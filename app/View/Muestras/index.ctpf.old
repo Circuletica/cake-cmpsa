@@ -1,0 +1,17 @@
+<h1>Listado de paises</h1>
+<pre>
+<?php print_r($paises);?>
+</pre>
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Nombre</th>
+  </tr>
+<?php foreach($paises as $pais):
+  echo "  <tr>";
+  echo "    <td>";$pais['Pais']['id'];"</td>";
+  echo "    <td>";$pais['Pais']['nombre'];"</td>";
+  echo "  </tr>";
+  endforeach;
+?>
+</table>

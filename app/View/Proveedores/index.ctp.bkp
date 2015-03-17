@@ -1,0 +1,35 @@
+<h2>Proveedores</h2>
+<?php if(empty($proveedores)): ?>
+No hay proveedores en esta lista
+<?php else: ?>
+<table>
+<tr>
+  <th><?php echo $this->Paginator->sort('nombre')?></th>
+  <th>Dirección</th>
+  <th>CP</th>
+  <th>Municipio</th>
+  <th><?php echo $this->Paginator->sort('pais')?></th>
+</tr>
+<?php foreach ($proveedores as $proveedor): ?>
+<tr>
+  <td>
+  <?php echo $proveedor['Proveedor']['nombre'] ?>
+  </td>
+  <td>
+  <?php echo $proveedor['Proveedor']['direccion'] ?>
+  </td>
+  <td>
+  <?php echo $proveedor['Proveedor']['cp'] ?>
+  </td>
+  <td>
+  <?php echo $proveedor['Proveedor']['municipio'] ?>
+  </td>
+  <td>
+  <?php echo $proveedor['Pais']['nombre'] ?>
+  </td>
+</tr>
+<?php endforeach; ?>
+</table>
+<?php endif; ?>
+<br>
+<?php echo $this->Html->link('Añadir proveedor', array('action'=>'add')); ?>
