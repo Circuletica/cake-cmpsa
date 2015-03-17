@@ -37,9 +37,9 @@
     <td>
       <?php 
 	//concatenamos la calidad de la muestra
-      echo $muestra['Calidad']['descafeinado'] ? 'Descafeinado' : 'Natural'.
-      	'-'.$muestra['Calidad']['Pais']['nombre'].
-      	'-'.$muestra['Calidad']['descripcion'];
+      echo $muestra['Calidad']['descafeinado'] ? 'Descafeinado ' : ''
+      	.$muestra['Calidad']['Pais']['nombre'].
+      	' '.$muestra['Calidad']['descripcion'];
 	?>
     </td>
     <td>

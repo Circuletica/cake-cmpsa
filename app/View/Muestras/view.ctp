@@ -76,10 +76,10 @@
 	echo "<dd>";
 	echo $muestra['Muestra']['incidencia'].'&nbsp;';
 	echo "</dd>";
-	echo "  <dt>Reclamación</dt>\n";
-	echo "<dd>";
-	echo $muestra['Muestra']['reclamacion'].'&nbsp;';
-	echo "</dd>";
+//	echo "  <dt>Reclamación</dt>\n";
+//	echo "<dd>";
+//	echo $muestra['Muestra']['reclamacion'].'&nbsp;';
+//	echo "</dd>";
 	echo "</dl>";
 	echo "<hr>\n";
 	echo "<p>\n";
