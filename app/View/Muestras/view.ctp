@@ -22,7 +22,7 @@
 		array('confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
 	);
 	echo $this->Html->link('Añadir línea',array(
-		'controller' => 'lineas',
+		'controller' => 'linea_muestras',
 		'action' => 'add',
 		'from_controller' => 'muestras',
 		'from_id' => $muestra['Muestra']['id'])

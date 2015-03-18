@@ -8,8 +8,10 @@ class ContactosController extends AppController {
 	public function add() {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$this->params['named']['from_id']) {
-			$this->Session->setFlash('URL mal formado controler/add '.$this->params['named']['from']);
-			$this->redirect(array('action'=>'index'));
+			$this->Session->setFlash('URL mal formado controller/add '.$this->params['named']['from']);
+			$this->redirect(array(
+				('controller' => $this->params['named']['from'],
+				'action' => 'index'));
 		}
 		//necesitamos el nombre de la empresa para el breadcrumb y el título de la vista
 		$empresa = $this->Contacto->Empresa->find('first',

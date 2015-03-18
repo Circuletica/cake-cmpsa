@@ -6,6 +6,7 @@
 	);
 	echo "<h2>Almacenes</h2>\n";
 	echo "<div class='actions'>\n";
+	echo $this->element('desplegabledatos'); //Desplegable
 	echo $this->Html->link('Añadir Almacén',array('action'=>'add'));
 	echo "\n";
 	echo "</div>\n";
@@ -47,7 +48,7 @@
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
 );
 ?>
-</p>
+</p></div>
 <div class="paging">
 	<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
 	<?php echo $this->Paginator->numbers(array('separator' => ''));?>

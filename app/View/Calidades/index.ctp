@@ -5,6 +5,7 @@
 		'action' => 'index')
 	);
 	echo "<div class='actions'>\n";
+    echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
 	echo $this->Html->link('Añadir Calidad',array(
 		'controller' => 'calidades',
 		'action'=>'add',
@@ -51,7 +52,7 @@
 <?php echo $this->Paginator->counter(
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
 );?>
-</p>
+</p></div>
 <div class="paging">
 	<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
 	<?php echo $this->Paginator->numbers(array('separator' => ''));?>
