@@ -160,7 +160,7 @@ CREATE TABLE `calidades` (
 
 LOCK TABLES `calidades` WRITE;
 /*!40000 ALTER TABLE `calidades` DISABLE KEYS */;
-INSERT INTO `calidades` VALUES (5,0,2,'Huila Excelso Criba 16','2015-03-12 23:59:58','2015-03-16 14:26:15'),(6,1,1,'N.Y.4, MTGB Duro limpio (EA Process)','2015-03-13 00:06:32','2015-03-16 15:11:32'),(8,0,1,'N.Y.4, 17/18,Duro Limpio','2015-03-16 10:31:51','2015-03-16 15:05:13'),(9,0,8,'AA Top','2015-03-16 10:37:26','2015-03-16 16:08:06'),(10,0,12,'S.H.G. Criba 16 Up','2015-03-16 10:37:59','2015-03-16 15:06:12'),(11,1,NULL,'Colombia/Brasil/Uganda( 30%,30%,40%)','2015-03-16 10:38:58','2015-03-16 17:58:04'),(12,0,14,'Robusta Criba 18 Limpio','2015-03-16 17:34:38','2015-03-17 09:59:03'),(23,0,1,'N.Y.4,17/18,Strictly Soft,Fine Roast','2015-03-16 23:05:51','2015-03-17 10:00:44'),(24,0,20,'Sidamo Grado 2','2015-03-16 23:06:57','2015-03-17 10:00:59'),(25,1,14,'Robusta Grado 2 (5%) EA Process','2015-03-17 12:00:42','2015-03-17 12:00:42'),(26,1,7,'Quito 29','2015-03-17 14:59:52','2015-03-17 14:59:52'),(27,1,NULL,'Guarani','2015-03-17 15:00:45','2015-03-17 15:00:45');
+INSERT INTO `calidades` VALUES (5,0,2,'Huila Excelso Criba 16','2015-03-12 23:59:58','2015-03-16 14:26:15'),(6,1,1,'N.Y.4, MTGB Duro limpio EA Process','2015-03-13 00:06:32','2015-03-17 15:29:24'),(8,0,1,'N.Y.4, 17/18,Duro Limpio','2015-03-16 10:31:51','2015-03-16 15:05:13'),(9,0,8,'AA Top','2015-03-16 10:37:26','2015-03-16 16:08:06'),(10,0,12,'S.H.G. Criba 16 Up','2015-03-16 10:37:59','2015-03-16 15:06:12'),(11,1,NULL,'Colombia/Brasil/Uganda( 30%,30%,40%)','2015-03-16 10:38:58','2015-03-16 17:58:04'),(12,0,14,'Robusta Criba 18 Limpio','2015-03-16 17:34:38','2015-03-17 09:59:03'),(23,0,1,'N.Y.4,17/18,Strictly Soft,Fine Roast','2015-03-16 23:05:51','2015-03-17 10:00:44'),(24,0,20,'Sidamo Grado 2','2015-03-16 23:06:57','2015-03-17 10:00:59'),(25,1,14,'Robusta Grado 2 (5%) EA Process','2015-03-17 12:00:42','2015-03-17 12:00:42'),(27,1,NULL,'Guarani','2015-03-17 15:00:45','2015-03-17 15:00:45');
 /*!40000 ALTER TABLE `calidades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,7 +226,7 @@ CREATE TABLE `contactos` (
   PRIMARY KEY (`id`,`empresa_id`),
   KEY `fk_contactos_empresas1_idx` (`empresa_id`),
   CONSTRAINT `fk_contactos_empresas1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,7 +235,7 @@ CREATE TABLE `contactos` (
 
 LOCK TABLES `contactos` WRITE;
 /*!40000 ALTER TABLE `contactos` DISABLE KEYS */;
-INSERT INTO `contactos` VALUES (3,4,'Emilio Botín','emilio@listafalciani.com','653306436','918695233','Golfista','2015-02-13 18:55:11','2015-02-17 23:41:31'),(4,11,'Rodrigo Rato','rodrigo@sotodelreal.es','937556421','666778899','trilero','2015-02-16 18:15:30','2015-02-17 21:00:15'),(6,3,'Juan Carlos Castro','','','','responsable cuenta','2015-02-17 15:25:01','2015-02-17 15:25:01'),(8,18,'Toto Cutugno','toto@libero.it','666 55 44 33','777 88 99 00','cantautor','2015-02-17 21:42:49','2015-02-17 23:59:22'),(9,26,'Lola Flores','','','','Cantaora','2015-02-24 12:30:26','2015-02-24 12:30:26'),(11,3,'Jordi Évole','','','','tocapelotas','2015-02-24 22:36:33','2015-02-24 22:36:33'),(13,50,'Camilo Sesto','','66655443322','','Peluquero','2015-03-10 13:25:07','2015-03-10 13:25:25');
+INSERT INTO `contactos` VALUES (3,4,'Emilio Botín','emilio@listafalciani.com','653306436','918695233','Golfista','2015-02-13 18:55:11','2015-02-17 23:41:31'),(6,3,'Juan Carlos Castro','','','','responsable cuenta','2015-02-17 15:25:01','2015-02-17 15:25:01'),(8,18,'Toto Cutugno','toto@libero.it','666 55 44 33','777 88 99 00','cantautor','2015-02-17 21:42:49','2015-02-17 23:59:22'),(9,26,'Lola Flores','','','','Cantaora','2015-02-24 12:30:26','2015-02-24 12:30:26'),(11,3,'Jordi Évole','','','','tocapelotas','2015-02-24 22:36:33','2015-02-24 22:36:33'),(13,50,'Camilo Sesto','','66655443322','','Peluquero','2015-03-10 13:25:07','2015-03-10 13:25:25'),(14,18,'Rodol','','','','','2015-03-19 14:05:47','2015-03-19 14:05:47');
 /*!40000 ALTER TABLE `contactos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -277,13 +277,13 @@ INSERT INTO `empresas` VALUES (3,'BBVA','Paseo Castellana, 108','','Madrid',3,'9
 UNLOCK TABLES;
 
 --
--- Table structure for table `lineas_muestras`
+-- Table structure for table `linea_muestras`
 --
 
-DROP TABLE IF EXISTS `lineas_muestras`;
+DROP TABLE IF EXISTS `linea_muestras`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `lineas_muestras` (
+CREATE TABLE `linea_muestras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `muestra_id` int(11) NOT NULL,
   `marca` varchar(45) DEFAULT NULL,
@@ -314,16 +314,17 @@ CREATE TABLE `lineas_muestras` (
   PRIMARY KEY (`id`,`muestra_id`),
   KEY `fk_linea_muestra_muestras1_idx` (`muestra_id`),
   CONSTRAINT `fk_linea_muestra_muestras1` FOREIGN KEY (`muestra_id`) REFERENCES `muestras` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `lineas_muestras`
+-- Dumping data for table `linea_muestras`
 --
 
-LOCK TABLES `lineas_muestras` WRITE;
-/*!40000 ALTER TABLE `lineas_muestras` DISABLE KEYS */;
-/*!40000 ALTER TABLE `lineas_muestras` ENABLE KEYS */;
+LOCK TABLES `linea_muestras` WRITE;
+/*!40000 ALTER TABLE `linea_muestras` DISABLE KEYS */;
+INSERT INTO `linea_muestras` VALUES (1,1,'Hacienda Sao Tomé','240','5576/15','4365432/CM12','85%','suave','ninguno',10,20,5,5,15,5,5,5,5,5,5,5,NULL,NULL,NULL,'Sabor a café','2015-03-19 00:19:01','2015-03-19 00:19:01');
+/*!40000 ALTER TABLE `linea_muestras` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -406,7 +407,7 @@ CREATE TABLE `paises` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index2` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -415,7 +416,7 @@ CREATE TABLE `paises` (
 
 LOCK TABLES `paises` WRITE;
 /*!40000 ALTER TABLE `paises` DISABLE KEYS */;
-INSERT INTO `paises` VALUES (1,'Brasil','br','55','2015-02-06 22:47:29','2015-03-10 12:10:41'),(2,'Colombia','co','','2015-02-06 22:47:41','2015-02-06 22:47:41'),(3,'España','es','34','2015-02-07 01:05:18','2015-02-24 23:58:34'),(4,'Tanzania','tz','','2015-02-07 01:05:31','2015-02-07 01:05:31'),(5,'Francia','fr','33','2015-02-10 14:24:25','2015-02-24 23:58:23'),(6,'Bélgica','be','32','2015-03-10 11:15:17','2015-03-10 12:09:41'),(7,'Perú','pe','','2015-03-10 11:30:38','2015-03-10 11:30:38'),(8,'Kenia','ke','','2015-03-10 11:42:13','2015-03-10 11:42:13'),(9,'Alemania','de','49','2015-03-10 11:48:52','2015-03-10 12:10:18'),(10,'Suiza','ch','','2015-03-10 11:53:43','2015-03-10 11:53:43'),(11,'Estados Unidos','us','','2015-03-10 11:56:32','2015-03-10 11:56:32'),(12,'Nicaragua','ni','','2015-03-10 12:02:39','2015-03-10 12:02:39'),(14,'Vietnam','vn','','2015-03-16 16:31:16','2015-03-16 16:31:16'),(19,'Indonesia','','','2015-03-16 22:56:37','2015-03-16 22:56:37'),(20,'Etiopia','','','2015-03-16 23:06:40','2015-03-16 23:06:40');
+INSERT INTO `paises` VALUES (1,'Brasil','br','55','2015-02-06 22:47:29','2015-03-10 12:10:41'),(2,'Colombia','co','','2015-02-06 22:47:41','2015-02-06 22:47:41'),(3,'España','es','34','2015-02-07 01:05:18','2015-02-24 23:58:34'),(4,'Tanzania','tz','','2015-02-07 01:05:31','2015-02-07 01:05:31'),(5,'Francia','fr','33','2015-02-10 14:24:25','2015-02-24 23:58:23'),(6,'Bélgica','be','32','2015-03-10 11:15:17','2015-03-10 12:09:41'),(7,'Perú','pe','','2015-03-10 11:30:38','2015-03-10 11:30:38'),(8,'Kenia','ke','','2015-03-10 11:42:13','2015-03-10 11:42:13'),(9,'Alemania','de','49','2015-03-10 11:48:52','2015-03-10 12:10:18'),(10,'Suiza','ch','','2015-03-10 11:53:43','2015-03-10 11:53:43'),(11,'Estados Unidos','us','','2015-03-10 11:56:32','2015-03-10 11:56:32'),(12,'Nicaragua','ni','','2015-03-10 12:02:39','2015-03-10 12:02:39'),(14,'Vietnam','vn','','2015-03-16 16:31:16','2015-03-16 16:31:16'),(19,'Indonesia','','','2015-03-16 22:56:37','2015-03-16 22:56:37'),(20,'Etiopia','','','2015-03-16 23:06:40','2015-03-16 23:06:40'),(21,'Italia','it','','2015-03-23 22:58:05','2015-03-23 22:58:05');
 /*!40000 ALTER TABLE `paises` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -473,4 +474,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-17 15:22:28
+-- Dump completed on 2015-03-23 23:20:48

@@ -89,5 +89,32 @@
 	echo "<hr>\n";
 	echo "<p>\n";
 	echo "<h3>Líneas</h3>";
+	echo "<table>\n";
+	echo $this->Html->tableHeaders(array('Marca', 'Número de Sacos',
+	       'Ref. Proveedor', 'Ref Almacén', ''));
+	foreach($muestra['LineaMuestra'] as $linea):
+		echo $this->Html->tableCells(array(
+			$linea['marca'],
+			$linea['numero_sacos'],
+			$linea['referencia_proveedor'],
+			$linea['referencia_almacen'],
+			$this->Html->link('Detalles', array(
+				'controller'=>'linea_muestras',
+				'action' => 'view',
+				$linea['id'],
+              			'from_controller'=>'muestras',
+              			'from_id'=>$linea['muestra_id']))
+				.' '.$this->Form->postLink('Borrar',
+				array(
+					'controller'=>'linea_muestras',
+					'action' => 'delete',
+					$linea['id'],
+					'from_controller' => 'muestras',
+					'from_id' => $linea['muestra_id']),
+					array('confirm' => 'Seguro que quieres borrar a '.$linea['marca'].'?')
+				)
+			));
+	endforeach;
+	echo "</table>\n";
 	echo "</div>";
 ?>
