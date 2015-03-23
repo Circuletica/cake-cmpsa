@@ -31,12 +31,12 @@ body {
 }
 a {
 	color: #5A4741;
-	text-decoration: underline;
+	text-decoration: none;
 	font-weight: bold;
 }
 a:hover {
 	color: #367889;
-	text-decoration:none;
+	text-decoration:underline;
 }
 a img {
 	border:none;
@@ -122,6 +122,9 @@ p {
 	border-color: #5A4741;
 	color: #5A4741;
 	padding: 6px 8px;
+	border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
 }
 
 /* Fin CSS TABS*/

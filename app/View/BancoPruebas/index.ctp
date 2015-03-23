@@ -1,13 +1,14 @@
 <?php //$this->Html->getCrumbs(' > ');?>
 <?php $this->Html->addCrumb('Bancos', '/banco_pruebas');?>
 <h2>Bancos</h2>
-<?php
-	echo "<div class='actions'>\n";
-	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
+
+	<div class="actions">
+<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
 	echo $this->Html->link('Añadir Banco',array('action'=>'add'));
-	echo "\n";
-	echo "</div>\n";
-	echo "<div class='index'>\n";
+?>
+	</div>
+	<div class='index'>
+<?php
 	if (empty($bancopruebas)):
 		echo "No hay bancos en esta lista";
 	else:
@@ -44,10 +45,12 @@
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
 );
 ?>
-</p></div>
 <div class="paging">
 	<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
 	<?php echo $this->Paginator->numbers(array('separator' => ''));?>
 	<?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
-</div><?php endif; ?>
+</div>
+</p></div>
+
+<?php endif; ?>
 

@@ -15,7 +15,6 @@ if (url != "no") window.location = url;
     <option value="/almacenes">Almacenes
     <option value="/banco_pruebas">Bancos
     <option value="/calidades">Calidades
-    <option value="/contactos">Contactos
     <option value="/empresas">Empresas
     <option value="/muestras">Muestras
     <option value="/paises">Pa&iacute;ses

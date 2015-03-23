@@ -57,13 +57,13 @@ class MuestrasController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		$muestra = $this->Muestra->find('first', array(
-			'conditions' => array('Muestra.id' => $id)));
+			'conditions' => array('Muestra.id' => $id),
+			'recursive' => 2));
 		//debug($muestra);
 		$this->set('muestra',$muestra);
 		$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL
-		$calidad_nombre = $this->CalidadNombre->find('first', array(
-			'conditions' => array('CalidadNombre.id' => $muestra['Calidad']['id'])));
+		$calidad_nombre = $this->CalidadNombre->findById($muestra['Calidad']['id']);
 		$this->set('calidad_nombre',$calidad_nombre);
 	}
 

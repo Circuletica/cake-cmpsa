@@ -19,8 +19,7 @@ class BancoPruebasController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		//sacamos el banco cuyo id se ha pasado al view
-		$bancoprueba = $this->BancoPrueba->find('first',array(
-			'conditions' => array('BancoPrueba.id' => $id)));
+		$bancoprueba = $this->BancoPrueba->findById($id);
 		$this->set('bancoprueba',$bancoprueba);
 		//calculamos el IBAN
 		$cuenta_cliente = $bancoprueba['BancoPrueba']['cuenta_cliente_1'];

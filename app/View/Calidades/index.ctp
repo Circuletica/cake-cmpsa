@@ -4,20 +4,19 @@
 		'controller' => 'calidades',
 		'action' => 'index')
 	);
-	echo "<div class='actions'>\n";
-    echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
+?>
+  <div class="actions">;
+  <?php
+  echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
 	echo $this->Html->link('Añadir Calidad',array(
 		'controller' => 'calidades',
 		'action'=>'add',
 		'from_controller' => 'calidades',
 		'from_action' => 'index'));
-	echo "\n";
-	echo "</div>\n";
-	echo "<div class='index'>\n";
-//	echo '<pre>';
-//	print_r($calidades);
-//	echo '</pre>';
-?>
+	echo "\n"; ?>
+	</div>
+	<div class='index'>
+	<?php //print_r($calidades);?>
 <table>
   <tr>
     <th><?php echo $this->Paginator->sort('id')?></th>

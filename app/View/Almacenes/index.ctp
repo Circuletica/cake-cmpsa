@@ -4,13 +4,18 @@
 		'controller' => 'almacenes',
 		'action' => 'index')
 	);
-	echo "<h2>Almacenes</h2>\n";
-	echo "<div class='actions'>\n";
+?>
+<h2>Almacenes</h2>
+<div class="actions">
+	<?php
 	echo $this->element('desplegabledatos'); //Desplegable
 	echo $this->Html->link('Añadir Almacén',array('action'=>'add'));
 	echo "\n";
-	echo "</div>\n";
-	echo "<div class='index'>\n";
+	?>
+	</div>
+
+	<div class='index'>
+	<?php
 	if (empty($empresas)):
 		echo "No hay almacenes en esta lista";
 	else:
@@ -48,10 +53,12 @@
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
 );
 ?>
-</p></div>
+
 <div class="paging">
 	<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
 	<?php echo $this->Paginator->numbers(array('separator' => ''));?>
 	<?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
-</div><?php endif; ?>
+</div>
+</p></div>
+<?php endif; ?>
 

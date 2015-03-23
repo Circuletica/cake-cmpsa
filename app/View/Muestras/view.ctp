@@ -47,11 +47,21 @@
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
 	//echo $muestra['Calidad']['nombre'].'&nbsp;';
-	echo $calidad_nombre['CalidadNombre']['nombre'].'&nbsp;';
+	//echo $calidad_nombre['CalidadNombre']['nombre'].'&nbsp;';
+	echo $this->Html->link($calidad_nombre['CalidadNombre']['nombre'], array(
+		'controller' => 'calidades',
+		'action' => 'view',
+		$muestra['Muestra']['id'])
+	);
 	echo "</dd>";
 	echo "  <dt>Proveedor</dt>\n";
 	echo "<dd>";
-	echo $muestra['Proveedor']['Empresa']['nombre'].'&nbsp;';
+	//echo $muestra['Proveedor']['Empresa']['nombre'].'&nbsp;';
+	echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre'], array(
+		'controller' => 'proveedores',
+		'action' => 'view',
+		$muestra['Proveedor']['id'])
+	);
 	echo "</dd>";
 	echo "  <dt>Almacen</dt>\n";
 	echo "<dd>";
@@ -66,7 +76,6 @@
 	$anyo = substr($fecha,0,4);
 	echo "<dd>";
 	echo $dia.'-'.$mes.'-'.$anyo;
-	//echo $muestra['Muestra']['fecha'].'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Resultado</dt>\n";
 	echo "<dd>";
@@ -76,10 +85,6 @@
 	echo "<dd>";
 	echo $muestra['Muestra']['incidencia'].'&nbsp;';
 	echo "</dd>";
-//	echo "  <dt>Reclamación</dt>\n";
-//	echo "<dd>";
-//	echo $muestra['Muestra']['reclamacion'].'&nbsp;';
-//	echo "</dd>";
 	echo "</dl>";
 	echo "<hr>\n";
 	echo "<p>\n";

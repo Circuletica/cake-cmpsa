@@ -10,7 +10,7 @@ class ContactosController extends AppController {
 		if (!$this->params['named']['from_id']) {
 			$this->Session->setFlash('URL mal formado controller/add '.$this->params['named']['from']);
 			$this->redirect(array(
-				('controller' => $this->params['named']['from'],
+				'controller' => $this->params['named']['from'],
 				'action' => 'index'));
 		}
 		//necesitamos el nombre de la empresa para el breadcrumb y el título de la vista

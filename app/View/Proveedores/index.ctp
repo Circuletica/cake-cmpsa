@@ -1,7 +1,8 @@
 <?php //$this->Html->getCrumbs(' > ');?>
-<?php $this->Html->addCrumb('Proveedores', '/proveedores');
-	echo "<h2>Proveedores</h2>";
-	echo "<div class='actions'>\n";
+<?php $this->Html->addCrumb('Proveedores', '/proveedores');?>
+<h2>Proveedores</h2>
+<div class='actions'>
+	<?php
 	echo $this->Html->link('Añadir Proveedor',array(
 		'controller' => 'proveedores',
 		'action' => 'add',
@@ -9,8 +10,9 @@
 		'from_action' => 'index'	
 		));
 	echo "\n";
-	echo "</div>\n";
-	echo "<div class='index'>\n";
+?> </div>
+	<div class="index">
+	<?php 
 	if (empty($proveedores)):
 		echo "No hay proveedores en esta lista";
 	else:
@@ -48,10 +50,12 @@
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
 );
 ?>
-</p>
-<div class="paging">
-	<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
-	<?php echo $this->Paginator->numbers(array('separator' => ''));?>
-	<?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
-</div><?php endif; ?>
+	<div class="paging">
+		<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
+		<?php echo $this->Paginator->numbers(array('separator' => ''));?>
+		<?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
+	</div>
+	</p>
+	</div>
+<?php endif; ?>
 
