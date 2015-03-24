@@ -46,7 +46,7 @@
 	echo "<dd>";
 	echo $linea['LineaMuestra']['referencia_proveedor'].'&nbsp;';
 	echo "</dd>";
-	echo "  <dt>Ref. Almacen</dt>\n";
+	echo "  <dt>Referencia Almacen</dt>\n";
 	echo "<dd>";
 	echo $linea['LineaMuestra']['referencia_almacen'].'&nbsp;';
 	echo "</dd>";
@@ -69,22 +69,54 @@
 	echo "  <dt>Criba</dt>\n";
 	echo "<dd>";
 	echo "<table>";
-	echo $this->Html->tableHeaders(array('Tamaño', 'Criba original', 'Criba ponderada'));
-	echo $this->Html->tableCells(array('Criba 20', $linea['LineaMuestra']['criba20'], ''));
-	echo $this->Html->tableCells(array('Criba 19', $linea['LineaMuestra']['criba19'], ''));
-	echo $this->Html->tableCells(array('Criba 13p', $linea['LineaMuestra']['criba13p'], ''));
-	echo $this->Html->tableCells(array('Criba 18', $linea['LineaMuestra']['criba18'], ''));
-	echo $this->Html->tableCells(array('Criba 12p', $linea['LineaMuestra']['criba12p'], ''));
-	echo $this->Html->tableCells(array('Criba 17', $linea['LineaMuestra']['criba17'], ''));
-	echo $this->Html->tableCells(array('Criba 11p', $linea['LineaMuestra']['criba11p'], ''));
-	echo $this->Html->tableCells(array('Criba 16', $linea['LineaMuestra']['criba16'], ''));
-	echo $this->Html->tableCells(array('Criba 10p', $linea['LineaMuestra']['criba10p'], ''));
-	echo $this->Html->tableCells(array('Criba 15', $linea['LineaMuestra']['criba15'], ''));
-	echo $this->Html->tableCells(array('Criba 9p', $linea['LineaMuestra']['criba9p'], ''));
-	echo $this->Html->tableCells(array('Criba 14', $linea['LineaMuestra']['criba14'], ''));
-	echo $this->Html->tableCells(array('Criba 8p', $linea['LineaMuestra']['criba8p'], ''));
-	echo $this->Html->tableCells(array('Criba 13', $linea['LineaMuestra']['criba13'], ''));
-	echo $this->Html->tableCells(array('Criba 12', $linea['LineaMuestra']['criba12'], ''));
+	echo $this->Html->tableHeaders(array('&nbsp;', 'Medida original', 'Medida ponderada'));
+	echo $this->Html->tableCells(array(
+		'Criba 20',
+		$linea['LineaMuestra']['criba20'],
+		$linea['CribaPonderada']['criba20']));
+	echo $this->Html->tableCells(array(
+		'Criba 19',
+		$linea['LineaMuestra']['criba19'],
+		$linea['CribaPonderada']['criba19']));
+	echo $this->Html->tableCells(array('Criba 13p', $linea['LineaMuestra']['criba13p'], '&nbsp;'));
+	echo $this->Html->tableCells(array(
+		'Criba 18',
+		$linea['LineaMuestra']['criba18'],
+		$linea['CribaPonderada']['criba18']));
+	echo $this->Html->tableCells(array('Criba 12p', $linea['LineaMuestra']['criba12p'], '&nbsp;'));
+	echo $this->Html->tableCells(array(
+		'Criba 17',
+		$linea['LineaMuestra']['criba17'],
+		$linea['CribaPonderada']['criba17']));
+	echo $this->Html->tableCells(array('Criba 11p', $linea['LineaMuestra']['criba11p'], '&nbsp;'));
+	echo $this->Html->tableCells(array(
+		'Criba 16',
+		$linea['LineaMuestra']['criba16'],
+		$linea['CribaPonderada']['criba16']));
+	echo $this->Html->tableCells(array('Criba 10p', $linea['LineaMuestra']['criba10p'], '&nbsp;'));
+	echo $this->Html->tableCells(array(
+		'Criba 15',
+		$linea['LineaMuestra']['criba15'],
+		$linea['CribaPonderada']['criba15']));
+	echo $this->Html->tableCells(array('Criba 9p', $linea['LineaMuestra']['criba9p'], '&nbsp;'));
+	echo $this->Html->tableCells(array(
+		'Criba 14',
+		$linea['LineaMuestra']['criba14'],
+		$linea['CribaPonderada']['criba14']));
+	echo $this->Html->tableCells(array('Criba 8p', $linea['LineaMuestra']['criba8p'], '&nbsp;'));
+	echo $this->Html->tableCells(array(
+		'Criba 13',
+		$linea['LineaMuestra']['criba13'],
+		$linea['CribaPonderada']['criba13']));
+	echo $this->Html->tableCells(array(
+		'Criba 12',
+		$linea['LineaMuestra']['criba12'],
+		$linea['CribaPonderada']['criba12']));
+	echo $this->Html->tableCells(array(
+		'Total',
+		array($suma_linea."%",array('class' => 'total')),
+		array($suma_ponderada."%",array('class' => 'total'))
+		));
 //	echo "<tr>";
 //	echo "<td>";
 //	echo "<table>";

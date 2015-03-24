@@ -60,7 +60,7 @@ class MuestrasController extends AppController {
 			'conditions' => array('Muestra.id' => $id),
 			'recursive' => 2));
 		//debug($this->Muestra->LineaMuestra);
-		debug($muestra['LineaMuestra']);
+		//debug($muestra['LineaMuestra']);
 		$this->set('muestra',$muestra);
 		$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL
