@@ -78,32 +78,32 @@
 		'Criba 19',
 		$linea['LineaMuestra']['criba19'],
 		$linea['CribaPonderada']['criba19']));
-	echo $this->Html->tableCells(array('Criba 13p', $linea['LineaMuestra']['criba13p'], '&nbsp;'));
+	echo $this->Html->tableCells(array('Caracol 13', $linea['LineaMuestra']['criba13p'], '&nbsp;'));
 	echo $this->Html->tableCells(array(
 		'Criba 18',
 		$linea['LineaMuestra']['criba18'],
 		$linea['CribaPonderada']['criba18']));
-	echo $this->Html->tableCells(array('Criba 12p', $linea['LineaMuestra']['criba12p'], '&nbsp;'));
+	echo $this->Html->tableCells(array('Caracol 12', $linea['LineaMuestra']['criba12p'], '&nbsp;'));
 	echo $this->Html->tableCells(array(
 		'Criba 17',
 		$linea['LineaMuestra']['criba17'],
 		$linea['CribaPonderada']['criba17']));
-	echo $this->Html->tableCells(array('Criba 11p', $linea['LineaMuestra']['criba11p'], '&nbsp;'));
+	echo $this->Html->tableCells(array('Caracol 11', $linea['LineaMuestra']['criba11p'], '&nbsp;'));
 	echo $this->Html->tableCells(array(
 		'Criba 16',
 		$linea['LineaMuestra']['criba16'],
 		$linea['CribaPonderada']['criba16']));
-	echo $this->Html->tableCells(array('Criba 10p', $linea['LineaMuestra']['criba10p'], '&nbsp;'));
+	echo $this->Html->tableCells(array('Caracol 10', $linea['LineaMuestra']['criba10p'], '&nbsp;'));
 	echo $this->Html->tableCells(array(
 		'Criba 15',
 		$linea['LineaMuestra']['criba15'],
 		$linea['CribaPonderada']['criba15']));
-	echo $this->Html->tableCells(array('Criba 9p', $linea['LineaMuestra']['criba9p'], '&nbsp;'));
+	echo $this->Html->tableCells(array('Caracol 9', $linea['LineaMuestra']['criba9p'], '&nbsp;'));
 	echo $this->Html->tableCells(array(
 		'Criba 14',
 		$linea['LineaMuestra']['criba14'],
 		$linea['CribaPonderada']['criba14']));
-	echo $this->Html->tableCells(array('Criba 8p', $linea['LineaMuestra']['criba8p'], '&nbsp;'));
+	echo $this->Html->tableCells(array('Caracol 8', $linea['LineaMuestra']['criba8p'], '&nbsp;'));
 	echo $this->Html->tableCells(array(
 		'Criba 13',
 		$linea['LineaMuestra']['criba13'],
@@ -162,6 +162,8 @@
 //	echo "</td>";
 //	echo "</tr>";
 	echo "</table>"."&nbsp;";
+	echo "<dt>Criba Media</dt>";
+	echo "<dd>".$linea['CribaPonderada']['criba_media']."</dd>";
 	echo "</dd>";
 	echo "</dl>";
 	echo "</div>";
