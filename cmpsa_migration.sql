@@ -53,7 +53,7 @@ CREATE TABLE `almacenes` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_almacenes_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +226,7 @@ CREATE TABLE `contactos` (
   PRIMARY KEY (`id`,`empresa_id`),
   KEY `fk_contactos_empresas1_idx` (`empresa_id`),
   CONSTRAINT `fk_contactos_empresas1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,9 +235,32 @@ CREATE TABLE `contactos` (
 
 LOCK TABLES `contactos` WRITE;
 /*!40000 ALTER TABLE `contactos` DISABLE KEYS */;
-INSERT INTO `contactos` VALUES (3,4,'Emilio Botín','emilio@listafalciani.com','653306436','918695233','Golfista','2015-02-13 18:55:11','2015-02-17 23:41:31'),(6,3,'Juan Carlos Castro','','','','responsable cuenta','2015-02-17 15:25:01','2015-02-17 15:25:01'),(8,18,'Toto Cutugno','toto@libero.it','666 55 44 33','777 88 99 00','cantautor','2015-02-17 21:42:49','2015-02-17 23:59:22'),(9,26,'Lola Flores','','','','Cantaora','2015-02-24 12:30:26','2015-02-24 12:30:26'),(11,3,'Jordi Évole','','','','tocapelotas','2015-02-24 22:36:33','2015-02-24 22:36:33'),(13,50,'Camilo Sesto','','66655443322','','Peluquero','2015-03-10 13:25:07','2015-03-10 13:25:25'),(14,18,'Rodol','','','','','2015-03-19 14:05:47','2015-03-19 14:05:47');
+INSERT INTO `contactos` VALUES (3,4,'Emilio Botín','emilio@listafalciani.com','653306436','918695233','Golfista','2015-02-13 18:55:11','2015-02-17 23:41:31'),(6,3,'Juan Carlos Castro','','','','responsable cuenta','2015-02-17 15:25:01','2015-02-17 15:25:01'),(8,18,'Toto Cutugno','toto@libero.it','666 55 44 33','777 88 99 00','cantautor','2015-02-17 21:42:49','2015-02-17 23:59:22'),(9,26,'Lola Flores','','','','Cantaora','2015-02-24 12:30:26','2015-02-24 12:30:26'),(11,3,'Jordi Évole','','','','tocapelotas','2015-02-24 22:36:33','2015-02-24 22:36:33'),(13,50,'Camilo Sesto','','66655443322','','Peluquero','2015-03-10 13:25:07','2015-03-10 13:25:25'),(15,18,'Pablo Iglesias','pabloiglesias@psoe.es','913241201','','Cofundador','2015-03-24 13:10:36','2015-03-24 13:10:36');
 /*!40000 ALTER TABLE `contactos` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `criba_ponderadas`
+--
+
+DROP TABLE IF EXISTS `criba_ponderadas`;
+/*!50001 DROP VIEW IF EXISTS `criba_ponderadas`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `criba_ponderadas` (
+  `id` tinyint NOT NULL,
+  `criba20` tinyint NOT NULL,
+  `criba19` tinyint NOT NULL,
+  `criba18` tinyint NOT NULL,
+  `criba17` tinyint NOT NULL,
+  `criba16` tinyint NOT NULL,
+  `criba15` tinyint NOT NULL,
+  `criba14` tinyint NOT NULL,
+  `criba13` tinyint NOT NULL,
+  `criba12` tinyint NOT NULL,
+  `criba_media` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `empresas`
@@ -292,29 +315,29 @@ CREATE TABLE `linea_muestras` (
   `referencia_almacen` varchar(45) DEFAULT NULL,
   `humedad` varchar(45) DEFAULT NULL,
   `tueste` varchar(45) DEFAULT NULL,
-  `defecto` varchar(45) DEFAULT NULL,
-  `criba20` tinyint(4) DEFAULT NULL,
-  `criba19` tinyint(4) DEFAULT NULL,
-  `criba13p` tinyint(4) DEFAULT NULL,
-  `criba18` tinyint(4) DEFAULT NULL,
-  `criba12p` tinyint(4) DEFAULT NULL,
-  `criba17` tinyint(4) DEFAULT NULL,
-  `criba11p` tinyint(4) DEFAULT NULL,
-  `criba16` tinyint(4) DEFAULT NULL,
-  `criba10p` tinyint(4) DEFAULT NULL,
-  `criba15` tinyint(4) DEFAULT NULL,
-  `criba9p` tinyint(4) DEFAULT NULL,
-  `criba14` tinyint(4) DEFAULT NULL,
-  `criba8p` tinyint(4) DEFAULT NULL,
-  `criba13` tinyint(4) DEFAULT NULL,
-  `criba12` tinyint(4) DEFAULT NULL,
+  `defecto` text,
+  `criba20` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba19` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba13p` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba18` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba12p` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba17` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba11p` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba16` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba10p` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba15` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba9p` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba14` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba8p` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba13` decimal(3,1) unsigned zerofill DEFAULT NULL,
+  `criba12` decimal(3,1) unsigned zerofill DEFAULT NULL,
   `apreciacion_bebida` text,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`,`muestra_id`),
   KEY `fk_linea_muestra_muestras1_idx` (`muestra_id`),
   CONSTRAINT `fk_linea_muestra_muestras1` FOREIGN KEY (`muestra_id`) REFERENCES `muestras` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +346,7 @@ CREATE TABLE `linea_muestras` (
 
 LOCK TABLES `linea_muestras` WRITE;
 /*!40000 ALTER TABLE `linea_muestras` DISABLE KEYS */;
-INSERT INTO `linea_muestras` VALUES (1,1,'Hacienda Sao Tomé','240','5576/15','4365432/CM12','85%','suave','ninguno',10,20,5,5,15,5,5,5,5,5,5,5,NULL,NULL,NULL,'Sabor a café','2015-03-19 00:19:01','2015-03-19 00:19:01');
+INSERT INTO `linea_muestras` VALUES (1,1,'Hacienda Sao Tomé','240','5576/15','4365432/CM12','85%','suave','ninguno',10.0,20.0,05.0,05.0,15.0,05.0,05.0,05.0,05.0,05.0,05.0,05.0,NULL,NULL,NULL,'Sabor a café','2015-03-19 00:19:01','2015-03-19 00:19:01'),(2,1,'El Corte Inglés','69','14/FH67','12A/29','','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','2015-03-24 14:04:11','2015-03-24 14:04:11'),(3,1,'002/1848/1111111','20 Big bags','345','00030000/934','12,3%','ffffffffffff','black and broken beans: 4,5%',NULL,NULL,04.0,25.0,02.0,26.0,03.0,30.0,NULL,10.0,NULL,NULL,NULL,NULL,NULL,'Acidez media alta\r\ncuerpo medio bajo\r\nleve suavidad todas las tazas\r\n1 Taza fermentada\r\n1 Taza sucia\r\n1 Taza fenol\r\n','2015-03-24 15:17:53','2015-03-24 15:17:53'),(4,1,'Príncipe Azul','50','14/37/654','12/09','85%','suave','Una taza riada\r\nManchas de aceite\r\nPar de granos azules',10.0,10.5,09.5,11.0,09.0,20.0,08.5,01.5,02.8,07.2,NULL,10.0,NULL,NULL,NULL,'','2015-03-26 01:03:59','2015-03-26 01:03:59'),(5,1,'test','','','','','','',10.0,10.5,09.5,11.0,09.0,20.0,08.5,01.5,02.8,07.2,00.0,10.0,NULL,NULL,NULL,'','2015-03-26 01:11:04','2015-03-26 01:11:04'),(6,5,'002/7790/352','2500 sacos +80 BIG BAGS+ 320 SACOS','','15/3245','11,5','FINO','N.Y. 3/4, 26 DEFECTOS EN 300 GRAMOS\r\nALTO PORCETAJE DE GRANOS ROTOS',NULL,NULL,NULL,23.5,01.3,32.1,02.6,30.0,NULL,10.5,NULL,NULL,NULL,NULL,NULL,'10 TAZAS DURO LIMPIO\r\nSABOR UNIFORME DE COSECHA NUEVA','2015-03-26 12:58:34','2015-03-26 12:58:34'),(7,5,'002/7790/352','2500 sacos +80 BIG BAGS+ 320 SACOS','','15/3245','11,5','FINO','N.Y. 3/4, 26 DEFECTOS EN 300 GRAMOS\r\nALTO PORCENTAJE DE GRANOS ROTOS\r\nFOREIGN MATTERS: 13%\r\n',NULL,NULL,NULL,23.5,01.3,32.1,02.6,30.0,NULL,10.5,NULL,NULL,NULL,NULL,NULL,'8 TAZAS DURO LIMPIO\r\nSABOR UNIFORME DE COSECHA NUEVA\r\n1 TAZA RIADA\r\n1 TAZA SABOR VERDE\r\n','2015-03-26 13:04:51','2015-03-26 13:04:51');
 /*!40000 ALTER TABLE `linea_muestras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,7 +376,7 @@ CREATE TABLE `muestras` (
   CONSTRAINT `fk_muestras_almacenes1` FOREIGN KEY (`almacen_id`) REFERENCES `almacenes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_muestras_calidades1` FOREIGN KEY (`calidad_id`) REFERENCES `calidades` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_muestras_proveedores1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -362,7 +385,7 @@ CREATE TABLE `muestras` (
 
 LOCK TABLES `muestras` WRITE;
 /*!40000 ALTER TABLE `muestras` DISABLE KEYS */;
-INSERT INTO `muestras` VALUES (1,'104/17','2015-03-13 18:37:00',1,'',5,38,50,'2015-03-14 01:23:07','2015-03-14 01:23:07'),(2,'DLS29','2015-03-16 00:00:00',0,'Trazas de caucho',23,36,50,'2015-03-16 23:09:01','2015-03-16 23:09:01'),(3,'145/29','2015-03-17 00:00:00',0,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum, justo in commodo mollis, lorem urna egestas risus, eu condimentum sapien nunc nec arcu. In hac habitasse platea dictumst. Donec imperdiet, enim eget viverra euismod, ligula ante placerat magna, et gravida turpis eros et libero. Quisque condimentum viverra eros, eget cursus lorem luctus scelerisque. Aliquam eget imperdiet lorem, quis porta diam. Pellentesque sed finibus lectus. Maecenas nec massa sit amet metus egestas consectetur ac non eros. Quisque placerat convallis nisl eu scelerisque. Pellentesque ut arcu aliquet, congue neque at, aliquet enim. Aenean fermentum quam mattis purus posuere, at consectetur lorem porttitor.',24,44,50,'2015-03-17 00:13:17','2015-03-17 00:13:17');
+INSERT INTO `muestras` VALUES (1,'104/17','2015-03-13 18:37:00',1,'',5,38,50,'2015-03-14 01:23:07','2015-03-14 01:23:07'),(2,'DLS29','2015-03-16 00:00:00',0,'Trazas de caucho',23,36,50,'2015-03-16 23:09:01','2015-03-16 23:09:01'),(3,'145/29','2015-03-17 00:00:00',0,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum, justo in commodo mollis, lorem urna egestas risus, eu condimentum sapien nunc nec arcu. In hac habitasse platea dictumst. Donec imperdiet, enim eget viverra euismod, ligula ante placerat magna, et gravida turpis eros et libero. Quisque condimentum viverra eros, eget cursus lorem luctus scelerisque. Aliquam eget imperdiet lorem, quis porta diam. Pellentesque sed finibus lectus. Maecenas nec massa sit amet metus egestas consectetur ac non eros. Quisque placerat convallis nisl eu scelerisque. Pellentesque ut arcu aliquet, congue neque at, aliquet enim. Aenean fermentum quam mattis purus posuere, at consectetur lorem porttitor.',24,44,50,'2015-03-17 00:13:17','2015-03-17 00:13:17'),(4,'15/027','2015-03-26 00:00:00',1,'El café ha llegado a puerto',9,39,50,'2015-03-26 12:48:01','2015-03-26 12:48:01'),(5,'15/037','2015-03-26 00:00:00',1,'no puedo meter los datos??\'',23,40,50,'2015-03-26 12:53:56','2015-03-26 12:53:56');
 /*!40000 ALTER TABLE `muestras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,7 +430,7 @@ CREATE TABLE `paises` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index2` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -416,7 +439,7 @@ CREATE TABLE `paises` (
 
 LOCK TABLES `paises` WRITE;
 /*!40000 ALTER TABLE `paises` DISABLE KEYS */;
-INSERT INTO `paises` VALUES (1,'Brasil','br','55','2015-02-06 22:47:29','2015-03-10 12:10:41'),(2,'Colombia','co','','2015-02-06 22:47:41','2015-02-06 22:47:41'),(3,'España','es','34','2015-02-07 01:05:18','2015-02-24 23:58:34'),(4,'Tanzania','tz','','2015-02-07 01:05:31','2015-02-07 01:05:31'),(5,'Francia','fr','33','2015-02-10 14:24:25','2015-02-24 23:58:23'),(6,'Bélgica','be','32','2015-03-10 11:15:17','2015-03-10 12:09:41'),(7,'Perú','pe','','2015-03-10 11:30:38','2015-03-10 11:30:38'),(8,'Kenia','ke','','2015-03-10 11:42:13','2015-03-10 11:42:13'),(9,'Alemania','de','49','2015-03-10 11:48:52','2015-03-10 12:10:18'),(10,'Suiza','ch','','2015-03-10 11:53:43','2015-03-10 11:53:43'),(11,'Estados Unidos','us','','2015-03-10 11:56:32','2015-03-10 11:56:32'),(12,'Nicaragua','ni','','2015-03-10 12:02:39','2015-03-10 12:02:39'),(14,'Vietnam','vn','','2015-03-16 16:31:16','2015-03-16 16:31:16'),(19,'Indonesia','','','2015-03-16 22:56:37','2015-03-16 22:56:37'),(20,'Etiopia','','','2015-03-16 23:06:40','2015-03-16 23:06:40'),(21,'Italia','it','','2015-03-23 22:58:05','2015-03-23 22:58:05');
+INSERT INTO `paises` VALUES (1,'Brasil','br','55','2015-02-06 22:47:29','2015-03-10 12:10:41'),(2,'Colombia','co','','2015-02-06 22:47:41','2015-02-06 22:47:41'),(3,'España','es','34','2015-02-07 01:05:18','2015-02-24 23:58:34'),(4,'Tanzania','tz','','2015-02-07 01:05:31','2015-02-07 01:05:31'),(5,'Francia','fr','33','2015-02-10 14:24:25','2015-02-24 23:58:23'),(6,'Bélgica','be','32','2015-03-10 11:15:17','2015-03-10 12:09:41'),(7,'Perú','pe','','2015-03-10 11:30:38','2015-03-10 11:30:38'),(8,'Kenia','ke','','2015-03-10 11:42:13','2015-03-10 11:42:13'),(9,'Alemania','de','49','2015-03-10 11:48:52','2015-03-10 12:10:18'),(10,'Suiza','ch','','2015-03-10 11:53:43','2015-03-10 11:53:43'),(11,'Estados Unidos','us','','2015-03-10 11:56:32','2015-03-10 11:56:32'),(12,'Nicaragua','ni','','2015-03-10 12:02:39','2015-03-10 12:02:39'),(14,'Vietnam','vn','','2015-03-16 16:31:16','2015-03-16 16:31:16'),(19,'Indonesia','','','2015-03-16 22:56:37','2015-03-16 22:56:37'),(20,'Etiopia','','','2015-03-16 23:06:40','2015-03-16 23:06:40'),(21,'Italia','it','','2015-03-23 22:58:05','2015-03-23 22:58:05'),(22,'Rusia','','','2015-03-24 12:57:30','2015-03-24 12:57:30');
 /*!40000 ALTER TABLE `paises` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -464,6 +487,25 @@ UNLOCK TABLES;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `criba_ponderadas`
+--
+
+/*!50001 DROP TABLE IF EXISTS `criba_ponderadas`*/;
+/*!50001 DROP VIEW IF EXISTS `criba_ponderadas`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`cmpsa`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `criba_ponderadas` AS select `linea_muestras`.`id` AS `id`,`linea_muestras`.`criba20` AS `criba20`,`linea_muestras`.`criba19` AS `criba19`,(coalesce(`linea_muestras`.`criba13p`,0) + coalesce(`linea_muestras`.`criba18`,0)) AS `criba18`,(coalesce(`linea_muestras`.`criba12p`,0) + coalesce(`linea_muestras`.`criba17`,0)) AS `criba17`,(coalesce(`linea_muestras`.`criba11p`,0) + coalesce(`linea_muestras`.`criba16`,0)) AS `criba16`,(coalesce(`linea_muestras`.`criba10p`,0) + coalesce(`linea_muestras`.`criba15`,0)) AS `criba15`,(coalesce(`linea_muestras`.`criba9p`,0) + coalesce(`linea_muestras`.`criba14`,0)) AS `criba14`,(coalesce(`linea_muestras`.`criba8p`,0) + coalesce(`linea_muestras`.`criba13`,0)) AS `criba13`,`linea_muestras`.`criba12` AS `criba12`,(((((((((0.2 * coalesce(`linea_muestras`.`criba20`,0)) + (0.19 * coalesce(`linea_muestras`.`criba19`,0))) + (0.18 * (coalesce(`linea_muestras`.`criba13p`,0) + coalesce(`linea_muestras`.`criba18`,0)))) + (0.17 * (coalesce(`linea_muestras`.`criba12p`,0) + coalesce(`linea_muestras`.`criba17`,0)))) + (0.16 * (coalesce(`linea_muestras`.`criba11p`,0) + coalesce(`linea_muestras`.`criba16`,0)))) + (0.15 * (coalesce(`linea_muestras`.`criba10p`,0) + coalesce(`linea_muestras`.`criba15`,0)))) + (0.14 * (coalesce(`linea_muestras`.`criba9p`,0) + coalesce(`linea_muestras`.`criba14`,0)))) + (0.13 * (coalesce(`linea_muestras`.`criba8p`,0) + coalesce(`linea_muestras`.`criba13`,0)))) + (0.12 * coalesce(`linea_muestras`.`criba12`,0))) AS `criba_media` from `linea_muestras` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -474,4 +516,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-23 23:20:48
+-- Dump completed on 2015-03-27  1:27:41
