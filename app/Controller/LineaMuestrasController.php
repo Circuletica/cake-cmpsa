@@ -85,7 +85,7 @@ class LineaMuestrasController extends AppController {
 		}
 		$linea = $this->LineaMuestra->findById($id);
 		$this->set('linea',$linea);
-		//debug($linea);
+		//debug($linea['LineaMuestra']);
 		//Sacamos la criba ponderada correspondiente
 		//$this->loadModel('CribaPonderada');
 		//$this->CribaPonderada->findById($id);

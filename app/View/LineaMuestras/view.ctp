@@ -60,107 +60,115 @@
 	echo "</dd>";
 	echo "  <dt>Defecto</dt>\n";
 	echo "<dd>";
-	echo $linea['LineaMuestra']['defecto'].'&nbsp;';
+	echo nl2br(h($linea['LineaMuestra']['defecto'])).'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Apreciación</dt>\n";
 	echo "<dd>";
-	echo $linea['LineaMuestra']['apreciacion_bebida'].'&nbsp;';
+	echo nl2br(h($linea['LineaMuestra']['apreciacion_bebida'])).'&nbsp;';
 	echo "</dd>";
+	//Tabla de criba medida y ponderada (con los caracoles)
+	//Antes de todo, necesitamos saber que criba corresponde al fondo.
+	for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){
+		$fondo = $i;
+	}
+	$fondo++;
+	//echo "fondo: ".$fondo;
 	echo "  <dt>Criba</dt>\n";
 	echo "<dd>";
 	echo "<table>";
 	echo $this->Html->tableHeaders(array('&nbsp;', 'Medida original', 'Medida ponderada'));
+	//solo mostramos la línea si tiene algún valor
+	if ($linea['LineaMuestra']['criba20'] || $linea['CribaPonderada']['criba20']) {
+		echo $this->Html->tableCells(array(
+			$fondo == 20 ? 'Fondo' : 'Criba 20',
+			+$linea['LineaMuestra']['criba20'],
+			+$linea['CribaPonderada']['criba20']));
+	}
+	//solo mostramos la línea si tiene algún valor
+	if ($linea['LineaMuestra']['criba19'] || $linea['CribaPonderada']['criba19']) {
+		echo $this->Html->tableCells(array(
+			$fondo == 19 ? 'Fondo' : 'Criba 19',
+			+$linea['LineaMuestra']['criba19'],
+			+$linea['CribaPonderada']['criba19']));
+	}
+	//solo mostramos la línea si tiene algún valor
+	if ($linea['LineaMuestra']['criba13p'] && $linea['LineaMuestra']['criba13p'] != 0) {
+		echo $this->Html->tableCells(array('Caracol 13', +$linea['LineaMuestra']['criba13p'], '&nbsp;'));
+	}
+	//Mostrar la línea si la criba original o la criba ponderada no es NULL o 0
+	if (($linea['LineaMuestra']['criba18'] && $linea['LineaMuestra']['criba18'] != 0) || ($linea['CribaPonderada']['criba18'] && $linea['CribaPonderada']['criba18'] != 0)) {
+		echo $this->Html->tableCells(array(
+			$fondo == 18 ? 'Fondo' : 'Criba 18',
+			+$linea['LineaMuestra']['criba18'],
+			+$linea['CribaPonderada']['criba18']));
+	}
+	//solo mostramos la línea si tiene algún valor
+	if ($linea['LineaMuestra']['criba12p'] && $linea['LineaMuestra']['criba12p'] != 0) {
+		echo $this->Html->tableCells(array('Caracol 12', +$linea['LineaMuestra']['criba12p'], '&nbsp;'));
+	}
+	if (($linea['LineaMuestra']['criba17'] && $linea['LineaMuestra']['criba17'] != 0) || ($linea['CribaPonderada']['criba17'] && $linea['CribaPonderada']['criba17'] != 0)) {
+		echo $this->Html->tableCells(array(
+			$fondo == 17 ? 'Fondo' : 'Criba 17',
+			+$linea['LineaMuestra']['criba17'],
+			+$linea['CribaPonderada']['criba17'])
+		);
+	}
+	//solo mostramos la línea si tiene algún valor
+	if ($linea['LineaMuestra']['criba11p'] && $linea['LineaMuestra']['criba11p'] != 0) {
+		echo $this->Html->tableCells(array('Caracol 11', +$linea['LineaMuestra']['criba11p'], '&nbsp;'));
+	}
+	//Mostrar la línea si la criba original o la criba ponderada no es NULL o 0
+	if (($linea['LineaMuestra']['criba16'] && $linea['LineaMuestra']['criba16'] != 0) || ($linea['CribaPonderada']['criba16'] && $linea['CribaPonderada']['criba16'] != 0)) {
+		echo $this->Html->tableCells(array(
+			$fondo == 16 ? 'Fondo' : 'Criba 16',
+			+$linea['LineaMuestra']['criba16'],
+			+$linea['CribaPonderada']['criba16']));
+	}
+	//solo mostramos la línea si tiene algún valor
+	if ($linea['LineaMuestra']['criba10p'] && $linea['LineaMuestra']['criba10p'] != 0) {
+		echo $this->Html->tableCells(array('Caracol 10', +$linea['LineaMuestra']['criba10p'], '&nbsp;'));
+	}
+	//Mostrar la línea si la criba original o la criba ponderada no es NULL o 0
+	if (($linea['LineaMuestra']['criba15'] && $linea['LineaMuestra']['criba15'] != 0) || ($linea['CribaPonderada']['criba15'] && $linea['CribaPonderada']['criba15'] != 0)) {
 	echo $this->Html->tableCells(array(
-		'Criba 20',
-		$linea['LineaMuestra']['criba20'],
-		$linea['CribaPonderada']['criba20']));
+		$fondo == 15 ? 'Fondo' : 'Criba 15',
+		+$linea['LineaMuestra']['criba15'],
+		+$linea['CribaPonderada']['criba15']));
+	}
+	//solo mostramos la línea si tiene algún valor
+	if ($linea['LineaMuestra']['criba9p'] && $linea['LineaMuestra']['criba9p'] != 0) {
+		echo $this->Html->tableCells(array('Caracol 9', +$linea['LineaMuestra']['criba9p'], '&nbsp;'));
+	}
+	//Mostrar la línea si la criba original o la criba ponderada no es NULL o 0
+	if (($linea['LineaMuestra']['criba14'] && $linea['LineaMuestra']['criba14'] != 0) || ($linea['CribaPonderada']['criba14'] && $linea['CribaPonderada']['criba14'] != 0)) {
 	echo $this->Html->tableCells(array(
-		'Criba 19',
-		$linea['LineaMuestra']['criba19'],
-		$linea['CribaPonderada']['criba19']));
-	echo $this->Html->tableCells(array('Caracol 13', $linea['LineaMuestra']['criba13p'], '&nbsp;'));
+		$fondo == 14 ? 'Fondo' : 'Criba 14',
+		+$linea['LineaMuestra']['criba14'],
+		+$linea['CribaPonderada']['criba14']));
+	}
+	//solo mostramos la línea si tiene algún valor
+	if ($linea['LineaMuestra']['criba8p'] && $linea['LineaMuestra']['criba8p'] != 0) {
+		echo $this->Html->tableCells(array('Caracol 8', +$linea['LineaMuestra']['criba8p'], '&nbsp;'));
+	}
+	//Mostrar la línea si la criba original o la criba ponderada no es NULL o 0
+	if (($linea['LineaMuestra']['criba13'] && $linea['LineaMuestra']['criba13'] != 0) || ($linea['CribaPonderada']['criba13'] && $linea['CribaPonderada']['criba13'] != 0)) {
 	echo $this->Html->tableCells(array(
-		'Criba 18',
-		$linea['LineaMuestra']['criba18'],
-		$linea['CribaPonderada']['criba18']));
-	echo $this->Html->tableCells(array('Caracol 12', $linea['LineaMuestra']['criba12p'], '&nbsp;'));
+		$fondo == 13 ? 'Fondo' : 'Criba 13',
+		+$linea['LineaMuestra']['criba13'],
+		+$linea['CribaPonderada']['criba13']));
+	}
+	//solo mostramos la línea si tiene algún valor
+	if ($linea['LineaMuestra']['criba12'] || $linea['CribaPonderada']['criba12']) {
 	echo $this->Html->tableCells(array(
-		'Criba 17',
-		$linea['LineaMuestra']['criba17'],
-		$linea['CribaPonderada']['criba17']));
-	echo $this->Html->tableCells(array('Caracol 11', $linea['LineaMuestra']['criba11p'], '&nbsp;'));
-	echo $this->Html->tableCells(array(
-		'Criba 16',
-		$linea['LineaMuestra']['criba16'],
-		$linea['CribaPonderada']['criba16']));
-	echo $this->Html->tableCells(array('Caracol 10', $linea['LineaMuestra']['criba10p'], '&nbsp;'));
-	echo $this->Html->tableCells(array(
-		'Criba 15',
-		$linea['LineaMuestra']['criba15'],
-		$linea['CribaPonderada']['criba15']));
-	echo $this->Html->tableCells(array('Caracol 9', $linea['LineaMuestra']['criba9p'], '&nbsp;'));
-	echo $this->Html->tableCells(array(
-		'Criba 14',
-		$linea['LineaMuestra']['criba14'],
-		$linea['CribaPonderada']['criba14']));
-	echo $this->Html->tableCells(array('Caracol 8', $linea['LineaMuestra']['criba8p'], '&nbsp;'));
-	echo $this->Html->tableCells(array(
-		'Criba 13',
-		$linea['LineaMuestra']['criba13'],
-		$linea['CribaPonderada']['criba13']));
-	echo $this->Html->tableCells(array(
-		'Criba 12',
-		$linea['LineaMuestra']['criba12'],
-		$linea['CribaPonderada']['criba12']));
+		$fondo == 12 ? 'Fondo' : 'Criba 12',
+		+$linea['LineaMuestra']['criba12'],
+		+$linea['CribaPonderada']['criba12']));
+	}
 	echo $this->Html->tableCells(array(
 		'Total',
 		array($suma_linea."%",array('class' => 'total')),
 		array($suma_ponderada."%",array('class' => 'total'))
 		));
-//	echo "<tr>";
-//	echo "<td>";
-//	echo "<table>";
-//	echo "<tr><td>Criba 20</td></tr>";
-//	echo "<tr><td>Criba 19</td></tr>";
-//	echo "<tr><td>Criba 13p</td></tr>";
-//	echo "<tr><td>Criba 18</td></tr>";
-//	echo "<tr><td>Criba 12p</td></tr>";
-//	echo "<tr><td>Criba 17</td></tr>";
-//	echo "<tr><td>Criba 11p</td></tr>";
-//	echo "<tr><td>Criba 16</td></tr>";
-//	echo "<tr><td>Criba 10p</td></tr>";
-//	echo "<tr><td>Criba 15</td></tr>";
-//	echo "<tr><td>Criba 9p</td></tr>";
-//	echo "<tr><td>Criba 14</td></tr>";
-//	echo "<tr><td>Criba 8p</td></tr>";
-//	echo "<tr><td>Criba 13</td></tr>";
-//	echo "<tr><td>Criba 12</td></tr>";
-//	echo "</table>";
-//	echo "</td>";
-//	echo "<td>";
-//	echo "<table>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba20']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba19']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba13p']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba18']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba12p']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba17']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba11p']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba16']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba10p']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba15']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba9p']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba14']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba8p']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba13']."</td></tr>";
-//	echo "<tr><td>".$linea['LineaMuestra']['criba12']."</td></tr>";
-//	echo "</table>";
-//	echo "</td>";
-//	echo "<td>";
-//	echo "<table>";
-//	echo "</table>";
-//	echo "</td>";
-//	echo "</tr>";
 	echo "</table>"."&nbsp;";
 	echo "<dt>Criba Media</dt>";
 	echo "<dd>".$linea['CribaPonderada']['criba_media']."</dd>";
