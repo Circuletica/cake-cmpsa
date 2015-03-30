@@ -123,19 +123,33 @@ class LineaMuestrasController extends AppController {
 		if (!$id or $this->request->is('get')) :
     			throw new MethodNotAllowedException();
 		endif;
-		if ($this->Calidad->delete($id)):
-			$this->Session->setFlash('Calidad borrada');
-			$this->redirect(array('action'=>'index'));
+		if ($this->LineaMuestra->delete($id)):
+			$this->Session->setFlash('Línea de muestra borrada');
+		$this->redirect(array(
+			'controller' => $this->params['named']['from_controller'],
+			'action'=>'view',
+			$this->params['named']['from_id']
+		));
 		endif;
 	}
 
 	public function edit( $id = null) {
+		//DRY, guardamos la página de donde venimos,
+		//para volver después de editar
+		$anterior = array(
+			'controller' => $this->params['named']['from_controller'],
+			'action'=>'view',
+			$this->params['named']['from_id']
+		);
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');
-			$this->redirect(array(
-				'controller' => 'muestras',
-				'action' => 'index'
-				));
+			$this->redirect($anterior);
+	//		$this->redirect(array(
+	//			'controller' => $this->params['named']['from_controller'],
+	//			'action'=>'view',
+	//			$this->params['named']['from_id']
+	//			)
+	//		);
 		}
 		$this->LineaMuestra->id = $id;
 		$linea = $this->LineaMuestra->findById($id);
@@ -147,10 +161,7 @@ class LineaMuestrasController extends AppController {
 				$this->Session->setFlash('Línea '.
 				$this->request->data['LineaMuestra']['marca'].
 			        ' modificada con éxito');
-				$this->redirect(array(
-					'controller' => 'muestra_lineas',
-					'action' => 'view',
-					$id));
+				$this->redirect($anterior);
 			else:
 				$this->Session->setFlash('Línea NO guardada');
 			endif;

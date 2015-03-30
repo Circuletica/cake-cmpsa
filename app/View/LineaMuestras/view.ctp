@@ -11,7 +11,9 @@
 <?php
 	echo "<div class='actions'>\n";
 	echo $this->Html->link('Modificar',array(
+		'from_controller' => 'linea_muestras',
 		'action'=>'edit',
+		'from_id' => $linea['LineaMuestra']['id'],
 		$linea['LineaMuestra']['id'])
 	);
 	echo "\n";
@@ -62,7 +64,7 @@
 	echo "<dd>";
 	echo nl2br(h($linea['LineaMuestra']['defecto'])).'&nbsp;';
 	echo "</dd>";
-	echo "  <dt>Apreciación</dt>\n";
+	echo "  <dt>Bebida</dt>\n";
 	echo "<dd>";
 	echo nl2br(h($linea['LineaMuestra']['apreciacion_bebida'])).'&nbsp;';
 	echo "</dd>";

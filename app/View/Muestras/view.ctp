@@ -90,10 +90,14 @@
 	echo "<p>\n";
 	echo "<h3>Líneas</h3>";
 	echo "<table>\n";
-	echo $this->Html->tableHeaders(array('Marca', 'Número de Sacos',
+	echo $this->Html->tableHeaders(array('Id','Marca', 'Número de Sacos',
 	       'Ref. Proveedor', 'Ref Almacén', ''));
+	//mostramos todas las catas de esta muestra
+	//hay que numerar las líneas
+	$i = 1;
 	foreach($muestra['LineaMuestra'] as $linea):
 		echo $this->Html->tableCells(array(
+			$i,
 			$linea['marca'],
 			$linea['numero_sacos'],
 			$linea['referencia_proveedor'],
@@ -114,6 +118,8 @@
 					array('confirm' => 'Seguro que quieres borrar a '.$linea['marca'].'?')
 				)
 			));
+		//numero de la línea siguiente
+		$i++;
 	endforeach;
 	echo "</table>\n";
 	echo "</div>";
