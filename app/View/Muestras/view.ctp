@@ -83,7 +83,7 @@
 	echo "</dd>";
 	echo "  <dt>Incidencia</dt>\n";
 	echo "<dd>";
-	echo $muestra['Muestra']['incidencia'].'&nbsp;';
+	echo nl2br(h($muestra['Muestra']['incidencia'])).'&nbsp;';
 	echo "</dd>";
 	echo "</dl>";
 	echo "<hr>\n";
