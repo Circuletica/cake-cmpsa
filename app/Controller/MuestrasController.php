@@ -4,18 +4,21 @@ class MuestrasController extends AppController {
 		'order' => array('referencia' => 'asc')
 	);
 
-	public funcion search() {
+	public function search() {
 		//la página a la que redirigimos después de mandar  el formulario de filtro
 		$url['action'] = 'index';
 		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
 		//la URL final tiene ese aspecto:
-		//http://cake-cmpsa.gargantilla.net/muestras/index/Search.palabras:mipalabra/Search.id:3
+		//http://cake-cmpsa.gargantilla.net/muestras/index/Search.referencia:mireferencia/Search.id:3
+		debug($this->data);
 		foreach ($this->data as $k=>$v){ 
 			foreach ($v as $kk=>$vv){ 
-			$url[$k.'.'.$kk]=$vv; 
+			if ($vv) {$url[$k.'.'.$kk]=$vv;} 
 			} 
 		}
+		debug($url);
 		$this->redirect($url,null,true);
+	}
 	
 	public function index() {
 		//$this->Calidad->recursive = 1;
@@ -29,18 +32,19 @@ class MuestrasController extends AppController {
 		$titulo = array();
 
 		//primero el filtro por id
-		if(isset($this->passedArgs['id'])) {
+		if(isset($this->passedArgs['Search.id'])) {
 			//ponemos la condicion
-			$this->paginate['conditions'][]['Muestra.id'] = $this->passedArgs['id'];
+			debug($this->passedArgs['Search.id']);
+			$this->paginate['conditions'][]['Muestra.id'] = $this->passedArgs['Search.id'];
 			//guardamos los datos de búsqueda para que el formulario 'se acuerde' de la opcion
-			$this->data['Search']['id'] = $this->passedArgs['id'];
+			$this->data['Search']['id'] = $this->passedArgs['Search.id'];
 			//generamos el titulo
-			$title[] = __('ID',true).': '.$this->passedArgs['id'];
+			$title[] = __('ID',true).': '.$this->passedArgs['Search.id'];
 		}
 		//filtramos por referencia
 		if(isset($this->passedArgs['Search.referencia'])) {
-			$palabras = $this->passedArgs['Search.referencia'];
-			$this->paginate['conditions'][]['Muestra.referencia LIKE'] => "%$referencia%";
+			$referencia = $this->passedArgs['Search.referencia'];
+			$this->paginate['conditions'][]['Muestra.referencia LIKE'] = "%$referencia%";
 			//guardamos el criterio para el formulario de vuelta
 			$this->data['Search']['referencia'] = $referencia;
 			//completamos el titulo
@@ -48,13 +52,21 @@ class MuestrasController extends AppController {
 		}
 		//filtramos por calidad
 		if(isset($this->passedArgs['Search.calidad'])) {
-			$palabras = $this->passedArgs['Search.calidad'];
-			$this->paginate['conditions'][]['Muestra.referencia LIKE'] => "%$calidad%";
+			$calidad = $this->passedArgs['Search.calidad'];
+			$this->paginate['conditions'][]['Muestra.referencia LIKE'] = "%$calidad%";
 			//guardamos el criterio para el formulario de vuelta
 			$this->data['Search']['calidad'] = $calidad;
 			//completamos el titulo
 			$title[] = __('Calidad',true).': '.$calidad;
 		}
+		//filtramos por aprobado
+		if(isset($this->passedArgs['Search.aprobado'])) {
+			$this->paginate['conditions'][]['Muestra.aprobado'] = $this->passedArgs['Search.aprobado']?1:0;
+			$this->data['Search']['aprobado'] = $this->passedArgs['Search.aprobado'];
+			$titulo[] = ($this->passedArgs['Search.aprobado']) ?
+				__('Muestras aprobadas', true) : __('Muestras rechazadas',true);
+		}
+
 
 		$this->set('muestras', $this->paginate());
 	}

@@ -2,7 +2,27 @@
 <?php 
 	$this->Html->addCrumb('Muestras', '/muestras');
 ?>
-
+<!--div class='actions'-->
+<?php echo $this->Form->create('Muestra', array('action'=>'search'));?>
+  <fieldset>
+    <legend><?php __('Filtro de muestra');?></legend>
+  <?php
+	echo $this->Form->input('Search.id');
+	echo $this->Form->input('Search.referencia');
+	echo $this->Form->input('Search.fecha', array('after'=>'dd/mm/aaaa'));
+	echo $this->Form->input('Search.calidad');
+	echo $this->Form->input('Search.aprobado', array(
+		'empty'=>__('Cualquiera', true),
+		'options'=>array(
+			0=>__('Rechazado',true),
+			1=>__('Aprobado',true)
+			)
+		));
+	echo $this->Form->end('Buscar');
+  ?>
+  </fieldset>
+<!--/div-->
+<div class='index'>
 <table>
   <tr>
     <th><?php echo $this->Paginator->sort('id')?></th>
@@ -53,6 +73,7 @@
   </tr>
 <?php endforeach;?>
 </table>
+</div>
 <div class="btabla">
 <?php echo $this->Html->link('Añadir Muestra',array('action'=>'add'));
 ?>
