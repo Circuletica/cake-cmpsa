@@ -1,4 +1,5 @@
 <h2>Modificar contacto <?php echo $this->request->data['Contacto']['nombre'].' en '.$this->request->data['Empresa']['nombre']?></h2>
+<div class="columna2">
 
 <?php
   $this->Html->addCrumb('Entidades','/'.$this->params['named']['from']);
@@ -26,4 +27,5 @@
   //echo $this->Form->select('empresa_id', $empresas);
   echo $this->Form->input('id',array('type'=>'hidden'));
   echo $this->Form->end('Guardar contacto');
-?>
+?></div>
+

@@ -1,6 +1,10 @@
 <h2>Contactos</h2>
 <?php 
 $this->Html->addCrumb('Contactos', '/Contactos');
+echo "<div class='actions'>\n";
+echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
+echo "</div>\n";
+echo "<div class='index'>\n";
 if(empty($contactos)): ?>
 No hay contactos en esta lista
 <?php else: ?>
@@ -46,3 +50,4 @@ No hay contactos en esta lista
 <?php endif; ?>
 <br>
 <?php echo $this->Html->link('Añadir contacto', array('action'=>'add')); ?>
+</div>

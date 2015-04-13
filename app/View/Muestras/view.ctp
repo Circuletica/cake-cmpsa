@@ -10,19 +10,19 @@
 ?>
 <?php
 	echo "<div class='actions'>\n";
-	echo $this->Html->link('Modificar',array(
+	echo $this->Html->link('Modificar muestra',array(
 		'action'=>'edit',
 		$muestra['Muestra']['id'])
 	);
 	echo "\n";
 	echo '<p>';
-	echo $this->Form->postLink('Borrar',array(
+	echo $this->Form->postLink('Borrar muestra',array(
 		'action'=>'delete',
 		$muestra['Muestra']['id']),
 		array('confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
 	);
 	echo $this->Html->link('Añadir línea',array(
-		'controller' => 'lineas',
+		'controller' => 'linea_muestras',
 		'action' => 'add',
 		'from_controller' => 'muestras',
 		'from_id' => $muestra['Muestra']['id'])
@@ -47,11 +47,21 @@
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
 	//echo $muestra['Calidad']['nombre'].'&nbsp;';
-	echo $calidad_nombre['CalidadNombre']['nombre'].'&nbsp;';
+	//echo $calidad_nombre['CalidadNombre']['nombre'].'&nbsp;';
+	echo $this->Html->link($calidad_nombre['CalidadNombre']['nombre'], array(
+		'controller' => 'calidades',
+		'action' => 'view',
+		$muestra['Muestra']['id'])
+	);
 	echo "</dd>";
 	echo "  <dt>Proveedor</dt>\n";
 	echo "<dd>";
-	echo $muestra['Proveedor']['Empresa']['nombre'].'&nbsp;';
+	//echo $muestra['Proveedor']['Empresa']['nombre'].'&nbsp;';
+	echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre'], array(
+		'controller' => 'proveedores',
+		'action' => 'view',
+		$muestra['Proveedor']['id'])
+	);
 	echo "</dd>";
 	echo "  <dt>Almacen</dt>\n";
 	echo "<dd>";
@@ -66,7 +76,6 @@
 	$anyo = substr($fecha,0,4);
 	echo "<dd>";
 	echo $dia.'-'.$mes.'-'.$anyo;
-	//echo $muestra['Muestra']['fecha'].'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Resultado</dt>\n";
 	echo "<dd>";
@@ -74,15 +83,45 @@
 	echo "</dd>";
 	echo "  <dt>Incidencia</dt>\n";
 	echo "<dd>";
-	echo $muestra['Muestra']['incidencia'].'&nbsp;';
+	echo nl2br(h($muestra['Muestra']['incidencia'])).'&nbsp;';
 	echo "</dd>";
-//	echo "  <dt>Reclamación</dt>\n";
-//	echo "<dd>";
-//	echo $muestra['Muestra']['reclamacion'].'&nbsp;';
-//	echo "</dd>";
-	echo "</dl>";
-	echo "<hr>\n";
-	echo "<p>\n";
-	echo "<h3>Líneas</h3>";
-	echo "</div>";
+	echo "</dl>";?>
+	<div class="detallado">
+	<h3>Líneas</h3>
+<table>
+<?php
+	echo $this->Html->tableHeaders(array('Id','Marca', 'Número de Sacos',
+	       'Ref. Proveedor', 'Ref Almacén', 'Acciones'));
+	//mostramos todas las catas de esta muestra
+	//hay que numerar las líneas
+	$i = 1;
+	foreach($muestra['LineaMuestra'] as $linea):
+		echo $this->Html->tableCells(array(
+			$i,
+			$linea['marca'],
+			$linea['numero_sacos'],
+			$linea['referencia_proveedor'],
+			$linea['referencia_almacen'],
+			$this->Html->link('Detalles', array(
+				'controller'=>'linea_muestras',
+				'action' => 'view',
+				$linea['id'],
+              			'from_controller'=>'muestras',
+              			'from_id'=>$linea['muestra_id']),array('class'=>'boton'))
+				.' '.$this->Form->postLink('Borrar línea',
+				array(
+					'controller'=>'linea_muestras',
+					'action' => 'delete',
+					$linea['id'],
+					'from_controller' => 'muestras',
+					'from_id' => $linea['muestra_id']),array('class'=>'boton'),
+					array('confirm' => 'Seguro que quieres borrar a '.$linea['marca'].'?')
+				)
+			));
+		//numero de la línea siguiente
+		$i++;
+	endforeach;
 ?>
+	</table>
+	</div></div>
+

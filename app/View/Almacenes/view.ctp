@@ -17,20 +17,17 @@ if (empty($empresa)):
 	echo "No hay almacenes en esta lista";
 else:
 	echo "<div class='actions'>\n";
-	echo $this->Html->link('Modificar',array('action'=>'edit',$empresa['Almacen']['id']));
+	echo $this->Html->link('Modificar almacén',array('action'=>'edit',$empresa['Almacen']['id']));
       //echo '&nbsp;';
       echo "\n";
       echo '<p>';
-      echo $this->Form->postLink('Borrar',array('action'=>'delete',$empresa['Almacen']['id']),array('confirm'=>'Realmente quiere borrar '.$empresa['Empresa']['nombre'].'?'));
-      echo "\n";
-      echo '<p>';
+      echo $this->Form->postLink('Borrar almacén',array('action'=>'delete',$empresa['Almacen']['id']),array('confirm'=>'¿Realmente quiere borrar '.$empresa['Empresa']['nombre'].'?'));
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
 	echo $this->Html->link('Añadir contacto',array(
 		'controller'=>'contactos',
 		'action'=>'add',
 		'from'=>'almacenes',
 		'from_id' => $empresa['Empresa']['id']));
-	echo "\n";
 	echo "</div>\n";
       //formateamos el número de cuenta de la entidad
       $numero_bruto=$empresa['Empresa']['cuenta_bancaria'];
@@ -82,12 +79,13 @@ else:
         echo $cuenta_entidad.'&nbsp;';
 	echo "</dd>";
 	echo '</dl>';
-	echo "<hr>\n";
-	echo "<p>\n";
-	echo "<h3>Contactos</h3>";
-	echo "<table>\n";
+	?>
+	<div class="detallado">
+	<h3>Contactos</h3>
+	<table>
+	<?php
 	echo $this->Html->tableHeaders(array('Nombre', 'Función',
-	       'Teléfono 1', 'Teléfono 2', 'Email',''));
+	       'Teléfono 1', 'Teléfono 2', 'Email','Acciones'));
 	foreach($empresa['Empresa']['Contacto'] as $contacto):
 	echo $this->Html->tableCells(array(
 		$contacto['nombre'],
@@ -100,21 +98,22 @@ else:
 			'action' => 'edit',
 			$contacto['id'],
               		'from'=>'almacenes',
-              		'from_id'=>$contacto['empresa_id']))
+              		'from_id'=>$contacto['empresa_id']), array('class'=>'boton'))
 			.' '.$this->Form->postLink('Borrar',
 			array(
 				'controller'=>'contactos',
 				'action' => 'delete',
 				$contacto['id'],
 				'from' => 'almacenes',
-				'from_id' => $contacto['empresa_id']),
+				'from_id' => $contacto['empresa_id']), array('class'=>'boton'),
 				array('confirm' => 'Seguro que quieres borrar a '.$contacto['nombre'].'?')
 		)
 	));
 		//print_r($contacto);
 	endforeach;
-	echo "</table>\n";
-	echo "</div>\n";
-endif;
-?>
+	endif;?>
+</table>
+	</div></div>
+
+
 
