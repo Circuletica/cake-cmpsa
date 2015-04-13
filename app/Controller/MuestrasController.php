@@ -4,9 +4,58 @@ class MuestrasController extends AppController {
 		'order' => array('referencia' => 'asc')
 	);
 
+	public funcion search() {
+		//la página a la que redirigimos después de mandar  el formulario de filtro
+		$url['action'] = 'index';
+		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
+		//la URL final tiene ese aspecto:
+		//http://cake-cmpsa.gargantilla.net/muestras/index/Search.palabras:mipalabra/Search.id:3
+		foreach ($this->data as $k=>$v){ 
+			foreach ($v as $kk=>$vv){ 
+			$url[$k.'.'.$kk]=$vv; 
+			} 
+		}
+		$this->redirect($url,null,true);
+	
 	public function index() {
 		//$this->Calidad->recursive = 1;
 		//debug($this->paginate());
+		//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
+		//por ej.
+		//$passedArgs['Search.palabras'] = mipalabra
+		//$passedArgs['Search.id'] = 3
+		
+		//Si queremos un titulo con los criterios de busqueda
+		$titulo = array();
+
+		//primero el filtro por id
+		if(isset($this->passedArgs['id'])) {
+			//ponemos la condicion
+			$this->paginate['conditions'][]['Muestra.id'] = $this->passedArgs['id'];
+			//guardamos los datos de búsqueda para que el formulario 'se acuerde' de la opcion
+			$this->data['Search']['id'] = $this->passedArgs['id'];
+			//generamos el titulo
+			$title[] = __('ID',true).': '.$this->passedArgs['id'];
+		}
+		//filtramos por referencia
+		if(isset($this->passedArgs['Search.referencia'])) {
+			$palabras = $this->passedArgs['Search.referencia'];
+			$this->paginate['conditions'][]['Muestra.referencia LIKE'] => "%$referencia%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->data['Search']['referencia'] = $referencia;
+			//completamos el titulo
+			$title[] = __('Calidad',true).': '.$referencia;
+		}
+		//filtramos por calidad
+		if(isset($this->passedArgs['Search.calidad'])) {
+			$palabras = $this->passedArgs['Search.calidad'];
+			$this->paginate['conditions'][]['Muestra.referencia LIKE'] => "%$calidad%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->data['Search']['calidad'] = $calidad;
+			//completamos el titulo
+			$title[] = __('Calidad',true).': '.$calidad;
+		}
+
 		$this->set('muestras', $this->paginate());
 	}
 
