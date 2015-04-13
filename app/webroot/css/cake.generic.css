@@ -23,19 +23,26 @@
 
 /** General Style Info **/
 body {
-	background: #5A4741;
-	color: #fff;
+background: #637A91;
+/*background: -moz-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(14%, rgba(69,50,23,1)), color-stop(48%, rgba(70,49,16,1)), color-stop(69%, rgba(123,100,64,1)), color-stop(92%, rgba(180,155,116,1)), color-stop(100%, rgba(180,155,116,1)));
+background: -webkit-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
+background: -o-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
+background: -ms-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
+background: linear-gradient(to bottom, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#453217', endColorstr='#b49b74', GradientType=0 );
+	*/color: #fff;
 	font-family:verdana,helvetica,arial,sans-serif;
-	font-size:70%;
+	font-size:75%;
 	margin: 0;
 }
 a {
-	color: #5A4741;
+	color: #384047;
 	text-decoration: underline;
-	font-weight: bold;
+	font-weight: 600;
 }
 a:hover {
-	color: #367889;
+	color: #488AF6;
 	text-decoration:none;
 }
 a img {
@@ -47,23 +54,24 @@ h1, h2, h3, h4 {
 }
 h1 {
 	background:#fff;
-	color: #5A4741;
-	font-size: 150%;
+	color: #CC0000;
+	font-size: 160%;
 }
 h2 {
-	background:#fff;
-	color: #e32;
+	/*background:#fff;*/
+	color: #e73827;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 190%;
+	font-size: 145%;
+
 }
 h3 {
 	color: #2c6877;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 165%;
+	font-size: 135%;
 }
 h4 {
-	color: #993;
-	font-weight: normal;
+	color: #355383;
+	font-weight: bold;
 }
 ul, li {
 	margin: 0 12px;
@@ -82,49 +90,22 @@ p {
 }
 #header h1 {
 	line-height:30px;
-	background: #5A4741 url('../img/grano.icon.png') no-repeat left;
+	background: #637A91 url('../img/grano.icon.png') no-repeat left;
 	color: #fff;
 	padding: 0px 40px;
 }
 #header h1 a {
 	color: #fff;
-	background: #5A4741;
+	background: #5A47;
 	font-weight: normal;
 	text-decoration: none;
 }
 #header h1 a:hover {
 	color: #fff;
-	background: #5A4741;
+	background: #384047;
 	text-decoration: underline;
 }
-/*Preparo la ubicación de los tabs*/
-#tabs{
-	position: relative;
-	padding-right:5%;
-	display: inline;
 
-}
-#tabs ul { 
-	list-style: none;
-	padding:0;
-	margin:0;
-	display: inline;
-	}
-#tabs li {
-	float: right;
-	margin: 0 0.5%  1em 0;
-}
-#tabs li a {
-	background:#ccc;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#F3F3F3), to(#C3C3C3));
-	background-image: -webkit-linear-gradient(top, #F3F3F3, #C3C3C3);
-	background-image: -moz-linear-gradient(top, #F3F3F3, #C3C3C3);
-	border-color: #5A4741;
-	color: #5A4741;
-	padding: 6px 8px;
-}
-
-/* Fin CSS TABS*/
 #content{
 	background: #fff;
 	clear: both;
@@ -151,19 +132,22 @@ div.index,
 div.view {
 	float:right;
 	width:76%;
-	border-left:1px solid #666;
+	border-left: 2px solid rgba(102, 102, 102, 0.92);
 	padding:10px 2%;
 }
 div.actions {
 	float:left;
 	width:16%;
-	padding:10px 1.5%;
+	padding:1%;
+	border: 5px;
+    height: 90px;
+    margin: 5px;
+    
 }
 div.actions h3 {
 	padding-top:0;
 	color:#777;
 }
-
 
 /** Tables **/
 table {
@@ -174,9 +158,9 @@ table {
 	width: 100%;
 }
 th {
-	border:0;
+	/*border:0;*/
 	border-bottom:2px solid #555;
-	text-align: left;
+	text-align: center;
 	padding:4px;
 }
 th a {
@@ -191,13 +175,14 @@ th a.desc:after {
 	content: ' ⇡';
 }
 table tr td {
-	padding: 6px;
-	text-align: left;
+	padding: 0.5%;
+	padding-left: 1%;
+	text-align: justify;
 	vertical-align: top;
 	border-bottom:1px solid #ddd;
 }
 table tr:nth-child(even) {
-	background: #f9f9f9;
+	background: #F6F9FA;
 }
 td.actions {
 	text-align: center;
@@ -207,6 +192,7 @@ table td.actions a {
 	margin: 0px 6px;
 	padding:2px 5px;
 }
+ 
 
 /* SQL log */
 .cake-sql-log {
@@ -221,10 +207,11 @@ table td.actions a {
 	color:#fff;
 }
 
+
 /** Paging **/
 .paging {
 	background:#fff;
-	color: #ccc;
+	color: #000000;
 	margin-top: 1em;
 	clear:both;
 }
@@ -245,14 +232,14 @@ table td.actions a {
 }
 .paging .prev {
 	border-left: 1px solid #ccc;
-	-moz-border-radius: 4px 0 0 4px;
-	-webkit-border-radius: 4px 0 0 4px;
-	border-radius: 4px 0 0 4px;
+	-moz-border-radius: 10px 0 0 10px;
+	-webkit-border-radius: 10px 0 0 10px;
+	border-radius: 10px 0 0 10px;
 }
 .paging .next {
-	-moz-border-radius: 0 4px 4px 0;
-	-webkit-border-radius: 0 4px 4px 0;
-	border-radius: 0 4px 4px 0;
+	-moz-border-radius: 0 10px 10px 0;
+	-webkit-border-radius: 0 10px 10px 0;
+	border-radius: 0 10px 10px 0;
 }
 .paging .disabled {
 	color: #ddd;
@@ -262,28 +249,28 @@ table td.actions a {
 }
 .paging .current {
 	background: #efefef;
-	color: #c73e14;
+	color: #8b0000;
 }
 
 /** Scaffold View **/
 dl {
 	line-height: 2em;
 	margin: 0em 0em;
-	width: 60%;
+	width: 90%;
 }
 dl dd:nth-child(4n+2),
 dl dt:nth-child(4n+1) {
-	background: #f4f4f4;
+	background: #F6F9FA;
 }
 
 dt {
 	font-weight: bold;
-	padding-left: 4px;
+	padding-left: 1%;
 	vertical-align: top;
-	width: 10em;
+	width: 25%;
 }
 dd {
-	margin-left: 10em;
+	margin-left: 25%;
 	margin-top: -2em;
 	vertical-align: top;
 }
@@ -335,9 +322,10 @@ form .required label:after {
 	display:inline;
 }
 form div.submit {
+	float: right;
 	border: 0;
 	clear: both;
-	margin-top: 10px;
+	margin-top: 1.5%;
 }
 label {
 	display: block;
@@ -348,7 +336,7 @@ label {
 input, textarea {
 	clear: both;
 	font-size: 110%;
-	font-family: "frutiger linotype", "lucida grande", "verdana", sans-serif;
+	font-family: "frutiger linotype", "verdana", sans-serif;
 	padding: 0.1%;
 	width:98%;
 }
@@ -544,6 +532,9 @@ input[type=submit],
 .actions ul li a,
 .actions a {
 	font-weight:normal;
+	text-align: center;
+	margin-top: 8%;
+	display: block;
 	padding: 4px 8px;
 	background: #dcdcdc;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));
