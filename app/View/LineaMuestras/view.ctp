@@ -31,43 +31,16 @@
 </div>
 <?php
 	echo "<div class='view'>\n";
-	echo "<dl>";
-	echo "  <dt>Id</dt>\n";
-	echo "<dd>";
-	echo $linea['LineaMuestra']['id'].'&nbsp;';
-	echo "</dd>";
-	echo "  <dt>Marca</dt>\n";
-	echo "<dd>";
-	echo $linea['LineaMuestra']['marca'].'&nbsp;';
-	echo "</dd>";
-	echo "  <dt>Núm. de sacos</dt>\n";
-	echo "<dd>";
-	echo $linea['LineaMuestra']['numero_sacos'].'&nbsp;';
-	echo "</dd>";
-	echo "  <dt>Ref. Proveedor</dt>\n";
-	echo "<dd>";
-	echo $linea['LineaMuestra']['referencia_proveedor'].'&nbsp;';
-	echo "</dd>";
-	echo "  <dt>Referencia Almacen</dt>\n";
-	echo "<dd>";
-	echo $linea['LineaMuestra']['referencia_almacen'].'&nbsp;';
-	echo "</dd>";
-	echo "  <dt>Humedad</dt>\n";
-	echo "<dd>";
-	echo $linea['LineaMuestra']['humedad'].'&nbsp;';
-	echo "</dd>";
-	echo "  <dt>tueste</dt>\n";
-	echo "<dd>";
-	echo $linea['LineaMuestra']['tueste'];
-	echo "</dd>";
-	echo "  <dt>Defecto</dt>\n";
-	echo "<dd>";
-	echo nl2br(h($linea['LineaMuestra']['defecto'])).'&nbsp;';
-	echo "</dd>";
-	echo "  <dt>Bebida</dt>\n";
-	echo "<dd>";
-	echo nl2br(h($linea['LineaMuestra']['apreciacion_bebida'])).'&nbsp;';
-	echo "</dd>";
+	echo "<dl>\n";
+	echo "  <dt>Id</dt><dd>".$linea['LineaMuestra']['id']."</dd>\n";
+	echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."</dd>\n";
+	echo "  <dt>Referencia Almacen</dt><dd>".$linea['LineaMuestra']['referencia_almacen']."</dd>\n";
+	echo "  <dt>Marca</dt><dd>".$linea['LineaMuestra']['marca']."</dd>\n";
+	echo "  <dt>Núm. de sacos</dt><dd>".$linea['LineaMuestra']['numero_sacos']."</dd>\n";
+	echo "  <dt>Humedad</dt><dd>".$linea['LineaMuestra']['humedad']."</dd>\n";
+	echo "  <dt>Defectos</dt><dd>".nl2br(h($linea['LineaMuestra']['defecto']))."</dd>\n";
+	echo "  <dt>Tueste</dt><dd>".$linea['LineaMuestra']['tueste']."</dd>\n";
+	echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida']))."</dd>\n";
 	//Tabla de criba medida y ponderada (con los caracoles)
 	//Antes de todo, necesitamos saber que criba corresponde al fondo.
 	for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){

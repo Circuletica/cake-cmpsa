@@ -16,11 +16,11 @@ function findTotal(){
 
 </script>
 
-<h2>Modificar Línea en Muestra <em><?php echo $linea['Muestra']['referencia']?></em></h2>
+<h2>Modificar Línea <?php echo $linea_muestra['LineaMuestra']['marca']?> en Muestra <em><?php echo $linea_muestra['Muestra']['referencia']?></em></h2>
 
 <?php
 $this->Html->addCrumb('Muestras','/muestras');
-$this->Html->addCrumb('Muestra '.$linea['Muestra']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
+$this->Html->addCrumb('Muestra '.$linea_muestra['Muestra']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 
 echo $this->Form->create('LineaMuestra', array(
 	'url' => array(
@@ -46,11 +46,11 @@ echo $this->Html->tableCells(array(
 );
 echo $this->Html->tableCells(array(
 	$this->Form->input('referencia_proveedor',array(
-		'label' => 'Referencia Proveedor('.$proveedor.')'
+		'label' => 'Referencia Proveedor ('.$proveedor.')'
 			)
 		),
 	$this->Form->input('referencia_almacen',array(
-		'label' => 'Referencia Almacén('.$almacen.')'
+		'label' => 'Referencia Almacén ('.$almacen.')'
 			)
 		)
 	)

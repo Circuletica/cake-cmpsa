@@ -10,9 +10,6 @@ class BancoPruebasController extends AppController {
 	}
 
 	public function view($id = null) {
-		//debug($this->request->params);
-		//debug(func_get_args());
-		//debug($this->referer());
 		if (!$id) {
 			//$this->set('params',$this->request->params);
 			$this->Session->setFlash('URL mal formado BancoPrueba/view ');
@@ -32,10 +29,9 @@ class BancoPruebasController extends AppController {
 	}
 
 	public function add() {
+		//los paises que rellenan el desplegable de 'País'
 		$this->set('paises', $this->BancoPrueba->Empresa->Pais->find('list'));
 		if($this->request->is('post')):
-			//$empresa = $this->BancoPrueba->Empresa->save($this->request->data);
-			//debug($this->BancoPrueba->Empresa);
 			//quitamos los guiones de la entrada de formulario
 			$numero_form = $this->data['BancoPrueba']['cuenta_cliente_1'];
 			$cuenta_cliente_1 = substr($numero_form,0,4).
@@ -49,12 +45,11 @@ class BancoPruebasController extends AppController {
 	     			substr($numero_form,13,10);
 			$this->request->data['BancoPrueba']['cuenta_cliente_1'] = $cuenta_cliente_1;
 			$this->request->data['Empresa']['cuenta_bancaria'] = $cuenta_bancaria;
-			$this->BancoPrueba->Empresa->save($this->request->data);
+			//primero se guarda la empresa y con el id que devuelve
+			//mysql guardamos el banco con el mismo id
 			$this->BancoPrueba->Empresa->save($this->request->data);
 			$this->request->data['BancoPrueba']['id'] = $this->BancoPrueba->Empresa->id;
-			//$this->request->data['BancoPrueba']['id'] = $empresa;
 			if($this->BancoPrueba->save($this->request->data)):
-			//if($this->BancoPrueba->save(array('id'=>$this->BancoPrueba->Empresa->id))):
 				$this->Session->setFlash('Banco guardado');
 				$this->redirect(array('action' => 'index'));
 			endif;

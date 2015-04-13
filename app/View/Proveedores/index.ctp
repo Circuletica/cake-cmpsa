@@ -21,7 +21,7 @@
 		$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
 		'País',
 		'Teléfono',
-		''));
+		'Acciones'));
 
 	foreach($proveedores as $proveedor):
 	echo $this->Html->tableCells(array(
@@ -31,7 +31,7 @@
 		//substr($proveedor['Empresa']['cuenta_bancaria'],4,4),
 		$proveedor['Empresa']['Pais']['nombre'],
 		$proveedor['Empresa']['telefono'],
-		$this->Html->link('Detalles',array('action'=>'view',$proveedor['Proveedor']['id']))//.' '.
+		$this->Html->link('Detalles',array('action'=>'view',$proveedor['Proveedor']['id']), array('class'=>'boton'))//.' '.
 		//$this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id'])).' '.
 		//$this->Form->postLink('Borrar',array('action'=>'delete',$proveedor['Empresa']['id']),array('confirm'=>'Realmente quiere borrar '.$proveedor['Empresa']['nombre'].'?'))
 	));

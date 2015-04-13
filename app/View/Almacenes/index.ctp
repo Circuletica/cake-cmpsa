@@ -36,7 +36,7 @@
 		//substr($empresa['Empresa']['cuenta_bancaria'],4,4),
 		$empresa['Empresa']['Pais']['nombre'],
 		$empresa['Empresa']['telefono'],
-		$this->Html->link('Detalles',array('action'=>'view',$empresa['Almacen']['id']))//.' '.
+		$this->Html->link('Detalles',array('action'=>'view',$empresa['Almacen']['id']), array('class' =>'boton' , ))//.' '.
 		//$this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id'])).' '.
 		//$this->Form->postLink('Borrar',array('action'=>'delete',$empresa['Empresa']['id']),array('confirm'=>'Realmente quiere borrar '.$empresa['Empresa']['nombre'].'?'))
 	));

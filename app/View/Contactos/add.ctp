@@ -1,4 +1,5 @@
 <h2>Agregar contacto a <em><?php echo $empresa['Empresa']['nombre']?></em></h2>
+<div class="columna2">
 
 <?php
   //echo '<pre>';
@@ -26,3 +27,4 @@
   //echo $this->Form->select('empresa_id', $empresas);
   echo $this->Form->end('Guardar contacto');
 ?>
+</div>

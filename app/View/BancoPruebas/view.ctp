@@ -19,11 +19,8 @@ else:
 	//echo "</pre>";
 
 	echo "<div class='actions'>\n";
-      echo $this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id']));
-      //echo '&nbsp;';
-      echo "\n";
-      echo '<p>';
-      echo $this->Form->postLink('Borrar',array('action'=>'delete',$bancoprueba['BancoPrueba']['id']),array('confirm'=>'Realmente quiere borrar '.$bancoprueba['Empresa']['nombre'].'?'));
+      echo $this->Html->link('Modificar banco',array('action'=>'edit',$bancoprueba['BancoPrueba']['id']));
+      echo $this->Form->postLink('Borrar banco',array('action'=>'delete',$bancoprueba['BancoPrueba']['id']),array('confirm'=>'¿Realmente quiere borrar '.$bancoprueba['Empresa']['nombre'].'?'));
       echo "\n";
       echo '<p>';
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
@@ -63,10 +60,13 @@ else:
 	echo "</dd>";
 	echo "  <dt>Dirección</dt>\n";
 	echo "<dd>";
+	//si el id de país no esta definido no intentar mostrar el nombre
+	$pais = $bancoprueba['Empresa']['Pais'] ? $bancoprueba['Empresa']['Pais']['nombre'] : '';
 	echo $bancoprueba['Empresa']['direccion'].' - '.
 		$bancoprueba['Empresa']['cp'].' '.
 		$bancoprueba['Empresa']['municipio'].' - '.
-		$bancoprueba['Empresa']['Pais']['nombre'].'&nbsp;';
+		$pais.
+		'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Teléfono</dt>\n";
 	echo "<dd>";
@@ -101,16 +101,13 @@ else:
 	//echo "<dd>";
         //echo $bancoprueba['BancoPrueba']['cuenta_cliente_2'].'&nbsp;';
 	//echo "</dd>";
-	echo '</dl>';
-	echo "<hr>\n";
-	echo "<p>\n";
-	echo "<h3>Contactos</h3>";
-	//echo "<pre>";
-	//print_r($bancoprueba['Empresa']['Contacto']);
-	//echo "</pre>";
-	echo "<table>\n";
+	echo '</dl>';?>
+	<div class="detallado">
+	<h3>Contactos</h3>
+<table>
+<?php
 	echo $this->Html->tableHeaders(array('Nombre', 'Función',
-	       'Teléfono 1', 'Teléfono 2', 'Email',''));
+	       'Teléfono 1', 'Teléfono 2', 'Email','Acciones'));
 	//echo $this->Html->tableCells($bancoprueba['Empresa']['Contacto']);
 	foreach($bancoprueba['Empresa']['Contacto'] as $contacto):
 	echo $this->Html->tableCells(array(
@@ -124,21 +121,22 @@ else:
 			'action' => 'edit',
 			$contacto['id'],
               		'from'=>'banco_pruebas',
-              		'from_id'=>$contacto['empresa_id']))
+              		'from_id'=>$contacto['empresa_id']), array('class'=>'boton'))
 			.' '.$this->Form->postLink('Borrar',
 			array(
 				'controller'=>'contactos',
 				'action' => 'delete',
 				$contacto['id'],
 				'from' => 'banco_pruebas',
-				'from_id' => $contacto['empresa_id']),
-				array('confirm' => 'Seguro que quieres borrar a '.$contacto['nombre'].'?')
+				'from_id' => $contacto['empresa_id']), array('class'=>'boton'),
+				array('confirm' =>'&iquestSeguro que quieres borrar a '.$contacto['nombre'].'?')
 		)
 	));
 		//print_r($contacto);
 	endforeach;
-	echo "</table>\n";
-	echo "</div>\n";
+
 endif;
 ?>
+</table>
+</div> </div>
 

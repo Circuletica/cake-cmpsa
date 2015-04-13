@@ -5,9 +5,7 @@ class CalidadesController extends AppController {
 //	);
 
 	public function index() {
-		//$this -> set('bancopruebas', $this->BancoPrueba->find('all'));
 		//$this->Calidad->recursive = 1;
-		//debug($this->paginate());
 		//$this->Calidad->setSource('CalidadNombre');
 		$this->set('calidades', $this->paginate());
 	}
@@ -25,7 +23,7 @@ class CalidadesController extends AppController {
 		endif;
 	}
 
-	public function delete( $id = null) {
+	public function delete($id = null) {
 		if (!$id or $this->request->is('get')) :
     			throw new MethodNotAllowedException();
 		endif;

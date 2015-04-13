@@ -153,23 +153,14 @@ class LineaMuestrasController extends AppController {
 		$this->LineaMuestra->id = $id;
 		//sacamos los datos de la muestra a la que pertenece la linea
 		//nos sirven en la vista para detallar campos
-		$muestra = $this->LineaMuestra->Muestra->find('first', array(
-			//'conditions' => array('Muestra.id' => $this->params['named']['from_id']),
-			'conditions' => array('Muestra.id' => $id),
-			'recursive' => 2,
-			'fields' => array(
-				'Muestra.id',
-				'Muestra.referencia',
-				'Muestra.proveedor_id',
-				'Muestra.almacen_id')
-		));
-		$this->set('proveedor',$muestra['Proveedor']['Empresa']['nombre']);
-		$this->set('almacen',$muestra['Almacen']['Empresa']['nombre']);
-		$linea = $this->LineaMuestra->findById($id);
-		//sacamos los datos de la muestra a la que pertenece la linea
-		//nos sirven en la vista para detallar campos
-		//debug($linea);
-		$this->set('linea',$linea);
+		$linea_muestra = $this->LineaMuestra->find('first', array(
+			'conditions' => array('LineaMuestra.id' => $id),
+			'recursive' => 3
+			)
+		);
+		$this->set('linea_muestra',$linea_muestra);
+		$this->set('proveedor',$linea_muestra['Muestra']['Proveedor']['Empresa']['nombre']);
+		$this->set('almacen',$linea_muestra['Muestra']['Almacen']['Empresa']['nombre']);
 		if($this->request->is('get')):
 			$this->request->data = $this->LineaMuestra->read();
 		else:

@@ -5,7 +5,13 @@
 	<div class="actions">
 <?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
 	
-?>
+?>		
+	<div class="exp">
+
+	<?php 	echo $this->Html->link('Imprimir',array('action'=>'add'), array('class'=>'prev')); 
+			echo $this->Html->link('Exportar a PDF',array('action'=>'add'), array('class'=>'next')); ?>
+
+		</div>
 	</div>
 	<div class='index'>
 <?php
@@ -16,15 +22,15 @@
 	//print_r($bancopruebas);
 	////print_r($bancopruebas['Empresa']['nombre']);
 	//echo "</pre>";
-
-	echo "<table>\n";
-	echo $this->Html->tableHeaders(array(
+?>
+	<table><?php
+		echo $this->Html->tableHeaders(array(
 		'Id',
 		$this->Paginator->sort('Empresa.nombre','Banco'),
 		$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
 		'Agencia',
 		'Teléfono',
-		''));
+		'Acciones'));
 
 	foreach($bancopruebas as $bancoprueba):
 	echo $this->Html->tableCells(array(
@@ -33,7 +39,7 @@
 		$bancoprueba['Empresa']['codigo_contable'],
 		substr($bancoprueba['BancoPrueba']['cuenta_cliente_1'],4,4),
 		$bancoprueba['Empresa']['telefono'],
-		$this->Html->link('Detalles',array('action'=>'view',$bancoprueba['BancoPrueba']['id']))//.' '.
+		$this->Html->link('Detalles', array('action'=>'view',$bancoprueba['BancoPrueba']['id']), array('class'=>'boton'))//.' '.
 		//$this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id'])).' '.
 		//$this->Form->postLink('Borrar',array('action'=>'delete',$bancoprueba['BancoPrueba']['id']),array('confirm'=>'Realmente quiere borrar '.$bancoprueba['Empresa']['nombre'].'?'))
 	));

@@ -22,13 +22,8 @@ else:
 	//echo "</pre>";
 
 	echo "<div class='actions'>\n";
-      echo $this->Html->link('Modificar',array('action'=>'edit',$proveedor['Proveedor']['id']));
-      //echo '&nbsp;';
-      echo "\n";
-      echo '<p>';
-      echo $this->Form->postLink('Borrar',array('action'=>'delete',$proveedor['Proveedor']['id']),array('confirm'=>'Realmente quiere borrar '.$proveedor['Empresa']['nombre'].'?'));
-      echo "\n";
-      echo '<p>';
+      echo $this->Html->link('Modificar proveedor',array('action'=>'edit',$proveedor['Proveedor']['id']));
+      echo $this->Form->postLink('Borrar proveedor',array('action'=>'delete',$proveedor['Proveedor']['id']),array('confirm'=>'¿Realmente quiere borrar '.$proveedor['Empresa']['nombre'].'?'));
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
 	echo $this->Html->link('Añadir contacto',array(
 		'controller'=>'contactos',
@@ -99,16 +94,13 @@ else:
 	//echo "<dd>";
         //echo $bancoprueba['BancoPrueba']['cuenta_cliente_2'].'&nbsp;';
 	//echo "</dd>";
-	echo '</dl>';
-	echo "<hr>\n";
-	echo "<p>\n";
-	echo "<h3>Contactos</h3>";
-	//echo "<pre>";
-	//print_r($bancoprueba['Empresa']['Contacto']);
-	//echo "</pre>";
-	echo "<table>\n";
+	echo '</dl>';?>
+	<div class="detallado">
+	<h3>Contactos</h3>
+<table>
+<?php
 	echo $this->Html->tableHeaders(array('Nombre', 'Función',
-	       'Teléfono 1', 'Teléfono 2', 'Email',''));
+	       'Teléfono 1', 'Teléfono 2', 'Email','Acciones'));
 	//echo $this->Html->tableCells($bancoprueba['Empresa']['Contacto']);
 	foreach($proveedor['Empresa']['Contacto'] as $contacto):
 	echo $this->Html->tableCells(array(
@@ -122,7 +114,8 @@ else:
 			'action' => 'edit',
 			$contacto['id'],
               		'from'=>'proveedores',
-              		'from_id'=>$contacto['empresa_id']))
+              		'from_id'=>$contacto['empresa_id']),
+			array('class'=>'boton'))
 			.' '.$this->Form->postLink('Borrar',
 			array(
 				'controller'=>'contactos',
@@ -130,7 +123,8 @@ else:
 				$contacto['id'],
 				'from' => 'proveedores',
 				'from_id' => $contacto['empresa_id']),
-				array('confirm' => 'Seguro que quieres borrar a '.$contacto['nombre'].'?')
+				array('class'=>'boton'),
+				array('confirm' => '¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
 		)
 	));
 		//print_r($contacto);
@@ -139,4 +133,6 @@ else:
 	echo "</div>\n";
 endif;
 ?>
+</table></div> </div>
+
 

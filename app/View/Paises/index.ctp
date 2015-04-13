@@ -6,8 +6,8 @@
     <th>Id</th>
     <th><?php echo $this->Paginator->sort('nombre')?></th>
     <th><?php echo $this->Paginator->sort('iso3166')?></th>
-    <th>prefijo tfno</th>
-    <th></th>
+    <th>Prefijo Telefónico</th>
+    <th>Acciones</th>
   </tr>
 <?php foreach($paises as $pais):?>
   <tr>
@@ -24,9 +24,9 @@
       <?php echo $pais['Pais']['prefijo_tfno']?>
     </td>
     <td>
-      <?php echo $this->Html->link('Modificar',array('action'=>'edit',$pais['Pais']['id']))?>
+      <?php echo $this->Html->link('Modificar',array('action'=>'edit',$pais['Pais']['id']), array('class'=>'boton'))?>
       <?php echo '&nbsp;';?>
-      <?php echo $this->Form->postLink('Borrar',array('action'=>'delete',$pais['Pais']['id']),array('confirm'=>'¿Realmente quiere borrar '.$pais['Pais']['nombre'].'?'))?>
+      <?php echo $this->Form->postLink('Borrar',array('action'=>'delete',$pais['Pais']['id']), array('class'=>'boton'),array('confirm'=>'¿Realmente quiere borrar '.$pais['Pais']['nombre'].'?'))?>
     </td>
   </tr>
 <?php endforeach;?>

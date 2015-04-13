@@ -10,13 +10,13 @@
 ?>
 <?php
 	echo "<div class='actions'>\n";
-	echo $this->Html->link('Modificar',array(
+	echo $this->Html->link('Modificar muestra',array(
 		'action'=>'edit',
 		$muestra['Muestra']['id'])
 	);
 	echo "\n";
 	echo '<p>';
-	echo $this->Form->postLink('Borrar',array(
+	echo $this->Form->postLink('Borrar muestra',array(
 		'action'=>'delete',
 		$muestra['Muestra']['id']),
 		array('confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
@@ -85,13 +85,13 @@
 	echo "<dd>";
 	echo nl2br(h($muestra['Muestra']['incidencia'])).'&nbsp;';
 	echo "</dd>";
-	echo "</dl>";
-	echo "<hr>\n";
-	echo "<p>\n";
-	echo "<h3>Líneas</h3>";
-	echo "<table>\n";
+	echo "</dl>";?>
+	<div class="detallado">
+	<h3>Líneas</h3>
+<table>
+<?php
 	echo $this->Html->tableHeaders(array('Id','Marca', 'Número de Sacos',
-	       'Ref. Proveedor', 'Ref Almacén', ''));
+	       'Ref. Proveedor', 'Ref Almacén', 'Acciones'));
 	//mostramos todas las catas de esta muestra
 	//hay que numerar las líneas
 	$i = 1;
@@ -107,20 +107,21 @@
 				'action' => 'view',
 				$linea['id'],
               			'from_controller'=>'muestras',
-              			'from_id'=>$linea['muestra_id']))
-				.' '.$this->Form->postLink('Borrar',
+              			'from_id'=>$linea['muestra_id']),array('class'=>'boton'))
+				.' '.$this->Form->postLink('Borrar línea',
 				array(
 					'controller'=>'linea_muestras',
 					'action' => 'delete',
 					$linea['id'],
 					'from_controller' => 'muestras',
-					'from_id' => $linea['muestra_id']),
+					'from_id' => $linea['muestra_id']),array('class'=>'boton'),
 					array('confirm' => 'Seguro que quieres borrar a '.$linea['marca'].'?')
 				)
 			));
 		//numero de la línea siguiente
 		$i++;
 	endforeach;
-	echo "</table>\n";
-	echo "</div>";
 ?>
+	</table>
+	</div></div>
+
