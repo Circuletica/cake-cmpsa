@@ -33,8 +33,9 @@ background: linear-gradient(to bottom, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#453217', endColorstr='#b49b74', GradientType=0 );
 	*/color: #fff;
 	font-family:verdana,helvetica,arial,sans-serif;
-	font-size:75%;
+	font-size:70%;
 	margin: 0;
+	font-weight: 600;
 }
 a {
 	color: #384047;
@@ -116,7 +117,7 @@ p {
 }
 #footer {
 	clear: both;
-	padding: 10px 10px 0px 10px;
+	padding: 10px 20px 0px 10px;
 }
 #header a, #footer a {
 	color: #fff;
@@ -156,6 +157,7 @@ table {
 	color: #333;
 	margin-bottom: 10px;
 	width: 100%;
+	font-weight: normal;
 }
 th {
 	/*border:0;*/
