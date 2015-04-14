@@ -5,6 +5,7 @@ class MuestrasController extends AppController {
 	);
 
 	public function search() {
+		//debug($proveedores);
 		//la página a la que redirigimos después de mandar  el formulario de filtro
 		$url['action'] = 'index';
 		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
@@ -20,6 +21,14 @@ class MuestrasController extends AppController {
 	
 	public function index() {
 		//$this->Calidad->recursive = 1;
+
+		//necesitamos la lista de proveedor_id/nombre para rellenar el select
+		//del formulario de busqueda
+		$this->set('proveedores', $this->Muestra->Proveedor->find('list', array(
+			'fields' => array('Proveedor.id','Empresa.nombre'),
+			'recursive' => 1
+			))
+		);
 		//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
 		//por ej.
 		//$passedArgs['Search.palabras'] = mipalabra
@@ -29,43 +38,51 @@ class MuestrasController extends AppController {
 		$titulo = array();
 
 		//primero el filtro por id
-		if(isset($this->passedArgs['Search.id'])) {
-			//ponemos la condicion
-			debug($this->passedArgs['Search.id']);
-			$this->paginate['conditions'][]['Muestra.id'] = $this->passedArgs['Search.id'];
-			//guardamos los datos de búsqueda para que el formulario 'se acuerde' de la opcion
-			$this->data['Search']['id'] = $this->passedArgs['Search.id'];
-			//generamos el titulo
-			$title[] = __('ID',true).': '.$this->passedArgs['Search.id'];
-		}
+//		if(isset($this->passedArgs['Search.id'])) {
+//			//ponemos la condicion
+//			debug($this->passedArgs['Search.id']);
+//			$this->paginate['conditions'][]['Muestra.id'] = $this->passedArgs['Search.id'];
+//			//guardamos los datos de búsqueda para que el formulario 'se acuerde' de la opcion
+//			$this->request->data['Search']['id'] = $this->passedArgs['Search.id'];
+//			//generamos el titulo
+//			$title[] = __('ID',true).': '.$this->passedArgs['Search.id'];
+//		}
 		//filtramos por referencia
 		if(isset($this->passedArgs['Search.referencia'])) {
 			$referencia = $this->passedArgs['Search.referencia'];
 			$this->paginate['conditions'][]['Muestra.referencia LIKE'] = "%$referencia%";
 			//guardamos el criterio para el formulario de vuelta
-			$this->data['Search']['referencia'] = $referencia;
+			$this->request->data['Search']['referencia'] = $referencia;
 			//completamos el titulo
-			$title[] = __('Calidad',true).': '.$referencia;
+			$title[] = 'Referencia: '.$referencia;
+		}
+		//filtramos por proveedor
+		if(isset($this->passedArgs['Search.proveedor_id'])) {
+			$proveedor_id = $this->passedArgs['Search.proveedor_id'];
+			$this->paginate['conditions'][]['Proveedor.id LIKE'] = "$proveedor_id";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['proveedor_id'] = $proveedor_id;
+			//completamos el titulo
+			$title[] ='Proveedor: '.$proveedor_id;
 		}
 		//filtramos por calidad
 		if(isset($this->passedArgs['Search.calidad'])) {
 			$calidad = $this->passedArgs['Search.calidad'];
 			$this->paginate['conditions'][]['Muestra.referencia LIKE'] = "%$calidad%";
 			//guardamos el criterio para el formulario de vuelta
-			$this->data['Search']['calidad'] = $calidad;
+			$this->request->data['Search']['calidad'] = $calidad;
 			//completamos el titulo
-			$title[] = __('Calidad',true).': '.$calidad;
+			$title[] ='Calidad: '.$calidad;
 		}
 		//filtramos por aprobado
-		if(isset($this->passedArgs['Search.aprobado'])) {
-			$this->paginate['conditions'][]['Muestra.aprobado'] = $this->passedArgs['Search.aprobado']?1:0;
-			$this->data['Search']['aprobado'] = $this->passedArgs['Search.aprobado'];
-			$titulo[] = ($this->passedArgs['Search.aprobado']) ?
-				__('Muestras aprobadas', true) : __('Muestras rechazadas',true);
-		}
+//		if(isset($this->passedArgs['Search.aprobado'])) {
+//			$this->paginate['conditions'][]['Muestra.aprobado'] = $this->passedArgs['Search.aprobado']?1:0;
+//			$this->data['Search']['aprobado'] = $this->passedArgs['Search.aprobado'];
+//			$titulo[] = ($this->passedArgs['Search.aprobado']) ?
+//				__('Muestras aprobadas', true) : __('Muestras rechazadas',true);
+//		}
 
 		$this->set('muestras', $this->paginate());
-		//debug($this->paginate());
 	}
 
 	public function view($id = null) {
@@ -76,8 +93,6 @@ class MuestrasController extends AppController {
 		$muestra = $this->Muestra->find('first', array(
 			'conditions' => array('Muestra.id' => $id),
 			'recursive' => 2));
-		//debug($this->Muestra->LineaMuestra);
-		//debug($muestra['LineaMuestra']);
 		$this->set('muestra',$muestra);
 		$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL

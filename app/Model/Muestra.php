@@ -3,7 +3,8 @@ class Muestra extends AppModel {
 	public $recursive = 3;
 //	public $belongTo = array('Empresa' => array(
 	public $displayField = 'referencia';
-	public $actsAs = array('Containable');
+	//no sabemos si este sirve de algo
+	//public $actsAs = array('Containable');
 	public $belongsTo = array(
 		'Calidad' => array(
 			'className' => 'Calidad',
