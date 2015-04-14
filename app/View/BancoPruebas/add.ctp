@@ -26,11 +26,12 @@ echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
 	echo $this->Form->input('Empresa.pais_id', array(
 		'label' => 'País',
 		'empty' => true,
-		'class' => 'listado'
+		'class' => 'listado'));
 		//'style'=>'height:20px;'
-		//'div' => 'input text'
-		)
-	);
+	//	'div' => 'input text'
+	echo $this->Html->link('Añadir País', array(
+	'controller'=>'paises',
+	'action'=>'add'));
 	echo $this->Form->input('Empresa.telefono', array('label'=> 'Teléfono'));
 	echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));
 	echo $this->Form->input('Empresa.codigo_contable', array('label'=>'Código Contable'));	

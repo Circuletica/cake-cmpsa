@@ -8,6 +8,7 @@ jQuery(function($) {
 	$('#EmpresaCuentaBancaria').mask("9999-9999-99-9999999999");
 });
 </script>
+<div class="columna2">
 <?php
 //$this->Html->addCrumb('Almacenes', '/almacenes');
 $this->Html->addCrumb('Almacenes', array(
@@ -24,6 +25,9 @@ echo $this->Form->create('Almacen', array(
 	'action' => 'add'));
 echo $this->Form->input('Empresa.nombre');
 echo $this->Form->input('Empresa.direccion');
+?>
+<div class="columna3">
+<?php
 echo $this->Form->input('Empresa.cp');
 echo $this->Form->input('Empresa.telefono');
 echo $this->Form->input('Empresa.municipio');
@@ -34,6 +38,8 @@ echo $this->Html->link('Añadir País', array(
 	'action'=>'add')
 );
 echo $this->Form->input('Empresa.cif');
+?></div>
+	<?php
 echo $this->Form->input('Empresa.codigo_contable');
 echo $this->Form->input('Empresa.cuenta_bancaria');
 //echo $this->Form->input('BancoPrueba.bic');
@@ -41,3 +47,4 @@ echo $this->Form->input('Empresa.cuenta_bancaria');
 //echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
 echo $this->Form->end('Guardar Almacén');
 ?>
+</div>

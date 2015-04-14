@@ -21,8 +21,8 @@ else:
 	echo "<div class='actions'>\n";
       echo $this->Html->link('Modificar banco',array('action'=>'edit',$bancoprueba['BancoPrueba']['id']));
       echo $this->Form->postLink('Borrar banco',array('action'=>'delete',$bancoprueba['BancoPrueba']['id']),array('confirm'=>'¿Realmente quiere borrar '.$bancoprueba['Empresa']['nombre'].'?'));
-      echo "\n";
-      echo '<p>';
+      //echo "\n";
+     // echo '<p>';
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
 	echo $this->Html->link('Añadir contacto',array(
 		'controller'=>'contactos',
@@ -122,14 +122,15 @@ else:
 			$contacto['id'],
               		'from'=>'banco_pruebas',
               		'from_id'=>$contacto['empresa_id']), array('class'=>'boton'))
-			.' '.$this->Form->postButton('Borrar',
+			.' '.$this->Form->postLink('Borrar',
 			array(
 				'controller'=>'contactos',
 				'action' => 'delete',
 				$contacto['id'],
 				'from' => 'banco_pruebas',
-				'from_id' => $contacto['empresa_id']), array('class'=>'boton'),
-				array('confirm' =>'&iquestSeguro que quieres borrar a '.$contacto['nombre'].'?')
+				'from_id' => $contacto['empresa_id']),
+				array('class'=>'boton',
+					'confirm' =>'¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
 		)
 	));
 		//print_r($contacto);

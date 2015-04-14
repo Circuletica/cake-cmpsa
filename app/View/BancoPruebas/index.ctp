@@ -9,7 +9,8 @@
 	<div class="exp">
 
 	<?php 	echo $this->Html->link('Imprimir',array('action'=>'add'), array('class'=>'prev')); 
-			echo $this->Html->link('Exportar a PDF',array('action'=>'add'), array('class'=>'next')); ?>
+			//echo $this->layout('Exportar a PDF', $this->layout = 'pdf', $this->render());
+ ?>
 
 		</div>
 	</div>

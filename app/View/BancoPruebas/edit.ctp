@@ -13,7 +13,11 @@ echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
 	//	array('label' => 'País'
 	//	)
 	//);
-	echo $this->Form->input('Empresa.pais_id', array('label'=>'País'));
+	echo $this->Form->input('Empresa.pais_id', 
+			array('label'=>'País',
+				'style: height'=>'100px')
+
+	);
 	echo $this->Form->input('Empresa.telefono', array('label'=>'Teléfono'));
 	echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));
 	echo $this->Form->input('Empresa.codigo_contable', array('label'=>'Codigo Contable'));

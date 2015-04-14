@@ -8,6 +8,7 @@ jQuery(function($) {
 	$('#EmpresaCuentaBancaria').mask("9999-9999-99-9999999999");
 });
 </script>
+<div class="columna2">
 <?php
 $this->Html->addCrumb('Proveedores', '/proveedores');
 $this->Html->addCrumb('Añadir Proveedor', '/proveedores/add');
@@ -40,3 +41,4 @@ echo $this->Form->input('Empresa.cuenta_bancaria');
 //echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
 echo $this->Form->end('Guardar Proveedor');
 ?>
+</div>

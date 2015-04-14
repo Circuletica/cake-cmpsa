@@ -23,26 +23,26 @@
 
 /** General Style Info **/
 body {
-background: #637A91;
-/*background: -moz-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
+background: #453217;
+background: -moz-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
 background: -webkit-gradient(left top, left bottom, color-stop(14%, rgba(69,50,23,1)), color-stop(48%, rgba(70,49,16,1)), color-stop(69%, rgba(123,100,64,1)), color-stop(92%, rgba(180,155,116,1)), color-stop(100%, rgba(180,155,116,1)));
 background: -webkit-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
 background: -o-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
 background: -ms-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
 background: linear-gradient(to bottom, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#453217', endColorstr='#b49b74', GradientType=0 );
-	*/color: #fff;
+	color: #fff;
 	font-family:verdana,helvetica,arial,sans-serif;
-	font-size:75%;
+	font-size:70%;
 	margin: 0;
 }
 a {
-	color: #384047;
+	color: #4d340e;
 	text-decoration: underline;
-	font-weight: 600;
+	font-weight: bold;
 }
 a:hover {
-	color: #488AF6;
+	color: #0099FF;
 	text-decoration:none;
 }
 a img {
@@ -70,7 +70,7 @@ h3 {
 	font-size: 135%;
 }
 h4 {
-	color: #355383;
+	color: #8A5C2E;
 	font-weight: bold;
 }
 ul, li {
@@ -90,7 +90,7 @@ p {
 }
 #header h1 {
 	line-height:30px;
-	background: #637A91 url('../img/grano.icon.png') no-repeat left;
+	background: #4d340e url('../img/grano.icon.png') no-repeat left;
 	color: #fff;
 	padding: 0px 40px;
 }
@@ -102,7 +102,7 @@ p {
 }
 #header h1 a:hover {
 	color: #fff;
-	background: #384047;
+	background: #4d340e;
 	text-decoration: underline;
 }
 
@@ -132,17 +132,14 @@ div.index,
 div.view {
 	float:right;
 	width:76%;
-	border-left: 2px solid rgba(102, 102, 102, 0.92);
-	padding:1% 2%;
+	border-left: 3px solid rgba(102, 102, 102, 0.92);
+	padding:10px 2%;
 }
 div.actions {
 	float:left;
 	width:16%;
 	padding:1%;
 	border: 5px;
-    height: 90px;
-    margin: 5px;
-    
 }
 div.actions h3 {
 	padding-top:0;
@@ -182,7 +179,7 @@ table tr td {
 	border-bottom:1px solid #ddd;
 }
 table tr:nth-child(even) {
-	background: #F6F9FA;
+	background: #f9f9f9;
 }
 td.actions {
 	text-align: center;
@@ -260,7 +257,7 @@ dl {
 }
 dl dd:nth-child(4n+2),
 dl dt:nth-child(4n+1) {
-	background: #F6F9FA;
+	background: #f4f4f4;
 }
 
 dt {
@@ -307,12 +304,11 @@ fieldset fieldset div {
 form div {
 	clear: both;
 	margin-bottom: 1em;
-	/*padding: .5em;*/
+	padding: .5em;
 	vertical-align: text-top;
 }
 form .input {
 	color: #444;
-
 }
 form .required {
 	font-weight: bold;
@@ -331,20 +327,19 @@ form div.submit {
 label {
 	display: block;
 	font-weight: bold; /*Títulos text area en negrita*/
-	font-size: 105%;
-	margin-bottom:2px;
+	font-size: 110%;
+	margin-bottom:3px;
 }
 input, textarea {
 	clear: both;
 	font-size: 110%;
-	font-family: "frutiger linotype", "verdana", sans-serif;
+	font-family: "frutiger linotype", "lucida grande", "verdana", sans-serif;
 	padding: 0.1%;
 	width:98%;
-	display:inline; /*Formulario visto en línea*/
 }
 select {
 	clear: both;
-	font-size: 100%;
+	font-size: 110%;
 	vertical-align: text-bottom;
 }
 select[multiple=multiple] {
@@ -363,7 +358,6 @@ input[type=checkbox] {
 div.checkbox label {
 	display: inline;
 }
-
 input[type=radio] {
 	float:left;
 	width:auto;
@@ -535,9 +529,6 @@ input[type=submit],
 .actions ul li a,
 .actions a {
 	font-weight:normal;
-	text-align: center;
-	margin-top: 8%;
-	display: block;
 	padding: 4px 8px;
 	background: #dcdcdc;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));

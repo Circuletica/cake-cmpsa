@@ -126,6 +126,18 @@ input[type=submit]:active,
 }
 
 /*Columnas dentro del index y form */
+.col2{
+	display: inline;
+ -webkit-columns: 2;
+    -moz-columns: 2;
+         columns: 2;
+ -webkit-column-gap: 20px;/* Chrome, Safari, Opera */
+    -moz-column-gap: 20px; /* Firefox */
+		 column-gap: 20px;
+ -webkit-column-rule: 1px dotted #ddd;
+	 -moz-column-rule: 1px dotted #ddd;
+   		 column-rule: 1px dotted #ddd;
+}
 .columna2{
  -webkit-columns: 2 300px;
     -moz-columns: 2 300px;
