@@ -21,7 +21,7 @@ class MuestrasController extends AppController {
 		//debug($this->Muestra->LineaMuestra);
 		//debug($muestra['LineaMuestra']);
 		$this->set('muestra',$muestra);
-		debug($muestra);
+		//debug($muestra);
 		$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$calidad_nombre = $this->CalidadNombre->findById($muestra['Calidad']['id']);
