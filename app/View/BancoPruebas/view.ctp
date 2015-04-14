@@ -122,7 +122,7 @@ else:
 			$contacto['id'],
               		'from'=>'banco_pruebas',
               		'from_id'=>$contacto['empresa_id']), array('class'=>'boton'))
-			.' '.$this->Form->postLink('Borrar',
+			.' '.$this->Form->postButton('Borrar',
 			array(
 				'controller'=>'contactos',
 				'action' => 'delete',
