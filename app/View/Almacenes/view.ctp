@@ -98,14 +98,14 @@ else:
 			'action' => 'edit',
 			$contacto['id'],
               		'from'=>'almacenes',
-              		'from_id'=>$contacto['empresa_id']))
+              		'from_id'=>$contacto['empresa_id']), array('class'=>'boton'))
 			.' '.$this->Form->postLink('Borrar',
 			array(
 				'controller'=>'contactos',
 				'action' => 'delete',
 				$contacto['id'],
 				'from' => 'almacenes',
-				'from_id' => $contacto['empresa_id']),
+				'from_id' => $contacto['empresa_id']), array('class'=>'boton'),
 				array('confirm' => 'Seguro que quieres borrar a '.$contacto['nombre'].'?')
 		)
 	));
