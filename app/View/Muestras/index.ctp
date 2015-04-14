@@ -7,17 +7,18 @@
   <fieldset>
     <legend><?php __('Filtro de muestra');?></legend>
   <?php
-	echo $this->Form->input('Search.id');
+	//echo $this->Form->input('Search.id');
 	echo $this->Form->input('Search.referencia');
 	echo $this->Form->input('Search.fecha', array('after'=>'dd/mm/aaaa'));
 	echo $this->Form->input('Search.calidad');
-	echo $this->Form->input('Search.aprobado', array(
-		'empty'=>__('Cualquiera', true),
-		'options'=>array(
-			0=>__('Rechazado',true),
-			1=>__('Aprobado',true)
-			)
-		));
+	echo $this->Form->input('Search.proveedor');
+//	echo $this->Form->input('Search.aprobado', array(
+//		'empty'=>__('Cualquiera', true),
+//		'options'=>array(
+//			0=>__('Rechazado',true),
+//			1=>__('Aprobado',true)
+//			)
+//		));
 	echo $this->Form->end('Buscar');
   ?>
   </fieldset>
@@ -25,18 +26,14 @@
 <div class='index'>
 <table>
   <tr>
-    <th><?php echo $this->Paginator->sort('id')?></th>
     <th><?php echo $this->Paginator->sort('referencia')?></th>
     <th><?php echo $this->Paginator->sort('fecha')?></th>
     <th><?php echo $this->Paginator->sort('Calidad.nombre', 'Calidad')?></th>
-    <th><?php echo $this->Paginator->sort('aprobado')?></th>
+    <th><?php echo $this->Paginator->sort('proveedor')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
 <?php foreach($muestras as $muestra):?>
   <tr>
-    <td>
-      <?php echo $muestra['Muestra']['id']?>
-    </td>
     <td>
       <?php echo $muestra['Muestra']['referencia']?>
     </td>
@@ -61,7 +58,8 @@
     </td>
     <td>
       <?php 
-		echo $muestra['Muestra']['aprobado'] ? 'Aprobado' : 'Rechazado';
+		//echo $muestra['Muestra']['aprobado'] ? 'Aprobado' : 'Rechazado';
+		echo $muestra['Proveedor']['Empresa']['nombre'];
 	?>
     </td>
     <td>

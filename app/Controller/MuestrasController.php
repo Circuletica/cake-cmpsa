@@ -10,19 +10,16 @@ class MuestrasController extends AppController {
 		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
 		//la URL final tiene ese aspecto:
 		//http://cake-cmpsa.gargantilla.net/muestras/index/Search.referencia:mireferencia/Search.id:3
-		debug($this->data);
 		foreach ($this->data as $k=>$v){ 
 			foreach ($v as $kk=>$vv){ 
 			if ($vv) {$url[$k.'.'.$kk]=$vv;} 
 			} 
 		}
-		debug($url);
 		$this->redirect($url,null,true);
 	}
 	
 	public function index() {
 		//$this->Calidad->recursive = 1;
-		//debug($this->paginate());
 		//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
 		//por ej.
 		//$passedArgs['Search.palabras'] = mipalabra
@@ -67,8 +64,8 @@ class MuestrasController extends AppController {
 				__('Muestras aprobadas', true) : __('Muestras rechazadas',true);
 		}
 
-
 		$this->set('muestras', $this->paginate());
+		//debug($this->paginate());
 	}
 
 	public function view($id = null) {
@@ -82,7 +79,6 @@ class MuestrasController extends AppController {
 		//debug($this->Muestra->LineaMuestra);
 		//debug($muestra['LineaMuestra']);
 		$this->set('muestra',$muestra);
-		debug($muestra);
 		$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$calidad_nombre = $this->CalidadNombre->findById($muestra['Calidad']['id']);
