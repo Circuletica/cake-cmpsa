@@ -2,7 +2,7 @@
 <?php 
 	$this->Html->addCrumb('Muestras', '/muestras');
 ?>
-<!--div class='actions'-->
+<div class='actions'>
 <?php echo $this->Form->create('Muestra', array('action'=>'search'));?>
   <fieldset>
     <legend>Filtro de muestra</legend>
@@ -27,7 +27,7 @@
 		));
   ?>
   </fieldset>
-<!--/div-->
+</div>
 <div class='index'>
 <table>
   <tr>
