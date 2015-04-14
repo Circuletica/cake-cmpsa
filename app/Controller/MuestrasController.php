@@ -20,15 +20,14 @@ class MuestrasController extends AppController {
 	}
 	
 	public function index() {
-		//$this->Calidad->recursive = 1;
-
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
-		$this->set('proveedores', $this->Muestra->Proveedor->find('list', array(
+		$proveedores = $this->Muestra->Proveedor->find('list', array(
 			'fields' => array('Proveedor.id','Empresa.nombre'),
 			'recursive' => 1
-			))
+			)
 		);
+		$this->set('proveedores',$proveedores);
 		//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
 		//por ej.
 		//$passedArgs['Search.palabras'] = mipalabra
@@ -45,7 +44,7 @@ class MuestrasController extends AppController {
 //			//guardamos los datos de búsqueda para que el formulario 'se acuerde' de la opcion
 //			$this->request->data['Search']['id'] = $this->passedArgs['Search.id'];
 //			//generamos el titulo
-//			$title[] = __('ID',true).': '.$this->passedArgs['Search.id'];
+//			$title[] = 'ID: '.$this->passedArgs['Search.id'];
 //		}
 		//filtramos por referencia
 		if(isset($this->passedArgs['Search.referencia'])) {
@@ -63,7 +62,7 @@ class MuestrasController extends AppController {
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['proveedor_id'] = $proveedor_id;
 			//completamos el titulo
-			$title[] ='Proveedor: '.$proveedor_id;
+			$title[] ='Proveedor: '.$proveedores[$proveedor_id];
 		}
 		//filtramos por calidad
 		if(isset($this->passedArgs['Search.calidad'])) {
@@ -79,10 +78,15 @@ class MuestrasController extends AppController {
 //			$this->paginate['conditions'][]['Muestra.aprobado'] = $this->passedArgs['Search.aprobado']?1:0;
 //			$this->data['Search']['aprobado'] = $this->passedArgs['Search.aprobado'];
 //			$titulo[] = ($this->passedArgs['Search.aprobado']) ?
-//				__('Muestras aprobadas', true) : __('Muestras rechazadas',true);
+//				'Muestras aprobadas' : 'Muestras rechazadas';
 //		}
 
-		$this->set('muestras', $this->paginate());
+		$muestras =  $this->paginate();
+		//generamos el título
+		if (isset($title)) {$title = implode(' | ', $title);}
+		$title = (isset($title)&&$title)?$title:'Todas las muestras';
+		//pasamos los datos a la vista
+		$this->set(compact('muestras','title'));
 	}
 
 	public function view($id = null) {

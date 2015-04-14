@@ -1,18 +1,21 @@
-<h2>Listado de muestras</h2>
+<h2>Listado de muestra: <?php echo $title;?></h2>
 <?php 
 	$this->Html->addCrumb('Muestras', '/muestras');
 ?>
 <div class='actions'>
 <?php echo $this->Form->create('Muestra', array('action'=>'search'));?>
   <fieldset>
-    <legend>Filtro de muestra</legend>
+    <legend>Buscador</legend>
   <?php
 	//echo $this->Form->input('Search.id');
 	echo $this->Form->input('Search.referencia');
 	echo $this->Form->input('Search.fecha', array('after'=>'dd/mm/aaaa'));
 	echo $this->Form->input('Search.calidad');
 	//echo $this->Form->input('Search.calidad_id');
-	echo $this->Form->input('Search.proveedor_id', array('label' => 'Proveedor'));
+	echo $this->Form->input('Search.proveedor_id', array(
+		'label' => 'Proveedor',
+		'empty' => true
+	));
 //	echo $this->Form->input('Search.aprobado', array(
 //		'empty'=>__('Cualquiera', true),
 //		'options'=>array(
