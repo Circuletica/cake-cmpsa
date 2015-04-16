@@ -1,4 +1,4 @@
-<?php //$this->Html->getCrumbs(' > ');?>
+	<?php //$this->Html->getCrumbs(' > ');?>
 <?php $this->Html->addCrumb('Bancos', array(
 	'controller'=>'banco_pruebas',
 	'action'=>'index'
@@ -107,7 +107,7 @@ else:
 <table>
 <?php
 	echo $this->Html->tableHeaders(array('Nombre', 'Función',
-	       'Teléfono 1', 'Teléfono 2', 'Email','Acciones'));
+	       'Teléfono Nº1', 'Teléfono Nº2', 'E-mail','Acciones'));
 	//echo $this->Html->tableCells($bancoprueba['Empresa']['Contacto']);
 	foreach($bancoprueba['Empresa']['Contacto'] as $contacto):
 	echo $this->Html->tableCells(array(

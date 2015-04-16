@@ -35,7 +35,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#453217', end
 	font-family:verdana,helvetica,arial,sans-serif;
 	font-size:70%;
 	margin: 0;
-	font-weight: 500;
+	font-weight: 600;
 }
 a {
 	color: #384047;
@@ -288,10 +288,6 @@ fieldset {
 	border: none;
 	margin-bottom: 1em;
 	padding: 16px 10px;
-	float: left;
-	/*display: block;*/
-	width: 15%;
-	margin: 0 30px 30px 0;
 }
 fieldset legend {
 	color: #e32;
@@ -317,9 +313,7 @@ form div {
 	vertical-align: text-top;
 }
 form .input {
-	display: block;
-	/*width: 15em;*/
-	color: #444;/**/
+	color: #444;
 
 }
 form .required {
@@ -335,11 +329,6 @@ form div.submit {
 	border: 0;
 	clear: both;
 	margin-top: 1.5%;
-}
-
-form :focus {
-	border: 2px solid #4C9ED9;
-	background: #F6F6F6;
 }
 label {
 	display: block;
@@ -359,7 +348,6 @@ select {
 	clear: both;
 	font-size: 100%;
 	vertical-align: text-bottom;
-	display: block;
 }
 select[multiple=multiple] {
 	width: 100%;

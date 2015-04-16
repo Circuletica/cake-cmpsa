@@ -1,4 +1,3 @@
-/*Preparo la ubicación de los tabs*/
 #tabs{
 	position: relative;
 	padding-right:5%;
@@ -130,6 +129,7 @@ input[type=submit]:active,
 }
 
 /*Columnas dentro del index y form */
+/* IDs */
 .col2{
 	display: inline;
  -webkit-columns: 2;
