@@ -1,6 +1,4 @@
 <h2>Modificar contacto <?php echo $this->request->data['Contacto']['nombre'].' en '.$this->request->data['Empresa']['nombre']?></h2>
-<div class="columna2">
-
 <?php
   $this->Html->addCrumb('Entidades','/'.$this->params['named']['from']);
   $this->Html->addCrumb($this->request->data['Empresa']['nombre'], '/'.$this->params['named']['from'].'/view/'.$this->params['named']['from_id']);
@@ -16,10 +14,14 @@
 	  'from'=>$this->params['named']['from'],
 	  'from_id'=>$this->params['named']['from_id']
   )));
+    ?>
+
+  <fieldset><?php
   echo $this->Form->input('nombre');
-  echo $this->Form->input('funcion');
-  echo $this->Form->input('telefono1');
-  echo $this->Form->input('telefono2');
+  echo $this->Form->input('funcion',array('label'=>'Función'));
+  echo $this->Form->input('telefono1',array('label'=>'Teléfono Nº1'));
+  ?>  <div class="columna2"><?php
+  echo $this->Form->input('telefono2',array('label'=>'Teléfono Nº2'));
   echo $this->Form->input('email', array('type' => 'email'));
   //echo 'Empresa';
   //echo $this->Form->select('pais_id', array($paises,
@@ -27,5 +29,5 @@
   //echo $this->Form->select('empresa_id', $empresas);
   echo $this->Form->input('id',array('type'=>'hidden'));
   echo $this->Form->end('Guardar contacto');
-?></div>
+?></fieldset></div>
 

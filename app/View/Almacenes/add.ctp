@@ -28,11 +28,9 @@ echo $this->Form->create('Almacen', array(
 	<?php
 echo $this->Form->input('Empresa.nombre');
 echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
-echo $this->Form->input('Empresa.cp', array('label'=>'Código Postal'));
 	?>
-	</fieldset>
-	<fieldset>
-	<?php
+	<div class="columna3"><?php
+echo $this->Form->input('Empresa.cp', array('label'=>'Código Postal'));
 echo $this->Form->input('Empresa.municipio');
 //echo $this->Form->select('Empresa.pais_id', $paises);
 echo $this->Form->input('Empresa.pais_id', array('label'=>'País'));
@@ -40,16 +38,14 @@ echo $this->Form->input('Empresa.pais_id', array('label'=>'País'));
 //	'action'=>'add')
 //);
 echo $this->Form->input('Empresa.telefono', array('label'=>'Teléfono'));
-	?>
-	</fieldset>
-	<fieldset>
-	<?php
 echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));
+	?></div>
+	<?php
 echo $this->Form->input('Empresa.codigo_contable', array('label'=>'Código Contable'));
 echo $this->Form->input('Empresa.cuenta_bancaria');
 //echo $this->Form->input('BancoPrueba.bic');
 //echo $this->Form->input('BancoPrueba.cuenta_cliente_1');
 //echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
 echo $this->Form->end('Guardar Almacén');
-?>
+?></fieldset>
 

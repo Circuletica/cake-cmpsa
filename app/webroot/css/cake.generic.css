@@ -63,6 +63,8 @@ h2 {
 	color: #e73827;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
 	font-size: 145%;
+	font-weight: bold;
+
 
 }
 h3 {
@@ -295,8 +297,8 @@ fieldset {
 }
 fieldset legend {
 	color: #e32;
-	font-size: 160%;
-	font-weight: bold;
+	font-size: 130%;
+	font-weight: normal;
 }
 fieldset fieldset {
 	margin-top: 0;

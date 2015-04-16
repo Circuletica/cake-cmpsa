@@ -19,7 +19,7 @@
 	echo $this->Form->postLink('Borrar muestra',array(
 		'action'=>'delete',
 		$muestra['Muestra']['id']),
-		array('confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
+		array('confirm'=>'¿Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
 	);
 	echo $this->Html->link('Añadir línea',array(
 		'controller' => 'linea_muestras',
