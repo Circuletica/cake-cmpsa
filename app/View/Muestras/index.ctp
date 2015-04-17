@@ -4,8 +4,7 @@
 ?>
 <div class='actions'>
 <?php echo $this->Form->create('Muestra', array('action'=>'search'));?>
-  <fieldset>
-    <legend>Buscador</legend>
+    <h3>Buscador</h3>
   <?php
 	//echo $this->Form->input('Search.id');
 	echo $this->Form->input('Search.referencia');
@@ -23,13 +22,13 @@
 //			1=>__('Aprobado',true)
 //			)
 //		));
+	
+	echo $this->Html->Link('Repetir búsqueda',array(
+		'action'=>'index')
+	);
 	echo $this->Form->end('Buscar');
-	echo $this->Html->Link('Resetear',array(
-		'action'=>'index'), array(
-			'class'=>'boton'
-		));
   ?>
-  </fieldset>
+
 </div>
 <div class='index'>
 <table>
@@ -71,28 +70,27 @@
 	?>
     </td>
     <td>
-	<?php echo $this->Html->link('Detalles',array('action'=>'view',$muestra['Muestra']['id']), array('class'=>'boton')).' '.
+	<?php echo $this->Html->link('Detalles',array('action'=>'view',$muestra['Muestra']['id']), array('class'=>'botond')).' '.
 		//$this->Html->link('Modificar',array('action'=>'edit',$muestra['Muestra']['id']))
-		$this->Form->postLink('Borrar',array('action'=>'delete',$muestra['Muestra']['id']), array('class'=>'boton'),array('confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?'))
+		$this->Form->postLink('Borrar',array('action'=>'delete',$muestra['Muestra']['id']), array('class'=>'botond'),array('confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?'))
 	?>
     </td>
   </tr>
-<?php endforeach;?>
-</table>
-</div>
-<div class="btabla">
-<?php echo $this->Html->link('Añadir Muestra',array('action'=>'add'));
-?>
+	<?php endforeach;?>
+	</table>
+
+	<div class="btabla">
+	<?php echo $this->Html->link('Añadir Muestra',array('action'=>'add'));
+	?>
 </div>
 
-<p>
 <?php echo $this->Paginator->counter(
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
 );?>
 
-</p>
-<div class="paging">
-	<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
-	<?php echo $this->Paginator->numbers(array('separator' => ''));?>
-	<?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
+	<div class="paging">
+		<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
+		<?php echo $this->Paginator->numbers(array('separator' => ''));?>
+		<?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
+	</div>
 </div>
