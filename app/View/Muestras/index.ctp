@@ -23,10 +23,11 @@
 //			)
 //		));
 	
-	echo $this->Html->Link('Repetir búsqueda',array(
+	echo $this->Form->end('Buscar');
+
+	echo $this->Html->Link('Cancelar búsqueda',array(
 		'action'=>'index')
 	);
-	echo $this->Form->end('Buscar');
   ?>
 
 </div>
