@@ -73,7 +73,9 @@ Configure::write('Config.language', 'spa');
  *
  * CakePlugin::loadAll(); // Loads all plugins at once
  * CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
- *
+ */
+CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
+/**
  */
 
 /**
