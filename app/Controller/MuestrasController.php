@@ -10,17 +10,27 @@ class MuestrasController extends AppController {
 		//datos que no sirven
 		$this->paginate = array(
 			'order' => array('Muestra.referencia' => 'asc'),
-			'recursive' => 2,
-			'fields' => array(
-				'Muestra.id',
-				'Muestra.referencia',
-				'Muestra.fecha',
-				'Muestra.aprobado',
-				'Muestra.incidencia',
-				'Muestra.calidad_id'
+			//'recursive' => 2,
+			'Muestra' => array(
+				'recursive' => 2,
+				'fields' => array(
+					'Muestra.id',
+					'Muestra.referencia',
+					'Muestra.fecha',
+					'Muestra.aprobado',
+					'Muestra.incidencia',
+					'Muestra.calidad_id',
+					'Calidad.pais_id',
+					'Calidad.descafeinado',
+					'Calidad.descripcion'
+				)
+			),
+			'Pais' => array(
+				'recursive' => 1,
+				'fields' => array('Pais.nombre')
 			)
 		);
-		$muestras = $this->paginate('Muestra');
+		$muestras = $this->paginate();
 		$this->set('muestras', $muestras);
 	}
 
