@@ -123,8 +123,9 @@ else:
 				$contacto['id'],
 				'from' => 'proveedores',
 				'from_id' => $contacto['empresa_id']),
-				array('class'=>'boton'),
-				array('confirm' => '¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
+				array(
+					'class'=>'boton',
+					'confirm' => '¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
 		)
 	));
 		//print_r($contacto);

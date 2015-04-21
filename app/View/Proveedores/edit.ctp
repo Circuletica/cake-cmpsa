@@ -26,6 +26,10 @@ echo $this->Form->input('Empresa.municipio');
 //);
 
 echo $this->Form->input('Empresa.pais_id',array('label'=>'País'));
+echo $this->Html->link('Añadir País', array(
+	'controller'=>'paises',
+	'action'=>'add')
+);
 echo $this->Form->input('Empresa.telefono',array('label'=>'Teléfono'));
 echo $this->Form->input('Empresa.cif',array('label'=>'CIF'));
 echo $this->Form->input('Empresa.codigo_contable',array('label'=>'Código Contable'));

@@ -1,10 +1,10 @@
-<h2>Listado de muestra: <?php echo $title;?></h2>
 <?php 
 	$this->Html->addCrumb('Muestras', '/muestras');
 ?>
-<div class='actions'>
+<h2>Listado de muestras</h2>
 <?php echo $this->Form->create('Muestra', array('action'=>'search'));?>
-    <h3>Buscador</h3>
+  <div class="actions">
+  <h3>Filtro de muestra</h3>
   <?php
 	//echo $this->Form->input('Search.id');
 	echo $this->Form->input('Search.referencia');

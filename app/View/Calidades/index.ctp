@@ -18,7 +18,8 @@
     <th><?php echo $this->Paginator->sort('id')?></th>
     <th><?php echo $this->Paginator->sort('descafeinado','Proceso')?></th>
     <th><?php echo $this->Paginator->sort('Pais.nombre','Origen')?></th>
-    <th><?php echo $this->Paginator->sort('descripcion')?></th>
+    <th><?php echo $this->Paginator->sort('descripcion', 'Descripción')?></th>
+    <th><?php echo 'Acciones'?></th>
   </tr>
 <?php foreach($calidades as $calidad):?>
   <tr>
@@ -36,8 +37,8 @@
       <?php //echo $calidad['Calidad']['nombre']?>
     </td>
     <td>
-      <?php echo $this->Html->link('Modificar',array('action'=>'edit',$calidad['Calidad']['id'])).'&nbsp;';?>
-      <?php echo $this->Form->postLink('Borrar',array('action'=>'delete',$calidad['Calidad']['id']),array('confirm'=>'Realmente quiere borrar '.$calidad['Calidad']['descripcion'].'?'))?>
+      <?php echo $this->Html->link('Modificar',array('action'=>'edit',$calidad['Calidad']['id']), array("class"=>"botond")).'&nbsp;';?>
+      <?php echo $this->Form->postLink('Borrar',array('action'=>'delete',$calidad['Calidad']['id']),array("class"=>"botond",'confirm'=>'¿Realmente quiere borrar '.$calidad['Calidad']['descripcion'].'?'))?>
     </td>
   </tr>
 <?php endforeach;?>
@@ -54,11 +55,10 @@
     <?php echo $this->Paginator->counter(
 	   array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
       );?>
-</p>
 <div class="paging">
 	<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));
 	 echo $this->Paginator->numbers(array('separator' => ''));
 	 echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
-</div>
+  </div>
 </div>
 

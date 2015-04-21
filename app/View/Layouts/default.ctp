@@ -36,7 +36,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </head>
 <body>
 <div id="header">
-	<h1><?php echo $this->Html->link($cakeDescription, 'http://cake-cmpsa.gargantilla.net'); ?></h1>
+	<h1><?php echo $this->Html->link($cakeDescription, '/'); ?></h1>
 	<?php echo $this->Html->getCrumbs(' > ', 'Inicio');	?>
 
 	<div id="tabs"> 

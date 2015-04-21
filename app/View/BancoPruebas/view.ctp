@@ -1,4 +1,4 @@
-<?php //$this->Html->getCrumbs(' > ');?>
+	<?php //$this->Html->getCrumbs(' > ');?>
 <?php $this->Html->addCrumb('Bancos', array(
 	'controller'=>'banco_pruebas',
 	'action'=>'index'
@@ -21,8 +21,8 @@ else:
 	echo "<div class='actions'>\n";
       echo $this->Html->link('Modificar banco',array('action'=>'edit',$bancoprueba['BancoPrueba']['id']));
       echo $this->Form->postLink('Borrar banco',array('action'=>'delete',$bancoprueba['BancoPrueba']['id']),array('confirm'=>'¿Realmente quiere borrar '.$bancoprueba['Empresa']['nombre'].'?'));
-      echo "\n";
-      echo '<p>';
+      //echo "\n";
+     // echo '<p>';
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
 	echo $this->Html->link('Añadir contacto',array(
 		'controller'=>'contactos',
@@ -107,7 +107,7 @@ else:
 <table>
 <?php
 	echo $this->Html->tableHeaders(array('Nombre', 'Función',
-	       'Teléfono 1', 'Teléfono 2', 'Email','Acciones'));
+	       'Teléfono Nº1', 'Teléfono Nº2', 'E-mail','Acciones'));
 	//echo $this->Html->tableCells($bancoprueba['Empresa']['Contacto']);
 	foreach($bancoprueba['Empresa']['Contacto'] as $contacto):
 	echo $this->Html->tableCells(array(
@@ -121,15 +121,16 @@ else:
 			'action' => 'edit',
 			$contacto['id'],
               		'from'=>'banco_pruebas',
-              		'from_id'=>$contacto['empresa_id']), array('class'=>'boton'))
+              		'from_id'=>$contacto['empresa_id']), array('class'=>'botond'))
 			.' '.$this->Form->postLink('Borrar',
 			array(
 				'controller'=>'contactos',
 				'action' => 'delete',
 				$contacto['id'],
 				'from' => 'banco_pruebas',
-				'from_id' => $contacto['empresa_id']), array('class'=>'boton'),
-				array('confirm' =>'&iquestSeguro que quieres borrar a '.$contacto['nombre'].'?')
+				'from_id' => $contacto['empresa_id']),
+				array('class'=>'botond',
+					'confirm' =>'¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
 		)
 	));
 		//print_r($contacto);
