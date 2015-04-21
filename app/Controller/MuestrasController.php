@@ -5,6 +5,21 @@ class MuestrasController extends AppController {
 		'order' => array('Muestra.referencia' => 'asc')
 	);
 
+	public function search() {
+		//debug($proveedores);
+		//la página a la que redirigimos después de mandar  el formulario de filtro
+		$url['action'] = 'index';
+		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
+		//la URL final tiene ese aspecto:
+		//http://cake-cmpsa.gargantilla.net/muestras/index/Search.referencia:mireferencia/Search.id:3
+		foreach ($this->data as $k=>$v){ 
+			foreach ($v as $kk=>$vv){ 
+			if ($vv) {$url[$k.'.'.$kk]=$vv;} 
+			} 
+		}
+		$this->redirect($url,null,true);
+	}
+	
 	public function index() {
 		//optimizamos la consulta SQL para no sacar
 		//datos que no sirven
@@ -20,6 +35,7 @@ class MuestrasController extends AppController {
 					'Muestra.aprobado',
 					'Muestra.incidencia',
 					'Muestra.calidad_id',
+					'Muestra.proveedor_id',
 					'Calidad.pais_id',
 					'Calidad.descafeinado',
 					'Calidad.descripcion'
@@ -30,8 +46,74 @@ class MuestrasController extends AppController {
 				'fields' => array('Pais.nombre')
 			)
 		);
+		//necesitamos la lista de proveedor_id/nombre para rellenar el select
+		//del formulario de busqueda
+		$proveedores = $this->Muestra->Proveedor->find('list', array(
+			'fields' => array('Proveedor.id','Empresa.nombre'),
+			'recursive' => 1
+			)
+		);
+		$this->set('proveedores',$proveedores);
+		//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
+		//por ej.
+		//$passedArgs['Search.palabras'] = mipalabra
+		//$passedArgs['Search.id'] = 3
+		
+		//Si queremos un titulo con los criterios de busqueda
+		$titulo = array();
+
+		//primero el filtro por id
+//		if(isset($this->passedArgs['Search.id'])) {
+//			//ponemos la condicion
+//			debug($this->passedArgs['Search.id']);
+//			$this->paginate['conditions'][]['Muestra.id'] = $this->passedArgs['Search.id'];
+//			//guardamos los datos de búsqueda para que el formulario 'se acuerde' de la opcion
+//			$this->request->data['Search']['id'] = $this->passedArgs['Search.id'];
+//			//generamos el titulo
+//			$title[] = 'ID: '.$this->passedArgs['Search.id'];
+//		}
+		//filtramos por referencia
+		if(isset($this->passedArgs['Search.referencia'])) {
+			$referencia = $this->passedArgs['Search.referencia'];
+			$this->paginate['conditions'][]['Muestra.referencia LIKE'] = "%$referencia%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['referencia'] = $referencia;
+			//completamos el titulo
+			$title[] = 'Referencia: '.$referencia;
+		}
+		//filtramos por proveedor
+		if(isset($this->passedArgs['Search.proveedor_id'])) {
+			$proveedor_id = $this->passedArgs['Search.proveedor_id'];
+			$this->paginate['conditions'][]['Proveedor.id LIKE'] = "$proveedor_id";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['proveedor_id'] = $proveedor_id;
+			//completamos el titulo
+			$title[] ='Proveedor: '.$proveedores[$proveedor_id];
+		}
+		//filtramos por calidad
+		if(isset($this->passedArgs['Search.calidad'])) {
+			$calidad = $this->passedArgs['Search.calidad'];
+			$this->paginate['conditions'][]['Muestra.referencia LIKE'] = "%$calidad%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['calidad'] = $calidad;
+			//completamos el titulo
+			$title[] ='Calidad: '.$calidad;
+		}
+		//filtramos por aprobado
+//		if(isset($this->passedArgs['Search.aprobado'])) {
+//			$this->paginate['conditions'][]['Muestra.aprobado'] = $this->passedArgs['Search.aprobado']?1:0;
+//			$this->data['Search']['aprobado'] = $this->passedArgs['Search.aprobado'];
+//			$titulo[] = ($this->passedArgs['Search.aprobado']) ?
+//				'Muestras aprobadas' : 'Muestras rechazadas';
+//		}
+
 		$muestras = $this->paginate();
 		$this->set('muestras', $muestras);
+		//generamos el título
+		if (isset($title)) {$title = implode(' | ', $title);}
+		$title = (isset($title)&&$title)?$title:'Todas las muestras';
+		//pasamos los datos a la vista
+		$this->set(compact('muestras','title'));
 	}
 
 	public function view($id = null) {
@@ -42,10 +124,7 @@ class MuestrasController extends AppController {
 		$muestra = $this->Muestra->find('first', array(
 			'conditions' => array('Muestra.id' => $id),
 			'recursive' => 2));
-		//debug($this->Muestra->LineaMuestra);
-		//debug($muestra['LineaMuestra']);
 		$this->set('muestra',$muestra);
-		//debug($muestra);
 		$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$calidad_nombre = $this->CalidadNombre->findById($muestra['Calidad']['id']);

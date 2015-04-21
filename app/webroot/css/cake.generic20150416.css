@@ -35,7 +35,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#453217', end
 	font-family:verdana,helvetica,arial,sans-serif;
 	font-size:70%;
 	margin: 0;
-	font-weight: 500;
+	font-weight: 600;
 }
 a {
 	color: #384047;
@@ -63,8 +63,6 @@ h2 {
 	color: #e73827;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
 	font-size: 145%;
-	font-weight: bold;
-
 
 }
 h3 {
@@ -143,7 +141,7 @@ div.actions {
 	width:16%;
 	padding:1%;
 	border: 5px;
-   /* height: 90px;*/
+    height: 90px;
     margin: 5px;
     
 }
@@ -290,15 +288,11 @@ fieldset {
 	border: none;
 	margin-bottom: 1em;
 	padding: 16px 10px;
-	float: left;
-	/*display: block;*/
-	width: 15%;
-	margin: 0 30px 30px 0;
 }
 fieldset legend {
 	color: #e32;
-	font-size: 130%;
-	font-weight: normal;
+	font-size: 160%;
+	font-weight: bold;
 }
 fieldset fieldset {
 	margin-top: 0;
@@ -319,9 +313,7 @@ form div {
 	vertical-align: text-top;
 }
 form .input {
-	display: block;
-	/*width: 15em;*/
-	color: #444;/**/
+	color: #444;
 
 }
 form .required {
@@ -337,11 +329,6 @@ form div.submit {
 	border: 0;
 	clear: both;
 	margin-top: 1.5%;
-}
-
-form :focus {
-	border: 2px solid #4C9ED9;
-	background: #F6F6F6;
 }
 label {
 	display: block;
@@ -361,7 +348,6 @@ select {
 	clear: both;
 	font-size: 100%;
 	vertical-align: text-bottom;
-	display: block;
 }
 select[multiple=multiple] {
 	width: 100%;
@@ -599,15 +585,7 @@ input[type=submit]:active,
 	border-color: #aaa;
 	text-decoration: none;
 }
-.actions select {
-	width: 100%;
-	color: #585757;
-	font-size: 13px;
-	line-height: 100%;
-	border: 1px solid #C1C1C1;
-	-webkit-appearance: none;
-}
- 
+
 /** Related **/
 .related {
 	clear: both;
