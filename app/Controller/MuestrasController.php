@@ -1,13 +1,27 @@
 <?php
 class MuestrasController extends AppController {
 	public $paginate = array(
-		'order' => array('referencia' => 'asc')
+		'recursive' => 2,
+		'order' => array('Muestra.referencia' => 'asc')
 	);
 
 	public function index() {
-		//$this->Calidad->recursive = 1;
-		//debug($this->paginate());
-		$this->set('muestras', $this->paginate());
+		//optimizamos la consulta SQL para no sacar
+		//datos que no sirven
+		$this->paginate = array(
+			'order' => array('Muestra.referencia' => 'asc'),
+			'recursive' => 2,
+			'fields' => array(
+				'Muestra.id',
+				'Muestra.referencia',
+				'Muestra.fecha',
+				'Muestra.aprobado',
+				'Muestra.incidencia',
+				'Muestra.calidad_id'
+			)
+		);
+		$muestras = $this->paginate('Muestra');
+		$this->set('muestras', $muestras);
 	}
 
 	public function view($id = null) {
