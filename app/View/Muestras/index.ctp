@@ -81,7 +81,14 @@
     <td>
 	<?php echo $this->Html->link('Detalles',array('action'=>'view',$muestra['Muestra']['id']), array('class'=>'botond')).' '.
 		//$this->Html->link('Modificar',array('action'=>'edit',$muestra['Muestra']['id']))
-		$this->Form->postLink('Borrar',array('action'=>'delete',$muestra['Muestra']['id']), array('class'=>'botond'),array('confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?'))
+	$this->Form->postLink(
+		'Borrar',
+		array('action'=>'delete',$muestra['Muestra']['id']),
+		array(
+			'class'=>'botond'
+			'confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?'
+		)
+	)
 	?>
     </td>
   </tr>
