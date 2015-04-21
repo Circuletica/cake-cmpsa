@@ -85,7 +85,7 @@
 		'Borrar',
 		array('action'=>'delete',$muestra['Muestra']['id']),
 		array(
-			'class'=>'botond'
+			'class'=>'botond',
 			'confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?'
 		)
 	)
