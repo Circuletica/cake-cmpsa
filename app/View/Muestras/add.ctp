@@ -146,7 +146,7 @@ $( "#combobox" ).toggle();
 });
 });
 </script>
-
+<fieldset>
 <?php
 	//si no esta la calidad en el listado, dejamos un enlace para
 	//agragarla
@@ -180,14 +180,19 @@ $( "#combobox" ).toggle();
 		)
 	);
 	echo $this->Form->input('referencia');
+		?>
+	<div class="columna3"><?php
 	echo $this->Form->input('fecha', array(
 		'dateFormat' => 'DMY',
 		'timeFormat' => null )
 	);
+	?></div>
+	<?php
 	echo $this->Form->input('almacen_id');
+
 	echo $this->Form->input('aprobado');
 	echo $this->Form->input('incidencia');
 	//echo $this->Form->input('reclamacion');
 	echo $this->Form->end('Guardar Muestra');
-?>
+?></fieldset>
 </div>
