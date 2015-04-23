@@ -1,12 +1,30 @@
-<?php 
-	$this->Html->addCrumb('Muestras', '/muestras');
-?>
-
+<div class="add">
 <h1>Añadir Muestra</h1>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<style>
+.custom-combobox {
+position: relative;
+display: inline-block;
+}
+.custom-combobox-toggle {
+position: absolute;
+top: 0;
+bottom: 0;
+margin-left: -1px;
+padding: 0;
+}
+.custom-combobox-input {
+margin: 0;
+padding: 5px 10px;
+}
+</style>
+
 <?php
 	echo $this->Html->script('jquery')."\n"; // Include jQuery library
 ?>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
 <script>
 (function( $ ) {
 $.widget( "custom.combobox", {
@@ -177,3 +195,4 @@ $( "#combobox" ).toggle();
 	//echo $this->Form->input('reclamacion');
 	echo $this->Form->end('Guardar Muestra');
 ?></fieldset>
+</div>
