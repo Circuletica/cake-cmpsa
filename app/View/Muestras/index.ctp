@@ -1,4 +1,3 @@
-
 <h2>Listado de muestras</h2>
 <?php 
   $this->Html->addCrumb('Muestras', '/muestras');
