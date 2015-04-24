@@ -325,3 +325,38 @@ input[type=submit]:active,
 	-webkit-border-radius: 0 10px 10px 0;
 	border-radius: 0 10px 10px 0;
 }
+
+/*Tabla para cuadrar elementos*/
+}
+.tabla table {
+	border-right:0;
+	clear: both;
+	color: #333;
+	margin-bottom: 10px;
+	width: 100%;
+	font-weight: normal;
+}
+.tabla th {
+	/*border:0;*/
+	border-bottom:2px solid #555;
+	text-align: center;
+	padding:4px;
+}
+ .tabla th a {
+	display: block;
+	padding: 2px 4px;
+	text-decoration: none;
+}
+.tabla th a.asc:after {
+	content: ' ⇣';
+}
+.tabla th a.desc:after {
+	content: ' ⇡';
+}
+.tabla table tr td {
+	padding: 0.5%;
+	padding-left: 1%;
+	text-align: justify;
+	vertical-align: top;
+	border-bottom:0px solid #ddd;
+}
