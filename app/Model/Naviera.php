@@ -1,10 +1,14 @@
 <?php
 class Naviera extends AppModel{
-  public $belongsTo = 'Pais';
-  public $validate = array(
-    'nombre' => array(
-      'rule' => 'notEmpty',
-      'message' => 'El nombre no puede ser vacio'
-      )
+    public $recursive = 2;
+    public $hasOne = array('Empresa' => array(
+	'className' => 'Empresa',
+	'foreignKey' => 'id')
     );
+// public $validate = array(
+   //     'nombre' => array(
+   //     'rule' => 'notEmpty',
+   //     'message' => 'El nombre no puede ser vacio'
+   //     )
+   // );
 }

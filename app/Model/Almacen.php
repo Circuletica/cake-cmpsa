@@ -33,4 +33,3 @@ class Almacen extends AppModel {
 	);
 	//var $name = 'BancoPrueba';
 }
-
