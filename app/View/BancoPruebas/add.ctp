@@ -14,42 +14,60 @@ $this->Html->addCrumb('Bancos', '/banco_pruebas');
 $this->Html->addCrumb('Añadir Banco');
 echo $this->Form->create('BancoPrueba', array('action' => 'add'));
 ?>
-<fieldset><?php
+<fieldset>
+	<?php
 	echo $this->Form->input('Empresa.nombre');
 	echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
 	//echo $this->Form->input('Cód Postal', array('Empresa.cp'));
 	echo $this->Form->input('Empresa.cp', array(
 		'label' => 'Código Postal'));
 	?>
-	</fieldset>
-	<fieldset>
+	<div class="columna2">
 	<?php
 	echo $this->Form->input('Empresa.municipio');
-	echo $this->Form->input('Empresa.pais_id', array(
+	?>
+	<div class="formuboton">
+		<ul>
+	    	<li>
+		<?php
+		echo $this->Form->input('Empresa.pais_id', array(
 		'label' => 'País',
 		'empty' => true,
 		'class' => 'listado'));
-	//.$this->Html->link('Añadir País', array(
-	//'controller'=>'paises',
-	//'action'=>'add'), 
-	//array("class"=>"botond"));
-	echo $this->Form->input('Empresa.telefono', array('label'=> 'Teléfono'));
-	?>
-	</fieldset>
-	<fieldset>
+			//.$this->Html->link('Añadir País', array(
+			//'controller'=>'paises',
+			//'action'=>'add'), 
+			//array("class"=>"botond"));
+			?>
+			</li>
+			<li>
+			<div class="enlinea">
+				<?php            
+				echo $this->Html->link('Añadir País', array(
+					'controller'=>'paises',
+					'action'=>'add'),array("class"=>"botond")
+						);
+				?>
+			</div>
+			</li>
+
+	    	</ul>
+	 	</div>
+	 
 	<?php
+	echo $this->Form->input('Empresa.telefono', array('label'=> 'Teléfono'));
 	echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));
+	?>
+	</div>
+	<?php
 	echo $this->Form->input('Empresa.codigo_contable', array('label'=>'Código Contable'));	
 	?>
 	<?php
-echo $this->Form->input('Empresa.cuenta_bancaria');
-?>
-	</fieldset>
-	<fieldset>
-	<?php
-echo $this->Form->input('BancoPrueba.bic', array('label'=>'BIC'));
-echo $this->Form->input('BancoPrueba.cuenta_cliente_1',array('label'=>'Cuenta Cliente Nº1'));
-//echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
-echo $this->Form->end('Guardar banco');
-?></fieldset>
+	echo $this->Form->input('Empresa.cuenta_bancaria');
+	echo $this->Form->input('BancoPrueba.bic', array('label'=>'BIC'));
+	echo $this->Form->input('BancoPrueba.cuenta_cliente_1',array('label'=>'Cuenta Cliente Nº1'));
+	//echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
+	echo $this->Form->end('Guardar banco');
+	?>
+</fieldset>
 

@@ -1,6 +1,5 @@
 <div class="add">
 <h2>Añadir Calidad</h2>
-
 <?php
 	$this->Html->addCrumb('Calidades', array(
 		'controller' => 'calidades',
@@ -18,7 +17,10 @@
 //		'from_action' => 'add',
 //		)
 //	);
-
+	?>
+	<fieldset>
+		<div class="columna2">
+	<?php
 	$enlace_anyadir_origen = $this->Html->link ('Añadir Origen', 'javascript:;', array(
 		'onclick' => "var openWin = window.open('".$this->Html->url(array(
 			'controller' => 'paises',
@@ -35,7 +37,12 @@
 	);
 	//echo $this->Form->input('pais_id');
 	echo $this->Form->input('descafeinado');
+	?>
+	</div>
+	<?php
 	echo $this->Form->input('descripcion');
 	echo $this->Form->end('Guardar Calidad');
 ?>
+
+</fieldset>
 </div>

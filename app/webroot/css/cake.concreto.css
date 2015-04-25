@@ -143,9 +143,9 @@ input[type=submit]:active,
    		 column-rule: 1px dotted #ddd;
 }
 .columna2{
- -webkit-columns: 2 300px;
-    -moz-columns: 2 300px;
-         columns: 2 300px;
+ -webkit-columns: 2 50px;
+    -moz-columns: 2 50px;
+         columns: 2 50px;
  -webkit-column-gap: 40px;/* Chrome, Safari, Opera */
     -moz-column-gap: 40px; /* Firefox */
 		 column-gap: 40px;
@@ -239,7 +239,6 @@ div.botond {
 	border-color: #acacac;
 	text-decoration: none;
 }
-/*Botones tras desplegables*/
 
 
 /*Exportar información*/
@@ -330,7 +329,8 @@ input[type=submit]:active,
 }
 .tabla table {
 	border-right:0;
-	clear: both;
+	/*clear: both;*/
+	float:left;
 	color: #333;
 	margin-bottom: 10px;
 	width: 100%;
@@ -339,7 +339,7 @@ input[type=submit]:active,
 .tabla th {
 	/*border:0;*/
 	border-bottom:2px solid #555;
-	text-align: center;
+	text-align: left;
 	padding:4px;
 }
  .tabla th a {
@@ -347,16 +347,33 @@ input[type=submit]:active,
 	padding: 2px 4px;
 	text-decoration: none;
 }
-.tabla th a.asc:after {
-	content: ' ⇣';
-}
-.tabla th a.desc:after {
-	content: ' ⇡';
+
 }
 .tabla table tr td {
 	padding: 0.5%;
 	padding-left: 1%;
 	text-align: justify;
-	vertical-align: top;
+	vertical-align: middle;
 	border-bottom:0px solid #ddd;
+}
+
+/*Boton tras texto o desplegable alineado */
+.formuboton{
+	position: relative;
+	padding-right:5%;
+	width:250px;
+}
+
+.formuboton ul { 
+	list-style: none;
+	padding:1em;
+	margin:0;
+	display: inline;
+	}
+.formuboton li {
+	float: left;
+	margin: 0px 10px 0px 0px;
+}
+.formuboton .enlinea{
+	padding-top: 20px;
 }

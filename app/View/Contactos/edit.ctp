@@ -19,9 +19,14 @@
   <fieldset><?php
   echo $this->Form->input('nombre');
   echo $this->Form->input('funcion',array('label'=>'Función'));
-  echo $this->Form->input('telefono1',array('label'=>'Teléfono Nº1'));
-  ?>  <div class="columna2"><?php
-  echo $this->Form->input('telefono2',array('label'=>'Teléfono Nº2'));
+  ?>  
+  <div class="columna2">
+    <?php
+    echo $this->Form->input('telefono1',array('label'=>'  Teléfono Nº1'));
+    echo $this->Form->input('telefono2',array('label'=>'Teléfono Nº2'));
+    ?>
+    </div>
+    <?php
   echo $this->Form->input('email', array('type' => 'email'));
   //echo 'Empresa';
   //echo $this->Form->select('pais_id', array($paises,
@@ -29,5 +34,5 @@
   //echo $this->Form->select('empresa_id', $empresas);
   echo $this->Form->input('id',array('type'=>'hidden'));
   echo $this->Form->end('Guardar contacto');
-?></fieldset></div>
+?></fieldset>
 

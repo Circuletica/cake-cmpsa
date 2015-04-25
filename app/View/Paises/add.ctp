@@ -1,12 +1,14 @@
 <div class="add">
-<h1>Añadir país</h1>
-<div class="columna2">
+<h1>Añadir País</h1>
 <?php
   echo $this->Form->create('Pais');
-  echo $this->Form->input('nombre');
-  echo $this->Form->input('iso3166');
-  echo $this->Form->input('prefijo_tfno');
-  echo $this->Form->end('Guardar país');
-?>
-</div>
-</div>
+  ?>
+  <fieldset>
+  	<?php
+  	 echo $this->Form->input('nombre');
+ 	 echo $this->Form->input('iso3166');
+	 echo $this->Form->input('prefijo_tfno', array("label"=>"Prefijo telefónico"));
+ 	 echo $this->Form->end('Guardar país');
+ 	?>
+ </fieldset>
+</div>	
