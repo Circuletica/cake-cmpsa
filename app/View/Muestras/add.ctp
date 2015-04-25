@@ -20,6 +20,7 @@
     </style>
 
     <?php
+      $this->Html->addCrumb('Muestras', '/muestras');
 	    echo $this->Html->script('jquery')."\n"; // Include jQuery library
     ?>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -163,7 +164,7 @@
 		    'controller' => 'proveedores',
 		    'action' => 'add',
 		    'from_controller' => 'muestras',
-		    'from_action' => 'add'
+		    'from_action' => 'add',
 		    )
 	    );
 
@@ -182,21 +183,28 @@
 		    'id' => 'combobox'
 		    )
 	    );
+	    ?>
+	    <div class="columna2">
+	    <?php
 	    echo $this->Form->input('referencia');
 		    ?>
-	    <div class="columna3"><?php
-	    echo $this->Form->input('fecha', array(
-		    'dateFormat' => 'DMY',
-		    'timeFormat' => null )
-	    );
-	    ?></div>
-	    <?php
-	    echo $this->Form->input('almacen_id');
-
+			    <div class="linea">
+			    	<?php
+			    echo $this->Form->input('fecha', array(
+				    'dateFormat' => 'DMY',
+				    'timeFormat' => null )
+			    );
+			    ?>
+				</div>
+	 	<?php 
+	 	echo $this->Form->input('almacen_id');
 	    echo $this->Form->input('aprobado');
+	    ?>
+	    </div>		
+	    <?php
 	    echo $this->Form->input('incidencia');
 	    //echo $this->Form->input('reclamacion');
 	    echo $this->Form->end('Guardar Muestra');
-	?>
+			?>
     </fieldset>
 </div>

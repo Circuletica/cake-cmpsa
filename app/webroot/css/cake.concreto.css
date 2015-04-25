@@ -374,6 +374,12 @@ input[type=submit]:active,
 	float: left;
 	margin: 0px 10px 0px 0px;
 }
-.formuboton .enlinea{
+.enlinea{
 	padding-top: 20px;
+}
+
+.linea select{
+	clear: both;
+	vertical-align: text-bottom;
+	display: inline;
 }

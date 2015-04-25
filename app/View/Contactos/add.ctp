@@ -14,18 +14,19 @@
   echo $this->Form->input('funcion', array(
 	  'label' =>'Función')
   );
-
+  ?>  
+  <div class="columna2">
+    <?php
   echo $this->Form->input('telefono1', array(
 	  'label'=>'Teléfono Nº1')
   );
-      ?>
-  </fieldset>
-  <fieldset>
-  <?php
+
   echo $this->Form->input('telefono2', array(
 	  'label'=>'Teléfono Nº2')
   );
-
+    ?>
+    </div>
+    <?php
   echo $this->Form->input('email');
   //echo 'Empresa';
   //echo $this->Form->select('pais_id', array($paises,

@@ -25,23 +25,21 @@
 //    ));
   
 ?>
-  <div class="tabla">
-  <table>
-   <tr>
-     <td>
-      <?php
+<div class="formuboton">
+  <ul>
+      <li><?php
       echo $this->Html->Link('Cancelar búsqueda',array(
         'action'=>'index')
        );
-       ?>
-     </td>
-     <td>
-        <?php
+      ?>
+      </li>
+      <li style="float:right; margin: 0">
+        <?php           
         echo $this->Form->end('Buscar');
-        ?>
-     </td>
-    </tr>
-  </table>
+      ?>
+     </li>
+     
+  </ul>
   </div>
 </div>
 <div class='index'>

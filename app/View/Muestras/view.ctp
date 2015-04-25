@@ -107,15 +107,16 @@
 				'action' => 'view',
 				$linea['id'],
               			'from_controller'=>'muestras',
-              			'from_id'=>$linea['muestra_id']),array('class'=>'boton'))
-				.' '.$this->Form->postLink('Borrar línea',
+              			'from_id'=>$linea['muestra_id']),array('class'=>'botond'))
+				.' '.$this->Form->postLink('Borrar',
 				array(
 					'controller'=>'linea_muestras',
 					'action' => 'delete',
 					$linea['id'],
 					'from_controller' => 'muestras',
-					'from_id' => $linea['muestra_id']),array('class'=>'boton'),
-					array('confirm' => 'Seguro que quieres borrar a '.$linea['marca'].'?')
+					'from_id' => $linea['muestra_id']),
+					array('class'=>'botond',
+						'confirm' => '¿Seguro que quieres borrar a '.$linea['marca'].'?')
 				)
 			));
 		//numero de la línea siguiente

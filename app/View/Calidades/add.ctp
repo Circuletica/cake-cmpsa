@@ -16,10 +16,9 @@
 //		'from_controller' => 'calidades',
 //		'from_action' => 'add',
 //		)
-//	);
-	?>
-	<fieldset>
-		<div class="columna2">
+//	);?>
+<fieldset>
+	<div class="columna2">
 	<?php
 	$enlace_anyadir_origen = $this->Html->link ('Añadir Origen', 'javascript:;', array(
 		'onclick' => "var openWin = window.open('".$this->Html->url(array(
@@ -28,13 +27,15 @@
 			'from_controller' => 'calidades',
 			'from_action' => 'add'))."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=500,height=500');  return false;"
 		)
-	);
 
+	);
+				
    	//Un café 'Blend' se guarda como pais_id==null en la BD
   	echo $this->Form->input('pais_id', array(
 		'label' =>'Origen ('.$enlace_anyadir_origen.')',
   		'empty' => 'Blend')
 	);
+		
 	//echo $this->Form->input('pais_id');
 	echo $this->Form->input('descafeinado');
 	?>

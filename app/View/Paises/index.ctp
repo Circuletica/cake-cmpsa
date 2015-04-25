@@ -24,9 +24,9 @@
       <?php echo $pais['Pais']['prefijo_tfno']?>
     </td>
     <td>
-      <?php echo $this->Html->link('Modificar',array('action'=>'edit',$pais['Pais']['id']), array('class'=>'boton'))?>
+      <?php echo $this->Html->link('Modificar',array('action'=>'edit',$pais['Pais']['id']), array('class'=>'botond'))?>
       <?php echo '&nbsp;';?>
-      <?php echo $this->Form->postLink('Borrar',array('action'=>'delete',$pais['Pais']['id']), array('class'=>'boton','confirm'=>'¿Realmente quiere borrar '.$pais['Pais']['nombre'].'?'))?>
+      <?php echo $this->Form->postLink('Borrar',array('action'=>'delete',$pais['Pais']['id']), array('class'=>'botond','confirm'=>'¿Realmente quiere borrar '.$pais['Pais']['nombre'].'?'))?>
     </td>
   </tr>
 <?php endforeach;?>

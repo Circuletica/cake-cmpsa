@@ -1,6 +1,7 @@
 <h1>Modificar Muestra</h1>
-
+<fieldset>
 <?php
+  $this->Html->addCrumb('Muestras', '/muestras');
 	//si no esta la calidad en el listado, dejamos un enlace para
 	//agragarla
 	$enlace_anyadir_calidad = $this->Html->link ('Añadir Calidad', array(
@@ -31,14 +32,28 @@
 		'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')'
 		)
 	);
+	?>
+	<div class="columna2">
+	<?php
 	echo $this->Form->input('referencia');
-	echo $this->Form->input('fecha', array(
-		'dateFormat' => 'DMY',
-		'timeFormat' => null )
-	);
-	echo $this->Form->input('almacen_id');
-	echo $this->Form->input('aprobado');
-	echo $this->Form->input('incidencia');
-	echo $this->Form->input('id', array('type'=>'hidden'));
-	echo $this->Form->end('Guardar Muestra');
-?>
+	 ?>
+		    <div class="linea">
+			<?php
+			echo $this->Form->input('fecha', array(
+				'dateFormat' => 'DMY',
+				'timeFormat' => null )
+			);
+			  ?>
+			</div>
+		<?php 
+		echo $this->Form->input('almacen_id');
+		echo $this->Form->input('aprobado');
+		 ?>
+	    </div>		
+	    <?php
+			echo $this->Form->input('incidencia');
+			echo $this->Form->input('id', array('type'=>'hidden'));
+			echo $this->Form->end('Guardar Muestra');
+		?>
+    </fieldset>
+</div>
