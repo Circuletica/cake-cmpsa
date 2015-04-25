@@ -67,8 +67,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
 					'http://www.cakephp.org/', array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered'));
 					?>
+
 			
-				<?php echo $cakeVersion; ?>
+				<?php 
+				echo $cakeVersion;
+				echo "   - Optimizado para resolución superior a 1280x720";	 ?>
 			
 		</div>
 	

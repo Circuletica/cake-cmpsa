@@ -33,7 +33,7 @@
        );
       ?>
       </li>
-      <li style="float:right; margin: 0">
+      <li style="margin: 0">
         <?php           
         echo $this->Form->end('Buscar');
       ?>
