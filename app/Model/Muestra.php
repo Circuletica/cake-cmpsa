@@ -6,6 +6,8 @@ class Muestra extends AppModel {
 	//no sabemos si este sirve de algo
 	//public $actsAs = array('Containable');
 	public $belongsTo = array(
+		//no estoy seguro de si hace falta incluir Calidad,
+		//si ya tenemos el enlace con CalidadNombre
 		'Calidad' => array(
 			'className' => 'Calidad',
 			'foreignKey' => 'calidad_id'),

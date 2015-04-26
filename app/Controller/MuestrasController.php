@@ -119,9 +119,7 @@ class MuestrasController extends AppController {
 	public function add() {
 		//el titulado completo de la Calidad sale de una vista
 		//de MySQL que concatena descafeinado, pais y descripcion
-		$this->loadModel('CalidadNombre');
-		$calidades = $this->CalidadNombre->find('list');
-		//debug($calidades);
+		$calidades = $this->Muestra->CalidadNombre->find('list');
 		$this->set('calidades',$calidades);
 		$this->set('proveedores', $this->Muestra->Proveedor->find('list', array(
 			'fields' => array('Proveedor.id','Empresa.nombre'),
@@ -150,9 +148,7 @@ class MuestrasController extends AppController {
 		$this->set('muestra',$muestra);
 		//el titulado completo de la Calidad sale de una vista
 		//de MySQL que concatena descafeinado, pais y descripcion
-		$this->loadModel('CalidadNombre');
-		$calidades = $this->CalidadNombre->find('list');
-		//debug($calidades);
+		$calidades = $this->Muestra->CalidadNombre->find('list');
 		$this->set('calidades',$calidades);
 		$this->set('proveedores', $this->Muestra->Proveedor->find('list', array(
 			'fields' => array('Proveedor.id','Empresa.nombre'),

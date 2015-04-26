@@ -47,7 +47,7 @@
   <tr>
     <th><?php echo $this->Paginator->sort('referencia')?></th>
     <th><?php echo $this->Paginator->sort('fecha')?></th>
-    <th><?php echo $this->Paginator->sort('Calidad.nombre', 'Calidad')?></th>
+    <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('proveedor')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
@@ -69,15 +69,11 @@
     </td>
     <td>
       <?php 
-  //concatenamos la calidad de la muestra
-      echo $muestra['Calidad']['descafeinado'] ? 'Descafeinado ' : ''
-        .$muestra['Calidad']['Pais']['nombre'].
-        ' '.$muestra['Calidad']['descripcion'];
+	echo $muestra['CalidadNombre']['nombre'];
   ?>
     </td>
     <td>
       <?php 
-    //echo $muestra['Muestra']['aprobado'] ? 'Aprobado' : 'Rechazado';
     echo $muestra['Proveedor']['Empresa']['nombre'];
   ?>
     </td>
