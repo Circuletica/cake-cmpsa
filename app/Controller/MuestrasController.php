@@ -65,6 +65,19 @@ class MuestrasController extends AppController {
 			//completamos el titulo
 			$title[] ='Proveedor: '.$proveedores[$proveedor_id];
 		}
+		//filtramos por fecha
+		if(isset($this->passedArgs['Search.fecha'])) {
+			$fecha = $this->passedArgs['Search.fecha'];
+			//partimos la fecha en dia/mes/año
+			list($mes,$anyo) = explode('-',$fecha);
+			//si se ha introducido un año, filtramos por el año
+			if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
+			//si se ha introducido un mes, filtramos por el mes
+			if($mes) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
+			$this->request->data['Search']['fecha'] = $fecha;
+			//completamos el titulo
+			$title[] = 'Fecha: '.$fecha;
+		}
 		//filtramos por calidad
 		if(isset($this->passedArgs['Search.calidad'])) {
 			$calidad = $this->passedArgs['Search.calidad'];

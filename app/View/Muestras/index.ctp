@@ -9,7 +9,7 @@
   <?php
   //echo $this->Form->input('Search.id');
   echo $this->Form->input('Search.referencia');
-  echo $this->Form->input('Search.fecha', array('after'=>'dd/mm/aaaa'));
+  echo $this->Form->input('Search.fecha', array('after'=>'mm-aaaa'));
   echo $this->Form->input('Search.calidad');
   //echo $this->Form->input('Search.calidad_id');
   echo $this->Form->input('Search.proveedor_id', array(
