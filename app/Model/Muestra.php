@@ -9,6 +9,9 @@ class Muestra extends AppModel {
 		'Calidad' => array(
 			'className' => 'Calidad',
 			'foreignKey' => 'calidad_id'),
+		'CalidadNombre' => array(
+			'className' => 'CalidadNombre',
+			'foreignKey' => 'calidad_id'),
 		'Proveedor' => array(
 			'className' => 'Proveedor',
 			'foreignKey' => 'proveedor_id'),

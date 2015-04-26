@@ -1,7 +1,8 @@
 <?php
 class MuestrasController extends AppController {
 	public $paginate = array(
-		'order' => array('referencia' => 'asc')
+		'recursive' => 2,
+		'order' => array('Muestra.referencia' => 'asc')
 	);
 
 	public function search() {
@@ -49,7 +50,7 @@ class MuestrasController extends AppController {
 		//filtramos por referencia
 		if(isset($this->passedArgs['Search.referencia'])) {
 			$referencia = $this->passedArgs['Search.referencia'];
-			$this->paginate['conditions'][]['Muestra.referencia LIKE'] = "%$referencia%";
+			$this->paginate['conditions']['Muestra.referencia LIKE'] = "%$referencia%";
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['referencia'] = $referencia;
 			//completamos el titulo
@@ -58,7 +59,7 @@ class MuestrasController extends AppController {
 		//filtramos por proveedor
 		if(isset($this->passedArgs['Search.proveedor_id'])) {
 			$proveedor_id = $this->passedArgs['Search.proveedor_id'];
-			$this->paginate['conditions'][]['Proveedor.id LIKE'] = "$proveedor_id";
+			$this->paginate['conditions']['Proveedor.id LIKE'] = "$proveedor_id";
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['proveedor_id'] = $proveedor_id;
 			//completamos el titulo
@@ -67,7 +68,8 @@ class MuestrasController extends AppController {
 		//filtramos por calidad
 		if(isset($this->passedArgs['Search.calidad'])) {
 			$calidad = $this->passedArgs['Search.calidad'];
-			$this->paginate['conditions'][]['Muestra.referencia LIKE'] = "%$calidad%";
+			$this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$calidad%";
+			//$this->paginate['conditions']['Pais.nombre LIKE'] = "%$calidad%";
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['calidad'] = $calidad;
 			//completamos el titulo
