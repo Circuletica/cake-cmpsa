@@ -1,4 +1,4 @@
-<h2>Listado de muestras</h2>
+<h2>Listado de muestras: <?php echo $title;?></h2>
 <?php 
   $this->Html->addCrumb('Muestras', '/muestras');
 ?>
@@ -9,7 +9,7 @@
   <?php
   //echo $this->Form->input('Search.id');
   echo $this->Form->input('Search.referencia');
-  echo $this->Form->input('Search.fecha', array('after'=>'mm-aaaa'));
+  echo $this->Form->input('Search.fecha', array('after'=>'aaaa o mm-aaaa'));
   echo $this->Form->input('Search.calidad');
   //echo $this->Form->input('Search.calidad_id');
   echo $this->Form->input('Search.proveedor_id', array(

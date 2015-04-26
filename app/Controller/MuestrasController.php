@@ -68,12 +68,19 @@ class MuestrasController extends AppController {
 		//filtramos por fecha
 		if(isset($this->passedArgs['Search.fecha'])) {
 			$fecha = $this->passedArgs['Search.fecha'];
-			//partimos la fecha en dia/mes/año
-			list($mes,$anyo) = explode('-',$fecha);
+			//Si solo se ha introducido un año
+			if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fecha; }
+			//la otra posibilidad es que se haya introducido mm-aaaa
+		       	elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fecha)) {
+				list($mes,$anyo) = explode('-',$fecha);
+			} else {
+				$this->Session->setFlash('Error de fecha');
+				$this->redirect(array('action' => 'index'));
+			}
 			//si se ha introducido un año, filtramos por el año
 			if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
 			//si se ha introducido un mes, filtramos por el mes
-			if($mes) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
+			if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
 			$this->request->data['Search']['fecha'] = $fecha;
 			//completamos el titulo
 			$title[] = 'Fecha: '.$fecha;
