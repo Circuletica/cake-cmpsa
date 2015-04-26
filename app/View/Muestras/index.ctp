@@ -28,7 +28,7 @@
 <div class="formuboton">
   <ul>
       <li><?php
-      echo $this->Html->Link('Cancelar búsqueda',array(
+      echo $this->Html->Link('Resetear filtro',array(
         'action'=>'index')
        );
       ?>
