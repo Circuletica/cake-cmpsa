@@ -1,8 +1,7 @@
 <?php
 class MuestrasController extends AppController {
 	public $paginate = array(
-		'recursive' => 2,
-		'order' => array('Muestra.referencia' => 'asc')
+		'order' => array('referencia' => 'asc')
 	);
 
 	public function search() {
@@ -21,32 +20,6 @@ class MuestrasController extends AppController {
 	}
 	
 	public function index() {
-		//optimizamos la consulta SQL para no sacar
-		//datos que no sirven
-		$this->paginate = array(
-			'order' => array('Muestra.referencia' => 'asc'),
-			'recursive' => 2,
-			'Muestra' => array(
-				'recursive' => 2,
-				'fields' => array(
-					'Muestra.id',
-					'Muestra.referencia',
-					'Muestra.fecha',
-					'Muestra.aprobado',
-					'Muestra.incidencia',
-					'Muestra.calidad_id',
-					'Muestra.proveedor_id',
-					'Calidad.pais_id',
-					'Calidad.descafeinado',
-					'Calidad.descripcion',
-					//'Pais.nombre'
-				)
-			),
-			'Pais' => array(
-				'recursive' => 1,
-				'fields' => array('Pais.nombre')
-			)
-		);
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
 		$proveedores = $this->Muestra->Proveedor->find('list', array(
@@ -76,7 +49,7 @@ class MuestrasController extends AppController {
 		//filtramos por referencia
 		if(isset($this->passedArgs['Search.referencia'])) {
 			$referencia = $this->passedArgs['Search.referencia'];
-			$this->paginate['conditions']['Muestra.referencia LIKE'] = "%$referencia%";
+			$this->paginate['conditions'][]['Muestra.referencia LIKE'] = "%$referencia%";
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['referencia'] = $referencia;
 			//completamos el titulo
@@ -85,7 +58,7 @@ class MuestrasController extends AppController {
 		//filtramos por proveedor
 		if(isset($this->passedArgs['Search.proveedor_id'])) {
 			$proveedor_id = $this->passedArgs['Search.proveedor_id'];
-			$this->paginate['conditions']['Proveedor.id LIKE'] = "$proveedor_id";
+			$this->paginate['conditions'][]['Proveedor.id LIKE'] = "$proveedor_id";
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['proveedor_id'] = $proveedor_id;
 			//completamos el titulo
@@ -94,9 +67,7 @@ class MuestrasController extends AppController {
 		//filtramos por calidad
 		if(isset($this->passedArgs['Search.calidad'])) {
 			$calidad = $this->passedArgs['Search.calidad'];
-			//$this->paginate['conditions'][]['CONCAT(`Calidad`.`descafeinado`, "-", `Calidad`.`pais_id`, "-", `Calidad`.`descripcion`) LIKE'] = "%$calidad%";
-			$this->paginate['conditions']['OR']['Calidad.descafeinado LIKE'] = $calidad;
-			$this->paginate['conditions']['OR']['Calidad.descripcion LIKE'] = "%$calidad%";
+			$this->paginate['conditions'][]['Muestra.referencia LIKE'] = "%$calidad%";
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['calidad'] = $calidad;
 			//completamos el titulo
@@ -110,8 +81,7 @@ class MuestrasController extends AppController {
 //				'Muestras aprobadas' : 'Muestras rechazadas';
 //		}
 
-		//debug($this->paginate);
-		$muestras = $this->paginate();
+		$muestras =  $this->paginate();
 		//generamos el título
 		if (isset($title)) {$title = implode(' | ', $title);}
 		$title = (isset($title)&&$title)?$title:'Todas las muestras';
