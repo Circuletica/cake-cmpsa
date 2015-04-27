@@ -4,13 +4,9 @@ class LineaMuestra extends AppModel {
 	public $displayField = 'marca';
 	//public $actsAs = array('Containable');
 	public $belongsTo = array(
-		//Intentando optimizar las queries de SQL
-		//quitamos esta porque realmente nunca se busca
-		//una muestra a partir de la linea. Mas bien
-		//lo contrario.
-		//'Muestra' => array(
-		//	'className' => 'Muestra',
-		//	'foreignKey' => 'muestra_id'),
+		'Muestra' => array(
+			'className' => 'Muestra',
+			'foreignKey' => 'muestra_id'),
 		'CribaPonderada' => array(
 			'className' => 'CribaPonderada',
 			'foreignKey' => 'id')
