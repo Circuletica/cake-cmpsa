@@ -6,7 +6,6 @@ class MuestrasController extends AppController {
 	);
 
 	public function search() {
-		//debug($proveedores);
 		//la página a la que redirigimos después de mandar  el formulario de filtro
 		$url['action'] = 'index';
 		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
@@ -21,6 +20,16 @@ class MuestrasController extends AppController {
 	}
 	
 	public function index() {
+		//el tipo de muestra puede ser:
+		//1 - oferta
+		//2 - embarque
+		//3 - entrega
+		$this->set('tipos', array(
+			1 => 'Oferta',
+			2 => 'Embarque',
+			3 => 'Entrega'
+			)
+		);	
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
 		$proveedores = $this->Muestra->Proveedor->find('list', array(
@@ -56,6 +65,15 @@ class MuestrasController extends AppController {
 			//completamos el titulo
 			$title[] = 'Referencia: '.$referencia;
 		}
+		//filtramos por tipo
+		if(isset($this->passedArgs['Search.tipo'])) {
+			$tipo = $this->passedArgs['Search.tipo'];
+			$this->paginate['conditions']['Muestra.tipo LIKE'] = "$tipo";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['tipo'] = $tipo;
+			//completamos el titulo
+			$title[] = 'Tipo: '.$tipo;
+		}
 		//filtramos por proveedor
 		if(isset($this->passedArgs['Search.proveedor_id'])) {
 			$proveedor_id = $this->passedArgs['Search.proveedor_id'];
@@ -68,7 +86,7 @@ class MuestrasController extends AppController {
 		//filtramos por fecha
 		if(isset($this->passedArgs['Search.fecha'])) {
 			$fecha = $this->passedArgs['Search.fecha'];
-			//Si solo se ha introducido un año
+			//Si solo se ha introducido un año (aaaa)
 			if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fecha; }
 			//la otra posibilidad es que se haya introducido mm-aaaa
 		       	elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fecha)) {
