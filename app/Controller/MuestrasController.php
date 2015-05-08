@@ -73,8 +73,6 @@ class MuestrasController extends AppController {
 			$this->request->data['Search']['tipo_id'] = $tipo_id;
 			//Sacamos el nombre del tipo
 			$tipo = $tipos[$tipo_id];	
-			//completamos el titulo
-			//$title[] = 'Tipo: '.$tipo;
 		}
 		//filtramos por proveedor
 		if(isset($this->passedArgs['Search.proveedor_id'])) {
@@ -109,7 +107,6 @@ class MuestrasController extends AppController {
 		if(isset($this->passedArgs['Search.calidad'])) {
 			$calidad = $this->passedArgs['Search.calidad'];
 			$this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$calidad%";
-			//$this->paginate['conditions']['Pais.nombre LIKE'] = "%$calidad%";
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['calidad'] = $calidad;
 			//completamos el titulo
@@ -125,15 +122,12 @@ class MuestrasController extends AppController {
 
 		$muestras =  $this->paginate();
 		//generamos el título
-		//if (isset($title)) {$title = implode(' | ', $title);}
-		if (isset($title)) {
+		if (isset($title)) { //si hay criterios de filtro, pero no incluimos el tipo
 			$title = implode(' | ', $title);
 			$title = 'Muestras de '.$tipo.' | '.$title;
-		} else {
+		} else { // Solo se filtra sobre el tipo de muestra
 			$title = 'Muestras de '.$tipo;
 		}
-		//$title = (isset($title)&&$title)?$title:'Todas las muestras';
-		//$title = 'Muestras de '.$tipo.' | '.$title;
 		//pasamos los datos a la vista
 		$this->set(compact('muestras','title'));
 	}
