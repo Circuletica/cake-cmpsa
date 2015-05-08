@@ -1,4 +1,4 @@
-<h2>Listado de muestras: <?php echo $title;?></h2>
+<h2><?php echo $title;?></h2>
 <?php 
   $this->Html->addCrumb('Muestras', '/muestras');
 ?>
@@ -8,7 +8,7 @@
   <h3>Filtro de muestra</h3>
   <?php
   //echo $this->Form->input('Search.id');
-  echo $this->Form->radio('Search.tipo',$tipos);
+  echo $this->Form->radio('Search.tipo_id',$tipos);
   echo $this->Form->input('Search.referencia');
   echo $this->Form->input('Search.fecha', array('after'=>'aaaa o mm-aaaa'));
   echo $this->Form->input('Search.calidad');

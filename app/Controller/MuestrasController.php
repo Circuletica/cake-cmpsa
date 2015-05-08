@@ -24,12 +24,12 @@ class MuestrasController extends AppController {
 		//1 - oferta
 		//2 - embarque
 		//3 - entrega
-		$this->set('tipos', array(
+		$tipos =  array(
 			1 => 'Oferta',
 			2 => 'Embarque',
 			3 => 'Entrega'
-			)
 		);	
+		$this->set('tipos', $tipos);
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
 		$proveedores = $this->Muestra->Proveedor->find('list', array(
@@ -66,13 +66,15 @@ class MuestrasController extends AppController {
 			$title[] = 'Referencia: '.$referencia;
 		}
 		//filtramos por tipo
-		if(isset($this->passedArgs['Search.tipo'])) {
-			$tipo = $this->passedArgs['Search.tipo'];
-			$this->paginate['conditions']['Muestra.tipo LIKE'] = "$tipo";
+		if(isset($this->passedArgs['Search.tipo_id'])) {
+			$tipo_id = $this->passedArgs['Search.tipo_id'];
+			$this->paginate['conditions']['Muestra.tipo LIKE'] = "$tipo_id";
 			//guardamos el criterio para el formulario de vuelta
-			$this->request->data['Search']['tipo'] = $tipo;
+			$this->request->data['Search']['tipo_id'] = $tipo_id;
+			//Sacamos el nombre del tipo
+			$tipo = $tipos[$tipo_id];	
 			//completamos el titulo
-			$title[] = 'Tipo: '.$tipo;
+			//$title[] = 'Tipo: '.$tipo;
 		}
 		//filtramos por proveedor
 		if(isset($this->passedArgs['Search.proveedor_id'])) {
@@ -123,8 +125,15 @@ class MuestrasController extends AppController {
 
 		$muestras =  $this->paginate();
 		//generamos el título
-		if (isset($title)) {$title = implode(' | ', $title);}
-		$title = (isset($title)&&$title)?$title:'Todas las muestras';
+		//if (isset($title)) {$title = implode(' | ', $title);}
+		if (isset($title)) {
+			$title = implode(' | ', $title);
+			$title = 'Muestras de '.$tipo.' | '.$title;
+		} else {
+			$title = 'Muestras de '.$tipo;
+		}
+		//$title = (isset($title)&&$title)?$title:'Todas las muestras';
+		//$title = 'Muestras de '.$tipo.' | '.$title;
 		//pasamos los datos a la vista
 		$this->set(compact('muestras','title'));
 	}
