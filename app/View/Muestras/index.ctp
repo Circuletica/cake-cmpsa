@@ -1,6 +1,6 @@
 <h2><?php echo $title;?></h2>
 <?php 
-  $this->Html->addCrumb('Muestras', '/muestras');
+  $this->Html->addCrumb($title, '/muestras/index/Search.tipo_id:'.$this->request->data['Search']['tipo_id']);
 ?>
 
 <div class="actions">
@@ -8,9 +8,8 @@
   <h3>Filtro de muestra</h3>
   <?php
     //echo $this->Form->input('Search.id');
-    echo $this->Form->radio('Search.tipo_id', array(
-	'options' => $tipos,
-	'label' => 'Tipo de muestra'
+    echo $this->Form->radio('Search.tipo_id', $tipos, array(
+	'legend' => ''
 	)
     );
     echo $this->Form->input('Search.referencia');
@@ -33,7 +32,8 @@
     <ul>
       <li><?php
 	echo $this->Html->Link('Resetear filtro',array(
-	  'action'=>'index')
+	  'action'=>'index',
+	  'Search.tipo_id'=>$this->request->data['Search']['tipo_id'])
 	 );
 	?>
 	</li>

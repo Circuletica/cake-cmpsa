@@ -73,6 +73,8 @@ class MuestrasController extends AppController {
 			$this->request->data['Search']['tipo_id'] = $tipo_id;
 			//Sacamos el nombre del tipo
 			$tipo = $tipos[$tipo_id];	
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['tipo_id'] = $tipo_id;
 		}
 		//filtramos por proveedor
 		if(isset($this->passedArgs['Search.proveedor_id'])) {
