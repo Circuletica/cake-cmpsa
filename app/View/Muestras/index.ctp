@@ -1,6 +1,11 @@
 <h2><?php echo $title;?></h2>
 <?php 
-  $this->Html->addCrumb($title, '/muestras/index/Search.tipo_id:'.$this->request->data['Search']['tipo_id']);
+  if(isset($this->request->data['Search']['tipo_id'])){
+    $this->Html->addCrumb($title, '/muestras/index/Search.tipo_id:'.$this->request->data['Search']['tipo_id']);
+  } else {
+    $this->Html->addCrumb($title, '/muestras/index');
+  }
+
 ?>
 
 <div class="actions">
@@ -31,14 +36,18 @@
   <div class="formuboton">
     <ul>
       <li><?php
-	echo $this->Html->Link('Resetear filtro',array(
-	  'action'=>'index',
-	  'Search.tipo_id'=>$this->request->data['Search']['tipo_id'])
-	 );
+	if(isset($this->request->data['Search']['tipo_id'])){
+	  echo $this->Html->Link('Resetear filtro',array(
+	    'action'=>'index',
+	    'Search.tipo_id'=>$this->request->data['Search']['tipo_id'])
+	  );
+	} else {
+	  echo $this->Html->Link('Resetear filtro',array('action'=>'index'));
+	}
 	?>
-	</li>
-	<li style="margin: 0">
-	  <?php           
+      </li>
+      <li style="margin: 0">
+	<?php           
 	  echo $this->Form->end('Buscar');
 	?>
       </li>
@@ -97,7 +106,22 @@
   </table>
 
   <div class="btabla">
-    <?php echo $this->Html->link('Añadir Muestra',array('action'=>'add')); ?>
+  <?php 
+    if(isset($this->request->data['Search']['tipo_id'])){
+      echo $this->Html->link(
+	'Añadir Muestra',
+	array(
+	  'action'=>'add',
+	  'tipo_id'=>$this->request->data['Search']['tipo_id']
+	)
+      );
+    } else {
+      echo $this->Html->link(
+	'Añadir Muestra',
+	array( 'action'=>'add',)
+      );
+    }
+  ?>
   </div>
 
   <?php echo $this->Paginator->counter(

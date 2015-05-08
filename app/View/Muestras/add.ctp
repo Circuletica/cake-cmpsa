@@ -169,6 +169,11 @@
 	    );
 
 	    echo $this->Form->create('Muestra');
+	    echo $this->Form->radio('tipo', $tipos, array(
+	      'legend' => 'Tipo de muestra',
+	      'value' => $this->request->data['Muestras']['tipo']
+	      )
+	    );
 	    echo $this->Form->input('calidad_id', array(
 		    'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 		    'empty' => array('' => 'Selecciona'),

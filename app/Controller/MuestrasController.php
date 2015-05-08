@@ -5,6 +5,16 @@ class MuestrasController extends AppController {
 		'order' => array('Muestra.referencia' => 'asc')
 	);
 
+	//el tipo de muestra puede ser:
+	//1 - oferta
+	//2 - embarque
+	//3 - entrega
+	public $tipos =  array(
+			1 => 'Oferta',
+			2 => 'Embarque',
+			3 => 'Entrega'
+		);	
+
 	public function search() {
 		//la página a la que redirigimos después de mandar  el formulario de filtro
 		$url['action'] = 'index';
@@ -15,6 +25,7 @@ class MuestrasController extends AppController {
 			foreach ($v as $kk=>$vv){ 
 			if ($vv) {$url[$k.'.'.$kk]=$vv;} 
 			} 
+
 		}
 		$this->redirect($url,null,true);
 	}
@@ -124,11 +135,15 @@ class MuestrasController extends AppController {
 
 		$muestras =  $this->paginate();
 		//generamos el título
-		if (isset($title)) { //si hay criterios de filtro, excluyendo el tipo
-			$title = implode(' | ', $title);
-			$title = 'Muestras de '.$tipo.' | '.$title;
-		} else { // Solo se filtra sobre el tipo de muestra
-			$title = 'Muestras de '.$tipo;
+		if (isset($tipo)) { //en caso de que se quiera mostrar todos los tipos de muestra
+			if (isset($title)) { //si hay criterios de filtro, excluyendo el tipo
+				$title = implode(' | ', $title);
+				$title = 'Muestras de '.$tipo.' | '.$title;
+			} else { // Solo se filtra sobre el tipo de muestra
+				$title = 'Muestras de '.$tipo;
+			}
+		} else {
+			$title = 'Todas las muestras';
 		}
 		//pasamos los datos a la vista
 		$this->set(compact('muestras','title'));
@@ -139,9 +154,20 @@ class MuestrasController extends AppController {
 			$this->Session->setFlash('URL mal formado Muestra/view');
 			$this->redirect(array('action'=>'index'));
 		}
+		//el tipo de muestra puede ser:
+		//1 - oferta
+		//2 - embarque
+		//3 - entrega
+		$tipos =  array(
+			1 => 'Oferta',
+			2 => 'Embarque',
+			3 => 'Entrega'
+		);	
 		$muestra = $this->Muestra->find('first', array(
 			'conditions' => array('Muestra.id' => $id),
 			'recursive' => 2));
+		$tipo = $tipos[$muestra['Muestra']['tipo']];
+		$this->set('tipo',$tipo);
 		$this->set('muestra',$muestra);
 		$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL
@@ -160,6 +186,23 @@ class MuestrasController extends AppController {
 	}
 
 	public function add() {
+		//Sacamos el tipo de muestra de la URL
+		//y lo metemos ya en el formulario
+		if(isset($this->passedArgs['tipo_id'])) { //por si la URL no incluye el tipo de muestra
+			$this->request->data['Muestras']['tipo'] = $this->passedArgs['tipo_id'];
+		} else {
+			$this->request->data['Muestras']['tipo'] = '';
+		}
+		//el tipo de muestra puede ser:
+		//1 - oferta
+		//2 - embarque
+		//3 - entrega
+		$tipos =  array(
+			1 => 'Oferta',
+			2 => 'Embarque',
+			3 => 'Entrega'
+		);	
+		$this->set('tipos', $tipos);
 		//el titulado completo de la Calidad sale de una vista
 		//de MySQL que concatena descafeinado, pais y descripcion
 		$calidades = $this->Muestra->CalidadNombre->find('list');
@@ -176,7 +219,10 @@ class MuestrasController extends AppController {
 		if($this->request->is('post')):
 			if($this->Muestra->save($this->request->data)):
 				$this->Session->setFlash('Muestra guardada');
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array(
+					'action' => 'index',
+					'Search.tipo_id' => $this->request->data['Muestra']['tipo']
+				));
 			endif;
 		endif;
 	}
@@ -189,6 +235,17 @@ class MuestrasController extends AppController {
 		$this->Muestra->id = $id;
 		$muestra = $this->Muestra->findById($id);
 		$this->set('muestra',$muestra);
+		//el tipo de muestra puede ser:
+		//1 - oferta
+		//2 - embarque
+		//3 - entrega
+		$tipos =  array(
+			1 => 'Oferta',
+			2 => 'Embarque',
+			3 => 'Entrega'
+		);	
+		$tipo = $tipos[$muestra['Muestra']['tipo']];
+		$this->set('tipo',$tipo);
 		//el titulado completo de la Calidad sale de una vista
 		//de MySQL que concatena descafeinado, pais y descripcion
 		$calidades = $this->Muestra->CalidadNombre->find('list');
