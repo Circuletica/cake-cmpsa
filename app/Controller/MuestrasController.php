@@ -88,7 +88,7 @@ class MuestrasController extends AppController {
 			$fecha = $this->passedArgs['Search.fecha'];
 			//Si solo se ha introducido un año (aaaa)
 			if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fecha; }
-			//la otra posibilidad es que se haya introducido mm-aaaa
+			//la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
 		       	elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fecha)) {
 				list($mes,$anyo) = explode('-',$fecha);
 			} else {
@@ -122,7 +122,7 @@ class MuestrasController extends AppController {
 
 		$muestras =  $this->paginate();
 		//generamos el título
-		if (isset($title)) { //si hay criterios de filtro, pero no incluimos el tipo
+		if (isset($title)) { //si hay criterios de filtro, excluyendo el tipo
 			$title = implode(' | ', $title);
 			$title = 'Muestras de '.$tipo.' | '.$title;
 		} else { // Solo se filtra sobre el tipo de muestra
