@@ -27,8 +27,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
-		echo $this->Html->css('cake.generic');
-		echo $this->Html->css('cake.concreto');
+		echo $this->Html->css(array('cake.generic','cake.concreto','menu'));
+		echo $this->Html->css('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
@@ -37,14 +37,21 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <body>
 <div id="header">
 	<h1><?php echo $this->Html->link($cakeDescription, '/'); ?></h1>
+	<i class="fa fa-home"></i>
 	<?php echo $this->Html->getCrumbs(' > ', 'Inicio');	?>
 
-	<div id="tabs"> 
-		<ul>
-			<li><?php echo $this->Html->link('Contabilidad','/pages/contabilidad',array('class'=>'button'));?></li>
-			<li><?php echo $this->Html->link('Laboratorio-Calidad','/pages/laboratorio',array('class'=>'button'));?></li>
-			<li><?php echo $this->Html->link('Transporte-Tráfico','/pages/trafico',array('class'=>'button'));?></li>
-			<li><?php echo $this->Html->link('Comercial-Compras','/pages/compras',array('class'=>'button'));?></li>
+	<div class="menu"> 
+		<ul class="tabs">
+			<li><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','/pages/contabilidad',array('escape' => false));?></li>
+			<li><?php echo $this->Html->link('<i class="fa fa-flask"></i> LABORATORIO','/pages/laboratorio',array('escape' => false));?>
+				<ul>
+				<li><?php echo $this->Html->link('OFERTA','/muestras/index/Search.tipo_id:1',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('EMBARQUE','/muestras/index/Search.tipo_id:2	',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
+				</ul>
+			</li>
+			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','/pages/trafico', array('escape' => false));?></li>
+			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/pages/compras',array('escape' => false));?></li>
 		</ul>	
 	</div>
 </div>
@@ -56,22 +63,22 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				
 		
 		<div id="footer">
-			<div id="tabs">
-				<ul>
-					<li><?php echo $this->Html->link('Informes','/pages/informes',array('class'=>'button'));?></li>
-					<li ><?php echo $this->Html->link('Preferencias','/pages/preferencias',array('class'=>'button'));?></li>
-					<li><?php echo $this->Html->link('Gestión Datos','/pages/gestiondatos',array('class'=>'button'));?></li>
+	
+	</div>
+			<div class="menu">
+				<ul class="tabs">
+					<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/pages/informes',array('escape' => false));?></li>
+					<li ><?php echo $this->Html->link('<i class="fa fa-cog"></i> PREFERENCIAS','/pages/preferencias',array('escape' => false));?></li>
+					<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?></li>
 				</ul>
 			</div>
+	
 					<?php echo $this->Html->link(
 					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
 					'http://www.cakephp.org/', array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered'));
 					?>
-
 			
-				<?php 
-				echo $cakeVersion;
-				echo "   - Optimizado para resolución superior a 1280x720";	 ?>
+				<?php echo $cakeVersion; ?>
 			
 		</div>
 	
