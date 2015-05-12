@@ -11,8 +11,8 @@ class MuestrasController extends AppController {
 	//3 - entrega
 	public $tipos =  array(
 			1 => 'Oferta',
-			2 => 'Embarque',
-			3 => 'Entrega'
+			2 => 'Emb.',
+			3 => 'Entr.'
 		);	
 
 	public function search() {
@@ -35,11 +35,11 @@ class MuestrasController extends AppController {
 		//1 - oferta
 		//2 - embarque
 		//3 - entrega
-		$tipos =  array(
-			1 => 'Oferta',
-			2 => 'Embarque',
-			3 => 'Entrega'
-		);	
+//		$tipos =  array(
+//			1 => 'Oferta',
+//			2 => 'Embarque',
+//			3 => 'Entrega'
+//		);	
 		$this->set('tipos', $tipos);
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
