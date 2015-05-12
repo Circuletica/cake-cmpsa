@@ -11,12 +11,13 @@
 <div class="actions">
   <?php echo $this->Form->create('Muestra', array('action'=>'search'));?>
   <!--h3>Filtro de muestra</h3-->
+<div class="radiomuestra">
   <?php
     //echo $this->Form->input('Search.id');
     echo $this->Form->radio('Search.tipo_id', $tipos, array(
-	'legend' => ''
-	)
-    );
+	'legend' => ''));?>
+  </div>
+  <?php
     echo $this->Form->input('Search.referencia');
     echo $this->Form->input('Search.fecha', array('after'=>'aaaa o mm-aaaa'));
     echo $this->Form->input('Search.calidad');
