@@ -52,7 +52,6 @@ a img {
 h1, h2, h3, h4 {
 	font-weight: normal;
 	margin-bottom:0.5em;
-	padding:0.5%;
 }
 h1 {
 	background:#fff;
@@ -65,6 +64,8 @@ h2 {
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
 	font-size: 145%;
 	font-weight: bold;
+
+
 }
 h3 {
 	color: #2c6877;
@@ -76,7 +77,10 @@ h4 {
 	font-weight: bold;
 }
 ul, li {
-	margin: 0 12px;
+	margin: 0 2px;
+}
+ul, ol {
+	list-style:none;
 }
 p {
 	margin: 0 0 1em 0;
@@ -120,7 +124,7 @@ p {
 	clear: both;
 	padding: 10px 20px 0px 10px;
 }
-#header a, #footer a {
+#header a, {			/*Se elimina footer a*/
 	color: #fff;
 }
 #cake-powered {
@@ -129,6 +133,11 @@ p {
 }
 
 /** containers **/
+div.menu{
+float: right;	margin:0px;
+
+width: 80%;
+}
 div.form,
 div.index,
 div.view {
@@ -140,7 +149,7 @@ div.view {
 div.actions {
 	float:left;
 	width:16%;
-	padding:0.5%;
+	padding:1%;
 	border: 5px;
    /* height: 90px;*/
     margin: 5px;
@@ -195,6 +204,7 @@ table td.actions a {
 	margin: 0px 6px;
 	padding:2px 5px;
 }
+ 
 
 /* SQL log */
 .cake-sql-log {
@@ -290,7 +300,7 @@ fieldset {
 	padding: 16px 10px;
 	float: left;
 	/*display: block;*/
-	width: 450px;
+	width: 15%;
 	margin: 0 30px 30px 0;
 }
 fieldset legend {
