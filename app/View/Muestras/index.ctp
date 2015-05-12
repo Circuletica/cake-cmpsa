@@ -10,7 +10,7 @@
 
 <div class="actions">
   <?php echo $this->Form->create('Muestra', array('action'=>'search'));?>
-  <h3>Filtro de muestra</h3>
+  <!--h3>Filtro de muestra</h3-->
   <?php
     //echo $this->Form->input('Search.id');
     echo $this->Form->radio('Search.tipo_id', $tipos, array(
