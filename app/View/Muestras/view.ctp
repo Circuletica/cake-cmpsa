@@ -31,7 +31,7 @@
 	echo "</div>\n";
 ?>
 <div class="index">
-<h2>Detalles Muestra <?php echo $muestra['Muestra']['referencia']?></h2>
+<h2>Detalles Muestra <?php echo 'de '.$tipo.' '.$muestra['Muestra']['referencia']?></h2>
 </div>
 <?php
 	echo "<div class='view'>\n";

@@ -5,8 +5,17 @@ class MuestrasController extends AppController {
 		'order' => array('Muestra.referencia' => 'asc')
 	);
 
+	//el tipo de muestra puede ser:
+	//1 - oferta
+	//2 - embarque
+	//3 - entrega
+	public $tipos =  array(
+			1 => 'Oferta',
+			2 => 'Emb.',
+			3 => 'Entr.'
+		);	
+
 	public function search() {
-		//debug($proveedores);
 		//la página a la que redirigimos después de mandar  el formulario de filtro
 		$url['action'] = 'index';
 		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
@@ -16,11 +25,22 @@ class MuestrasController extends AppController {
 			foreach ($v as $kk=>$vv){ 
 			if ($vv) {$url[$k.'.'.$kk]=$vv;} 
 			} 
+
 		}
 		$this->redirect($url,null,true);
 	}
 	
 	public function index() {
+		//el tipo de muestra puede ser:
+		//1 - oferta
+		//2 - embarque
+		//3 - entrega
+		$tipos =  array(
+			1 => 'Oferta',
+			2 => 'Embar.',
+			3 => 'Entr.'
+		);	
+		$this->set('tipos', $tipos);
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
 		$proveedores = $this->Muestra->Proveedor->find('list', array(
@@ -56,6 +76,17 @@ class MuestrasController extends AppController {
 			//completamos el titulo
 			$title[] = 'Referencia: '.$referencia;
 		}
+		//filtramos por tipo
+		if(isset($this->passedArgs['Search.tipo_id'])) {
+			$tipo_id = $this->passedArgs['Search.tipo_id'];
+			$this->paginate['conditions']['Muestra.tipo LIKE'] = "$tipo_id";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['tipo_id'] = $tipo_id;
+			//Sacamos el nombre del tipo
+			$tipo = $tipos[$tipo_id];	
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['tipo_id'] = $tipo_id;
+		}
 		//filtramos por proveedor
 		if(isset($this->passedArgs['Search.proveedor_id'])) {
 			$proveedor_id = $this->passedArgs['Search.proveedor_id'];
@@ -68,9 +99,9 @@ class MuestrasController extends AppController {
 		//filtramos por fecha
 		if(isset($this->passedArgs['Search.fecha'])) {
 			$fecha = $this->passedArgs['Search.fecha'];
-			//Si solo se ha introducido un año
+			//Si solo se ha introducido un año (aaaa)
 			if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fecha; }
-			//la otra posibilidad es que se haya introducido mm-aaaa
+			//la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
 		       	elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fecha)) {
 				list($mes,$anyo) = explode('-',$fecha);
 			} else {
@@ -89,7 +120,6 @@ class MuestrasController extends AppController {
 		if(isset($this->passedArgs['Search.calidad'])) {
 			$calidad = $this->passedArgs['Search.calidad'];
 			$this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$calidad%";
-			//$this->paginate['conditions']['Pais.nombre LIKE'] = "%$calidad%";
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['calidad'] = $calidad;
 			//completamos el titulo
@@ -105,8 +135,16 @@ class MuestrasController extends AppController {
 
 		$muestras =  $this->paginate();
 		//generamos el título
-		if (isset($title)) {$title = implode(' | ', $title);}
-		$title = (isset($title)&&$title)?$title:'Todas las muestras';
+		if (isset($tipo)) { //en caso de que se quiera mostrar todos los tipos de muestra
+			if (isset($title)) { //si hay criterios de filtro, excluyendo el tipo
+				$title = implode(' | ', $title);
+				$title = 'Muestras de '.$tipo.' | '.$title;
+			} else { // Solo se filtra sobre el tipo de muestra
+				$title = 'Muestras de '.$tipo;
+			}
+		} else {
+			$title = 'Todas las muestras';
+		}
 		//pasamos los datos a la vista
 		$this->set(compact('muestras','title'));
 	}
@@ -116,9 +154,20 @@ class MuestrasController extends AppController {
 			$this->Session->setFlash('URL mal formado Muestra/view');
 			$this->redirect(array('action'=>'index'));
 		}
+		//el tipo de muestra puede ser:
+		//1 - oferta
+		//2 - embarque
+		//3 - entrega
+		$tipos =  array(
+			1 => 'Oferta',
+			2 => 'Embarque',
+			3 => 'Entrega'
+		);	
 		$muestra = $this->Muestra->find('first', array(
 			'conditions' => array('Muestra.id' => $id),
 			'recursive' => 2));
+		$tipo = $tipos[$muestra['Muestra']['tipo']];
+		$this->set('tipo',$tipo);
 		$this->set('muestra',$muestra);
 		$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL
@@ -137,6 +186,23 @@ class MuestrasController extends AppController {
 	}
 
 	public function add() {
+		//Sacamos el tipo de muestra de la URL
+		//y lo metemos ya en el formulario
+		if(isset($this->passedArgs['tipo_id'])) { //por si la URL no incluye el tipo de muestra
+			$this->request->data['Muestras']['tipo'] = $this->passedArgs['tipo_id'];
+		} else {
+			$this->request->data['Muestras']['tipo'] = '';
+		}
+		//el tipo de muestra puede ser:
+		//1 - oferta
+		//2 - embarque
+		//3 - entrega
+		$tipos =  array(
+			1 => 'Oferta',
+			2 => 'Embarque',
+			3 => 'Entrega'
+		);	
+		$this->set('tipos', $tipos);
 		//el titulado completo de la Calidad sale de una vista
 		//de MySQL que concatena descafeinado, pais y descripcion
 		$calidades = $this->Muestra->CalidadNombre->find('list');
@@ -153,7 +219,10 @@ class MuestrasController extends AppController {
 		if($this->request->is('post')):
 			if($this->Muestra->save($this->request->data)):
 				$this->Session->setFlash('Muestra guardada');
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array(
+					'action' => 'index',
+					'Search.tipo_id' => $this->request->data['Muestra']['tipo']
+				));
 			endif;
 		endif;
 	}
@@ -166,6 +235,17 @@ class MuestrasController extends AppController {
 		$this->Muestra->id = $id;
 		$muestra = $this->Muestra->findById($id);
 		$this->set('muestra',$muestra);
+		//el tipo de muestra puede ser:
+		//1 - oferta
+		//2 - embarque
+		//3 - entrega
+		$tipos =  array(
+			1 => 'Oferta',
+			2 => 'Embarque',
+			3 => 'Entrega'
+		);	
+		$tipo = $tipos[$muestra['Muestra']['tipo']];
+		$this->set('tipo',$tipo);
 		//el titulado completo de la Calidad sale de una vista
 		//de MySQL que concatena descafeinado, pais y descripcion
 		$calidades = $this->Muestra->CalidadNombre->find('list');

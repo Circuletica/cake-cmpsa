@@ -401,3 +401,14 @@ input[type=submit]:active,
 	vertical-align: text-bottom;
 	display: inline;
 }
+.radiomuestra input[type=radio] {
+	float:none;
+	width:auto;
+	/*margin: 6px 0; Se comenta para que estén en línea*/
+	padding: 0;
+}
+.radiomuestra label {
+	margin: 0px 4px 0px 0px;
+	/*line-height: 26px;*/
+	display:inline;
+}

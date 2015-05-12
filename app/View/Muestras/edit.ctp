@@ -1,4 +1,4 @@
-<h1>Modificar Muestra</h1>
+<h1>Modificar Muestra<?php echo ' de '.$tipo;?></h1>
 <fieldset>
 <?php
   $this->Html->addCrumb('Muestras', '/muestras');
