@@ -45,9 +45,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<li><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','/pages/contabilidad',array('escape' => false));?></li>
 			<li><?php echo $this->Html->link('<i class="fa fa-flask"></i> LABORATORIO','/pages/laboratorio',array('escape' => false));?>
 				<ul>
-				<li><?php echo $this->Html->link('OFERTA','/muestras/index/Search.tipo:1',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('EMBARQUE','/muestras/index/Search.tipo:2	',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo:3',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('OFERTA','/muestras/index/Search.tipo_id:1',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('EMBARQUE','/muestras/index/Search.tipo_id:2	',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
 				</ul>
 			</li>
 			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','/pages/trafico', array('escape' => false));?></li>
