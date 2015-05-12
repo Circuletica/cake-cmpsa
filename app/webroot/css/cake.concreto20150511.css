@@ -1,25 +1,23 @@
-.tabs{
+#tabs{
 	position: relative;
 	padding-right:5%;
 	display: inline;
 
 }
-.tabs ul { 
+#tabs ul { 
 	list-style: none;
 	padding:0;
 	margin:0;
 	display: inline;
 	}
-.tabs li {
-	/*margin: 0 0.5%  1em 0;*/
-}
-.tabs > li {
-	float:left;
+#tabs li {
+	float: right;
+	margin: 0 0.5%  1em 0;
 }
 /* Enlace en pestaña*/
-.tabs li a {
+#tabs li a {
 	font-weight:600;
-	padding: 10px 12px;
+	padding: 4px 8px;
 	background: #dcdcdc;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));
 	background-image: -webkit-linear-gradient(top, #fefefe, #dcdcdc);
@@ -33,30 +31,14 @@
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 	text-decoration: none;
-	display:block;
 }
-.tabs li ul {
-	display:none;
-	position:absolute;
-	min-width:100px;
-}
-.tabs li:hover > ul {
-	display:block;
-}
-.tabs li ul li {
-	position:relative;
-}
-.tabs li ul li ul {
-	right:-100px;
-	top:0px;
-}
-.tabs a:hover {
+#tabs a:hover {
 background: #5FCF80;
 color: #fff;
 text-decoration: none;
 }
 
-.tabs a:active {
+#tabs a:active {
 background: #5FCF80;
 color: #fff;
 }
