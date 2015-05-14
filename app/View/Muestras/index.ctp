@@ -43,7 +43,7 @@
 	    'Search.tipo_id'=>$this->request->data['Search']['tipo_id'])
 	  );
 	} else {
-	  echo $this->Html->Link('Resetear filtro',array('action'=>'index'));
+	  echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>'index'), array('escape'=>false));
 	}
 	?>
       </li>
@@ -91,12 +91,12 @@
       <?php echo $muestra['Proveedor']['Empresa']['nombre']; ?>
     </td>
     <td>
-      <?php echo $this->Html->link('Detalles',array('action'=>'view',$muestra['Muestra']['id']), array('class'=>'botond')).' '.
+      <?php echo $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$muestra['Muestra']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles')).' '.
       $this->Form->postLink(
-	'Borrar',
+	'<i class="fa fa-trash"></i>',
 	array('action'=>'delete',$muestra['Muestra']['id']),
 	array(
-	  'class'=>'botond',
+    'class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
 	  'confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?'
 	)
       )
@@ -110,17 +110,16 @@
   <?php 
     if(isset($this->request->data['Search']['tipo_id'])){
       echo $this->Html->link(
-	'Añadir Muestra',
+	'<i class="fa fa-plus"></i> Añadir Muestra',
 	array(
 	  'action'=>'add',
 	  'tipo_id'=>$this->request->data['Search']['tipo_id']
-	)
-      );
+	),array(
+  'class'=>'botond','escape'=>false, 'title'=>'Añadir Muestra'));
     } else {
-      echo $this->Html->link(
-	'Añadir Muestra',
-	array( 'action'=>'add',)
-      );
+    echo $this->Html->link(
+	'<i class="fa fa-plus"></i> Añadir Muestra',
+	array('action'=>'add'),array('class'=>'botond','escape'=>false, 'title'=>'Añadir Muestra'));
     }
   ?>
   </div>

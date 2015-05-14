@@ -31,7 +31,7 @@
 		//substr($proveedor['Empresa']['cuenta_bancaria'],4,4),
 		$proveedor['Empresa']['Pais']['nombre'],
 		$proveedor['Empresa']['telefono'],
-		$this->Html->link('Detalles',array('action'=>'view',$proveedor['Proveedor']['id']), array('class'=>'boton'))//.' '.
+		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$proveedor['Proveedor']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))//.' '.
 		//$this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id'])).' '.
 		//$this->Form->postLink('Borrar',array('action'=>'delete',$proveedor['Empresa']['id']),array('confirm'=>'Realmente quiere borrar '.$proveedor['Empresa']['nombre'].'?'))
 	));
@@ -39,12 +39,12 @@
 	endforeach;?>
 </table>
 <div class="btabla">
-		<?php echo $this->Html->link('Añadir Proveedor',array(
+		<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Proveedor',array(
 		'controller' => 'proveedores',
 		'action' => 'add',
 		'from_controller' => 'proveedores',
 		'from_action' => 'index'	
-		));
+		),array('escape' => false, 'title'=>'Añadir Proveedor'));
 		?>
 </div>
 	<?php echo $this->Paginator->counter(

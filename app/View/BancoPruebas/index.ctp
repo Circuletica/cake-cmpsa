@@ -2,19 +2,6 @@
 <?php $this->Html->addCrumb('Bancos', '/banco_pruebas');?>
 <h2>Bancos</h2>
 
-	<div class="actions">
-<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
-	
-?>		
-	<div class="exp">
-
-	<?php 	echo $this->Html->link('Imprimir',array('action'=>'add'), array('class'=>'prev')); 
-			//echo $this->layout('Exportar a PDF', $this->layout = 'pdf', $this->render());
- ?>
-
-		</div>
-	</div>
-	<div class='index'>
 <?php
 	if (empty($bancopruebas)):
 		echo "No hay bancos en esta lista";
@@ -40,7 +27,7 @@
 		$bancoprueba['Empresa']['codigo_contable'],
 		substr($bancoprueba['BancoPrueba']['cuenta_cliente_1'],4,4),
 		$bancoprueba['Empresa']['telefono'],
-		$this->Html->link('Detalles', array('action'=>'view',$bancoprueba['BancoPrueba']['id']), array('class'=>'boton'))//.' '.
+		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array('action'=>'view',$bancoprueba['BancoPrueba']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))//.' '.
 		//$this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id'])).' '.
 		//$this->Form->postLink('Borrar',array('action'=>'delete',$bancoprueba['BancoPrueba']['id']),array('confirm'=>'Realmente quiere borrar '.$bancoprueba['Empresa']['nombre'].'?'))
 	));
@@ -48,7 +35,7 @@
 	endforeach;?>
 	</table>
 	<div class="btabla">
-			<?php echo $this->Html->link('Añadir Banco',array('action'=>'add')); ?>
+			<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Banco',array('action'=>'add'), array('escape' => false)); ?>
 	</div>
 	<?php
 	echo $this->Paginator->counter(
@@ -61,7 +48,6 @@
 			<?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
 		</div>
 
-</div>
 
 <?php endif; ?>
 

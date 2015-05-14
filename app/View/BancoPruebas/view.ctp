@@ -18,23 +18,15 @@ else:
 	////print_r($bancoprueba['Empresa']['Contacto']);
 	//echo "</pre>";
 
-	echo "<div class='actions'>\n";
-      echo $this->Html->link('Modificar banco',array('action'=>'edit',$bancoprueba['BancoPrueba']['id']));
-      echo $this->Form->postLink('Borrar banco',array('action'=>'delete',$bancoprueba['BancoPrueba']['id']),array('confirm'=>'¿Realmente quiere borrar '.$bancoprueba['Empresa']['nombre'].'?'));
+	echo "<div class='acciones'>\n";
+      echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id']),array('title'=>'Modificar Banco','escape'=>false)).' '.
+      $this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array('action'=>'delete',$bancoprueba['BancoPrueba']['id']),array('escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$bancoprueba['Empresa']['nombre'].'?'));
       //echo "\n";
      // echo '<p>';
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
-	echo $this->Html->link('Añadir contacto',array(
-		'controller'=>'contactos',
-		'action'=>'add',
-		'from'=>'banco_pruebas',
-		'from_id' => $bancoprueba['Empresa']['id']));
-	echo "\n";
-	echo "</div>\n";
 ?>
-<div class="index">
-<h2>Detalles Banco <?php echo $bancoprueba['Empresa']['nombre']?></h2>
 </div>
+<h2>Detalles Banco <?php echo $bancoprueba['Empresa']['nombre']?></h2>
 <?php
       //formateamos el número de cuenta de la entidad
       $numero_bruto=$bancoprueba['Empresa']['cuenta_bancaria'];
@@ -48,7 +40,7 @@ else:
 	      '-'.substr($numero_bruto,4,4).
 	      '-'.substr($numero_bruto,8,2).
 	      '-'.substr($numero_bruto,10,10);
-	echo "<div class='view'>\n";
+	//echo "<div class='view'>\n";
 	echo "<dl>";
 	echo "  <dt>Id</dt>\n";
 	echo "<dd>";
@@ -116,20 +108,20 @@ else:
 		$contacto['telefono1'],
 		$contacto['telefono2'],
 		$contacto['email'],
-		$this->Html->link('Modificar', array(
+		$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
 			'controller'=>'contactos',
 			'action' => 'edit',
 			$contacto['id'],
               		'from'=>'banco_pruebas',
-              		'from_id'=>$contacto['empresa_id']), array('class'=>'formuboton','class'=>'botond'))
-			.' '.$this->Form->postLink('Borrar',
+              		'from_id'=>$contacto['empresa_id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar'))
+			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
 			array(
 				'controller'=>'contactos',
 				'action' => 'delete',
 				$contacto['id'],
 				'from' => 'banco_pruebas',
 				'from_id' => $contacto['empresa_id']),
-				array('class'=>'formuboton','class'=>'botond',
+				array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
 					'confirm' =>'¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
 		)
 	));
@@ -139,5 +131,12 @@ else:
 endif;
 ?>
 </table>
-</div> </div>
+	<div class="btabla">
+			<?php echo $this->Html->link('<i class="fa fa-user-plus"></i> Añadir contacto',array(
+		'controller'=>'contactos',
+		'action'=>'add',
+		'from'=>'banco_pruebas',
+		'from_id' => $bancoprueba['Empresa']['id']), array('escape' => false,'title'=>'Añadir contacto'));?>
+	</div>
+</div>
 

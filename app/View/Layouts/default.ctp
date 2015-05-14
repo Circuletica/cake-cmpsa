@@ -37,13 +37,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <body>
 <div id="header">
 	<h1><?php echo $this->Html->link($cakeDescription, '/'); ?></h1>
-	<i class="fa fa-home"></i>
-	<?php echo $this->Html->getCrumbs(' > ', 'Inicio');	?>
-
-	<div class="menu"> 
+		<div class="menuheader"> 
 		<ul class="tabs">
 			<li><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','/pages/contabilidad',array('escape' => false));?></li>
-			<li><?php echo $this->Html->link('<i class="fa fa-flask"></i> LABORATORIO','/pages/laboratorio',array('escape' => false));?>
+			<li><?php echo $this->Html->link('<i class="fa fa-flask"></i> LABORATORIO','#',array('escape' => false));?>
 				<ul>
 				<li><?php echo $this->Html->link('OFERTA','/muestras/index/Search.tipo_id:1',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('EMBARQUE','/muestras/index/Search.tipo_id:2	',array('escape' => false));?></li>
@@ -55,7 +52,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		</ul>	
 	</div>
 </div>
+	
 		<div id="content">
+		<div id="bread">
+		<i class="fa fa-home"></i>
+		<?php echo $this->Html->getCrumbs(' > ', 'Inicio');	?>
+		</div>
 			<?php echo $this->Session->flash(); ?>
 			<?php echo $this->fetch('content'); ?>
 
@@ -65,7 +67,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<div id="footer">
 	
 	</div>
-			<div class="menu">
+			<div class="menufooter">
 				<ul class="tabs">
 					<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/pages/informes',array('escape' => false));?></li>
 					<li ><?php echo $this->Html->link('<i class="fa fa-cog"></i> PREFERENCIAS','/pages/preferencias',array('escape' => false));?></li>

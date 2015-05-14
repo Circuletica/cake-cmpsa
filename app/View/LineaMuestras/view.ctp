@@ -8,29 +8,30 @@
 	$linea['Muestra']['id']
 ));
 ?>
-<?php
-	echo "<div class='actions'>\n";
-	echo $this->Html->link('Modificar',array(
+<h2>Detalles Línea <?php echo $linea['LineaMuestra']['marca']?> de muestra <?php echo $linea['Muestra']['referencia']?></h2>
+
+	<div class='actions'>
+	<?php
+	echo $this->element('filtromuestra');
+	?>
+	</div>
+	<div class="acciones">
+	<?php
+		echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
 		'from_controller' => 'linea_muestras',
 		'action'=>'edit',
 		'from_id' => $linea['LineaMuestra']['id'],
-		$linea['LineaMuestra']['id'])
-	);
-	echo "\n";
-	echo '<p>';
-	echo $this->Form->postLink('Borrar',array(
+		$linea['LineaMuestra']['id']),array('title'=>'Modificar muestra','escape'=>false)
+		.' '.
+		$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
 		'action'=>'delete',
 		$linea['LineaMuestra']['id']),
-		array('confirm'=>'Realmente quiere borrar '.$linea['LineaMuestra']['marca'].'?')
-	);
-	echo "\n";
-	echo "</div>\n";
-?>
-<div class="index">
-<h2>Detalles Línea <?php echo $linea['LineaMuestra']['marca']?> de muestra <?php echo $linea['Muestra']['referencia']?></h2>
-</div>
+		array('escape'=>false, 'title'=> 'Borrar',
+		'confirm'=>'Realmente quiere borrar '.$linea['LineaMuestra']['marca'].'?')
+	);?>
+	</div>
+	<div class='view'>
 <?php
-	echo "<div class='view'>\n";
 	echo "<dl>\n";
 	echo "  <dt>Id</dt><dd>".$linea['LineaMuestra']['id']."</dd>\n";
 	echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."</dd>\n";

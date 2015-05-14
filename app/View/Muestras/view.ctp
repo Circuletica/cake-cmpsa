@@ -8,33 +8,27 @@
 	$muestra['Muestra']['id']
 ));
 ?>
-<?php
-	echo "<div class='actions'>\n";
-	echo $this->Html->link('Modificar muestra',array(
-		'action'=>'edit',
-		$muestra['Muestra']['id'])
-	);
-	echo "\n";
-	echo '<p>';
-	echo $this->Form->postLink('Borrar muestra',array(
-		'action'=>'delete',
-		$muestra['Muestra']['id']),
-		array('confirm'=>'¿Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
-	);
-	echo $this->Html->link('Añadir línea',array(
-		'controller' => 'linea_muestras',
-		'action' => 'add',
-		'from_controller' => 'muestras',
-		'from_id' => $muestra['Muestra']['id'])
-	);
-	echo "\n";
-	echo "</div>\n";
-?>
-<div class="index">
 <h2>Detalles Muestra <?php echo 'de '.$tipo.' '.$muestra['Muestra']['referencia']?></h2>
+<div class="actions">
+	<?php
+	echo $this->element('filtromuestra');
+	?>
 </div>
+<div class="acciones">
 <?php
-	echo "<div class='view'>\n";
+	echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
+		'action'=>'edit',
+		$muestra['Muestra']['id']),array('title'=>'Modificar Banco','escape'=>false))
+	.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
+		'action'=>'delete',
+		$muestra['Muestra']['id']),array(
+		'escape'=>false, 'title'=> 'Borrar',
+		'confirm'=>'¿Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
+	);
+?>
+</div>
+	<div class='view'>
+	<?php
 	echo "<dl>";
 	echo "  <dt>Id</dt>\n";
 	echo "<dd>";
@@ -102,27 +96,38 @@
 			$linea['numero_sacos'],
 			$linea['referencia_proveedor'],
 			$linea['referencia_almacen'],
-			$this->Html->link('Detalles', array(
+			$this->Html->link('<i class="fa fa-info-circle"></i>', array(
 				'controller'=>'linea_muestras',
 				'action' => 'view',
 				$linea['id'],
               			'from_controller'=>'muestras',
-              			'from_id'=>$linea['muestra_id']),array('class'=>'botond'))
-				.' '.$this->Form->postLink('Borrar',
+              			'from_id'=>$linea['muestra_id']),array(
+              			'class'=>'botond','escape' => false,'title'=>'Detalles'))
+			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
 				array(
 					'controller'=>'linea_muestras',
 					'action' => 'delete',
 					$linea['id'],
 					'from_controller' => 'muestras',
 					'from_id' => $linea['muestra_id']),
-					array('class'=>'botond',
+					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
 						'confirm' => '¿Seguro que quieres borrar a '.$linea['marca'].'?')
 				)
 			));
 		//numero de la línea siguiente
 		$i++;
 	endforeach;
-?>
-	</table>
-	</div></div>
+?>	</table>
+		<div class="btabla">
+		<?php
+		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir',array(
+		'controller' => 'linea_muestras',
+		'action' => 'add',
+		'from_controller' => 'muestras',
+		'from_id' => $muestra['Muestra']['id']),
+		 array('escape' => false,'title'=>'Añadir línea'));
+		?>
+		</div>
+	</div>
+</div>
 

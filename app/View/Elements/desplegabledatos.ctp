@@ -7,9 +7,7 @@ url = document.navegador.secciones.options[document.navegador.secciones.selected
 if (url != "no") window.location = url;
 
 }
-
 </script>
-<h4>Tablas de datos</h4>
 <form name=navegador>
 <select name="secciones" onchange="destino()">
     <option value="no">Seleccione la tabla

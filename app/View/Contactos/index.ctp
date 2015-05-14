@@ -16,6 +16,7 @@ No hay contactos en esta lista
   <th>Teléfono2</th>
   <th>Email</th>
   <th>Empresa</th>
+  <th>Acciones</th>
 </tr>
 <?php foreach ($contactos as $contacto): ?>
 <tr>
@@ -38,16 +39,22 @@ No hay contactos en esta lista
   <?php echo $contacto['Empresa']['nombre'] ?>
   </td>
   <td>
-<?php echo $this->Html->link('Editar', array('action' => 'edit',$contacto['Contacto']['id'])).' '.
-           $this->Form->postLink('Borrar',
-		     array('action' => 'delete', $contacto['Contacto']['id']),
-		     array('confirm' => 'Seguro que quieres borrar a '.$contacto['Contacto']['nombre'].'?'))
+<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',
+      array('action' => 'edit',$contacto['Contacto']['id']),array('class'=>'botond','escape'=>false, 'title'=>'Modificar')).' '.
+      $this->Form->postLink('<i class="fa fa-trash"></i>',
+		  array('action' => 'delete', $contacto['Contacto']['id']),
+		  array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar', 'confirm' => 'Seguro que quieres borrar a '.$contacto['Contacto']['nombre'].'?'));
   ?>
   </td>
 </tr>
 <?php endforeach; ?>
 </table>
 <?php endif; ?>
-<br>
-<?php echo $this->Html->link('Añadir contacto', array('action'=>'add')); ?>
+  <div class="btabla">
+      <?php echo $this->Html->link('<i class="fa fa-user-plus"></i> Añadir contacto',
+        array(
+       'action'=>'add'),
+        array(
+       'escape' => false,'title'=>'Añadir contacto'));?>
+  </div>
 </div>

@@ -9,9 +9,7 @@
 	$proveedor['Empresa']['id']
 ));
 ?>
-<div class="index">
-<h2>Detalles Proveedor <?php echo $proveedor['Empresa']['nombre']?></h2>
-</div>
+
 <?php
 if (empty($proveedor)):
 	echo "No hay proveedores en esta lista";
@@ -21,17 +19,14 @@ else:
 	////print_r($bancoprueba['Empresa']['Contacto']);
 	//echo "</pre>";
 
-	echo "<div class='actions'>\n";
-      echo $this->Html->link('Modificar proveedor',array('action'=>'edit',$proveedor['Proveedor']['id']));
-      echo $this->Form->postLink('Borrar proveedor',array('action'=>'delete',$proveedor['Proveedor']['id']),array('confirm'=>'¿Realmente quiere borrar '.$proveedor['Empresa']['nombre'].'?'));
+	echo "<div class='acciones'>\n";
+    echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array('action'=>'edit',$proveedor['Proveedor']['id']),array('title'=>'Modificar Banco','escape'=>false)).' '.
+      $this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array('action'=>'delete',$proveedor['Proveedor']['id']),array('escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$proveedor['Empresa']['nombre'].'?'));
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
-	echo $this->Html->link('Añadir contacto',array(
-		'controller'=>'contactos',
-		'action'=>'add',
-		'from'=>'proveedores',
-		'from_id' => $proveedor['Empresa']['id']));
-	echo "\n";
-	echo "</div>\n";
+	?></div>
+	<h2>Detalles Proveedor <?php echo $proveedor['Empresa']['nombre']?></h2>
+	<?php
+
       //formateamos el número de cuenta de la entidad
       $numero_bruto=$proveedor['Empresa']['cuenta_bancaria'];
       $cuenta_entidad=substr($numero_bruto,0,4).
@@ -44,7 +39,7 @@ else:
 //	      '-'.substr($numero_bruto,4,4).
 //	      '-'.substr($numero_bruto,8,2).
 //	      '-'.substr($numero_bruto,10,10);
-	echo "<div class='view'>\n";
+	//echo "<div class='view'>\n";
 	echo "<dl>";
 	echo "  <dt>Id</dt>\n";
 	echo "<dd>";
@@ -109,31 +104,40 @@ else:
 		$contacto['telefono1'],
 		$contacto['telefono2'],
 		$contacto['email'],
-		$this->Html->link('Modificar', array(
+		$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
 			'controller'=>'contactos',
 			'action' => 'edit',
 			$contacto['id'],
               		'from'=>'proveedores',
               		'from_id'=>$contacto['empresa_id']),
-			array('class'=>'boton'))
-			.' '.$this->Form->postLink('Borrar',
+			array('class'=>'botond','escape'=>false, 'title'=>'Modificar'))
+			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
 			array(
 				'controller'=>'contactos',
 				'action' => 'delete',
 				$contacto['id'],
 				'from' => 'proveedores',
 				'from_id' => $contacto['empresa_id']),
-				array(
-					'class'=>'boton',
+				array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
 					'confirm' => '¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
 		)
 	));
 		//print_r($contacto);
 	endforeach;
-	echo "</table>\n";
-	echo "</div>\n";
+	//echo "</table>\n";
+	//echo "</div>\n";
 endif;
 ?>
-</table></div> </div>
+</table>
+	<div class="btabla">
+			<?php echo $this->Html->link('<i class="fa fa-user-plus"></i> Añadir contacto',array(
+		'controller'=>'contactos',
+		'action'=>'add',
+		'from'=>'proveedores',
+		'from_id' => $proveedor['Empresa']['id']), 
+		array('escape' => false,'title'=>'Añadir contacto'));
+		?>
+	</div>
+</div>
 
 

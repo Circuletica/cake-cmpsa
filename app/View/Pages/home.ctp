@@ -1,6 +1,5 @@
 <h2>¡¡Bienvenido!! </h2>
 
-<div class='index'><tr>
 <td>
 <table>
 	<tr><td><?php echo $this->Html->link('Bancos','/banco_pruebas',array('class'=>'button'));?></td>
@@ -15,9 +14,4 @@
 	<tr><td><?php echo $this->Html->link('Almacenes','/almacenes',array('class'=>'button'));?></td><td></td></tr>
 	<tr><td><?php echo $this->Html->link('Paises','/paises',array('class'=>'button'));?></td><td></td></tr>
 </table>
-</div>
-<div class="actions">
-<?php 
-echo $this->element('desplegabledatos');
-?>
-</div>
+

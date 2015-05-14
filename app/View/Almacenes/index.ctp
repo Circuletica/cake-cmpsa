@@ -26,7 +26,7 @@
 		$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
 		'País',
 		'Teléfono',
-		''));
+		'Acciones'));
 
 	foreach($empresas as $empresa):
 	echo $this->Html->tableCells(array(
@@ -36,7 +36,7 @@
 		//substr($empresa['Empresa']['cuenta_bancaria'],4,4),
 		$empresa['Empresa']['Pais']['nombre'],
 		$empresa['Empresa']['telefono'],
-		$this->Html->link('Detalles',array('action'=>'view',$empresa['Almacen']['id']), array('class' =>'boton' , ))//.' '.
+		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$empresa['Almacen']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))//.' '.
 		//$this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id'])).' '.
 		//$this->Form->postLink('Borrar',array('action'=>'delete',$empresa['Empresa']['id']),array('confirm'=>'Realmente quiere borrar '.$empresa['Empresa']['nombre'].'?'))
 	));
@@ -44,7 +44,7 @@
 	endforeach;?>
 	</table>
 	<div class="btabla">
-		<?php echo $this->Html->link('Añadir Almacén',array('action'=>'add')); ?>
+		<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Almacén',array('action'=>'add'),array('escape' => false)); ?>
 	</div>
 	<?php
 	echo $this->Paginator->counter(

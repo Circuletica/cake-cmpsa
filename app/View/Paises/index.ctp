@@ -24,20 +24,20 @@
       <?php echo $pais['Pais']['prefijo_tfno']?>
     </td>
     <td>
-      <?php echo $this->Html->link('Modificar',array('action'=>'edit',$pais['Pais']['id']), array('class'=>'botond'))?>
-      <?php echo '&nbsp;';?>
-      <?php echo $this->Form->postLink('Borrar',array('action'=>'delete',$pais['Pais']['id']), array('class'=>'botond','confirm'=>'¿Realmente quiere borrar '.$pais['Pais']['nombre'].'?'))?>
+      <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',array('action'=>'edit',$pais['Pais']['id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar'))
+      .' '.$this->Form->postLink('<i class="fa fa-trash"></i>',array('action'=>'delete',$pais['Pais']['id']), array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$pais['Pais']['nombre'].'?'))?>
     </td>
   </tr>
 <?php endforeach;?>
 </table>
 <div class="btabla">
-    <?php echo $this->Html->link('Añadir País',array(
+    <?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País',array(
    'controller' => 'paises',
    'action' => 'add',
    'from_controller' => 'paises',
-   'from_action' => 'index'
-     )); ?>
+   'from_action' => 'index'),array(
+   'escape' => false,
+   'title'=>'Añadir País')); ?>
 </div>
 
 <p>

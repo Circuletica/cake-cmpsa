@@ -37,18 +37,18 @@
       <?php //echo $calidad['Calidad']['nombre']?>
     </td>
     <td>
-      <?php echo $this->Html->link('Modificar',array('action'=>'edit',$calidad['Calidad']['id']), array("class"=>"botond")).'&nbsp;';?>
-      <?php echo $this->Form->postLink('Borrar',array('action'=>'delete',$calidad['Calidad']['id']),array("class"=>"botond",'confirm'=>'¿Realmente quiere borrar '.$calidad['Calidad']['descripcion'].'?'))?>
+      <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',array('action'=>'edit',$calidad['Calidad']['id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar'))
+      .' '.$this->Form->postLink('<i class="fa fa-trash"></i>',array('action'=>'delete',$calidad['Calidad']['id']),array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$calidad['Calidad']['descripcion'].'?'))?>
     </td>
   </tr>
 <?php endforeach;?>
 </table>
     <div class="btabla">
-    <?php echo $this->Html->link('Añadir Calidad',array(
+    <?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Calidad',array(
     'controller' => 'calidades',
     'action'=>'add',
     'from_controller' => 'calidades',
-    'from_action' => 'index'));
+    'from_action' => 'index'),array('escape' => false));
       ?>
        </div>
 
