@@ -98,7 +98,7 @@ p {
 	/*line-height:30px;*/
 	background: #637A91 url('../img/grano.icon.png') no-repeat left;
 	color: #fff;
-	padding: 10px 40px;
+	padding: 10px 10px 10px 40px;
 	display: inline;
 }
 #header h1 a {
@@ -209,7 +209,6 @@ table td.actions a {
 	margin: 0px 6px;
 	padding:2px 5px;
 }
- 
 
 /* SQL log */
 .cake-sql-log {
@@ -417,7 +416,7 @@ form .submit input[type=submit] {
 	border-color: #2d6324;
 	color: #fff;
 	text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0px;
-	padding: 2px 8px;
+	padding: 4px 8px;
 }
 form .submit input[type=submit]:hover {
 	background: #5BA150;

@@ -104,6 +104,9 @@ else:
 		$contacto['telefono1'],
 		$contacto['telefono2'],
 		$contacto['email'],
+		$this->Html->link('<i class="fa fa-envelope-o"></i>', 'mailto:'.$contacto['email'],array(
+			'class'=>'botond', 'escape'=>false,'target' => '_blank', 'title'=>'Enciar e-mail'))
+		.' '.
 		$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
 			'controller'=>'contactos',
 			'action' => 'edit',

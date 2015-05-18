@@ -9,7 +9,7 @@
 	$empresa['Empresa']['id']
 ));
 ?>
-<h2>Detalles Almacén <?php echo $empresa['Empresa']['nombre']?></h2>
+
 <?php
 if (empty($empresa)):
 	echo "No hay almacenes en esta lista";
@@ -19,6 +19,7 @@ else:
    $this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array('action'=>'delete',$empresa['Almacen']['id']),array('escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$empresa['Empresa']['nombre'].'?'));
    	?>
    </div>
+   <h2>Detalles Almacén <?php echo $empresa['Empresa']['nombre']?></h2>
    <?php
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
 	  //formateamos el número de cuenta de la entidad
@@ -84,6 +85,9 @@ else:
 		$contacto['telefono1'],
 		$contacto['telefono2'],
 		$contacto['email'],
+		$this->Html->link('<i class="fa fa-envelope-o"></i>', 'mailto:'.$contacto['email'],array(
+			'class'=>'botond', 'escape'=>false,'target' => '_blank', 'title'=>'Enciar e-mail'))
+		.' '.
 		$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
 			'controller'=>'contactos',
 			'action' => 'edit',

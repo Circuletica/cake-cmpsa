@@ -4,12 +4,20 @@
 		'controller' => 'almacenes',
 		'action' => 'index')
 	); ?>
+	<div class="printdet">
+<ul><li>
+	<?php 
+	echo $this->element('imprimir');
+	?>
+	</li>
+	<li>
+	<?php
+	echo $this->element('desplegabledatos');
+	?>
+	</li>
+</ul>
+</div>
 <h2>Almacenes</h2>
-	<div class="actions">
-		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
-		?>
-	</div>
-	<div class='index'>
 	<?php
 	if (empty($empresas)):
 		echo "No hay almacenes en esta lista";
@@ -56,6 +64,6 @@
 		echo $this->Paginator->numbers(array('separator' => ''));
 		echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled')); ?>
 	</div>
-</div>
+
 <?php endif; ?>
 

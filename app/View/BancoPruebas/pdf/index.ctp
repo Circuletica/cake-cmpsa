@@ -1,17 +1,10 @@
 <?php //$this->Html->getCrumbs(' > ');?>
 <?php $this->Html->addCrumb('Bancos', '/banco_pruebas');?>
+
 <div class="printdet">
-<ul><li>
 	<?php 
-	echo $this->element('imprimir');
+	echo $this->element('imprimir')
 	?>
-	</li>
-	<li>
-	<?php
-	echo $this->element('desplegabledatos');
-	?>
-	</li>
-</ul>
 </div>
 <h2>Bancos</h2>
 <?php

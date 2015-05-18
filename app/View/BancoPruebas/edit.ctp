@@ -29,10 +29,10 @@
 			<li>
 			<div class="enlinea">
 				<?php            
-				echo $this->Html->link('Añadir País', array(
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País', array(
 						'controller'=>'paises',
 						'action'=>'add'),
-						array("class"=>"botond")
+						array("class"=>"botond", 'escape' => false)
 						);
 						 ?>
 			 </div>

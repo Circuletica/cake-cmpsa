@@ -1,3 +1,8 @@
+<div class="printdet">
+  <?php 
+  echo $this->element('imprimir');
+  ?>
+</div>
 <h2><?php echo $title;?></h2>
 <?php 
   if(isset($this->request->data['Search']['tipo_id'])){

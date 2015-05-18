@@ -27,7 +27,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
-		echo $this->Html->css(array('cake.generic','cake.concreto','menu'));
+		echo $this->Html->css(array('cake.generic','cake.concreto'));
 		echo $this->Html->css('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
