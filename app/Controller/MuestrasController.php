@@ -9,7 +9,7 @@ class MuestrasController extends AppController {
 	//1 - oferta
 	//2 - embarque
 	//3 - entrega
-	public $tipos =  array(
+	private $tipos =  array(
 			1 => 'Oferta',
 			2 => 'Emb.',
 			3 => 'Entr.'
@@ -31,16 +31,7 @@ class MuestrasController extends AppController {
 	}
 	
 	public function index() {
-		//el tipo de muestra puede ser:
-		//1 - oferta
-		//2 - embarque
-		//3 - entrega
-		$tipos =  array(
-			1 => 'Oferta',
-			2 => 'Embar.',
-			3 => 'Entr.'
-		);	
-		$this->set('tipos', $tipos);
+		$this->set('tipos', $this->tipos);
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
 		$proveedores = $this->Muestra->Proveedor->find('list', array(
@@ -154,15 +145,7 @@ class MuestrasController extends AppController {
 			$this->Session->setFlash('URL mal formado Muestra/view');
 			$this->redirect(array('action'=>'index'));
 		}
-		//el tipo de muestra puede ser:
-		//1 - oferta
-		//2 - embarque
-		//3 - entrega
-		$tipos =  array(
-			1 => 'Oferta',
-			2 => 'Embarque',
-			3 => 'Entrega'
-		);	
+		$this->set('tipos', $this->tipos);
 		$muestra = $this->Muestra->find('first', array(
 			'conditions' => array('Muestra.id' => $id),
 			'recursive' => 2));
@@ -186,6 +169,7 @@ class MuestrasController extends AppController {
 	}
 
 	public function add() {
+		$this->set('tipos', $this->tipos);
 		//Sacamos el tipo de muestra de la URL
 		//y lo metemos ya en el formulario
 		if(isset($this->passedArgs['tipo_id'])) { //por si la URL no incluye el tipo de muestra
@@ -193,16 +177,6 @@ class MuestrasController extends AppController {
 		} else {
 			$this->request->data['Muestras']['tipo'] = '';
 		}
-		//el tipo de muestra puede ser:
-		//1 - oferta
-		//2 - embarque
-		//3 - entrega
-		$tipos =  array(
-			1 => 'Oferta',
-			2 => 'Embarque',
-			3 => 'Entrega'
-		);	
-		$this->set('tipos', $tipos);
 		//el titulado completo de la Calidad sale de una vista
 		//de MySQL que concatena descafeinado, pais y descripcion
 		$calidades = $this->Muestra->CalidadNombre->find('list');
@@ -235,15 +209,7 @@ class MuestrasController extends AppController {
 		$this->Muestra->id = $id;
 		$muestra = $this->Muestra->findById($id);
 		$this->set('muestra',$muestra);
-		//el tipo de muestra puede ser:
-		//1 - oferta
-		//2 - embarque
-		//3 - entrega
-		$tipos =  array(
-			1 => 'Oferta',
-			2 => 'Embarque',
-			3 => 'Entrega'
-		);	
+		$this->set('tipos', $this->tipos);
 		$tipo = $tipos[$muestra['Muestra']['tipo']];
 		$this->set('tipo',$tipo);
 		//el titulado completo de la Calidad sale de una vista
