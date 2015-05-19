@@ -5,16 +5,6 @@ class MuestrasController extends AppController {
 		'order' => array('Muestra.referencia' => 'asc')
 	);
 
-	//el tipo de muestra puede ser:
-	//1 - oferta
-	//2 - embarque
-	//3 - entrega
-	public $tipos =  array(
-			1 => 'Oferta',
-			2 => 'Emb.',
-			3 => 'Entr.'
-		);	
-
 	public function search() {
 		//la página a la que redirigimos después de mandar  el formulario de filtro
 		$url['action'] = 'index';
@@ -149,7 +139,7 @@ class MuestrasController extends AppController {
 		$muestra = $this->Muestra->find('first', array(
 			'conditions' => array('Muestra.id' => $id),
 			'recursive' => 2));
-		$tipo = $tipos[$muestra['Muestra']['tipo']];
+		$tipo = $this->tipoMuestras[$muestra['Muestra']['tipo']];
 		$this->set('tipo',$tipo);
 		$this->set('muestra',$muestra);
 		$this->loadModel('CalidadNombre');
