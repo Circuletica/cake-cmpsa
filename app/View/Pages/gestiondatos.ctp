@@ -1,6 +1,6 @@
 <?php $this->Html->addCrumb('Gestión de Datos', '/pages/gestiondatos');?>
 
-<div class="acciones">
+<div class="printdet">
 <?php
 echo $this->element('desplegabledatos');
 ?>

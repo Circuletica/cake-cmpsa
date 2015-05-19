@@ -21,9 +21,9 @@
 		'from_controller' => 'linea_muestras',
 		'action'=>'edit',
 		'from_id' => $linea['LineaMuestra']['id'],
-		$linea['LineaMuestra']['id']),array('title'=>'Modificar muestra','escape'=>false)
-		.' '.
-		$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
+		$linea['LineaMuestra']['id']),
+		array('title'=>'Modificar muestra','escape'=>false))
+		.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
 		'action'=>'delete',
 		$linea['LineaMuestra']['id']),
 		array('escape'=>false, 'title'=> 'Borrar',
@@ -49,10 +49,12 @@
 	}
 	$fondo++;
 	//echo "fondo: ".$fondo;
-	echo "  <dt>Criba</dt>\n";
-	echo "<dd>";
-	echo "<table>";
-	echo $this->Html->tableHeaders(array('&nbsp;', 'Medida original', 'Medida ponderada'));
+	?>
+	<br>
+	<div class="cribai">
+	<table>
+	<?php
+	echo $this->Html->tableHeaders(array('Criba', 'Medida original', 'Medida ponderada'));
 	//solo mostramos la línea si tiene algún valor
 	if ($linea['LineaMuestra']['criba20'] || $linea['CribaPonderada']['criba20']) {
 		echo $this->Html->tableCells(array(
@@ -145,10 +147,16 @@
 		array($suma_linea."%",array('class' => 'total')),
 		array($suma_ponderada."%",array('class' => 'total'))
 		));
-	echo "</table>"."&nbsp;";
-	echo "<dt>Criba Media</dt>";
-	echo "<dd>".$linea['CribaPonderada']['criba_media']."</dd>";
-	echo "</dd>";
-	echo "</dl>";
-	echo "</div>";
-?>
+	?>
+	</table>
+	<div class="negrita">
+	<?php
+	echo "Criba Media";
+	echo $linea['CribaPonderada']['criba_media'];
+		?>
+
+			</div>
+
+	</div>
+
+</div>

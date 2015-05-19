@@ -1,16 +1,28 @@
-<h2>Listado de calidades</h2>
 <?php
 	$this->Html->addCrumb('Calidades', array(
 		'controller' => 'calidades',
 		'action' => 'index')
 	);
 ?>
-  <div class="actions">
+<div class="printdet">
+<ul><li>
+  <?php 
+  echo $this->element('imprimir');
+  ?>
+  </li>
+  <li>
   <?php
-  echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
-	?>
-	</div>
-
+  echo $this->element('desplegabledatos');
+  ?>
+  </li>
+</ul>
+</div>
+<h2>Listado de calidades</h2>
+<div class="actions">
+  <?php
+  echo $this->element('filtromuestra');
+  ?>
+</div>
 	<div class='index'>
 	<?php //print_r($calidades);?>
 <table>

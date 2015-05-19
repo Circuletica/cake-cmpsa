@@ -1,10 +1,19 @@
 <?php //$this->Html->getCrumbs(' > ');?>
 <?php $this->Html->addCrumb('Proveedores', '/proveedores');?>
-<h2>Proveedores</h2>
-<div class='actions'>
-	<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos?>
+<div class="printdet">
+<ul><li>
+	<?php 
+	echo $this->element('imprimir');
+	?>
+	</li>
+	<li>
+	<?php
+	echo $this->element('desplegabledatos');
+	?>
+	</li>
+</ul>
 </div>
-<div class="index">
+<h2>Proveedores</h2>
 	<?php 
 	if (empty($proveedores)):
 		echo "No hay proveedores en esta lista";
@@ -55,6 +64,5 @@
 		<?php echo $this->Paginator->numbers(array('separator' => ''));?>
 		<?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
 	</div>
-</div>
 <?php endif; ?>
 
