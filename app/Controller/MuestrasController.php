@@ -9,7 +9,7 @@ class MuestrasController extends AppController {
 	//1 - oferta
 	//2 - embarque
 	//3 - entrega
-	private $tipos =  array(
+	public $tipos =  array(
 			1 => 'Oferta',
 			2 => 'Emb.',
 			3 => 'Entr.'
@@ -31,7 +31,7 @@ class MuestrasController extends AppController {
 	}
 	
 	public function index() {
-		$this->set('tipos', $this->tipos);
+		$this->set('tipos', $this->tipoMuestras);
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
 		$proveedores = $this->Muestra->Proveedor->find('list', array(
@@ -74,7 +74,7 @@ class MuestrasController extends AppController {
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['tipo_id'] = $tipo_id;
 			//Sacamos el nombre del tipo
-			$tipo = $tipos[$tipo_id];	
+			$tipo = $this->tipoMuestras[$tipo_id];	
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['tipo_id'] = $tipo_id;
 		}
@@ -145,7 +145,7 @@ class MuestrasController extends AppController {
 			$this->Session->setFlash('URL mal formado Muestra/view');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->set('tipos', $this->tipos);
+		$this->set('tipos', $this->tipoMuestras);
 		$muestra = $this->Muestra->find('first', array(
 			'conditions' => array('Muestra.id' => $id),
 			'recursive' => 2));
@@ -169,7 +169,7 @@ class MuestrasController extends AppController {
 	}
 
 	public function add() {
-		$this->set('tipos', $this->tipos);
+		$this->set('tipos', $this->tipoMuestras);
 		//Sacamos el tipo de muestra de la URL
 		//y lo metemos ya en el formulario
 		if(isset($this->passedArgs['tipo_id'])) { //por si la URL no incluye el tipo de muestra
@@ -209,7 +209,7 @@ class MuestrasController extends AppController {
 		$this->Muestra->id = $id;
 		$muestra = $this->Muestra->findById($id);
 		$this->set('muestra',$muestra);
-		$this->set('tipos', $this->tipos);
+		$this->set('tipos', $this->tipoMuestras);
 		$tipo = $tipos[$muestra['Muestra']['tipo']];
 		$this->set('tipo',$tipo);
 		//el titulado completo de la Calidad sale de una vista

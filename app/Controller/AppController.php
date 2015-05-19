@@ -65,4 +65,16 @@ class AppController extends Controller {
 	if(strlen($digitoControl)==1) $digitoControl = '0'.$digitoControl;
 	return $codigoPais.$digitoControl.$ccc;
 	}
+	
+	//el tipo de muestra puede ser:
+	//1 - oferta
+	//2 - embarque
+	//3 - entrega
+	public $tipoMuestras =  array(
+			1 => 'Oferta',
+			2 => 'Emb.',
+			3 => 'Entr.'
+		);	
+
+
 }

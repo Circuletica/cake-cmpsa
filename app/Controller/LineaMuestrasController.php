@@ -83,6 +83,7 @@ class LineaMuestrasController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		$linea = $this->LineaMuestra->findById($id);
+		$this->set('tipos', $this->tipoMuestras);
 		$this->set('linea',$linea);
 		//debug($linea['LineaMuestra']);
 		//Sacamos la criba ponderada correspondiente
