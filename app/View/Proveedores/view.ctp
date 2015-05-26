@@ -70,7 +70,7 @@ else:
 	echo "</dd>";
 	echo "  <dt>BIC</dt>\n";
 	echo "<dd>";
-        echo $proveedor['BancoPrueba']['bic'].'&nbsp;';
+        echo $proveedor['Empresa']['bic'].'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Cuenta entidad</dt>\n";
 	echo "<dd>";

@@ -61,11 +61,11 @@ else:
 	echo "  <dt>Código contable</dt>\n";
 	echo "<dd>";
         echo $empresa['Empresa']['codigo_contable'].'&nbsp;';
-	//echo "</dd>";
-	//echo "  <dt>BIC</dt>\n";
-	//echo "<dd>";
-        //echo $proveedor['BancoPrueba']['bic'].'&nbsp;';
-	//echo "</dd>";
+	echo "</dd>";
+	echo "  <dt>BIC</dt>\n";
+	echo "<dd>";
+        echo $empresa['Empresa']['bic'].'&nbsp;';
+	echo "</dd>";
 	echo "  <dt>Cuenta entidad</dt>\n";
 	echo "<dd>";
         echo $cuenta_entidad.'&nbsp;';
