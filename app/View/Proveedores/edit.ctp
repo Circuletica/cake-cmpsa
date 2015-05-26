@@ -52,6 +52,7 @@ echo $this->Form->create('Proveedor', array('action' => 'edit'));
 	echo $this->Form->input('Empresa.cif',array('label'=>'CIF'));
 	echo $this->Form->input('Empresa.codigo_contable',array('label'=>'Código Contable'));
 	echo $this->Form->input('Empresa.cuenta_bancaria');
+	echo $this->Form->input('Empresa.bic');
 	//echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
 	echo $this->Form->input('id',array('type'=>'hidden'));
 	echo $this->Form->end('Guardar proveedor');
