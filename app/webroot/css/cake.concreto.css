@@ -403,7 +403,7 @@ input[type=submit]:active,
 	margin: 0px 10px 0px 0px;
 }
 .enlinea{
-	padding-top: 20px;
+	padding-top: 26px;
 }
 
 .linea select{
@@ -582,3 +582,41 @@ div.cribai {
 	font-weight: bold;
 	color: #CE443E;
 }
+/* LATERAL DERECHA */
+div.laterald {
+	float:right;
+	width:16%;
+	padding:1%;
+	border: 5px;
+    margin: 5px;
+    
+}
+div.laterald h3 {
+	padding-top:0;
+	color:#777;
+}
+
+.laterald select {
+	width: 100%;
+	color: #585757;
+	font-size: 13px;
+	line-height: 100%;
+	border: 1px solid #C1C1C1;
+	-webkit-appearance: none;
+}
+.laterald input {
+	clear: both;
+	font-size: 110%;
+	font-family: "frutiger linotype", "verdana", sans-serif;
+	padding: 0.1%;
+	width:98%;
+	display:inline; /*Formulario visto en línea*/
+	text-align: right;
+}
+div.laterali {
+	float:left;
+	width:76%;
+	border-right: 2px solid rgba(102, 102, 102, 0.92);
+	padding:1% 2%;
+}
+
