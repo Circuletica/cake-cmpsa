@@ -1,5 +1,5 @@
 <?php
-class Agentes extends AppController {
+class AgentesController extends AppController {
 	public $paginate = array(
 		'order' => array('Empresa.nombre' => 'asc')
 	);
@@ -13,7 +13,7 @@ class Agentes extends AppController {
 			$this->Session->setFlash('URL mal formado Agente/view ');
 			$this->redirect(array('action'=>'index'));
 		}
-		$empresa = $this->Naviera->find('first',array(
+		$empresa = $this->Agente->find('first',array(
 			'conditions' => array('Agente.id' => $id)));
 		$this->set('empresa',$empresa);
 		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
@@ -41,7 +41,7 @@ class Agentes extends AppController {
 			$this->Agente->Empresa->save($this->request->data);
 			$this->request->data['Agente']['id'] = $this->Agente->Empresa->id;
 			if($this->Agente->save($this->request->data)):
-				$this->Session->setFlash('Agente guardada');
+				$this->Session->setFlash('Agente guardado');
 				$this->redirect(array('action' => 'index'));
 			endif;
 		endif;
@@ -53,8 +53,8 @@ class Agentes extends AppController {
 			//$this->Session->setFlash('URL mal formado');
 			//$this->redirect(array('action'=>'index'));
 		endif;
-		if ($this->Naviera->Empresa->delete($id)):
-			$this->Session->setFlash('Naviera borrado');
+		if ($this->Agente->Empresa->delete($id)):
+			$this->Session->setFlash('Agente borrado');
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}
@@ -64,23 +64,23 @@ class Agentes extends AppController {
 			$this->Session->setFlash('URL mal formado');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Naviera->id = $id;
-		$this->Naviera->Empresa->id = $id;
-		$naviera = $this->Naviera->find('first',array(
-			'conditions' => array('Naviera.id' => $id)));
-		$this->set('empresa',$naviera);
-		$this->set('paises', $this->Naviera->Empresa->Pais->find('list'));
+		$this->Agente->id = $id;
+		$this->Agente->Empresa->id = $id;
+		$agente = $this->Agente->find('first',array(
+			'conditions' => array('Agente.id' => $id)));
+		$this->set('empresa',$agente);
+		$this->set('paises', $this->Agente->Empresa->Pais->find('list'));
 		if($this->request->is('get')):
-			$this->request->data = $this->Naviera->read();
+			$this->request->data = $this->Agente->read();
 		else:
 			//if ($this->BancoPrueba->save($this->request->data)):
-			if ($this->Naviera->Empresa->save($this->request->data) and $this->Naviera->save($this->request->data)):
-				$this->Session->setFlash('Naviera '.
+			if ($this->Agente->Empresa->save($this->request->data) and $this->Agente->save($this->request->data)):
+				$this->Session->setFlash('Agente '.
 				$this->request->data['Empresa']['nombre'].
 			        ' modificado con éxito');
 				$this->redirect(array('action' => 'view', $id));
 			else:
-				$this->Session->setFlash('Naviera NO guardado');
+				$this->Session->setFlash('Agente NO guardado');
 			endif;
 		endif;
 	}
