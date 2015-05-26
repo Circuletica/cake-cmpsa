@@ -8,6 +8,7 @@ class CalidadesController extends AppController {
 		//$this->Calidad->recursive = 1;
 		//$this->Calidad->setSource('CalidadNombre');
 		$this->set('calidades', $this->paginate());
+		$this->set('tipos', $this->tipoMuestras);
 	}
 
 	public function add() {
