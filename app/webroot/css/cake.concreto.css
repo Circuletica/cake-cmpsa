@@ -159,13 +159,12 @@ input[type=submit]:active,
 /*Columnas dentro del index y form */
 /* IDs */
 .col2{
-	display: inline;
- -webkit-columns: 2;
-    -moz-columns: 2;
-         columns: 2;
- -webkit-column-gap: 20px;/* Chrome, Safari, Opera */
-    -moz-column-gap: 20px; /* Firefox */
-		 column-gap: 20px;
+ -webkit-columns: 2 50px;
+    -moz-columns: 2 50px;
+         columns: 2 50px;
+ -webkit-column-gap: 40px;/* Chrome, Safari, Opera */
+    -moz-column-gap: 40px; /* Firefox */
+         column-gap: 40px;
  -webkit-column-rule: 1px dotted #ddd;
 	 -moz-column-rule: 1px dotted #ddd;
    		 column-rule: 1px dotted #ddd;
@@ -180,6 +179,7 @@ input[type=submit]:active,
  -webkit-column-rule: 1px dotted #ddd;
 	 -moz-column-rule: 1px dotted #ddd;
    		 column-rule: 1px dotted #ddd;
+   		 width:740px;
 }
 
 .columna3{
@@ -192,6 +192,7 @@ input[type=submit]:active,
   -webkit-column-rule: 1px dotted #ddd;
      -moz-column-rule: 1px dotted #ddd;
           column-rule: 1px dotted #ddd;
+          width: 740px
 }
 
 /*Botones genéricos y en tabla de detalle*/
@@ -403,7 +404,7 @@ input[type=submit]:active,
 	margin: 0px 10px 0px 0px;
 }
 .enlinea{
-	padding-top: 26px;
+	padding-top: 20px;
 }
 
 .linea select{
@@ -586,7 +587,7 @@ div.cribai {
 div.laterald {
 	float:right;
 	width:16%;
-	padding:1%;
+	/*padding:1%;*/
 	border: 5px;
     margin: 5px;
     

@@ -19,11 +19,11 @@ echo $this->Form->create('BancoPrueba', array('action' => 'add'));
 	echo $this->Form->input('Empresa.nombre');
 	echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
 	//echo $this->Form->input('Cód Postal', array('Empresa.cp'));
+	?>
+	<div class="columna3">
+	<?php
 	echo $this->Form->input('Empresa.cp', array(
 		'label' => 'Código Postal'));
-	?>
-	<div class="columna2">
-	<?php
 	echo $this->Form->input('Empresa.municipio');
 	?>
 	<div class="formuboton">
@@ -57,11 +57,9 @@ echo $this->Form->create('BancoPrueba', array('action' => 'add'));
 	<?php
 	echo $this->Form->input('Empresa.telefono', array('label'=> 'Teléfono'));
 	echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));
-	?>
-	</div>
-	<?php
 	echo $this->Form->input('Empresa.codigo_contable', array('label'=>'Código Contable'));	
 	?>
+	</div>
 	<?php
 	echo $this->Form->input('Empresa.cuenta_bancaria');
 	echo $this->Form->input('BancoPrueba.bic', array('label'=>'BIC'));

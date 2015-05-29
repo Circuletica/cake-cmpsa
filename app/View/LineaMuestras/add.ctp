@@ -21,8 +21,14 @@ function findTotal(){
 <?php
 $this->Html->addCrumb('Muestras','/muestras');
 $this->Html->addCrumb('Muestra '.$muestra['Muestra']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
+
+?>
+<div class="laterali">
+<?php
 echo $this->Form->create();
-echo "<table>\n";
+?>
+	<div class="col2">
+<?php
 echo $this->Html->tableCells(array(
 	$this->Form->input('marca'),
 	$this->Form->input('numero_sacos', array(
@@ -38,15 +44,29 @@ echo $this->Html->tableCells(array(
 );
 echo $this->Html->tableCells(array(
 	$this->Form->input('referencia_proveedor',array(
-		'label' => 'Referencia Proveedor('.$proveedor.')'
+		'label' => 'Referencia Proveedor - '.$proveedor.''
 			)
 		),
 	$this->Form->input('referencia_almacen',array(
-		'label' => 'Referencia Almacén('.$almacen.')'
+		'label' => 'Referencia Almacén - '.$almacen.''
 			)
 		)
 	)
 );
+?>
+</div>
+<?php
+echo $this->Form->input('apreciacion_bebida', array(
+	'label' => 'Bebida')
+);
+
+echo $this->Form->input('defecto');
+echo $this->Form->end('Guardar Linea de muestra');
+
+?>
+</div>
+<div class="laterald">
+<?php
 echo $this->Html->tableCells(array(
 		$this->Form->input('criba20', array(
 			'label' => 'Criba 20',
@@ -154,12 +174,7 @@ echo $this->Html->tableCells(array(
 		'Total : <input type="number" name="total" id="total"/>'
 		)
 	);
-echo "</table>\n";
-echo $this->Form->input('apreciacion_bebida', array(
-	'label' => 'Bebida')
-);
 
-echo $this->Form->input('defecto');
 //echo $this->Form->input('marca');
 //echo $this->Form->input('numero_sacos');
 //echo $this->Form->input('referencia_proveedor',array(
@@ -247,6 +262,5 @@ echo $this->Form->input('defecto');
 //);
 //
 //echo 'Total : <input type="text" name="total" id="total"/>';
-
-echo $this->Form->end('Guardar Linea de muestra');
 ?>
+</div>

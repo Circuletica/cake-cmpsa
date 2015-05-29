@@ -300,12 +300,13 @@ form {
 }
 fieldset {
 	border: none;
-	margin-bottom: 1em;
-	padding: 16px 10px;
+	/*margin-bottom: 1em;*/
+	padding: 16px 0px;
 	float: left;
 	/*display: block;*/
-	width: 15%;
-	margin: 0 30px 30px 0;
+	/*width: 15%;*/
+	width: 749px;
+	/*margin: 0 30px 10px 0;*/
 }
 fieldset legend {
 	color: #e32;
@@ -349,6 +350,7 @@ form div.submit {
 	border: 0;
 	clear: both;
 	margin-top: 1.5%;
+	margin-right: 10px;
 }
 
 form :focus {

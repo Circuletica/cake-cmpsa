@@ -14,10 +14,12 @@
 echo $this->Form->create('Proveedor', array('action' => 'edit'));
 ?>
 <fieldset>
-	<?php
+<?php
 	echo $this->Form->input('Empresa.nombre');
 	echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
-		?><div class="columna2">
+		?>
+</fieldset>
+		<div class="columna2">
 		<?php
 		echo $this->Form->input('Empresa.cp',array('label'=>'Código Postal'));
 		echo $this->Form->input('Empresa.municipio');
@@ -47,7 +49,7 @@ echo $this->Form->create('Proveedor', array('action' => 'edit'));
 			<?php
 			echo $this->Form->input('Empresa.telefono',array('label'=>'Teléfono'));
 			?>
-		</div>
+		
 	<?php
 	echo $this->Form->input('Empresa.cif',array('label'=>'CIF'));
 	echo $this->Form->input('Empresa.codigo_contable',array('label'=>'Código Contable'));
@@ -56,6 +58,10 @@ echo $this->Form->create('Proveedor', array('action' => 'edit'));
 		'label'=>'BIC'
 		)
 	);
+	?>
+	</div>
+	<fieldset>
+	<?php
 	//echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
 	echo $this->Form->input('id',array('type'=>'hidden'));
 	echo $this->Form->end('Guardar proveedor');
