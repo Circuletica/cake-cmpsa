@@ -32,7 +32,7 @@ class ProveedoresController extends AppController {
 	}
 
 	public function add() {
-		debug($this->params['named']);
+		//debug($this->params['named']);
 		$this->set('paises', $this->Proveedor->Empresa->Pais->find('list'));
 		if($this->request->is('post')):
 			//$empresa = $this->BancoPrueba->Empresa->save($this->request->data);

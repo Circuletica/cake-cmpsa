@@ -18,12 +18,6 @@
 </ul>
 </div>
 <h2>Listado de calidades</h2>
-<div class="actions">
-  <?php
-  echo $this->element('filtromuestra');
-  ?>
-</div>
-	<div class='index'>
 	<?php //print_r($calidades);?>
 <table>
   <tr>
@@ -62,7 +56,7 @@
     'from_controller' => 'calidades',
     'from_action' => 'index'),array('escape' => false));
       ?>
-       </div>
+      </div>
 
     <?php echo $this->Paginator->counter(
 	   array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
@@ -71,6 +65,6 @@
 	<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));
 	 echo $this->Paginator->numbers(array('separator' => ''));
 	 echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
-  </div>
+ </div>
 </div>
 

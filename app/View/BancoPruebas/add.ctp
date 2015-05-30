@@ -10,8 +10,15 @@ $('#EmpresaCuentaBancaria').mask("9999-9999-99-9999999999");
 });
 </script>
 <?php
-$this->Html->addCrumb('Bancos', '/banco_pruebas');
-$this->Html->addCrumb('Añadir Banco');
+$this->Html->addCrumb('Bancos', array(
+	'controller' => 'bancopruebas',
+	'action' => 'index')
+);
+
+$this->Html->addCrumb('Añadir Banco', array(
+	'controller' => 'bancopruebas',
+	'action' => 'add')
+);
 echo $this->Form->create('BancoPrueba', array('action' => 'add'));
 ?>
 <fieldset>
@@ -43,27 +50,27 @@ echo $this->Form->create('BancoPrueba', array('action' => 'add'));
 			<li>
 			<div class="enlinea">
 				<?php            
-				echo $this->Html->link('Añadir País', array(
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País', array(
 					'controller'=>'paises',
-					'action'=>'add'),array("class"=>"botond")
+					'action'=>'add'),array("class"=>"botond", 'escape' => false)
 						);
 				?>
 			</div>
 			</li>
-
 	    	</ul>
-	 	</div>
-	 
-	<?php
+	 </div>
+	 <?php
 	echo $this->Form->input('Empresa.telefono', array('label'=> 'Teléfono'));
 	echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));
 	echo $this->Form->input('Empresa.codigo_contable', array('label'=>'Código Contable'));	
-	?>
-	</div>
-	<?php
+	?></div>
+	<div class="columna3"><?php
 	echo $this->Form->input('Empresa.cuenta_bancaria');
 	echo $this->Form->input('BancoPrueba.bic', array('label'=>'BIC'));
 	echo $this->Form->input('BancoPrueba.cuenta_cliente_1',array('label'=>'Cuenta Cliente Nº1'));
+	?>
+    </div>
+    <?php
 	//echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
 	echo $this->Form->end('Guardar banco');
 	?>

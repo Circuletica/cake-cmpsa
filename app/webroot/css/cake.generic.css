@@ -137,11 +137,11 @@ p {
 div.menuheader{
 float: right;
 margin:0px;
-width: 80%;
+width: 70%;
 }
 div.menufooter{
 float: right;margin:-10px;
-width: 80%;
+width: 60%;
 }
 
 div.form,
@@ -349,7 +349,7 @@ form div.submit {
 	float: right;
 	border: 0;
 	clear: both;
-	margin-top: 1.5%;
+	/*margin-top: 1.5%; Botones formularios demasiado separados*/
 	margin-right: 10px;
 }
 
