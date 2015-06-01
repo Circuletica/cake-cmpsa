@@ -1,8 +1,3 @@
-<div class="printdet">
-  <?php 
-  echo $this->element('imprimir');
-  ?>
-</div>
 <h2><?php echo $title;?></h2>
 <?php 
   if(isset($this->request->data['Search']['tipo_id'])){
@@ -12,11 +7,6 @@
   }
 
 ?>
-
-<div class="actions">
-  <?php echo $this->element('filtromuestra');?>
-  <!--h3>Filtro de muestra</h3-->
-</div>
 <div class='index'>
   <table>
   <tr>
@@ -25,7 +15,6 @@
     <th><?php echo $this->Paginator->sort('fecha')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('proveedor')?></th>
-    <th><?php echo 'Acciones'?></th>
   </tr>
   <?php foreach($muestras as $muestra):?>
   <tr>
@@ -67,32 +56,4 @@
   </tr>
   <?php endforeach;?>
   </table>
-
-  <div class="btabla">
-  <?php 
-    if(isset($this->request->data['Search']['tipo_id'])){
-      echo $this->Html->link(
-	'<i class="fa fa-plus"></i> Añadir Muestra',
-	array(
-	  'action'=>'add',
-	  'tipo_id'=>$this->request->data['Search']['tipo_id']
-	),array(
-  'class'=>'botond','escape'=>false, 'title'=>'Añadir Muestra'));
-    } else {
-    echo $this->Html->link(
-	'<i class="fa fa-plus"></i> Añadir Muestra',
-	array('action'=>'add'),array('class'=>'botond','escape'=>false, 'title'=>'Añadir Muestra'));
-    }
-  ?>
-  </div>
-
-  <?php echo $this->Paginator->counter(
-    array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
-  );?>
-
-  <div class="paging">
-    <?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
-    <?php echo $this->Paginator->numbers(array('separator' => ''));?>
-    <?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
-  </div>
 </div>

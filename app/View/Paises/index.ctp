@@ -1,5 +1,18 @@
 
 <?php $this->Html->addCrumb('Países', '/paises');?>
+<div class="printdet">
+<ul><li>
+  <?php 
+  echo $this->element('imprimir');
+  ?>
+  </li>
+  <li>
+  <?php
+  echo $this->element('desplegabledatos');
+  ?>
+  </li>
+</ul>
+</div>
 <h2>Listado de países</h2>
 <table>
   <tr>

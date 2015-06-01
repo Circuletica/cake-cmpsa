@@ -85,7 +85,7 @@ Configure::write('CakePdf', array(
 	'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',//Solo con windows, con linux instalar en /usr/bin/wkhtmltopdf y por defecto funciona.
 	//'binary'=>'/usr/local/bin/wkhtmltopdf',
 	'pageSize'=> 'A4',
-	'orientation'=> 'portrait'
+	'orientation'=> 'landscape'
 ));
 
 /**

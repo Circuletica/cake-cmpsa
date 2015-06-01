@@ -1,6 +1,6 @@
 
 
-  <?php echo $this->Form->create('Muestra', array('action'=>'search'));?>
+  <?php echo $this->Form->create('Muestra', array('action'=>'filtroListado'));?>
   <div class="radiomuestra">
   <?php
     //echo $this->Form->input('Search.id');

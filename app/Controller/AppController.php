@@ -76,5 +76,19 @@ class AppController extends Controller {
 			3 => 'Entr.'
 		);	
 
+	public function filtroListado() { //FILTRO-BUSCADOR
+		//la página a la que redirigimos después de mandar  el formulario de filtro
+		$url['action'] = 'index';
+		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
+		//la URL final tiene ese aspecto:
+		//http://cake-cmpsa.gargantilla.net/muestras/index/Search.referencia:mireferencia/Search.id:3
+		foreach ($this->data as $k=>$v){ 
+			foreach ($v as $kk=>$vv){ 
+			if ($vv) {$url[$k.'.'.$kk]=$vv;} 
+			} 
+
+		}
+		$this->redirect($url,null,true);
+	}
 
 }

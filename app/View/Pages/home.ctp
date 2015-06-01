@@ -1,17 +1,16 @@
-<h2>¡¡Bienvenido!! </h2>
+<h1>Bienvenido a la gestión de COMERCIAL DE MATERIAS PRIMAS </h1>
 
-<td>
-<table>
-	<tr><td><?php echo $this->Html->link('Bancos','/banco_pruebas',array('class'=>'button'));?></td>
-		<td><?php echo $this->Html->link('Muestras','/muestras',array('class'=>'button'));?></td>
-	</tr>
-	<tr><td><?php echo $this->Html->link('Proveedores','/proveedores',array('class'=>'button'));?></td>
-		<td><?php echo $this->Html->link('Línea de Muestra','/linea_muestras',array('class'=>'button'));?></td></tr>
-	<tr><td><?php echo $this->Html->link('Calidades','/calidades',array('class'=>'button'));?>
-		<td><?php echo $this->Html->link('Asociados','/asociados',array('class'=>'button'));?></td><td></td></tr>
-	<tr><td><?php echo $this->Html->link('Navieras','/navieras',array('class'=>'button'));?></td><td></td></tr>
-	<tr><td><?php echo $this->Html->link('Agentes','/agentes',array('class'=>'button'));?></td><td></td></tr>
-	<tr><td><?php echo $this->Html->link('Almacenes','/almacenes',array('class'=>'button'));?></td><td></td></tr>
-	<tr><td><?php echo $this->Html->link('Paises','/paises',array('class'=>'button'));?></td><td></td></tr>
-</table>
+<ul class="portada">
+<li><?php echo $this->Html->link('<i class="fa fa-money fa-3x"></i> <br>CONTABILIDAD','/pages/contabilidad',array('escape' => false));?></li>
+		<li><?php echo $this->Html->link('<i class="fa fa-flask fa-3x"></i> <br>LABORATORIO','#',array('escape' => false));?>
+				<ul>
+				<li><?php echo $this->Html->link('OFERTA','/muestras/index/Search.tipo_id:1',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('EMBARQUE','/muestras/index/Search.tipo_id:2	',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
+				</ul>
+			</li>
 
+			<li><?php echo $this->Html->link('<i class="fa fa-ship fa-3x"></i> <br>TRÁFICO','/pages/trafico', array('escape' => false));?></li>
+			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart fa-3x"></i> <br>COMERCIAL','/pages/compras',array('escape' => false));?></li>
+</ul>
+</div>

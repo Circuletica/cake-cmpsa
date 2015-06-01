@@ -7,37 +7,8 @@
 	'action'=>'view',
 	$muestra['Muestra']['id']
 ));
-?><div class="acciones">
-	<div class="printdet">
-	<ul><li>
-		<?php 
-		echo $this->element('imprimir');
-		?>	
-		
-	</li>
-	<li>
-			<?php
-		echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
-			'action'=>'edit',
-			$muestra['Muestra']['id']),array('title'=>'Modificar Banco','escape'=>false))
-		.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
-			'action'=>'delete',
-			$muestra['Muestra']['id']),array(
-			'escape'=>false, 'title'=> 'Borrar',
-			'confirm'=>'¿Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
-		);
-	?>
-	</li>
-	</ul>
-	</div>
-</div>
+?>
 <h2>Detalles Muestra <?php echo 'de '.$tipo.' '.$muestra['Muestra']['referencia']?></h2>
-<div class="actions">
-	<?php
-	echo $this->element('filtromuestra');
-	?>
-</div>
-
 	<div class='view'>
 	<?php
 	echo "<dl>";
