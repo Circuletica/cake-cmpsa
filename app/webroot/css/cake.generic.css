@@ -123,7 +123,7 @@ p {
 }
 #footer {
 	clear: both;
-	padding: 10px 20px 0px 10px;
+	padding: 0px 20px 0px 10px;
 }
 #header a, {			/*Se elimina footer a*/
 	color: #fff;
@@ -140,8 +140,9 @@ margin:0px;
 width: 70%;
 }
 div.menufooter{
-float: right;margin:-10px;
-width: 60%;
+/*float: right;*/
+margin: 0px 20px;
+/*width: 60%;*/
 }
 
 div.form,
