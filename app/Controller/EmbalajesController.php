@@ -1,5 +1,5 @@
 <?php
-class Embalajes extends AppController {
+class EmbalajesController extends AppController {
 	public $scaffold;
 }
 ?>
