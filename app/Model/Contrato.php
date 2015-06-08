@@ -1,6 +1,6 @@
 <?php
 class Contrato extends AppModel {
-	//public $recursive = 2;
+	public $recursive = 3;
 	//public $validate = array(
 	//);
 	//public $hasOne = array(

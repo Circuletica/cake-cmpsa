@@ -1,5 +1,5 @@
 <?php
 class IncotermsController extends AppController {
-	public $scaffold;
+  	var $scaffold = 'admin';
 }
 ?>
