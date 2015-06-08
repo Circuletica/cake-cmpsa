@@ -1,20 +1,19 @@
 <?php
 class Contrato extends AppModel {
 	public $recursive = 3;
+	public $displayField = 'referencia';
 	//public $validate = array(
 	//);
-	//public $hasOne = array(
 	public $belongsTo = array(
 		'Proveedor' => array(
 			'className' => 'Proveedor',
-			'foreignKey' => 'id'),
+			'foreignKey' => 'proveedor_id'),
 		'Incoterm' => array(
 			'className' => 'Incoterm',
-			'foreignKey' => 'id'),
+			'foreignKey' => 'incoterm_id'),
 		'CalidadNombre' => array(
 			'className' => 'CalidadNombre',
-			'foreignKey' => 'id')
+			'foreignKey' => 'calidad_id')
 	);
-	//var $name = 'BancoPrueba';
 }
 

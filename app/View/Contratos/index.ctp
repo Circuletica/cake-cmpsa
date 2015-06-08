@@ -24,23 +24,22 @@
 		'Diferencial',
 		'BolsaLondres?',
 		'Opciones',
-		'Puerto',
 		''));
 
 	foreach($contratos as $contrato):
-		echo '<pre>';
-		print_r($contrato);
-		echo '</pre>';
+		//echo '<pre>';
+		//print_r($contrato);
+		//echo '</pre>';
 	echo $this->Html->tableCells(array(
 		$contrato['Contrato']['id'],
 		$contrato['Contrato']['referencia'],
 		$contrato['Proveedor']['Empresa']['nombre'],
+		$contrato['Incoterm']['nombre'],
 		$contrato['CalidadNombre']['nombre'],
 		$contrato['Contrato']['diferencial'],
 		$contrato['Contrato']['si_londres'],
 		$contrato['Contrato']['opciones'],
-		$contrato['Contrato']['Puerto']['nombre'],
-		$this->Html->link('Detalles',array('action'=>'view',$contrato['id']), array('class' =>'boton' , ))//.' '.
+		$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))//.' '.
 	));
 
 	endforeach;?>
