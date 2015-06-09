@@ -4,6 +4,12 @@ class Contrato extends AppModel {
 	public $displayField = 'referencia';
 	//public $validate = array(
 	//);
+	public $hasMany = array(
+		'Lote' => array(
+			'className' => 'Lote',
+			'foreignKey' => 'contrato_id'
+		)
+	);
 	public $belongsTo = array(
 		'Proveedor' => array(
 			'className' => 'Proveedor',

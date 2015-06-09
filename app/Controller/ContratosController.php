@@ -34,6 +34,20 @@ class ContratosController extends AppController {
 		endif;
 	}
 
+	public function view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash('URL mal formado Contrato/view');
+			$this->redirect(array('action'=>'index'));
+		}
+		$contrato = $this->Contrato->find('first', array(
+			'conditions' => array('Contrato.id' => $id),
+			'recursive' => 2));
+		$this->set('contrato',$contrato);
+		$this->loadModel('CalidadNombre');
+		//el nombre de calidad concatenado esta en una view de MSQL
+	}
+
+
 
 }
 ?>
