@@ -19,11 +19,11 @@
 			<?php
 		echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
 			'action'=>'edit',
-			$muestra['Muestra']['id']),array('title'=>'Modificar Banco','escape'=>false))
+			$muestra['Muestra']['id']),array('title'=>'Modificar Muestra','escape'=>false))
 		.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
 			'action'=>'delete',
 			$muestra['Muestra']['id']),array(
-			'escape'=>false, 'title'=> 'Borrar',
+			'escape'=>false, 'title'=> 'Borrar Muestra',
 			'confirm'=>'¿Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
 		);
 	?>
