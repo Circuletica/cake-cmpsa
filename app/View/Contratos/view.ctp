@@ -38,6 +38,8 @@
 	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Incoterms</dt>\n";
 	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
+	echo "  <dt>Bolsa de Londres</dt>\n";
+	echo "  <dd>".$contrato['Contrato']['si_londres'].'&nbsp;'."</dd>";
 	echo "  <dt>Diferencial</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['diferencial'].'&nbsp;'."</dd>";
 	echo "  <dt>Opciones</dt>\n";
