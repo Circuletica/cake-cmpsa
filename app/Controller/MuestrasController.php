@@ -133,6 +133,21 @@ class MuestrasController extends AppController {
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$calidad_nombre = $this->CalidadNombre->findById($muestra['Calidad']['id']);
 		$this->set('calidad_nombre',$calidad_nombre);
+
+				//Exportar PDF
+		 //$this->set('title_for_layout', 'Factura');
+		//$this->layout = 'facturas';
+		 $this->Muestra->id = $id;
+            if (!$this->Muestra->exists()) {
+                throw new NotFoundException(__('Informe inválido'));
+            }
+ 		$this->pdfConfig = array(
+			'orientation'=>'portrait',
+			'download'=>true,
+			'filename'=>'INFORME-'.$id.'pdf'
+			);
+
+		 $this->set('muestra', $this->Muestra->read(null, $id));
 	}
 
 	public function delete( $id = null) {

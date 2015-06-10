@@ -3,10 +3,13 @@
 	</title>
 </head>
 <body>
-	<h2>COMERCIAL DE MATERIAS PRIMAS S.A.</h2>
-layout>default
+	<h1>COMERCIAL DE MATERIAS PRIMAS S.A.</h1>
+	<h2>DEPARTAMENTO DE CONTROL DE CALIDAD</h2><br>
+	
+	FACTURA
+	layout>facturas
+
 	<?php
- echo date('d/m/Y');
 header("Content-type: application/pdf");
 echo $content_for_layout;
 ?>

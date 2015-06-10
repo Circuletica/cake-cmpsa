@@ -4,9 +4,24 @@ class BancoPruebasController extends AppController {
 		'order' => array('Empresa.nombre' => 'asc')
 	);
 
-		function index() {
+		function index($id = null) {
 		//$this -> set('bancopruebas', $this->BancoPrueba->find('all'));
 		$this->set('bancopruebas', $this->paginate());
+			//Exportar PDF
+		$this->pdfConfig = array(
+			'orientation'=>'landscape',
+			'filename'=>'Bancos-'.$id.'pdf',
+			'title'=>'Listado de Bancos',
+			'margin' => array(
+            'bottom' => 15,
+            'left' => 30,
+            'right' => 30,
+            'top' => 15
+        	));
+		 $this->set('Listado', $this->BancoPrueba->read(null, $id));
+		// $this->layout = 'pdf\facturas'; //this will use the pdf.ctp layout
+		 $this->render();
+				
 	}
 
 	public function view($id = null) {
@@ -26,6 +41,13 @@ class BancoPruebasController extends AppController {
 		$iban_cliente = $this->iban("ES",$cuenta_cliente);
 		$this->set('iban_cliente',$iban_cliente);
 		//debug($iban_cliente);
+
+		//Exportar PDF
+		$this->pdfConfig = array(
+			'orientation'=>'portrait',
+			'download'=>true,
+			'filename'=>'bancos-'.$id.'pdf'
+			);
 	}
 
 	public function add() {
