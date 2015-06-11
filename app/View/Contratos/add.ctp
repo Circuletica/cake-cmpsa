@@ -188,10 +188,18 @@
 	    );
 	    ?>
 	<div class="columna2">
-		<?php echo $this->Form->input('referencia'); ?>
-	 	<?php 
+		<?php
+			echo $this->Form->input('referencia');
 			echo $this->Form->input('diferencial');
 			echo $this->Form->input('si_londres');
+			echo $this->Form->input('fecha_embarque', array(
+				'label' => 'Fecha de embarque',
+			'dateFormat' => 'DMY')
+			);
+			echo $this->Form->input('fecha_entrega', array(
+				'label' => 'Fecha de entrega',
+				'dateFormat' => 'DMY')
+			);
 			echo $this->Form->input('opciones');
 		?>
 	</div>		

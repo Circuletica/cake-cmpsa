@@ -29,6 +29,17 @@
 </div>
 	<div class='view'>
 	<?php
+	//mysql almacena la fecha en formato YMD
+	$fecha = $contrato['Contrato']['fecha_embarque'];
+	$dia = substr($fecha,8,2);
+	$mes = substr($fecha,5,2);
+	$anyo = substr($fecha,0,4);
+	$fecha_embarque = $dia.'-'.$mes.'-'.$anyo;
+	$fecha = $contrato['Contrato']['fecha_entrega'];
+	$dia = substr($fecha,8,2);
+	$mes = substr($fecha,5,2);
+	$anyo = substr($fecha,0,4);
+	$fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
 	echo "<dl>";
 	echo "  <dt>Id</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['id'].'&nbsp;'."</dd>";
@@ -38,6 +49,10 @@
 	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Incoterms</dt>\n";
 	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
+	echo "  <dt>Fecha de embarque</dt>\n";
+	echo "  <dd>".$fecha_embarque."</dd>";
+	echo "  <dt>Fecha de entrega</dt>\n";
+	echo "  <dd>".$fecha_entrega."</dd>";
 	echo "  <dt>Bolsa de Londres</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['si_londres'].'&nbsp;'."</dd>";
 	echo "  <dt>Diferencial</dt>\n";
