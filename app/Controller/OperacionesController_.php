@@ -40,6 +40,10 @@ public function view($id = null) {
 	}
 
 	public function add() {
+		//$this->set('proveedores', $proveedores);
+		//$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
+		$this->set('almacenes', $this->Operacion->Almacen->find('list'));
+		$this->set('calidades', $this->Operacion->CalidadNombre->find('list'));
 		if($this->request->is('post')):
 			if($this->Operacion->save($this->request->data) ):
 				$this->Session->setFlash('Operación guardada');

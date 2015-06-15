@@ -10,18 +10,21 @@ class Operacion extends AppModel {
 			'foreignKey' => 'contrato_id')
 	);
 	public $belongsTo = array(
-			'Agente' => array(
-			'className' => 'Agente',
-			'foreignKey'=> 'agente_id'),
-			'Naviera' => array(
+		'Proveedor' => array(
+			'className' => 'Proveedor',
+			'foreignKey' => 'proveedor_id'),
+		'Incoterm' => array(
+			'className' => 'Incoterm',
+			'foreignKey' => 'incoterm_id'),
+		'CalidadNombre' => array(
+			'className' => 'CalidadNombre',
+			'foreignKey' => 'calidad_id'),
+		'Naviera' => array(
 			'className' => 'Naviera',
 			'foreignKey' => 'naviera_id'),
-			'Almacen' => array(
-			'className' => 'Almacen',
-			'foreignKey' => 'almacen_id'),
-			'Puerto' => array(
-			'className' => 'Puerto',
-			'foreignKey' => 'puerto_id')
+		'Puerto' => array(
+		'className' => 'Pais',
+		'foreignKey' => 'puerto_id')
 	);
   	public $validate = array(
     'referencia' => array(
