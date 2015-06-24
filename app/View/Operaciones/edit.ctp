@@ -1,4 +1,4 @@
-<h1>Modificar Muestra<?php echo ' de '.$tipo;?></h1>
+<h1>Modificar Operación<?php echo ' de '.$tipo;?></h1>
 <fieldset>
 <?php
   $this->Html->addCrumb('Muestras', '/muestras');
@@ -17,12 +17,12 @@
 	$enlace_anyadir_proveedor = $this->Html->link ('Añadir Proveedor', array(
 		'controller' => 'proveedores',
 		'action' => 'add',
-		'from_controller' => 'muestras',
+		'from_controller' => 'operadores',
 		'from_action' => 'add'
 		)
 	);
 
-	echo $this->Form->create('Muestra', array('action' => 'edit'));
+	echo $this->Form->create('Operacion', array('action' => 'edit'));
 	echo $this->Form->input('calidad_id', array(
 		'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 		'id' => 'combobox'

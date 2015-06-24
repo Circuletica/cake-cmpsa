@@ -3,7 +3,7 @@
 	'action'=>'index'
 	));
 	$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-	'controller'=>'muestras',
+	'controller'=>'operacion',
 	'action'=>'view',
 	$operacion['Operacion']['id']
 ));

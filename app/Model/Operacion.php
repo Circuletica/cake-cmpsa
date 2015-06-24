@@ -11,15 +11,18 @@ class Operacion extends AppModel {
 			'Naviera' => array(
 			'className' => 'Naviera',
 			'foreignKey' => 'naviera_id'),
-			'Almacen' => array(
-			'className' => 'Almacen',
-			'foreignKey' => 'almacen_id'),
 			'Puerto' => array(
 			'className' => 'Puerto',
 			'foreignKey' => 'puerto_id'),
-			'Lote' => array(
-			'className' => 'Lote',
-			'foreignKey' => 'lote_id')
+	//		'Proveedor' => array(
+	//		'className' => 'Proveedor',
+	//		'foreignKey' => 'proveedor_id'),
+	//		'Incoterm' => array(
+	//		'className' => 'Incoterm',
+	//		'foreignKey' => 'incoterm_id'),
+	//		'CalidadNombre' => array(
+	//		'className' => 'CalidadNombre',
+	//		'foreignKey' => 'calidad_id')
 	);
   	public $validate = array(
     'referencia' => array(
@@ -29,3 +32,4 @@ class Operacion extends AppModel {
 
 }
 
+?>
