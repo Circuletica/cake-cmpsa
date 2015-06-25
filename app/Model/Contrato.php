@@ -5,8 +5,8 @@ class Contrato extends AppModel {
 	//public $validate = array(
 	//);
 	public $hasMany = array(
-		'Lote' => array(
-			'className' => 'Lote',
+		'LineaContrato' => array(
+			'className' => 'LineaContrato',
 			'foreignKey' => 'contrato_id'
 		)
 	);
