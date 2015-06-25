@@ -5,18 +5,23 @@ class OperacionesController extends AppController {
 		'order' => array('Operacion.referencia' => 'asc')
 	);
 
+	public $scaffold = 'admin';
+
 
 
 public function index() {
-
+	//$proveedores = $this->Operacion->Linea_Contrato_Operacion->Linea_Contrato->Contrato->Proveedor->find('list', array(
+	//		'fields' => array('Proveedor.id','Empresa.nombre'),
+	//		'recursive' => 3
+	//		)
+	//	);
+	//	$this->set('proveedores', $proveedores);
 	$this->set('operaciones', $this->Operacion->find('all'));
 	$operaciones =  $this->paginate();
-		//generamos el título
-		
+		//generamos el título		
 		//pasamos los datos a la vista
 	$this->set(compact('operacion','title'));
 }
-
 
 public function view($id = null) {
 		//debug($this->request->params);

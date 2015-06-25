@@ -1,21 +1,18 @@
 
 
   <?php echo $this->Form->create('Muestra', array('action'=>'filtroListado'));?>
-  <div class="radiomuestra">
-  <?php
-    //echo $this->Form->input('Search.id');
-    echo $this->Form->radio('Search.tipo_id', $opera, array(
-  'legend' => ''));?>
-  </div>
   <?php
     echo $this->Form->input('Search.referencia');
     echo $this->Form->input('Search.fecha', array('after'=>'aaaa o mm-aaaa'));
-    echo $this->Form->input('Search.calidad');
+    echo $this->Form->input('Search.contrato.referencia');
     //echo $this->Form->input('Search.calidad_id');
-    echo $this->Form->input('Search.proveedor_id', array(
-      'label' => 'Proveedor',
-      'empty' => true
-    ));
+    echo $this->Form->input('Search.calidad_id', array(
+      'label' => 'Calidad',
+      'empty' => true));
+    echo $this->Form->input('Search.matricula', array(
+      'label' => 'BL/Matrícula',
+      'empty' => true));
+     echo $this->Form->input('Search.almacen.cuenta_corriente_almacen');
     //  echo $this->Form->input('Search.aprobado', array(
     //    'empty'=>__('Cualquiera', true),
     //    'options'=>array(

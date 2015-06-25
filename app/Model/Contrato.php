@@ -1,12 +1,12 @@
 <?php
 class Contrato extends AppModel {
-	public $recursive = 3;
+	public $recursive = 4;
 	public $displayField = 'referencia';
 	//public $validate = array(
 	//);
 	public $hasMany = array(
-		'Lote' => array(
-			'className' => 'Lote',
+		'LineaContrato' => array(
+			'className' => 'LineaContrato',
 			'foreignKey' => 'contrato_id'
 		)
 	);
