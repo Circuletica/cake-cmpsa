@@ -23,16 +23,17 @@ $this->Html->addCrumb('Muestras','/muestras');
 $this->Html->addCrumb('Muestra '.$linea_muestra['Muestra']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 ?>
 <div class="laterali">
-<?php
-echo $this->Form->create('LineaMuestra', array(
+	<?php
+	echo $this->Form->create('LineaMuestra', array(
 	'url' => array(
 		'action' => 'edit',
 		'from_controller' => $this->params['named']['from_controller'],
 		'from_id'=>$this->params['named']['from_id']
 	)
-));
-?>
+));?>
+	<div class="col2">
 <?php
+
 echo $this->Html->tableCells(array(
 	$this->Form->input('marca'),
 	$this->Form->input('numero_sacos', array(
@@ -48,22 +49,23 @@ echo $this->Html->tableCells(array(
 );
 echo $this->Html->tableCells(array(
 	$this->Form->input('referencia_proveedor',array(
-		'label' => 'Referencia Proveedor ('.$proveedor.')'
+		'label' => 'Referencia Proveedor - '.$proveedor.''
 			)
 		),
 	$this->Form->input('referencia_almacen',array(
-		'label' => 'Referencia Almacén ('.$almacen.')'
+		'label' => 'Referencia Almacén - '.$almacen.''
 			)
 		)
 	)
 );
 ?>
+</div>
 <?php
 echo $this->Html->tableCells(array($this->Form->input('apreciacion_bebida', array(
 	'label' => 'Bebida')),
 	$this->Form->input('defecto')));
-echo $this->Form->end('Guardar Linea de muestra');
 echo  $this->Form->input('id',	array('type'=>'hidden'));
+echo $this->Form->end('Guardar Linea de muestra');
 ?>
 </div>
 <div class="laterald">

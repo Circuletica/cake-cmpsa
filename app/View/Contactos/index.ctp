@@ -1,10 +1,21 @@
-<h2>Contactos</h2>
 <?php 
 $this->Html->addCrumb('Contactos', '/Contactos');
-echo "<div class='actions'>\n";
-echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
-echo "</div>\n";
-echo "<div class='index'>\n";
+?>
+<div class="printdet">
+<ul><li>
+  <?php 
+  echo $this->element('imprimir');
+  ?>
+  </li>
+  <li>
+  <?php
+  echo $this->element('desplegabledatos');
+  ?>
+  </li>
+</ul>
+</div>
+<h2>Contactos</h2>
+<?php
 if(empty($contactos)): ?>
 No hay contactos en esta lista
 <?php else: ?>
@@ -51,10 +62,10 @@ No hay contactos en esta lista
 </table>
 <?php endif; ?>
   <div class="btabla">
-      <?php echo $this->Html->link('<i class="fa fa-user-plus"></i> Añadir contacto',
-        array(
-       'action'=>'add'),
-        array(
-       'escape' => false,'title'=>'Añadir contacto'));?>
+      <?php
+      // echo $this->Html->link('<i class="fa fa-user-plus"></i> Añadir contacto',
+      //  array(
+      // 'action'=>'add'),
+      //  array(
+      // 'escape' => false,'title'=>'Añadir contacto'));?>
   </div>
-</div>

@@ -1,5 +1,4 @@
 <div class="add">
-    <h1>Añadir Muestra</h1>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <style>
 	.custom-combobox {
@@ -147,6 +146,7 @@
       });
     });
     </script>
+     <h2>Añadir Muestra</h2>
     <fieldset>
     <?php
 	    //si no esta la calidad en el listado, dejamos un enlace para
@@ -169,11 +169,17 @@
 	    );
 
 	    echo $this->Form->create('Muestra');
+	    ?>
+	    <div class="radiomuestra">
+  		<?php
 	    echo $this->Form->radio('tipo', $tipos, array(
 	      'legend' => 'Tipo de muestra',
 	      'value' => $this->request->data['Muestras']['tipo']
 	      )
 	    );
+	    ?>
+		</div>
+	    <?php
 	    echo $this->Form->input('calidad_id', array(
 		    'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 		    'empty' => array('' => 'Selecciona'),
@@ -193,7 +199,12 @@
 	    <?php
 	    echo $this->Form->input('referencia');
 		    ?>
-			    <div class="linea">
+			   
+	 	<?php 
+	 	echo $this->Form->input('almacen_id');
+	    echo $this->Form->input('aprobado');
+	    ?>
+ <div class="linea">
 			    	<?php
 			    echo $this->Form->input('fecha', array(
 				    'dateFormat' => 'DMY',
@@ -201,10 +212,6 @@
 			    );
 			    ?>
 				</div>
-	 	<?php 
-	 	echo $this->Form->input('almacen_id');
-	    echo $this->Form->input('aprobado');
-	    ?>
 	    </div>		
 	    <?php
 	    echo $this->Form->input('incidencia');

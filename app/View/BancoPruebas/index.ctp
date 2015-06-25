@@ -47,7 +47,7 @@
 	endforeach;?>
 	</table>
 	<div class="btabla">
-			<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Banco',array('action'=>'add'), array('escape' => false)); ?>
+			<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Banco',array('action'=>'add'), array('title'=>'Añadir Banco','escape' => false)); ?>
 	</div>
 	<?php
 	echo $this->Paginator->counter(

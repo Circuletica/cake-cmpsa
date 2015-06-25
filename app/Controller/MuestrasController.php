@@ -1,24 +1,12 @@
 <?php
 class MuestrasController extends AppController {
+	public $scaffold = 'admin';
 	public $paginate = array(
 		'recursive' => 2,
 		'order' => array('Muestra.referencia' => 'asc')
 	);
 
-	public function search() {
-		//la página a la que redirigimos después de mandar  el formulario de filtro
-		$url['action'] = 'index';
-		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
-		//la URL final tiene ese aspecto:
-		//http://cake-cmpsa.gargantilla.net/muestras/index/Search.referencia:mireferencia/Search.id:3
-		foreach ($this->data as $k=>$v){ 
-			foreach ($v as $kk=>$vv){ 
-			if ($vv) {$url[$k.'.'.$kk]=$vv;} 
-			} 
 
-		}
-		$this->redirect($url,null,true);
-	}
 	
 	public function index() {
 		$this->set('tipos', $this->tipoMuestras);
@@ -132,7 +120,7 @@ class MuestrasController extends AppController {
 
 	public function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado Muestra/view');
+			$this->Session->setFlash('URL mal formada Muestra/view');
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('tipos', $this->tipoMuestras);
@@ -199,7 +187,8 @@ class MuestrasController extends AppController {
 		$this->Muestra->id = $id;
 		$muestra = $this->Muestra->findById($id);
 		$this->set('muestra',$muestra);
-		$this->set('tipos', $this->tipoMuestras);
+		$tipos = $this->tipoMuestras;
+		$this->set('tipos', $tipos);
 		$tipo = $tipos[$muestra['Muestra']['tipo']];
 		$this->set('tipo',$tipo);
 		//el titulado completo de la Calidad sale de una vista

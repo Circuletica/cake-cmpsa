@@ -4,12 +4,21 @@
 		'controller' => 'agentes',
 		'action' => 'index')
 	); ?>
+
+	<div class="printdet">
+<ul><li>
+	<?php 
+	echo $this->element('imprimir');
+	?>
+	</li>
+	<li>
+	<?php
+	echo $this->element('desplegabledatos');
+	?>
+	</li>
+</ul>
+</div>
 <h2>Agentes</h2>
-	<div class="actions">
-		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
-		?>
-	</div>
-	<div class='index'>
 	<?php
 	if (empty($empresas)):
 		echo "No hay agentes en esta lista";
@@ -36,7 +45,7 @@
 		//substr($empresa['Empresa']['cuenta_bancaria'],4,4),
 		$empresa['Empresa']['Pais']['nombre'],
 		$empresa['Empresa']['telefono'],
-		$this->Html->link('Detalles',array('action'=>'view',$empresa['Agente']['id']), array('class' =>'boton' , ))//.' '.
+		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$empresa['Agente']['id']), array('class' =>'boton','escape' => false,'title'=>'Detalles'))//.' '.
 	));
 
 	endforeach;?>
@@ -45,14 +54,13 @@
 	echo $this->Paginator->counter(
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));
 	?>
-
+	<div class="btabla">
+		<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Agente',array('action'=>'add'), array('title'=>'Añadir Agente','escape' => false)); ?>
+	</div>
 	<div class="paging">
 		<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));
 		echo $this->Paginator->numbers(array('separator' => ''));
 		echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled')); ?>
 	</div>
 	<?php endif; ?>
-	<div class="btabla">
-		<?php echo $this->Html->link('Añadir Agente',array('action'=>'add')); ?>
-	</div>
-</div>
+

@@ -47,7 +47,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
 				</ul>
 			</li>
-			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','/pages/trafico', array('escape' => false));?></li>
+			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','/admin/operaciones', array('escape' => false));?></li>
 			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/pages/compras',array('escape' => false));?></li>
 		</ul>	
 	</div>
@@ -69,18 +69,18 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	</div>
 			<div class="menufooter">
 				<ul class="tabs">
-					<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/pages/informes',array('escape' => false));?></li>
+					<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/highcharts/highcharts_demo',array('escape' => false));?></li>
 					<li ><?php echo $this->Html->link('<i class="fa fa-cog"></i> PREFERENCIAS','/pages/preferencias',array('escape' => false));?></li>
 					<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?></li>
 				</ul>
 			</div>
 	
-					<?php echo $this->Html->link(
+					<?php /*echo $this->Html->link(
 					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
 					'http://www.cakephp.org/', array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered'));
-					?>
+					*/?>
 			
-				<?php echo $cakeVersion; ?>
+				<?php echo '&nbsp&nbsp'.$cakeVersion.' - Optimizado para resolución superior a 1280x720'; ?>
 			
 		</div>
 	

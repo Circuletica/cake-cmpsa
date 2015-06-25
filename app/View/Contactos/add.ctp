@@ -9,13 +9,16 @@
   $this->Html->addCrumb('Añadir Contacto ', '/contactos/add/'.'from:'.$this->params['named']['from'].'/from_id:'.$this->params['named']['from_id']);
   echo $this->Form->create();
    ?>
-  <fieldset><?php
+  <fieldset>
+  <div class="columna2">
+  <?php
   echo $this->Form->input('nombre');
   echo $this->Form->input('funcion', array(
 	  'label' =>'Función')
   );
-  ?>  
-  <div class="columna2">
+  ?> 
+  </div>
+  <div class="columna3">
     <?php
   echo $this->Form->input('telefono1', array(
 	  'label'=>'Teléfono Nº1')
@@ -24,10 +27,10 @@
   echo $this->Form->input('telefono2', array(
 	  'label'=>'Teléfono Nº2')
   );
-    ?>
+  echo $this->Form->input('email');
+      ?>
     </div>
     <?php
-  echo $this->Form->input('email');
   //echo 'Empresa';
   //echo $this->Form->select('pais_id', array($paises,
   //'label' => 'País'));

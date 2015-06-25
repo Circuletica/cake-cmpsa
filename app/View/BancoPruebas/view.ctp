@@ -8,8 +8,6 @@
 	'action'=>'view',
 	$bancoprueba['Empresa']['id']
 ));
-?>
-<?php
 if (empty($bancoprueba)):
 	echo "No hay bancos en esta lista";
 else:

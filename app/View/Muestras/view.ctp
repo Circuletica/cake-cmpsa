@@ -7,26 +7,37 @@
 	'action'=>'view',
 	$muestra['Muestra']['id']
 ));
-?>
+?><div class="acciones">
+	<div class="printdet">
+	<ul><li>
+		<?php 
+		echo $this->element('imprimir');
+		?>	
+		
+	</li>
+	<li>
+			<?php
+		echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
+			'action'=>'edit',
+			$muestra['Muestra']['id']),array('title'=>'Modificar Muestra','escape'=>false))
+		.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
+			'action'=>'delete',
+			$muestra['Muestra']['id']),array(
+			'escape'=>false, 'title'=> 'Borrar Muestra',
+			'confirm'=>'¿Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
+		);
+	?>
+	</li>
+	</ul>
+	</div>
+</div>
 <h2>Detalles Muestra <?php echo 'de '.$tipo.' '.$muestra['Muestra']['referencia']?></h2>
 <div class="actions">
 	<?php
 	echo $this->element('filtromuestra');
 	?>
 </div>
-<div class="acciones">
-<?php
-	echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
-		'action'=>'edit',
-		$muestra['Muestra']['id']),array('title'=>'Modificar Banco','escape'=>false))
-	.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
-		'action'=>'delete',
-		$muestra['Muestra']['id']),array(
-		'escape'=>false, 'title'=> 'Borrar',
-		'confirm'=>'¿Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
-	);
-?>
-</div>
+
 	<div class='view'>
 	<?php
 	echo "<dl>";
@@ -59,7 +70,11 @@
 	echo "</dd>";
 	echo "  <dt>Almacen</dt>\n";
 	echo "<dd>";
-	echo $muestra['Almacen']['Empresa']['nombre'].'&nbsp;';
+	echo $this->Html->link( $muestra['Almacen']['Empresa']['nombre'], array(
+		'controller' => 'almacenes',
+		'action' => 'view',
+		$muestra['Almacen']['id'])
+	);
 	echo "</dd>";
 	echo "  <dt>Fecha</dt>\n";
 	//no queremos la hora

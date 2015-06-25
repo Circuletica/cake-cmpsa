@@ -8,28 +8,20 @@
 	'action'=>'view',
 	$empresa['Naviera']['id']
 ));
-?>
-<div class="index">
-<h2>Detalles Naviera <?php echo $empresa['Empresa']['nombre']?></h2>
-</div>
-<?php
+
 if (empty($empresa)):
 	echo "No hay navieras en esta lista";
 else:
-	echo "<div class='actions'>\n";
-	echo $this->Html->link('Modificar naviera',array('action'=>'edit',$empresa['Naviera']['id']));
-      //echo '&nbsp;';
-      echo "\n";
-      echo '<p>';
-      echo $this->Form->postLink('Borrar naviera',array('action'=>'delete',$empresa['Naviera']['id']),array('confirm'=>'¿Realmente quiere borrar '.$empresa['Empresa']['nombre'].'?'));
+
+		echo "<div class='acciones'>\n";
+		echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array('action'=>'edit',$empresa['Naviera']['id']),array('title'=>'Modificar Naviera','escape'=>false)).' '.
+	    $this->Form->postLink('<i class="fa fa-trash"></i> Borrar', array('action'=>'delete',$empresa['Naviera']['id']),array('title'=>'Borrar','escape'=>false,'confirm'=>'¿Realmente quiere borrar '.$empresa['Empresa']['nombre'].'?'));
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
-	echo $this->Html->link('Añadir contacto',array(
-		'controller'=>'contactos',
-		'action'=>'add',
-		'from'=>'navieras',
-		'from_id' => $empresa['Empresa']['id']));
-	echo "</div>\n";
-      //formateamos el número de cuenta de la entidad
+?>
+</div>
+<h2>Detalles Naviera <?php echo $empresa['Empresa']['nombre']?></h2>
+<?php
+	  //formateamos el número de cuenta de la entidad
       $numero_bruto=$empresa['Empresa']['cuenta_bancaria'];
       $cuenta_entidad=substr($numero_bruto,0,4).
 	      '-'.substr($numero_bruto,4,4).
@@ -41,7 +33,6 @@ else:
 //	      '-'.substr($numero_bruto,4,4).
 //	      '-'.substr($numero_bruto,8,2).
 //	      '-'.substr($numero_bruto,10,10);
-	echo "<div class='view'>\n";
 	echo "<dl>";
 	echo "  <dt>Id</dt>\n";
 	echo "<dd>";
@@ -93,29 +84,39 @@ else:
 		    $contacto['telefono1'],
 		    $contacto['telefono2'],
 		    $contacto['email'],
-		    $this->Html->link('Modificar', array(
+		    $this->Html->link('<i class="fa fa-envelope-o"></i>', 'mailto:'.$contacto['email'],array(
+			'class'=>'botond', 'escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'))
+		    .' '.$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
 			'controller'=>'contactos',
 			'action' => 'edit',
 			$contacto['id'],
 			'from'=>'navieras',
-			'from_id'=>$contacto['empresa_id']), array('class'=>'botond'))
-			.' '.$this->Form->postLink('Borrar',
+			'from_id'=>$contacto['empresa_id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar'))
+			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
 			array(
 			    'controller'=>'contactos',
 			    'action' => 'delete',
 			    $contacto['id'],
 			    'from' => 'navieras',
 			    'from_id' => $contacto['empresa_id']),
-			    array('class'=>'botond',
+			    array('class'=>'botond','escape'=>false, 'title'=> 'Borrar',
 			    'confirm' => '¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
 			)
 	));
 		//print_r($contacto);
 		endforeach;
-	endif;?>
+	endif;
+	?>
 	</table>
-    </div>
-</div>
+	<div class="btabla">
+		<?php echo $this->Html->link('<i class="fa fa-user-plus"></i> Añadir contacto',array(
+		'controller'=>'contactos',
+		'action'=>'add',
+		'from'=>'navieras',
+		'from_id' => $empresa['Empresa']['id']), array('escape' => false,'title'=>'Añadir contacto'));
+	?>
+	</div>
+ </div>
 
 
 

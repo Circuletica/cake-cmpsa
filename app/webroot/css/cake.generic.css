@@ -123,7 +123,7 @@ p {
 }
 #footer {
 	clear: both;
-	padding: 10px 20px 0px 10px;
+	padding: 0px 20px 0px 10px;
 }
 #header a, {			/*Se elimina footer a*/
 	color: #fff;
@@ -137,11 +137,12 @@ p {
 div.menuheader{
 float: right;
 margin:0px;
-width: 80%;
+width: 70%;
 }
 div.menufooter{
-float: right;margin:-10px;
-width: 80%;
+/*float: right;*/
+margin: 0px 20px;
+/*width: 60%;*/
 }
 
 div.form,
@@ -300,12 +301,13 @@ form {
 }
 fieldset {
 	border: none;
-	margin-bottom: 1em;
-	padding: 16px 10px;
+	/*margin-bottom: 1em;*/
+	padding: 16px 0px;
 	float: left;
 	/*display: block;*/
-	width: 15%;
-	margin: 0 30px 30px 0;
+	/*width: 15%;*/
+	width: 749px;
+	/*margin: 0 30px 10px 0;*/
 }
 fieldset legend {
 	color: #e32;
@@ -348,7 +350,8 @@ form div.submit {
 	float: right;
 	border: 0;
 	clear: both;
-	margin-top: 1.5%;
+	/*margin-top: 1.5%; Botones formularios demasiado separados*/
+	margin-right: 10px;
 }
 
 form :focus {
