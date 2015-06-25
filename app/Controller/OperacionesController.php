@@ -5,6 +5,8 @@ class OperacionesController extends AppController {
 		'order' => array('Operacion.referencia' => 'asc')
 	);
 
+	public $scaffold = 'admin';
+
 
 
 public function index() {

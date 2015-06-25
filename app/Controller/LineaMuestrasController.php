@@ -1,5 +1,6 @@
 <?php
 class LineaMuestrasController extends AppController {
+	public $scaffold = 'admin';
 	public $paginate = array(
 		'order' => array('marca' => 'asc')
 	);
