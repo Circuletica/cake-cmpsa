@@ -17,7 +17,7 @@
 	    $enlace_anyadir_calidad = $this->Html->link ('Añadir Calidad', array(
 		    'controller' => 'calidades',
 		    'action' => 'add',
-		    'from_controller' => 'muestras',
+		    'from_controller' => 'operaciones',
 		    'from_action' => 'add',
 		    )
 	    );
@@ -26,7 +26,7 @@
 	    $enlace_anyadir_proveedor = $this->Html->link ('Añadir Proveedor', array(
 		    'controller' => 'proveedores',
 		    'action' => 'add',
-		    'from_controller' => 'muestras',
+		    'from_controller' => 'operaciones',
 		    'from_action' => 'add',
 		    )
 	    );
@@ -35,7 +35,15 @@
 	    $enlace_anyadir_almacen = $this->Html->link ('Añadir Almacén', array(
 		    'controller' => 'almacenes',
 		    'action' => 'add',
-		    'from_controller' => 'muestras',
+		    'from_controller' => 'operaciones',
+		    'from_action' => 'add',
+		    )
+	    );
+	    	   //si no esta el almacén en el listado, dejamos un enlace para agregarlo
+	    $enlace_anyadir_incoterms = $this->Html->link ('Añadir Incoterms', array(
+		    'controller' => 'incoterms',
+		    'action' => 'add',
+		    'from_controller' => 'operaciones',
 		    'from_action' => 'add',
 		    )
 	    );
@@ -48,7 +56,7 @@
 							'label' => 'Fecha de asegurado',
 							'dateFormat' => 'DMY'));
 	echo $this->Form->input('incoterm_id', array(
-	    'label' => 'Incoterms',
+	    'label' => 'Incoterms ('.$enlace_anyadir_incoterms.')',
 	    'empty' => array('' => 'Selecciona')
 	    )
 	);

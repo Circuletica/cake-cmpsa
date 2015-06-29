@@ -36,21 +36,21 @@
       <?php
 	//no queremos la hora
 	//mysql almacena la fecha en formato YYY-MM-DD
-	$fecha_emb = $operacion['Operacion']['fecha_embarque'];
-	$dia_emb = substr($fecha_emb,8,2);
-	$mes_emb = substr($fecha_emb,5,2);
-	$anyo_emb= substr($fecha_emb,0,4);
-	echo $dia_emb .'-'.$mes_emb .'-'.$anyo_emb;
+//	$fecha_emb = $operacion['Contrato']['fecha_embarque'];
+//	$dia_emb = substr($fecha_emb,8,2);
+//	$mes_emb = substr($fecha_emb,5,2);
+//	$anyo_emb= substr($fecha_emb,0,4);
+//	echo $dia_emb .'-'.$mes_emb .'-'.$anyo_emb;
      ?>
     </td>
           <?php
   //no queremos la hora
   //mysql almacena la fecha en formato YYY-MM-DD
-  $fecha_ent = $operacion['Operacion']['fecha_entrega'];
-  $dia_ent = substr($fecha_ent,8,2);
-  $mes_ent = substr($fecha_ent,5,2);
-  $anyo_ent = substr($fecha_ent,0,4);
-  echo $dia_ent.'-'.$mes_ent.'-'.$anyo_ent;
+  //$fecha_ent = $operacion['Contrato']['fecha_entrega'];
+  //$dia_ent = substr($fecha_ent,8,2);
+  //$mes_ent = substr($fecha_ent,5,2);
+  //$anyo_ent = substr($fecha_ent,0,4);
+ // echo $dia_ent.'-'.$mes_ent.'-'.$anyo_ent;
      ?>
     </td>
 

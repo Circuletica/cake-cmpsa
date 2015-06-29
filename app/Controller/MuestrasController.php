@@ -1,6 +1,5 @@
 <?php
 class MuestrasController extends AppController {
-	public $scaffold = 'admin';
 	public $paginate = array(
 		'recursive' => 2,
 		'order' => array('Muestra.referencia' => 'asc')

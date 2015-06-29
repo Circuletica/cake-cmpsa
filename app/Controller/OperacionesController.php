@@ -1,27 +1,19 @@
 <?php
 class OperacionesController extends AppController {
+	var $displayField = 'referencia';
 	public $paginate = array(
 		'recursive' => 3,
 		'order' => array('Operacion.referencia' => 'asc')
 	);
 
-	public $scaffold = 'admin';
 
-
-
-public function index() {
-	//$proveedores = $this->Operacion->Linea_Contrato_Operacion->Linea_Contrato->Contrato->Proveedor->find('list', array(
-	//		'fields' => array('Proveedor.id','Empresa.nombre'),
-	//		'recursive' => 3
-	//		)
-	//	);
-	//	$this->set('proveedores', $proveedores);
-	$this->set('operaciones', $this->Operacion->find('all'));
-	$operaciones =  $this->paginate();
-		//generamos el título		
-		//pasamos los datos a la vista
-	$this->set(compact('operacion','title'));
-}
+	public function index() {
+		//	$proveedores = $this->Operacion->Proveedor->find('list', array(
+		//		'fields' => array('Proveedor.id','Empresa.nombre'),
+		//		'recursive' => 1)
+		//		);
+		$this->set('operaciones', $this->paginate());
+	}
 
 public function view($id = null) {
 		//debug($this->request->params);
@@ -47,8 +39,8 @@ public function view($id = null) {
 	public function add() {
 		//$this->set('proveedores', $proveedores);
 		//$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
-		$this->set('almacenes', $this->Operacion->Almacen->find('list'));
-		$this->set('calidades', $this->Operacion->CalidadNombre->find('list'));
+		//$this->set('almacenes', $this->Operacion->Almacen->find('list'));
+		//$this->set('calidades', $this->Operacion->CalidadNombre->find('list'));
 		if($this->request->is('post')):
 			if($this->Operacion->save($this->request->data) ):
 				$this->Session->setFlash('Operación guardada');

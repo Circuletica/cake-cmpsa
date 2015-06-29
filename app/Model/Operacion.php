@@ -16,9 +16,13 @@ class Operacion extends AppModel {
 	public $hasMany = array(
 		'LineaContratosOperacion' => array(
 			'className' => 'LineaContratosOperacion',
-			'foreignKey' => 'operacion_id'
-		)
+			'foreignKey' => 'operacion_id'),
+		'Muestra' => array(
+			'className' => 'Muestra'),
+		'Transporte' => array(
+			'className' => 'Transporte')
 	);
+
 	public $belongsTo = array(
 		'Agente' => array(
 			'className' => 'Agente',
@@ -29,15 +33,6 @@ class Operacion extends AppModel {
 		'Puerto' => array(
 			'className' => 'Puerto',
 			'foreignKey' => 'puerto_id'),
-	//		'Proveedor' => array(
-	//		'className' => 'Proveedor',
-	//		'foreignKey' => 'proveedor_id'),
-	//		'Incoterm' => array(
-	//		'className' => 'Incoterm',
-	//		'foreignKey' => 'incoterm_id'),
-	//		'CalidadNombre' => array(
-	//		'className' => 'CalidadNombre',
-	//		'foreignKey' => 'calidad_id')
 	);
   	public $validate = array(
 	    'referencia' => array(
