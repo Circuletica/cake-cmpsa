@@ -31,7 +31,7 @@
 	</ul>
 	</div>
 </div>
-<h2>Detalles Operación <?php echo 'de '.$tipo.' '.$operacion['Operacion']['referencia']?></h2>
+<h2>Detalles Operación <?php echo $operacion['Operacion']['referencia']?></h2>
 <div class="actions">
 	<?php
 	echo $this->element('filtrooperacion');
@@ -49,68 +49,40 @@
 	echo "<dd>";
 	echo $operacion['Operacion']['referencia'].'&nbsp;';
 	echo "</dd>";
-	echo "  <dt>Calidad</dt>\n";
+	echo "  <dt>Naviera</dt>\n";
 	echo "<dd>";
-	//echo $operacion['Calidad']['nombre'].'&nbsp;';
-	echo $calidad_nombre['CalidadNombre']['nombre'].'&nbsp;';
-//	echo $this->Html->link($calidad_nombre['CalidadNombre']['nombre'], array(
-//		'controller' => 'calidades',
-//		'action' => 'view',
-//		$operacion['Operacion']['id'])
-//	);
+	echo $operacion['Naviera']['Empresa']['nombre'].'&nbsp;';
 	echo "</dd>";
-	echo "  <dt>Proveedor</dt>\n";
+	echo "  <dt>Agente</dt>\n";
 	echo "<dd>";
-	//echo $operacion['Proveedor']['Empresa']['nombre'].'&nbsp;';
-	echo $this->Html->link($operacion['Proveedor']['Empresa']['nombre'], array(
-		'controller' => 'proveedores',
+	echo $this->Html->link($operacion['Agente']['Empresa']['nombre'], array(
+		'controller' => 'agentes',
 		'action' => 'view',
-		$operacion['Proveedor']['id'])
+		$operacion['Agente']['id'])
 	);
 	echo "</dd>";
-	echo "  <dt>Almacen</dt>\n";
+	echo "  <dt>Puerto</dt>\n";
 	echo "<dd>";
-	echo $this->Html->link( $operacion['Almacen']['Empresa']['nombre'], array(
-		'controller' => 'almacenes',
+	echo $this->Html->link( $operacion['Puerto']['nombre'], array(
+		'controller' => 'puertos',
 		'action' => 'view',
-		$operacion['Almacen']['id'])
+		$operacion['Puerto']['id'])
 	);
-	echo "</dd>";
-	echo "  <dt>Fecha</dt>\n";
-	//no queremos la hora
-	//mysql almacena la fecha en formato YMD
-	$fecha = $operacion['Operacion']['fecha'];
-	$dia = substr($fecha,8,2);
-	$mes = substr($fecha,5,2);
-	$anyo = substr($fecha,0,4);
-	echo "<dd>";
-	echo $dia.'-'.$mes.'-'.$anyo;
-	echo "</dd>";
-	echo "  <dt>Resultado</dt>\n";
-	echo "<dd>";
-	echo $operacion['Operacion']['aprobado'] ? 'Aprobado' : 'Rechazado'.'&nbsp;';
-	echo "</dd>";
-	echo "  <dt>Incidencia</dt>\n";
-	echo "<dd>";
-	echo nl2br(h($operacion['Operacion']['incidencia'])).'&nbsp;';
 	echo "</dd>";
 	echo "</dl>";?>
 	<div class="detallado">
 	<h3>Líneas</h3>
 <table>
 <?php
-	echo $this->Html->tableHeaders(array('Id','Marca', 'Número de Sacos',
-	       'Ref. Proveedor', 'Ref Almacén', 'Acciones'));
-	//mostramos todas las catas de esta muestra
-	//hay que numerar las líneas
-	$i = 1;
-	foreach($operacion['LineaOperacion'] as $linea):
+	echo $this->Html->tableHeaders(array('Referencia Contrato','Calidad', 'Incoterms',
+	       'Cantidad Contenedores', 'Acciones'));
+	foreach($operacion['LineaContratosOperacion'] as $linea):
 		echo $this->Html->tableCells(array(
-			$i,
-			$linea['marca'],
-			$linea['numero_sacos'],
-			$linea['referencia_proveedor'],
-			$linea['referencia_almacen'],
+			$linea['LineaContrato']['Contrato']['referencia'],
+			$linea['LineaContrato']['Contrato']['CalidadNombre']['nombre'],
+			$linea['LineaContrato']['Contrato']['Incoterm']['nombre'],
+			$linea['cantidad_contenedores'],
+			//$linea['referencia_almacen'],
 			$this->Html->link('<i class="fa fa-info-circle"></i>', array(
 				'controller'=>'linea_muestras',
 				'action' => 'view',
@@ -129,8 +101,6 @@
 						'confirm' => '¿Seguro que quieres borrar a '.$linea['marca'].'?')
 				)
 			));
-		//numero de la línea siguiente
-		$i++;
 	endforeach;
 ?>	</table>
 		<div class="btabla">
@@ -143,6 +113,9 @@
 		 array('escape' => false,'title'=>'Añadir línea'));
 		?>
 		</div>
+	</div>
+	<div class="detallado">
+	<h3>Transportes</h3>
 	</div>
 </div>
 

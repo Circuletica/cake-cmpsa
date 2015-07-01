@@ -23,17 +23,9 @@ public function view($id = null) {
 			$this->Session->setFlash('URL mal formada Operación/view ');
 			$this->redirect(array('action'=>'index'));
 		}
-		$empresa = $this->Operacion->find('first',array(
+		$operacion = $this->Operacion->find('first',array(
 			'conditions' => array('Operacion.id' => $id)));
-		$this->set('empresa',$empresa);
-		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
-		//el método iban() definido en AppController necesita
-		//como parametro un 'string'
-		settype($cuenta_bancaria,"string");
-		//debug($ccc);
-		$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
-		$this->set('iban_bancaria',$iban_bancaria);
-		//debug($iban_cliente);
+		$this->set('operacion',$operacion);
 	}
 
 	public function add() {
