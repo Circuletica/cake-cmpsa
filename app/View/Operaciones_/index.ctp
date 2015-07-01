@@ -19,50 +19,35 @@
   <table>
   <tr>
     <th><?php echo $this->Paginator->sort('referencia')?></th>
-    <th><?php echo $this->Paginator->sort('flete')?></th>
-    <th><?php echo $this->Paginator->sort('seguro')?></th>
-    <th><?php echo $this->Paginator->sort('forfait')?></th>
-    <th><?php echo $this->Paginator->sort('fecha_seguro')?></th>
+    <th><?php echo $this->Paginator->sort('fecha')?></th>
+    <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
+    <th><?php echo $this->Paginator->sort('proveedor')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
-
-  <?php foreach($operaciones as $operacion): ?>
+  <?php foreach($operaciones as $operacion):?>
   <tr>
+    <td>
+      <?php echo $operacion['Operacion']['tipo']?>
+    </td>
     <td>
       <?php echo $operacion['Operacion']['referencia']?>
     </td>
     <td>
       <?php
-      echo $operacion['Operacion']['flete'];
 	//no queremos la hora
-	//mysql almacena la fecha en formato YYY-MM-DD
-echo $operacion['LineaContratosOperacion']['LineaContrato.id'];
-//['Contrato']['fecha_embarque'];
-//	$dia_emb = substr($fecha_emb,8,2);
-//	$mes_emb = substr($fecha_emb,5,2);
-//	$anyo_emb= substr($fecha_emb,0,4);
- // echo $fecha_emb;
-//	echo $dia_emb .'-'.$mes_emb .'-'.$anyo_emb;
+	//mysql almacena la fecha en formato YMD
+	$fecha = $operacion['Operacion']['fecha'];
+	$dia = substr($fecha,8,2);
+	$mes = substr($fecha,5,2);
+	$anyo = substr($fecha,0,4);
+	echo $dia.'-'.$mes.'-'.$anyo;
      ?>
     </td>
-          <?php
-      echo $operacion['Operacion']['seguro'];
-  //no queremos la hora
-  //mysql almacena la fecha en formato YYY-MM-DD
-	//$fecha_ent = $operacion['LineaContratosOperacion']['0']['LineaContrato']['Contrato']['fecha_entrega'];
-//	$fecha_ent = $operacion['LineaContratosOperacion'][1]['LineaContrato']['Contrato']['fecha_entrega'];
-//	$dia_ent = substr($fecha_ent,8,2);
-//	$mes_ent = substr($fecha_ent,5,2);
-//	$anyo_ent = substr($fecha_ent,0,4);
-//	echo $dia_ent.'-'.$mes_ent.'-'.$anyo_ent;
-     ?>
+    <td>
+      <?php echo $operacion['CalidadNombre']['nombre']; ?>
     </td>
-
-      <td>
-      <?php echo $operacion['Operacion']['forfait']?>
-    </td>
-      <td>
-      <?php echo $operacion['Operacion']['fecha_seguro']?>
+    <td>
+      <?php echo $operacion['Proveedor']['Empresa']['nombre']; ?>
     </td>
     <td>
       <?php echo $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$operacion['Operacion']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles')).' '.
@@ -106,11 +91,5 @@ echo $operacion['LineaContratosOperacion']['LineaContrato.id'];
     <?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
     <?php echo $this->Paginator->numbers(array('separator' => ''));?>
     <?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
-  </div>
-
-  <div class="detallado">
-    <h3>Líneas de la operación</h3>
-  <table>
-  </table>
   </div>
 </div>

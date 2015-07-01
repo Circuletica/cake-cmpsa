@@ -24,13 +24,5 @@ class LineaContrato extends AppModel {
                 'associationForeignKey' => 'asociado_id'
         )
     );
-//	public $hasAndBelongsToMany = array(
-//		'Operacion' => array(
-//			'className' => 'Operacion',
-//			'joinTable' => 'linea_contratos_operaciones',
-//			'foreignKey' => 'operacion_id',
-//			'associationForeignKey' => 'linea_contrato_id'
-//		)
-//	);
 }
 

@@ -1,11 +1,11 @@
 <?php
 class Embalaje extends AppModel{
-  //public $hasMany= 'Empresa';
-//	public $hasMany= array('Proveedor',
-//		'Banco',
-//		'Naviera',
-//		'Cliente',
-//		'Agente');
+	public $hasMany = array(
+		'EmbalajesTransporte' => array(
+			'className' => 'EmbalajesTransporte',
+			'foreignKey' => 'embalaje_id')
+	);
+	
   public $displayField = 'nombre';
   public $validate = array(
     'nombre' => array(

@@ -17,14 +17,12 @@ class Transporte extends AppModel {
 		'AlmacenesTransporte'=> array(
 			'className' => 'AlmacenesTransporte',
 			'foreignKey' => 'transporte_id'),
+		'EmbalajesTransporte' => array(
+			'className' => 'EmbalajesTransporte',
+			'foreignKey' => 'transporte_id'),
 		'Seguro' => array(
 			'className'=>'Seguro')
 	);
-    public $hasOne = array(
-    	'EmbalajesLineaContrato' => array(
-			'className' => 'EmbalajesLineaContrato',
-			'foreignKey' => 'embalajes_linea_contrato_id')
-    );
   	public $validate = array(
     'referencia' => array(
       'rule' => 'notEmpty',
