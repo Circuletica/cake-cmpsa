@@ -1,23 +1,22 @@
 <?php
 class OperacionesController extends AppController {
-	var $displayField = 'referencia';
-	
 	public $paginate = array(
 		'recursive' => 3,
 		'order' => array('Operacion.referencia' => 'asc')
 	);
 
 
-	public function index() {
-			$contrato = $this->Operacion->LineaContratosOperacion->find('list', array(
-				'fields' => array('LineaContratosOperacion.id'),
-				'recursive' => 3)
-			);
 
-		$this->set('contrato',$contrato);
+public function index() {
 
-		$this->set('operaciones', $this->paginate());
-	}
+	$this->set('operaciones', $this->Operacion->find('all'));
+	$operaciones =  $this->paginate();
+		//generamos el título
+		
+		//pasamos los datos a la vista
+	$this->set(compact('operacion','title'));
+}
+
 
 public function view($id = null) {
 		//debug($this->request->params);
@@ -43,8 +42,8 @@ public function view($id = null) {
 	public function add() {
 		//$this->set('proveedores', $proveedores);
 		//$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
-		//$this->set('almacenes', $this->Operacion->Almacen->find('list'));
-		//$this->set('calidades', $this->Operacion->CalidadNombre->find('list'));
+		$this->set('almacenes', $this->Operacion->Almacen->find('list'));
+		$this->set('calidades', $this->Operacion->CalidadNombre->find('list'));
 		if($this->request->is('post')):
 			if($this->Operacion->save($this->request->data) ):
 				$this->Session->setFlash('Operación guardada');

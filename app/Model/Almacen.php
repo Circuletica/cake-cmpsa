@@ -27,11 +27,11 @@ class Almacen extends AppModel {
 //		//	'message' => 'número de cuenta erroneo'
 //		//)
 //	);
-//	public $hasMany = array(
-//		'AlmacenesTransporte'=> array(
-//			'className' => 'AlmacenesTransporte',
-//			'foreignKey' => 'almacen_id')
-//	);
+	public $hasMany = array(
+		'AlmacenesTransporte'=> array(
+			'className' => 'AlmacenesTransporte',
+			'foreignKey' => 'almacen_id')
+	);
 	public $hasOne = array('Empresa' => array(
 		'className' => 'Empresa',
 		'foreignKey' => 'id')
