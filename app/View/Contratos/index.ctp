@@ -21,25 +21,25 @@
 		$this->Paginator->sort('proveedor','Proveedor'),
 		$this->Paginator->sort('Incoterm.nombre','Incoterm'),
 		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
+		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
 		'Diferencial',
-		'BolsaLondres?',
+		//'Bolsa',
+		$this->Paginator->sort('Contrato.si_londres','Bolsa'),
 		'Opciones',
 		''));
 
 	foreach($contratos as $contrato):
-		//echo '<pre>';
-		//print_r($contrato);
-		//echo '</pre>';
-	echo $this->Html->tableCells(array(
-		$contrato['Contrato']['id'],
-		$contrato['Contrato']['referencia'],
-		$contrato['Proveedor']['Empresa']['nombre'],
-		$contrato['Incoterm']['nombre'],
-		$contrato['CalidadNombre']['nombre'],
-		$contrato['Contrato']['diferencial'],
-		$contrato['Contrato']['si_londres'],
-		$contrato['Contrato']['opciones'],
-		$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))//.' '.
+		echo $this->Html->tableCells(array(
+			$contrato['Contrato']['id'],
+			$contrato['Contrato']['referencia'],
+			$contrato['Proveedor']['Empresa']['nombre'],
+			$contrato['Incoterm']['nombre'],
+			$contrato['CalidadNombre']['nombre'],
+			$contrato['Contrato']['peso_comprado'],
+			$contrato['Contrato']['diferencial'],
+			$contrato['Contrato']['si_londres'] ? 'Londres' : 'NY',
+			$contrato['Contrato']['opciones'],
+			$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))//.' '.
 	));
 
 	endforeach;?>

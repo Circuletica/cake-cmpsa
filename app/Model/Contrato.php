@@ -8,6 +8,10 @@ class Contrato extends AppModel {
 		'LineaContrato' => array(
 			'className' => 'LineaContrato',
 			'foreignKey' => 'contrato_id'
+		),
+		'ContratoEmbalaje' => array(
+			'className' => 'ContratoEmbalaje',
+			'foreignKey' => 'contrato_id'
 		)
 	);
 	public $belongsTo = array(

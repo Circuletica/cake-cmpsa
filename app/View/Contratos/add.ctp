@@ -169,6 +169,7 @@
 	    );
 
 	    echo $this->Form->create('Contrato');
+	    echo $this->Form->input('referencia');
 	    echo $this->Form->input('incoterm_id', array(
 		    'label' => 'Incoterms',
 		    'empty' => array('' => 'Selecciona')
@@ -186,12 +187,43 @@
 		    'empty' => array('' => 'Selecciona')
 		    )
 	    );
+	    echo $this->Form->input('peso_comprado');
+    ?>
+    <table>
+	<tr>
+      <th> </th>
+      <th>cantidad</th>
+      <th>peso</th>
+	</tr>
+	
+	<?php
+	    foreach ($embalajes as $embalaje):
+		    echo '<tr>';
+		    $id_embalaje = array_search($embalaje,$embalajes);
+		    echo "<td>".$embalaje."</td>\n";
+		    echo '<td>';
+		    echo $this->Form->input('Embalaje.'.$id_embalaje.'.cantidad_embalaje', array(
+			    'label' => ''
+			    )
+		    );
+		    echo '</td>';
+		    echo '<td>';
+		    echo $this->Form->input('Embalaje.'.$id_embalaje.'.peso_embalaje_real', array(
+			    'label' => ''
+			    )
+		);
+		    echo '</td>';
+		    echo '</tr>';
+	    endforeach;
 	    ?>
+    </table>
 	<div class="columna2">
 		<?php
-			echo $this->Form->input('referencia');
 			echo $this->Form->input('diferencial');
-			echo $this->Form->input('si_londres');
+			echo $this->Form->input('opciones');
+			echo $this->Form->input('si_londres', array(
+			    'label' => 'Bolsa de Londres')
+		    );
 			echo $this->Form->input('fecha_embarque', array(
 				'label' => 'Fecha de embarque',
 			'dateFormat' => 'DMY')
@@ -200,7 +232,6 @@
 				'label' => 'Fecha de entrega',
 				'dateFormat' => 'DMY')
 			);
-			echo $this->Form->input('opciones');
 		?>
 	</div>		
 	<?php echo $this->Form->end('Guardar Contrato'); ?>

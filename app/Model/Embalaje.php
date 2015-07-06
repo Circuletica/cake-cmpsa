@@ -7,6 +7,12 @@ class Embalaje extends AppModel{
 //		'Cliente',
 //		'Agente');
   public $displayField = 'nombre';
+  public $hasMany = array(
+  	'ContratoEmbalaje' => array(
+  		'className' => 'ContratoEmbalaje',
+  		'foreignKey' => 'contrato_id'
+  	)
+  );
   public $validate = array(
     'nombre' => array(
       'rule' => 'notEmpty',
