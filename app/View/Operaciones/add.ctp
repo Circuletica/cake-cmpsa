@@ -31,27 +31,32 @@
 		    )
 	    );
 
-	   //si no esta el almacén en el listado, dejamos un enlace para agregarlo
-	    $enlace_anyadir_almacen = $this->Html->link ('Añadir Almacén', array(
-		    'controller' => 'almacenes',
-		    'action' => 'add',
-		    'from_controller' => 'operaciones',
-		    'from_action' => 'add',
-		    )
-	    );
+	//   //si no esta el almacén en el listado, dejamos un enlace para agregarlo
+	//    $enlace_anyadir_almacen = $this->Html->link ('Añadir Almacén', array(
+//		    'controller' => 'almacenes',
+//		    'action' => 'add',
+//		    'from_controller' => 'operaciones',
+//		    'from_action' => 'add',
+//		    )
+//	    );
 	    	   //si no esta el almacén en el listado, dejamos un enlace para agregarlo
-	    $enlace_anyadir_incoterms = $this->Html->link ('Añadir Incoterms', array(
-		    'controller' => 'incoterms',
-		    'action' => 'add',
-		    'from_controller' => 'operaciones',
-		    'from_action' => 'add',
-		    )
-	    );
+	//    $enlace_anyadir_incoterms = $this->Html->link ('Añadir Incoterms', array(
+	//	    'controller' => 'incoterms',
+	//	    'action' => 'add',
+	//	    'from_controller' => 'operaciones',
+	//	    'from_action' => 'add',
+	//	    )
+	 //  );
 	    //Formulario para rellenar operación
 	echo $this->Form->create('Operacion', array('action' => 'add'));
 	echo $this->Form->input('Operacion.referencia');
-	echo $this->Form->input('Operacion.cantidad', array('label'=>'Cantidad (en toneladas)'));
-	echo $this->Form->input('Operacion.seguro');
+	echo $this->Form->input('Operacion.packing');
+	echo $this->Form->input('Operacion.si_fob',  array('label' => '¿Es FOB?');
+	echo $this->Form->input('Operacion.flete);
+	echo $this->Form->input('Operacion.flete);
+
+
+
 	echo $this->Form->input('Operacion.fecha_seguro', array(
 							'label' => 'Fecha de asegurado',
 							'dateFormat' => 'DMY'));

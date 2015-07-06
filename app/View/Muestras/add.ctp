@@ -204,7 +204,7 @@
 	 	echo $this->Form->input('almacen_id');
 	    echo $this->Form->input('aprobado');
 	    ?>
- <div class="linea">
+				<div class="linea">
 			    	<?php
 			    echo $this->Form->input('fecha', array(
 				    'dateFormat' => 'DMY',

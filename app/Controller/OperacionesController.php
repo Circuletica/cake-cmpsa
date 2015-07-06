@@ -3,7 +3,7 @@ class OperacionesController extends AppController {
 	var $displayField = 'referencia';
 	
 	public $paginate = array(
-		'recursive' => 3,
+		'recursive' => 4,
 		'order' => array('Operacion.referencia' => 'asc')
 	);
 

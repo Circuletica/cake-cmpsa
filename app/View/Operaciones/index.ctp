@@ -20,7 +20,7 @@
   <tr>
     <th><?php echo $this->Paginator->sort('referencia')?></th>
     <th><?php echo $this->Paginator->sort('flete')?></th>
-    <th><?php echo $this->Paginator->sort('seguro')?></th>
+    <th><?php echo $this->Paginator->sort('Contrato.fecha_embarque')?></th>
     <th><?php echo $this->Paginator->sort('forfait')?></th>
     <th><?php echo $this->Paginator->sort('fecha_seguro')?></th>
     <th><?php echo 'Acciones'?></th>
@@ -32,11 +32,15 @@
       <?php echo $operacion['Operacion']['referencia']?>
     </td>
     <td>
-      <?php
-      echo $operacion['Operacion']['flete'];
+      <?php echo $operacion['Operacion']['flete'];?>
+    </td>
+      <td>
+      <?php echo $operacion['LineaContratosOperacion']['LineaContrato']['Contrato']['fecha_embarque'];?>
+    </td>
+    <?php
 	//no queremos la hora
 	//mysql almacena la fecha en formato YYY-MM-DD
-echo $operacion['LineaContratosOperacion']['LineaContrato.id'];
+//echo $operacion['LineaContratosOperacion']['LineaContrato.contrato_id'];
 //['Contrato']['fecha_embarque'];
 //	$dia_emb = substr($fecha_emb,8,2);
 //	$mes_emb = substr($fecha_emb,5,2);
@@ -82,19 +86,19 @@ echo $operacion['LineaContratosOperacion']['LineaContrato.id'];
 
   <div class="btabla">
   <?php 
-    if(isset($this->request->data['Search']['tipo_id'])){
-      echo $this->Html->link(
-	'<i class="fa fa-plus"></i> Añadir Operación',
-	array(
-	  'action'=>'add',
-	  'tipo_id'=>$this->request->data['Search']['tipo_id']
-	),array(
-  'class'=>'botond','escape'=>false, 'title'=>'Añadir Operación'));
-    } else {
-    echo $this->Html->link(
-	'<i class="fa fa-plus"></i> Añadir Operación',
-	array('action'=>'add'),array('class'=>'botond','escape'=>false, 'title'=>'Añadir Operación'));
-    }
+//    if(isset($this->request->data['Search']['tipo_id'])){
+//     echo $this->Html->link(
+//	'<i class="fa fa-plus"></i> Añadir Operación',
+//	array(
+//	  'action'=>'add',
+//	  'tipo_id'=>$this->request->data['Search']['tipo_id']
+//	),array(
+// 'class'=>'botond','escape'=>false, 'title'=>'Añadir Operación'));
+//    } else {
+//    echo $this->Html->link(
+//	'<i class="fa fa-plus"></i> Añadir Operación',
+//	array('action'=>'add'),array('class'=>'botond','escape'=>false, 'title'=>'Añadir Operación'));
+//    }
   ?>
   </div>
 
@@ -108,9 +112,4 @@ echo $operacion['LineaContratosOperacion']['LineaContrato.id'];
     <?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
   </div>
 
-  <div class="detallado">
-    <h3>Líneas de la operación</h3>
-  <table>
-  </table>
-  </div>
 </div>
