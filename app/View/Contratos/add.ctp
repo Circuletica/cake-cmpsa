@@ -197,18 +197,17 @@
 	</tr>
 	
 	<?php
-	    foreach ($embalajes as $embalaje):
+	    foreach ($embalajes as $index => $embalaje):
 		    echo '<tr>';
-		    $id_embalaje = array_search($embalaje,$embalajes);
 		    echo "<td>".$embalaje."</td>\n";
 		    echo '<td>';
-		    echo $this->Form->input('Embalaje.'.$id_embalaje.'.cantidad_embalaje', array(
+		    echo $this->Form->input('Embalaje.'.$index.'.cantidad_embalaje', array(
 			    'label' => ''
 			    )
 		    );
 		    echo '</td>';
 		    echo '<td>';
-		    echo $this->Form->input('Embalaje.'.$id_embalaje.'.peso_embalaje_real', array(
+		    echo $this->Form->input('Embalaje.'.$index.'.peso_embalaje_real', array(
 			    'label' => ''
 			    )
 		);
@@ -217,23 +216,25 @@
 	    endforeach;
 	    ?>
     </table>
-	<div class="columna2">
-		<?php
-			echo $this->Form->input('diferencial');
-			echo $this->Form->input('opciones');
-			echo $this->Form->input('si_londres', array(
-			    'label' => 'Bolsa de Londres')
-		    );
-			echo $this->Form->input('fecha_embarque', array(
-				'label' => 'Fecha de embarque',
+	<?php
+		echo $this->Form->input('diferencial');
+		echo $this->Form->input('opciones');
+		echo $this->Form->input('si_londres', array(
+		    'label' => 'Bolsa de Londres')
+	    );
+		echo "<div class='linea'>\n";
+		echo $this->Form->input('fecha_embarque', array(
+			'label' => 'Fecha de embarque',
+		'dateFormat' => 'DMY')
+		);
+		echo "</div>\n";
+		echo "<div class='linea'>\n";
+		echo $this->Form->input('fecha_entrega', array(
+			'label' => 'Fecha de entrega',
 			'dateFormat' => 'DMY')
-			);
-			echo $this->Form->input('fecha_entrega', array(
-				'label' => 'Fecha de entrega',
-				'dateFormat' => 'DMY')
-			);
-		?>
-	</div>		
-	<?php echo $this->Form->end('Guardar Contrato'); ?>
+		);
+		echo "</div>\n";
+		echo $this->Form->end('Guardar Contrato');
+	?>
     </fieldset>
 </div>

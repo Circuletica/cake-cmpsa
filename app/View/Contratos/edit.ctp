@@ -24,31 +24,72 @@
 
 	echo $this->Form->create('Contrato', array('action' => 'edit'));
 	echo $this->Form->input('referencia');
-	echo $this->Form->input('proveedor_id', array(
-		'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')'
-		)
+	echo $this->Form->input('incoterm_id', array(
+	    'label' => 'Incoterms',
+	    'empty' => array('' => 'Selecciona')
+	    )
 	);
 	echo $this->Form->input('calidad_id', array(
 		'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
+		'empty' => array('' => 'Selecciona'),
+		'class' => 'ui-widget',
 		'id' => 'combobox'
 		)
 	);
-	echo $this->Form->input('incoterm_id');
-	echo $this->Form->input('fecha_embarque', array(
-		'label' => 'Fecha de embarque',
-		'dateFormat' => 'DMY')
-		);
-	echo $this->Form->input('fecha_entrega', array(
-		'label' => 'Fecha de entrega',
-		'dateFormat' => 'DMY')
-	);
-	echo $this->Form->input('si_londres', array(
-		'label' => 'Bolsa de Londres'
+	echo $this->Form->input('proveedor_id', array(
+		'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
+		'empty' => array('' => 'Selecciona')
 		)
 	);
-	echo $this->Form->input('diferencial');
-	echo $this->Form->input('opciones');
-	echo $this->Form->input('id', array('type'=>'hidden'));
-	echo $this->Form->end('Guardar Muestra');
+	echo $this->Form->input('peso_comprado');
   ?>
+     <table>
+	<tr>
+      <th> </th>
+      <th>cantidad</th>
+      <th>peso</th>
+	</tr>
+	
+	<?php
+	    foreach ($embalajes as $index => $embalaje):
+		    echo '<tr>';
+		    echo "<td>".$embalaje."</td>\n";
+		    echo '<td>';
+		    echo $this->Form->input('Embalaje.'.$index.'.cantidad_embalaje', array(
+			    'label' => ''
+			    )
+		    );
+		    echo '</td>';
+		    echo '<td>';
+		    echo $this->Form->input('Embalaje.'.$index.'.peso_embalaje_real', array(
+			    'label' => ''
+			    )
+		);
+		    echo '</td>';
+		    echo '</tr>';
+	    endforeach;
+	    ?>
+    </table>
+	<?php
+		echo $this->Form->input('diferencial');
+		echo $this->Form->input('opciones');
+		echo $this->Form->input('si_londres', array(
+			'label' => 'Bolsa de Londres'
+			)
+		);
+		echo "<div class='linea'>\n";
+		echo $this->Form->input('fecha_embarque', array(
+			'label' => 'Fecha de embarque',
+			'dateFormat' => 'DMY')
+		);
+		echo "</div>\n";
+		echo "<div class='linea'>\n";
+		echo $this->Form->input('fecha_entrega', array(
+			'label' => 'Fecha de entrega',
+			'dateFormat' => 'DMY')
+		);
+		echo "</div>\n";
+		echo $this->Form->input('id', array('type'=>'hidden'));
+		echo $this->Form->end('Guardar Contrato');
+	?>
 </fieldset>
