@@ -96,6 +96,15 @@ class ContratosController extends AppController {
 			}
 		else:
 			if ($this->Contrato->save($this->request->data)):
+				//Los registros de ContratoEmbalaje se van sumando
+				//entonces hay que borrarlos todos porque el saveAll()
+				//los volverá a crear y no queremos duplicados
+				$this->Contrato->ContratoEmbalaje->deleteAll(array(
+					'ContratoEmbalaje.contrato_id' => $this->Contrato->id
+					)
+				);
+				//sacamos los datos del formulario en edit.ctp para crear nuevos
+				//registros en la tabla de join
 				//Las claves del array data['Embalaje'] no son secuenciales,
 				//son realmente el embalaje_id
 				foreach ($this->request->data['Embalaje'] as $embalaje_id => $valor) {
@@ -105,18 +114,17 @@ class ContratosController extends AppController {
 						$this->request->data['ContratoEmbalaje']['embalaje_id'] = $embalaje_id;
 						$this->request->data['ContratoEmbalaje']['cantidad_embalaje'] = $valor['cantidad_embalaje'];
 						$this->request->data['ContratoEmbalaje']['peso_embalaje_real'] = $valor['peso_embalaje_real'];
-						//$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
-						$this->Contrato->ContratoEmbalaje->save($this->request->data['ContratoEmbalaje']);
+						$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
 					}
 				}
 				$this->Session->setFlash('Contrato '.
 				$this->request->data['Contrato']['referencia'].
 			        ' modificada con éxito');
-//				$this->redirect(array(
-//					'action' => 'view',
-//					$id
-//					)
-//				);
+				$this->redirect(array(
+					'action' => 'view',
+					$id
+					)
+				);
 			else:
 				$this->Session->setFlash('Contrato NO guardado');
 			endif;
