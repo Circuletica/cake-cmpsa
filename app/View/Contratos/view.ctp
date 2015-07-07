@@ -41,14 +41,20 @@
 	$anyo = substr($fecha,0,4);
 	$fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
 	echo "<dl>";
-	echo "  <dt>Id</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['id'].'&nbsp;'."</dd>";
+	//echo "  <dt>Id</dt>\n";
+	//echo "  <dd>".$contrato['Contrato']['id'].'&nbsp;'."</dd>";
 	echo "  <dt>Referencia</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['referencia'].'&nbsp;'."</dd>";
+	echo "  <dt>Proveedor</dt>\n";
+	echo "<dd>";
+	echo $this->Html->link($contrato['Proveedor']['Empresa']['nombre'], array(
+		'controller' => 'proveedores',
+		'action' => 'view',
+		$contrato['Proveedor']['id'])
+	);
+	echo "</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
-	echo "  <dt>Incoterms</dt>\n";
-	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Peso</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['peso_comprado'].'&nbsp;'."</dd>";
 	echo "  <table>\n";
@@ -69,20 +75,15 @@
 	echo "  <dd>".$fecha_embarque."</dd>";
 	echo "  <dt>Fecha de entrega</dt>\n";
 	echo "  <dd>".$fecha_entrega."</dd>";
-	echo "  <dt>Bolsa</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['si_londres'] ? 'Londres' : 'NY'."</dd>";
+	$bolsa = $contrato['Contrato']['si_londres'] ? 'London' : 'New-York';
+	//echo "  <dt>Bolsa</dt>\n";
+	//echo "  <dd>".$bolsa.'&nbsp;'."</dd>";
 	echo "  <dt>Diferencial</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['diferencial'].'&nbsp;'."</dd>";
+	echo "  <dd>".$contrato['Contrato']['diferencial'].' ('.$bolsa.')&nbsp;'."</dd>";
+	echo "  <dt>Incoterm</dt>\n";
+	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Opciones</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['opciones'].'&nbsp;'."</dd>";
-	echo "  <dt>Proveedor</dt>\n";
-	echo "<dd>";
-	echo $this->Html->link($contrato['Proveedor']['Empresa']['nombre'], array(
-		'controller' => 'proveedores',
-		'action' => 'view',
-		$contrato['Proveedor']['id'])
-	);
-	echo "</dd>";
 	echo "</dl>";?>
 	<div class="detallado">
 	<h3>Líneas de contrato</h3>

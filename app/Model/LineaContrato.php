@@ -8,12 +8,12 @@ class LineaContrato extends AppModel {
 			'className' => 'Contrato',
 			'foreignKey' => 'contrato_id')
 	);
-	public $hasMany = array(
-		'LineaContratosOperacion' => array(
-			'className' => 'LineaContratosOperacion',
-			'foreignKey' => 'linea_contrato_id'
-		)
-	);
+	//public $hasMany = array(
+	//	'LineaContratosOperacion' => array(
+	//		'className' => 'LineaContratosOperacion',
+	//		'foreignKey' => 'linea_contrato_id'
+	//	)
+	//);
 //	public $hasAndBelongsToMany = array(
 //		'Operacion' => array(
 //			'className' => 'Operacion',

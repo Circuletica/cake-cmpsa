@@ -225,13 +225,13 @@
 		echo "<div class='linea'>\n";
 		echo $this->Form->input('fecha_embarque', array(
 			'label' => 'Fecha de embarque',
-		'dateFormat' => 'DMY')
+		'dateFormat' => 'MY')
 		);
 		echo "</div>\n";
 		echo "<div class='linea'>\n";
 		echo $this->Form->input('fecha_entrega', array(
 			'label' => 'Fecha de entrega',
-			'dateFormat' => 'DMY')
+			'dateFormat' => 'MY')
 		);
 		echo "</div>\n";
 		echo $this->Form->end('Guardar Contrato');
