@@ -14,26 +14,26 @@ class Operacion extends AppModel {
 	//);
 
 	public $hasMany = array(
-		'LineaContratosOperacion' => array(
-			'className' => 'LineaContratosOperacion',
-			'foreignKey' => 'operacion_id'),
+		'LineaContrato' => array(
+		'className' => 'LineaContrato',
+		'foreignKey' => 'operacion_id'),
 		'Muestra' => array(
 			'className' => 'Muestra'),
 		'Transporte' => array(
 			'className' => 'Transporte')
 	);
 
-	public $belongsTo = array(
-		'Agente' => array(
-			'className' => 'Agente',
-			'foreignKey'=> 'agente_id'),
-		'Naviera' => array(
-			'className' => 'Naviera',
-			'foreignKey' => 'naviera_id'),
-		'Puerto' => array(
-			'className' => 'Puerto',
-			'foreignKey' => 'puerto_id'),
-	);
+//	public $belongsTo = array(
+//		'Agente' => array(
+//			'className' => 'Agente',
+//			'foreignKey'=> 'agente_id'),
+//		'Naviera' => array(
+//			'className' => 'Naviera',
+//			'foreignKey' => 'naviera_id'),
+//		'Puerto' => array(
+//			'className' => 'Puerto',
+//			'foreignKey' => 'puerto_id'),
+//	);
   	public $validate = array(
 	    'referencia' => array(
 		      'rule' => 'notEmpty',

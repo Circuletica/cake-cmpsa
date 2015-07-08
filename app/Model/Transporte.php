@@ -10,15 +10,24 @@ class Transporte extends AppModel {
 			'foreignKey' => 'seguro_id'),
 			'Operacion' => array(
 			'className' => 'Operacion',
-			'foreignKey' => 'operacion_id')
+			'foreignKey' => 'operacion_id'),
+			'Naviera' => array(
+			'className' => 'Naviera',
+			'foreignKey' => 'naviera_id'),
+			'Puerto' => array(
+			'className' => 'Puerto',
+			'foreignKey' => 'puerto_id'),
+			'Agente' => array(
+			'className' => 'Agente',
+			'foreignKey' => 'agente_id')
 	);
 
 	public $hasMany = array(
 		'AlmacenesTransporte'=> array(
 			'className' => 'AlmacenesTransporte',
 			'foreignKey' => 'transporte_id'),
-		'EmbalajesTransporte' => array(
-			'className' => 'EmbalajesTransporte',
+		'EmbalajeTransporte' => array(
+			'className' => 'EmbalajeTransporte',
 			'foreignKey' => 'transporte_id'),
 		'Seguro' => array(
 			'className'=>'Seguro')

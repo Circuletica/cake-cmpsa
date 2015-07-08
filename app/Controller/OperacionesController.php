@@ -3,19 +3,17 @@ class OperacionesController extends AppController {
 	var $displayField = 'referencia';
 	
 	public $paginate = array(
-		'recursive' => 4,
+		'recursive' => 3,
 		'order' => array('Operacion.referencia' => 'asc')
 	);
 
 
 	public function index() {
-			$contrato = $this->Operacion->LineaContratosOperacion->find('list', array(
-				'fields' => array('LineaContratosOperacion.id'),
-				'recursive' => 3)
-			);
-
-		$this->set('contrato',$contrato);
-
+	//		$contrato = $this->Operacion->find('list', array(
+	//			'fields' => array('LineaContratosOperacion.id'),
+	//			'recursive' => 3)
+	//		);
+//		$this->set('contrato',$contrato);
 		$this->set('operaciones', $this->paginate());
 	}
 
@@ -65,18 +63,16 @@ public function view($id = null) {
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->Operacion->id = $id;
-		$this->Operacion->Empresa->id = $id;
 		$operacion = $this->Operacion->find('first',array(
 			'conditions' => array('Operacion.id' => $id)));
 		$this->set('operacion',$operacion);
-		$this->set('paises', $this->Operacion->Empresa->Pais->find('list'));
 		if($this->request->is('get')):
 			$this->request->data = $this->Operacion->read();
 		else:
 			//if ($this->BancoPrueba->save($this->request->data)):
-			if ($this->Operacion->Empresa->save($this->request->data) and $this->Operacion->save($this->request->data)):
+			if ($this->Operacion->save($this->request->data) and $this->Operacion->save($this->request->data)):
 				$this->Session->setFlash('Operacion '.
-				$this->request->data['Empresa']['nombre'].
+				$this->request->data['Operacion']['referencia'].
 			        ' modificado con éxito');
 				$this->redirect(array('action' => 'view', $id));
 			else:

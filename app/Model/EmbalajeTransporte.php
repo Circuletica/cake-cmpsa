@@ -1,5 +1,5 @@
 <?php
-class EmbalajesTransporte extends AppModel {
+class EmbalajeTransporte extends AppModel {
 	public $belongsTo = array('Embalaje','Transporte');
 }
 ?>

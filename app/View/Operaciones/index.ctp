@@ -19,57 +19,23 @@
   <table>
   <tr>
     <th><?php echo $this->Paginator->sort('referencia')?></th>
-    <th><?php echo $this->Paginator->sort('flete')?></th>
-    <th><?php echo $this->Paginator->sort('Contrato.fecha_embarque')?></th>
-    <th><?php echo $this->Paginator->sort('forfait')?></th>
-    <th><?php echo $this->Paginator->sort('fecha_seguro')?></th>
+    <th><?php echo $this->Paginator->sort('cantidad_contenedores')?></th>
+    <th><?php echo $this->Paginator->sort('cambio_dolar_euro')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
-
   <?php foreach($operaciones as $operacion): ?>
   <tr>
     <td>
       <?php echo $operacion['Operacion']['referencia']?>
     </td>
     <td>
-      <?php echo $operacion['Operacion']['flete'];?>
+      <?php echo $operacion['Operacion']['cantidad_contenedores'];?>
     </td>
       <td>
-      <?php echo $operacion['LineaContratosOperacion']['LineaContrato']['Contrato']['fecha_embarque'];?>
-    </td>
-    <?php
-	//no queremos la hora
-	//mysql almacena la fecha en formato YYY-MM-DD
-//echo $operacion['LineaContratosOperacion']['LineaContrato.contrato_id'];
-//['Contrato']['fecha_embarque'];
-//	$dia_emb = substr($fecha_emb,8,2);
-//	$mes_emb = substr($fecha_emb,5,2);
-//	$anyo_emb= substr($fecha_emb,0,4);
- // echo $fecha_emb;
-//	echo $dia_emb .'-'.$mes_emb .'-'.$anyo_emb;
-     ?>
-    </td>
-          <?php
-      echo $operacion['Operacion']['seguro'];
-  //no queremos la hora
-  //mysql almacena la fecha en formato YYY-MM-DD
-	//$fecha_ent = $operacion['LineaContratosOperacion']['0']['LineaContrato']['Contrato']['fecha_entrega'];
-//	$fecha_ent = $operacion['LineaContratosOperacion'][1]['LineaContrato']['Contrato']['fecha_entrega'];
-//	$dia_ent = substr($fecha_ent,8,2);
-//	$mes_ent = substr($fecha_ent,5,2);
-//	$anyo_ent = substr($fecha_ent,0,4);
-//	echo $dia_ent.'-'.$mes_ent.'-'.$anyo_ent;
-     ?>
-    </td>
-
-      <td>
-      <?php echo $operacion['Operacion']['forfait']?>
-    </td>
-      <td>
-      <?php echo $operacion['Operacion']['fecha_seguro']?>
+      <?php echo $operacion['Operacion']['cambio_dolar_euro'];?>
     </td>
     <td>
-      <?php echo $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$operacion['Operacion']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles')).' '.
+      <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',array('action'=>'edit',$operacion['Operacion']['id']),array('class'=>'botond','title'=>'Modificar Operación','escape'=>false)).' '.$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$operacion['Operacion']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles')).' '.
       $this->Form->postLink(
 	'<i class="fa fa-trash"></i>',
 	array('action'=>'delete',$operacion['Operacion']['id']),
