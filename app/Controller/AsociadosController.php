@@ -3,6 +3,8 @@ class AsociadosController extends AppController {
 	public $paginate = array(
 		'order' => array('Empresa.nombre' => 'asc')
 	);
+	public $scaffold = 'admin';
+
 	public function index() {
 		$this->set('empresas', $this->paginate());
 	}
