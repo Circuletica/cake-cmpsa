@@ -1,0 +1,62 @@
+<?php
+class PuertosController extends AppController {
+	public $helpers = array('Html', 'Form');
+	public $components = array('Session');
+	public $paginate = array(
+		'limit' => 10,
+		'order' => array('Puertos.nombre' => 'asc')
+	);
+
+	public function index() {
+		$params = array('order' => 'nombre asc');
+		//$this->set('Puertos', $this->Puertos->find('all', $params));
+		$this->set('puertos', $this->paginate());
+	}
+	public function add() {
+		if($this->request->is('post')):
+			if($this->Puertos->save($this->request->data) ):
+				$this->Session->setFlash('Puerto guardado');
+				$this->redirect(array(
+					'controller' => $this->params['named']['from_controller'],
+					'action' => $this->params['named']['from_action']));
+			endif;
+		endif;
+	}
+
+	//FALLA POR CONFIGURAR
+public function edit( $id = null) {
+		if (!$id) {
+			$this->Session->setFlash('URL mal formado');
+			$this->redirect(array('action'=>'index'));
+		}
+		$this->Puerto->id = $id;
+		$this->set('paises', $this->Puerto->Pais->find('list'));
+		if($this->request->is('get')):
+			$this->request->data = $this->Puerto->read();
+		else:
+			if  ($this->Puerto->save($this->request->data)):
+				$this->Session->setFlash('Puerto '.
+				$this->request->data['Puerto']['nombre'].
+			        ' modificado con éxito');
+				$this->redirect(array('action' => 'index', $id));
+			else:
+				$this->Session->setFlash('Puerto NO guardado');
+			endif;
+		endif;
+	}
+	public function delete($id) {
+		if($this->request->is('get')):
+			throw new MethodNotAllowedException();
+		else:
+			if($this->Puertos->delete($id)):
+				$this->Session->setFlash('Puerto borrado');
+		$this->redirect(array('action' => 'index'));
+endif;
+endif;
+	}
+}
+
+
+
+
+?>

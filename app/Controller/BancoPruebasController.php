@@ -84,7 +84,7 @@ class BancoPruebasController extends AppController {
 				$this->Session->setFlash('BancoPrueba '.
 				$this->request->data['Empresa']['nombre'].
 			        ' modificado con éxito');
-				$this->redirect(array('action' => 'view', $id));
+				$this->redirect(array('action' => 'index', $id));
 			else:
 				$this->Session->setFlash('BancoPrueba NO guardado');
 			endif;

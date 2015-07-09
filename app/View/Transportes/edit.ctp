@@ -23,11 +23,10 @@
 	);
 
 	echo $this->Form->create('Operacion', array('action' => 'edit'));
-	echo $this->Form->input('referencia', array('label'=>'Referencia Operación'));
-	//echo $this->Form->input('CalidadNombre.nombre', 'Calidad');
-	echo $this->Form->input('Contrato.fecha_embarque');
-	echo $this->Form->input('Contrato.fecha_entrega');
-	echo $this->Form->input('proveedor', 'Proveedor');
+	echo $this->Form->input('referencia');
+	echo $this->Form->input('CALIDAD');
+	echo $this->Form->input('agente-id');
+	echo $this->Form->input('referencia');
 
 
 
