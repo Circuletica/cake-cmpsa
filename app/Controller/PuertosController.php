@@ -1,7 +1,5 @@
 <?php
 class PuertosController extends AppController {
-	public $helpers = array('Html', 'Form');
-	public $components = array('Session');
 	public $paginate = array(
 		'limit' => 10,
 		'order' => array('Puertos.nombre' => 'asc')
@@ -9,10 +7,10 @@ class PuertosController extends AppController {
 
 	public function index() {
 		$params = array('order' => 'nombre asc');
-		//$this->set('Puertos', $this->Puertos->find('all', $params));
 		$this->set('puertos', $this->paginate());
 	}
 	public function add() {
+		$this->set('paises', $this->Puerto->Pais->find('list'));
 		if($this->request->is('post')):
 			if($this->Puertos->save($this->request->data) ):
 				$this->Session->setFlash('Puerto guardado');
@@ -23,14 +21,17 @@ class PuertosController extends AppController {
 		endif;
 	}
 
-	//FALLA POR CONFIGURAR
 public function edit( $id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');
 			$this->redirect(array('action'=>'index'));
 		}
+		$puerto = $this->Puerto->find('first',array(
+		'conditions' => array('Puerto.id' => $id)));
+		$this->set('puerto',$puerto);
 		$this->Puerto->id = $id;
 		$this->set('paises', $this->Puerto->Pais->find('list'));
+
 		if($this->request->is('get')):
 			$this->request->data = $this->Puerto->read();
 		else:

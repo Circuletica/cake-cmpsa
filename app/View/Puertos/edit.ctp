@@ -3,11 +3,11 @@
 $this->Html->addCrumb('Modificar Puerto');
 echo $this->Form->create('Puerto', array('action' => 'edit'));?>
 <fieldset>
-<div class="columna3">
+<div class="columna2">
 <?php
 
    echo $this->Form->input('nombre');
-   echo $this->Form->input('pais');
+   echo $this->Form->input('pais.nombre', array('label'=>'País'));
 ?>
 	</div>
  <?php

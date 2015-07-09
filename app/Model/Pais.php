@@ -13,4 +13,12 @@ class Pais extends AppModel{
       'message' => 'El nombre no puede ser vacio'
       )
     );
+
+   public $hasMany = array(
+   		'Empresa' => array(
+			'className' => 'Empresa',
+			'foreignKey' => 'id'),
+   		'Pais'=> array(
+			'className'=>'Pais')
+   		);    
 }

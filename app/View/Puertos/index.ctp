@@ -15,29 +15,28 @@
 </div>
 <h2>Listado de puertos</h2>
 <table>
-  <tr>
-    <th><?php echo $this->Paginator->sort('id')?></th>
-    <th><?php echo $this->Paginator->sort('nombre')?></th>
-    <th><?php echo $this->Paginator->sort('pais')?></th>
-    <th>Acciones</th>
-  </tr>
-<?php foreach($puertos as $pais):?>
-  <tr>
-    <td>
-      <?php echo $pais['Puerto']['id']?>
-    </td>
-    <td>
-      <?php echo $pais['Puerto']['nombre']?>
-    </td>
-    <td>
-      <?php echo $pais['Pais']['nombre']?>
-    </td>
-    <td>
-      <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',array('action'=>'edit',$pais['Puerto']['id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar'))
-      .' '.$this->Form->postLink('<i class="fa fa-trash"></i>',array('action'=>'delete',$pais['Puerto']['id']), array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$pais['Puerto']['nombre'].'?'))?>
-    </td>
-  </tr>
-<?php endforeach;?>
+<?php
+echo $this->Html->tableHeaders(array(
+    'Id',
+    $this->Paginator->sort('nombre'),
+    $this->Paginator->sort('pais'),
+    'Acciones'));
+
+foreach($puertos as $puerto):
+ echo $this->Html->tableCells(array(
+  $puerto['Puerto']['id'],
+  $puerto['Puerto']['nombre'],
+  $puerto['Pais']['nombre'],
+  $this->Html->link('<i class="fa fa-pencil-square-o"></i>',
+    array('action'=>'edit', $puerto['Puerto']['id']),
+    array('class'=>'botond','escape'=>false, 'title'=>'Modificar puerto'))
+   .' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
+    array('action'=>'delete',$puerto['Puerto']['id']),
+    array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$puerto['Puerto']['nombre'].'?'))
+ ));
+
+endforeach;?>
+
 </table>
 <div class="btabla">
     <?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Puerto',array(
