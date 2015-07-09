@@ -18,15 +18,11 @@
 	if (empty($bancopruebas)):
 		echo "No hay bancos en esta lista";
 	else:
-	//echo "<pre>";
-	//print_r($bancopruebas);
-	////print_r($bancopruebas['Empresa']['nombre']);
-	//echo "</pre>";
 ?>
 	<table><?php
 		echo $this->Html->tableHeaders(array(
 		'Id',
-		$this->Paginator->sort('Empresa.nombre','Banco'),
+		$this->Paginator->sort('Empresa.nombre_corto','Banco'),
 		$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
 		'Agencia',
 		'Teléfono',
@@ -35,7 +31,7 @@
 	foreach($bancopruebas as $bancoprueba):
 	echo $this->Html->tableCells(array(
 		$bancoprueba['BancoPrueba']['id'],
-		$bancoprueba['Empresa']['nombre'],
+		$bancoprueba['Empresa']['nombre_corto'],
 		$bancoprueba['Empresa']['codigo_contable'],
 		substr($bancoprueba['BancoPrueba']['cuenta_cliente_1'],4,4),
 		$bancoprueba['Empresa']['telefono'],
