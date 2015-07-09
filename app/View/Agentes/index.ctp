@@ -8,7 +8,7 @@
 	<div class="printdet">
 <ul><li>
 	<?php 
-	echo $this->element('imprimir');
+	echo $this->element('imprimirI');
 	?>
 	</li>
 	<li>
@@ -23,15 +23,10 @@
 	if (empty($empresas)):
 		echo "No hay agentes en esta lista";
 	else:
-	//echo "<pre>";
-	//print_r($bancopruebas);
-	////print_r($bancopruebas['Empresa']['nombre']);
-	//echo "</pre>";
-
 	echo "<table>\n";
 	echo $this->Html->tableHeaders(array(
-		'Id',
-		$this->Paginator->sort('Empresa.nombre','Agente'),
+		//'Id',
+		$this->Paginator->sort('Empresa.nombre_corto','Agente'),
 		$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
 		'País',
 		'Teléfono',
@@ -39,8 +34,8 @@
 
 	foreach($empresas as $empresa):
 	echo $this->Html->tableCells(array(
-		$empresa['Agente']['id'],
-		$empresa['Empresa']['nombre'],
+		//$empresa['Agente']['id'],
+		$empresa['Empresa']['nombre_corto'],
 		$empresa['Empresa']['codigo_contable'],
 		//substr($empresa['Empresa']['cuenta_bancaria'],4,4),
 		$empresa['Empresa']['Pais']['nombre'],

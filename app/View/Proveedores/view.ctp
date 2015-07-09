@@ -3,7 +3,7 @@
 	'controller'=>'proveedores',
 	'action'=>'index'
 	));
-	$this->Html->addCrumb($proveedor['Empresa']['nombre'], array(
+	$this->Html->addCrumb($proveedor['Empresa']['nombre_corto'], array(
 	'controller'=>'proveedores',
 	'action'=>'view',
 	$proveedor['Empresa']['id']
@@ -14,17 +14,12 @@
 if (empty($proveedor)):
 	echo "No hay proveedores en esta lista";
 else:
-	//echo "<pre>";
-	//print_r($bancoprueba);
-	////print_r($bancoprueba['Empresa']['Contacto']);
-	//echo "</pre>";
-
 	echo "<div class='acciones'>\n";
     echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array('action'=>'edit',$proveedor['Proveedor']['id']),array('title'=>'Modificar Banco','escape'=>false)).' '.
-      $this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array('action'=>'delete',$proveedor['Proveedor']['id']),array('escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$proveedor['Empresa']['nombre'].'?'));
+      $this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array('action'=>'delete',$proveedor['Proveedor']['id']),array('escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$proveedor['Empresa']['nombre_corto'].'?'));
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
 	?></div>
-	<h2>Detalles Proveedor <?php echo $proveedor['Empresa']['nombre']?></h2>
+	<h2>Detalles Proveedor <?php echo $proveedor['Empresa']['nombre_corto']?></h2>
 	<?php
 
       //formateamos el número de cuenta de la entidad
@@ -39,13 +34,16 @@ else:
 //	      '-'.substr($numero_bruto,4,4).
 //	      '-'.substr($numero_bruto,8,2).
 //	      '-'.substr($numero_bruto,10,10);
-	//echo "<div class='view'>\n";
 	echo "<dl>";
-	echo "  <dt>Id</dt>\n";
-	echo "<dd>";
-	echo $proveedor['Proveedor']['id'].'&nbsp;';
+	//echo "  <dt>Id</dt>\n";
+	//echo "<dd>";
+	//echo $proveedor['Proveedor']['id'].'&nbsp;';
 	echo "</dd>";
-	echo "  <dt>Nombre</dt>\n";
+	echo "  <dt>Nombre corto</dt>\n";
+	echo "<dd>";
+        echo $proveedor['Empresa']['nombre_corto'];
+	echo "</dd>";
+	echo "  <dt>Denominación legal</dt>\n";
 	echo "<dd>";
         echo $proveedor['Empresa']['nombre'];
 	echo "</dd>";
@@ -125,10 +123,7 @@ else:
 					'confirm' => '¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
 		)
 	));
-		//print_r($contacto);
 	endforeach;
-	//echo "</table>\n";
-	//echo "</div>\n";
 endif;
 ?>
 </table>
@@ -142,5 +137,3 @@ endif;
 		?>
 	</div>
 </div>
-
-

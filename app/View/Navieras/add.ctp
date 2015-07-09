@@ -26,7 +26,8 @@ echo $this->Form->create('Naviera', array(
 	?>
 <fieldset>
 	<?php
-	echo $this->Form->input('Empresa.nombre');
+	echo $this->Form->input('Empresa.nombre_corto');
+	echo $this->Form->input('Empresa.nombre', array('label'=>'Denominacion legal');
 	echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
 		?>
 	<div class="columna3">
@@ -38,12 +39,8 @@ echo $this->Form->create('Naviera', array(
 		<ul>
 	    	<li>
 			<?php
-			//echo $this->Form->select('Empresa.pais_id', $paises);
 			echo $this->Form->input('Empresa.pais_id', 
 				array('label'=>'País'));
-			//	'controller'=>'paises',
-			//	'action'=>'add')
-			//);
 			?>
 			</li>
 			<li>

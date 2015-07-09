@@ -3,7 +3,7 @@
 	'controller'=>'navieras',
 	'action'=>'index'
 	));
-	$this->Html->addCrumb($empresa['Empresa']['nombre'], array(
+	$this->Html->addCrumb($empresa['Empresa']['nombre_corto'], array(
 	'controller'=>'navieras',
 	'action'=>'view',
 	$empresa['Naviera']['id']
@@ -21,7 +21,7 @@ else:
 </div>
 <h2>Detalles Naviera <?php echo $empresa['Empresa']['nombre']?></h2>
 <?php
-	  //formateamos el número de cuenta de la entidad
+  //formateamos el número de cuenta de la entidad
       $numero_bruto=$empresa['Empresa']['cuenta_bancaria'];
       $cuenta_entidad=substr($numero_bruto,0,4).
 	      '-'.substr($numero_bruto,4,4).
@@ -34,11 +34,15 @@ else:
 //	      '-'.substr($numero_bruto,8,2).
 //	      '-'.substr($numero_bruto,10,10);
 	echo "<dl>";
-	echo "  <dt>Id</dt>\n";
+//	echo "  <dt>Id</dt>\n";
+//	echo "<dd>";
+//	echo $empresa['Naviera']['id'].'&nbsp;';
+//	echo "</dd>";
+	echo "  <dt>Nombre corto</dt>\n";
 	echo "<dd>";
-	echo $empresa['Naviera']['id'].'&nbsp;';
+        echo $empresa['Empresa']['nombre_corto'];
 	echo "</dd>";
-	echo "  <dt>Nombre</dt>\n";
+	echo "  <dt>Denominacion legal</dt>\n";
 	echo "<dd>";
         echo $empresa['Empresa']['nombre'];
 	echo "</dd>";

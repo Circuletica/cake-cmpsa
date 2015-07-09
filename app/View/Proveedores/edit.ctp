@@ -1,66 +1,70 @@
 <h2>Modificar Proveedor</h2>
 <?php
- $this->Html->addCrumb('Proveedores', array(
-	'controller'=>'proveedores',
-	'action'=>'index'
-	));
+	$this->Html->addCrumb('Proveedores', array(
+		'controller'=>'proveedores',
+		'action'=>'index'
+		)
+	);
 	$this->Html->addCrumb($proveedor['Empresa']['nombre'], array(
-	'controller'=>'proveedores',
-	'action'=>'view',
-	$proveedor['Empresa']['id']
-));
-
-//$this->Html->addCrumb('Modificar Proveedor', 'proveedores/edit');
-echo $this->Form->create('Proveedor', array('action' => 'edit'));
+		'controller'=>'proveedores',
+		'action'=>'view',
+		$proveedor['Empresa']['id']
+		)
+	);
+	echo $this->Form->create('Proveedor', array('action' => 'edit'));
 ?>
 <fieldset>
 <?php
-	echo $this->Form->input('Empresa.nombre');
+	echo $this->Form->input('Empresa.nombre_corto');
+	echo $this->Form->input('Empresa.nombre', array('label'=>'Denominacion legal');
 	echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
-		?>
-		<div class="columna3">
+?>
+	<div class="columna3">
 		<?php
-		echo $this->Form->input('Empresa.cp',array('label'=>'Código Postal'));
-		echo $this->Form->input('Empresa.municipio');
-		//echo $this->Form->select('Empresa.pais_id', $paises,
-		//	array('label' => 'País'
-		//	)
-		//);
+			echo $this->Form->input('Empresa.cp',array('label'=>'Código Postal'));
+			echo $this->Form->input('Empresa.municipio');
 		?>
-				<div class="formuboton">
-				<ul>
+		<div class="formuboton">
+			<ul>
 			     	<li><?php
 					echo $this->Form->input('Empresa.pais_id',array('label'=>'País'));
 					?></li>
 					<li><div class="enlinea">
 						<?php            
 						echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País', array(
-						'controller'=>'paises',
-						'action'=>'add'),array("class"=>"botond", 'escape' => false)
+							'controller'=>'paises',
+							'action'=>'add'
+							),
+							array(
+								"class"=>"botond",
+								'escape' => false
+							)
 						);
-						 ?>
-						 </div>
+						?>
+						</div>
 					</li>
 
-	    		</ul>
-	 			</div>
+			</ul>
+		</div>
 	 		
-			<?php
-	echo $this->Form->input('Empresa.telefono',array('label'=>'Teléfono'));
-	echo $this->Form->input('Empresa.cif',array('label'=>'CIF'));
-	echo $this->Form->input('Empresa.codigo_contable',array('label'=>'Código Contable'));
-	?></div>
-	<div class="columna2"><?php
-	echo $this->Form->input('Empresa.cuenta_bancaria');
-	echo $this->Form->input('Empresa.bic', array(
-		'label'=>'BIC'
-		)
-	);
+		<?php
+			echo $this->Form->input('Empresa.telefono',array('label'=>'Teléfono'));
+			echo $this->Form->input('Empresa.cif',array('label'=>'CIF'));
+			echo $this->Form->input('Empresa.codigo_contable',array('label'=>'Código Contable'));
+		?>
+	</div>
+	<div class="columna2">
+	<?php
+		echo $this->Form->input('Empresa.cuenta_bancaria');
+		echo $this->Form->input('Empresa.bic', array(
+			'label'=>'BIC'
+			)
+		);
 	?>
-    </div>
-    <?php
-	//echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
-	echo $this->Form->input('id',array('type'=>'hidden'));
-	echo $this->Form->end('Guardar proveedor');
+	</div>
+	<?php
+		//echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
+		echo $this->Form->input('id',array('type'=>'hidden'));
+		echo $this->Form->end('Guardar proveedor');
 	?>
 </fieldset>
