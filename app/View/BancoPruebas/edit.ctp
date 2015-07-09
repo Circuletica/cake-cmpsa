@@ -1,14 +1,14 @@
 <h2>Modificar Banco</h2>
 <?php
 	$this->Html->addCrumb('Bancos',array(
-	'controller'=>'bancopruebas',
+	'controller'=>'banco_pruebas',
 	'action'=>'index'
 	));
 	echo $this->Form->create('BancoPrueba', array('action' => 'edit'));
 	?>
 	<fieldset><?php
-	echo $this->Form->input('Empresa.nombre_corto', array('label' => 'Nombre corto');
-	echo $this->Form->input('Empresa.nombre', array('label' => 'Denominación legal');
+	echo $this->Form->input('Empresa.nombre_corto', array('label' => 'Nombre corto'));
+	echo $this->Form->input('Empresa.nombre', array('label' => 'Denominación legal'));
 	echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
 	?>
 	<div class="columna3"><?php

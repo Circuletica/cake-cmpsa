@@ -29,8 +29,7 @@
 
 	echo "<table>\n";
 	echo $this->Html->tableHeaders(array(
-		'Id',
-		$this->Paginator->sort('Empresa.nombre','Almacén'),
+		$this->Paginator->sort('Empresa.nombre_corto','Almacén'),
 		$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
 		'País',
 		'Teléfono',
@@ -38,8 +37,7 @@
 
 	foreach($empresas as $empresa):
 	echo $this->Html->tableCells(array(
-		$empresa['Almacen']['id'],
-		$empresa['Empresa']['nombre'],
+		$empresa['Empresa']['nombre_corto'],
 		$empresa['Empresa']['codigo_contable'],
 		//substr($empresa['Empresa']['cuenta_bancaria'],4,4),
 		$empresa['Empresa']['Pais']['nombre'],

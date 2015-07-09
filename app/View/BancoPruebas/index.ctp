@@ -21,7 +21,7 @@
 ?>
 	<table><?php
 		echo $this->Html->tableHeaders(array(
-		'Id',
+		//'Id',
 		$this->Paginator->sort('Empresa.nombre_corto','Banco'),
 		$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
 		'Agencia',
@@ -30,7 +30,7 @@
 
 	foreach($bancopruebas as $bancoprueba):
 	echo $this->Html->tableCells(array(
-		$bancoprueba['BancoPrueba']['id'],
+		//$bancoprueba['BancoPrueba']['id'],
 		$bancoprueba['Empresa']['nombre_corto'],
 		$bancoprueba['Empresa']['codigo_contable'],
 		substr($bancoprueba['BancoPrueba']['cuenta_cliente_1'],4,4),

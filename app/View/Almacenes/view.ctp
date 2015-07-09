@@ -19,7 +19,7 @@ else:
    $this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array('action'=>'delete',$empresa['Almacen']['id']),array('escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$empresa['Empresa']['nombre'].'?'));
    	?>
    </div>
-   <h2>Detalles Almacén <?php echo $empresa['Empresa']['nombre']?></h2>
+   <h2>Detalles Almacén <?php echo $empresa['Empresa']['nombre_corto']?></h2>
    <?php
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
 	  //formateamos el número de cuenta de la entidad
@@ -39,7 +39,11 @@ else:
 	echo "<dd>";
 	echo $empresa['Almacen']['id'].'&nbsp;';
 	echo "</dd>";
-	echo "  <dt>Nombre</dt>\n";
+	echo "  <dt>Nombre corto</dt>\n";
+	echo "<dd>";
+        echo $empresa['Empresa']['nombre_corto'];
+	echo "</dd>";
+	echo "  <dt>Denominacion legal</dt>\n";
 	echo "<dd>";
         echo $empresa['Empresa']['nombre'];
 	echo "</dd>";
