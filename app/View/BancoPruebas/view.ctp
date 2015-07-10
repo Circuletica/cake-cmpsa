@@ -40,10 +40,10 @@ else:
 	      '-'.substr($numero_bruto,10,10);
 	//echo "<div class='view'>\n";
 	echo "<dl>";
-	echo "  <dt>Id</dt>\n";
-	echo "<dd>";
-	echo $bancoprueba['BancoPrueba']['id'].'&nbsp;';
-	echo "</dd>";
+	//echo "  <dt>Id</dt>\n";
+	//echo "<dd>";
+	//echo $bancoprueba['BancoPrueba']['id'].'&nbsp;';
+	//echo "</dd>";
 	echo "  <dt>Nombre Corto</dt>\n";
 	echo "<dd>";
         echo $bancoprueba['Empresa']['nombre_corto'];

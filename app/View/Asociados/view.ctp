@@ -34,13 +34,17 @@ else:
 //	      '-'.substr($numero_bruto,8,2).
 //	      '-'.substr($numero_bruto,10,10);
 	echo "<dl>";
-	echo "  <dt>Id</dt>\n";
+	//echo "  <dt>Id</dt>\n";
+	//echo "<dd>";
+	//echo $empresa['Asociado']['id'].'&nbsp;';
+	//echo "</dd>";
+	echo "  <dt>Nombre Corto</dt>\n";
 	echo "<dd>";
-	echo $empresa['Asociado']['id'].'&nbsp;';
+        echo $bancoprueba['Empresa']['nombre_corto'];
 	echo "</dd>";
-	echo "  <dt>Nombre</dt>\n";
+	echo "  <dt>Denominación legal</dt>\n";
 	echo "<dd>";
-        echo $empresa['Empresa']['nombre'];
+        echo $bancoprueba['Empresa']['nombre'];
 	echo "</dd>";
 	echo "  <dt>Dirección</dt>\n";
 	echo "<dd>";
