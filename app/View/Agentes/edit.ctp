@@ -5,7 +5,7 @@
 	'action'=>'index'
 	)
     );
-    $this->Html->addCrumb($empresa['Empresa']['nombre'], array(
+    $this->Html->addCrumb($empresa['Empresa']['nombre_corto'], array(
 	'controller'=>'agentes',
 	'action'=>'view',
 	$empresa['Empresa']['id']
@@ -15,7 +15,8 @@
 	?>
 	<fieldset>
     <?php
-	echo $this->Form->input('Empresa.nombre');
+	echo $this->Form->input('Empresa.nombre_corto');
+	echo $this->Form->input('Empresa.nombre', array('label'=>'Denominacion legal'));
 	echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
     ?>
     <div class="columna3">

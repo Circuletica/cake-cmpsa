@@ -3,7 +3,7 @@
 	'controller'=>'agentes',
 	'action'=>'index'
 	));
-	$this->Html->addCrumb($empresa['Empresa']['nombre'], array(
+	$this->Html->addCrumb($empresa['Empresa']['nombre_corto'], array(
 	'controller'=>'agentes',
 	'action'=>'view',
 	$empresa['Agente']['id']
@@ -41,6 +41,10 @@ else:
 	echo $empresa['Agente']['id'].'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Nombre</dt>\n";
+	echo "<dd>";
+        echo $empresa['Empresa']['nombre_corto'];
+	echo "</dd>";
+	echo "  <dt>Denominacion legal</dt>\n";
 	echo "<dd>";
         echo $empresa['Empresa']['nombre'];
 	echo "</dd>";

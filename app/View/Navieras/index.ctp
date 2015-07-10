@@ -30,8 +30,8 @@
 ?>
 	<table><?php
 	echo $this->Html->tableHeaders(array(
-		'Id',
-		$this->Paginator->sort('Empresa.nombre','Naviera'),
+		//'Id',
+		$this->Paginator->sort('Empresa.nombre_corto','Naviera'),
 		$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
 		'País',
 		'Teléfono',
@@ -39,8 +39,8 @@
 
 	foreach($empresas as $empresa):
 	echo $this->Html->tableCells(array(
-		$empresa['Naviera']['id'],
-		$empresa['Empresa']['nombre'],
+		//$empresa['Naviera']['id'],
+		$empresa['Empresa']['nombre_corto'],
 		$empresa['Empresa']['codigo_contable'],
 		//substr($empresa['Empresa']['cuenta_bancaria'],4,4),
 		$empresa['Empresa']['Pais']['nombre'],
