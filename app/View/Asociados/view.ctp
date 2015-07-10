@@ -40,11 +40,11 @@ else:
 	//echo "</dd>";
 	echo "  <dt>Nombre Corto</dt>\n";
 	echo "<dd>";
-        echo $bancoprueba['Empresa']['nombre_corto'];
+        echo $empresa['Empresa']['nombre_corto'];
 	echo "</dd>";
 	echo "  <dt>Denominación legal</dt>\n";
 	echo "<dd>";
-        echo $bancoprueba['Empresa']['nombre'];
+        echo $empresa['Empresa']['nombre'];
 	echo "</dd>";
 	echo "  <dt>Dirección</dt>\n";
 	echo "<dd>";
