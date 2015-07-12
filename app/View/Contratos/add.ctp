@@ -1,3 +1,28 @@
+<script type="text/javascript">
+function totalDesglose(){
+    var pesoComprado = document.getElementById('pesoComprado').value;
+    var cantidades = document.getElementsByClassName('cantidad');
+    var pesos = document.getElementsByClassName('peso');
+    var total=0;
+    for(var i=0;i<cantidades.length;i++){
+        if(parseFloat(cantidades[i].value) && parseFloat(pesos[i].value)) {
+	    var cantidad = parseFloat(cantidades[i].value);
+	    var peso = parseFloat(pesos[i].value);
+	    console.log(cantidad);
+	    console.log(peso);
+            total += cantidad * peso;
+	}
+    }
+    console.log(total);
+    document.getElementById('total').value = total;
+    if(total == pesoComprado)
+    	document.getElementById('total').style.color = "black";
+    if(total != pesoComprado)
+    	document.getElementById('total').style.color = "red";
+}
+
+</script>
+
 <div class="add">
     <h1>Añadir Contrato</h1>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -20,7 +45,7 @@
     </style>
 
     <?php
-      $this->Html->addCrumb('Muestras', '/muestras');
+      $this->Html->addCrumb('Contratos', '/contratos');
 	    echo $this->Html->script('jquery')."\n"; // Include jQuery library
     ?>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -187,7 +212,11 @@
 		    'empty' => array('' => 'Selecciona')
 		    )
 	    );
-	    echo $this->Form->input('peso_comprado');
+	    echo $this->Form->input('peso_comprado', array(
+		    'id' => 'pesoComprado',
+		'onblur' => 'totalDesglose()'
+		    )
+	    );
     ?>
     <table>
 	<tr>
@@ -202,18 +231,25 @@
 		    echo "<td>".$embalaje."</td>\n";
 		    echo '<td>';
 		    echo $this->Form->input('Embalaje.'.$index.'.cantidad_embalaje', array(
-			    'label' => ''
+			'label' => '',
+			'class' => 'cantidad',
+			'onblur' => 'totalDesglose()'
 			    )
 		    );
 		    echo '</td>';
 		    echo '<td>';
 		    echo $this->Form->input('Embalaje.'.$index.'.peso_embalaje_real', array(
-			    'label' => ''
+			'label' => '',
+			'class' => 'peso',
+			'onblur' => 'totalDesglose()'
 			    )
 		);
 		    echo '</td>';
 		    echo '</tr>';
 	    endforeach;
+	    echo '<tr>';
+	    echo '<td>Total : <input type="number" name="total" id="total"/></td>';
+	    echo '</tr>';
 	    ?>
     </table>
 	<?php
@@ -225,13 +261,21 @@
 		echo "<div class='linea'>\n";
 		echo $this->Form->input('fecha_embarque', array(
 			'label' => 'Fecha de embarque',
-		'dateFormat' => 'MY')
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+5,
+			'selected' => date('Y-m-1')
+			)
 		);
 		echo "</div>\n";
 		echo "<div class='linea'>\n";
 		echo $this->Form->input('fecha_entrega', array(
 			'label' => 'Fecha de entrega',
-			'dateFormat' => 'MY')
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+5,
+			'selected' => date('Y-m-1')
+			)
 		);
 		echo "</div>\n";
 		echo $this->Form->end('Guardar Contrato');

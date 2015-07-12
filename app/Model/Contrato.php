@@ -2,8 +2,12 @@
 class Contrato extends AppModel {
 	public $recursive = 4;
 	public $displayField = 'referencia';
-	//public $validate = array(
-	//);
+	public $validate = array(
+		'incoterm_id' => array('required' => true),
+		'proveedor_id' => array('required' => true),
+		'calidad_id' => array('required' => true),
+		'referencia' => array('required' => true)
+		);
 	public $hasMany = array(
 		'LineaContrato' => array(
 			'className' => 'LineaContrato',
