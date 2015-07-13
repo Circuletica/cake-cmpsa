@@ -33,9 +33,11 @@ class LineaContratosController extends AppController {
 		$this->set('contrato',$contrato);
 		$this->set('proveedor',$contrato['Proveedor']['Empresa']['nombre']);
 		if($this->request->is('post')):
+			//al guardar la linea, se incluye a qué contrato pertenece
+			$this->request->data['LineaContrato']['contrato_id'] = $this->params['named']['from_id'];
 			if($this->LineaContrato->save($this->request->data)):
 				$this->Session->setFlash('Linea de Contrato guardada');
-				//volvemos a la muestra a la que pertenece la linea creada
+				//volvemos al contrato a la que pertenece la linea creada
 				$this->redirect(array(
 					'controller' => $this->params['named']['from_controller'],
 					'action' => 'view',

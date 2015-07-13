@@ -8,6 +8,12 @@ class Contrato extends AppModel {
 		'calidad_id' => array('rule' => 'notEmpty'),
 		'referencia' => array('rule' => 'notEmpty')
 		);
+	public $hasOne = array(
+		'RestoContrato' => array(
+			'className' => 'RestoContrato',
+			'foreignKey' => 'id'
+		),
+	);
 	public $hasMany = array(
 		'LineaContrato' => array(
 			'className' => 'LineaContrato',
