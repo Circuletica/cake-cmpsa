@@ -22,11 +22,15 @@
 		)
 	);
 
-	echo $this->Form->create('Contrato', array('action' => 'edit'));
+	echo $this->Form->create('Contrato', array(
+		'action' => 'edit',
+		//'onload' => 'totalDesglose()'
+		)
+	);
 	echo $this->Form->input('referencia');
 	echo $this->Form->input('incoterm_id', array(
-	    'label' => 'Incoterms',
-	    'empty' => array('' => 'Selecciona')
+		'label' => 'Incoterms',
+		'empty' => array('' => 'Selecciona'),
 	    )
 	);
 	echo $this->Form->input('calidad_id', array(
@@ -41,7 +45,12 @@
 		'empty' => array('' => 'Selecciona')
 		)
 	);
-	echo $this->Form->input('peso_comprado');
+	echo $this->Form->input('peso_comprado', array(
+		'id' => 'pesoComprado',
+		'onblur' => 'totalDesglose()',
+		'oninput' => 'totalDesglose()'
+		    )
+	);
   ?>
      <table>
 	<tr>
@@ -56,20 +65,27 @@
 		    echo "<td>".$embalaje."</td>\n";
 		    echo '<td>';
 		    echo $this->Form->input('Embalaje.'.$index.'.cantidad_embalaje', array(
-			    'label' => ''
+			'label' => '',
+			'class' => 'cantidad',
+			'onblur' => 'totalDesglose()',
+			'oninput' => 'totalDesglose()'
 			    )
 		    );
 		    echo '</td>';
 		    echo '<td>';
 		    echo $this->Form->input('Embalaje.'.$index.'.peso_embalaje_real', array(
-			    'label' => ''
-			    )
+			'label' => '',
+			'class' => 'peso',
+			'onblur' => 'totalDesglose()',
+			'oninput' => 'totalDesglose()'
+			)
 		);
 		    echo '</td>';
 		    echo '</tr>';
 	    endforeach;
 	    ?>
     </table>
+    <p id="total"></p>
 	<?php
 		echo $this->Form->input('diferencial');
 		echo $this->Form->input('opciones');

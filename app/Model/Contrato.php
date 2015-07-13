@@ -3,10 +3,10 @@ class Contrato extends AppModel {
 	public $recursive = 4;
 	public $displayField = 'referencia';
 	public $validate = array(
-		'incoterm_id' => array('required' => true),
-		'proveedor_id' => array('required' => true),
-		'calidad_id' => array('required' => true),
-		'referencia' => array('required' => true)
+		'incoterm_id' => array('rule' => 'notEmpty'),
+		'proveedor_id' => array('rule' => 'notEmpty'),
+		'calidad_id' => array('rule' => 'notEmpty'),
+		'referencia' => array('rule' => 'notEmpty')
 		);
 	public $hasMany = array(
 		'LineaContrato' => array(

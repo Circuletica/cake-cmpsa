@@ -1,28 +1,3 @@
-<script type="text/javascript">
-function totalDesglose(){
-    var pesoComprado = document.getElementById('pesoComprado').value;
-    var cantidades = document.getElementsByClassName('cantidad');
-    var pesos = document.getElementsByClassName('peso');
-    var total=0;
-    for(var i=0;i<cantidades.length;i++){
-        if(parseFloat(cantidades[i].value) && parseFloat(pesos[i].value)) {
-	    var cantidad = parseFloat(cantidades[i].value);
-	    var peso = parseFloat(pesos[i].value);
-	    console.log(cantidad);
-	    console.log(peso);
-            total += cantidad * peso;
-	}
-    }
-    console.log(total);
-    document.getElementById('total').value = total;
-    if(total == pesoComprado)
-    	document.getElementById('total').style.color = "black";
-    if(total != pesoComprado)
-    	document.getElementById('total').style.color = "red";
-}
-
-</script>
-
 <div class="add">
     <h1>Añadir Contrato</h1>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -213,9 +188,9 @@ function totalDesglose(){
 		    )
 	    );
 	    echo $this->Form->input('peso_comprado', array(
-		    'id' => 'pesoComprado',
-		'onblur' => 'totalDesglose()'
-		    )
+		'id' => 'pesoComprado',
+		'oninput' => 'totalDesglose()'
+		)
 	    );
     ?>
     <table>
@@ -233,7 +208,7 @@ function totalDesglose(){
 		    echo $this->Form->input('Embalaje.'.$index.'.cantidad_embalaje', array(
 			'label' => '',
 			'class' => 'cantidad',
-			'onblur' => 'totalDesglose()'
+			'oninput' => 'totalDesglose()'
 			    )
 		    );
 		    echo '</td>';
@@ -241,17 +216,15 @@ function totalDesglose(){
 		    echo $this->Form->input('Embalaje.'.$index.'.peso_embalaje_real', array(
 			'label' => '',
 			'class' => 'peso',
-			'onblur' => 'totalDesglose()'
+			'oninput' => 'totalDesglose()'
 			    )
 		);
 		    echo '</td>';
 		    echo '</tr>';
 	    endforeach;
-	    echo '<tr>';
-	    echo '<td>Total : <input type="number" name="total" id="total"/></td>';
-	    echo '</tr>';
 	    ?>
     </table>
+    <p id="total"></p>
 	<?php
 		echo $this->Form->input('diferencial');
 		echo $this->Form->input('opciones');

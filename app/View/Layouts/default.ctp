@@ -32,6 +32,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
+		echo $this->Html->script('cmpsa');//incluye funciones javascript
 	?>
 </head>
 <body>
@@ -85,5 +86,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		</div>
 	
 	<?php //echo $this->element('sql_dump'); ?>
+	<?php echo $this->Js->writeBuffer(); //write cached scripts ?>
 </body>
 </html>
