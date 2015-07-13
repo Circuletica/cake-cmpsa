@@ -1,0 +1,23 @@
+<?php
+class ProveedoresController extends AppController {
+var $name = 'Proveedores';
+  public function index() {
+    $this->set('proveedores', $this->paginate());
+    //$this->set('empresas', $this->Proveedor->Empresa->find('list'));
+    $this->set('paises', $this->Proveedor->Pais->find('list'));
+    //$paises =  $this->Proveedor->Pais->find('list');
+  }
+  public function add() {
+    $this->set('paises', $this->Proveedor->Pais->find('list'));
+    //$paises = $this->Proveedor->Pais->generateList();
+    //$this->set('paises', $this->Proveedor->Pais->generateList());
+    //$this->set('paises', $paises);
+    if($this->request->is('post')):
+      if($this->Proveedor->save($this->request->data) ):
+        $this->Session->setFlash('Proveedor guardado');
+        $this->redirect(array('action' => 'index'));
+      endif;
+    endif;
+  }
+}
+?>
