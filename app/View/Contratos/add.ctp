@@ -174,7 +174,7 @@
 	//	);
 	    echo $this->Form->radio('canal_compra', $canales, array(
 		    'legend' => false,
-		    'value' => 0,
+		    'value' => 1,
 		    'separator' => '<br/>',
 		    'onclick' => 'canalCompra()'
 	    		)
@@ -289,3 +289,6 @@
 	?>
     </fieldset>
 </div>
+<script type="text/javascript">
+	window.onload = canalCompra();
+</script>

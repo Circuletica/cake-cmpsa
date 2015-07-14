@@ -137,3 +137,6 @@
 		echo $this->Form->end('Guardar Contrato');
 	?>
 </fieldset>
+<script type="text/javascript">
+	window.onload = totalDesglose();
+</script>

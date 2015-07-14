@@ -16,31 +16,30 @@
 	else:
 	echo "<table>\n";
 	echo $this->Html->tableHeaders(array(
-		'Id',
+		//'Id',
 		$this->Paginator->sort('Contrato.referencia','Referencia'),
 		$this->Paginator->sort('proveedor','Proveedor'),
 		$this->Paginator->sort('Incoterm.nombre','Incoterm'),
 		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
 		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
+		$this->Paginator->sort('CanalCompra.nombre','Bolsa'),
 		'Diferencial',
-		//'Bolsa',
-		$this->Paginator->sort('Contrato.canal_compra','Bolsa'),
 		'Opciones',
 		'')
 	);
 
 	foreach($contratos as $contrato):
 		echo $this->Html->tableCells(array(
-			$contrato['Contrato']['id'],
+			//$contrato['Contrato']['id'],
 			$contrato['Contrato']['referencia'],
 			$contrato['Proveedor']['Empresa']['nombre'],
 			$contrato['Incoterm']['nombre'],
 			$contrato['CalidadNombre']['nombre'],
-			$contrato['Contrato']['peso_comprado'],
-			$contrato['Contrato']['diferencial'],
-			$contrato['Contrato']['canal_compra'],
-			$contrato['Contrato']['opciones'],
-			$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))//.' '.
+			$contrato['Contrato']['peso_comprado'].'kg',
+			$contrato['CanalCompra']['nombre'],
+			$contrato['Contrato']['diferencial'].$contrato['CanalCompra']['divisa'],
+			$contrato['Contrato']['opciones'].$contrato['CanalCompra']['divisa'],
+			$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))
 	));
 
 	endforeach;?>

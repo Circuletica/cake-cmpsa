@@ -12,11 +12,12 @@ class ContratosController extends AppController {
 			'recursive' => 1
 			)
 		);
-		$canales = array(
-			'0' => 'Bolsa LND',
-			'1' => 'Bolsa NY',
-			'2' => 'Precio fijo'
-		);
+//		$canales = array(
+//			'0' => 'Bolsa LND',
+//			'1' => 'Bolsa NY',
+//			'2' => 'Precio fijo'
+//		);
+		$canales = $this->Contrato->CanalCompra->find('all');
 		$this->set('proveedores', $proveedores);
 		//$contratos = $this->paginate();
 		$this->set('contratos', $this->paginate());
@@ -28,10 +29,14 @@ class ContratosController extends AppController {
 			'recursive' => 1
 			)
 		);
-		$canales = array(
-			'0' => 'Bolsa LND',
-			'1' => 'Bolsa NY',
-			'2' => 'Precio fijo'
+//		$canales = array(
+//			'0' => 'Bolsa LND',
+//			'1' => 'Bolsa NY',
+//			'2' => 'Precio fijo'
+//		);
+		$canales = $this->Contrato->CanalCompra->find('list', array(
+			'fields' => array('id','nombre')
+			)
 		);
 		$this->set('canales', $canales);
 		$this->set('proveedores', $proveedores);
