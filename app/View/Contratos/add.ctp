@@ -169,6 +169,16 @@
 	    );
 
 	    echo $this->Form->create('Contrato');
+	//	echo $this->Form->input('si_londres', array(
+	//	    'label' => 'Bolsa de Londres')
+	//	);
+	    echo $this->Form->radio('canal_compra', $canales, array(
+		    'legend' => false,
+		    'value' => 1,
+		    'separator' => '<br/>',
+		    'onclick' => 'canalCompra()'
+	    		)
+	    );
 	    echo $this->Form->input('referencia');
 	    echo $this->Form->input('incoterm_id', array(
 		    'label' => 'Incoterms',
@@ -226,11 +236,16 @@
     </table>
     <p id="total"></p>
 	<?php
-		echo $this->Form->input('diferencial');
-		echo $this->Form->input('opciones');
-		echo $this->Form->input('si_londres', array(
-		    'label' => 'Bolsa de Londres')
-	    );
+		echo $this->Form->input('diferencial', array(
+			//'class' => 'diferencial'
+			)
+		);
+		echo '<p id="divisa_diferencial"></p>';
+		echo $this->Form->input('opciones', array(
+			//'class' => 'opciones'
+			)
+		);
+		echo '<p id="divisa_opciones"></p>';
 		echo "<div class='linea'>\n";
 		echo $this->Form->input('fecha_embarque', array(
 			'label' => 'Fecha de embarque',

@@ -23,6 +23,12 @@ class ContratosController extends AppController {
 			'recursive' => 1
 			)
 		);
+		$canales = array(
+			'1' => 'Bolsa LND',
+			'2' => 'Bolsa NY',
+			'3' => 'Precio fijo'
+		);
+		$this->set('canales', $canales);
 		$this->set('proveedores', $proveedores);
 		//En la vista se muestra la lista de todos los embalajes existentes
 		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('list', array(
