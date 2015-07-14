@@ -75,7 +75,8 @@
 	echo "  <dd>".$fecha_embarque."</dd>";
 	echo "  <dt>Fecha de entrega</dt>\n";
 	echo "  <dd>".$fecha_entrega."</dd>";
-	$bolsa = $contrato['Contrato']['si_londres'] ? 'London' : 'New-York';
+	//$bolsa = $contrato['Contrato']['si_londres'] ? 'London' : 'New-York';
+	$bolsa = $contrato['Contrato']['canal_compra'];
 	//echo "  <dt>Bolsa</dt>\n";
 	//echo "  <dd>".$bolsa.'&nbsp;'."</dd>";
 	echo "  <dt>Diferencial</dt>\n";

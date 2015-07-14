@@ -24,9 +24,10 @@
 		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
 		'Diferencial',
 		//'Bolsa',
-		$this->Paginator->sort('Contrato.si_londres','Bolsa'),
+		$this->Paginator->sort('Contrato.canal_compra','Bolsa'),
 		'Opciones',
-		''));
+		'')
+	);
 
 	foreach($contratos as $contrato):
 		echo $this->Html->tableCells(array(
@@ -37,7 +38,7 @@
 			$contrato['CalidadNombre']['nombre'],
 			$contrato['Contrato']['peso_comprado'],
 			$contrato['Contrato']['diferencial'],
-			$contrato['Contrato']['si_londres'] ? 'Londres' : 'NY',
+			$contrato['Contrato']['canal_compra'],
 			$contrato['Contrato']['opciones'],
 			$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))//.' '.
 	));

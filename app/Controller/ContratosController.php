@@ -12,6 +12,11 @@ class ContratosController extends AppController {
 			'recursive' => 1
 			)
 		);
+		$canales = array(
+			'0' => 'Bolsa LND',
+			'1' => 'Bolsa NY',
+			'2' => 'Precio fijo'
+		);
 		$this->set('proveedores', $proveedores);
 		//$contratos = $this->paginate();
 		$this->set('contratos', $this->paginate());
@@ -24,14 +29,14 @@ class ContratosController extends AppController {
 			)
 		);
 		$canales = array(
-			'1' => 'Bolsa LND',
-			'2' => 'Bolsa NY',
-			'3' => 'Precio fijo'
+			'0' => 'Bolsa LND',
+			'1' => 'Bolsa NY',
+			'2' => 'Precio fijo'
 		);
 		$this->set('canales', $canales);
 		$this->set('proveedores', $proveedores);
 		//En la vista se muestra la lista de todos los embalajes existentes
-		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('list', array(
+		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
 			'order' => array('Embalaje.nombre' => 'asc')
 			)
 		);
@@ -89,7 +94,8 @@ class ContratosController extends AppController {
 			'recursive' => 1
 			))
 		);
-		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('list', array(
+		//En la vista se muestra la lista de todos los embalajes existentes
+		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
 			'order' => array('Embalaje.nombre' => 'asc')
 			)
 		);

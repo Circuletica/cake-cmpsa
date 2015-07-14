@@ -174,7 +174,7 @@
 	//	);
 	    echo $this->Form->radio('canal_compra', $canales, array(
 		    'legend' => false,
-		    'value' => 1,
+		    'value' => 0,
 		    'separator' => '<br/>',
 		    'onclick' => 'canalCompra()'
 	    		)
@@ -211,11 +211,12 @@
 	</tr>
 	
 	<?php
-	    foreach ($embalajes as $index => $embalaje):
+	    //foreach ($embalajes as $index => $embalaje):
+	    foreach ($embalajes as $embalaje):
 		    echo '<tr>';
-		    echo "<td>".$embalaje."</td>\n";
+		    echo "<td>".$embalaje['Embalaje']['nombre']."</td>\n";
 		    echo '<td>';
-		    echo $this->Form->input('Embalaje.'.$index.'.cantidad_embalaje', array(
+		    echo $this->Form->input('Embalaje.'.$embalaje['Embalaje']['id'].'.cantidad_embalaje', array(
 			'label' => '',
 			'class' => 'cantidad',
 			'oninput' => 'totalDesglose()'
@@ -223,12 +224,30 @@
 		    );
 		    echo '</td>';
 		    echo '<td>';
-		    echo $this->Form->input('Embalaje.'.$index.'.peso_embalaje_real', array(
-			'label' => '',
-			'class' => 'peso',
-			'oninput' => 'totalDesglose()'
-			    )
-		);
+		    //rellenamos la celda de peso y la dejamos en lectura sola si
+		    //el peso del embalaje es fijo
+		    //casi siempre, menos los bigbag que tienen un peso variable
+		    if(!$embalaje['Embalaje']['peso_embalaje']){
+			    echo $this->Form->input(
+				    'Embalaje.'.$embalaje['Embalaje']['id'].'.peso_embalaje_real',
+				    array(
+					'label' => '',
+					'class' => 'peso',
+					'oninput' => 'totalDesglose()'
+				    )
+			    );
+		    } else {
+			    echo $this->Form->input(
+				    'Embalaje.'.$embalaje['Embalaje']['id'].'.peso_embalaje_real',
+				    array(
+					'label' => '',
+					'default' => $embalaje['Embalaje']['peso_embalaje'],
+					'class' => 'peso',
+					'oninput' => 'totalDesglose()',
+					'readonly' => true
+					)
+				);
+			}
 		    echo '</td>';
 		    echo '</tr>';
 	    endforeach;
