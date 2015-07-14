@@ -56,7 +56,7 @@
 	echo "  <dt>Calidad</dt>\n";
 	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Peso</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['peso_comprado'].'&nbsp;'."</dd>";
+	echo "  <dd>".$contrato['Contrato']['peso_comprado'].' kg&nbsp;'."</dd>";
 	echo "  <table>\n";
 	echo $this->Html->tableHeaders(array('Cantidad','Embalaje', 'Peso ud.', 'Peso'));
 	$peso_total = 0;
@@ -65,8 +65,8 @@
 		echo $this->Html->tableCells(array(
 			$embalaje['cantidad_embalaje'],
 			$embalaje['Embalaje']['nombre'],
-			$embalaje['peso_embalaje_real'],
-			$peso_embalaje,
+			$embalaje['peso_embalaje_real']." kg",
+			$peso_embalaje." kg",
 			));
 		$peso_total += $peso_embalaje;
 	endforeach;
@@ -75,16 +75,14 @@
 	echo "  <dd>".$fecha_embarque."</dd>";
 	echo "  <dt>Fecha de entrega</dt>\n";
 	echo "  <dd>".$fecha_entrega."</dd>";
-	//$bolsa = $contrato['Contrato']['si_londres'] ? 'London' : 'New-York';
-	$bolsa = $contrato['Contrato']['canal_compra'];
-	//echo "  <dt>Bolsa</dt>\n";
-	//echo "  <dd>".$bolsa.'&nbsp;'."</dd>";
+	echo "  <dt>Bolsa</dt>\n";
+	echo "  <dd>".$contrato['CanalCompra']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Diferencial</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['diferencial'].' ('.$bolsa.')&nbsp;'."</dd>";
+	echo "  <dd>".$contrato['Contrato']['diferencial']." ".$contrato['CanalCompra']['divisa']."</dd>";
 	echo "  <dt>Incoterm</dt>\n";
 	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Opciones</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['opciones'].'&nbsp;'."</dd>";
+	echo "  <dd>".$contrato['Contrato']['opciones']." ".$contrato['CanalCompra']['divisa']."</dd>";
 	echo "</dl>";?>
 	<div class="detallado">
 	<h3>Líneas de contrato</h3>
@@ -94,10 +92,10 @@
 	foreach($contrato['LineaContrato'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['referencia'],
-			$linea['peso_linea_contrato'],
+			$linea['peso_linea_contrato']." kg",
 			$linea['fecha_pos_fijacion'],
-			$linea['precio_fijacion'],
-			$linea['precio_compra'],
+			$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
+			$linea['precio_compra']." ".$contrato['CanalCompra']['divisa'],
 			$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
 			'controller'=>'linea_contratos',
 			'action' => 'edit',

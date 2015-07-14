@@ -25,6 +25,9 @@ class Contrato extends AppModel {
 		)
 	);
 	public $belongsTo = array(
+		'CanalCompra' => array(
+			'className' => 'CanalCompra',
+			'foreignKey' => 'canal_compra_id'),
 		'Proveedor' => array(
 			'className' => 'Proveedor',
 			'foreignKey' => 'proveedor_id'),
