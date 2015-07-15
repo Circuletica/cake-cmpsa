@@ -27,12 +27,9 @@ echo $this->element('desplegabledatos');
 	<tr><td></td>
 		<td><?php echo $this->Html->link('Incoterms','/incoterms',array('class'=>'button'));?></td>
 		<td><?php echo $this->Html->link('Puertos','/puertos',array('class'=>'button'));?></td>
-	
 		<td><?php echo $this->Html->link('Transportes','/transportes',array('class'=>'button'));?></td>
 		<td></td>
-		<td></td>
-	
+		<td></td>	
 	</tr>
-	
 </table>
 </div>

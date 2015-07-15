@@ -20,43 +20,37 @@ echo $this->Form->create('Proveedor');
 
 <fieldset>
 	<?php
-
-//	echo $this->Form->create('Proveedor', array(
-//		'controller' => 'proveedores',
-//		'action' => 'add',
-//		'from_controller' => 'proveedores',
-//		'from_action' => 'add'	
-//	));
-echo $this->Form->input('Empresa.nombre');
-echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
+		echo $this->Form->input('Empresa.nombre_corto');
+		echo $this->Form->input('Empresa.nombre', array('label'=>'Denominacion legal');
+		echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
 	?>
 	<div class="columna3">
 	<?php
-	echo $this->Form->input('Empresa.cp', array(
-		'label' => 'Código Postal'));
-	echo $this->Form->input('Empresa.telefono', array('label'=> 'Teléfono'));
-	echo $this->Form->input('Empresa.municipio');
+		echo $this->Form->input('Empresa.cp', array(
+			'label' => 'Código Postal'));
+		echo $this->Form->input('Empresa.telefono', array('label'=> 'Teléfono'));
+		echo $this->Form->input('Empresa.municipio');
 	?>
 	<div class="formuboton">
 		<ul>
-	    	<li>
-		<?php
-	//echo $this->Form->select('Empresa.pais_id', $paises);
-	echo $this->Form->input('Empresa.pais_id',array(
-		'label' => 'País',
-		'empty' => true,
-		'class' => 'listado'));
+			<li>
+			<?php
+				//echo $this->Form->select('Empresa.pais_id', $paises);
+				echo $this->Form->input('Empresa.pais_id',array(
+					'label' => 'País',
+					'empty' => true,
+					'class' => 'listado'));
 			?>
 			</li>
 			<li>
-			<div class="enlinea">
-				<?php            
-				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País', array(
-					'controller'=>'paises',
-					'action'=>'add'),array("class"=>"botond", 'escape' => false)
-						);
-				?>
-			</div>
+				<div class="enlinea">
+					<?php            
+						echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País', array(
+							'controller'=>'paises',
+							'action'=>'add'),array("class"=>"botond", 'escape' => false)
+							);
+					?>
+				</div>
 			</li>
 	    	</ul>
 	 </div>

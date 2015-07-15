@@ -1,6 +1,6 @@
 <div class="printdet">
   <?php 
-  echo $this->element('imprimir');
+  echo $this->element('imprimirI');
   ?>
 </div>
 <h2><?php echo $title;?></h2>

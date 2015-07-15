@@ -46,6 +46,6 @@ class Empresa extends AppModel {
 		)
 	);
  	var $name = 'Empresa';
-	public $displayField = 'nombre';
+	public $displayField = 'nombre_corto';
 }
 ?>
