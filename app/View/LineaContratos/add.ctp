@@ -14,6 +14,7 @@ echo 'Peso sin fijar: '.$contrato['RestoContrato']['peso_restante']."\n";
 echo '<p>';
 echo $this->Form->create('LineaContrato');
 echo $this->Form->input('referencia');
+echo $this->Form->input('embalaje_id');
 echo $this->Form->input('peso_linea_contrato');
 echo "<div class='linea'>\n";
 echo $this->Form->input('fecha_pos_fijacion', array(

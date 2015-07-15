@@ -30,6 +30,24 @@ class LineaContratosController extends AppController {
 				'Contrato.peso_comprado',
 				'CalidadNombre.nombre')
 		));
+		$embalajes = $this->LineaContrato->Contrato->ContratoEmbalaje->find('list', array(
+			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
+			'fields' => array('ContratoEmbalaje.embalaje_id','Embalaje.nombre'),
+			'recursive' => 1
+				)
+			);
+		$this->set('embalajes', $embalajes);
+		$embalajes_contrato = $this->LineaContrato->Contrato->ContratoEmbalaje->find('all', array(
+			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
+			'fields' => array(
+				'Embalaje.id',
+				'Embalaje.nombre',
+				'ContratoEmbalaje.cantidad_embalaje',
+				'ContratoEmbalaje.peso_embalaje_real'
+				)
+			)
+		);
+		$this->set('embalajes_contrato', $embalajes_contrato);
 		$this->set('contrato',$contrato);
 		$this->set('proveedor',$contrato['Proveedor']['Empresa']['nombre']);
 		if($this->request->is('post')):

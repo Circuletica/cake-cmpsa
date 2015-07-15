@@ -256,11 +256,12 @@
     <p id="total"></p>
 	<?php
 		echo $this->Form->input('diferencial', array(
+			'between' => '(<var id="divisa_diferencial"></var>)'
 			//'class' => 'diferencial'
 			)
 		);
-		echo '<p id="divisa_diferencial"></p>';
 		echo $this->Form->input('opciones', array(
+			'between' => '(<var id="divisa_opciones"></var>)'
 			//'class' => 'opciones'
 			)
 		);

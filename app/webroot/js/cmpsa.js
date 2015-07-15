@@ -35,14 +35,14 @@ function canalCompra(){
 		document.getElementById("ContratoOpciones").disabled = false;
 	}else if(document.getElementById("ContratoCanalCompra2").checked) {
 		  //NY radio button is checked
-		document.getElementById("divisa_diferencial").innerHTML = 'ctv/Lb';
-		document.getElementById("divisa_opciones").innerHTML = 'ctv/Lb';
+		document.getElementById("divisa_diferencial").innerHTML = '¢/Lb';
+		document.getElementById("divisa_opciones").innerHTML = '¢/Lb';
 		document.getElementById("ContratoDiferencial").disabled = false;
 		document.getElementById("ContratoOpciones").disabled = false;
 	}else if(document.getElementById("ContratoCanalCompra3").checked) {
 		  //Precio fijo radio button is checked
-		document.getElementById("divisa_diferencial").innerHTML = '';
-		document.getElementById("divisa_opciones").innerHTML = '';
+		document.getElementById("divisa_diferencial").innerHTML = '€/Tm';
+		document.getElementById("divisa_opciones").innerHTML = '€/Tm';
 		document.getElementById("ContratoDiferencial").disabled = true;
 		document.getElementById("ContratoOpciones").disabled = true;
 	}
