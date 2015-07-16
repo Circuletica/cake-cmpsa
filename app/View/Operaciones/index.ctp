@@ -7,7 +7,7 @@
 
 <div class="printdet">
   <?php 
-  echo $this->element('imprimir');
+  echo $this->element('imprimirI');
   ?>
 </div>
 <h2>Operaciones<?php //echo $title;?></h2>
