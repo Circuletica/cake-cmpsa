@@ -35,15 +35,16 @@
       <?php echo $operacion['Operacion']['cambio_dolar_euro'];?>
     </td>
     <td>
-      <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',array('action'=>'edit',$operacion['Operacion']['id']),array('class'=>'botond','title'=>'Modificar Operación','escape'=>false)).' '.$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$operacion['Operacion']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles')).' '.
-      $this->Form->postLink(
-	'<i class="fa fa-trash"></i>',
-	array('action'=>'delete',$operacion['Operacion']['id']),
-	array(
-    'class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-	  'confirm'=>'Realmente quiere borrar '.$operacion['Operacion']['referencia'].'?'
-	)
-      )
+      <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',array('action'=>'edit',$operacion['Operacion']['id']),array('class'=>'botond','title'=>'Modificar Operación','escape'=>false)).' '.$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$operacion['Operacion']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles'));
+//  .' '.
+//      $this->Form->postLink(
+//	'<i class="fa fa-trash"></i>',
+//	array('action'=>'delete',$operacion['Operacion']['id']),
+//	array(
+//   'class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
+//	  'confirm'=>'Realmente quiere borrar '.$operacion['Operacion']['referencia'].'?'
+//	)
+//      )
       ?>
     </td>
   </tr>

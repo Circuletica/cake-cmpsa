@@ -15,8 +15,7 @@ class Operacion extends AppModel {
 
 	public $hasMany = array(
 		'LineaContrato' => array(
-		'className' => 'LineaContrato',
-		'foreignKey' => 'operacion_id'),
+		'className' => 'LineaContrato'),
 		'Muestra' => array(
 			'className' => 'Muestra'),
 		'Transporte' => array(

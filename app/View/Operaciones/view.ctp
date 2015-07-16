@@ -41,17 +41,17 @@
 	<div class='view'>
 	<?php
 	echo "<dl>";
-	echo "  <dt>Id</dt>\n";
-	echo "<dd>";
-	echo $operacion['Operacion']['id'].'&nbsp;';
-	echo "</dd>";
+	//echo "  <dt>Id</dt>\n";
+	//echo "<dd>";
+	//echo $operacion['Operacion']['id'].'&nbsp;';
+	//echo "</dd>";
 	echo "  <dt>Referencia</dt>\n";
 	echo "<dd>";
 	echo $operacion['Operacion']['referencia'].'&nbsp;';
 	echo "</dd>";
-	echo "  <dt>Naviera</dt>\n";
+	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
-	echo $operacion['Naviera']['Empresa']['nombre'].'&nbsp;';
+	echo $operacion['CalidadNombre']['nombre'].'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Agente</dt>\n";
 	echo "<dd>";
@@ -76,7 +76,7 @@
 <?php
 	echo $this->Html->tableHeaders(array('Referencia Contrato','Calidad', 'Incoterms',
 	       'Cantidad Contenedores', 'Acciones'));
-	foreach($operacion['LineaContratosOperacion'] as $linea):
+	foreach($operacion['LineaContrato'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['LineaContrato']['Contrato']['referencia'],
 			$linea['LineaContrato']['Contrato']['CalidadNombre']['nombre'],
@@ -121,11 +121,11 @@
 <?php
 	echo $this->Html->tableHeaders(array('Referencia Contrato','Calidad', 'Incoterms',
 	       'Cantidad Contenedores', 'Acciones'));
-	foreach($operacion['LineaContratosOperacion'] as $linea):
+	foreach($operacion['LineaContrato'] as $linea):
 		echo $this->Html->tableCells(array(
-			$linea['LineaContrato']['Contrato']['referencia'],
-			$linea['LineaContrato']['Contrato']['CalidadNombre']['nombre'],
-			$linea['LineaContrato']['Contrato']['Incoterm']['nombre'],
+			$linea['Contrato']['referencia'],
+			$linea['Contrato']['CalidadNombre']['nombre'],
+			$linea['Contrato']['Incoterm']['nombre'],
 			$linea['cantidad_contenedores'],
 			//$linea['referencia_almacen'],
 			$this->Html->link('<i class="fa fa-info-circle"></i>', array(

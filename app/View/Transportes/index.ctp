@@ -7,7 +7,7 @@
 
 <div class="printdet">
   <?php 
-  echo $this->element('imprimir');
+  echo $this->element('imprimirI');
   ?>
 </div>
 <h2>Transportees<?php //echo $title;?></h2>
@@ -19,10 +19,12 @@
   <table>
   <tr>
     <th><?php echo $this->Paginator->sort('id')?></th>
+    <?//php echo $this->Paginator->sort('Operacion.muestra.sí o no')?>
     <th><?php echo $this->Paginator->sort('nombre_vehiculo')?></th>
     <th><?php echo $this->Paginator->sort('matricula')?></th>
     <th><?php echo $this->Paginator->sort('fecha_carga')?></th>
-    <th><?php echo $this->Paginator->sort('Operacion.cantidad_contenedores', 'Cantidad')?></th>
+   <th><?php echo $this->Paginator->sort('fecha_llegada')?></th>
+    <th><?php echo $this->Paginator->sort('EmbalajeTransporte.cantidad', 'Cantidad')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
 
@@ -40,8 +42,11 @@
      <td>
       <?php echo $transporte['Transporte']['fecha_carga'];?>
     </td>
+     <td>
+      <?php echo $transporte['Transporte']['fecha_llegada'];?>
+    </td>    
     <td>
-      <?php echo $transporte['Operacion']['cantidad_contenedores'];?>
+      <?php echo $transporte['EmbalajeTransporte']['cantidad'];?>
     </td>
     
     <?php
