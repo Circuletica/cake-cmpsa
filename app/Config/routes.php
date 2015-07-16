@@ -35,6 +35,7 @@
  * how to customize the loading of plugin routes.
  */
 	CakePlugin::routes();
+	Router::mapResources(array('Muestra'));
 	Router::parseExtensions('pdf');
 
 /**
