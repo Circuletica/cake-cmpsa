@@ -22,7 +22,23 @@ echo $this->Form->input('embalaje_id', array(
 );
 //echo $this->Form->input('peso_linea_contrato');
 //necesitamos un select multiple con la cantidad asignada a cada socio
-echo $this->Form->input('asociado_id');
+//echo $this->Form->input('asociado_id');
+echo "<table>";
+foreach ($asociados as $id => $asociado):
+	echo "<tr>";
+	echo "<td>".$asociado."</td>\n";
+	echo "<td>";
+	echo $this->Form->input('Cantidad.'.$id, array(
+		'label' => ''
+		)
+	);
+	echo "</td>";
+	echo "<td>";
+	echo $embalajes_contrato[0]['ContratoEmbalaje']['peso_embalaje_real'];
+	echo "</td>";
+	echo "</tr>";
+endforeach;
+echo "</table>";
 echo "<div class='linea'>\n";
 echo $this->Form->input('fecha_pos_fijacion', array(
 	'label' => 'Fecha de fijación',
