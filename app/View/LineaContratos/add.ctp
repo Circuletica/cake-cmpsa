@@ -20,15 +20,13 @@ echo $this->Form->input('embalaje_id', array(
 	'after' => '(quedan '.$embalajes_contrato[0]['ContratoEmbalaje']['cantidad_embalaje'].' sin fijar)'
 	)
 );
-//echo $this->Form->input('peso_linea_contrato');
-//necesitamos un select multiple con la cantidad asignada a cada socio
-//echo $this->Form->input('asociado_id');
+//necesitamos un array con la cantidad asignada a cada socio
 echo "<table>";
 foreach ($asociados as $id => $asociado):
 	echo "<tr>";
 	echo "<td>".$asociado."</td>\n";
 	echo "<td>";
-	echo $this->Form->input('Cantidad.'.$id, array(
+	echo $this->Form->input('CantidadAsociado.'.$id, array(
 		'label' => ''
 		)
 	);

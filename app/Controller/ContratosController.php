@@ -29,11 +29,6 @@ class ContratosController extends AppController {
 			'recursive' => 1
 			)
 		);
-//		$canales = array(
-//			'0' => 'Bolsa LND',
-//			'1' => 'Bolsa NY',
-//			'2' => 'Precio fijo'
-//		);
 		$canales = $this->Contrato->CanalCompra->find('list', array(
 			'fields' => array('id','nombre')
 			)
