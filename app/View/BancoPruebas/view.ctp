@@ -135,10 +135,10 @@ endif;
 </table>
 	<div class="btabla">
 			<?php echo $this->Html->link('<i class="fa fa-user-plus"></i> Añadir contacto',array(
-		'controller'=>'contactos',
+		'controller'=>'transportes',
 		'action'=>'add',
-		'from'=>'banco_pruebas',
-		'from_id' => $bancoprueba['Empresa']['id']), array('escape' => false,'title'=>'Añadir contacto'));?>
+		'from'=>'operacion',
+		'from_id' => $operacion['Transporte']['id']), array('escape' => false,'title'=>'Añadir transporte'));?>
 	</div>
 </div>
 

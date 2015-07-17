@@ -12,7 +12,6 @@
 ?>
 
 <fieldset>
-<div class="col2">
     <?php
 	    //si no esta la calidad en el listado, dejamos un enlace para agregarlo
 	    $enlace_anyadir_calidad = $this->Html->link ('Añadir Calidad', array(
@@ -46,11 +45,8 @@
 	echo $this->Form->input('Puerto.nombre', array('label' => 'Puerto'));
 	echo $this->Form->input('Naviera.Empresa.nombre', array('label' => 'Empresa del transporte'));
 	echo $this->Form->input('Agente.Empresa.nombre', array('label' => 'Nombre del agente'));
-	echo $this->Form->input('Seguro.Aseguradora.Empresa.nombre', array('label' => 'Nombre Aseguradora'));
+	
 ?>
-
-</div>
-<div class="columna3">
 <div class="linea">
  <?php
  echo $this->Form->input('fecha_entradamerc', array(
@@ -100,14 +96,23 @@
  );
  ?>
  </div>
- </div>
- <?php
- 	echo $this->Form->input('observaciones');
-	echo $this->Form->input('proveedor_id', array(
-	   'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
-	   'empty' => array('' => 'Selecciona')
-		)
-	);
+ 	<?php
+// 	echo $this->Form->input('observaciones');
+//	echo $this->Form->input('proveedor_id', array(
+//	   'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
+//	   'empty' => array('' => 'Selecciona')
+//		)
+//	);
+	?>
+	<div class="detalladoform">
+	<h3>Aseguradora</h3>
+
+	<table>
+<?php
+	echo $this->Form->input('Seguro.Aseguradora.Empresa.nombre', array('label' => 'Nombre aseguradora'));
+?>	</table>
+	</div>
+<?php
 	echo $this->Form->end('Guardar Transporte');
 ?>
 </fieldset>

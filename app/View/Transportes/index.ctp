@@ -1,5 +1,5 @@
 <?php
-  $this->Html->addCrumb('Transportees', array(
+  $this->Html->addCrumb('Línea de Transportes', array(
     'controller' => 'transportes',
     'action' => 'index')
   );
@@ -10,7 +10,7 @@
   echo $this->element('imprimirI');
   ?>
 </div>
-<h2>Transportees<?php //echo $title;?></h2>
+<h2>Línea de Transportes<?php //echo $title;?></h2>
 <div class="actions">
   <?php echo $this->element('filtrooperacion');?>
   <!--h3>Filtro de transporte</h3-->

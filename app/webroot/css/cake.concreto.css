@@ -89,6 +89,18 @@ div.detallado h3{
 	padding-top:20px;
 	color:#2C6877;/*Retocado para div.detallado*/
 }
+
+/* Información detallada del add o edit*/
+div.detalladoform{
+	/*float:right;*/
+	margin-top: 20px;
+   /* width:90%;*/
+	border-top: 2px solid rgba(102, 102, 102, 0.92);
+}
+div.detalladoform h3{
+	padding-top:20px;
+	color:#2C6877;/*Retocado para div.detallado*/
+}
 /**Bajo tabla**/
 div .btabla{
 	float:right;

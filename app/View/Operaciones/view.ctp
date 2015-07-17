@@ -148,6 +148,15 @@
 			));
 	endforeach;
 ?>	</table>
+
+	<div class="btabla">
+			<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Línea Transporte',array(
+			'controller' => 'transportes',
+			'action' => 'add',
+			'from_controller' => 'operaciones',
+			'from_id' => $operacion['Operacion']['id']), 
+			array('escape' => false,'title'=>'Añadir Línea Transporte'));?>	
+	</div>
 	</div>
 </div>
 
