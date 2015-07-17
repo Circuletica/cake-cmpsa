@@ -1,5 +1,5 @@
 <?php
 class EmbalajesController extends AppController {
-	public $scaffold;
+	var $scaffold = 'admin';
 }
 ?>

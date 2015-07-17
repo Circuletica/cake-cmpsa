@@ -20,7 +20,7 @@
     </style>
 
     <?php
-      $this->Html->addCrumb('Muestras', '/muestras');
+      $this->Html->addCrumb('Contratos', '/contratos');
 	    echo $this->Html->script('jquery')."\n"; // Include jQuery library
     ?>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -169,6 +169,17 @@
 	    );
 
 	    echo $this->Form->create('Contrato');
+	//	echo $this->Form->input('si_londres', array(
+	//	    'label' => 'Bolsa de Londres')
+	//	);
+	    echo $this->Form->radio('canal_compra', $canales, array(
+		    'legend' => false,
+		    'value' => 1,
+		    'separator' => '<br/>',
+		    'onclick' => 'canalCompra()'
+	    		)
+	    );
+	    echo $this->Form->input('referencia');
 	    echo $this->Form->input('incoterm_id', array(
 		    'label' => 'Incoterms',
 		    'empty' => array('' => 'Selecciona')
@@ -186,23 +197,99 @@
 		    'empty' => array('' => 'Selecciona')
 		    )
 	    );
+	    echo $this->Form->input('peso_comprado', array(
+		'id' => 'pesoComprado',
+		'oninput' => 'totalDesglose()'
+		)
+	    );
+    ?>
+    <table>
+	<tr>
+      <th> </th>
+      <th>cantidad</th>
+      <th>peso</th>
+	</tr>
+	
+	<?php
+	    //foreach ($embalajes as $index => $embalaje):
+	    foreach ($embalajes as $embalaje):
+		    echo '<tr>';
+		    echo "<td>".$embalaje['Embalaje']['nombre']."</td>\n";
+		    echo '<td>';
+		    echo $this->Form->input('Embalaje.'.$embalaje['Embalaje']['id'].'.cantidad_embalaje', array(
+			'label' => '',
+			'class' => 'cantidad',
+			'oninput' => 'totalDesglose()'
+			    )
+		    );
+		    echo '</td>';
+		    echo '<td>';
+		    //rellenamos la celda de peso y la dejamos en lectura sola si
+		    //el peso del embalaje es fijo
+		    //casi siempre, menos los bigbag que tienen un peso variable
+		    if(!$embalaje['Embalaje']['peso_embalaje']){
+			    echo $this->Form->input(
+				    'Embalaje.'.$embalaje['Embalaje']['id'].'.peso_embalaje_real',
+				    array(
+					'label' => '',
+					'class' => 'peso',
+					'oninput' => 'totalDesglose()'
+				    )
+			    );
+		    } else {
+			    echo $this->Form->input(
+				    'Embalaje.'.$embalaje['Embalaje']['id'].'.peso_embalaje_real',
+				    array(
+					'label' => '',
+					'default' => $embalaje['Embalaje']['peso_embalaje'],
+					'class' => 'peso',
+					'oninput' => 'totalDesglose()',
+					'readonly' => true
+					)
+				);
+			}
+		    echo '</td>';
+		    echo '</tr>';
+	    endforeach;
 	    ?>
-	<div class="columna2">
-		<?php
-			echo $this->Form->input('referencia');
-			echo $this->Form->input('diferencial');
-			echo $this->Form->input('si_londres');
-			echo $this->Form->input('fecha_embarque', array(
-				'label' => 'Fecha de embarque',
-			'dateFormat' => 'DMY')
-			);
-			echo $this->Form->input('fecha_entrega', array(
-				'label' => 'Fecha de entrega',
-				'dateFormat' => 'DMY')
-			);
-			echo $this->Form->input('opciones');
-		?>
-	</div>		
-	<?php echo $this->Form->end('Guardar Contrato'); ?>
+    </table>
+    <p id="total"></p>
+	<?php
+		echo $this->Form->input('diferencial', array(
+			'between' => '(<var id="divisa_diferencial"></var>)'
+			//'class' => 'diferencial'
+			)
+		);
+		echo $this->Form->input('opciones', array(
+			'between' => '(<var id="divisa_opciones"></var>)'
+			//'class' => 'opciones'
+			)
+		);
+		echo '<p id="divisa_opciones"></p>';
+		echo "<div class='linea'>\n";
+		echo $this->Form->input('fecha_embarque', array(
+			'label' => 'Fecha de embarque',
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+5,
+			'selected' => date('Y-m-1')
+			)
+		);
+		echo "</div>\n";
+		echo "<div class='linea'>\n";
+		echo $this->Form->input('fecha_entrega', array(
+			'label' => 'Fecha de entrega',
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+5,
+			'selected' => date('Y-m-1')
+			)
+		);
+		echo "</div>\n";
+		echo $this->Form->end('Guardar Contrato');
+	?>
     </fieldset>
 </div>
+<script type="text/javascript">
+	window.onload = canalCompra();
+</script>

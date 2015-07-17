@@ -41,24 +41,10 @@
 	$anyo = substr($fecha,0,4);
 	$fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
 	echo "<dl>";
-	echo "  <dt>Id</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['id'].'&nbsp;'."</dd>";
+	//echo "  <dt>Id</dt>\n";
+	//echo "  <dd>".$contrato['Contrato']['id'].'&nbsp;'."</dd>";
 	echo "  <dt>Referencia</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['referencia'].'&nbsp;'."</dd>";
-	echo "  <dt>Calidad</dt>\n";
-	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
-	echo "  <dt>Incoterms</dt>\n";
-	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
-	echo "  <dt>Fecha de embarque</dt>\n";
-	echo "  <dd>".$fecha_embarque."</dd>";
-	echo "  <dt>Fecha de entrega</dt>\n";
-	echo "  <dd>".$fecha_entrega."</dd>";
-	echo "  <dt>Bolsa de Londres</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['si_londres'].'&nbsp;'."</dd>";
-	echo "  <dt>Diferencial</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['diferencial'].'&nbsp;'."</dd>";
-	echo "  <dt>Opciones</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['opciones'].'&nbsp;'."</dd>";
 	echo "  <dt>Proveedor</dt>\n";
 	echo "<dd>";
 	echo $this->Html->link($contrato['Proveedor']['Empresa']['nombre'], array(
@@ -67,45 +53,82 @@
 		$contrato['Proveedor']['id'])
 	);
 	echo "</dd>";
+	echo "  <dt>Calidad</dt>\n";
+	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
+	echo "  <dt>Peso</dt>\n";
+	echo "  <dd>".$contrato['Contrato']['peso_comprado'].' kg&nbsp;'."</dd>";
+	echo "  <table>\n";
+	echo $this->Html->tableHeaders(array('Cantidad','Embalaje', 'Peso ud.', 'Peso'));
+	$peso_total = 0;
+	foreach($contrato['ContratoEmbalaje'] as $embalaje):
+		$peso_embalaje = $embalaje['cantidad_embalaje'] * $embalaje['peso_embalaje_real'];
+		echo $this->Html->tableCells(array(
+			$embalaje['cantidad_embalaje'],
+			$embalaje['Embalaje']['nombre'],
+			$embalaje['peso_embalaje_real']." kg",
+			$peso_embalaje." kg",
+			));
+		$peso_total += $peso_embalaje;
+	endforeach;
+	echo "  </table>\n";
+	echo "  <dt>Fecha de embarque</dt>\n";
+	echo "  <dd>".$fecha_embarque."</dd>";
+	echo "  <dt>Fecha de entrega</dt>\n";
+	echo "  <dd>".$fecha_entrega."</dd>";
+	echo "  <dt>Bolsa</dt>\n";
+	echo "  <dd>".$contrato['CanalCompra']['nombre'].'&nbsp;'."</dd>";
+	echo "  <dt>Diferencial</dt>\n";
+	echo "  <dd>".$contrato['Contrato']['diferencial']." ".$contrato['CanalCompra']['divisa']."</dd>";
+	echo "  <dt>Incoterm</dt>\n";
+	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
+	echo "  <dt>Opciones</dt>\n";
+	echo "  <dd>".$contrato['Contrato']['opciones']." ".$contrato['CanalCompra']['divisa']."</dd>";
 	echo "</dl>";?>
 	<div class="detallado">
-	<h3>Lotes</h3>
+	<h3>Líneas de contrato</h3>
 <table>
 <?php
-	echo $this->Html->tableHeaders(array('Id', 'Fecha fijación', 'Precio fijación', 'Acciones'));
-	foreach($contrato['Lote'] as $lote):
+	echo $this->Html->tableHeaders(array('Referencia','Peso','Fecha de fijación', 'Precio de fijación', 'Precio de compra', 'Acciones'));
+	foreach($contrato['LineaContrato'] as $linea):
 		echo $this->Html->tableCells(array(
-			$lote['id'],
-			$lote['fecha_pos_fijacion'],
-			$lote['precio_fijacion'],
-			$this->Html->link('<i class="fa fa-info-circle"></i>', array(
-				'controller'=>'lotes',
-				'action' => 'view',
-				$lote['id'],
-              			'from_controller'=>'contratos',
-              			'from_id'=>$lote['contrato_id']),array(
-              			'class'=>'botond','escape' => false,'title'=>'Detalles'))
-			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
+			$linea['referencia'],
+			$linea['peso_linea_contrato']." kg",
+			$linea['fecha_pos_fijacion'],
+			$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
+			$linea['precio_compra']." ".$contrato['CanalCompra']['divisa'],
+			$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
+			'controller'=>'linea_contratos',
+			'action' => 'edit',
+			$linea['id'],
+              		'from'=>'contratos',
+              		'from_id'=>$contrato['Contrato']['id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar'))
+			.' '.$this->Form->postLink(
+				'<i class="fa fa-trash"></i>',
 				array(
-					'controller'=>'lotes',
+					'controller'=>'linea_contratos',
 					'action' => 'delete',
-					$lote['id'],
-					'from_controller' => 'contratos',
-					'from_id' => $lote['contrato_id']),
-					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-						'confirm' => '¿Seguro que quieres borrar a '.$lote['id'].'?')
+					$linea['id'],
+					'from' => 'contratos',
+					'from_id' => $contrato['Contrato']['id']
+				),
+				array(
+					'class'=>'botond',
+					'escape'=>false,
+					'title'=> 'Borrar',
+					'confirm' =>'¿Seguro que quieres borrar a '.$linea['referencia'].'?'
 				)
-			));
+			)
+		)
+	);
 	endforeach;
-?>	</table>
-		<div class="btabla">
-		<?php
-		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir',array(
-		'controller' => 'lotes',
+	echo "</table>";
+		echo '<div class="btabla">';
+		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir línea',array(
+		'controller' => 'linea_contratos',
 		'action' => 'add',
 		'from_controller' => 'contratos',
 		'from_id' => $contrato['Contrato']['id']),
-		 array('escape' => false,'title'=>'Añadir lote'));
+		 array('escape' => false,'title'=>'Añadir línea de contrato'));
 		?>
 		</div>
 	</div>

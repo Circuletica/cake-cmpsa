@@ -1,0 +1,80 @@
+<?php
+class LineaContratosController extends AppController {
+	public $scaffold = 'admin';
+	public $paginate = array(
+		'order' => array('referencia' => 'asc')
+	);
+
+	public function index() {
+		$this->set('lineas', $this->paginate());
+	}
+
+	public function add() {
+		//el id y la clase de la entidad de origen vienen en la URL
+		if (!$this->params['named']['from_id']) {
+			$this->Session->setFlash('URL mal formado lineaContrato/add '.$this->params['named']['from']);
+			$this->redirect(array(
+				'controller' => $this->params['named']['from'],
+				'action' => 'index')
+			);
+		}
+		//sacamos los datos del contrato al que pertenece la linea
+		//nos sirven en la vista para detallar campos
+		$contrato = $this->LineaContrato->Contrato->find('first', array(
+			'conditions' => array('Contrato.id' => $this->params['named']['from_id']),
+			'recursive' => 2,
+			'fields' => array(
+				'Contrato.id',
+				'Contrato.referencia',
+				'Contrato.proveedor_id',
+				'Contrato.peso_comprado',
+				'CanalCompra.nombre',
+				'CanalCompra.divisa',
+				'CalidadNombre.nombre')
+		));
+		$this->set('contrato',$contrato);
+		//hace falta para el desplegable de 'Embalaje'
+		//queda por ver si $embalajes_contrato no puede ser usada en su lugar
+		$embalajes = $this->LineaContrato->Contrato->ContratoEmbalaje->find('list', array(
+			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
+			'fields' => array('ContratoEmbalaje.embalaje_id','Embalaje.nombre'),
+			'recursive' => 1
+				)
+			);
+		$this->set('embalajes', $embalajes);
+		$embalajes_contrato = $this->LineaContrato->Contrato->ContratoEmbalaje->find('all', array(
+			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
+			'fields' => array(
+				'Embalaje.id',
+				'Embalaje.nombre',
+				'ContratoEmbalaje.cantidad_embalaje',
+				'ContratoEmbalaje.peso_embalaje_real'
+				)
+			)
+		);
+		$this->set('embalajes_contrato', $embalajes_contrato);
+		//solo para mostrar el proveedor a nivel informativo
+		$this->set('proveedor',$contrato['Proveedor']['Empresa']['nombre']);
+		//a quienes van asociadas las lineas de contrato
+		$asociados = $this->LineaContrato->AsociadoLineaContrato->Asociado->find('list', array(
+			'fields' => array('Asociado.id','Empresa.nombre'),
+			'recursive' => 1
+			)
+		);
+		$this->set('asociados', $asociados);
+
+		if($this->request->is('post')):
+			//al guardar la linea, se incluye a qué contrato pertenece
+			$this->request->data['LineaContrato']['contrato_id'] = $this->params['named']['from_id'];
+			if($this->LineaContrato->save($this->request->data)):
+				$this->Session->setFlash('Linea de Contrato guardada');
+				//volvemos al contrato a la que pertenece la linea creada
+				$this->redirect(array(
+					'controller' => $this->params['named']['from_controller'],
+					'action' => 'view',
+					$this->params['named']['from_id']));
+			endif;
+		endif;
+}
+}
+?>
