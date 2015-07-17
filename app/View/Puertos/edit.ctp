@@ -7,7 +7,7 @@ echo $this->Form->create('Puerto', array('action' => 'edit'));?>
 <?php
 
    echo $this->Form->input('nombre');
-   echo $this->Form->input('pais.nombre', array('label'=>'País'));
+   echo $this->Form->input('pais_id', array('label'=>'País'));
 ?>
 	</div>
  <?php

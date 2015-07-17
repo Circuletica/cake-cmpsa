@@ -12,7 +12,7 @@ class PuertosController extends AppController {
 	public function add() {
 		$this->set('paises', $this->Puerto->Pais->find('list'));
 		if($this->request->is('post')):
-			if($this->Puertos->save($this->request->data) ):
+			if($this->Puerto->save($this->request->data) ):
 				$this->Session->setFlash('Puerto guardado');
 				$this->redirect(array(
 					'controller' => $this->params['named']['from_controller'],
@@ -20,6 +20,7 @@ class PuertosController extends AppController {
 			endif;
 		endif;
 	}
+
 
 public function edit( $id = null) {
 		if (!$id) {
@@ -49,7 +50,7 @@ public function edit( $id = null) {
 		if($this->request->is('get')):
 			throw new MethodNotAllowedException();
 		else:
-			if($this->Puertos->delete($id)):
+			if($this->Puerto->delete($id)):
 				$this->Session->setFlash('Puerto borrado');
 		$this->redirect(array('action' => 'index'));
 endif;
