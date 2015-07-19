@@ -9,18 +9,18 @@ class OperacionesController extends AppController {
 
 
 	public function index() {
-	//		$contrato = $this->Operacion->find('list', array(
-	//			'fields' => array('LineaContratosOperacion.id'),
-	//			'recursive' => 3)
-	//		);
-//		$this->set('contrato',$contrato);
-		$this->set('operaciones', $this->paginate());
+	$proveedores = $this->Operacion->LineaContrato->Contrato->Proveedor->find('list', array(
+			'fields' => array('Proveedor.id','Empresa.nombre'),
+			'recursive' => 1
+		)
+	);
+	$this->set('proveedores', $proveedores);
+	$this->set('operaciones', $this->paginate());
 	}
 
 public function view($id = null) {
-		//debug($this->request->params);
-		//debug(func_get_args());
-		//debug($this->referer());
+		$lineacontrato = $this->Operacion->LineaContrato->find('all');
+		
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada Operación/view ');
 			$this->redirect(array('action'=>'index'));
@@ -28,13 +28,10 @@ public function view($id = null) {
 		$operacion = $this->Operacion->find('first',array(
 			'conditions' => array('Operacion.id' => $id)));
 		$this->set('operacion',$operacion);
+		$this->loadModel('CalidadNombre');
 	}
 
 	public function add() {
-		//$this->set('proveedores', $proveedores);
-		//$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
-		//$this->set('almacenes', $this->Operacion->Almacen->find('list'));
-		//$this->set('calidades', $this->Operacion->CalidadNombre->find('list'));
 		if($this->request->is('post')):
 			if($this->Operacion->save($this->request->data) ):
 				$this->Session->setFlash('Operación guardada');
@@ -63,13 +60,11 @@ public function view($id = null) {
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->Operacion->id = $id;
-		$operacion = $this->Operacion->find('first',array(
-			'conditions' => array('Operacion.id' => $id)));
+		$operacion = $this->Operacion->findById($id)
 		$this->set('operacion',$operacion);
 		if($this->request->is('get')):
 			$this->request->data = $this->Operacion->read();
 		else:
-			//if ($this->BancoPrueba->save($this->request->data)):
 			if ($this->Operacion->save($this->request->data) and $this->Operacion->save($this->request->data)):
 				$this->Session->setFlash('Operacion '.
 				$this->request->data['Operacion']['referencia'].

@@ -1,7 +1,7 @@
 
 <h2>Añadir Transporte</h2>
 <?php
-	$this->Html->addCrumb('Transportes', array(
+	$this->Html->addCrumb('Línea de Transporte', array(
 		'controller' => 'Transportes',
 		'action' => 'index')
 	);
@@ -48,53 +48,55 @@
 	
 ?>
 <div class="linea">
- <?php
- echo $this->Form->input('fecha_entradamerc', array(
- 'dateFormat' => 'DMY',
- 'timeFormat' => null ,
- 'label' => 'Fecha Entrada mercancía')
- );
-  echo $this->Form->input('fecha_carga', array(
- 'dateFormat' => 'DMY',
- 'timeFormat' => null ,
-  'label' => 'Fecha de carga')
- );
-  echo $this->Form->input('fecha_llegada', array(
- 'dateFormat' => 'DMY',
- 'timeFormat' => null ,
- 'label' => 'Fecha de llegada')
- );
-  echo $this->Form->input('fecha_pago', array(
- 'dateFormat' => 'DMY',
- 'timeFormat' => null ,
- 'label' => 'Fecha de pago')
- );
-  echo $this->Form->input('fecha_enviodoc', array(
- 'dateFormat' => 'DMY',
- 'timeFormat' => null ,
- 'label' => 'Fecha de envío documentación')
- );
-   echo $this->Form->input('fecha_despacho_op', array(
- 'dateFormat' => 'DMY',
- 'timeFormat' => null ,
- 'label' => 'Fecha despacho operación')
- );
-   echo $this->Form->input('fecha_vencimiento_seg', array(
- 'dateFormat' => 'DMY',
- 'timeFormat' => null ,
- 'label' => 'Fecha vencimiento seguro')
- );
-   echo $this->Form->input('fecha_reclamacion', array(
- 'dateFormat' => 'DMY',
- 'timeFormat' => null ,
- 'label' => 'Fecha de reclamación')
- );
-   echo $this->Form->input('fecha_limite_retirada', array(
- 'dateFormat' => 'DMY',
- 'timeFormat' => null ,
- 'label' => 'Fecha límite de retirada')
- );
- ?>
+	<div class='columna3'>
+		 <?php
+		 echo $this->Form->input('fecha_entradamerc', array(
+		 'dateFormat' => 'DMY',
+		 'timeFormat' => null ,
+		 'label' => 'Fecha Entrada mercancía')
+		 );
+		  echo $this->Form->input('fecha_carga', array(
+		 'dateFormat' => 'DMY',
+		 'timeFormat' => null ,
+		  'label' => 'Fecha de carga')
+		 );
+		  echo $this->Form->input('fecha_llegada', array(
+		 'dateFormat' => 'DMY',
+		 'timeFormat' => null ,
+		 'label' => 'Fecha de llegada')
+		 );
+		  echo $this->Form->input('fecha_pago', array(
+		 'dateFormat' => 'DMY',
+		 'timeFormat' => null ,
+		 'label' => 'Fecha de pago')
+		 );
+		  echo $this->Form->input('fecha_enviodoc', array(
+		 'dateFormat' => 'DMY',
+		 'timeFormat' => null ,
+		 'label' => 'Fecha de envío documentación')
+		 );
+		   echo $this->Form->input('fecha_despacho_op', array(
+		 'dateFormat' => 'DMY',
+		 'timeFormat' => null ,
+		 'label' => 'Fecha despacho operación')
+		 );
+		   echo $this->Form->input('fecha_vencimiento_seg', array(
+		 'dateFormat' => 'DMY',
+		 'timeFormat' => null ,
+		 'label' => 'Fecha vencimiento seguro')
+		 );
+		   echo $this->Form->input('fecha_reclamacion', array(
+		 'dateFormat' => 'DMY',
+		 'timeFormat' => null ,
+		 'label' => 'Fecha de reclamación')
+		 );
+		   echo $this->Form->input('fecha_limite_retirada', array(
+		 'dateFormat' => 'DMY',
+		 'timeFormat' => null ,
+		 'label' => 'Fecha límite de retirada')
+		 );
+		 ?>
+	</div>
  </div>
  	<?php
 // 	echo $this->Form->input('observaciones');

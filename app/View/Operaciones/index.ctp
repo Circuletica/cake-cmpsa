@@ -18,21 +18,36 @@
 <div class='index'>
   <table>
   <tr>
+     <th><?php echo $this->Paginator->sort('id')?></th>
     <th><?php echo $this->Paginator->sort('referencia')?></th>
+    <th><?php echo $this->Paginator->sort('CalidadNombre.nombre','Calidad')?></th>
     <th><?php echo $this->Paginator->sort('cantidad_contenedores')?></th>
-    <th><?php echo $this->Paginator->sort('cambio_dolar_euro')?></th>
+    <th><?php echo $this->Paginator->sort('proveedor', 'Proveedor');?></th>
+    <th><?php echo $this->Paginator->sort('LineaContrato.peso_linea_contrato', 'Peso')?></th>
+    <th><?php echo $this->Paginator->sort('cambio_dolar_euro', 'Cambio $/€')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
   <?php foreach($operaciones as $operacion): ?>
   <tr>
+       <td>
+      <?php echo $operacion['Operacion']['id']?>
+    </td>
     <td>
       <?php echo $operacion['Operacion']['referencia']?>
     </td>
     <td>
+      <? echo $operacion['CalidadNombre']['nombre']?>
+    </td>
+    <td>
       <?php echo $operacion['Operacion']['cantidad_contenedores'];?>
     </td>
-      <td>
-      <?php echo $operacion['Operacion']['cambio_dolar_euro'];?>
+    <td>
+      <?php //echo $operacion['LineaContrato']['Contrato']['Proveedor']['Empresa']['nombre'];?>
+    </td> 
+    <td> <?php// echo $operacion['LineaContrato']['peso_linea_contrato'].'Kg';?>
+    </td>
+    <td>
+      <?php echo $operacion['Operacion']['cambio_dolar_euro'].'$/€';?>
     </td>
     <td>
       <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',array('action'=>'edit',$operacion['Operacion']['id']),array('class'=>'botond','title'=>'Modificar Operación','escape'=>false)).' '.$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$operacion['Operacion']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles'));
@@ -50,6 +65,9 @@
   </tr>
   <?php endforeach;?>
   </table>
+  <div class="btabla">
+      <?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Operación',array('action'=>'add'), array('title'=>'Añadir Operación','escape' => false)); ?>
+  </div>
 
   <div class="btabla">
   <?php 
