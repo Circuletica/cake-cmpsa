@@ -17,7 +17,7 @@ echo "<p>\n";
 echo $this->Form->create('LineaContrato');
 echo $this->Form->input('referencia');
 echo $this->Form->input('embalaje_id', array(
-	'after' => '(quedan '.$embalajes_contrato[0]['ContratoEmbalaje']['cantidad_embalaje'].' sin fijar)'
+	'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
 	)
 );
 //necesitamos un array con la cantidad asignada a cada socio
@@ -32,7 +32,7 @@ foreach ($asociados as $id => $asociado):
 	);
 	echo "</td>";
 	echo "<td>";
-	echo $embalajes_contrato[0]['ContratoEmbalaje']['peso_embalaje_real'];
+	echo $embalajes_completo[1]['peso_embalaje_real'];
 	echo "</td>";
 	echo "</tr>";
 endforeach;

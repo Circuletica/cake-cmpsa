@@ -7,6 +7,12 @@ class LineaContrato extends AppModel {
 			'className' => 'Contrato',
 			'foreignKey' => 'contrato_id')
 	);
+	public $hasOne = array(
+		'PesoLineaContrato' => array(
+			'className' => 'PesoLineaContrato',
+			'foreignKey' => 'id'
+		)
+	);
 	public $hasMany = array(
 		'AsociadoLineaContrato' => array(
 			'className' => 'AsociadoLineaContrato',

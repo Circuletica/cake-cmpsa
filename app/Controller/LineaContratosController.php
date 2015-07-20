@@ -33,13 +33,6 @@ class LineaContratosController extends AppController {
 				'CalidadNombre.nombre')
 		));
 		$this->set('contrato',$contrato);
-		//queda por ver si $embalajes_contrato no puede ser usada en su lugar
-//		$embalajes = $this->LineaContrato->Contrato->ContratoEmbalaje->find('list', array(
-//			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
-//			'fields' => array('ContratoEmbalaje.embalaje_id','Embalaje.nombre'),
-//			'recursive' => 1
-//				)
-//			);
 		$embalajes_contrato = $this->LineaContrato->Contrato->ContratoEmbalaje->find('all', array(
 			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
 			'fields' => array(
@@ -50,7 +43,6 @@ class LineaContratosController extends AppController {
 				)
 			)
 		);
-		//$this->set('embalajes_contrato', $embalajes_contrato);
 		//hace falta para el desplegable de 'Embalaje'
 		//recombinamos el array anterior que quedaba asi:
 		//Array
@@ -66,10 +58,10 @@ class LineaContratosController extends AppController {
 		//  (
 		//    [2] => big bag
 		//    [1] => saco 60kg
+		$embalajes = Hash::combine($embalajes_contrato, '{n}.Embalaje.id', '{n}.Embalaje.nombre');
+		$this->set('embalajes', $embalajes);
 		$embalajes_nombre = Hash::combine($embalajes_contrato, '{n}.Embalaje.id', '{n}.Embalaje');
-		$this->set('embalajes_nombre', $embalajes_nombre);
 		$embalajes_peso = Hash::combine($embalajes_contrato, '{n}.Embalaje.id', '{n}.ContratoEmbalaje');
-		$this->set('embalajes_peso', $embalajes_peso);
 		//sumamos los distintos arrays de mismo index para llegar a esto:
 		//Array
 		//  (
@@ -79,8 +71,8 @@ class LineaContratosController extends AppController {
 		//      cantidad_embalaje => 60
 		//      peso_embalaje_real => 60
 		//    [1] => ...
-		$embalajes = array_replace_recursive($embalajes_nombre,$embalajes_peso);
-		$this->set('embalajes', $embalajes);
+		$embalajes_completo = array_replace_recursive($embalajes_nombre,$embalajes_peso);
+		$this->set('embalajes_completo', $embalajes_completo);
 		//solo para mostrar el proveedor a nivel informativo
 		$this->set('proveedor',$contrato['Proveedor']['Empresa']['nombre']);
 		//a quienes van asociadas las lineas de contrato
@@ -92,9 +84,6 @@ class LineaContratosController extends AppController {
 		$this->set('asociados', $asociados);
 
 		if($this->request->is('post')):
-			//debug($this->request->data['LineaContrato']);
-			//debug($this->request->data['CantidadAsociado']);
-			//throw New Exception('array depurado');
 			//al guardar la linea, se incluye a qué contrato pertenece
 			$this->request->data['LineaContrato']['contrato_id'] = $this->params['named']['from_id'];
 			//primero guardamos los datos de LineaContrato
@@ -105,6 +94,7 @@ class LineaContratosController extends AppController {
 						$this->request->data['AsociadoLineaContrato']['linea_contrato_id'] = $this->LineaContrato->id;
 						$this->request->data['AsociadoLineaContrato']['asociado_id'] = $asociado_id;
 						$this->request->data['AsociadoLineaContrato']['cantidad_embalaje_asociado'] = $cantidad;
+						//$cantidad_embalaje_linea_contrato += $cantidad;
 						if (!$this->LineaContrato->AsociadoLineaContrato->saveAll($this->request->data['AsociadoLineaContrato']))
 							throw New Exception('error en guardar AsociadoLineaContrato');
 					}
@@ -120,6 +110,34 @@ class LineaContratosController extends AppController {
 					$this->params['named']['from_id']));
 			endif;
 		endif;
-}
+	}
+	public function view($id = null) {
+		//el id y la clase de la entidad de origen vienen en la URL
+		if (!$id) {
+			$this->Session->setFlash('URL mal formado Muestra/view');
+			$this->redirect(array('action'=>'index'));
+		}
+		$linea_contrato = $this->LineaContrato->find(
+			'first',
+			array(
+				'conditions' => array('LineaContrato.id' => $id),
+				'recursive' => 3
+			)
+		);
+		$this->set('linea_contrato', $linea_contrato);
+		$this->loadModel('ContratoEmbalaje');
+		$embalaje = $this->ContratoEmbalaje->find(
+			'first',
+			array(
+				'conditions' => array(
+					'ContratoEmbalaje.contrato_id' => $linea_contrato['LineaContrato']['contrato_id'],
+					'ContratoEmbalaje.embalaje_id' => $linea_contrato['LineaContrato']['embalaje_id']
+				),
+				'fields' => array('Embalaje.nombre')
+			)
+		);
+		$this->set('embalaje', $embalaje);
+	
+	}
 }
 ?>
