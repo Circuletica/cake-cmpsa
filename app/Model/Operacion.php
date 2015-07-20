@@ -1,6 +1,6 @@
 <?php
 class Operacion extends AppModel {
-	public $recursive = 4;
+	public $recursive = 3;
 	public $displayField = 'referencia';
 	//public $validate = array(
 	//);
@@ -23,16 +23,9 @@ class Operacion extends AppModel {
 	);
 
 //	public $belongsTo = array(
-//		'Agente' => array(
-//			'className' => 'Agente',
-//			'foreignKey'=> 'agente_id'),
-//		'Naviera' => array(
-//			'className' => 'Naviera',
-//			'foreignKey' => 'naviera_id'),
-//		'Puerto' => array(
-//			'className' => 'Puerto',
-//			'foreignKey' => 'puerto_id'),
-//	);
+//		'CalidadNombre' => array(
+//			'className' => 'CalidadNombre')		
+//);
   	public $validate = array(
 	    'referencia' => array(
 		      'rule' => 'notEmpty',

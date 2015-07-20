@@ -1,11 +1,11 @@
-<?php $this->Html->addCrumb('Operaciones', array(
+<?php $this->Html->addCrumb('Transportes', array(
 	'controller'=>'operaciones',
 	'action'=>'index'
 	));
-	$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-	'controller'=>'operacion',
+	$this->Html->addCrumb('Transporte '.$transporte['Transporte']['referencia'], array(
+	'controller'=>'transporte',
 	'action'=>'view',
-	$operacion['Operacion']['id']
+	$transporte['Transporte']['id']
 ));
 ?><div class="acciones">
 	<div class="printdet">
@@ -19,19 +19,19 @@
 			<?php
 		echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
 			'action'=>'edit',
-			$operacion['Operacion']['id']),array('title'=>'Modificar Operación','escape'=>false))
+			$transporte['Transporte']['id']),array('title'=>'Modificar Transporte','escape'=>false))
 		.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
 			'action'=>'delete',
-			$operacion['Operacion']['id']),array(
-			'escape'=>false, 'title'=> 'Borrar Operación',
-			'confirm'=>'¿Realmente quiere borrar '.$operacion['Operacion']['referencia'].'?')
+			$transporte['Transporte']['id']),array(
+			'escape'=>false, 'title'=> 'Borrar Transporte',
+			'confirm'=>'¿Realmente quiere borrar '.$transporte['Transporte']['referencia'].'?')
 		);
 	?>
 	</li>
 	</ul>
 	</div>
 </div>
-<h2>Detalles Operación <?php echo $operacion['Operacion']['referencia']?></h2>
+<h2>Detalles Transporte <?php echo $transporte['Transporte']['referencia']?></h2>
 <div class="actions">
 	<?php
 	echo $this->element('filtrooperacion');
@@ -43,30 +43,30 @@
 	echo "<dl>";
 	echo "  <dt>Id</dt>\n";
 	echo "<dd>";
-	echo $operacion['Operacion']['id'].'&nbsp;';
+	echo $transporte['Transporte']['id'].'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Referencia</dt>\n";
 	echo "<dd>";
-	echo $operacion['Operacion']['referencia'].'&nbsp;';
+	echo $transporte['Transporte']['referencia'].'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Naviera</dt>\n";
 	echo "<dd>";
-	echo $operacion['Naviera']['Empresa']['nombre'].'&nbsp;';
+	echo $transporte['Naviera']['Empresa']['nombre'].'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Agente</dt>\n";
 	echo "<dd>";
-	echo $this->Html->link($operacion['Agente']['Empresa']['nombre'], array(
+	echo $this->Html->link($transporte['Agente']['Empresa']['nombre'], array(
 		'controller' => 'agentes',
 		'action' => 'view',
-		$operacion['Agente']['id'])
+		$transporte['Agente']['id'])
 	);
 	echo "</dd>";
 	echo "  <dt>Puerto</dt>\n";
 	echo "<dd>";
-	echo $this->Html->link( $operacion['Puerto']['nombre'], array(
+	echo $this->Html->link( $transporte['Puerto']['nombre'], array(
 		'controller' => 'puertos',
 		'action' => 'view',
-		$operacion['Puerto']['id'])
+		$transporte['Puerto']['id'])
 	);
 	echo "</dd>";
 	echo "</dl>";?>
@@ -76,7 +76,7 @@
 <?php
 	echo $this->Html->tableHeaders(array('Referencia Contrato','Calidad', 'Incoterms',
 	       'Cantidad Contenedores', 'Acciones'));
-	foreach($operacion['LineaContratosOperacion'] as $linea):
+	foreach($transporte['LineaContratosTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['LineaContrato']['Contrato']['referencia'],
 			$linea['LineaContrato']['Contrato']['CalidadNombre']['nombre'],
@@ -88,7 +88,7 @@
 				'action' => 'view',
 				$linea['id'],
               			'from_controller'=>'operaciones',
-              			'from_id'=>$operacion['Operacion']['id']),array(
+              			'from_id'=>$transporte['Transporte']['id']),array(
               			'class'=>'botond','escape' => false,'title'=>'Detalles'))
 			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
 				array(
@@ -96,9 +96,9 @@
 					'action' => 'delete',
 					$linea['id'],
 					'from_controller' => 'operaciones',
-					'from_id'=>$operacion['Operacion']['id']),
+					'from_id'=>$transporte['Transporte']['id']),
 					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-						'confirm' => '¿Seguro que quieres borrar a '.$operacion['Operacion']['referencia'].'?')
+						'confirm' => '¿Seguro que quieres borrar a '.$transporte['Transporte']['referencia'].'?')
 				)
 			));
 	endforeach;
@@ -109,7 +109,7 @@
 //		'controller' => 'linea_muestras',
 //		'action' => 'add',
 //		'from_controller' => 'muestras',
-//		'from_id' => $operacion['Operacion']['id']),
+//		'from_id' => $transporte['Transporte']['id']),
 //		 array('escape' => false,'title'=>'Añadir línea'));
 		?>
 		</div>
@@ -121,7 +121,7 @@
 <?php
 	echo $this->Html->tableHeaders(array('Referencia Contrato','Calidad', 'Incoterms',
 	       'Cantidad Contenedores', 'Acciones'));
-	foreach($operacion['LineaContratosOperacion'] as $linea):
+	foreach($transporte['LineaContratosTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['LineaContrato']['Contrato']['referencia'],
 			$linea['LineaContrato']['Contrato']['CalidadNombre']['nombre'],
@@ -133,7 +133,7 @@
 				'action' => 'view',
 				$linea['id'],
               			'from_controller'=>'operaciones',
-              			'from_id'=>$operacion['Operacion']['id']),array(
+              			'from_id'=>$transporte['Transporte']['id']),array(
               			'class'=>'botond','escape' => false,'title'=>'Detalles'))
 			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
 				array(
@@ -141,9 +141,9 @@
 					'action' => 'delete',
 					$linea['id'],
 					'from_controller' => 'operaciones',
-					'from_id'=>$operacion['Operacion']['id']),
+					'from_id'=>$transporte['Transporte']['id']),
 					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-						'confirm' => '¿Seguro que quieres borrar a '.$operacion['Operacion']['referencia'].'?')
+						'confirm' => '¿Seguro que quieres borrar a '.$transporte['Transporte']['referencia'].'?')
 				)
 			));
 	endforeach;

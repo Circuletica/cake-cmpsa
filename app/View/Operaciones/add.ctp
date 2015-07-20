@@ -41,11 +41,19 @@
 	    //Formulario para rellenar operación
 	echo $this->Form->create('Operacion', array('action' => 'add'));
 	echo $this->Form->input('Operacion.referencia');
+	echo $this->Form->input('Operacion.cantidad_contenedores');
+	echo $this->Form->input('Operacion.cambio_dolar_euro');
 	echo $this->Form->input('proveedor_id', array(
 	   'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
 	   'empty' => array('' => 'Selecciona')
 		)
 	);
+	echo $this->Form->input('calidad_id', array(
+	    'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
+	    'empty' => array('' => 'Selecciona'),
+	    'id' => 'combobox'
+	    )
+	);	
 	echo $this->Form->end('Guardar Operación');
 ?>
 </fieldset>

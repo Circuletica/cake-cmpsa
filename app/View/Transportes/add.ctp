@@ -1,5 +1,5 @@
 
-<h2>Añadir Transporte</h2>
+<h2>Añadir Línea de Transporte</h2>
 <?php
 	$this->Html->addCrumb('Línea de Transporte', array(
 		'controller' => 'Transportes',
@@ -17,7 +17,7 @@
 	    $enlace_anyadir_calidad = $this->Html->link ('Añadir Calidad', array(
 		    'controller' => 'calidades',
 		    'action' => 'add',
-		    'from_controller' => 'operaciones',
+		    'from_controller' => 'muestras',
 		    'from_action' => 'add',
 		    )
 	    );
@@ -30,14 +30,36 @@
 		    'from_action' => 'add',
 		    )
 	    );
-	//si no esta el almacén en el listado, dejamos un enlace para agregarlo
-	//    $enlace_anyadir_incoterms = $this->Html->link ('Añadir Incoterms', array(
-	//	    'controller' => 'incoterms',
-	//	    'action' => 'add',
-	//	    'from_controller' => 'operaciones',
-	//	    'from_action' => 'add',
-	//	    )
-	 //  );
+	    $enlace_anyadir_puerto = $this->Html->link ('Añadir Puerto', array(
+		    'controller' => 'puertos',
+		    'action' => 'add',
+		    'from_controller' => 'transportes',
+		    'from_action' => 'add',
+		    )
+	    );
+	    $enlace_anyadir_naviera = $this->Html->link ('Añadir Naviera', array(
+		    'controller' => 'navieras',
+		    'action' => 'add',
+		    'from_controller' => 'transportes',
+		    'from_action' => 'add',
+		    )
+	    );
+	    $enlace_anyadir_seguro = $this->Html->link ('Añadir Seguro', array(
+		    'controller' => 'seguros',
+		    'action' => 'add',
+		    'from_controller' => 'transportes',
+		    'from_action' => 'add',
+		    )
+	    );	
+	   $enlace_anyadir_agente = $this->Html->link ('Añadir Agente', array(
+		    'controller' => 'agentes',
+		    'action' => 'add',
+		    'from_controller' => 'transportes',
+		    'from_action' => 'add',
+		    )
+	    );		    
+		//si no esta en el listado, dejamos un enlace para agregarlo
+
 	    //Formulario para rellenar operación
 	echo $this->Form->create('Transporte', array('action' => 'add'));
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
@@ -95,11 +117,48 @@
 		 'timeFormat' => null ,
 		 'label' => 'Fecha límite de retirada')
 		 );
-		 ?>
-	</div>
+		  echo $this->Form->input('fecha_reclamacion_factura', array(
+		 'dateFormat' => 'DMY',
+		 'timeFormat' => null ,
+		 'label' => 'Fecha reclamacion factura')
+		 );
+		echo $this->Form->input('flete');
+		echo $this->Form->input('forfait');
+		?>
+		</div>
+		<?php
+		echo $this->Form->input('puerto_id', array(
+		    'label' => 'Puerto ('.$enlace_anyadir_puerto.')',
+		    'empty' => array('' => 'Selecciona')
+		    ));
+		echo $this->Form->input('naviera_id', array(
+		    'label' => 'Naviera ('.$enlace_anyadir_naviera.')',
+		    'empty' => array('' => 'Selecciona')
+		    ));
+//		echo $this->Form->input('operacion_id', array(
+//		    'label' => 'Operación ('.$enlace_anyadir_operacion.')',
+//		    'empty' => array('' => 'Selecciona')
+//		    ));
+		echo $this->Form->input('agente_id', array(
+		    'label' => 'Agente ('.$enlace_anyadir_agente.')',
+		    'empty' => array('' => 'Selecciona')
+		    ));
+		?>
+
  </div>
  	<?php
-// 	echo $this->Form->input('observaciones');
+	echo $this->Form->input('observaciones');
+		    echo $this->Form->input('calidad_id', array(
+		    'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
+		    'empty' => array('' => 'Selecciona')
+		    )
+	    );
+	    echo $this->Form->input('proveedor_id', array(
+		    'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
+		    'empty' => array('' => 'Selecciona')
+		    )
+	    );
+
 //	echo $this->Form->input('proveedor_id', array(
 //	   'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
 //	   'empty' => array('' => 'Selecciona')

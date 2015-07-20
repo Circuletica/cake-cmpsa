@@ -14,7 +14,13 @@ class OperacionesController extends AppController {
 			'recursive' => 1
 		)
 	);
+	$calidades = $this->Operacion->LineaContrato->Contrato->CalidadNombre->find('list', array(
+		'fields' => array('CalidadNombre.nombre'),
+		'recursive' => 1
+		)
+	);	
 	$this->set('proveedores', $proveedores);
+	$this->set('calidades', $calidades);
 	$this->set('operaciones', $this->paginate());
 	}
 
@@ -32,6 +38,20 @@ public function view($id = null) {
 	}
 
 	public function add() {
+	$proveedores = $this->Operacion->LineaContrato->Contrato->Proveedor->find('list', array(
+		'fields' => array('Proveedor.id','Empresa.nombre'),
+		'recursive' => 1
+		)
+	);
+	$calidades = $this->Operacion->LineaContrato->Contrato->CalidadNombre->find('list', array(
+		'fields' => array('CalidadNombre.nombre'),
+		'recursive' => 1
+		)
+	);
+		$this->set('proveedores', $proveedores);
+		$this->set('incoterms', $this->Operacion->LineaContrato->Contrato->Incoterm->find('list'));
+		$this->set('calidades', $calidades);
+
 		if($this->request->is('post')):
 			if($this->Operacion->save($this->request->data) ):
 				$this->Session->setFlash('Operación guardada');
@@ -60,7 +80,7 @@ public function view($id = null) {
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->Operacion->id = $id;
-		$operacion = $this->Operacion->findById($id)
+		$operacion = $this->Operacion->findById($id);
 		$this->set('operacion',$operacion);
 		if($this->request->is('get')):
 			$this->request->data = $this->Operacion->read();

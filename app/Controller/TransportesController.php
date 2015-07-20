@@ -8,15 +8,14 @@ class TransportesController extends AppController {
 		}
 
 public function view($id = null) {
-		//debug($this->request->params);
-		//debug(func_get_args());
-		//debug($this->referer());
+
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada Transporte/view ');
 			$this->redirect(array('action'=>'index'));
 		}
 		$transporte = $this->Transporte->find('first',array(
-			'conditions' => array('Transporte.id' => $id)));
+			'conditions' => array('Transporte.id' => $id),
+			'recursive' => 2));
 		$this->set('transporte',$transporte);
 	}
 

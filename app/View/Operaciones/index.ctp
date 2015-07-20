@@ -36,13 +36,13 @@
       <?php echo $operacion['Operacion']['referencia']?>
     </td>
     <td>
-      <? echo $operacion['CalidadNombre']['nombre']?>
+      <? echo $operacion['LineaContrato']['Contrato']['CalidadNombre']['nombre']?>
     </td>
     <td>
       <?php echo $operacion['Operacion']['cantidad_contenedores'];?>
     </td>
     <td>
-      <?php //echo $operacion['LineaContrato']['Contrato']['Proveedor']['Empresa']['nombre'];?>
+      <?php //echo $operacion['Proveedor']['Empresa']['nombre'];?>
     </td> 
     <td> <?php// echo $operacion['LineaContrato']['peso_linea_contrato'].'Kg';?>
     </td>
