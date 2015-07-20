@@ -8,7 +8,7 @@ class ContratosController extends AppController {
 
 	public function index() {
 		$proveedores = $this->Contrato->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre'),
+			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
 			'recursive' => 1
 			)
 		);

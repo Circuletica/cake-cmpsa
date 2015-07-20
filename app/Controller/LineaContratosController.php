@@ -133,11 +133,24 @@ class LineaContratosController extends AppController {
 					'ContratoEmbalaje.contrato_id' => $linea_contrato['LineaContrato']['contrato_id'],
 					'ContratoEmbalaje.embalaje_id' => $linea_contrato['LineaContrato']['embalaje_id']
 				),
-				'fields' => array('Embalaje.nombre')
+				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
 			)
 		);
 		$this->set('embalaje', $embalaje);
 	
+	}
+	public function delete($id = null) {
+		if (!$id or $this->request->is('get')) :
+    			throw new MethodNotAllowedException();
+		endif;
+		if ($this->LineaContrato->delete($id)):
+			$this->Session->setFlash('Línea de contrato borrada');
+		$this->redirect(array(
+			'controller' => $this->params['named']['from_controller'],
+			'action'=>'view',
+			$this->params['named']['from_id']
+		));
+		endif;
 	}
 }
 ?>
