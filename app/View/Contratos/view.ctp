@@ -53,6 +53,8 @@
 	echo "</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
+	echo "  <dt>lotes</dt>\n";
+	echo "  <dd>".$contrato['Contrato']['lotes_contrato'].'&nbsp;'."</dd>";
 	echo "  <dt>peso</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['peso_comprado'].' kg&nbsp;'."</dd>";
 	echo "  <table>\n";
@@ -147,7 +149,10 @@
 <?php
 	//calculamos la cantidad que queda por fijar
 	$queda_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado; 
-	echo "<em>Quedan por fijar ".$queda_por_fijar."kg</em>";
+//	echo "<em>Quedan por fijar ".$queda_por_fijar."kg</em>\n";
+//	echo "<p>\n";
+	echo "<em>Quedan por fijar ".$contrato['RestoLotesContrato']['lotes_restantes']
+		." lotes (".$queda_por_fijar."kg)</em>";
 	echo '<div class="btabla">';
 	echo $this->html->link('<i class="fa fa-plus"></i> añadir línea',array(
 		'controller' => 'linea_contratos',

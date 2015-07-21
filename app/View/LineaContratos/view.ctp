@@ -58,6 +58,8 @@
 			$linea_contrato['PesoLineaContrato']['cantidad_embalaje'].' x '.
 			$embalaje['Embalaje']['nombre'].
 			' ('.$linea_contrato['PesoLineaContrato']['peso'].'kg)&nbsp;'."</dd>";
+		echo "  <dt>Lotes:</dt>\n";
+		echo "  <dd>".$linea_contrato['LineaContrato']['lotes_linea_contrato'].'&nbsp;'."</dd>";
 		echo "  <dt>Fecha pos. fijación:</dt>\n";
 		echo "  <dd>".$linea_contrato['LineaContrato']['fecha_pos_fijacion'].'&nbsp;'."</dd>";
 		echo "  <dt>Precio fijación:</dt>\n";

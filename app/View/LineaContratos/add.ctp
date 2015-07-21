@@ -40,7 +40,11 @@ foreach ($asociados as $id => $asociado):
 endforeach;
 echo "</table>";
 echo "<div class='linea'>\n";
-echo $this->Form->input('lotes_linea_contrato');
+echo $this->Form->input('lotes_linea_contrato',
+	array(
+		'label' => 'Lotes <em>(Quedan por fijar '.$contrato['RestoLotesContrato']['lotes_restantes'].' lotes)</em>'
+	)
+);
 echo $this->Form->input('fecha_pos_fijacion', array(
 	'label' => 'Fecha de fijación',
 	'dateFormat' => 'DMY',

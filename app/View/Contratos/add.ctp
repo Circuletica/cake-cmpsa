@@ -206,7 +206,7 @@
 		'oninput' => 'totalDesglose()'
 		)
 	    );
-	    echo $this->Form->input('lotes');
+	    echo $this->Form->input('lotes_contrato');
     ?>
     <table>
 	<tr>
