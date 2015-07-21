@@ -29,11 +29,13 @@ class ContratosController extends AppController {
 			'recursive' => 1
 			)
 		);
-		$canales = $this->Contrato->CanalCompra->find('list', array(
+		$canal_compras_divisa = $this->Contrato->CanalCompra->find('all');
+		$this->set('canal_compras_divisa', $canal_compras_divisa);
+		$canal_compras = $this->Contrato->CanalCompra->find('list', array(
 			'fields' => array('id','nombre')
 			)
 		);
-		$this->set('canales', $canales);
+		$this->set('canal_compras', $canal_compras);
 		$this->set('proveedores', $proveedores);
 		//En la vista se muestra la lista de todos los embalajes existentes
 		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
@@ -94,6 +96,14 @@ class ContratosController extends AppController {
 			'recursive' => 1
 			))
 		);
+		//Donde se compra el café (London, New-York, ...)
+		//$canales = $this->Contrato->CanalCompra->find('list', array(
+		$canal = $this->Contrato->CanalCompra->find('first', array(
+			'conditions' => array('CanalCompra.id' => $contrato['CanalCompra']['id']),
+			'fields' => array('id','nombre','divisa')
+			)
+		);
+		$this->set('canal',$canal);
 		//En la vista se muestra la lista de todos los embalajes existentes
 		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
 			'order' => array('Embalaje.nombre' => 'asc')

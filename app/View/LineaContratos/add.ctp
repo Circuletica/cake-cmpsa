@@ -17,7 +17,8 @@ echo "<p>\n";
 echo $this->Form->create('LineaContrato');
 echo $this->Form->input('referencia');
 echo $this->Form->input('embalaje_id', array(
-	'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
+	//'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
+	'after' => '(quedan ????? sin fijar)'
 	)
 );
 //necesitamos un array con la cantidad asignada a cada socio
@@ -32,15 +33,19 @@ foreach ($asociados as $id => $asociado):
 	);
 	echo "</td>";
 	echo "<td>";
-	echo $embalajes_completo[1]['peso_embalaje_real'];
+	//echo $embalajes_completo[1]['peso_embalaje_real'];
+	echo "?????? kg";
 	echo "</td>";
 	echo "</tr>";
 endforeach;
 echo "</table>";
 echo "<div class='linea'>\n";
+echo $this->Form->input('lotes_linea_contrato');
 echo $this->Form->input('fecha_pos_fijacion', array(
 	'label' => 'Fecha de fijación',
-	'dateFormat' => 'DMY')
+	'dateFormat' => 'DMY',
+	'selected' => date('Y-m-1')
+	)
 );
 		echo "</div>\n";
 echo $this->Form->input('precio_fijacion', array(
@@ -48,7 +53,8 @@ echo $this->Form->input('precio_fijacion', array(
 	)
 );
 echo $this->Form->input('precio_compra', array(
-	'between' => '('.$contrato['CanalCompra']['divisa'].')'
+	'between' => '('.$contrato['CanalCompra']['divisa'].')',
+	'label' => 'Precio factura'
 	)
 );
 echo $this->Form->end('Guardar Linea de contrato');

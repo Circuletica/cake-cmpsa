@@ -79,8 +79,8 @@
 	echo "  <dd>".$contrato['Contrato']['diferencial']." ".$contrato['CanalCompra']['divisa']."</dd>";
 	echo "  <dt>incoterm</dt>\n";
 	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
-	echo "  <dt>opciones</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['opciones']." ".$contrato['CanalCompra']['divisa']."</dd>";
+	//echo "  <dt>opciones</dt>\n";
+	//echo "  <dd>".$contrato['Contrato']['opciones']." ".$contrato['CanalCompra']['divisa']."</dd>";
 	echo "</dl>";?>
 	<div class="detallado">
 	<h3>líneas de contrato</h3>
@@ -88,7 +88,7 @@
 <?php
 	//echo $this->html->tableheaders(array('referencia','peso','fecha de fijación', 'precio de fijación', 'precio de compra', 'acciones'));
 	$peso_fijado = 0;
-	echo $this->html->tableheaders(array('referencia','peso','fecha de fijación', 'precio de fijación', 'precio de compra'));
+	echo $this->html->tableheaders(array('referencia','peso','fecha de fijación', 'precio de fijación', 'precio de factura'));
 	foreach($contrato['LineaContrato'] as $linea):
 		//guardamos el total del peso de las líneas para calcular
 		//lo que falta por fijar

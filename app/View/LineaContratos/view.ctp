@@ -63,8 +63,11 @@
 		echo "  <dt>Precio fijación:</dt>\n";
 		echo "  <dd>".$linea_contrato['LineaContrato']['precio_fijacion'].
 			$linea_contrato['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
-		echo "  <dt>Precio compra:</dt>\n";
+		echo "  <dt>Precio factura:</dt>\n";
 		echo "  <dd>".$linea_contrato['LineaContrato']['precio_compra'].
+			$linea_contrato['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+		echo "  <dt>Diferencial:</dt>\n";
+		echo "  <dd>".$linea_contrato['Contrato']['diferencial'].
 			$linea_contrato['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
 		echo "</dl>";
 		echo "<table>";
