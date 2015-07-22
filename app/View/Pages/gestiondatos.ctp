@@ -16,28 +16,19 @@ echo $this->element('desplegabledatos');
 		<td><?php echo $this->Html->link('Calidades','/calidades',array('class'=>'button'));?></td>
 	</tr>
 	<tr>
-		<td><?php echo $this->Html->link('Navieras','/navieras',array('class'=>'button'));?></td>
-		<td><?php echo $this->Html->link('Países','/paises',array('class'=>'button'));?></td>
+		<td><?php echo $this->Html->link('Contactos','/contactos',array('class'=>'button'));?></td>
+		<td><?php echo $this->Html->link('Contratos','/contratos',array('class'=>'button'));?></td>
+		<td><?php echo $this->Html->link('Embalajes','/embalajes',array('class'=>'button'));?></td>
+		<td><?php echo $this->Html->link('Incoterms','/incoterms',array('class'=>'button'));?></td>
 		<td><?php echo $this->Html->link('Muestras','/muestras',array('class'=>'button'));?></td>
+		<td><?php echo $this->Html->link('Navieras','/navieras',array('class'=>'button'));?></td>
+	</tr>
+	<tr>
+		<td><?php echo $this->Html->link('Operaciones','/operaciones',array('class'=>'button'));?></td>
+		<td><?php echo $this->Html->link('Paises','/paises',array('class'=>'button'));?></td>
 		<td><?php echo $this->Html->link('Proveedores','/proveedores',array('class'=>'button'));?></td>
-		<td><?php echo $this->Html->link('Incoterms','/incoterms',array('class'=>'button'));?></td>
-		<td><?php echo $this->Html->link('Puertos','/puerto',array('class'=>'button'));?></td>
-		<td></td>
-	</tr>
-	<tr><td></td>
-		<td><?php echo $this->Html->link('Incoterms','/incoterms',array('class'=>'button'));?></td>
-		<td><?php echo $this->Html->link('Puertos','/puerto',array('class'=>'button'));?></td>
-	
-		<td><?php echo $this->Html->link('Transportes','/transporte',array('class'=>'button'));?></td>
-
-		<td></td>
-	</tr>
-	<tr><td></td>
-		<td><?php echo $this->Html->link('Incoterms','/incoterms',array('class'=>'button'));?></td>
 		<td><?php echo $this->Html->link('Puertos','/puertos',array('class'=>'button'));?></td>
-		<td><?php echo $this->Html->link('Transportes','/transportes',array('class'=>'button'));?></td>
-		<td></td>
-	
+		<td><?php echo $this->Html->link('Seguros','/seguros',array('class'=>'button'));?></td>
 	</tr>
 </table>
 </div>

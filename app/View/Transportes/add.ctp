@@ -61,14 +61,14 @@
 		//si no esta en el listado, dejamos un enlace para agregarlo
 
 	    //Formulario para rellenar operación
+	?>
+	<div class="col2">
+	<?php
 	echo $this->Form->create('Transporte', array('action' => 'add'));
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));	
-	echo $this->Form->input('Puerto.nombre', array('label' => 'Puerto'));
-	echo $this->Form->input('Naviera.Empresa.nombre', array('label' => 'Empresa del transporte'));
-	echo $this->Form->input('Agente.Empresa.nombre', array('label' => 'Nombre del agente'));
-	
 ?>
+</div>
 <div class="linea">
 	<div class='columna3'>
 		 <?php
@@ -90,7 +90,8 @@
 		  echo $this->Form->input('fecha_pago', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
-		 'label' => 'Fecha de pago')
+		 'label' => 'Fecha de pago',
+		 'selected' => '')
 		 );
 		  echo $this->Form->input('fecha_enviodoc', array(
 		 'dateFormat' => 'DMY',

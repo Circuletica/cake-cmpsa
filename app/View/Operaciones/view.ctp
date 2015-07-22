@@ -55,10 +55,10 @@
 	echo "</dd>";
 	echo "  <dt>Agente</dt>\n";
 	echo "<dd>";
-	echo $this->Html->link($operacion['Agente']['Empresa']['nombre'], array(
-		'controller' => 'agentes',
+	echo $this->Html->link($operacion['Transporte']['Agente']['id'], array(
+		'controller' => 'transportes',
 		'action' => 'view',
-		$operacion['Agente']['id'])
+		$operacion['Transporte']['Agente']['id'])
 	);
 	echo "</dd>";
 	echo "  <dt>Puerto</dt>\n";
@@ -70,51 +70,27 @@
 	);
 	echo "</dd>";
 	echo "</dl>";?>
+	<!--Se hace un index de la Linea de contratos-->
 	<div class="detallado">
-	<h3>Contrato</h3>
+	<h3>Línea de Contratos</h3>
 <table>
 <?php
-	echo $this->Html->tableHeaders(array('Referencia Contrato', 'Proveedor','Calidad', 'Incoterms','Peso', 'Bolsa', 'Acciones'));
+	echo $this->Html->tableHeaders(array('Línea Contrato', 'Ref. Contrato','Calidad', 'Incoterms','Peso', 'Bolsa', 'Acciones'));
 
-	foreach($lineacontratos as $lineacontrato):
+	foreach($operacion['LineaContrato']  as $lineacontrato):
 		echo $this->Html->tableCells(array(
 			//$contrato['Contrato']['id'],
-			$lineacontrato['LineaContrato']['Contrato']['referencia'],
-			$lineacontrato['LineaContrato']['Contrato']['Proveedor']['Empresa']['nombre'],
-			$lineacontrato['LineaContrato']['Contrato']['Incoterm']['nombre'],
+			$lineacontrato['referencia'],
+			$lineacontrato['Contrato']['referencia'],
+			$lineacontrato['Contrato']['Incoterm']['nombre'],
 			$lineacontrato['CalidadNombre']['nombre'],
-			$lineacontrato['LineaContrato']['Contrato']['peso_comprado'].'kg',
-			$lineacontrato['LineaContrato']['Contrato']['CanalCompra']['nombre'],
-			$this->Html->link('Detalles',array('action'=>'view',$lineacontrato['Contrato']['id']), array('class' =>'boton' ))
+			$lineacontrato['Contrato']['peso_comprado'].'kg',
+			$lineacontrato['Contrato']['CanalCompra']['nombre'],
+			$this->Html->link('Detalles',array('action'=>'view','controller' => 'linea_contratos',$lineacontrato['id']), array('class' =>'boton' ))
 	));
 
 	endforeach;
-//	foreach($operacion['LineaContrato'] as $linea):
-//		echo $this->Html->tableCells(array(
-//			$linea['LineaContrato']['Contrato']['referencia'],
-//			$linea['LineaContrato']['Contrato']['CalidadNombre']['nombre'],
-//			$linea['LineaContrato']['Contrato']['Incoterm']['nombre'],
-//			$linea['cantidad_contenedores'],
-//			//$linea['referencia_almacen'],
-//			$this->Html->link('<i class="fa fa-info-circle"></i>', array(
-//				'controller'=>'operaciones',
-//				'action' => 'view',
-//				$linea['id'],
-//            			'from_controller'=>'operaciones',
-//              			'from_id'=>$operacion['Operacion']['id']),array(
-//              			'class'=>'botond','escape' => false,'title'=>'Detalles'))
-//			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
-//				array(
-//					'controller'=>'operaciones',
-//					'action' => 'delete',
-//					$linea['id'],
-//					'from_controller' => 'operaciones',
-//					'from_id'=>$operacion['Operacion']['id']),
-//					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-//						'confirm' => '¿Seguro que quieres borrar a '.$operacion['Operacion']['referencia'].'?')
-//				)
-//			));
-//	endforeach;
+
 ?>	</table>
 		<div class="btabla">
 	<?php
@@ -127,19 +103,18 @@
 		?>
 		</div>
 	</div>
+	<!--Se listan los asociados que forman parte de la operación-->
 	<div class="detallado">
-	<h3>Líneas de transporte</h3>
-
+	<h3>Asociados</h3>
 	<table>
-<?php
-	echo $this->Html->tableHeaders(array('Referencia Contrato','Calidad', 'Incoterms',
+	<?php
+	echo $this->Html->tableHeaders(array('Nombre','Calidad', 'Incoterms',
 	       'Cantidad Contenedores', 'Acciones'));
 	foreach($operacion['LineaContrato'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['Contrato']['referencia'],
 			$linea['Contrato']['CalidadNombre']['nombre'],
 			$linea['Contrato']['Incoterm']['nombre'],
-			$linea['cantidad_contenedores'],
 			//$linea['referencia_almacen'],
 			$this->Html->link('<i class="fa fa-info-circle"></i>', array(
 				'controller'=>'operaciones',
@@ -162,6 +137,41 @@
 	endforeach;
 ?>	</table>
 
+	<!--Se listan las líneas de transporte para la operación-->
+	<div class="detallado">
+	<h3>Líneas de transporte</h3>
+	<table>
+<?php
+	echo $this->Html->tableHeaders(array('Nombre', 'BL/Matrícula',
+	       'Fecha carga', 'Cantidad','Acciones'));
+	foreach($operacion['Transporte'] as $linea):
+		echo $this->Html->tableCells(array(
+			$linea['nombre_vehiculo'],
+			$linea['matricula'],
+			$linea['fecha_carga'],
+			$linea['EmbalajeTransporte']['cantidad'],
+			$linea['agente_id'],
+			$this->Html->link('<i class="fa fa-info-circle"></i>', array(
+				'controller'=>'operaciones',
+				'action' => 'view',
+				$linea['id'],
+              			'from_controller'=>'operaciones',
+              			'from_id'=>$operacion['Operacion']['id']),array(
+              			'class'=>'botond','escape' => false,'title'=>'Detalles'))
+			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
+				array(
+					'controller'=>'operaciones',
+					'action' => 'delete',
+					$linea['id'],
+					'from_controller' => 'operaciones',
+					'from_id'=>$operacion['Operacion']['id']),
+					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
+						'confirm' => '¿Seguro que quieres borrar a '.$operacion['Operacion']['referencia'].'?')
+				)
+			));
+	endforeach;
+?>	</table>
+</div>	
 	<div class="btabla">
 			<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Línea Transporte',array(
 			'controller' => 'transportes',

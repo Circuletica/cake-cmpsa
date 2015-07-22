@@ -1,9 +1,6 @@
 <?php
 class Transporte extends AppModel {
 	public $recursive = 3;
-	//public $displayField = 'referencia';
-	//public $validate = array(
-	//);
 	public $belongsTo = array(
 			'Seguro' => array(
 			'className' => 'Seguro',
