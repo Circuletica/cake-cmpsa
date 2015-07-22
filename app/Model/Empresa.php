@@ -1,8 +1,8 @@
 <?php
 class Empresa extends AppModel {
 	public $hasOne = array(
-		'BancoPrueba' => array(
-			'className' => 'BancoPrueba',
+		'Banco' => array(
+			'className' => 'Banco',
 			'foreignKey' => 'id'),
 		'Proveedor' => array(
 			'className' => 'Proveedor',
