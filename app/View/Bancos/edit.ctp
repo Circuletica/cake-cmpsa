@@ -1,10 +1,10 @@
 <h2>Modificar Banco</h2>
 <?php
 	$this->Html->addCrumb('Bancos',array(
-	'controller'=>'banco_pruebas',
+	'controller'=>'bancos',
 	'action'=>'index'
 	));
-	echo $this->Form->create('BancoPrueba', array('action' => 'edit'));
+	echo $this->Form->create('Banco', array('action' => 'edit'));
 	?>
 	<fieldset><?php
 	echo $this->Form->input('Empresa.nombre_corto', array('label' => 'Nombre corto'));

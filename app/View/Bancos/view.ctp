@@ -115,14 +115,14 @@ else:
 			'controller'=>'contactos',
 			'action' => 'edit',
 			$contacto['id'],
-              		'from'=>'banco_pruebas',
+              		'from'=>'bancos',
               		'from_id'=>$contacto['empresa_id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar'))
 			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
 			array(
 				'controller'=>'contactos',
 				'action' => 'delete',
 				$contacto['id'],
-				'from' => 'banco_pruebas',
+				'from' => 'bancos',
 				'from_id' => $contacto['empresa_id']),
 				array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
 					'confirm' =>'¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
