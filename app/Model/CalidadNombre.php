@@ -8,6 +8,5 @@ class CalidadNombre extends AppModel {
 		'className' => 'Calidad',
 		'foreignKey' => 'id')
 	);
-	//var $name = 'BancoPrueba';
 }
 

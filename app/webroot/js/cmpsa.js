@@ -13,7 +13,6 @@ function totalDesglose(){
             total += cantidad * peso;
 	}
     }
-    //console.log(total);
     if(total == pesoComprado){
     document.getElementById('total').innerHTML = "Total desglose: " + total + "kg";
     	document.getElementById('total').style.color = "black";
@@ -27,23 +26,13 @@ function totalDesglose(){
 }
 
 function canalCompra(){
-	if(document.getElementById("ContratoCanalCompra1").checked) {
-		  //London radio button is checked
-		document.getElementById("divisa_diferencial").innerHTML = '$/Tm';
-		document.getElementById("divisa_opciones").innerHTML = '$/Tm';
-		document.getElementById("ContratoDiferencial").disabled = false;
-		document.getElementById("ContratoOpciones").disabled = false;
-	}else if(document.getElementById("ContratoCanalCompra2").checked) {
-		  //NY radio button is checked
-		document.getElementById("divisa_diferencial").innerHTML = '¢/Lb';
-		document.getElementById("divisa_opciones").innerHTML = '¢/Lb';
-		document.getElementById("ContratoDiferencial").disabled = false;
-		document.getElementById("ContratoOpciones").disabled = false;
-	}else if(document.getElementById("ContratoCanalCompra3").checked) {
-		  //Precio fijo radio button is checked
-		document.getElementById("divisa_diferencial").innerHTML = '€/Tm';
-		document.getElementById("divisa_opciones").innerHTML = '€/Tm';
-		document.getElementById("ContratoDiferencial").disabled = true;
-		document.getElementById("ContratoOpciones").disabled = true;
-	}
+	var canal = window.app.canalCompraDivisa;
+	//la bolsa que seleccionamos
+	var checked = $('input:checked').val();
+	//la divisa correspondiente
+	var divisa = canal[checked-1].CanalCompra.divisa;
+	//mostramos la divisa al lado del diferencial
+	document.getElementById("divisa_diferencial").innerHTML = divisa;
+	//desactivamos el diferencial si es precio fijo
+	document.getElementById("ContratoDiferencial").disabled = canal[checked-1].CanalCompra.precio_fijo;
 }

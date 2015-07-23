@@ -2,7 +2,12 @@
 class Operacion extends AppModel {
 	public $recursive = 3;
 	public $displayField = 'referencia';
-
+  	public $validate = array(
+	    'referencia' => array(
+		      'rule' => 'notEmpty',
+		      'message' => 'La referencia no puede estar vacía'
+		      )
+	    );
 	public $hasMany = array(
 		'Muestra' => array(
 			'className' => 'Muestra'),
@@ -12,13 +17,6 @@ class Operacion extends AppModel {
 			'clasName' => 'Asociado')
 	);
 
-  	public $validate = array(
-	    'referencia' => array(
-		      'rule' => 'notEmpty',
-		      'message' => 'La referencia no puede estar vacía'
-		      )
-	    );
-
 	public $belongsTo = array(
 		'Contrato' => array(
 			'className' => 'Contrato',
@@ -26,6 +24,12 @@ class Operacion extends AppModel {
 		'Embalaje' => array(
 			'className' => 'Embalaje',
 			'foreignKey' => 'embalaje_id')		
+	);
+	public $hasOne = array(
+		'PesoOperacion' => array(
+			'className' => 'PesoOperacion',
+			'foreignKey' => 'id'
+		)
 	);
 
 }

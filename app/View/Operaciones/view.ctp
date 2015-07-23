@@ -134,52 +134,20 @@
 						'confirm' => '¿Seguro que quieres borrar a '.$operacion['Operacion']['referencia'].'?')
 				)
 			));
+		//numero de la línea siguiente
+		$i++;
 	endforeach;
 ?>	</table>
-
-	<!--Se listan las líneas de transporte para la operación-->
-	<div class="detallado">
-	<h3>Líneas de transporte</h3>
-	<table>
-<?php
-	echo $this->Html->tableHeaders(array('Nombre', 'BL/Matrícula',
-	       'Fecha carga', 'Cantidad','Acciones'));
-	foreach($operacion['Transporte'] as $linea):
-		echo $this->Html->tableCells(array(
-			$linea['nombre_vehiculo'],
-			$linea['matricula'],
-			$linea['fecha_carga'],
-			$linea['EmbalajeTransporte']['cantidad'],
-			$linea['agente_id'],
-			$this->Html->link('<i class="fa fa-info-circle"></i>', array(
-				'controller'=>'operaciones',
-				'action' => 'view',
-				$linea['id'],
-              			'from_controller'=>'operaciones',
-              			'from_id'=>$operacion['Operacion']['id']),array(
-              			'class'=>'botond','escape' => false,'title'=>'Detalles'))
-			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
-				array(
-					'controller'=>'operaciones',
-					'action' => 'delete',
-					$linea['id'],
-					'from_controller' => 'operaciones',
-					'from_id'=>$operacion['Operacion']['id']),
-					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-						'confirm' => '¿Seguro que quieres borrar a '.$operacion['Operacion']['referencia'].'?')
-				)
-			));
-	endforeach;
-?>	</table>
-</div>	
-	<div class="btabla">
-			<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Línea Transporte',array(
-			'controller' => 'transportes',
-			'action' => 'add',
-			'from_controller' => 'operaciones',
-			'from_id' => $operacion['Operacion']['id']), 
-			array('escape' => false,'title'=>'Añadir Línea Transporte'));?>	
-	</div>
+		<div class="btabla">
+		<?php
+		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir',array(
+		'controller' => 'linea_muestras',
+		'action' => 'add',
+		'from_controller' => 'muestras',
+		'from_id' => $operacion['Operacion']['id']),
+		 array('escape' => false,'title'=>'Añadir línea'));
+		?>
+		</div>
 	</div>
 </div>
 

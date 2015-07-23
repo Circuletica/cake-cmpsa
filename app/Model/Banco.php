@@ -31,5 +31,6 @@ class Banco extends AppModel {
 		'className' => 'Empresa',
 		'foreignKey' => 'id')
 	);
-	//var $name = 'BancoPrueba';
+	//var $name = 'Banco';
 }
+

@@ -25,7 +25,5 @@ class Muestra extends AppModel {
 			'foreignKey' => 'operacion_id')
 	);
 	public $hasMany = 'LineaMuestra';
-//	);
-	//var $name = 'BancoPrueba';
 }
 

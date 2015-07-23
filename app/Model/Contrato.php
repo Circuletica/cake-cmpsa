@@ -13,6 +13,10 @@ class Contrato extends AppModel {
 			'className' => 'RestoContrato',
 			'foreignKey' => 'id'
 		),
+		'RestoLotesContrato' => array(
+			'className' => 'RestoLotesContrato',
+			'foreignKey' => 'id'
+		),
 	);
 	public $hasMany = array(
 		'Operacion' => array(

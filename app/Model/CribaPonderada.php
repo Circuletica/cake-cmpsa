@@ -5,6 +5,5 @@ class CribaPonderada extends AppModel {
 			'className' => 'LineaMuestra',
 			'foreignKey' => 'id')
 	);
-	//var $name = 'BancoPrueba';
 }
 

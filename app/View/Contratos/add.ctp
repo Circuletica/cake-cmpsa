@@ -22,6 +22,10 @@
     <?php
       $this->Html->addCrumb('Contratos', '/contratos');
 	    echo $this->Html->script('jquery')."\n"; // Include jQuery library
+	//Pasamos la lista de 'bolsas' al javascript de la vista
+	$this->Js->set('canalCompraDivisa', $canal_compras_divisa);
+	echo $this->Js->writeBuffer(array('onDomReady' => false));
+
     ?>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -172,7 +176,7 @@
 	//	echo $this->Form->input('si_londres', array(
 	//	    'label' => 'Bolsa de Londres')
 	//	);
-	    echo $this->Form->radio('canal_compra', $canales, array(
+	    echo $this->Form->radio('canal_compra_id', $canal_compras, array(
 		    'legend' => false,
 		    'value' => 1,
 		    'separator' => '<br/>',
@@ -202,6 +206,7 @@
 		'oninput' => 'totalDesglose()'
 		)
 	    );
+	    echo $this->Form->input('lotes_contrato');
     ?>
     <table>
 	<tr>
@@ -260,11 +265,12 @@
 			//'class' => 'diferencial'
 			)
 		);
-		echo $this->Form->input('opciones', array(
-			'between' => '(<var id="divisa_opciones"></var>)'
-			//'class' => 'opciones'
-			)
-		);
+		    //Las opciones estan en Operacion
+		//echo $this->Form->input('opciones', array(
+		//	'between' => '(<var id="divisa_opciones"></var>)'
+		//	//'class' => 'opciones'
+		//	)
+		//);
 		echo '<p id="divisa_opciones"></p>';
 		echo "<div class='linea'>\n";
 		echo $this->Form->input('fecha_embarque', array(
@@ -272,7 +278,8 @@
 			'dateFormat' => 'DMY',
 			'minYear' => date('Y')-1,
 			'maxYear' => date('Y')+5,
-			'selected' => date('Y-m-1')
+			//'selected' => date('Y-m-1'),
+			'empty' => true
 			)
 		);
 		echo "</div>\n";
@@ -282,7 +289,8 @@
 			'dateFormat' => 'DMY',
 			'minYear' => date('Y')-1,
 			'maxYear' => date('Y')+5,
-			'selected' => date('Y-m-1')
+			//'selected' => date('Y-m-1'),
+			'empty' => true
 			)
 		);
 		echo "</div>\n";

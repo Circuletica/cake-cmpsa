@@ -1,4 +1,8 @@
 <h1>Modificar Contrato</h1>
+<p>
+<?php
+	echo "Bolsa: ".$canal['CanalCompra']['nombre']."(".$canal['CanalCompra']['divisa'].")";
+?>
 <fieldset>
   <?php
 	$this->Html->addCrumb('Contratos', '/contratos');
@@ -51,6 +55,7 @@
 		'oninput' => 'totalDesglose()'
 		    )
 	);
+	echo $this->Form->input('lotes_contrato');
   ?>
      <table>
 	<tr>
@@ -116,11 +121,19 @@
     <p id="total"></p>
 	<?php
 		echo $this->Form->input('diferencial');
-		echo $this->Form->input('opciones');
-		echo $this->Form->input('si_londres', array(
-			'label' => 'Bolsa de Londres'
-			)
-		);
+		    //Las opciones estan en Operacion
+		//echo $this->Form->input('opciones');
+//		echo $this->Form->input('si_londres', array(
+//			'label' => 'Bolsa de Londres'
+//			)
+//		);
+//	    echo $this->Form->radio('canal_compra', $canales, array(
+//		    'legend' => false,
+//		    //'value' => 1,
+//		    'separator' => '<br/>',
+//		    'onclick' => 'canalCompra()'
+//	    		)
+//	    );
 		echo "<div class='linea'>\n";
 		echo $this->Form->input('fecha_embarque', array(
 			'label' => 'Fecha de embarque',
