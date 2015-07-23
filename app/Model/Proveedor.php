@@ -36,6 +36,5 @@ class Proveedor extends AppModel {
 		'className' => 'Empresa',
 		'foreignKey' => 'id')
 	);
-	//var $name = 'BancoPrueba';
 }
 
