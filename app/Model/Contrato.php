@@ -15,8 +15,8 @@ class Contrato extends AppModel {
 		),
 	);
 	public $hasMany = array(
-		'LineaContrato' => array(
-			'className' => 'LineaContrato',
+		'Operacion' => array(
+			'className' => 'Operacion',
 			'foreignKey' => 'contrato_id'
 		),
 		'ContratoEmbalaje' => array(

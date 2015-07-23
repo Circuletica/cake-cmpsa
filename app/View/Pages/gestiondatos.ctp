@@ -12,7 +12,7 @@ echo $this->element('desplegabledatos');
 		<td><?php echo $this->Html->link('Almacenes','/almacenes',array('class'=>'button'));?></td>
 		<td><?php echo $this->Html->link('Aseguradoras','/aseguradoras',array('class'=>'button'));?></td>
 		<td><?php echo $this->Html->link('Asociados','/asociados',array('class'=>'button'));?></td>
-		<td><?php echo $this->Html->link('Bancos','/banco_pruebas',array('class'=>'button'));?></td>
+		<td><?php echo $this->Html->link('Bancos','/bancos',array('class'=>'button'));?></td>
 		<td><?php echo $this->Html->link('Calidades','/calidades',array('class'=>'button'));?></td>
 	</tr>
 	<tr>

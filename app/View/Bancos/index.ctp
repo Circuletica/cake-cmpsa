@@ -1,5 +1,5 @@
 <?php //$this->Html->getCrumbs(' > ');?>
-<?php $this->Html->addCrumb('Bancos', '/banco_pruebas');?>
+<?php $this->Html->addCrumb('Bancos', '/bancos');?>
 <div class="printdet">
 <ul><li>
 	<?php 
@@ -15,7 +15,7 @@
 </div>
 <h2>Bancos</h2>
 <?php
-	if (empty($bancopruebas)):
+	if (empty($bancos)):
 		echo "No hay bancos en esta lista";
 	else:
 ?>
@@ -27,19 +27,17 @@
 		'Agencia',
 		'Teléfono',
 		'Acciones'));
-
-	foreach($bancopruebas as $bancoprueba):
+	foreach($bancos as $banco):
 	echo $this->Html->tableCells(array(
-		//$bancoprueba['BancoPrueba']['id'],
-		$bancoprueba['Empresa']['nombre_corto'],
-		$bancoprueba['Empresa']['codigo_contable'],
-		substr($bancoprueba['BancoPrueba']['cuenta_cliente_1'],4,4),
-		$bancoprueba['Empresa']['telefono'],
-		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array('action'=>'view',$bancoprueba['BancoPrueba']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))//.' '.
-		//$this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id'])).' '.
-		//$this->Form->postLink('Borrar',array('action'=>'delete',$bancoprueba['BancoPrueba']['id']),array('confirm'=>'Realmente quiere borrar '.$bancoprueba['Empresa']['nombre'].'?'))
+		//$banco['BancoPrueba']['id'],
+		$banco['Empresa']['nombre_corto'],
+		$banco['Empresa']['codigo_contable'],
+		substr($banco['Banco']['cuenta_cliente_1'],4,4),
+		$banco['Empresa']['telefono'],
+		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array('action'=>'view',$banco['Banco']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))//.' '.
+		//$this->Html->link('Modificar',array('action'=>'edit',$banco['BancoPrueba']['id'])).' '.
+		//$this->Form->postLink('Borrar',array('action'=>'delete',$banco['BancoPrueba']['id']),array('confirm'=>'Realmente quiere borrar '.$banco['Empresa']['nombre'].'?'))
 	));
-
 	endforeach;?>
 	</table>
 	<div class="btabla">
@@ -58,4 +56,3 @@
 
 
 <?php endif; ?>
-

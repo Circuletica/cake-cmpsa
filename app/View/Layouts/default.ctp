@@ -49,7 +49,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				</ul>
 			</li>
 			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','/operaciones', array('escape' => false));?></li>
-			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/pages/compras',array('escape' => false));?></li>
+			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/contratos',array('escape' => false));?></li>
 		</ul>	
 	</div>
 </div>

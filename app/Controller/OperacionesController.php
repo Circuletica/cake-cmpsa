@@ -9,23 +9,23 @@ class OperacionesController extends AppController {
 
 
 	public function index() {
-	$proveedores = $this->Operacion->LineaContrato->Contrato->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre'),
-			'recursive' => 1
-		)
-	);
-	$calidades = $this->Operacion->LineaContrato->Contrato->CalidadNombre->find('list', array(
+//	$proveedores = $this->Operacion->Contrato->Proveedor->find('list', array(
+//			'fields' => array('Proveedor.id','Empresa.nombre'),
+//			'recursive' => 1
+//		)
+//	);
+	$calidades = $this->Operacion->Contrato->CalidadNombre->find('list', array(
 		'fields' => array('CalidadNombre.nombre'),
 		'recursive' => 1
 		)
 	);	
-	$this->set('proveedores', $proveedores);
+	//$this->set('proveedores', $proveedores);
 	$this->set('calidades', $calidades);
 	$this->set('operaciones', $this->paginate());
 	}
 
 public function view($id = null) {
-		$lineacontrato = $this->Operacion->LineaContrato->find('all');
+		$operacion = $this->Operacion->find('all');
 		
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada Operación/view ');
@@ -38,18 +38,18 @@ public function view($id = null) {
 	}
 
 	public function add() {
-	$proveedores = $this->Operacion->LineaContrato->Contrato->Proveedor->find('list', array(
+	$proveedores = $this->Operacion->Contrato->Proveedor->find('list', array(
 		'fields' => array('Proveedor.id','Empresa.nombre'),
 		'recursive' => 1
 		)
 	);
-	$calidades = $this->Operacion->LineaContrato->Contrato->CalidadNombre->find('list', array(
+	$calidades = $this->Operacion->Contrato->CalidadNombre->find('list', array(
 		'fields' => array('CalidadNombre.nombre'),
 		'recursive' => 1
 		)
 	);
 		$this->set('proveedores', $proveedores);
-		$this->set('incoterms', $this->Operacion->LineaContrato->Contrato->Incoterm->find('list'));
+		$this->set('incoterms', $this->Operacion->Contrato->Incoterm->find('list'));
 		$this->set('calidades', $calidades);
 
 		if($this->request->is('post')):
