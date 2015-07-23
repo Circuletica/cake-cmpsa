@@ -2,13 +2,13 @@
 	'controller'=>'contratos',
 	'action'=>'index'
 	));
-	$this->Html->addCrumb('Contrato '.$linea_contrato['Contrato']['referencia'], array(
+	$this->Html->addCrumb('Contrato '.$operacion['Contrato']['referencia'], array(
 		'controller'=>'contratos',
 		'action'=>'view',
-		$linea_contrato['Contrato']['id']
+		$operacion['Contrato']['id']
 	));
 ?>
-<h2>Detalles Línea de Contrato <?php echo $linea_contrato['LineaContrato']['referencia']?></h2>
+<h2>Detalles Operacion <?php echo $operacion['Operacion']['referencia']?></h2>
 <div class="actions">
 	<?php
 	echo $this->element('filtromuestra');
@@ -20,9 +20,9 @@
 		'<i class="fa fa-pencil-square-o"></i> Modificar',
 		array(
 			'action'=>'edit',
-			$linea_contrato['LineaContrato']['id']),
+			$operacion['Operacion']['id']),
 		array(
-			'title'=>'Modificar Línea de Contrato',
+			'title'=>'Modificar Operacion',
 			'escape'=>false
 		)
 	).' '.
@@ -30,14 +30,14 @@
 		'<i class="fa fa-trash"></i> Borrar',
 		array(
 			'action'=>'delete',
-			$linea_contrato['LineaContrato']['id'],
+			$operacion['Operacion']['id'],
 			'from_controller' => 'contratos',
-			'from_id' => $linea_contrato['Contrato']['id']
+			'from_id' => $operacion['Contrato']['id']
 		),
 		array(
 			'escape'=>false,
 			'title'=> 'Borrar',
-			'confirm'=>'¿Realmente quiere borrar la línea de contrato '.$linea_contrato['LineaContrato']['referencia'].'?'
+			'confirm'=>'¿Realmente quiere borrar la operacion '.$operacion['Operacion']['referencia'].'?'
 		)
 	);
 ?>
@@ -46,35 +46,45 @@
 	<?php
 		echo "<dl>";
 		echo "  <dt>Referencia Contrato:</dt>\n";
-		echo "  <dd>".$linea_contrato['Contrato']['referencia'].'&nbsp;'."</dd>";
-		echo "  <dt>Referencia Línea:</dt>\n";
-		echo "  <dd>".$linea_contrato['LineaContrato']['referencia'].'&nbsp;'."</dd>";
+		echo "  <dd>".$operacion['Contrato']['referencia'].'&nbsp;'."</dd>";
 		echo "  <dt>Proveedor:</dt>\n";
-		echo "  <dd>".$linea_contrato['Contrato']['Proveedor']['Empresa']['nombre_corto'].'&nbsp;'."</dd>";
+		echo "<dd>";
+		echo $this->html->link($operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'], array(
+			'controller' => 'proveedores',
+			'action' => 'view',
+			$operacion['Contrato']['Proveedor']['id'])
+		);
+		echo "  </dd>";
 		echo "  <dt>Peso:</dt>\n";
-		echo "  <dd>".$linea_contrato['PesoLineaContrato']['peso'].'kg&nbsp;'."</dd>";
+		echo "  <dd>".$operacion['PesoOperacion']['peso'].'kg&nbsp;'."</dd>";
 		echo "  <dt>Embalaje:</dt>\n";
 		echo "  <dd>".
-			$linea_contrato['PesoLineaContrato']['cantidad_embalaje'].' x '.
+			$operacion['PesoOperacion']['cantidad_embalaje'].' x '.
 			$embalaje['Embalaje']['nombre'].
-			' ('.$linea_contrato['PesoLineaContrato']['peso'].'kg)&nbsp;'."</dd>";
+			' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
 		echo "  <dt>Lotes:</dt>\n";
-		echo "  <dd>".$linea_contrato['LineaContrato']['lotes_linea_contrato'].'&nbsp;'."</dd>";
+		echo "  <dd>".$operacion['Operacion']['lotes_operacion'].'&nbsp;'."</dd>";
+		//mysql almacena la fecha en formato ymd
+		$fecha = $operacion['Operacion']['fecha_pos_fijacion'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_fijacion = $dia.'-'.$mes.'-'.$anyo;
 		echo "  <dt>Fecha pos. fijación:</dt>\n";
-		echo "  <dd>".$linea_contrato['LineaContrato']['fecha_pos_fijacion'].'&nbsp;'."</dd>";
+		echo "  <dd>".$fecha_fijacion.'&nbsp;'."</dd>";
 		echo "  <dt>Precio fijación:</dt>\n";
-		echo "  <dd>".$linea_contrato['LineaContrato']['precio_fijacion'].
-			$linea_contrato['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+		echo "  <dd>".$operacion['Operacion']['precio_fijacion'].
+			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
 		echo "  <dt>Precio factura:</dt>\n";
-		echo "  <dd>".$linea_contrato['LineaContrato']['precio_compra'].
-			$linea_contrato['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+		echo "  <dd>".$operacion['Operacion']['precio_compra'].
+			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
 		echo "  <dt>Diferencial:</dt>\n";
-		echo "  <dd>".$linea_contrato['Contrato']['diferencial'].
-			$linea_contrato['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+		echo "  <dd>".$operacion['Contrato']['diferencial'].
+			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
 		echo "</dl>";
 		echo "<table>";
 		echo $this->Html->tableHeaders(array('Asociado', 'Cantidad de embalajes', 'Peso'));
-		foreach ($linea_contrato['AsociadoLineaContrato'] as $linea_asociado):
+		foreach ($operacion['AsociadoOperacion'] as $linea_asociado):
 			$peso_asociado = $linea_asociado['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 			echo $this->Html->tableCells(array(
 				$linea_asociado['Asociado']['Empresa']['nombre_corto'],

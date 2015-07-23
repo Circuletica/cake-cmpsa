@@ -1,4 +1,4 @@
-<h2>Agregar linea a Contrato <em><?php echo $contrato['Contrato']['referencia']?></em></h2>
+<h2>Agregar Operacion a Contrato <em><?php echo $contrato['Contrato']['referencia']?></em></h2>
 
 <?php
 $this->Html->addCrumb('Contratos','/contratos');
@@ -14,7 +14,7 @@ echo 'Peso total: '.$contrato['Contrato']['peso_comprado']."\n";
 echo "<p>\n";
 echo 'Peso sin fijar: '.$contrato['RestoContrato']['peso_restante']."\n";
 echo "<p>\n";
-echo $this->Form->create('LineaContrato');
+echo $this->Form->create('Operacion');
 echo $this->Form->input('referencia');
 echo $this->Form->input('embalaje_id', array(
 	//'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
@@ -40,7 +40,7 @@ foreach ($asociados as $id => $asociado):
 endforeach;
 echo "</table>";
 echo "<div class='linea'>\n";
-echo $this->Form->input('lotes_linea_contrato',
+echo $this->Form->input('lotes_operacion',
 	array(
 		'label' => 'Lotes <em>(Quedan por fijar '.$contrato['RestoLotesContrato']['lotes_restantes'].' lotes)</em>'
 	)
@@ -61,7 +61,7 @@ echo $this->Form->input('precio_compra', array(
 	'label' => 'Precio factura'
 	)
 );
-echo $this->Form->end('Guardar Linea de contrato');
+echo $this->Form->end('Guardar Operacion');
 ?>
 </div>
 

@@ -53,9 +53,9 @@
 	echo "</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
-	echo "  <dt>lotes</dt>\n";
+	echo "  <dt>Lotes</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['lotes_contrato'].'&nbsp;'."</dd>";
-	echo "  <dt>peso</dt>\n";
+	echo "  <dt>Peso</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['peso_comprado'].' kg&nbsp;'."</dd>";
 	echo "  <table>\n";
 	echo $this->html->tableheaders(array('cantidad','embalaje', 'peso ud.', 'peso'));
@@ -71,24 +71,21 @@
 		$peso_total += $peso_embalaje;
 	endforeach;
 	echo "  </table>\n";
-	echo "  <dt>fecha de embarque</dt>\n";
+	echo "  <dt>Fecha de embarque</dt>\n";
 	echo "  <dd>".$fecha_embarque."</dd>";
-	echo "  <dt>fecha de entrega</dt>\n";
+	echo "  <dt>Fecha de entrega</dt>\n";
 	echo "  <dd>".$fecha_entrega."</dd>";
-	echo "  <dt>bolsa</dt>\n";
+	echo "  <dt>Bolsa</dt>\n";
 	echo "  <dd>".$contrato['CanalCompra']['nombre'].'&nbsp;'."</dd>";
-	echo "  <dt>diferencial</dt>\n";
+	echo "  <dt>Diferencial</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['diferencial']." ".$contrato['CanalCompra']['divisa']."</dd>";
-	echo "  <dt>incoterm</dt>\n";
+	echo "  <dt>Incoterm</dt>\n";
 	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
-	//echo "  <dt>opciones</dt>\n";
-	//echo "  <dd>".$contrato['Contrato']['opciones']." ".$contrato['CanalCompra']['divisa']."</dd>";
 	echo "</dl>";?>
 	<div class="detallado">
-	<h3>líneas de contrato</h3>
+	<h3>Operaciones</h3>
 <table>
 <?php
-	//echo $this->html->tableheaders(array('referencia','peso','fecha de fijación', 'precio de fijación', 'precio de compra', 'acciones'));
 	$peso_fijado = 0;
 	echo $this->html->tableheaders(array('referencia','peso','fecha de fijación', 'precio de fijación', 'precio de factura'));
 	foreach($contrato['Operacion'] as $linea):
@@ -154,12 +151,12 @@
 	echo "<em>Quedan por fijar ".$contrato['RestoLotesContrato']['lotes_restantes']
 		." lotes (".$queda_por_fijar."kg)</em>";
 	echo '<div class="btabla">';
-	echo $this->html->link('<i class="fa fa-plus"></i> añadir línea',array(
+	echo $this->html->link('<i class="fa fa-plus"></i> añadir operacion',array(
 		'controller' => 'operaciones',
 		'action' => 'add',
 		'from_controller' => 'contratos',
 		'from_id' => $contrato['Contrato']['id']),
-		 array('escape' => false,'title'=>'añadir línea de contrato'));
+		 array('escape' => false,'title'=>'añadir operacion'));
 ?>
 		</div>
 	</div>
