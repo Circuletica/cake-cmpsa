@@ -9,24 +9,25 @@ class OperacionesController extends AppController {
 
 
 	public function index() {
-//	$proveedores = $this->Operacion->Contrato->Proveedor->find('list', array(
-//			'fields' => array('Proveedor.id','Empresa.nombre'),
-//			'recursive' => 1
-//		)
-//	);
+	$proveedores = $this->Operacion->Contrato->Proveedor->find('list', array(
+			'fields' => array('Proveedor.id','Empresa.nombre'),
+			'recursive' => 1
+		)
+	);
 	$calidades = $this->Operacion->Contrato->CalidadNombre->find('list', array(
 		'fields' => array('CalidadNombre.nombre'),
 		'recursive' => 1
 		)
 	);	
-	//$this->set('proveedores', $proveedores);
+	$this->set('proveedores', $proveedores);
 	$this->set('calidades', $calidades);
 	$this->set('operaciones', $this->paginate());
 	}
 
 public function view($id = null) {
 		$operacion = $this->Operacion->find('all');
-		
+
+
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada Operación/view ');
 			$this->redirect(array('action'=>'index'));

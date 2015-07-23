@@ -31,7 +31,7 @@
 	</ul>
 	</div>
 </div>
-<h2>Detalles Operación <?php echo $operacion['Operacion']['referencia']?></h2>
+<h2>Detalles Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
 <div class="actions">
 	<?php
 	echo $this->element('filtrooperacion');
@@ -40,19 +40,42 @@
 
 	<div class='view'>
 	<?php
+		//mysql almacena la fecha en formato ymd
+//	$fecha = $operacion['Operacion']['Contrato']['fecha_embarque'];
+//	$dia = substr($fecha,8,2);
+//	$mes = substr($fecha,5,2);
+//	$anyo = substr($fecha,0,4);
+//	$fecha_embarque = $dia.'-'.$mes.'-'.$anyo;
+//	$fecha = $operacion['Operacion']['Contrato']['fecha_entrega'];
+//	$dia = substr($fecha,8,2);
+//	$mes = substr($fecha,5,2);
+//	$anyo = substr($fecha,0,4);
+//	$fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
 	echo "<dl>";
-	//echo "  <dt>Id</dt>\n";
-	//echo "<dd>";
-	//echo $operacion['Operacion']['id'].'&nbsp;';
-	//echo "</dd>";
 	echo "  <dt>Referencia</dt>\n";
 	echo "<dd>";
 	echo $operacion['Operacion']['referencia'].'&nbsp;';
 	echo "</dd>";
+	echo "  <dt>Fecha de embarque</dt>\n";
+	echo "<dd>";
+	echo $operacion['Contrato']['fecha_embarque'].'&nbsp;';
+	echo "</dd>";
+	echo "  <dt>Fecha de entrega</dt>\n";
+	echo "<dd>";
+	echo $operacion['Contrato']['fecha_entrega'].'&nbsp;';
+	echo "</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
-	echo $operacion['CalidadNombre']['nombre'].'&nbsp;';
+	echo $operacion['Contrato']['CalidadNombre']['nombre'].'&nbsp;';
+	echo "  <dt>Proveedor</dt>\n";
+	echo "<dd>";
+	echo $this->html->link($operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'], array(
+		'controller' => 'proveedores',
+		'action' => 'view',
+		$operacion['Contrato']['Proveedor']['id'])
+	);
 	echo "</dd>";
+
 	echo "  <dt>Agente</dt>\n";
 	echo "<dd>";
 	echo $this->Html->link($operacion['Transporte']['Agente']['id'], array(
@@ -63,46 +86,15 @@
 	echo "</dd>";
 	echo "  <dt>Puerto</dt>\n";
 	echo "<dd>";
-	echo $this->Html->link( $operacion['Puerto']['nombre'], array(
+	echo $this->Html->link( $operacion['Transporte']['Puerto']['nombre'], array(
 		'controller' => 'puertos',
 		'action' => 'view',
-		$operacion['Puerto']['id'])
+		$operacion['Transporte']['Puerto']['id'])
 	);
 	echo "</dd>";
 	echo "</dl>";?>
 	<!--Se hace un index de la Linea de contratos-->
-	<div class="detallado">
-	<h3>Línea de Contratos</h3>
-<table>
-<?php
-	echo $this->Html->tableHeaders(array('Línea Contrato', 'Ref. Contrato','Calidad', 'Incoterms','Peso', 'Bolsa', 'Acciones'));
 
-	foreach($operacion['LineaContrato']  as $lineacontrato):
-		echo $this->Html->tableCells(array(
-			//$contrato['Contrato']['id'],
-			$lineacontrato['referencia'],
-			$lineacontrato['Contrato']['referencia'],
-			$lineacontrato['Contrato']['Incoterm']['nombre'],
-			$lineacontrato['CalidadNombre']['nombre'],
-			$lineacontrato['Contrato']['peso_comprado'].'kg',
-			$lineacontrato['Contrato']['CanalCompra']['nombre'],
-			$this->Html->link('Detalles',array('action'=>'view','controller' => 'linea_contratos',$lineacontrato['id']), array('class' =>'boton' ))
-	));
-
-	endforeach;
-
-?>	</table>
-		<div class="btabla">
-	<?php
-//		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir',array(
-//		'controller' => 'linea_muestras',
-//		'action' => 'add',
-//		'from_controller' => 'muestras',
-//		'from_id' => $operacion['Operacion']['id']),
-//		 array('escape' => false,'title'=>'Añadir línea'));
-		?>
-		</div>
-	</div>
 	<!--Se listan los asociados que forman parte de la operación-->
 	<div class="detallado">
 	<h3>Asociados</h3>
@@ -110,11 +102,11 @@
 	<?php
 	echo $this->Html->tableHeaders(array('Nombre','Calidad', 'Incoterms',
 	       'Cantidad Contenedores', 'Acciones'));
-	foreach($operacion['LineaContrato'] as $linea):
+	foreach($operacion['Contrato'] as $linea):
 		echo $this->Html->tableCells(array(
-			$linea['Contrato']['referencia'],
-			$linea['Contrato']['CalidadNombre']['nombre'],
-			$linea['Contrato']['Incoterm']['nombre'],
+			$operacion['Contrato']['referencia'],
+			$operacion['Contrato']['CalidadNombre']['nombre'],
+			$operacion['Contrato']['Incoterm']['nombre'],
 			//$linea['referencia_almacen'],
 			$this->Html->link('<i class="fa fa-info-circle"></i>', array(
 				'controller'=>'operaciones',

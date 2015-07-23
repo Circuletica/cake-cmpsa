@@ -13,8 +13,8 @@ class Operacion extends AppModel {
 			'className' => 'Muestra'),
 		'Transporte' => array(
 			'className' => 'Transporte'),
-		'Asociado' => array(
-			'clasName' => 'Asociado')
+		'AsociadoOperacion' => array(
+			'clasName' => 'AsociadoOperacion')
 	);
 
 	public $belongsTo = array(
@@ -23,7 +23,7 @@ class Operacion extends AppModel {
 			'foreignKey' => 'contrato_id'),
 		'Embalaje' => array(
 			'className' => 'Embalaje',
-			'foreignKey' => 'embalaje_id')		
+			'foreignKey' => 'embalaje_id'),	
 	);
 	public $hasOne = array(
 		'PesoOperacion' => array(

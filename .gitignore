@@ -4,6 +4,7 @@
 /app/tmp
 <<<<<<< HEAD
 /app/Plugin/CakePdf/*
+/app/Plugin/Highcharts/*
 =======
 /app/Plugin/CakePdf
 >>>>>>> master

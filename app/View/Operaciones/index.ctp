@@ -16,41 +16,52 @@
   <!--h3>Filtro de operacion</h3-->
 </div>
 <div class='index'>
+  <?php
+//  //mysql almacena la fecha en formato ymd
+//  $fecha = $operacion['Contrato']['fecha_embarque'];
+//  $dia = substr($fecha,8,2);
+//  $mes = substr($fecha,5,2);
+//  $anyo = substr($fecha,0,4);
+//  $fecha_embarque = $dia.'-'.$mes.'-'.$anyo;
+//  $fecha = $operaciones['Contrato']['fecha_entrega'];
+//  $dia = substr($fecha,8,2);
+//  $mes = substr($fecha,5,2);
+//  $anyo = substr($fecha,0,4);
+//  $fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
+ 
+  ?>  
   <table>
   <tr>
-     <th><?php echo $this->Paginator->sort('id')?></th>
     <th><?php echo $this->Paginator->sort('referencia')?></th>
-    <th><?php echo $this->Paginator->sort('CalidadNombre.nombre','Calidad')?></th>
-    <th><?php echo $this->Paginator->sort('cantidad_contenedores')?></th>
+    <th><?php echo $this->Paginator->sort('fecha_embarque','Embarque')?></th>
+    <th><?php echo $this->Paginator->sort('fecha_entrega', 'Entrega')?></th>
+    <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('proveedor', 'Proveedor');?></th>
-    <th><?php echo $this->Paginator->sort('LineaContrato.peso_linea_contrato', 'Peso')?></th>
-    <th><?php echo $this->Paginator->sort('cambio_dolar_euro', 'Cambio $/€')?></th>
+    <th><?php echo $this->Paginator->sort('Embalaje.peso_embalaje', 'Peso')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
   <?php foreach($operaciones as $operacion): ?>
   <tr>
-       <td>
-      <?php echo $operacion['Operacion']['id']?>
-    </td>
     <td>
       <?php echo $operacion['Operacion']['referencia']?>
     </td>
     <td>
-      <? echo $operacion['LineaContrato']['Contrato']['CalidadNombre']['nombre']?>
+      <? echo $operacion['Contrato']['fecha_embarque']?>
     </td>
     <td>
-      <?php echo $operacion['Operacion']['cantidad_contenedores'];?>
+      <?php echo $operacion['Contrato']['fecha_entrega'];?>
     </td>
     <td>
-      <?php //echo $operacion['Proveedor']['Empresa']['nombre'];?>
-    </td> 
-    <td> <?php// echo $operacion['LineaContrato']['peso_linea_contrato'].'Kg';?>
+      <?php echo $operacion['Contrato']['CalidadNombre']['nombre'];?>
     </td>
     <td>
-      <?php echo $operacion['Operacion']['cambio_dolar_euro'].'$/€';?>
+      <?php echo $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'];?>
     </td>
     <td>
-      <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',array('action'=>'edit',$operacion['Operacion']['id']),array('class'=>'botond','title'=>'Modificar Operación','escape'=>false)).' '.$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$operacion['Operacion']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles'));
+      <?php echo $operacion['Embalaje']['peso_embalaje'].' Kg';?>
+    </td>
+    <td>
+      <?php echo $this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$operacion['Operacion']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'));
 //  .' '.
 //      $this->Form->postLink(
 //	'<i class="fa fa-trash"></i>',
