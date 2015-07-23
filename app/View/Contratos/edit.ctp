@@ -121,7 +121,7 @@
     <p id="total"></p>
 	<?php
 		echo $this->Form->input('diferencial');
-		    //Las opciones estan en LineaContrato
+		    //Las opciones estan en Operacion
 		//echo $this->Form->input('opciones');
 //		echo $this->Form->input('si_londres', array(
 //			'label' => 'Bolsa de Londres'

@@ -91,20 +91,20 @@
 	//echo $this->html->tableheaders(array('referencia','peso','fecha de fijación', 'precio de fijación', 'precio de compra', 'acciones'));
 	$peso_fijado = 0;
 	echo $this->html->tableheaders(array('referencia','peso','fecha de fijación', 'precio de fijación', 'precio de factura'));
-	foreach($contrato['LineaContrato'] as $linea):
+	foreach($contrato['Operacion'] as $linea):
 		//guardamos el total del peso de las líneas para calcular
 		//lo que falta por fijar
-		$peso_fijado += $linea['PesoLineaContrato']['peso'];
+		$peso_fijado += $linea['PesoOperacion']['peso'];
 		echo $this->html->tablecells(array(
 			$linea['referencia'],
-			$linea['PesoLineaContrato']['peso']." kg",
+			$linea['PesoOperacion']['peso']." kg",
 			$linea['fecha_pos_fijacion'],
 			$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
 			$linea['precio_compra']." ".$contrato['CanalCompra']['divisa'],
 			$this->html->link(
 				'<i class="fa fa-info-circle"></i>',
 				array(
-					'controller'=>'linea_contratos',
+					'controller'=>'operaciones',
 					'action'=>'view',
 					$linea['id']),
 				array(
@@ -115,7 +115,7 @@
 			//.' '.$this->html->link(
 			//	'<i class="fa fa-pencil-square-o"></i>',
 			//	array(
-			//		'controller'=>'linea_contratos',
+			//		'controller'=>'operaciones',
 			//		'action' => 'edit',
 			//		$linea['id'],
 			//		'from'=>'contratos',
@@ -129,7 +129,7 @@
 			//.' '.$this->form->postlink(
 			//	'<i class="fa fa-trash"></i>',
 			//	array(
-			//		'controller'=>'linea_contratos',
+			//		'controller'=>'operaciones',
 			//		'action' => 'delete',
 			//		$linea['id'],
 			//		'from' => 'contratos',
@@ -155,7 +155,7 @@
 		." lotes (".$queda_por_fijar."kg)</em>";
 	echo '<div class="btabla">';
 	echo $this->html->link('<i class="fa fa-plus"></i> añadir línea',array(
-		'controller' => 'linea_contratos',
+		'controller' => 'operaciones',
 		'action' => 'add',
 		'from_controller' => 'contratos',
 		'from_id' => $contrato['Contrato']['id']),

@@ -24,7 +24,7 @@
 		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
 		$this->Paginator->sort('CanalCompra.nombre','Bolsa'),
 		'Diferencial',
-		//Las opciones en LineaContrato
+		//Las opciones en Operacion
 		//'Opciones',
 		'')
 	);
@@ -39,7 +39,7 @@
 			$contrato['Contrato']['peso_comprado'].'kg',
 			$contrato['CanalCompra']['nombre'],
 			$contrato['Contrato']['diferencial'].$contrato['CanalCompra']['divisa'],
-			//Las opciones en LineaContrato
+			//Las opciones en Operacion
 			//$contrato['Contrato']['opciones'].$contrato['CanalCompra']['divisa'],
 			$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))
 	));

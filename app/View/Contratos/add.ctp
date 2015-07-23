@@ -265,7 +265,7 @@
 			//'class' => 'diferencial'
 			)
 		);
-		    //Las opciones estan en LineaContrato
+		    //Las opciones estan en Operacion
 		//echo $this->Form->input('opciones', array(
 		//	'between' => '(<var id="divisa_opciones"></var>)'
 		//	//'class' => 'opciones'
