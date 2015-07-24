@@ -1,5 +1,5 @@
 
-<h2>Añadir Línea de Transporte</h2>
+<h2>Añadir Línea de Transporte a la Operación xxx<em><?php// echo $operaciones['referencia']?></em></h2>
 <?php
 	$this->Html->addCrumb('Línea de Transporte', array(
 		'controller' => 'Transportes',
@@ -13,61 +13,15 @@
 
 <fieldset>
     <?php
-	    //si no esta la calidad en el listado, dejamos un enlace para agregarlo
-	    $enlace_anyadir_calidad = $this->Html->link ('Añadir Calidad', array(
-		    'controller' => 'calidades',
-		    'action' => 'add',
-		    'from_controller' => 'muestras',
-		    'from_action' => 'add',
-		    )
-	    );
-	    //si no esta el proveedor en el listado, dejamos un enlace para agregarlo
-
-	    $enlace_anyadir_proveedor = $this->Html->link ('Añadir Proveedor', array(
-		    'controller' => 'proveedores',
-		    'action' => 'add',
-		    'from_controller' => 'transportes',
-		    'from_action' => 'add',
-		    )
-	    );
-	    $enlace_anyadir_puerto = $this->Html->link ('Añadir Puerto', array(
-		    'controller' => 'puertos',
-		    'action' => 'add',
-		    'from_controller' => 'transportes',
-		    'from_action' => 'add',
-		    )
-	    );
-	    $enlace_anyadir_naviera = $this->Html->link ('Añadir Naviera', array(
-		    'controller' => 'navieras',
-		    'action' => 'add',
-		    'from_controller' => 'transportes',
-		    'from_action' => 'add',
-		    )
-	    );
-	    $enlace_anyadir_seguro = $this->Html->link ('Añadir Seguro', array(
-		    'controller' => 'seguros',
-		    'action' => 'add',
-		    'from_controller' => 'transportes',
-		    'from_action' => 'add',
-		    )
-	    );	
-	   $enlace_anyadir_agente = $this->Html->link ('Añadir Agente', array(
-		    'controller' => 'agentes',
-		    'action' => 'add',
-		    'from_controller' => 'transportes',
-		    'from_action' => 'add',
-		    )
-	    );		    
-		//si no esta en el listado, dejamos un enlace para agregarlo
-
-	    //Formulario para rellenar operación
+   
+	    //Formulario para rellenar transporte
 	?>
-	<div class="col2">
+<div class="col2">
 	<?php
 	echo $this->Form->create('Transporte', array('action' => 'add'));
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));	
-?>
+	?>
 </div>
 <div class="linea">
 	<div class='columna3'>
@@ -75,106 +29,135 @@
 		 echo $this->Form->input('fecha_entradamerc', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
-		 'label' => 'Fecha Entrada mercancía')
+		 'label' => 'Fecha Entrada mercancía',
+		 'empty' => ' ')
 		 );
 		  echo $this->Form->input('fecha_carga', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
-		  'label' => 'Fecha de carga')
+		  'label' => 'Fecha de carga',
+		 'empty' => ' ')
 		 );
 		  echo $this->Form->input('fecha_llegada', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
-		 'label' => 'Fecha de llegada')
+		 'label' => 'Fecha de llegada',
+		 'empty' => ' ')
 		 );
 		  echo $this->Form->input('fecha_pago', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
 		 'label' => 'Fecha de pago',
-		 'selected' => '')
+		 'empty' => ' ')
 		 );
 		  echo $this->Form->input('fecha_enviodoc', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
-		 'label' => 'Fecha de envío documentación')
+		 'label' => 'Fecha de envío documentación',
+		 'empty' => ' ')
 		 );
 		   echo $this->Form->input('fecha_despacho_op', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
-		 'label' => 'Fecha despacho operación')
+		 'label' => 'Fecha despacho operación',
+		 'empty' => ' ')
 		 );
 		   echo $this->Form->input('fecha_vencimiento_seg', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
-		 'label' => 'Fecha vencimiento seguro')
+		 'label' => 'Fecha vencimiento seguro',
+		 'empty' => ' ')
 		 );
 		   echo $this->Form->input('fecha_reclamacion', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
-		 'label' => 'Fecha de reclamación')
+		 'label' => 'Fecha de reclamación',
+		 'empty' => ' ')
 		 );
 		   echo $this->Form->input('fecha_limite_retirada', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
-		 'label' => 'Fecha límite de retirada')
+		 'label' => 'Fecha límite de retirada',
+		 'empty' => ' ')
 		 );
 		  echo $this->Form->input('fecha_reclamacion_factura', array(
 		 'dateFormat' => 'DMY',
 		 'timeFormat' => null ,
-		 'label' => 'Fecha reclamacion factura')
+		 'label' => 'Fecha reclamacion factura',
+		 'empty' => ' ')
 		 );
 		echo $this->Form->input('flete');
 		echo $this->Form->input('forfait');
 		?>
-		</div>
-		<?php
-		echo $this->Form->input('puerto_id', array(
-		    'label' => 'Puerto ('.$enlace_anyadir_puerto.')',
-		    'empty' => array('' => 'Selecciona')
-		    ));
-		echo $this->Form->input('naviera_id', array(
-		    'label' => 'Naviera ('.$enlace_anyadir_naviera.')',
-		    'empty' => array('' => 'Selecciona')
-		    ));
-//		echo $this->Form->input('operacion_id', array(
-//		    'label' => 'Operación ('.$enlace_anyadir_operacion.')',
-//		    'empty' => array('' => 'Selecciona')
-//		    ));
-		echo $this->Form->input('agente_id', array(
-		    'label' => 'Agente ('.$enlace_anyadir_agente.')',
-		    'empty' => array('' => 'Selecciona')
-		    ));
-		?>
-
- </div>
+	</div>
+</div>
+<div class='columna3'>
+	<div class="formuboton">
+		<ul>
+	    	<li>
+			<?php
+			echo $this->Form->input('puerto_id', 
+				array('label'=>'Puerto destino'));
+			?>
+			</li>
+			<li>
+			<div class="enlinea">
+				<?php            
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Puerto', array(
+					'controller'=>'puertos',
+					'action'=>'add'),array("class"=>"botond", 'escape' => false)
+						);
+				?>
+			</div>
+			</li>
+	   	</ul>
+	</div>
+	<br><br>
+	<div class="formuboton">
+			<ul>
+	    	<li>
+			<?php
+			echo $this->Form->input('naviera_id', 
+				array('label'=>'Naviera'));
+			?>
+			</li>
+			<li>
+			<div class="enlinea">
+				<?php            
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Naviera', array(
+					'controller'=>'navieras',
+					'action'=>'add'),array("class"=>"botond", 'escape' => false)
+						);
+				?>
+			</div>
+			</li>
+	    	</ul>	
+	</div>
+	<br><br>
+	<div class="formuboton">
+			<ul>
+	    	<li>
+			<?php
+			echo $this->Form->input('agente_id', 
+				array('label'=>'Agente Aduanas'));
+			?>
+			</li>
+			<li>
+			<div class="enlinea">
+				<?php            
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Agente', array(
+					'controller'=>'agentes',
+					'action'=>'add'),array("class"=>"botond", 'escape' => false)
+						);
+				?>
+			</div>
+			</li>
+	    	</ul>	
+	</div>
+</div>
  	<?php
 	echo $this->Form->input('observaciones');
-		    echo $this->Form->input('calidad_id', array(
-		    'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
-		    'empty' => array('' => 'Selecciona')
-		    )
-	    );
-	    echo $this->Form->input('proveedor_id', array(
-		    'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
-		    'empty' => array('' => 'Selecciona')
-		    )
-	    );
-
-//	echo $this->Form->input('proveedor_id', array(
-//	   'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
-//	   'empty' => array('' => 'Selecciona')
-//		)
-//	);
-	?>
-	<div class="detalladoform">
-	<h3>Aseguradora</h3>
-
-	<table>
-<?php
-	echo $this->Form->input('Seguro.Aseguradora.Empresa.nombre', array('label' => 'Nombre aseguradora'));
-?>	</table>
-	</div>
-<?php
 	echo $this->Form->end('Guardar Transporte');
-?>
+	?>
+
 </fieldset>

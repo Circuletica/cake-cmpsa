@@ -20,12 +20,14 @@ public function view($id = null) {
 	}
 
 	public function add() {
+		$operaciones = $this->Transporte->Operacion->find('all');
+		$this->set('operaciones', $operaciones);
 		$this->set('puertos', $this->Transporte->Puerto->find('list'));
 		$this->set('navieras', $this->Transporte->Naviera->find('list'));		
 		$this->set('agentes', $this->Transporte->Agente->find('list'));
 	//	$this->set('puertos', $this->Transporte->Puerto->find('list'));		
 		if($this->request->is('post')):
-			if($this->Operacion->save($this->request->data) ):
+			if($this->Transporte->save($this->request->data) ):
 				$this->Session->setFlash('Línea de transporte guardada');
 				$this->redirect(array(
 					'controller' => $this->params['named']['from_controller'],

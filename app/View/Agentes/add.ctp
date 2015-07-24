@@ -33,11 +33,28 @@ echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
 	<div class="columna3"><?php
 echo $this->Form->input('Empresa.cp', array('label'=>'Código Postal'));
 echo $this->Form->input('Empresa.municipio');
-//echo $this->Form->select('Empresa.pais_id', $paises);
-echo $this->Form->input('Empresa.pais_id', array('label'=>'País'));
-//	'controller'=>'paises',
-//	'action'=>'add')
-//);
+?>
+	<div class="formuboton">
+		<ul>
+	    	<li>
+			<?php
+			echo $this->Form->input('Empresa.pais_id', 
+				array('label'=>'País'));
+			?>
+			</li>
+			<li>
+			<div class="enlinea">
+				<?php            
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País', array(
+					'controller'=>'paises',
+					'action'=>'add'),array("class"=>"botond", 'escape' => false)
+						);
+				?>
+			</div>
+			</li>
+	    	</ul>	
+	</div>
+	<?php
 echo $this->Form->input('Empresa.telefono', array('label'=>'Teléfono'));
 echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));
 	?></div>

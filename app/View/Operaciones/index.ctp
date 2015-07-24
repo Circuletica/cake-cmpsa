@@ -33,6 +33,7 @@
   <table>
   <tr>
     <th><?php echo $this->Paginator->sort('referencia')?></th>
+    <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Contrato')?></th>
     <th><?php echo $this->Paginator->sort('fecha_embarque','Embarque')?></th>
     <th><?php echo $this->Paginator->sort('fecha_entrega', 'Entrega')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
@@ -44,6 +45,9 @@
   <tr>
     <td>
       <?php echo $operacion['Operacion']['referencia']?>
+    </td>
+    <td>
+      <? echo $operacion['Contrato']['refere']?>
     </td>
     <td>
       <? echo $operacion['Contrato']['fecha_embarque']?>
