@@ -27,8 +27,8 @@ CREATE TABLE `agentes` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_agentes_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_agentes_empresas` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `agentes` (
 
 LOCK TABLES `agentes` WRITE;
 /*!40000 ALTER TABLE `agentes` DISABLE KEYS */;
-INSERT INTO `agentes` VALUES (64,'2015-05-26 14:22:05','2015-05-26 14:22:05');
+INSERT INTO `agentes` VALUES (64,'2015-05-26 14:22:05','2015-05-26 14:22:05'),(87,'2015-07-24 17:06:33','2015-07-24 17:06:33');
 /*!40000 ALTER TABLE `agentes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,6 +108,7 @@ CREATE TABLE `aseguradoras` (
   `id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_aseguradoras_empresas1_idx` (`id`),
+  CONSTRAINT `fk_aseguradoras_empresas` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_aseguradoras_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -119,6 +120,38 @@ CREATE TABLE `aseguradoras` (
 LOCK TABLES `aseguradoras` WRITE;
 /*!40000 ALTER TABLE `aseguradoras` DISABLE KEYS */;
 /*!40000 ALTER TABLE `aseguradoras` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `asociado_operaciones`
+--
+
+DROP TABLE IF EXISTS `asociado_operaciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `asociado_operaciones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `operacion_id` int(11) NOT NULL,
+  `asociado_id` int(11) NOT NULL,
+  `cantidad_embalaje_asociado` mediumint(9) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_asociados_has_linea_contratos_asociados1_idx` (`asociado_id`),
+  KEY `fk_asociados_has_linea_contratos_linea_contratos1_idx` (`operacion_id`),
+  CONSTRAINT `fk_asociado_linea_contratos_linea_contratos1` FOREIGN KEY (`operacion_id`) REFERENCES `operaciones` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_asociado_linea_contratos_asociados1` FOREIGN KEY (`asociado_id`) REFERENCES `asociados` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `asociado_operaciones`
+--
+
+LOCK TABLES `asociado_operaciones` WRITE;
+/*!40000 ALTER TABLE `asociado_operaciones` DISABLE KEYS */;
+INSERT INTO `asociado_operaciones` VALUES (33,19,68,16,'2015-07-24 14:51:15','2015-07-24 14:51:15'),(34,19,78,57,'2015-07-24 14:51:15','2015-07-24 14:51:15'),(35,19,79,41,'2015-07-24 14:51:15','2015-07-24 14:51:15'),(36,19,81,206,'2015-07-24 14:51:15','2015-07-24 14:51:15'),(37,21,83,80,'2015-07-24 14:53:09','2015-07-24 14:53:09');
+/*!40000 ALTER TABLE `asociado_operaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -148,41 +181,13 @@ INSERT INTO `asociados` VALUES (68,'2015-07-08 02:55:16','2015-07-14 12:45:22'),
 UNLOCK TABLES;
 
 --
--- Table structure for table `asociados_linea_contratos`
+-- Table structure for table `bancos`
 --
 
-DROP TABLE IF EXISTS `asociados_linea_contratos`;
+DROP TABLE IF EXISTS `bancos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `asociados_linea_contratos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `asociado_id` int(11) NOT NULL,
-  `linea_contrato_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_asociados_has_linea_contratos_linea_contratos1_idx` (`linea_contrato_id`),
-  KEY `fk_asociados_has_linea_contratos_asociados1_idx` (`asociado_id`),
-  CONSTRAINT `fk_asociados_has_linea_contratos_asociados1` FOREIGN KEY (`asociado_id`) REFERENCES `asociados` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_asociados_has_linea_contratos_linea_contratos1` FOREIGN KEY (`linea_contrato_id`) REFERENCES `linea_contratos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `asociados_linea_contratos`
---
-
-LOCK TABLES `asociados_linea_contratos` WRITE;
-/*!40000 ALTER TABLE `asociados_linea_contratos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asociados_linea_contratos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `banco_pruebas`
---
-
-DROP TABLE IF EXISTS `banco_pruebas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `banco_pruebas` (
+CREATE TABLE `bancos` (
   `id` int(11) NOT NULL,
   `bic` char(11) DEFAULT NULL,
   `cuenta_cliente_1` char(20) DEFAULT NULL,
@@ -192,13 +197,13 @@ CREATE TABLE `banco_pruebas` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `banco_pruebas`
+-- Dumping data for table `bancos`
 --
 
-LOCK TABLES `banco_pruebas` WRITE;
-/*!40000 ALTER TABLE `banco_pruebas` DISABLE KEYS */;
-INSERT INTO `banco_pruebas` VALUES (3,'BBVAESMM','01824572420000074739'),(4,'BSCHESMM','1490-0100-92-0001235'),(14,'',''),(15,'BSABESBBXXX','00815760340001359645'),(16,'',''),(17,'',''),(18,'BMARES2MXXX',''),(26,'BKBKESMM','01289404030100074446');
-/*!40000 ALTER TABLE `banco_pruebas` ENABLE KEYS */;
+LOCK TABLES `bancos` WRITE;
+/*!40000 ALTER TABLE `bancos` DISABLE KEYS */;
+INSERT INTO `bancos` VALUES (3,NULL,NULL),(4,NULL,NULL),(14,NULL,NULL),(15,NULL,NULL),(16,NULL,NULL),(17,NULL,NULL),(18,NULL,NULL),(26,NULL,NULL),(86,'','');
+/*!40000 ALTER TABLE `bancos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -259,10 +264,11 @@ CREATE TABLE `canal_compras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `divisa` varchar(10) DEFAULT NULL,
+  `precio_fijo` tinyint(1) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,50 +277,8 @@ CREATE TABLE `canal_compras` (
 
 LOCK TABLES `canal_compras` WRITE;
 /*!40000 ALTER TABLE `canal_compras` DISABLE KEYS */;
-INSERT INTO `canal_compras` VALUES (1,'Londres','$/Tm','0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,'New-York','¢/Lb','0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,'Precio fijo','€/Tm','0000-00-00 00:00:00','0000-00-00 00:00:00');
+INSERT INTO `canal_compras` VALUES (1,'Londres','$/Tm',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,'New-York','¢/Lb',0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,'Precio fijo (€/Tm)','€/Tm',1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,'Precio fijo (¢/Lb)','¢/Lb',1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(5,'Precio fijo ($/Tm)','$/Tm',1,'2015-07-21 14:40:12','2015-07-21 14:40:12');
 /*!40000 ALTER TABLE `canal_compras` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `clientes`
---
-
-DROP TABLE IF EXISTS `clientes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `clientes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  `direccion` varchar(45) DEFAULT NULL,
-  `cp` varchar(45) DEFAULT NULL,
-  `municipio` varchar(45) DEFAULT NULL,
-  `pais_id` int(11) NOT NULL,
-  `telefono` varchar(45) DEFAULT NULL,
-  `cif` varchar(45) DEFAULT NULL,
-  `codigo_contable` varchar(45) DEFAULT NULL,
-  `cuenta_bancaria` varchar(45) DEFAULT NULL,
-  `nombre_contacto1` varchar(45) DEFAULT NULL,
-  `tfno_contacto1` varchar(45) DEFAULT NULL,
-  `email_contacto1` varchar(45) DEFAULT NULL,
-  `nombre_contacto2` varchar(45) DEFAULT NULL,
-  `tfno_contacto2` varchar(45) DEFAULT NULL,
-  `email_contacto2` varchar(45) DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_empresas_paises1_idx` (`pais_id`),
-  KEY `nombre` (`nombre`),
-  CONSTRAINT `fk_empresas_paises13` FOREIGN KEY (`pais_id`) REFERENCES `paises` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `clientes`
---
-
-LOCK TABLES `clientes` WRITE;
-/*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -337,7 +301,7 @@ CREATE TABLE `contactos` (
   PRIMARY KEY (`id`,`empresa_id`),
   KEY `fk_contactos_empresas1_idx` (`empresa_id`),
   CONSTRAINT `fk_contactos_empresas1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -346,7 +310,7 @@ CREATE TABLE `contactos` (
 
 LOCK TABLES `contactos` WRITE;
 /*!40000 ALTER TABLE `contactos` DISABLE KEYS */;
-INSERT INTO `contactos` VALUES (3,4,'Emilio Botín','emilio@listafalciani.com','653306436','918695233','Golfista','2015-02-13 18:55:11','2015-02-17 23:41:31'),(6,3,'Juan Carlos Castro','','','','responsable cuenta','2015-02-17 15:25:01','2015-02-17 15:25:01'),(8,18,'Toto Cutugno','toto@libero.it','666 55 44 33','777 88 99 00','cantautor','2015-02-17 21:42:49','2015-02-17 23:59:22'),(9,26,'Lola Flores','','','','Cantaora','2015-02-24 12:30:26','2015-02-24 12:30:26'),(11,3,'Jordi Évole','','','','tocapelotas','2015-02-24 22:36:33','2015-02-24 22:36:33'),(13,50,'Camilo Sesto','','666554433','','Peluquero','2015-03-10 13:25:07','2015-05-05 16:12:28'),(15,18,'Pablo Iglesias','pabloiglesias@podemos.es','913241201','','Cofundador','2015-03-24 13:10:36','2015-04-07 15:03:34'),(18,40,'persona','correo@correos.es','3423423424','453452522','funcionando','2015-04-07 17:45:55','2015-04-07 17:46:05'),(19,3,'hola','hola@hola.com','1548721','157892118','que tal','2015-04-09 13:54:40','2015-04-09 13:54:40'),(22,63,'Manu Chao','','666554433','','Flautista','2015-04-24 17:42:59','2015-04-24 17:42:59'),(23,16,'','pepito@movistar.com','','','','2015-05-07 22:10:09','2015-05-07 22:10:09'),(25,16,'','lacosa@loes.com','','','','2015-05-07 22:10:36','2015-05-07 22:10:36'),(26,47,'Jesús','empleadojesus@gmail.com','913341568','','Empleado','2015-05-28 20:39:44','2015-05-28 20:39:44'),(27,63,'Chulito Camacho','camacho@chulito.com','36565875218','','Cantante','2015-05-30 12:23:17','2015-05-30 12:23:17'),(28,64,'Juan José','juanjo@importente.org','','','','2015-05-30 12:26:05','2015-05-30 12:26:05'),(29,39,'Ada Colau','adacolau@bcn.org','938521478','','Activista','2015-05-30 12:33:51','2015-05-30 12:33:51'),(30,40,'Pedro','unomas@carla.es','633354547','','jefe - Tráfico','2015-06-02 13:24:53','2015-06-02 13:24:53'),(31,40,'Pedro','unomas@carla.es','633354547','','jefe - Tráfico','2015-06-02 13:24:56','2015-06-02 13:24:56');
+INSERT INTO `contactos` VALUES (3,4,'Emilio Botín','emilio@listafalciani.com','653306436','918695233','Golfista','2015-02-13 18:55:11','2015-02-17 23:41:31'),(6,3,'Juan Carlos Castro','','','','responsable cuenta','2015-02-17 15:25:01','2015-02-17 15:25:01'),(8,18,'Toto Cutugno','toto@libero.it','666 55 44 33','777 88 99 00','cantautor','2015-02-17 21:42:49','2015-02-17 23:59:22'),(9,26,'Lola Flores','','','','Cantaora','2015-02-24 12:30:26','2015-02-24 12:30:26'),(11,3,'Jordi Évole','','','','tocapelotas','2015-02-24 22:36:33','2015-02-24 22:36:33'),(13,50,'Camilo Sesto','','666554433','','Peluquero','2015-03-10 13:25:07','2015-05-05 16:12:28'),(15,18,'Pablo Iglesias','pabloiglesias@podemos.es','913241201','','Cofundador','2015-03-24 13:10:36','2015-04-07 15:03:34'),(18,40,'persona','correo@correos.es','3423423424','453452522','funcionando','2015-04-07 17:45:55','2015-04-07 17:46:05'),(19,3,'hola','hola@hola.com','1548721','157892118','que tal','2015-04-09 13:54:40','2015-04-09 13:54:40'),(22,63,'Manu Chao','','666554433','','Flautista','2015-04-24 17:42:59','2015-04-24 17:42:59'),(23,16,'','pepito@movistar.com','','','','2015-05-07 22:10:09','2015-05-07 22:10:09'),(25,16,'','lacosa@loes.com','','','','2015-05-07 22:10:36','2015-05-07 22:10:36'),(26,47,'Jesús','empleadojesus@gmail.com','913341568','','Empleado','2015-05-28 20:39:44','2015-05-28 20:39:44'),(27,63,'Chulito Camacho','camacho@chulito.com','36565875218','','Cantante','2015-05-30 12:23:17','2015-05-30 12:23:17'),(28,64,'Juan José','juanjo@importente.org','','','','2015-05-30 12:26:05','2015-05-30 12:26:05'),(29,39,'Ada Colau','adacolau@bcn.org','938521478','','Activista','2015-05-30 12:33:51','2015-05-30 12:33:51'),(30,40,'Pedro','unomas@carla.es','633354547','','jefe - Tráfico','2015-06-02 13:24:53','2015-06-02 13:24:53'),(31,40,'Pedro','unomas@carla.es','633354547','','jefe - Tráfico','2015-06-02 13:24:56','2015-06-02 13:24:56'),(32,38,'Jaun','Juan@gerente.com','93622255','','Gerente','2015-07-23 20:44:29','2015-07-23 20:44:29');
 /*!40000 ALTER TABLE `contactos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,7 +334,7 @@ CREATE TABLE `contrato_embalajes` (
   KEY `fk_embalajes_has_contratos_embalajes1_idx` (`embalaje_id`),
   CONSTRAINT `fk_embalajes_has_contratos_contratos1` FOREIGN KEY (`contrato_id`) REFERENCES `contratos` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `fk_embalajes_has_contratos_embalajes1` FOREIGN KEY (`embalaje_id`) REFERENCES `embalajes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -379,7 +343,7 @@ CREATE TABLE `contrato_embalajes` (
 
 LOCK TABLES `contrato_embalajes` WRITE;
 /*!40000 ALTER TABLE `contrato_embalajes` DISABLE KEYS */;
-INSERT INTO `contrato_embalajes` VALUES (1,4,1,10,60,'2015-07-04 00:43:43','2015-07-04 00:43:43'),(26,21,2,13,1000,'2015-07-07 13:11:16','2015-07-07 13:11:16'),(27,21,1,200,60,'2015-07-07 13:11:16','2015-07-07 13:11:16'),(28,21,5,100,69,'2015-07-07 13:11:16','2015-07-07 13:11:16'),(40,22,2,60,1000,'2015-07-13 17:19:13','2015-07-13 17:19:13'),(41,22,1,1000,60,'2015-07-13 17:19:13','2015-07-13 17:19:13'),(42,14,2,7,1000,'2015-07-14 11:59:12','2015-07-14 11:59:12'),(43,14,1,1000,60,'2015-07-14 11:59:12','2015-07-14 11:59:12'),(44,14,4,200,70,'2015-07-14 11:59:12','2015-07-14 11:59:12');
+INSERT INTO `contrato_embalajes` VALUES (62,31,2,80,1000,'2015-07-24 14:55:10','2015-07-24 14:55:10'),(63,31,1,320,60,'2015-07-24 14:55:10','2015-07-24 14:55:10');
 /*!40000 ALTER TABLE `contrato_embalajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,10 +359,12 @@ CREATE TABLE `contratos` (
   `proveedor_id` int(11) NOT NULL,
   `incoterm_id` int(11) NOT NULL,
   `calidad_id` int(11) NOT NULL,
+  `canal_compra_id` int(11) NOT NULL,
   `referencia` varchar(45) NOT NULL,
   `diferencial` decimal(6,2) DEFAULT NULL,
-  `canal_compra` tinyint(4) NOT NULL,
-  `peso_comprado` int(11) DEFAULT NULL,
+  `posicion_bolsa` datetime DEFAULT NULL,
+  `peso_comprado` mediumint(9) DEFAULT NULL,
+  `lotes_contrato` mediumint(9) DEFAULT NULL,
   `opciones` decimal(6,2) DEFAULT NULL,
   `fecha_embarque` date DEFAULT NULL,
   `fecha_entrega` date DEFAULT NULL,
@@ -409,10 +375,12 @@ CREATE TABLE `contratos` (
   KEY `fk_contratos_proveedores1_idx` (`proveedor_id`),
   KEY `fk_contratos_incoterms1_idx` (`incoterm_id`),
   KEY `fk_contratos_calidades1_idx` (`calidad_id`),
+  KEY `fk_contratos_canal_compras1_idx` (`canal_compra_id`),
   CONSTRAINT `fk_contratos_calidades1` FOREIGN KEY (`calidad_id`) REFERENCES `calidades` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_contratos_canal_compras1` FOREIGN KEY (`canal_compra_id`) REFERENCES `canal_compras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_contratos_incoterms1` FOREIGN KEY (`incoterm_id`) REFERENCES `incoterms` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_contratos_proveedores1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -421,7 +389,7 @@ CREATE TABLE `contratos` (
 
 LOCK TABLES `contratos` WRITE;
 /*!40000 ALTER TABLE `contratos` DISABLE KEYS */;
-INSERT INTO `contratos` VALUES (3,38,1,9,'001',4.00,0,NULL,3.00,NULL,NULL,NULL,NULL),(4,40,2,24,'017/17',2.00,0,NULL,2.00,NULL,NULL,NULL,NULL),(5,46,3,12,'069/069',1.36,1,NULL,NULL,'2015-09-11','2015-11-20','2015-06-11 17:55:42','2015-06-11 17:55:42'),(6,43,5,24,'1507/01',260.00,0,NULL,3.15,'2015-10-05','2015-12-17','2015-07-05 01:43:13','2015-07-05 01:43:13'),(7,44,3,8,'333/22/11',111.00,1,NULL,56.00,'2015-07-06','2015-07-06','2015-07-06 01:30:14','2015-07-06 01:30:14'),(12,47,4,23,'44/55/666',123.00,1,NULL,2.56,'2015-07-06','2015-07-06','2015-07-06 02:00:05','2015-07-06 02:00:05'),(14,36,1,10,'00/000',1234.00,1,81000,345.00,'2015-07-06','2015-09-06','2015-07-14 11:59:12','2015-07-06 02:26:29'),(17,41,1,26,'11/22/33/44/55',123.00,1,NULL,456.00,'2015-07-06','2016-03-06','2015-07-06 22:32:09','2015-07-06 22:32:09'),(21,41,2,12,'11/22/33/44/5678',234.00,0,NULL,567.00,'2015-07-06','2016-07-06','2015-07-07 13:11:15','2015-07-06 22:45:13'),(22,38,2,8,'CO123456',-18.00,0,120000,5.00,'2015-08-01','2015-10-07','2015-07-13 17:19:12','2015-07-07 14:10:39');
+INSERT INTO `contratos` VALUES (5,46,3,12,2,'069/069',1.36,NULL,120000,NULL,NULL,'2015-09-11','2015-11-20','2015-06-11 17:55:42','2015-06-11 17:55:42'),(6,43,5,24,1,'1507/01',260.00,NULL,30000,NULL,3.15,'2015-10-05','2015-12-17','2015-07-05 01:43:13','2015-07-05 01:43:13'),(7,44,3,8,2,'333/22/11',111.00,NULL,400000,NULL,56.00,'2015-07-06','2015-07-06','2015-07-06 01:30:14','2015-07-06 01:30:14'),(12,47,4,23,2,'44/55/666',123.00,NULL,60000,NULL,2.56,'2015-07-06','2015-07-06','2015-07-06 02:00:05','2015-07-06 02:00:05'),(17,41,1,26,1,'11/22/33/44/55',123.00,NULL,30000,NULL,456.00,'2015-07-06','2016-03-06','2015-07-06 22:32:09','2015-07-06 22:32:09'),(31,38,1,12,1,'CO-7096202',265.00,NULL,99200,10,NULL,'2015-07-01','2015-03-01','2015-07-24 14:55:10','2015-07-21 14:04:18');
 /*!40000 ALTER TABLE `contratos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -458,10 +426,10 @@ DROP TABLE IF EXISTS `embalaje_transportes`;
 CREATE TABLE `embalaje_transportes` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `embalaje_id` int(10) NOT NULL,
-  `transporte_id` int(11) NOT NULL,
   `cantidad` int(11) NOT NULL,
   `modified` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
+  `transporte_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_embalajes_has_lotes_embalajes1_idx` (`embalaje_id`),
   KEY `fk_embalajes_linea_contratos_transportes1_idx` (`transporte_id`),
@@ -493,7 +461,7 @@ CREATE TABLE `embalajes` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -502,7 +470,7 @@ CREATE TABLE `embalajes` (
 
 LOCK TABLES `embalajes` WRITE;
 /*!40000 ALTER TABLE `embalajes` DISABLE KEYS */;
-INSERT INTO `embalajes` VALUES (1,'saco 60kg',NULL,NULL,NULL),(2,'big bag',NULL,NULL,NULL),(4,'saco 70kg',NULL,NULL,NULL),(5,'saco 69kg',NULL,'2015-07-05 22:23:20','2015-07-05 22:23:20');
+INSERT INTO `embalajes` VALUES (1,'sacos 60kg',60.00,'2015-07-05 22:23:20','2015-07-05 22:23:20'),(2,'bigbags',NULL,'2015-07-05 22:23:20','2015-07-05 22:23:20'),(4,'sacos 70kg',70.00,'2015-07-05 22:23:20','2015-07-05 22:23:20'),(5,'sacos 69kg',69.00,'2015-07-05 22:23:20','2015-07-05 22:23:20'),(6,'barriles Jamaica',NULL,'2015-07-21 13:20:59','2015-07-21 13:20:59');
 /*!40000 ALTER TABLE `embalajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -534,7 +502,7 @@ CREATE TABLE `empresas` (
   KEY `fk_empresas_paises1_idx` (`pais_id`),
   KEY `nombre` (`nombre`),
   CONSTRAINT `fk_empresas_paises140` FOREIGN KEY (`pais_id`) REFERENCES `paises` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -543,7 +511,7 @@ CREATE TABLE `empresas` (
 
 LOCK TABLES `empresas` WRITE;
 /*!40000 ALTER TABLE `empresas` DISABLE KEYS */;
-INSERT INTO `empresas` VALUES (3,'BBVA','BBVA','Paseo Castellana, 108','','Madrid',3,'918652010',NULL,'57200005',NULL,NULL,NULL,'2015-03-10 11:41:32'),(4,'Santander','Santander','Serrano, 21','28012','Madrid',3,NULL,'A-39000013','57200011',NULL,NULL,'2015-02-13 18:51:30','2015-02-17 15:13:25'),(14,'La Caixa','Caixa','','','',3,NULL,NULL,'57200002',NULL,NULL,'2015-02-17 14:57:48','2015-02-17 14:57:48'),(15,'Sabadell','Sabadell','','','',3,NULL,NULL,'57200003','00815760340001359645',NULL,'2015-02-17 14:59:17','2015-02-24 11:57:16'),(16,'Deutsche Bank','Deutsche Bank','','','',3,NULL,NULL,'57200006',NULL,NULL,'2015-02-17 15:05:12','2015-02-17 15:06:25'),(17,'Banco Popular Español','Popular','','','',3,NULL,NULL,'57200007',NULL,NULL,'2015-02-17 15:10:30','2015-02-17 15:10:30'),(18,'Banca March','March','','28000','',3,NULL,NULL,'57200009',NULL,NULL,'2015-02-17 15:11:11','2015-05-26 15:26:57'),(26,'Bankinter','Bankinter','','','',3,'',NULL,'57200010',NULL,NULL,'2015-02-24 11:59:17','2015-05-26 15:30:32'),(36,'Icona Café SA','Icona','','','',3,'',NULL,NULL,NULL,NULL,'2015-03-10 11:26:57','2015-03-10 11:26:57'),(37,'Louis Dreyfus Commodities España ','Dreyfus España','','','',3,'',NULL,NULL,NULL,NULL,'2015-03-10 11:39:25','2015-03-10 11:45:29'),(38,'Coprocafé Ibérica S.A.','Coprocafé','','','',3,'',NULL,NULL,NULL,NULL,'2015-03-10 11:39:46','2015-03-10 11:39:46'),(39,'C.Dorman Limited','Dorman','','','',8,'',NULL,NULL,NULL,NULL,'2015-03-10 11:43:30','2015-03-10 11:43:30'),(40,'Louis Dreyfus Commodities Brasil','Dreyfus Brasil','','','',1,'',NULL,NULL,NULL,NULL,'2015-03-10 11:45:06','2015-03-10 11:45:06'),(41,'List & Beisler GmbH','Beisler','','','',9,'',NULL,NULL,NULL,NULL,'2015-03-10 11:49:34','2015-03-10 11:49:34'),(43,'Olam International Ltd','Olam','','','',10,'',NULL,NULL,NULL,NULL,'2015-03-10 11:54:18','2015-03-10 11:54:18'),(44,'Mercon Coffee Corporation','Mercon','','','',11,'',NULL,NULL,NULL,NULL,'2015-03-10 11:57:06','2015-03-10 11:57:06'),(45,'Coffein Compagnie Dr. Erich Scheele GmbH & Co','Coffein','','','',9,'',NULL,NULL,NULL,NULL,'2015-03-10 11:59:26','2015-03-10 11:59:26'),(46,'Outspan Brasil Ltda','Outspan','','','',1,'',NULL,NULL,NULL,NULL,'2015-03-10 12:01:15','2015-03-10 12:01:15'),(47,'Exportadora Atlantic S.A.','Atlantic','','','',12,'',NULL,NULL,NULL,NULL,'2015-03-10 12:03:17','2015-03-10 12:03:17'),(48,'InterAmerican Coffee GmbH','InterAmerican','','','',9,'',NULL,NULL,NULL,NULL,'2015-03-10 12:05:28','2015-03-10 12:05:28'),(50,'Almacenes Viorvi SA','Viorvi','','','Barcelona',3,'987654321',NULL,NULL,NULL,NULL,'2015-03-10 12:51:59','2015-03-10 13:29:35'),(58,'Almacén  BIT','BIT','','','Barcelona',3,'',NULL,NULL,NULL,NULL,'2015-04-08 17:18:29','2015-05-05 16:10:39'),(59,'Molenbergnatie','Molenbergnatie','','','Barcelona',3,'',NULL,NULL,NULL,NULL,'2015-04-08 17:19:45','2015-05-05 16:11:16'),(60,'Pacorini','Pacorini','','','Gijón',3,'',NULL,NULL,NULL,NULL,'2015-04-08 17:20:25','2015-05-05 16:11:45'),(61,'Almacén Europa','Europa','','','',9,'',NULL,NULL,NULL,NULL,'2015-04-08 17:20:57','2015-04-08 17:20:57'),(63,'Turulu','Turulu','','28995632','Paris',5,'',NULL,NULL,NULL,NULL,'2015-04-24 17:41:30','2015-05-30 12:45:28'),(64,'Coma y Ribas','Coma','c/ Obradors, 7','08130','Santa Perpètua de Mogoda',3,'933021414',NULL,NULL,NULL,NULL,'2015-05-26 14:22:04','2015-05-26 14:22:04'),(65,'Nabia','Nabia','C/Porto','7859','Vigo',3,'',NULL,NULL,NULL,NULL,'2015-06-15 11:27:11','2015-06-15 11:27:11'),(66,'Armas','Armas','Las Palmas','','Las Palmas de Gran Canaria',3,'',NULL,NULL,NULL,NULL,'2015-06-15 11:27:46','2015-06-15 11:27:46'),(67,'Murueta','Murueta','C/Solsticio 5','84572','Donostia',3,'',NULL,NULL,NULL,NULL,'2015-06-15 11:28:22','2015-06-15 11:28:22'),(68,'Germán De Erausquin, S.A.','Erausquin','Urgel, 37 1º - 3ª','08011','Barcelona',3,'933255640','ESA-08259368','43401006','',NULL,'2015-07-08 02:55:15','2015-07-14 12:45:22'),(75,'Cafés Baqué, S.L.U.','Baqué','P.Ind. Sta. Apolonia - U.A.I., 2-2','48215','Iurreta',3,'946215610','ESB-95445508','43401007','',NULL,'2015-07-14 12:40:47','2015-07-14 12:46:08'),(76,'Juan Iriondo, S.A.','Iriondo','Pol. Ugaldetxo - C/ Zuaznabar, 49','20180','Oiartzun',3,'943491642','ESA-20063954','43401010','',NULL,'2015-07-14 12:48:24','2015-07-14 12:50:49'),(77,'Rodriguez y Mateus, S.L.U.','Mateus','Alfonso Gómez, 15','28037','Madrid',3,'913271216','ESB-28577799','43401011','',NULL,'2015-07-14 12:50:14','2015-07-14 12:50:14'),(78,'Cafés la Brasileña, S.A.','Brasileña','Oñate, 12','01013','Vitoria',3,'945265000','ESA-01016450','43401013','',NULL,'2015-07-14 12:52:19','2015-07-14 12:52:19'),(79,'Cafés Orus, S.A.','Orus','Ctra. Logroño - P.I. Portazgo - 101-102-83','50011','Zaragoza',3,'976347272','ESA-50004860','43401014','',NULL,'2015-07-14 12:54:01','2015-07-14 12:54:01'),(80,'U.N.I.C. , S.L.','Unic','Sancho de Avila, 73-75','08018','Barcelona',3,'933006007','ESB-08266009','43401015','',NULL,'2015-07-14 12:55:26','2015-07-14 12:55:26'),(81,'Café Dromedario, S.A.','Dromedario','Recta de Heras, s/nº.','39792','Heras',3,'942540725','ESA-39000690','43401019','',NULL,'2015-07-14 12:56:52','2015-07-14 12:56:52'),(82,'Cafento Norte, S.L.','Cafento','Pol.Ind. La Curiscada - Entrada Sur.','33877','Tineo',3,'902117218','ESB-33019688','43401024','',NULL,'2015-07-14 12:58:26','2015-07-14 12:58:26'),(83,'Tupinamba, S.A.','Tupinamba','Domenech Pascual, 3 - P.I. Can Misser','08360','Canet de Mar',3,'937943110','ESA-58476961','43401031','',NULL,'2015-07-14 13:00:16','2015-07-14 13:00:16'),(84,'La Ind. Levantina de Cafés Durban, S.L.','Durban','Ctra. Valencia - Ademuz, Km.11','46980','Paterna',3,'961320998','ESB-46012506','43401038','',NULL,'2015-07-14 13:01:52','2015-07-14 13:01:52');
+INSERT INTO `empresas` VALUES (3,'BBVA','BBVA','Paseo Castellana, 108','','Madrid',3,'918652010',NULL,'57200005',NULL,NULL,NULL,'2015-03-10 11:41:32'),(4,'Santander','Santander','Serrano, 21','28012','Madrid',3,NULL,'A-39000013','57200011',NULL,NULL,'2015-02-13 18:51:30','2015-02-17 15:13:25'),(14,'La Caixa','Caixa','','','',3,NULL,NULL,'57200002',NULL,NULL,'2015-02-17 14:57:48','2015-02-17 14:57:48'),(15,'Sabadell','Sabadell','','','',3,NULL,NULL,'57200003','00815760340001359645',NULL,'2015-02-17 14:59:17','2015-02-24 11:57:16'),(16,'Deutsche Bank','Deutsche Bank','','','',3,NULL,NULL,'57200006',NULL,NULL,'2015-02-17 15:05:12','2015-02-17 15:06:25'),(17,'Banco Popular Español','Popular','','','',3,NULL,NULL,'57200007',NULL,NULL,'2015-02-17 15:10:30','2015-02-17 15:10:30'),(18,'Banca March','March','','28000','',3,NULL,NULL,'57200009',NULL,NULL,'2015-02-17 15:11:11','2015-05-26 15:26:57'),(26,'Bankinter','Bankinter','','','',3,'',NULL,'57200010',NULL,NULL,'2015-02-24 11:59:17','2015-05-26 15:30:32'),(36,'Icona Café SA','Icona','','','',3,'',NULL,NULL,NULL,NULL,'2015-03-10 11:26:57','2015-03-10 11:26:57'),(37,'Louis Dreyfus Commodities España ','Dreyfus España','','','',3,'',NULL,NULL,NULL,NULL,'2015-03-10 11:39:25','2015-03-10 11:45:29'),(38,'Coprocafé Ibérica S.A.','Coprocafé','','','',3,'',NULL,NULL,NULL,NULL,'2015-03-10 11:39:46','2015-03-10 11:39:46'),(39,'C.Dorman Limited','Dorman','','','',8,'',NULL,NULL,NULL,NULL,'2015-03-10 11:43:30','2015-03-10 11:43:30'),(40,'Louis Dreyfus Commodities Brasil','Dreyfus Brasil','','','',1,'',NULL,NULL,NULL,NULL,'2015-03-10 11:45:06','2015-03-10 11:45:06'),(41,'List & Beisler GmbH','Beisler','','','',9,'',NULL,NULL,NULL,NULL,'2015-03-10 11:49:34','2015-03-10 11:49:34'),(43,'Olam International Ltd','Olam','','','',10,'',NULL,NULL,NULL,NULL,'2015-03-10 11:54:18','2015-03-10 11:54:18'),(44,'Mercon Coffee Corporation','Mercon','','','',11,'',NULL,NULL,NULL,NULL,'2015-03-10 11:57:06','2015-03-10 11:57:06'),(45,'Coffein Compagnie Dr. Erich Scheele GmbH & Co','Coffein','','','',9,'',NULL,NULL,NULL,NULL,'2015-03-10 11:59:26','2015-03-10 11:59:26'),(46,'Outspan Brasil Ltda','Outspan','','','',1,'',NULL,NULL,NULL,NULL,'2015-03-10 12:01:15','2015-03-10 12:01:15'),(47,'Exportadora Atlantic S.A.','Atlantic','','','',12,'',NULL,NULL,NULL,NULL,'2015-03-10 12:03:17','2015-03-10 12:03:17'),(48,'InterAmerican Coffee GmbH','InterAmerican','','','',9,'',NULL,NULL,NULL,NULL,'2015-03-10 12:05:28','2015-03-10 12:05:28'),(50,'Almacenes Viorvi SA','Viorvi','','','Barcelona',3,'987654321',NULL,NULL,NULL,NULL,'2015-03-10 12:51:59','2015-03-10 13:29:35'),(58,'Almacén  BIT','BIT','','','Barcelona',3,'',NULL,NULL,NULL,NULL,'2015-04-08 17:18:29','2015-05-05 16:10:39'),(59,'Molenbergnatie','Molenbergnatie','','','Barcelona',3,'',NULL,NULL,NULL,NULL,'2015-04-08 17:19:45','2015-05-05 16:11:16'),(60,'Pacorini','Pacorini','','','Gijón',3,'',NULL,NULL,NULL,NULL,'2015-04-08 17:20:25','2015-05-05 16:11:45'),(61,'Almacén Europa','Europa','','','',9,'',NULL,NULL,NULL,NULL,'2015-04-08 17:20:57','2015-04-08 17:20:57'),(63,'Turulu','Turulu','','28995632','Paris',5,'',NULL,NULL,NULL,NULL,'2015-04-24 17:41:30','2015-05-30 12:45:28'),(64,'Coma y Ribas','Coma','c/ Obradors, 7','08130','Santa Perpètua de Mogoda',3,'933021414',NULL,NULL,NULL,NULL,'2015-05-26 14:22:04','2015-05-26 14:22:04'),(65,'Nabia','Nabia','C/Porto','7859','Vigo',3,'',NULL,NULL,NULL,NULL,'2015-06-15 11:27:11','2015-06-15 11:27:11'),(66,'Armas','Armas','Las Palmas','','Las Palmas de Gran Canaria',3,'',NULL,NULL,NULL,NULL,'2015-06-15 11:27:46','2015-06-15 11:27:46'),(67,'Murueta','Murueta','C/Solsticio 5','84572','Donostia',3,'',NULL,NULL,NULL,NULL,'2015-06-15 11:28:22','2015-06-15 11:28:22'),(68,'Germán De Erausquin, S.A.','Erausquin','Urgel, 37 1º - 3ª','08011','Barcelona',3,'933255640','ESA-08259368','43401006','',NULL,'2015-07-08 02:55:15','2015-07-14 12:45:22'),(75,'Cafés Baqué, S.L.U.','Baqué','P.Ind. Sta. Apolonia - U.A.I., 2-2','48215','Iurreta',3,'946215610','ESB-95445508','43401007','',NULL,'2015-07-14 12:40:47','2015-07-14 12:46:08'),(76,'Juan Iriondo, S.A.','Iriondo','Pol. Ugaldetxo - C/ Zuaznabar, 49','20180','Oiartzun',3,'943491642','ESA-20063954','43401010','',NULL,'2015-07-14 12:48:24','2015-07-14 12:50:49'),(77,'Rodriguez y Mateus, S.L.U.','Mateus','Alfonso Gómez, 15','28037','Madrid',3,'913271216','ESB-28577799','43401011','',NULL,'2015-07-14 12:50:14','2015-07-14 12:50:14'),(78,'Cafés la Brasileña, S.A.','Brasileña','Oñate, 12','01013','Vitoria',3,'945265000','ESA-01016450','43401013','',NULL,'2015-07-14 12:52:19','2015-07-14 12:52:19'),(79,'Cafés Orus, S.A.','Orus','Ctra. Logroño - P.I. Portazgo - 101-102-83','50011','Zaragoza',3,'976347272','ESA-50004860','43401014','',NULL,'2015-07-14 12:54:01','2015-07-14 12:54:01'),(80,'U.N.I.C. , S.L.','Unic','Sancho de Avila, 73-75','08018','Barcelona',3,'933006007','ESB-08266009','43401015','',NULL,'2015-07-14 12:55:26','2015-07-14 12:55:26'),(81,'Café Dromedario, S.A.','Dromedario','Recta de Heras, s/nº.','39792','Heras',3,'942540725','ESA-39000690','43401019','',NULL,'2015-07-14 12:56:52','2015-07-14 12:56:52'),(82,'Cafento Norte, S.L.','Cafento','Pol.Ind. La Curiscada - Entrada Sur.','33877','Tineo',3,'902117218','ESB-33019688','43401024','',NULL,'2015-07-14 12:58:26','2015-07-14 12:58:26'),(83,'Tupinamba, S.A.','Tupinamba','Domenech Pascual, 3 - P.I. Can Misser','08360','Canet de Mar',3,'937943110','ESA-58476961','43401031','',NULL,'2015-07-14 13:00:16','2015-07-14 13:00:16'),(84,'La Ind. Levantina de Cafés Durban, S.L.','Durban','Ctra. Valencia - Ademuz, Km.11','46980','Paterna',3,'961320998','ESB-46012506','43401038','',NULL,'2015-07-14 13:01:52','2015-07-14 13:01:52'),(86,'Banco Bilbao Vizcaya','BBVA Frances','','','',3,'','','','',NULL,'2015-07-22 18:20:17','2015-07-22 18:50:48'),(87,'Fernando Flores Barcelona S.L.','Flores','Av. Diagonal, 618 5°B','08021','Barcelona',3,'932290352','B-58284779','','',NULL,'2015-07-24 17:06:33','2015-07-24 17:06:33');
 /*!40000 ALTER TABLE `empresas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -560,7 +528,7 @@ CREATE TABLE `incoterms` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -569,73 +537,8 @@ CREATE TABLE `incoterms` (
 
 LOCK TABLES `incoterms` WRITE;
 /*!40000 ALTER TABLE `incoterms` DISABLE KEYS */;
-INSERT INTO `incoterms` VALUES (1,'CIF',NULL,NULL),(2,'FOB',NULL,NULL),(3,'IN STORE',NULL,NULL),(4,'FOT ',NULL,NULL),(5,'IN STORE DESPACHADO',NULL,NULL),(6,'FOT DESPACHADO',NULL,NULL);
+INSERT INTO `incoterms` VALUES (1,'CIF-Barcelona',NULL,'2015-07-21 13:15:34'),(2,'FOB',NULL,NULL),(3,'IN STORE',NULL,NULL),(4,'FOT ',NULL,NULL),(5,'IN STORE DESPACHADO',NULL,NULL),(6,'FOT DESPACHADO',NULL,NULL),(7,'CIF-Gijón','2015-07-21 13:16:03','2015-07-21 13:16:03');
 /*!40000 ALTER TABLE `incoterms` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `linea_contratos`
---
-
-DROP TABLE IF EXISTS `linea_contratos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `linea_contratos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `contrato_id` int(11) NOT NULL,
-  `asociado_id` int(11) DEFAULT NULL,
-  `operacion_id` int(11) DEFAULT NULL,
-  `referencia` varchar(45) DEFAULT NULL,
-  `peso_linea_contrato` int(11) DEFAULT NULL,
-  `fecha_pos_fijacion` date DEFAULT NULL,
-  `precio_fijacion` decimal(8,4) DEFAULT NULL,
-  `precio_compra` decimal(8,4) DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_linea_contratos_contratos1_idx` (`contrato_id`),
-  KEY `fk_linea_contratos_asociados1_idx` (`asociado_id`),
-  KEY `fk_linea_contratos_operaciones1_idx` (`operacion_id`),
-  CONSTRAINT `fk_linea_contratos_asociados1` FOREIGN KEY (`asociado_id`) REFERENCES `asociados` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_linea_contratos_contratos1` FOREIGN KEY (`contrato_id`) REFERENCES `contratos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_linea_contratos_operaciones1` FOREIGN KEY (`operacion_id`) REFERENCES `operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `linea_contratos`
---
-
-LOCK TABLES `linea_contratos` WRITE;
-/*!40000 ALTER TABLE `linea_contratos` DISABLE KEYS */;
-INSERT INTO `linea_contratos` VALUES (8,22,NULL,NULL,'1111222233',60000,'2015-09-01',123.0000,121.0000,'2015-07-14 00:41:08','2015-07-14 00:41:08'),(9,22,NULL,NULL,'2',30000,'2016-01-01',321.0000,320.0000,'2015-07-14 01:06:38','2015-07-14 01:06:38'),(10,22,NULL,NULL,'3',10000,'2015-07-14',300.0000,310.0000,'2015-07-14 15:13:40','2015-07-14 15:13:40');
-/*!40000 ALTER TABLE `linea_contratos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `linea_contratos_operaciones`
---
-
-DROP TABLE IF EXISTS `linea_contratos_operaciones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `linea_contratos_operaciones` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cantidad_contenedores` int(11) DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `linea_contratos_operaciones`
---
-
-LOCK TABLES `linea_contratos_operaciones` WRITE;
-/*!40000 ALTER TABLE `linea_contratos_operaciones` DISABLE KEYS */;
-INSERT INTO `linea_contratos_operaciones` VALUES (7,2,'2015-06-25 17:18:41','2015-06-25 17:18:41');
-/*!40000 ALTER TABLE `linea_contratos_operaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -730,9 +633,9 @@ DROP TABLE IF EXISTS `muestras`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `muestras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `operacion_id` int(11) DEFAULT NULL,
   `proveedor_id` int(11) NOT NULL,
   `calidad_id` int(11) NOT NULL,
+  `operacion_id` int(11) DEFAULT NULL,
   `referencia` varchar(45) NOT NULL,
   `fecha` datetime DEFAULT NULL,
   `aprobado` tinyint(1) unsigned zerofill DEFAULT NULL,
@@ -745,8 +648,8 @@ CREATE TABLE `muestras` (
   KEY `fk_muestras_calidades1_idx` (`calidad_id`),
   KEY `fk_muestras_proveedores1_idx` (`proveedor_id`),
   KEY `referencia` (`referencia`),
-  KEY `fk_muestras_operaciones1_idx` (`operacion_id`),
   KEY `fk_muestras_almacenes1_idx` (`almacen_id`),
+  KEY `fk_muestras_operaciones1_idx` (`operacion_id`),
   CONSTRAINT `fk_muestras_operaciones1` FOREIGN KEY (`operacion_id`) REFERENCES `operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_muestras_almacenes1` FOREIGN KEY (`almacen_id`) REFERENCES `almacenes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_muestras_calidades1` FOREIGN KEY (`calidad_id`) REFERENCES `calidades` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -760,7 +663,7 @@ CREATE TABLE `muestras` (
 
 LOCK TABLES `muestras` WRITE;
 /*!40000 ALTER TABLE `muestras` DISABLE KEYS */;
-INSERT INTO `muestras` VALUES (1,0,38,5,'104/17','2015-03-13 18:37:00',1,'',NULL,1,'2015-03-14 01:23:07','2015-03-14 01:23:07'),(4,0,39,9,'15/027','2015-03-26 00:00:00',1,'El café ha llegado a puerto',NULL,1,'2015-03-26 12:48:01','2015-03-26 12:48:01'),(6,0,40,24,'15/031','2015-03-27 00:00:00',0,'Muestra de embarque llegada antes del embarque',NULL,1,'2015-03-27 13:43:17','2015-04-14 00:42:02'),(10,0,41,24,'15/003','2014-04-07 00:00:00',1,'MUESTRA APROBADA RECIBIDA DESDE ALMACEN EN ALMENIA\r\nEL CAFE LLEGARA AL ALACEN DEL SOCIO\r\nCAFE MU BUENO + INTRO\r\nCAFE MEJOR\r\n',NULL,1,'2015-04-07 13:40:59','2015-04-27 01:01:06'),(14,0,43,10,'007/007','2015-04-26 00:00:00',0,'',NULL,1,'2015-04-26 19:04:48','2015-04-26 19:04:48'),(15,0,48,6,'008/008','2015-04-26 00:00:00',0,'Pues no me gusta',50,1,'2015-04-26 19:39:44','2015-07-14 13:21:41'),(16,0,46,25,'123/456','2015-04-26 00:00:00',0,'',NULL,1,'2015-04-26 23:43:14','2015-04-26 23:46:00'),(17,0,36,9,'000/111','2015-05-08 00:00:00',1,'',59,2,'2015-05-08 16:48:02','2015-07-01 16:34:53'),(18,0,47,6,'001/001/001','2015-05-08 00:00:00',1,'',NULL,3,'2015-05-08 17:24:47','2015-05-08 17:24:47'),(19,0,41,5,'69/69','2014-05-08 00:00:00',1,'',61,2,'2015-05-08 17:25:34','2015-07-01 16:35:30');
+INSERT INTO `muestras` VALUES (1,38,5,NULL,'104/17','2015-03-13 18:37:00',1,'',NULL,1,'2015-03-14 01:23:07','2015-03-14 01:23:07'),(4,39,9,NULL,'15/027','2015-03-26 00:00:00',1,'El café ha llegado a puerto',NULL,1,'2015-03-26 12:48:01','2015-03-26 12:48:01'),(6,40,24,NULL,'15/031','2015-03-27 00:00:00',0,'Muestra de embarque llegada antes del embarque',NULL,1,'2015-03-27 13:43:17','2015-04-14 00:42:02'),(10,41,24,NULL,'15/003','2014-04-07 00:00:00',1,'MUESTRA APROBADA RECIBIDA DESDE ALMACEN EN ALMENIA\r\nEL CAFE LLEGARA AL ALACEN DEL SOCIO\r\nCAFE MU BUENO + INTRO\r\nCAFE MEJOR\r\n',NULL,1,'2015-04-07 13:40:59','2015-04-27 01:01:06'),(14,43,10,NULL,'007/007','2015-04-26 00:00:00',0,'',NULL,1,'2015-04-26 19:04:48','2015-04-26 19:04:48'),(15,48,6,NULL,'008/008','2015-04-26 00:00:00',0,'Pues no me gusta',50,1,'2015-04-26 19:39:44','2015-07-14 13:21:41'),(16,46,25,NULL,'123/456','2015-04-26 00:00:00',0,'',NULL,1,'2015-04-26 23:43:14','2015-04-26 23:46:00'),(17,36,9,NULL,'000/111','2015-05-08 00:00:00',1,'',59,2,'2015-05-08 16:48:02','2015-07-01 16:34:53'),(18,47,6,NULL,'001/001/001','2015-05-08 00:00:00',1,'',NULL,3,'2015-05-08 17:24:47','2015-05-08 17:24:47'),(19,41,5,NULL,'69/69','2014-05-08 00:00:00',1,'',61,2,'2015-05-08 17:25:34','2015-07-01 16:35:30');
 /*!40000 ALTER TABLE `muestras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -776,7 +679,7 @@ CREATE TABLE `navieras` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_navieras_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_navieras_empresas` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -799,14 +702,23 @@ DROP TABLE IF EXISTS `operaciones`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `operaciones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `referencia` varchar(15) DEFAULT NULL,
-  `cantidad_contenedores` int(11) DEFAULT NULL,
+  `contrato_id` int(11) DEFAULT NULL,
+  `embalaje_id` int(11) NOT NULL,
+  `referencia` varchar(15) NOT NULL,
+  `lotes_operacion` mediumint(9) DEFAULT NULL,
+  `fecha_pos_fijacion` date DEFAULT NULL,
+  `precio_fijacion` decimal(6,2) DEFAULT NULL,
+  `precio_compra` decimal(6,2) DEFAULT NULL,
+  `opciones` decimal(6,2) DEFAULT NULL,
   `cambio_dolar_euro` decimal(7,6) DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL COMMENT '		',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `referencia_UNIQUE` (`referencia`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+  KEY `fk_linea_contratos_contratos1_idx` (`contrato_id`),
+  KEY `fk_linea_contratos_embalajes1_idx` (`embalaje_id`),
+  CONSTRAINT `fk_operaciones_contratos` FOREIGN KEY (`contrato_id`) REFERENCES `contratos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_linea_contratos_embalajes1` FOREIGN KEY (`embalaje_id`) REFERENCES `embalajes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -815,7 +727,7 @@ CREATE TABLE `operaciones` (
 
 LOCK TABLES `operaciones` WRITE;
 /*!40000 ALTER TABLE `operaciones` DISABLE KEYS */;
-INSERT INTO `operaciones` VALUES (12,'6666/66',NULL,NULL,'2015-06-25 16:51:23','2015-06-25 16:43:15'),(13,'999/99',NULL,0.000034,'2015-06-25 16:46:36','2015-06-25 16:46:36'),(14,'12345',NULL,1.325000,'2015-06-25 16:52:57','2015-06-25 16:52:57');
+INSERT INTO `operaciones` VALUES (19,31,1,'15/028',2,'2015-07-01',1986.00,1986.00,NULL,NULL,'2015-07-24 14:51:15','2015-07-21 20:23:31'),(21,31,2,'31/15006',8,'2015-01-14',1986.00,1986.00,NULL,NULL,'2015-07-24 14:53:09','2015-07-24 14:53:09');
 /*!40000 ALTER TABLE `operaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -871,6 +783,22 @@ LOCK TABLES `peso_contenedores` WRITE;
 UNLOCK TABLES;
 
 --
+-- Temporary table structure for view `peso_operaciones`
+--
+
+DROP TABLE IF EXISTS `peso_operaciones`;
+/*!50001 DROP VIEW IF EXISTS `peso_operaciones`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `peso_operaciones` (
+  `id` tinyint NOT NULL,
+  `contrato_id` tinyint NOT NULL,
+  `cantidad_embalaje` tinyint NOT NULL,
+  `peso` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `proveedores`
 --
 
@@ -912,7 +840,7 @@ CREATE TABLE `puertos` (
   PRIMARY KEY (`id`),
   KEY `fk_puertos_paises1_idx` (`pais_id`),
   CONSTRAINT `fk_puertos_paises1` FOREIGN KEY (`pais_id`) REFERENCES `paises` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -921,7 +849,7 @@ CREATE TABLE `puertos` (
 
 LOCK TABLES `puertos` WRITE;
 /*!40000 ALTER TABLE `puertos` DISABLE KEYS */;
-INSERT INTO `puertos` VALUES (1,'Venecia',9,'2015-06-15 13:05:17','2015-07-09 18:47:38'),(2,'Marsella',5,'2015-06-15 13:05:27','2015-06-15 13:05:27'),(3,'San Petesburgo',22,'2015-06-15 13:05:39','2015-06-15 13:05:39'),(4,'Napoles',21,'2015-06-15 13:05:50','2015-06-15 13:05:50');
+INSERT INTO `puertos` VALUES (1,'Venecia',9,'2015-06-15 13:05:17','2015-07-09 18:47:38'),(2,'Marsella',5,'2015-06-15 13:05:27','2015-06-15 13:05:27'),(3,'San Petesburgo',22,'2015-06-15 13:05:39','2015-06-15 13:05:39'),(5,'Burdeos',9,'2015-07-17 19:12:12','2015-07-17 19:12:12'),(6,'Barcelona',3,'2015-07-17 19:14:47','2015-07-17 19:14:47'),(7,'Bilbao',3,'2015-07-17 19:14:57','2015-07-17 19:15:02'),(8,'Santander',3,'2015-07-17 19:15:07','2015-07-17 19:15:21');
 /*!40000 ALTER TABLE `puertos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -936,6 +864,20 @@ SET character_set_client = utf8;
 /*!50001 CREATE TABLE `resto_contratos` (
   `id` tinyint NOT NULL,
   `peso_restante` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `resto_lotes_contratos`
+--
+
+DROP TABLE IF EXISTS `resto_lotes_contratos`;
+/*!50001 DROP VIEW IF EXISTS `resto_lotes_contratos`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `resto_lotes_contratos` (
+  `id` tinyint NOT NULL,
+  `lotes_restantes` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -977,7 +919,9 @@ DROP TABLE IF EXISTS `transportes`;
 CREATE TABLE `transportes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `seguro_id` int(11) NOT NULL,
-  `operacion_id` int(11) NOT NULL,
+  `naviera_id` int(11) NOT NULL,
+  `puerto_id` int(11) NOT NULL,
+  `agente_id` int(11) NOT NULL,
   `fecha_entradamerc` date DEFAULT NULL,
   `fecha_carga` date DEFAULT NULL,
   `fecha_llegada` date DEFAULT NULL,
@@ -991,25 +935,23 @@ CREATE TABLE `transportes` (
   `nombre_vehiculo` varchar(45) DEFAULT NULL,
   `matricula` varchar(45) DEFAULT NULL,
   `observaciones` text,
-  `modified` datetime DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
   `flete` decimal(8,2) DEFAULT NULL,
-  `fortfait` decimal(8,2) DEFAULT NULL,
-  `naviera_id` int(11) NOT NULL,
-  `puerto_id` int(11) NOT NULL,
-  `agente_id` int(11) NOT NULL,
+  `forfait` decimal(8,2) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  `operacion_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_transportes_seguros1_idx` (`seguro_id`),
-  KEY `fk_transportes_operaciones1_idx` (`operacion_id`),
   KEY `fk_transportes_navieras1_idx` (`naviera_id`),
   KEY `fk_transportes_puertos1_idx` (`puerto_id`),
   KEY `fk_transportes_agentes1_idx` (`agente_id`),
+  KEY `fk_transportes_operaciones1_idx` (`operacion_id`),
+  CONSTRAINT `fk_transportes_operaciones1` FOREIGN KEY (`operacion_id`) REFERENCES `operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_transportes_agentes1` FOREIGN KEY (`agente_id`) REFERENCES `agentes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_navieras1` FOREIGN KEY (`naviera_id`) REFERENCES `navieras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_puertos1` FOREIGN KEY (`puerto_id`) REFERENCES `puertos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_transportes_agentes1` FOREIGN KEY (`agente_id`) REFERENCES `agentes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_transportes_operaciones1` FOREIGN KEY (`operacion_id`) REFERENCES `operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_seguros1` FOREIGN KEY (`seguro_id`) REFERENCES `seguros` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1060,6 +1002,25 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `peso_operaciones`
+--
+
+/*!50001 DROP TABLE IF EXISTS `peso_operaciones`*/;
+/*!50001 DROP VIEW IF EXISTS `peso_operaciones`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`cmpsa`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `peso_operaciones` AS select `operaciones`.`id` AS `id`,`operaciones`.`contrato_id` AS `contrato_id`,(select ifnull(sum(`asociado_operaciones`.`cantidad_embalaje_asociado`),0) from `asociado_operaciones` where (`asociado_operaciones`.`operacion_id` = `operaciones`.`id`)) AS `cantidad_embalaje`,((select ifnull(sum(`asociado_operaciones`.`cantidad_embalaje_asociado`),0) from `asociado_operaciones` where (`asociado_operaciones`.`operacion_id` = `operaciones`.`id`)) * (select `contrato_embalajes`.`peso_embalaje_real` from `contrato_embalajes` where ((`contrato_embalajes`.`contrato_id` = `operaciones`.`contrato_id`) and (`contrato_embalajes`.`embalaje_id` = `operaciones`.`embalaje_id`)))) AS `peso` from `operaciones` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `resto_contratos`
 --
 
@@ -1073,7 +1034,26 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`cmpsa`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `resto_contratos` AS select `contratos`.`id` AS `id`,(`contratos`.`peso_comprado` - (select ifnull(sum(`linea_contratos`.`peso_linea_contrato`),0) from `linea_contratos` where (`linea_contratos`.`contrato_id` = `contratos`.`id`))) AS `peso_restante` from `contratos` */;
+/*!50001 VIEW `resto_contratos` AS select `contratos`.`id` AS `id`,(`contratos`.`peso_comprado` - (select ifnull(sum(`peso_operaciones`.`peso`),0) from `peso_operaciones` where (`peso_operaciones`.`contrato_id` = `contratos`.`id`))) AS `peso_restante` from `contratos` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `resto_lotes_contratos`
+--
+
+/*!50001 DROP TABLE IF EXISTS `resto_lotes_contratos`*/;
+/*!50001 DROP VIEW IF EXISTS `resto_lotes_contratos`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`cmpsa`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `resto_lotes_contratos` AS select `contratos`.`id` AS `id`,(`contratos`.`lotes_contrato` - (select ifnull(sum(`operaciones`.`lotes_operacion`),0) from `operaciones` where (`operaciones`.`contrato_id` = `contratos`.`id`))) AS `lotes_restantes` from `contratos` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1087,4 +1067,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-14 15:56:12
+-- Dump completed on 2015-07-24 17:35:07

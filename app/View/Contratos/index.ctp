@@ -18,11 +18,12 @@
 	echo $this->Html->tableHeaders(array(
 		//'Id',
 		$this->Paginator->sort('Contrato.referencia','Referencia'),
-		$this->Paginator->sort('proveedor','Proveedor'),
+		$this->Paginator->sort('Proveedor.Empresa.nombre_corto','Proveedor'),
 		$this->Paginator->sort('Incoterm.nombre','Incoterm'),
 		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
 		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
 		$this->Paginator->sort('CanalCompra.nombre','Bolsa'),
+		$this->Paginator->sort('Contrato.posicion_bolsa','Posición'),
 		'Diferencial',
 		//Las opciones en Operacion
 		//'Opciones',
@@ -38,6 +39,7 @@
 			$contrato['CalidadNombre']['nombre'],
 			$contrato['Contrato']['peso_comprado'].'kg',
 			$contrato['CanalCompra']['nombre'],
+			$contrato['Contrato']['posicion_bolsa'],
 			$contrato['Contrato']['diferencial'].$contrato['CanalCompra']['divisa'],
 			//Las opciones en Operacion
 			//$contrato['Contrato']['opciones'].$contrato['CanalCompra']['divisa'],

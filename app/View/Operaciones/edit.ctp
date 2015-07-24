@@ -41,9 +41,14 @@ foreach ($asociados as $id => $asociado):
 endforeach;
 echo "</table>";
 echo "<div class='linea'>\n";
+//Los lotes que quedan por fijar = los de RestoLotesContrato +
+//los de esta operacion visto que estamos editando.
+$lotes_por_fijar = $operacion['Contrato']['RestoLotesContrato']['lotes_restantes'] + $this->request->data['Operacion']['lotes_operacion'];
 echo $this->Form->input('lotes_operacion',
 	array(
-		'label' => 'Lotes <em>(Quedan por fijar '.$operacion['Contrato']['RestoLotesContrato']['lotes_restantes'].' lotes)</em>'
+		'label' => 'Lotes <em>(Quedan por fijar <var id="lotes">'.$lotes_por_fijar.'</var> lotes)</em>',
+		'oninput' => 'lotesPorFijar()'
+
 	)
 );
 echo $this->Form->input('fecha_pos_fijacion', array(
@@ -65,4 +70,3 @@ echo $this->Form->input('precio_compra', array(
 echo $this->Form->end('Guardar Operacion');
 ?>
 </div>
-

@@ -30,9 +30,21 @@ function canalCompra(){
 	//la bolsa que seleccionamos
 	var checked = $('input:checked').val();
 	//la divisa correspondiente
+	//!!!ESTA MAL el index del array no tiene
+	//porque coincidir con el id del canal en la bdd
 	var divisa = canal[checked-1].CanalCompra.divisa;
 	//mostramos la divisa al lado del diferencial
 	document.getElementById("divisa_diferencial").innerHTML = divisa;
 	//desactivamos el diferencial si es precio fijo
 	document.getElementById("ContratoDiferencial").disabled = canal[checked-1].CanalCompra.precio_fijo;
+}
+
+function lotesPorFijar() {
+    var lotesPendientes = parseInt(document.getElementById('lotes').innerHTML);
+    var lotesOperacion = document.getElementById('OperacionLotesOperacion').value;
+    if (lotesOperacion > lotesPendientes) {
+	    document.getElementById('OperacionLotesOperacion').style.color = "red";
+    } else {
+	    document.getElementById('OperacionLotesOperacion').style.color = "black";
+    }
 }

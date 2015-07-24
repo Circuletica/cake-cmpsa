@@ -118,68 +118,12 @@ class OperacionesController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->Operacion->id = $id;
-		//$operacion = $this->Operacion->findById($id);
 		$operacion = $this->Operacion->find('first', array(
 			'conditions' => array('Operacion.id' => $id),
 			'recursive' => 3
 			)
 		);
 		$this->set('operacion', $operacion);
-		//sacamos los datos del contrato al que pertenece la linea
-		//nos sirven en la vista para detallar campos
-//		$contrato = $this->Operacion->Contrato->find('first', array(
-//			'conditions' => array('Contrato.id' => $this->params['named']['from_id']),
-//			'recursive' => 2,
-//			'fields' => array(
-//				'Contrato.id',
-//				'Contrato.referencia',
-//				'Contrato.proveedor_id',
-//				'Contrato.peso_comprado',
-//				'CanalCompra.nombre',
-//				'CanalCompra.divisa',
-//				'CalidadNombre.nombre')
-//		));
-		//$this->set('contrato',$contrato);
-//		$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find('all', array(
-//			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
-//			'fields' => array(
-//				'Embalaje.id',
-//				'Embalaje.nombre',
-//				'ContratoEmbalaje.cantidad_embalaje',
-//				'ContratoEmbalaje.peso_embalaje_real'
-//				)
-//			)
-//		);
-		//hace falta para el desplegable de 'Embalaje'
-		//recombinamos el array anterior que quedaba asi:
-		//Array
-		//  (
-		//    [0] => Array
-		//      id => 2
-		//      nombre => big bag
-		//    [1] => Array
-		//      id => 1
-		//      nombre => saco 60kg
-		//y se transforma así
-		//Array
-		//  (
-		//    [2] => big bag
-		//    [1] => saco 60kg
-//		$embalajes = Hash::combine($embalajes_contrato, '{n}.Embalaje.id', '{n}.Embalaje.nombre');
-//		$this->set('embalajes', $embalajes);
-//		$embalajes_nombre = Hash::combine($embalajes_contrato, '{n}.Embalaje.id', '{n}.Embalaje');
-//		$embalajes_peso = Hash::combine($embalajes_contrato, '{n}.Embalaje.id', '{n}.ContratoEmbalaje');
-		//sumamos los distintos arrays de mismo index para llegar a esto:
-		//Array
-		//  (
-		//    [2] =>Array
-		//      id => 2
-		//      nombre => big bag
-		//      cantidad_embalaje => 60
-		//      peso_embalaje_real => 60
-		//    [1] => ...
-		//$embalajes_completo = array_replace_recursive($embalajes_nombre,$embalajes_peso);
-		//$this->set('embalajes_completo', $embalajes_completo);
 		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('list', array(
 			'fields' => array('Asociado.id','Empresa.nombre_corto'),
 			'recursive' => 1
