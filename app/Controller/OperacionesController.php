@@ -126,11 +126,11 @@ class OperacionesController extends AppController {
 		$this->set('operacion', $operacion);
 		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('list', array(
 			'fields' => array('Asociado.id','Empresa.nombre_corto'),
+			'order' => array('Empresa.nombre_corto' => 'ASC'),
 			'recursive' => 1
 			)
 		);
 		$this->set('asociados', $asociados);
-
 		//los que ya tienen embalajes en la operacion
 		$asociados_operacion = $operacion['AsociadoOperacion'];
 		//queremos el id del socio como index del array

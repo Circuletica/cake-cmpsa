@@ -8,6 +8,10 @@ class Operacion extends AppModel {
 			'foreignKey' => 'contrato_id')
 	);
 	public $hasOne = array(
+		'PrecioOperacion' => array(
+			'className' => 'PrecioOperacion',
+			'foreignKey' => 'id'
+		),
 		'PesoOperacion' => array(
 			'className' => 'PesoOperacion',
 			'foreignKey' => 'id'

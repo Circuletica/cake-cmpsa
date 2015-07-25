@@ -81,6 +81,15 @@
 		echo "  <dt>Diferencial:</dt>\n";
 		echo "  <dd>".$operacion['Contrato']['diferencial'].
 			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+		if ($operacion['Operacion']['opciones'] != NULL):
+			echo "  <dt>Opciones:</dt>\n";
+			echo "  <dd>".$operacion['Operacion']['opciones'].
+			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+		endif;
+		echo "  <dt>Cambio dolar/euro:</dt>\n";
+		echo "  <dd>".$operacion['Operacion']['cambio_dolar_euro'].'&nbsp;'."</dd>";
+		echo "  <dt>Precio €/Tm:</dt>\n";
+		echo "  <dd>".$operacion['PrecioOperacion']['precio_euro_tm'].'&nbsp;'."</dd>";
 		echo "</dl>";
 		echo "<table>";
 		echo $this->Html->tableHeaders(array('Asociado', 'Cantidad de embalajes', 'Peso'));

@@ -67,6 +67,20 @@ echo $this->Form->input('precio_compra', array(
 	'label' => 'Precio factura'
 	)
 );
+echo $this->Form->input('opciones', array(
+	'between' => '('.$operacion['Contrato']['CanalCompra']['divisa'].')',
+	'label' => 'Opciones'
+	)
+);
+echo $this->Form->input('flete', array(
+	'between' => '('.$operacion['Contrato']['CanalCompra']['divisa'].')',
+	'label' => 'Flete'
+	)
+);
+echo $this->Form->input('cambio_dolar_euro', array(
+	'label' => 'Cambio dolar/euro'
+	)
+);
 echo $this->Form->end('Guardar Operacion');
 ?>
 </div>
