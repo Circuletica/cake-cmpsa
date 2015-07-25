@@ -31,6 +31,12 @@
 	);
 
 	foreach($contratos as $contrato):
+		//mysql almacena la fecha en formato ymd
+		$fecha = $contrato['Contrato']['posicion_bolsa'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$posicion_bolsa = $mes.'-'.$anyo;
 		echo $this->Html->tableCells(array(
 			//$contrato['Contrato']['id'],
 			$contrato['Contrato']['referencia'],
@@ -39,7 +45,7 @@
 			$contrato['CalidadNombre']['nombre'],
 			$contrato['Contrato']['peso_comprado'].'kg',
 			$contrato['CanalCompra']['nombre'],
-			$contrato['Contrato']['posicion_bolsa'],
+			$posicion_bolsa,
 			$contrato['Contrato']['diferencial'].$contrato['CanalCompra']['divisa'],
 			//Las opciones en Operacion
 			//$contrato['Contrato']['opciones'].$contrato['CanalCompra']['divisa'],

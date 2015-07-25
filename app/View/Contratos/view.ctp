@@ -81,6 +81,8 @@
 	echo "  <dd>".$contrato['Contrato']['diferencial']." ".$contrato['CanalCompra']['divisa']."</dd>";
 	echo "  <dt>Incoterm</dt>\n";
 	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
+	echo "  <dt>Posicion de bolsa</dt>\n";
+	echo "  <dd>".$posicion_bolsa.'&nbsp;'."</dd>";
 	echo "</dl>";?>
 	<div class="detallado">
 	<h3>Operaciones</h3>

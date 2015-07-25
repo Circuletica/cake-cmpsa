@@ -146,6 +146,12 @@
 			'dateFormat' => 'DMY')
 		);
 		echo "</div>\n";
+		echo "<div class='linea'>\n";
+		echo $this->Form->input('posicion_bolsa', array(
+			'label' => 'Posición de bolsa',
+			'dateFormat' => 'MY')
+		);
+		echo "</div>\n";
 		echo $this->Form->input('id', array('type'=>'hidden'));
 		echo $this->Form->end('Guardar Contrato');
 	?>

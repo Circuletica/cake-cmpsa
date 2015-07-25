@@ -45,8 +45,19 @@ class ContratosController extends AppController {
 		$this->set('embalajes', $embalajes);
 		$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
 		$this->set('calidades', $this->Contrato->CalidadNombre->find('list'));
+		//Rellenamos la fecha de posicion con el mes/año de hoy sólo si esta vacío,
+		//si ya tenía valor y que el usuario vuelve al formulario, se guarda lo que
+		//habia metido antes.
+		//Si usaramos un 'selected' en la View, cuando vuelve el usuario al formulario
+		//se sobreescribe lo que tenía
+		if (!isset($this->request->data['Contrato']['posicion_bolsa']['day']))
+			$this->request->data['Contrato']['posicion_bolsa']['day'] = date('Y-m');
 		if($this->request->is('post')):
+			//Hay que meter un dia si no queremos que mysql meta una fecha NULL
+			//lo suyo seria tener 0, pero el cakephp parece que no quiere
+			$this->request->data['Contrato']['posicion_bolsa']['day'] = 1;
 			if($this->Contrato->save($this->request->data)):
+			$this->flash('Stop');
 				//Las claves del array data['Embalaje'] no son secuenciales,
 				//son realmente el embalaje_id
 				foreach ($this->request->data['Embalaje'] as $embalaje_id => $valor) {
@@ -75,8 +86,14 @@ class ContratosController extends AppController {
 			'conditions' => array('Contrato.id' => $id),
 			'recursive' => 2));
 		$this->set('contrato',$contrato);
-		$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL
+		$this->loadModel('CalidadNombre');
+		//mysql almacena la fecha en formato ymd
+		$fecha = $contrato['Contrato']['posicion_bolsa'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$this->set('posicion_bolsa', $mes.'-'.$anyo);
 	}
 
 	public function edit($id = null) {
@@ -117,6 +134,9 @@ class ContratosController extends AppController {
 				$this->request->data['Embalaje'][$embalaje['embalaje_id']]['peso_embalaje_real'] = $embalaje['peso_embalaje_real'];
 			}
 		else:
+			//Hay que meter un dia si no queremos que mysql meta una fecha NULL
+			//lo suyo seria tener 0, pero el cakephp parece que no quiere
+			$this->request->data['Contrato']['posicion_bolsa']['day'] = 1;
 			if ($this->Contrato->save($this->request->data)):
 				//Los registros de ContratoEmbalaje se van sumando
 				//entonces hay que borrarlos todos porque el saveAll()

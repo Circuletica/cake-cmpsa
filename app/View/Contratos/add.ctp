@@ -207,6 +207,15 @@
 		)
 	    );
 	    echo $this->Form->input('lotes_contrato');
+		echo "<div class='linea'>\n";
+		echo $this->Form->input('posicion_bolsa', array(
+			'label' => 'Posición de bolsa',
+			'dateFormat' => 'MY',
+			//'selected' => date('Y-m'),
+			//'div' => false
+			)
+		);
+		echo "</div>\n";
     ?>
     <table>
 	<tr>
