@@ -35,8 +35,9 @@ function canalCompra(){
 	var divisa = canal[checked-1].CanalCompra.divisa;
 	//mostramos la divisa al lado del diferencial
 	document.getElementById("divisa_diferencial").innerHTML = divisa;
-	//desactivamos el diferencial si es precio fijo
-	document.getElementById("ContratoDiferencial").disabled = canal[checked-1].CanalCompra.precio_fijo;
+	//desactivamos el diferencial si el canal no tiene diferencial
+	//document.getElementById("ContratoDiferencial").disabled = canal[checked-1].CanalCompra.si_diferencial ? false : true;
+	document.getElementById("ContratoDiferencial").disabled = !canal[checked-1].CanalCompra.si_diferencial;
 }
 
 function lotesPorFijar() {

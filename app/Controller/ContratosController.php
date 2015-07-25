@@ -25,10 +25,20 @@ class ContratosController extends AppController {
 
 	public function add() {
 		$proveedores = $this->Contrato->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre'),
-			'recursive' => 1
+			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+			'recursive' => 1,
+			'order' => array('Empresa.nombre_corto' => 'ASC')
 			)
 		);
+		$this->set('proveedores', $proveedores);
+		$this->set('puertos', $this->Contrato->Puerto->find('list', array(
+			'order' => array('Puerto.nombre' => 'ASC')
+			))
+		);
+		$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
+			'order' => array('Incoterm.nombre' => 'ASC')
+			)
+		));
 		$canal_compras_divisa = $this->Contrato->CanalCompra->find('all');
 		$this->set('canal_compras_divisa', $canal_compras_divisa);
 		$canal_compras = $this->Contrato->CanalCompra->find('list', array(
@@ -36,15 +46,17 @@ class ContratosController extends AppController {
 			)
 		);
 		$this->set('canal_compras', $canal_compras);
-		$this->set('proveedores', $proveedores);
 		//En la vista se muestra la lista de todos los embalajes existentes
 		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
 			'order' => array('Embalaje.nombre' => 'asc')
 			)
 		);
 		$this->set('embalajes', $embalajes);
-		$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
-		$this->set('calidades', $this->Contrato->CalidadNombre->find('list'));
+		//$this->set('calidades', $this->Contrato->CalidadNombre->find('list'));
+		$this->set('calidades',$this->Contrato->CalidadNombre->find('list', array(
+			'order' => array('CalidadNombre.nombre' => 'ASC')
+			)
+		));
 		//Rellenamos la fecha de posicion con el mes/año de hoy sólo si esta vacío,
 		//si ya tenía valor y que el usuario vuelve al formulario, se guarda lo que
 		//habia metido antes.
@@ -57,7 +69,6 @@ class ContratosController extends AppController {
 			//lo suyo seria tener 0, pero el cakephp parece que no quiere
 			$this->request->data['Contrato']['posicion_bolsa']['day'] = 1;
 			if($this->Contrato->save($this->request->data)):
-			$this->flash('Stop');
 				//Las claves del array data['Embalaje'] no son secuenciales,
 				//son realmente el embalaje_id
 				foreach ($this->request->data['Embalaje'] as $embalaje_id => $valor) {
@@ -106,11 +117,23 @@ class ContratosController extends AppController {
 		$this->set('contrato',$contrato);
 		//el titulado completo de la Calidad sale de una vista
 		//de MySQL que concatena descafeinado, pais y descripcion
-		$this->set('calidades',$this->Contrato->CalidadNombre->find('list'));
-		$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
+		$this->set('calidades',$this->Contrato->CalidadNombre->find('list', array(
+			'order' => array('CalidadNombre.nombre' => 'ASC')
+			)
+		));
+		//$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
+		$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
+			'order' => array('Incoterm.nombre' => 'ASC')
+			)
+		));
+		$this->set('puertos', $this->Contrato->Puerto->find('list', array(
+			'order' => array('Puerto.nombre' => 'ASC')
+			))
+		);
 		$this->set('proveedores', $this->Contrato->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre'),
-			'recursive' => 1
+			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+			'recursive' => 1,
+			'order' => array('Empresa.nombre_corto' => 'ASC')
 			))
 		);
 		//Donde se compra el café (London, New-York, ...)

@@ -21,7 +21,7 @@ echo $this->Form->create('Proveedor');
 <fieldset>
 	<?php
 		echo $this->Form->input('Empresa.nombre_corto');
-		echo $this->Form->input('Empresa.nombre', array('label'=>'Denominacion legal');
+		echo $this->Form->input('Empresa.nombre', array('label'=>'Denominacion legal'));
 		echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
 	?>
 	<div class="columna3">

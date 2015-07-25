@@ -75,6 +75,8 @@
 	echo "  <dd>".$fecha_embarque."</dd>";
 	echo "  <dt>Fecha de entrega</dt>\n";
 	echo "  <dd>".$fecha_entrega."</dd>";
+	echo "  <dt>Puerto de destino</dt>\n";
+	echo "  <dd>".$contrato['Puerto']['nombre']."&nbsp;</dd>";
 	echo "  <dt>Bolsa</dt>\n";
 	echo "  <dd>".$contrato['CanalCompra']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Diferencial</dt>\n";

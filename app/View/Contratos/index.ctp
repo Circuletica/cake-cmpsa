@@ -23,8 +23,10 @@
 		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
 		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
 		$this->Paginator->sort('CanalCompra.nombre','Bolsa'),
+		$this->Paginator->sort('Contrato.lotes_contrato','Lotes'),
 		$this->Paginator->sort('Contrato.posicion_bolsa','Posición'),
-		'Diferencial',
+		//El diferencial para view()
+		//'Diferencial',
 		//Las opciones en Operacion
 		//'Opciones',
 		'')
@@ -45,8 +47,9 @@
 			$contrato['CalidadNombre']['nombre'],
 			$contrato['Contrato']['peso_comprado'].'kg',
 			$contrato['CanalCompra']['nombre'],
+			$contrato['Contrato']['lotes_contrato'],
 			$posicion_bolsa,
-			$contrato['Contrato']['diferencial'].$contrato['CanalCompra']['divisa'],
+			//$contrato['Contrato']['diferencial'].$contrato['CanalCompra']['divisa'],
 			//Las opciones en Operacion
 			//$contrato['Contrato']['opciones'].$contrato['CanalCompra']['divisa'],
 			$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))

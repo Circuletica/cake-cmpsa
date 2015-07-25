@@ -37,6 +37,11 @@
 		'empty' => array('' => 'Selecciona'),
 	    )
 	);
+	echo $this->Form->input('puerto_id', array(
+		'label' => 'Puerto de destino',
+		'empty' => array('' => ''),
+	    )
+	);
 	echo $this->Form->input('calidad_id', array(
 		'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 		'empty' => array('' => 'Selecciona'),
