@@ -22,20 +22,20 @@ class OperacionesController extends AppController {
 	$this->set('proveedores', $proveedores);
 	$this->set('calidades', $calidades);
 	$this->set('operaciones', $this->paginate());
+
 	}
 
 public function view($id = null) {
-		$operacion = $this->Operacion->find('all');
-
-
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada Operación/view ');
 			$this->redirect(array('action'=>'index'));
 		}
 		$operacion = $this->Operacion->find('first',array(
-			'conditions' => array('Operacion.id' => $id)));
+			'conditions' => array('Operacion.id' => $id),
+			'recursive' => 3));
 		$this->set('operacion',$operacion);
 		$this->loadModel('CalidadNombre');
+
 	}
 
 	public function add() {

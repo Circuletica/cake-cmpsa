@@ -70,7 +70,11 @@
 	echo "</dd>";
 	echo "  <dt>Fecha de entrega</dt>\n";
 	echo "<dd>";
-	echo $operacion['Contrato']['fecha_entrega'].'&nbsp;';
+	$fecha = $operacion['Contrato']['fecha_entrega'];
+	$dia = substr($fecha,8,2);
+	$mes = substr($fecha,5,2);
+	$anyo = substr($fecha,0,4);
+	echo $fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
 	echo "</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";

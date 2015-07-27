@@ -5,7 +5,6 @@ class ContratosController extends AppController {
 	public $paginate = array(
 		'order' => array('Contrato.referencia' => 'asc')
 	);
-
 	public function index() {
 		$proveedores = $this->Contrato->Proveedor->find('list', array(
 			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
@@ -22,13 +21,22 @@ class ContratosController extends AppController {
 		//$contratos = $this->paginate();
 		$this->set('contratos', $this->paginate());
 	}
-
 	public function add() {
 		$proveedores = $this->Contrato->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre'),
-			'recursive' => 1
+			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+			'recursive' => 1,
+			'order' => array('Empresa.nombre_corto' => 'ASC')
 			)
 		);
+		$this->set('proveedores', $proveedores);
+		$this->set('puertos', $this->Contrato->Puerto->find('list', array(
+			'order' => array('Puerto.nombre' => 'ASC')
+			))
+		);
+		$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
+			'order' => array('Incoterm.nombre' => 'ASC')
+			)
+		));
 		$canal_compras_divisa = $this->Contrato->CanalCompra->find('all');
 		$this->set('canal_compras_divisa', $canal_compras_divisa);
 		$canal_compras = $this->Contrato->CanalCompra->find('list', array(
@@ -36,16 +44,28 @@ class ContratosController extends AppController {
 			)
 		);
 		$this->set('canal_compras', $canal_compras);
-		$this->set('proveedores', $proveedores);
 		//En la vista se muestra la lista de todos los embalajes existentes
 		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
 			'order' => array('Embalaje.nombre' => 'asc')
 			)
 		);
 		$this->set('embalajes', $embalajes);
-		$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
-		$this->set('calidades', $this->Contrato->CalidadNombre->find('list'));
+		//$this->set('calidades', $this->Contrato->CalidadNombre->find('list'));
+		$this->set('calidades',$this->Contrato->CalidadNombre->find('list', array(
+			'order' => array('CalidadNombre.nombre' => 'ASC')
+			)
+		));
+		//Rellenamos la fecha de posicion con el mes/año de hoy sólo si esta vacío,
+		//si ya tenía valor y que el usuario vuelve al formulario, se guarda lo que
+		//habia metido antes.
+		//Si usaramos un 'selected' en la View, cuando vuelve el usuario al formulario
+		//se sobreescribe lo que tenía
+		if (!isset($this->request->data['Contrato']['posicion_bolsa']['day']))
+			$this->request->data['Contrato']['posicion_bolsa']['day'] = date('Y-m');
 		if($this->request->is('post')):
+			//Hay que meter un dia si no queremos que mysql meta una fecha NULL
+			//lo suyo seria tener 0, pero el cakephp parece que no quiere
+			$this->request->data['Contrato']['posicion_bolsa']['day'] = 1;
 			if($this->Contrato->save($this->request->data)):
 				//Las claves del array data['Embalaje'] no son secuenciales,
 				//son realmente el embalaje_id
@@ -65,7 +85,6 @@ class ContratosController extends AppController {
 			endif;
 		endif;
 	}
-
 	public function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado Contrato/view');
@@ -75,10 +94,15 @@ class ContratosController extends AppController {
 			'conditions' => array('Contrato.id' => $id),
 			'recursive' => 2));
 		$this->set('contrato',$contrato);
-		$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL
+		$this->loadModel('CalidadNombre');
+		//mysql almacena la fecha en formato ymd
+		$fecha = $contrato['Contrato']['posicion_bolsa'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$this->set('posicion_bolsa', $mes.'-'.$anyo);
 	}
-
 	public function edit($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');
@@ -89,11 +113,23 @@ class ContratosController extends AppController {
 		$this->set('contrato',$contrato);
 		//el titulado completo de la Calidad sale de una vista
 		//de MySQL que concatena descafeinado, pais y descripcion
-		$this->set('calidades',$this->Contrato->CalidadNombre->find('list'));
-		$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
+		$this->set('calidades',$this->Contrato->CalidadNombre->find('list', array(
+			'order' => array('CalidadNombre.nombre' => 'ASC')
+			)
+		));
+		//$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
+		$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
+			'order' => array('Incoterm.nombre' => 'ASC')
+			)
+		));
+		$this->set('puertos', $this->Contrato->Puerto->find('list', array(
+			'order' => array('Puerto.nombre' => 'ASC')
+			))
+		);
 		$this->set('proveedores', $this->Contrato->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre'),
-			'recursive' => 1
+			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+			'recursive' => 1,
+			'order' => array('Empresa.nombre_corto' => 'ASC')
 			))
 		);
 		//Donde se compra el café (London, New-York, ...)
@@ -117,6 +153,9 @@ class ContratosController extends AppController {
 				$this->request->data['Embalaje'][$embalaje['embalaje_id']]['peso_embalaje_real'] = $embalaje['peso_embalaje_real'];
 			}
 		else:
+			//Hay que meter un dia si no queremos que mysql meta una fecha NULL
+			//lo suyo seria tener 0, pero el cakephp parece que no quiere
+			$this->request->data['Contrato']['posicion_bolsa']['day'] = 1;
 			if ($this->Contrato->save($this->request->data)):
 				//Los registros de ContratoEmbalaje se van sumando
 				//entonces hay que borrarlos todos porque el saveAll()
@@ -152,7 +191,6 @@ class ContratosController extends AppController {
 			endif;
 		endif;
 	}
-
 	public function delete($id = null) {
 		if (!$id or $this->request->is('get')) :
 			throw new MethodNotAllowedException();

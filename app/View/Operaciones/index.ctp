@@ -32,10 +32,10 @@
   ?>  
   <table>
   <tr>
-    <th><?php echo $this->Paginator->sort('referencia')?></th>
+    <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Referencia')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Contrato')?></th>
-    <th><?php echo $this->Paginator->sort('fecha_embarque','Embarque')?></th>
-    <th><?php echo $this->Paginator->sort('fecha_entrega', 'Entrega')?></th>
+    <th><?php echo $this->Paginator->sort('Contrato.fecha_embarque','Embarque')?></th>
+    <th><?php echo $this->Paginator->sort('Contrato.fecha_entrega', 'Entrega')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('proveedor', 'Proveedor');?></th>
     <th><?php echo $this->Paginator->sort('Embalaje.peso_embalaje', 'Peso')?></th>
@@ -47,7 +47,7 @@
       <?php echo $operacion['Operacion']['referencia']?>
     </td>
     <td>
-      <? echo $operacion['Contrato']['refere']?>
+      <? echo $operacion['Contrato']['referencia']?>
     </td>
     <td>
       <? echo $operacion['Contrato']['fecha_embarque']?>
@@ -80,9 +80,9 @@
   </tr>
   <?php endforeach;?>
   </table>
-  <div class="btabla">
+ <!-- <div class="btabla">
       <?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Operación',array('action'=>'add'), array('title'=>'Añadir Operación','escape' => false)); ?>
-  </div>
+  </div>-->
 
   <div class="btabla">
   <?php 

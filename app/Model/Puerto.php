@@ -1,11 +1,11 @@
 <?php
 class Puerto extends AppModel{
   public $displayField = 'nombre';
-  public $hasMany = 'Transporte';
+  //public $hasMany = 'Operacion';
   public $belongsTo = array(
-  	'Pais' => array(
-	  'className' => 'Pais',
-	  'foreignKey' => 'pais_id')
+    'Pais' => array(
+  'className' => 'Pais',
+  'foreignKey' => 'pais_id')
     );
   public $validate = array(
     'nombre' => array(

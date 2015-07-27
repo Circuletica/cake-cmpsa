@@ -37,3 +37,4 @@ class Almacen extends AppModel {
 		'foreignKey' => 'id')
 	);
 
+}
