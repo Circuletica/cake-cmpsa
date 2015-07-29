@@ -103,6 +103,10 @@
 	echo "<dd>";
 	echo $operacion['Operacion']['precio_fijacion'];
 	echo "</dd>";
+	echo "  <dt>Embalaje por adjudicar - FALSE </dt>\n";
+	echo "<dd>";
+	//echo $operacion['Operacion']['precio_fijacion'];
+	echo "</dd>";
 	echo "</dl>";?>
 	<!--Se hace un index de la Linea de contratos-->
 

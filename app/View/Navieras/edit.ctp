@@ -16,7 +16,7 @@
 <fieldset>
     <?php
 	echo $this->Form->input('Empresa.nombre_corto');
-	echo $this->Form->input('Empresa.nombre', array('label'=>'Denominacion legal');
+	echo $this->Form->input('Empresa.nombre', array('label'=>'Denominacion legal'));
     ?>
     <div class="columna3">
 	<?php

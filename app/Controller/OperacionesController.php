@@ -76,6 +76,7 @@ public function view($id = null) {
 	}
 
 	public function edit( $id = null) {
+
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');
 			$this->redirect(array('action'=>'index'));
@@ -83,6 +84,7 @@ public function view($id = null) {
 		$this->Operacion->id = $id;
 		$operacion = $this->Operacion->findById($id);
 		$this->set('operacion',$operacion);
+		
 		if($this->request->is('get')):
 			$this->request->data = $this->Operacion->read();
 		else:

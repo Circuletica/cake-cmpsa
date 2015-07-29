@@ -8,7 +8,6 @@ class TransportesController extends AppController {
 		}
 
 public function view($id = null) {
-
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada Transporte/view ');
 			$this->redirect(array('action'=>'index'));
@@ -20,18 +19,38 @@ public function view($id = null) {
 	}
 
 	public function add() {
-		$operaciones = $this->Transporte->Operacion->find('all');
-		$this->set('operaciones', $operaciones);
-		$this->set('puertos', $this->Transporte->Puerto->find('list'));
+		$this->set('puertos', $this->Transporte->Puerto->find('list')
+		);
 		$this->set('navieras', $this->Transporte->Naviera->find('list'));		
 		$this->set('agentes', $this->Transporte->Agente->find('list'));
-	//	$this->set('puertos', $this->Transporte->Puerto->find('list'));		
+		$this->set('almacenes', $this->Transporte->AlmacenesTransporte->Almacen->find('list', array(
+			'fields' => array('Almacen.id','Empresa.nombre'),
+			'recursive' => 1))
+		);
+		$this->set('almacenes_transportes', $this->Transporte->AlmacenesTransporte->Almacen->find('list'));
+		//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
+		$this->set('seguros', $this->Transporte->Seguro->Aseguradora->find('list', array(
+			'fields' => array('Aseguradora.id','Empresa.nombre'),
+			'recursive' => 1))
+		);
+	//sacamos los datos de la operacion  al que pertenece la linea
+		//nos sirven en la vista para detallar campos
+		$operacion = $this->Transporte->Operacion->find('first', array(
+			'conditions' => array('Operacion.id' => $this->params['named']['from_id']),
+			'recursive' => 2,
+			'fields' => array(
+				'Operacion.id',
+				'Operacion.precio_compra')
+		));
+
+		$transporte = $this->Transporte->find('all');	
+		$this->set('transportes',$transporte);
+
+
 		if($this->request->is('post')):
 			if($this->Transporte->save($this->request->data) ):
 				$this->Session->setFlash('Línea de transporte guardada');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => $this->params['named']['from_action']));
+				$this->redirect(array('action'=>'index'));
 			endif;
 		endif;
 	}
