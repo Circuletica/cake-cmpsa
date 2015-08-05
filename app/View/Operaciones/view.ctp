@@ -75,9 +75,9 @@
 		echo "  <dt>Precio fijación:</dt>\n";
 		echo "  <dd>".$operacion['Operacion']['precio_fijacion'].
 			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
-		echo "  <dt>Precio factura:</dt>\n";
-		echo "  <dd>".$operacion['Operacion']['precio_compra'].
-			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+//		echo "  <dt>Precio factura:</dt>\n";
+//		echo "  <dd>".$operacion['Operacion']['precio_compra'].
+//			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
 		echo "  <dt>Diferencial:</dt>\n";
 		echo "  <dd>".$operacion['Contrato']['diferencial'].
 			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
