@@ -8,7 +8,8 @@ echo 'Proveedor: '.$proveedor."\n";
 echo "<p>\n";
 echo 'Calidad: '.$contrato['CalidadNombre']['nombre']."\n";
 echo "<p>\n";
-echo 'Bolsa: '.$contrato['CanalCompra']['nombre']."\n";
+echo 'Bolsa: '.$contrato['CanalCompra']['nombre'].
+	' ('.$contrato['Incoterm']['nombre'].")\n";
 echo "<p>\n";
 echo 'Peso total: '.$contrato['Contrato']['peso_comprado']."\n";
 echo "<p>\n";
@@ -66,9 +67,23 @@ echo $this->Form->input('opciones', array(
 	'label' => 'Opciones'
 	)
 );
-echo $this->Form->input('flete', array(
+if ($contrato['Incoterm']['si_flete']) {
+	echo $this->Form->input('flete', array(
+		'between' => '('.$contrato['CanalCompra']['divisa'].')',
+		'label' => 'Flete'
+		)
+	);
+}
+if ($contrato['Incoterm']['si_seguro']) {
+	echo $this->Form->input('seguro', array(
+		'between' => '('.$contrato['CanalCompra']['divisa'].')',
+		'label' => 'Seguro'
+		)
+	);
+}
+echo $this->Form->input('forfait', array(
 	'between' => '('.$contrato['CanalCompra']['divisa'].')',
-	'label' => 'Flete'
+	'label' => 'Forfait'
 	)
 );
 echo $this->Form->input('cambio_dolar_euro', array(

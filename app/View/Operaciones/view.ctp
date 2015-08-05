@@ -70,7 +70,7 @@
 		$mes = substr($fecha,5,2);
 		$anyo = substr($fecha,0,4);
 		$fecha_fijacion = $dia.'-'.$mes.'-'.$anyo;
-		echo "  <dt>Fecha pos. fijación:</dt>\n";
+		echo "  <dt>Fecha fijación:</dt>\n";
 		echo "  <dd>".$fecha_fijacion.'&nbsp;'."</dd>";
 		echo "  <dt>Precio fijación:</dt>\n";
 		echo "  <dd>".$operacion['Operacion']['precio_fijacion'].

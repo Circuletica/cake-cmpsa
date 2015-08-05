@@ -30,6 +30,9 @@ class OperacionesController extends AppController {
 				'Contrato.peso_comprado',
 				'CanalCompra.nombre',
 				'CanalCompra.divisa',
+				'Incoterm.nombre',
+				'Incoterm.si_flete',
+				'Incoterm.si_seguro',
 				'CalidadNombre.nombre')
 		));
 		$this->set('contrato',$contrato);

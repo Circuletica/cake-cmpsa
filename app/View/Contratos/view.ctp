@@ -29,17 +29,6 @@
 </div>
 	<div class='view'>
 	<?php
-	//mysql almacena la fecha en formato ymd
-	$fecha = $contrato['Contrato']['fecha_embarque'];
-	$dia = substr($fecha,8,2);
-	$mes = substr($fecha,5,2);
-	$anyo = substr($fecha,0,4);
-	$fecha_embarque = $dia.'-'.$mes.'-'.$anyo;
-	$fecha = $contrato['Contrato']['fecha_entrega'];
-	$dia = substr($fecha,8,2);
-	$mes = substr($fecha,5,2);
-	$anyo = substr($fecha,0,4);
-	$fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
 	echo "<dl>";
 	echo "  <dt>Referencia</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['referencia'].'&nbsp;'."</dd>";
@@ -54,7 +43,7 @@
 	echo "  <dt>Calidad</dt>\n";
 	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Lotes</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['lotes_contrato'].'&nbsp;'."</dd>";
+	echo "  <dd>".$contrato['Contrato']['lotes_contrato'].' ('.$posicion_bolsa.')&nbsp;'."</dd>";
 	echo "  <dt>Peso</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['peso_comprado'].' kg&nbsp;'."</dd>";
 	echo "  <table>\n";
@@ -83,8 +72,6 @@
 	echo "  <dd>".$contrato['Contrato']['diferencial']." ".$contrato['CanalCompra']['divisa']."</dd>";
 	echo "  <dt>Incoterm</dt>\n";
 	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
-	echo "  <dt>Posicion de bolsa</dt>\n";
-	echo "  <dd>".$posicion_bolsa.'&nbsp;'."</dd>";
 	echo "</dl>";?>
 	<div class="detallado">
 	<h3>Operaciones</h3>
