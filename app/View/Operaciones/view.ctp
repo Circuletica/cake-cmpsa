@@ -75,21 +75,34 @@
 		echo "  <dt>Precio fijación:</dt>\n";
 		echo "  <dd>".$operacion['Operacion']['precio_fijacion'].
 			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
-//		echo "  <dt>Precio factura:</dt>\n";
-//		echo "  <dd>".$operacion['Operacion']['precio_compra'].
-//			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
 		echo "  <dt>Diferencial:</dt>\n";
 		echo "  <dd>".$operacion['Contrato']['diferencial'].
 			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
-		if ($operacion['Operacion']['opciones'] != NULL):
+		if ($operacion['Operacion']['opciones'] != 0):
 			echo "  <dt>Opciones:</dt>\n";
 			echo "  <dd>".$operacion['Operacion']['opciones'].
 			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
 		endif;
+		if ($operacion['Contrato']['Incoterm']['si_flete']) {
+			echo "  <dt>Flete:</dt>\n";
+			echo "  <dd>".$operacion['Operacion']['flete'].
+				$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+		}
+		if ($operacion['Contrato']['Incoterm']['si_seguro']) {
+			echo "  <dt>Seguro:</dt>\n";
+			echo "  <dd>".$operacion['Operacion']['seguro'].
+				$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+		}
+		echo "  <dt>Precio $/Tm:</dt>\n";
+		echo "  <dd>".$operacion['PrecioOperacion']['precio_dolar_tonelada'].'$&nbsp;'."</dd>";
 		echo "  <dt>Cambio dolar/euro:</dt>\n";
 		echo "  <dd>".$operacion['Operacion']['cambio_dolar_euro'].'&nbsp;'."</dd>";
 		echo "  <dt>Precio €/Tm:</dt>\n";
 		echo "  <dd>".$operacion['PrecioOperacion']['precio_euro_tm'].'&nbsp;'."</dd>";
+		echo "  <dt>Forfait:</dt>\n";
+		echo "  <dd>".$operacion['Operacion']['forfait'].'€/Tm&nbsp;'."</dd>";
+		echo "  <dt>Precio €/Tm total:</dt>\n";
+		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_forfait_total'].'&nbsp;'."</dd>";
 		echo "</dl>";
 		echo "<table>";
 		echo $this->Html->tableHeaders(array('Asociado', 'Cantidad de embalajes', 'Peso'));

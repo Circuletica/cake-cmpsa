@@ -12,6 +12,10 @@ class Operacion extends AppModel {
 			'className' => 'PrecioOperacion',
 			'foreignKey' => 'id'
 		),
+		'PrecioTotalOperacion' => array(
+			'className' => 'PrecioTotalOperacion',
+			'foreignKey' => 'id'
+		),
 		'PesoOperacion' => array(
 			'className' => 'PesoOperacion',
 			'foreignKey' => 'id'

@@ -88,7 +88,7 @@ if ($operacion['Contrato']['Incoterm']['si_seguro']) {
 	);
 }
 echo $this->Form->input('forfait', array(
-	'between' => '('.$operacion['Contrato']['CanalCompra']['divisa'].')',
+	'between' => '(€/Tm)',
 	'label' => 'Forfait'
 	)
 );
