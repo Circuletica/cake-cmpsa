@@ -1,5 +1,5 @@
 
-<h2>Añadir Línea de Transporte a la Operación xxx<em></h2>
+<h2>Añadir Línea de Transporte a la Operación <?php echo $operacion['Operacion']['referencia'] ?><em></h2>
 <?php
 $this->Html->addCrumb('Línea de Transporte', array(
 'controller' => 'transportes',
@@ -194,11 +194,11 @@ $this->Html->addCrumb('Añadir Transporte', array(
 		<?php
 		echo $this->Form->input('MarcaAlmacen.nombre',array('label'=>'Marca'));
 		echo '<label>Nº embalajes</label>';
-		//echo $almacenaje['cantidad_cuenta'].' Kg';
+		echo $almacenaje['AlmacenajesTransporte']['cantidad_cuenta'].' Kg';
 		echo '<label>Cantidad Asegurada</label>';
-		//echo $almacenaje['cantidad_cuenta'].' Kg';
+		echo $almacenaje['cantidad_cuenta'].' Kg';
 		echo '<label>Precio de compra</label>';
-		//echo $operacion['Operacion']['precio_compra'];
+		echo $operacion['Operacion']['precio_compra'];
 
 	?>
 	</div>

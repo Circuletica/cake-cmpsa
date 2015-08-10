@@ -21,8 +21,14 @@ public function view($id = null) {
 	public function add() {
 		$this->set('puertos', $this->Transporte->Puerto->find('list')
 		);
-		$this->set('navieras', $this->Transporte->Naviera->find('list'));		
-		$this->set('agentes', $this->Transporte->Agente->find('list'));
+		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
+			'fields' => array('Naviera.id','Empresa.nombre'),
+			'recursive' => 1))
+		);
+		$this->set('agentes', $this->Transporte->Agente->find('list',array(
+			'fields' => array('Agente.id','Empresa.nombre'),
+			'recursive' => 1))
+		);
 		$this->set('almacenes', $this->Transporte->AlmacenesTransporte->Almacen->find('list', array(
 			'fields' => array('Almacen.id','Empresa.nombre'),
 			'recursive' => 1))
@@ -40,11 +46,22 @@ public function view($id = null) {
 			'recursive' => 2,
 			'fields' => array(
 				'Operacion.id',
-				'Operacion.precio_compra')
+				'Operacion.precio_compra',
+				'Operacion.referencia')
 		));
+		$this->set('operacion',$operacion);
 
 		$transporte = $this->Transporte->find('all');	
-		$this->set('transportes',$transporte);
+		$this->set('transporte',$transporte);
+
+		$almacenaje = $this->Transporte->AlmacenesTransporte->find('first', array(
+			'conditions' => array('Transporte.id' => $this->params['named']['from_id']),
+			'recursive' => 2,
+			'fields' => array(
+				'AlmacenesTransporte.cantidad_cuenta',
+				'AlmacenesTransporte.cuenta_almacen')
+		));
+		$this->set('almacenaje',$almacenaje);		
 
 
 		if($this->request->is('post')):
