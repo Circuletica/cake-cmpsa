@@ -38,7 +38,7 @@
     <th><?php echo $this->Paginator->sort('Contrato.fecha_entrega', 'Entrega')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('proveedor', 'Proveedor');?></th>
-    <th><?php echo $this->Paginator->sort('Embalaje.peso_embalaje', 'Peso')?></th>
+    <th><?php echo $this->Paginator->sort('PesoOperacion.cantidad_embalaje', 'Bultos')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
   <?php foreach($operaciones as $operacion): ?>
@@ -62,19 +62,10 @@
       <?php echo $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'];?>
     </td>
     <td>
-      <?php echo $operacion['Embalaje']['peso_embalaje'].' Kg';?>
+      <?php echo $operacion['PesoOperacion']['cantidad_embalaje']?>
     </td>
     <td>
-      <?php echo $this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$operacion['Operacion']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'));
-//  .' '.
-//      $this->Form->postLink(
-//	'<i class="fa fa-trash"></i>',
-//	array('action'=>'delete',$operacion['Operacion']['id']),
-//	array(
-//   'class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-//	  'confirm'=>'Realmente quiere borrar '.$operacion['Operacion']['referencia'].'?'
-//	)
-//      )
+      <?php echo $this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view_trafico',$operacion['Operacion']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'));
       ?>
     </td>
   </tr>
@@ -85,22 +76,7 @@
   </div>-->
 
   <div class="btabla">
-  <?php 
-//    if(isset($this->request->data['Search']['tipo_id'])){
-//     echo $this->Html->link(
-//	'<i class="fa fa-plus"></i> Añadir Operación',
-//	array(
-//	  'action'=>'add',
-//	  'tipo_id'=>$this->request->data['Search']['tipo_id']
-//	),array(
-// 'class'=>'botond','escape'=>false, 'title'=>'Añadir Operación'));
-//    } else {
-//    echo $this->Html->link(
-//	'<i class="fa fa-plus"></i> Añadir Operación',
-//	array('action'=>'add'),array('class'=>'botond','escape'=>false, 'title'=>'Añadir Operación'));
-//    }
-  ?>
-  </div>
+   </div>
 
   <?php echo $this->Paginator->counter(
     array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')

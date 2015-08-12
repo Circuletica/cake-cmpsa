@@ -8,7 +8,7 @@ class OperacionesController extends AppController {
 	);
 
 
-	public function index() {
+	public function index_trafico() {
 	$proveedores = $this->Operacion->Contrato->Proveedor->find('list', array(
 			'fields' => array('Proveedor.id','Empresa.nombre'),
 			'recursive' => 1
@@ -19,13 +19,15 @@ class OperacionesController extends AppController {
 		'recursive' => 1
 		)
 	);	
+	$this->loadModel('ContratoEmbalaje');
+
 	$this->set('proveedores', $proveedores);
 	$this->set('calidades', $calidades);
 	$this->set('operaciones', $this->paginate());
 
 	}
 
-public function view($id = null) {
+public function view_trafico($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada Operación/view ');
 			$this->redirect(array('action'=>'index'));
@@ -33,6 +35,20 @@ public function view($id = null) {
 		$operacion = $this->Operacion->find('first',array(
 			'conditions' => array('Operacion.id' => $id),
 			'recursive' => 3));
+
+		$this->loadModel('ContratoEmbalaje');
+		$embalaje = $this->ContratoEmbalaje->find(
+			'first',
+			array(
+				'conditions' => array(
+					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
+					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+				),
+				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
+			)
+		);
+		$this->set('embalaje', $embalaje);
+
 		$this->set('operacion',$operacion);
 		$this->loadModel('CalidadNombre');
 

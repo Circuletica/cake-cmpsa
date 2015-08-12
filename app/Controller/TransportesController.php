@@ -19,24 +19,35 @@ public function view($id = null) {
 	}
 
 	public function add() {
+
+		if($this->request->is('post')):
+			//al guardar la linea, se incluye a qué operacion pertenece
+			//debug($this->params['named']['from_id']);
+			$this->request->data['Transporte']['operacion_id'] = $this->params['named']['from_id'];
+			if($this->Transporte->save($this->request->data) ):
+				$this->Session->setFlash('Línea de transporte guardada');
+				$this->redirect(array('action'=>'index_trafico'));
+			endif;
+		endif;
+
 		$this->set('puertos', $this->Transporte->Puerto->find('list')
 		);
 		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
-			'fields' => array('Naviera.id','Empresa.nombre'),
+			'fields' => array('Naviera.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
 		$this->set('agentes', $this->Transporte->Agente->find('list',array(
-			'fields' => array('Agente.id','Empresa.nombre'),
+			'fields' => array('Agente.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
 		$this->set('almacenes', $this->Transporte->AlmacenesTransporte->Almacen->find('list', array(
-			'fields' => array('Almacen.id','Empresa.nombre'),
+			'fields' => array('Almacen.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
 		$this->set('almacenes_transportes', $this->Transporte->AlmacenesTransporte->Almacen->find('list'));
 		//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
-		$this->set('seguros', $this->Transporte->Seguro->Aseguradora->find('list', array(
-			'fields' => array('Aseguradora.id','Empresa.nombre'),
+		$this->set('aseguradoras', $this->Transporte->Aseguradora->find('list', array(
+			'fields' => array('Aseguradora.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
 	//sacamos los datos de la operacion  al que pertenece la linea
@@ -61,15 +72,9 @@ public function view($id = null) {
 				'AlmacenesTransporte.cantidad_cuenta',
 				'AlmacenesTransporte.cuenta_almacen')
 		));
-		$this->set('almacenaje',$almacenaje);		
+		$this->set('almacenajes',$almacenaje);		
 
 
-		if($this->request->is('post')):
-			if($this->Transporte->save($this->request->data) ):
-				$this->Session->setFlash('Línea de transporte guardada');
-				$this->redirect(array('action'=>'index'));
-			endif;
-		endif;
 	}
 
 	public function delete( $id = null) {

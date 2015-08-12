@@ -4,7 +4,9 @@
   <?php
     echo $this->Form->input('Search.referencia');
     echo $this->Form->input('Search.fecha', array('after'=>'aaaa o mm-aaaa'));
-    echo $this->Form->input('Search.contrato.referencia');
+    echo $this->Form->input('Search.contrato.referencia', array(
+      'label' => 'Referencia contrato',
+      'empty' => true));
     //echo $this->Form->input('Search.calidad_id');
     echo $this->Form->input('Search.calidad_id', array(
       'label' => 'Calidad',

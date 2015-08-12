@@ -1,10 +1,11 @@
 
-<h2>Modificar Línea de Transporte a la Operación xxx<em></h2>
+<h2>Modificar Línea de Transporte: Operación <?php echo $operacion['Operacion']['referencia'] ?><em></h2>
 <?php
-$this->Html->addCrumb('Línea de Transporte', array(
-'controller' => 'transportes',
-'action' => 'view')
-);
+	$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
+	'controller'=>'operacion',
+	'action'=>'view_trafico',
+	$operacion['Operacion']['id']
+));
 $this->Html->addCrumb('Modificar Transporte', array(
 'controller' => 'transportes',
 'action' => 'edit')
@@ -14,9 +15,13 @@ $this->Html->addCrumb('Modificar Transporte', array(
 <?php
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte', array('action' => 'edit'));
+	?>
+	<div class="col2">
+	<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
 	?>
+	</div>
 <div class="linea">
 	<div class="columna3">
 	<?php
@@ -62,6 +67,7 @@ $this->Html->addCrumb('Modificar Transporte', array(
 	'label' => 'Fecha vencimiento seguro',
 	'empty' => ' ')
 	);
+	echo "<br><br>";
 	echo $this->Form->input('fecha_reclamacion', array(
 	'dateFormat' => 'DMY',
 	'timeFormat' => null ,
@@ -80,11 +86,11 @@ $this->Html->addCrumb('Modificar Transporte', array(
 	'label' => 'Fecha reclamacion factura',
 	'empty' => ' ')
 	);
-	echo $this->Form->input('flete');
-	echo $this->Form->input('forfait');
 	?>
+	<br><br>
 	</div>
 </div>
+<div class="columna3">
 	<div class="formuboton">
 	<ul>
 		<li>
@@ -146,12 +152,14 @@ $this->Html->addCrumb('Modificar Transporte', array(
 		</li>
 	</ul>
 	</div>
+</div>
 	<?php
-	echo $this->Form->input('observaciones', array('label'=>'Observaciones transporte'));
+	echo $this->Form->input('observaciones', array('label'=>'Observaciones del transporte'));
 
 	?>
-<div class="detallado">
+<div class="detalladoform">
 	<h3>Almacén</h3>
+	<div  class="col2">
 					<div class="formuboton">
 					<ul>
 						<li><?php
@@ -169,21 +177,39 @@ $this->Html->addCrumb('Modificar Transporte', array(
 						</div>
 						</li>
 					</ul>
-				</div>
+					</div>
 		<?php
 		echo $this->Form->input('cuenta_almacen',array('label'=>'Cuenta corriente / Referencia almacén'));
 		echo $this->Form->input('cantidad_cuenta',array('label'=>'Cantidad embalajes en cuenta'));
 		echo $this->Form->input('MarcaAlmacen.nombre',array('label'=>'Marca'));
 	?> 
+	</div>
 </div>
-<div class="detallado">
+
+<div class="detalladoform">
 <h3>Aseguradora</h3>
-		<?php
-		echo $this->Form->input('aseguradora_id',array('label'=>'Nombre aseguradora'));
-		?>
+	<div class="columna3">	
+		<div class="formuboton">
+			<ul>
+			<li><?php
+			echo $this->Form->input('aseguradora_id',array('label'=>'Nombre aseguradora'));
+			?>
+			</li>
+			<li>
+			<div class="enlinea">
+				<?php            
+				echo $this->Html->link('<i class="fa fa-plus"></i> Aseguradora', array(
+				'controller'=>'aseguradoras',
+				'action'=>'add'),array("class"=>"botond", 'escape' => false)
+				);
+				?>
+			</div>
+			</li>
+			</ul>
+		</div>
 		<div class="linea">
 		<?php
-		echo $this->Form->input('Seguro.fecha_seguro', array(
+		echo $this->Form->input('Transporte.fecha_seguro', array(
 		'dateFormat' => 'DMY',
 		'timeFormat' => null ,
 		'label' => 'Fecha del seguro',
@@ -192,15 +218,10 @@ $this->Html->addCrumb('Modificar Transporte', array(
 		?>
 		</div>
 		<?php
-		echo $this->Form->input('MarcaAlmacen.nombre',array('label'=>'Marca'));
-		echo '<label>Nº embalajes</label>';
-		//echo $almacenaje['cantidad_cuenta'].' Kg';
-		echo '<label>Cantidad Asegurada</label>';
-		//echo $almacenaje['cantidad_cuenta'].' Kg';
 		echo '<label>Precio de compra</label>';
-		//echo $operacion['Operacion']['precio_compra'];
-
-	?>
+		echo $operacion['Operacion']['precio_compra'] .'€';
+		?>
+		</div>
 	</div>
 	<?php	echo $this->Form->end('Modificar Línea Transporte'); ?>
 </fieldset>

@@ -3,8 +3,8 @@
 	'action'=>'index'
 	));
 	$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-	'controller'=>'operacion',
-	'action'=>'view',
+	'controller'=>'operaciones',
+	'action'=>'view_trafico',
 	$operacion['Operacion']['id']
 ));
 ?><div class="acciones">
@@ -95,18 +95,16 @@
 	echo "<dd>";
 	echo $operacion['Embalaje']['peso_embalaje'].' Kg';
 	echo "</dd>";
-	echo "  <dt>Precio de compra</dt>\n";
+		echo "  <dt>Peso:</dt>\n";
 	echo "<dd>";
-	echo $operacion['Operacion']['precio_compra'];
-	echo "</dd>";
-	echo "  <dt>Precio fijación </dt>\n";
-	echo "<dd>";
-	echo $operacion['Operacion']['precio_fijacion'];
-	echo "</dd>";
-	echo "  <dt>Embalaje por adjudicar - FALSE </dt>\n";
-	echo "<dd>";
-	//echo $operacion['Operacion']['precio_fijacion'];
-	echo "</dd>";
+	echo "  <dd>".$operacion['PesoOperacion']['peso'].'kg&nbsp;'."</dd>";
+	echo "  <dt>Embalaje:</dt>\n";
+	echo "  <dd>".
+		$operacion['PesoOperacion']['cantidad_embalaje'].' x '.
+		$embalaje['Embalaje']['nombre'].
+		' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
+	echo "  <dt>Precio €/Tm total:</dt>\n";
+	//echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_forfait_total'].'&nbsp;'."</dd>";
 	echo "</dl>";?>
 	<!--Se hace un index de la Linea de contratos-->
 
@@ -125,14 +123,14 @@
 			$linea['nombre_vehiculo'],
 			$linea['matricula'],
 			$linea['fecha_carga'],
-			$linea['embalaje_id'],
-			$linea['seguro_id'],
+			$linea['Operacion']['embalaje_id'],
+			$linea['aseguradora_id'],
 			//$linea['referencia_almacen'],
-			$this->Html->link('<i class="fa fa-info-circle"></i>', array(
-				'controller'=>'operaciones',
+			$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array(
+				'controller'=>'transportes',
 				'action' => 'view',
 				$linea['id'],
-              			'from_controller'=>'operaciones',
+              			'from_controller'=>'transportes',
               			'from_id'=>$operacion['Operacion']['id']),array(
               			'class'=>'botond','escape' => false,'title'=>'Detalles'))
 			));
@@ -140,6 +138,7 @@
 		$i++;
 	endforeach;
 ?>	</table>
+
 		<div class="btabla">
 		<?php
 		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Línea',array(
@@ -150,6 +149,26 @@
 		 array('escape' => false,'title'=>'Añadir línea de transporte'));
 		?>
 		</div>
+	</div>
+	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
+	<div class="detallado">
+	<h3>Asociados</h3>
+	<table>
+		<?php
+		echo $this->Html->tableHeaders(array('Cuenta','Asociado', 'Cantidad de embalajes', 'Peso'));
+		foreach ($operacion['AsociadoOperacion'] as $linea_asociado):
+			$peso_asociado = $linea_asociado['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+			echo $this->Html->tableCells(array(
+				//$linea_asociado['Asociado']['Empresa']['codigo_contable'],
+			//	$linea_asociado['Asociado']['Empresa']['nombre_corto'],
+				$linea_asociado['cantidad_embalaje_asociado'],
+				$peso_asociado.'kg'
+				)
+			);
+		endforeach;
+		?>
+		</table>		
+	</div>
 	</div>
 </div>
 

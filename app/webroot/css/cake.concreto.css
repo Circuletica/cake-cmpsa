@@ -82,7 +82,7 @@ color: #fff;
 div.detallado {
 	/*float:right;*/
 	margin-top: 20px;
-    width:90%;
+    width:100%;
 	border-top: 2px solid rgba(102, 102, 102, 0.92);
 }
 div.detallado h3{
@@ -94,12 +94,13 @@ div.detallado h3{
 div.detalladoform{
 	/*float:right;*/
 	margin-top: 20px;
-   /* width:90%;*/
-	border-top: 2px solid rgba(102, 102, 102, 0.92);
+	border-top: 3px dotted #2C6877;
 }
 div.detalladoform h3{
 	padding-top:20px;
 	color:#2C6877;/*Retocado para div.detallado*/
+	font-size: 140%;
+	font-weight: bold;
 }
 /**Bajo tabla**/
 div .btabla{

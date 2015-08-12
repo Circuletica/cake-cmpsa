@@ -97,11 +97,22 @@ class ContratosController extends AppController {
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$this->loadModel('CalidadNombre');
 		//mysql almacena la fecha en formato ymd
-		$fecha = $contrato['Contrato']['posicion_bolsa'];
+		$fecha = $contrato['Contrato']['fecha_embarque'];
 		$dia = substr($fecha,8,2);
 		$mes = substr($fecha,5,2);
 		$anyo = substr($fecha,0,4);
-		$this->set('posicion_bolsa', $mes.'-'.$anyo);
+		$this->set('fecha_embarque', $dia.'-'.$mes.'-'.$anyo);
+		$fecha = $contrato['Contrato']['fecha_entrega'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$this->set('fecha_entrega', $dia.'-'.$mes.'-'.$anyo);
+		$fecha = $contrato['Contrato']['posicion_bolsa'];
+		//sacamos el nombre del mes en castellano
+		setlocale(LC_TIME, "es_ES.UTF-8");
+		$mes = strftime("%B", strtotime($fecha));
+		$anyo = substr($fecha,0,4);
+		$this->set('posicion_bolsa', $mes.' '.$anyo);
 	}
 	public function edit($id = null) {
 		if (!$id) {

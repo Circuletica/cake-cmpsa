@@ -2,9 +2,9 @@
 class Transporte extends AppModel {
 	public $recursive = 3;
 	public $belongsTo = array(
-			'Seguro' => array(
-			'className' => 'Seguro',
-			'foreignKey' => 'seguro_id'),
+			'Aseguradora' => array(
+			'className' => 'Aseguradora',
+			'foreignKey' => 'aseguradora_id'),
 			'Operacion' => array(
 			'className' => 'Operacion',
 			'foreignKey' => 'operacion_id'),
@@ -25,9 +25,7 @@ class Transporte extends AppModel {
 			'foreignKey' => 'transporte_id'),
 		'EmbalajeTransporte' => array(
 			'className' => 'EmbalajeTransporte',
-			'foreignKey' => 'transporte_id'),
-		'Seguro' => array(
-			'className'=>'Seguro')
+			'foreignKey' => 'transporte_id')
 	);
   	public $validate = array(
     'referencia' => array(
