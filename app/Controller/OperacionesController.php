@@ -2,11 +2,12 @@
 class OperacionesController extends AppController {
 	public $scaffold = 'admin';
 	public $paginate = array(
-		'order' => array('referencia' => 'asc')
+		'order' => array('referencia' => 'asc'),
+		'recursive' => 3
 	);
 
 	public function index() {
-		$this->set('lineas', $this->paginate());
+		$this->set('operaciones', $this->paginate());
 	}
 
 	public function add() {
@@ -36,6 +37,7 @@ class OperacionesController extends AppController {
 				'CalidadNombre.nombre')
 		));
 		$this->set('contrato',$contrato);
+		$this->set('divisa', $contrato['CanalCompra']['divisa']);
 		$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find('all', array(
 			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
 			'fields' => array(
@@ -79,13 +81,23 @@ class OperacionesController extends AppController {
 		//solo para mostrar el proveedor a nivel informativo
 		$this->set('proveedor',$contrato['Proveedor']['Empresa']['nombre']);
 		//a quienes van asociadas las lineas de contrato
-		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('list', array(
-			'fields' => array('Asociado.id','Empresa.nombre_corto'),
+		//$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('list', array(
+		//	'fields' => array('Asociado.id','Empresa.nombre_corto'),
+		//	'recursive' => 1
+		//	)
+		//);
+		//$this->set('asociados', $asociados);
+		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
+			'fields' => array('Asociado.id','Empresa.codigo_contable','Empresa.nombre_corto'),
+			'order' => array('Empresa.codigo_contable' => 'ASC'),
 			'recursive' => 1
 			)
 		);
+		//reindexamos los asociados por codigo contable
+		$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
+		ksort($asociados);
 		$this->set('asociados', $asociados);
-
+	
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué contrato pertenece
 			$this->request->data['Operacion']['contrato_id'] = $this->params['named']['from_id'];
@@ -127,13 +139,23 @@ class OperacionesController extends AppController {
 			)
 		);
 		$this->set('operacion', $operacion);
-		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('list', array(
-			'fields' => array('Asociado.id','Empresa.nombre_corto'),
-			'order' => array('Empresa.nombre_corto' => 'ASC'),
+//		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('list', array(
+//			'fields' => array('Asociado.id','Empresa.nombre_corto'),
+//			'order' => array('Empresa.codigo_contable' => 'ASC'),
+//			'recursive' => 1
+//			)
+//		);
+		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
+			'fields' => array('Asociado.id','Empresa.codigo_contable','Empresa.nombre_corto'),
+			'order' => array('Empresa.codigo_contable' => 'ASC'),
 			'recursive' => 1
 			)
 		);
+		//reindexamos los asociados por codigo contable
+		$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
+		ksort($asociados);
 		$this->set('asociados', $asociados);
+		$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
 		//los que ya tienen embalajes en la operacion
 		$asociados_operacion = $operacion['AsociadoOperacion'];
 		//queremos el id del socio como index del array
@@ -210,7 +232,24 @@ class OperacionesController extends AppController {
 			)
 		);
 		$this->set('embalaje', $embalaje);
-
+		$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
+		foreach ($operacion['AsociadoOperacion'] as $linea):
+			$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+			$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
+			$lineas_reparto[] = array(
+				'Código' => $codigo,
+				'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
+				'Cantidad' => $linea['cantidad_embalaje_asociado'],
+				'Peso' => $peso
+			);	
+		endforeach;
+		$columnas_reparto = array_keys($lineas_reparto[0]);
+		//indexamos el array por el codigo de asociado
+		$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
+		//se ordena por codigo ascendente
+		ksort($lineas_reparto);
+		$this->set('columnas_reparto',$columnas_reparto);
+		$this->set('lineas_reparto',$lineas_reparto);
 	}
 
 	public function delete($id = null) {

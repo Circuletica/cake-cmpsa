@@ -1,12 +1,12 @@
-<?php $this->Html->addCrumb('Contratos', array(
-	'controller'=>'contratos',
+<?php $this->Html->addCrumb('Operaciones', array(
+	'controller'=>'operaciones',
 	'action'=>'index'
 	));
-	$this->Html->addCrumb('Contrato '.$operacion['Contrato']['referencia'], array(
-		'controller'=>'contratos',
-		'action'=>'view',
-		$operacion['Contrato']['id']
-	));
+//	$this->Html->addCrumb('Contrato '.$operacion['Contrato']['referencia'], array(
+//		'controller'=>'contratos',
+//		'action'=>'view',
+//		$operacion['Contrato']['id']
+//	));
 ?>
 <h2>Detalles Operacion <?php echo $operacion['Operacion']['referencia']?></h2>
 <div class="actions">
@@ -46,7 +46,14 @@
 	<?php
 		echo "<dl>";
 		echo "  <dt>Referencia Contrato:</dt>\n";
-		echo "  <dd>".$operacion['Contrato']['referencia'].'&nbsp;'."</dd>";
+		//echo "  <dd>".$operacion['Contrato']['referencia'].'&nbsp;'."</dd>";
+		echo "<dd>";
+		echo $this->html->link($operacion['Contrato']['referencia'], array(
+			'controller' => 'contratos',
+			'action' => 'view',
+			$operacion['Contrato']['id'])
+		);
+		echo "  </dd>";
 		echo "  <dt>Proveedor:</dt>\n";
 		echo "<dd>";
 		echo $this->html->link($operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'], array(
@@ -73,45 +80,47 @@
 		echo "  <dt>Fecha fijación:</dt>\n";
 		echo "  <dd>".$fecha_fijacion.'&nbsp;'."</dd>";
 		echo "  <dt>Precio fijación:</dt>\n";
-		echo "  <dd>".$operacion['Operacion']['precio_fijacion'].
-			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+		echo "  <dd>".$operacion['Operacion']['precio_fijacion']
+			.$divisa
+			.' (factura: '.$operacion['Operacion']['precio_compra'].$divisa.')'
+			.'&nbsp;'."</dd>";
 		echo "  <dt>Diferencial:</dt>\n";
-		echo "  <dd>".$operacion['Contrato']['diferencial'].
-			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
-		if ($operacion['Operacion']['opciones'] != 0):
+		echo "  <dd>".$operacion['Contrato']['diferencial'].$divisa.'&nbsp;'."</dd>";
+		if ($operacion['Operacion']['opciones'] != 0){
 			echo "  <dt>Opciones:</dt>\n";
-			echo "  <dd>".$operacion['Operacion']['opciones'].
-			$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
-		endif;
-		if ($operacion['Contrato']['Incoterm']['si_flete']) {
-			echo "  <dt>Flete:</dt>\n";
-			echo "  <dd>".$operacion['Operacion']['flete'].
-				$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
-		}
-		if ($operacion['Contrato']['Incoterm']['si_seguro']) {
-			echo "  <dt>Seguro:</dt>\n";
-			echo "  <dd>".$operacion['Operacion']['seguro'].
-				$operacion['Contrato']['CanalCompra']['divisa'].'&nbsp;'."</dd>";
+			echo "  <dd>".$operacion['Operacion']['opciones'].$divisa.'&nbsp;'."</dd>";
 		}
 		echo "  <dt>Precio $/Tm:</dt>\n";
-		echo "  <dd>".$operacion['PrecioOperacion']['precio_dolar_tonelada'].'$&nbsp;'."</dd>";
+		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_dolar_tonelada'].'$/Tm&nbsp;'."</dd>";
+		if ($operacion['Contrato']['Incoterm']['si_flete']) {
+			echo "  <dt>Flete:</dt>\n";
+			echo "  <dd>".$operacion['Operacion']['flete'].'$/Tm&nbsp;'."</dd>";
+		}
 		echo "  <dt>Cambio dolar/euro:</dt>\n";
 		echo "  <dd>".$operacion['Operacion']['cambio_dolar_euro'].'&nbsp;'."</dd>";
 		echo "  <dt>Precio €/Tm:</dt>\n";
-		echo "  <dd>".$operacion['PrecioOperacion']['precio_euro_tm'].'&nbsp;'."</dd>";
+		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_tonelada'].'€/Tm&nbsp;'."</dd>";
+		if ($operacion['Contrato']['Incoterm']['si_seguro']) {
+			echo "  <dt>Seguro:</dt>\n";
+			echo "  <dd>".$operacion['Operacion']['seguro'].'%'
+				.' ('.$operacion['PrecioTotalOperacion']['seguro_euro_tonelada'].'€/Tm)'
+				.'&nbsp;'."</dd>";
+		}
 		echo "  <dt>Forfait:</dt>\n";
 		echo "  <dd>".$operacion['Operacion']['forfait'].'€/Tm&nbsp;'."</dd>";
-		echo "  <dt>Precio €/Tm total:</dt>\n";
-		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_forfait_total'].'&nbsp;'."</dd>";
+		echo "  <dt>Precio €/kg estimado:</dt>\n";
+		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
 		echo "</dl>";
+
+		//la tabla con el reparto de sacos para los asociados
 		echo "<table>";
-		echo $this->Html->tableHeaders(array('Asociado', 'Cantidad de embalajes', 'Peso'));
-		foreach ($operacion['AsociadoOperacion'] as $linea_asociado):
-			$peso_asociado = $linea_asociado['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+		echo $this->Html->tableHeaders($columnas_reparto);
+		foreach ($lineas_reparto as $codigo => $linea_reparto):
 			echo $this->Html->tableCells(array(
-				$linea_asociado['Asociado']['Empresa']['nombre_corto'],
-				$linea_asociado['cantidad_embalaje_asociado'],
-				$peso_asociado.'kg'
+				$codigo,
+				$linea_reparto['Nombre'],
+				$linea_reparto['Cantidad'],
+				$linea_reparto['Peso'],
 				)
 			);
 		endforeach;

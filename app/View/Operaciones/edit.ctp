@@ -26,11 +26,16 @@ echo $this->Form->input('referencia');
 //);
 //necesitamos un array con la cantidad asignada a cada socio
 echo "<table>";
-foreach ($asociados as $id => $asociado):
+//foreach ($asociados as $id => $asociado):
+foreach ($asociados as $codigo => $asociado):
 	echo "<tr>";
-	echo "<td>".$asociado."</td>\n";
 	echo "<td>";
-	echo $this->Form->input('CantidadAsociado.'.$id, array(
+	echo substr($codigo,-2);
+	echo "</td>\n";
+	echo "<td>".$asociado['Empresa']['nombre_corto']."</td>\n";
+	echo "<td>";
+	//echo $this->Form->input('CantidadAsociado.'.$id, array(
+	echo $this->Form->input('CantidadAsociado.'.$asociado['Asociado']['id'], array(
 		'label' => ''
 		)
 	);
@@ -60,29 +65,29 @@ echo $this->Form->input('fecha_pos_fijacion', array(
 );
 		echo "</div>\n";
 echo $this->Form->input('precio_fijacion', array(
-	'between' => '('.$operacion['Contrato']['CanalCompra']['divisa'].')'
+	'between' => '('.$divisa.')'
 	)
 );
 echo $this->Form->input('precio_compra', array(
-	'between' => '('.$operacion['Contrato']['CanalCompra']['divisa'].')',
+	'between' => '('.$divisa.')',
 	'label' => 'Precio factura'
 	)
 );
 echo $this->Form->input('opciones', array(
-	'between' => '('.$operacion['Contrato']['CanalCompra']['divisa'].')',
+	'between' => '('.$divisa.')',
 	'label' => 'Opciones'
 	)
 );
 if ($operacion['Contrato']['Incoterm']['si_flete']) {
 	echo $this->Form->input('flete', array(
-		'between' => '('.$operacion['Contrato']['CanalCompra']['divisa'].')',
+		'between' => '(€/Tm)',
 		'label' => 'Flete'
 		)
 	);
 }
 if ($operacion['Contrato']['Incoterm']['si_seguro']) {
 	echo $this->Form->input('seguro', array(
-		'between' => '('.$operacion['Contrato']['CanalCompra']['divisa'].')',
+		'between' => '(%)',
 		'label' => 'Seguro'
 		)
 	);
