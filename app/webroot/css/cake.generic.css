@@ -89,11 +89,13 @@ p {
 /** Layout **/
 #container {
 	text-align: left;
+
 }
 
 #header{
 	padding: 10px 20px;
-}
+	width: 1280px;
+ 	margin: 0 auto;}
 #header h1 {
 	/*line-height:30px;*/
 	background: #637A91 url('../img/grano.icon.png') no-repeat left;
@@ -117,49 +119,52 @@ p {
 	background: #fff;
 	clear: both;
 	color: #333;
-	padding: 0px 20px 40px 20px;
+	/*padding: 0px 20px 40px 20px; Anterior*/
+	padding: 0px 40px 40px 40px;
 	overflow: auto;
+	width: 1280px;
+ 	margin: 0 auto;
 	/*border: 1px solid; /*Borde pestaña y caja*/
 }
 #footer {
+	width: 1280px;
+ 	margin: 0 auto;
 	clear: both;
 	padding: 0px 20px 0px 10px;
 }
 #header a, {			/*Se elimina footer a*/
 	color: #fff;
 }
-#cake-powered {
+/*#cake-powered {
 	float: left;
 
-}
+}*/
 
 /** containers **/
 div.menuheader{
 float: right;
 margin:0px;
-width: 70%;
-}
-div.menufooter{
-/*float: right;*/
-margin: 0px 20px;
-/*width: 60%;*/
+/*width: 70%; Se cambia*/	
 }
 
 div.form,
 div.index,
 div.view {
 	float:right;
-	width:76%;
 	border-left: 2px solid rgba(102, 102, 102, 0.92);
-	padding:1% 2%;
+/*	width:76%;
+	padding:1% 2%;*/
+
+	width: 79%;
+	padding: 1% 0% 8% 2%;
 }
 div.actions {
 	float:left;
-	width:16%;
-	padding:1%;
+	width:17%;
+	padding:1% 0% 2%;
 	border: 5px;
    /* height: 90px;*/
-    margin: 5px;
+   /* margin: 5px;*/
     
 }
 div.actions h3 {
@@ -273,7 +278,7 @@ table td.actions a {
 dl {
 	line-height: 2em;
 	margin: 0em 0em;
-	width: 90%;
+	/*width: 90%;*/
 	/*width:100%;*/
 }
 dl dd:nth-child(4n+2),

@@ -25,7 +25,7 @@
 			'action'=>'delete',
 			$transporte['Transporte']['id']),array(
 			'escape'=>false, 'title'=> 'Borrar Transporte',
-			'confirm'=>'¿Realmente quiere borrar con id'.$transporte['Transporte']['id'].'?')
+			'confirm'=>'¿Realmente quiere borrar con BL/Matrícula '.$transporte['Transporte']['matricula'].'?')
 		);
 	?>
 	</li>

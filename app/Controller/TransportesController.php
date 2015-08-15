@@ -81,15 +81,17 @@ public function view($id = null) {
 	}
 
 	public function delete( $id = null) {
-		if (!$id or $this->request->is('get')) :
+		if (!$id or $this->request->is('post')) :
     			throw new MethodNotAllowedException();
-			//$this->Session->setFlash('URL mal formado');
-			//$this->redirect(array('action'=>'index'));
 		endif;
-		if ($this->Operacion->delete($id)):
-			$this->Session->setFlash('Operación borrada');
-			$this->redirect(array('action'=>'index'));
+		if ($this->Transporte->delete($id)):
+			$this->Session->setFlash('Línea de Transporte borrada');
+			$this->redirect(array(
+					'controller' => 'operaciones',
+					'action' => 'view_trafico',
+					$this->params['named']['from_id']));
 		endif;
+
 	}
 
 	public function edit( $id = null) {

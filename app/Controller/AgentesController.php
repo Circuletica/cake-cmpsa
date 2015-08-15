@@ -3,11 +3,9 @@ class AgentesController extends AppController {
 	public $paginate = array(
 		'order' => array('Empresa.nombre' => 'asc')
 	);
-
 	public function index() {
 		$this->set('empresas', $this->paginate());
 	}
-
 	public function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado Agente/view ');
@@ -24,7 +22,6 @@ class AgentesController extends AppController {
 		$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
 		$this->set('iban_bancaria',$iban_bancaria);
 	}
-
 	public function add() {
 		$this->set('paises', $this->Agente->Empresa->Pais->find('list'));
 		if($this->request->is('post')):
@@ -46,7 +43,6 @@ class AgentesController extends AppController {
 			endif;
 		endif;
 	}
-
 	public function delete( $id = null) {
 		if (!$id or $this->request->is('get')) :
     			throw new MethodNotAllowedException();
@@ -58,7 +54,6 @@ class AgentesController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}
-
 	public function edit( $id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');

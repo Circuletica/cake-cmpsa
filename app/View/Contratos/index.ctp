@@ -34,10 +34,11 @@
 	foreach($contratos as $contrato):
 		//mysql almacena la fecha en formato ymd
 		$fecha = $contrato['Contrato']['posicion_bolsa'];
-		$dia = substr($fecha,8,2);
-		$mes = substr($fecha,5,2);
+		//sacamos el nombre del mes en castellano
+		setlocale(LC_TIME, "es_ES.UTF-8");
+		$mes = strftime("%B", strtotime($fecha));
 		$anyo = substr($fecha,0,4);
-		$posicion_bolsa = $mes.'-'.$anyo;
+		$posicion_bolsa = $mes.' '.$anyo;
 		echo $this->Html->tableCells(array(
 			//$contrato['Contrato']['id'],
 			$contrato['Contrato']['referencia'],
