@@ -274,6 +274,7 @@ dl {
 	line-height: 2em;
 	margin: 0em 0em;
 	width: 90%;
+	/*width:100%;*/
 }
 dl dd:nth-child(4n+2),
 dl dt:nth-child(4n+1) {

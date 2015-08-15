@@ -4,7 +4,7 @@
 	'action'=>'view_trafico',
 	$transporte['Operacion']['id']
 	));
-	$this->Html->addCrumb('Línea Transporte '.$transporte['Transporte']['id'], array(
+	$this->Html->addCrumb('Línea Transporte ', array(
 	'controller' => 'transportes',
 	'action' => 'add')
 	);
@@ -41,83 +41,32 @@
 </div>
 
 	<div class='view'>
-	<?php
-	echo "<dl>";
+	<dl><?php
 		echo "  <dt>Operación</dt>\n";
-		echo "<dd>";
-		echo $this->Html->link($transporte['Operacion']['referencia'], array(
+			echo "<dd>";
+			echo $this->Html->link($transporte['Operacion']['referencia'], array(
 			'controller' => 'operaciones',
 			'action' => 'view_trafico',
 			$transporte['Operacion']['id'])
-		);
+			);
+			echo "</dd>";
 		echo "  <dt>Contrato</dt>\n";
-		echo "<dd>";
-		echo $this->Html->link($transporte['Operacion']['Contrato']['referencia'], array(
+			echo "<dd>";
+			echo $this->Html->link($transporte['Operacion']['Contrato']['referencia'], array(
 			'controller' => 'contratos',
 			'action' => 'view',
 			$transporte['Operacion']['Contrato']['id'])
-		);
-		echo "</dd>";
-
-	echo "<dl>";
-		echo "</dd>";
+			);
+			echo "</dd>";
 		echo "  <dt>Nombre del transporte</dt>\n";
 		echo "<dd>";
-		echo $transporte['Transporte']['nombre_vehiculo'].'&nbsp;';
+			echo $transporte['Transporte']['nombre_vehiculo'].'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>BL/Matrícula</dt>\n";
 		echo "<dd>";
-		echo $transporte['Transporte']['matricula'].'&nbsp;';
+			echo $transporte['Transporte']['matricula'].'&nbsp;';
 		echo "</dd>";
-		echo "  <dt>Fecha de carga</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_carga'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Fecha de llegada</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_llegada'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Fecha de pago</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_pago'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Fecha de llegada</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_llegada'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Fecha de pago</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_pago'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Fecha de envío documentación</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_enviodoc'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Fecha de entrada mercancía</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_entradamerc'].'&nbsp;';
-		echo "</dd>";
-			echo "  <dt>Fecha despacho operación</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_despacho_op'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Fecha vencimiento seguro</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_vencimiento_seg'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Fecha de reclamación</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_reclamacion'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Fecha límite de retirada</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_limite_retirada'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Fecha reclamación factura</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['fecha_reclamacion_factura'].'&nbsp;';
-		echo "</dd>";
-		echo "  <dt>Puerto destino</dt>\n";
+				echo "  <dt>Puerto destino</dt>\n";
 		echo "<dd>";
 		echo $this->Html->link( $transporte['Puerto']['nombre'], array(
 			'controller' => 'puertos',
@@ -140,19 +89,83 @@
 			$transporte['Agente']['id'])
 		);
 		echo "</dd>";
+		echo "  <dt>Observaciones</dt>\n";
+		echo "<dd>";
+		echo $transporte['Transporte']['observaciones'].'&nbsp;';?>
+		</dd>
+	<br>
+	<h3>Fechas</h3>
+	<?php
+		echo "  <dt>Carga mercancía</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_carga'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Fecha de llegada</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_llegada'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Pago</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_pago'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Envío documentación</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_enviodoc'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Entrada mercancía</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_entradamerc'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Despacho operación</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_despacho_op'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Vencimiento seguro</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_vencimiento_seg'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Fecha de reclamación</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_reclamacion'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Límite de retirada</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_limite_retirada'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Reclamación factura</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_reclamacion_factura'].'&nbsp;';
+		echo "</dd>";
 
-
-
-	echo "</dl>";?>
+?>	</dl>
+	<br>
+	<h3>Seguro</h3>
+	<dl><?php
+		echo "  <dt>Aseguradora</dt>\n";
+		echo "<dd>";
+			echo $transporte['Aseguradora']['Empresa']['nombre_corto'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Fecha del seguro</dt>\n";
+		echo "<dd>";
+			echo $transporte['Transporte']['fecha_seguro'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Precio del seguro</dt>\n";
+		echo "<dd>";
+		echo $transporte['Transporte']['fecha_seguro'].'&nbsp;';
+		echo "</dd>";
+	?>		
+</dl>
 	<div class="detallado">
+
 	<h3>Almacenes</h3>
 
 	<table>
 <?php
-	echo $this->Html->tableHeaders(array('Cuenta Corriente/Referencia','Cantidad', 'Marca','Acciones'));
+	echo $this->Html->tableHeaders(array('Cuenta Corriente/Referencia','Nombre', 'Cantidad', 'Marca','Acciones'));
 	foreach($transporte['AlmacenesTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['cuenta_almacen'],
+			$linea['almacen_id'],
 			$linea['cantidad_cuenta'],
 			$linea['MarcaAlmacen']['nombre'],			//$linea['referencia_almacen'],
 			$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array(
@@ -173,8 +186,18 @@
 						'confirm' => '¿Seguro que quieres borrar a '.$transporte['Transporte']['referencia'].'?')
 				)
 			));
-	endforeach;
-?>	</table>
+	endforeach;?>
+	</table>
+	<div class="btabla">
+		<?php
+		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Cuenta Corriente',array(
+		'controller' => 'almacenes_transportes',
+		'action' => 'add',
+		'from_controller' => 'trasportes',
+		'from_id' => $transporte['Transporte']['id']),
+		 array('escape' => false,'title'=>'Añadir cuenta corriente almacén'));
+		?>
 	</div>
+	</div>
+	
 </div>
-

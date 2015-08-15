@@ -1,6 +1,6 @@
 <?php $this->Html->addCrumb('Operaciones', array(
 	'controller'=>'operaciones',
-	'action'=>'index'
+	'action'=>'index_trafico'
 	));
 	$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
 	'controller'=>'operaciones',
@@ -132,7 +132,7 @@
 				$linea['id'],
               			'from_controller'=>'transportes',
               			'from_id'=>$operacion['Operacion']['id']),array(
-              			'class'=>'botond','escape' => false,'title'=>'Detalles'))
+              			'class'=>'boton','escape' => false,'title'=>'Detalles'))
 			));
 		//numero de la línea siguiente
 		$i++;

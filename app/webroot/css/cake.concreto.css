@@ -82,7 +82,7 @@ color: #fff;
 div.detallado {
 	/*float:right;*/
 	margin-top: 20px;
-    width:100%;
+    width:90%;
 	border-top: 2px solid rgba(102, 102, 102, 0.92);
 }
 div.detallado h3{

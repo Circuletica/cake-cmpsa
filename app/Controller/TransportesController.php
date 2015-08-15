@@ -26,7 +26,10 @@ public function view($id = null) {
 			$this->request->data['Transporte']['operacion_id'] = $this->params['named']['from_id'];
 			if($this->Transporte->save($this->request->data) ):
 				$this->Session->setFlash('Línea de transporte guardada');
-				$this->redirect(array('action'=>'index_trafico'));
+				$this->redirect(array(
+					'controller' => 'operaciones',
+					'action' => 'view_trafico',
+					$this->params['named']['from_id']));
 			endif;
 		endif;
 

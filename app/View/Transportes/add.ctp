@@ -23,8 +23,68 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
 	?>
 	</div>
+		<div class="formuboton">
+		<ul>
+			<li>
+			<?php
+			echo $this->Form->input('puerto_id',
+			array('label'=>'Puerto destino'));
+			?>
+			</li>
+			<li>
+				<div class="enlinea">
+				<?php
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Puerto', array(
+				'controller'=>'puertos',
+				'action'=>'add'),array("class"=>"botond", 'escape' => false)
+				);
+				?>
+				</div>
+			</li>
+		</ul>
+		</div>
+		<div class="formuboton">
+		<ul>
+			<li>
+			<?php
+			echo $this->Form->input('naviera_id',array('label'=>'Naviera'));
+			?>
+			</li>
+			<li>
+				<div class="enlinea">
+				<?php
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Naviera', array(
+				'controller'=>'navieras',
+				'action'=>'add'),
+				array("class"=>"botond", 'escape' => false)
+				);
+				?>
+				</div>
+			</li>
+		</ul>
+		</div>
+		<div class="formuboton">
+		<ul>
+			<li>
+			<?php
+			echo $this->Form->input('agente_id',array('label'=>'Agente Aduanas'));
+			?>
+			</li>
+			<li>
+				<div class="enlinea">
+				<?php
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Agente', array(
+				'controller'=>'agentes',
+				'action'=>'add'),array("class"=>"botond", 'escape' => false)
+				);
+				?>
+				</div>
+			</li>
+		</ul>
+		</div>
+	<br><br>
+	<h3>Fechas</h3>
 <div class="linea">
-	<div class="columna3">
 	<?php
 	echo $this->Form->input('fecha_carga', array(
 	'dateFormat' => 'DMY',
@@ -68,7 +128,6 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	'label' => 'Fecha vencimiento seguro',
 	'empty' => ' ')
 	);
-	echo "<br><br>";
 	echo $this->Form->input('fecha_reclamacion', array(
 	'dateFormat' => 'DMY',
 	'timeFormat' => null ,
@@ -88,107 +147,14 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	'empty' => ' ')
 	);
 	?>
-	<br><br>
 	</div>
-</div>
-<div class="columna3">
-	<div class="formuboton">
-	<ul>
-		<li>
-		<?php
-		echo $this->Form->input('puerto_id',
-		array('label'=>'Puerto destino'));
-		?>
-		</li>
-		<li>
-			<div class="enlinea">
-			<?php
-			echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Puerto', array(
-			'controller'=>'puertos',
-			'action'=>'add'),array("class"=>"botond", 'escape' => false)
-			);
-			?>
-			</div>
-		</li>
-	</ul>
-	</div>
-<br>
-	<div class="formuboton">
-	<ul>
-		<li>
-		<?php
-		echo $this->Form->input('naviera_id',array('label'=>'Naviera'));
-		?>
-		</li>
-		<li>
-			<div class="enlinea">
-			<?php
-			echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Naviera', array(
-			'controller'=>'navieras',
-			'action'=>'add'),
-			array("class"=>"botond", 'escape' => false)
-			);
-			?>
-			</div>
-		</li>
-	</ul>
-	</div>
-<br><br>
-	<div class="formuboton">
-	<ul>
-		<li>
-		<?php
-		echo $this->Form->input('agente_id',array('label'=>'Agente Aduanas'));
-		?>
-		</li>
-		<li>
-			<div class="enlinea">
-			<?php
-			echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Agente', array(
-			'controller'=>'agentes',
-			'action'=>'add'),array("class"=>"botond", 'escape' => false)
-			);
-			?>
-			</div>
-		</li>
-	</ul>
-	</div>
-</div>
+
 	<?php
 	echo $this->Form->input('observaciones', array('label'=>'Observaciones del transporte'));
 
 	?>
 <div class="detalladoform">
-	<h3>Almacén</h3>
-	<div  class="col2">
-					<div class="formuboton">
-					<ul>
-						<li><?php
-						echo $this->Form->input('almacen_id',array('label'=>'Nombre almacén'));
-						?>
-						</li>
-						<li>
-						<div class="enlinea">
-								<?php            
-								echo $this->Html->link('<i class="fa fa-plus"></i> Almacén', array(
-								'controller'=>'almacenes',
-								'action'=>'add'),array("class"=>"botond", 'escape' => false)
-								);
-								?>
-						</div>
-						</li>
-					</ul>
-					</div>
-		<?php
-		echo $this->Form->input('cuenta_almacen',array('label'=>'Cuenta corriente / Referencia almacén'));
-		echo $this->Form->input('cantidad_cuenta',array('label'=>'Cantidad embalajes en cuenta'));
-		echo $this->Form->input('MarcaAlmacen.nombre',array('label'=>'Marca'));
-	?> 
-	</div>
-</div>
-
-<div class="detalladoform">
-<h3>Aseguradora</h3>
+<h3>Seguro</h3>
 	<div class="columna3">	
 		<div class="formuboton">
 			<ul>
@@ -210,7 +176,7 @@ $this->Html->addCrumb('Añadir Transporte', array(
 		</div>
 		<div class="linea">
 		<?php
-		echo $this->Form->input('Transporte.fecha_seguro', array(
+		echo $this->Form->input('fecha_seguro', array(
 		'dateFormat' => 'DMY',
 		'timeFormat' => null ,
 		'label' => 'Fecha del seguro',
