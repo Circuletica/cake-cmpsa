@@ -109,15 +109,6 @@
 					)
 				);
 			}
-//		    echo $this->Form->input(
-//			    'Embalaje.'.$embalaje['Embalaje']['id'].'.peso_embalaje_real',
-//			    array(
-//				'label' => '',
-//				'class' => 'peso',
-//				'onblur' => 'totalDesglose()',
-//				'oninput' => 'totalDesglose()'
-//			)
-//		);
 		    echo '</td>';
 		    echo '</tr>';
 	    endforeach;
@@ -139,15 +130,31 @@
 //		    'onclick' => 'canalCompra()'
 //	    		)
 //	    );
-		echo "<div class='linea'>\n";
-		echo $this->Form->input('fecha_embarque', array(
-			'label' => 'Fecha de embarque',
-			'dateFormat' => 'DMY')
+//		echo "<div class='linea'>\n";
+//		echo $this->Form->input('fecha_embarque', array(
+//			'label' => 'Fecha de embarque',
+//			'dateFormat' => 'DMY')
+//		);
+//		echo "</div>\n";
+//		echo "<div class='linea'>\n";
+//		echo $this->Form->input('fecha_entrega', array(
+//			'label' => 'Fecha de entrega',
+//			'dateFormat' => 'DMY')
+//		);
+//		echo "</div>\n";
+		echo "<div class='radiomuestra'>\n";
+		echo $this->Form->radio(
+			'si_entrega',
+			$tipos_fecha_transporte,
+			array(
+				'legend' => 'Fecha:',
+				'value' => $si_entrega
+			)
 		);
 		echo "</div>\n";
 		echo "<div class='linea'>\n";
-		echo $this->Form->input('fecha_entrega', array(
-			'label' => 'Fecha de entrega',
+		echo $this->Form->input('fecha_transporte', array(
+			'label' => '',
 			'dateFormat' => 'DMY')
 		);
 		echo "</div>\n";
@@ -157,6 +164,7 @@
 			'dateFormat' => 'MY')
 		);
 		echo "</div>\n";
+		echo $this->Form->input('comentario');
 		echo $this->Form->input('id', array('type'=>'hidden'));
 		echo $this->Form->end('Guardar Contrato');
 	?>

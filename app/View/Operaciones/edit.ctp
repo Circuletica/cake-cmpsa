@@ -19,11 +19,6 @@ echo 'Embalaje: '.$embalaje['Embalaje']['nombre']."\n";
 echo "<p>\n";
 echo $this->Form->create('Operacion');
 echo $this->Form->input('referencia');
-//echo $this->Form->input('embalaje_id', array(
-//	//'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
-//	'after' => '(quedan ????? sin fijar)'
-//	)
-//);
 //necesitamos un array con la cantidad asignada a cada socio
 echo "<table>";
 //foreach ($asociados as $id => $asociado):
@@ -101,6 +96,7 @@ echo $this->Form->input('cambio_dolar_euro', array(
 	'label' => 'Cambio dolar/euro'
 	)
 );
+echo $this->Form->input('comentario');
 echo $this->Form->end('Guardar Operacion');
 ?>
 </div>

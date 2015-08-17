@@ -53,6 +53,9 @@ echo $this->Form->input('lotes_operacion',
 echo $this->Form->input('fecha_pos_fijacion', array(
 	'label' => 'Fecha de fijación',
 	'dateFormat' => 'DMY',
+	'minYear' => date('Y'),
+	'maxYear' => date('Y')+5,
+	'orderYear' => 'asc',
 	'selected' => date('Y-m-1')
 	)
 );
@@ -91,11 +94,11 @@ echo $this->Form->input('forfait', array(
 	)
 );
 echo $this->Form->input('cambio_dolar_euro', array(
-	//'between' => '('.$contrato['CanalCompra']['divisa'].')',
 	'label' => 'Cambio dolar/euro'
 	)
 );
-echo $this->Form->end('Guardar Operacion');
+	echo $this->Form->input('comentario');
+	echo $this->Form->end('Guardar Operacion');
 ?>
 </div>
 
