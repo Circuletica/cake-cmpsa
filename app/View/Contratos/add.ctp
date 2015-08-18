@@ -216,6 +216,9 @@
 		echo $this->Form->input('posicion_bolsa', array(
 			'label' => 'Posición de bolsa',
 			'dateFormat' => 'MY',
+			'minYear' => date('Y'),
+			'maxYear' => date('Y')+5,
+			'orderYear' => 'asc',
 			//'selected' => date('Y-m'),
 			//'div' => false
 			)

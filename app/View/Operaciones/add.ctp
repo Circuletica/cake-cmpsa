@@ -76,7 +76,7 @@ echo $this->Form->input('opciones', array(
 );
 if ($contrato['Incoterm']['si_flete']) {
 	echo $this->Form->input('flete', array(
-		'between' => '(€/Tm)',
+		'between' => '($/Tm)',
 		'label' => 'Flete'
 		)
 	);

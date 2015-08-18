@@ -82,7 +82,7 @@
 		echo "  <dt>Precio fijación:</dt>\n";
 		echo "  <dd>".$operacion['Operacion']['precio_fijacion']
 			.$divisa
-			.' (factura: '.$operacion['Operacion']['precio_compra'].$divisa.')'
+			// (factura: '.$operacion['Operacion']['precio_compra'].$divisa.')'
 			.'&nbsp;'."</dd>";
 		echo "  <dt>Diferencial:</dt>\n";
 		echo "  <dd>".$operacion['Contrato']['diferencial'].$divisa.'&nbsp;'."</dd>";
