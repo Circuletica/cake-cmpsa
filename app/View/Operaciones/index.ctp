@@ -4,7 +4,7 @@
 		'controller' => 'operaciones',
 		'action' => 'index')
 	); ?>
-<h2>Operacions</h2>
+<h2>Operaciones</h2>
 	<div class="actions">
 		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
 		?>
