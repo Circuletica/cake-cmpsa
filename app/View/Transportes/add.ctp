@@ -11,24 +11,21 @@ $this->Html->addCrumb('Añadir Transporte', array(
 'action' => 'add')
 );
 ?>
-<fieldset>
 <?php
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
-
-	?>
-	<div class="col2">
-	<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
 	?>
-	</div>
-		<div class="formuboton">
+	<div class="formuboton">
 		<ul>
 			<li>
 			<?php
 			echo $this->Form->input('puerto_id',
-			array('label'=>'Puerto destino'));
+				array('
+					label'=>'Puerto destino',
+					'empty' =>true
+					));
 			?>
 			</li>
 			<li>
@@ -47,16 +44,23 @@ $this->Html->addCrumb('Añadir Transporte', array(
 		<ul>
 			<li>
 			<?php
-			echo $this->Form->input('naviera_id',array('label'=>'Naviera'));
+			echo $this->Form->input('naviera_id',
+				array(
+					'label'=>'Naviera',
+					'empty' =>true 
+					));
 			?>
 			</li>
 			<li>
 				<div class="enlinea">
 				<?php
-				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Naviera', array(
-				'controller'=>'navieras',
-				'action'=>'add'),
-				array("class"=>"botond", 'escape' => false)
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Naviera',
+					 array(
+					'controller'=>'navieras',
+					'action'=>'add'),
+					array(
+					"class"=>"botond",
+					'escape' => false)
 				);
 				?>
 				</div>
@@ -67,7 +71,11 @@ $this->Html->addCrumb('Añadir Transporte', array(
 		<ul>
 			<li>
 			<?php
-			echo $this->Form->input('agente_id',array('label'=>'Agente Aduanas'));
+			echo $this->Form->input('agente_id',
+				array(
+					'label'=>'Agente aduanas',
+					'empty' =>true 
+				));
 			?>
 			</li>
 			<li>
@@ -88,10 +96,14 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	<?php
 	echo $this->Form->input('fecha_carga', array(
 	'dateFormat' => 'DMY',
+	'minYear' => date('Y'),
+	'maxYear' => date('Y')+2,
+	'orderYear' => 'asc',
 	'timeFormat' => null ,
 	'label' => 'Fecha de carga',
 	'empty' => ' ')
 	);
+
 	echo $this->Form->input('fecha_llegada', array(
 	'dateFormat' => 'DMY',
 	'timeFormat' => null ,
@@ -191,4 +203,3 @@ $this->Html->addCrumb('Añadir Transporte', array(
 		</div>
 	</div>
 	<?php	echo $this->Form->end('Guardar Línea Transporte'); ?>
-</fieldset>

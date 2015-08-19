@@ -29,17 +29,6 @@
 </div>
 	<div class='view'>
 	<?php
-	//mysql almacena la fecha en formato ymd
-	$fecha = $contrato['Contrato']['fecha_embarque'];
-	$dia = substr($fecha,8,2);
-	$mes = substr($fecha,5,2);
-	$anyo = substr($fecha,0,4);
-	$fecha_embarque = $dia.'-'.$mes.'-'.$anyo;
-	$fecha = $contrato['Contrato']['fecha_entrega'];
-	$dia = substr($fecha,8,2);
-	$mes = substr($fecha,5,2);
-	$anyo = substr($fecha,0,4);
-	$fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
 	echo "<dl>";
 	echo "  <dt>Referencia</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['referencia'].'&nbsp;'."</dd>";
@@ -54,7 +43,7 @@
 	echo "  <dt>Calidad</dt>\n";
 	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Lotes</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['lotes_contrato'].'&nbsp;'."</dd>";
+	echo "  <dd>".$contrato['Contrato']['lotes_contrato'].' ('.$posicion_bolsa.')&nbsp;'."</dd>";
 	echo "  <dt>Peso</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['peso_comprado'].' kg&nbsp;'."</dd>";
 	echo "  <table>\n";
@@ -71,10 +60,12 @@
 		$peso_total += $peso_embalaje;
 	endforeach;
 	echo "  </table>\n";
-	echo "  <dt>Fecha de embarque</dt>\n";
-	echo "  <dd>".$fecha_embarque."</dd>";
-	echo "  <dt>Fecha de entrega</dt>\n";
-	echo "  <dd>".$fecha_entrega."</dd>";
+//	echo "  <dt>Fecha de embarque</dt>\n";
+//	echo "  <dd>".$fecha_embarque."</dd>";
+//	echo "  <dt>Fecha de entrega</dt>\n";
+//	echo "  <dd>".$fecha_entrega."</dd>";
+	echo "  <dt>$tipo_fecha_transporte</dt>\n";
+	echo "  <dd>".$fecha_transporte."</dd>";
 	echo "  <dt>Puerto de destino</dt>\n";
 	echo "  <dd>".$contrato['Puerto']['nombre']."&nbsp;</dd>";
 	echo "  <dt>Bolsa</dt>\n";
@@ -83,8 +74,8 @@
 	echo "  <dd>".$contrato['Contrato']['diferencial']." ".$contrato['CanalCompra']['divisa']."</dd>";
 	echo "  <dt>Incoterm</dt>\n";
 	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
-	echo "  <dt>Posicion de bolsa</dt>\n";
-	echo "  <dd>".$posicion_bolsa.'&nbsp;'."</dd>";
+	echo "  <dt>Comentarios</dt>\n";
+	echo "  <dd>".$contrato['Contrato']['comentario'].'&nbsp;'."</dd>";
 	echo "</dl>";?>
 	<div class="detallado">
 	<h3>Operaciones</h3>
@@ -113,36 +104,6 @@
 					'escape' => false,
 					'title'=>'detalles')
 			)
-			//.' '.$this->html->link(
-			//	'<i class="fa fa-pencil-square-o"></i>',
-			//	array(
-			//		'controller'=>'operaciones',
-			//		'action' => 'edit',
-			//		$linea['id'],
-			//		'from'=>'contratos',
-			//		'from_id'=>$contrato['Contrato']['id']
-			//	),
-			//       	array(
-			//		'class'=>'botond',
-			//		'escape'=>false,
-			//		'title'=>'modificar')
-			//	)
-			//.' '.$this->form->postlink(
-			//	'<i class="fa fa-trash"></i>',
-			//	array(
-			//		'controller'=>'operaciones',
-			//		'action' => 'delete',
-			//		$linea['id'],
-			//		'from' => 'contratos',
-			//		'from_id' => $contrato['Contrato']['id']
-			//	),
-			//	array(
-			//		'class'=>'botond',
-			//		'escape'=>false,
-			//		'title'=> 'borrar',
-			//		'confirm' =>'¿seguro que quieres borrar a '.$linea['referencia'].'?'
-			//	)
-			//)
 		));
 	endforeach;
 ?>
@@ -150,8 +111,6 @@
 <?php
 	//calculamos la cantidad que queda por fijar
 	$queda_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado; 
-//	echo "<em>Quedan por fijar ".$queda_por_fijar."kg</em>\n";
-//	echo "<p>\n";
 	echo "<em>Quedan por fijar ".$contrato['RestoLotesContrato']['lotes_restantes']
 		." lotes (".$queda_por_fijar."kg)</em>";
 	echo '<div class="btabla">';

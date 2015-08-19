@@ -9,26 +9,9 @@
 ));
 ?><div class="acciones">
 	<div class="printdet">
-	<ul><li>
 		<?php 
 		echo $this->element('imprimirV');
 		?>	
-		
-	</li>
-	<li>
-			<?php
-		echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
-			'action'=>'edit',
-			$operacion['Operacion']['id']),array('title'=>'Modificar Operación','escape'=>false))
-		.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
-			'action'=>'delete',
-			$operacion['Operacion']['id']),array(
-			'escape'=>false, 'title'=> 'Borrar Operación',
-			'confirm'=>'¿Realmente quiere borrar '.$operacion['Operacion']['referencia'].'?')
-		);
-	?>
-	</li>
-	</ul>
 	</div>
 </div>
 <h2>Detalles Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
@@ -52,7 +35,7 @@
 //	$anyo = substr($fecha,0,4);
 //	$fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
 	echo "<dl>";
-	echo "  <dt>Referencia</dt>\n";
+	echo "  <dt>Operación</dt>\n";
 	echo "<dd>";
 	echo $operacion['Operacion']['referencia'].'&nbsp;';
 	echo "</dd>";
@@ -64,18 +47,8 @@
 		$operacion['Operacion']['contrato_id'])
 	);
 	echo "</dd>";
-	echo "  <dt>Fecha de embarque</dt>\n";
-	echo "<dd>";
-	echo $operacion['Contrato']['fecha_embarque'].'&nbsp;';
-	echo "</dd>";
-	echo "  <dt>Fecha de entrega</dt>\n";
-	echo "<dd>";
-	$fecha = $operacion['Contrato']['fecha_entrega'];
-	$dia = substr($fecha,8,2);
-	$mes = substr($fecha,5,2);
-	$anyo = substr($fecha,0,4);
-	echo $fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
-	echo "</dd>";
+	echo "  <dt>$tipo_fecha_transporte</dt>\n";
+	echo "  <dd>".$fecha_transporte."</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
 	echo $operacion['Contrato']['CalidadNombre']['nombre'].'&nbsp;';

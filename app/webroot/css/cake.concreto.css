@@ -404,7 +404,7 @@ input[type=submit]:active,
 .formuboton{
 	position: relative;
 	padding-right:5%;
-	width:250px;
+	/*width:250px; No necesario*/
 }
 
 .formuboton ul { 
@@ -418,7 +418,7 @@ input[type=submit]:active,
 	margin: 0px 10px 0px 0px;
 }
 .enlinea{
-	padding-top: 20px;
+	padding-top: 24px;
 }
 
 .linea select{

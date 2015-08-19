@@ -33,8 +33,7 @@ public function view($id = null) {
 			endif;
 		endif;
 
-		$this->set('puertos', $this->Transporte->Puerto->find('list')
-		);
+		$this->set('puertos', $this->Transporte->Puerto->find('list'));
 		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
 			'fields' => array('Naviera.id','Empresa.nombre_corto'),
 			'recursive' => 1))
@@ -80,20 +79,22 @@ public function view($id = null) {
 
 	}
 
-	public function delete( $id = null) {
-		if (!$id or $this->request->is('post')) :
+
+	public function delete($id = null) {
+		if (!$id or $this->request->is('get')) :
     			throw new MethodNotAllowedException();
 		endif;
 		if ($this->Transporte->delete($id)):
-			$this->Session->setFlash('Línea de Transporte borrada');
-			$this->redirect(array(
-					'controller' => 'operaciones',
-					'action' => 'view_trafico',
-					$this->params['named']['from_id']));
+			$this->Session->setFlash('Línea de transporte borrada');
+		$this->redirect(array(
+			'controller' => 'operaciones',
+			'action' => 'view_trafico',
+			$this->params['named']['from_id']
+		));
 		endif;
-
 	}
 
+	
 	public function edit( $id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');

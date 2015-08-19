@@ -34,8 +34,7 @@
   <tr>
     <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Referencia')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Contrato')?></th>
-    <th><?php echo $this->Paginator->sort('Contrato.fecha_embarque','Embarque')?></th>
-    <th><?php echo $this->Paginator->sort('Contrato.fecha_entrega', 'Entrega')?></th>
+    <th><?php echo $this->Paginator->sort('Contrato.fecha_transporte','Embarque/Entrega')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('proveedor', 'Proveedor');?></th>
     <th><?php echo $this->Paginator->sort('PesoOperacion.cantidad_embalaje', 'Bultos')?></th>
@@ -50,10 +49,7 @@
       <? echo $operacion['Contrato']['referencia']?>
     </td>
     <td>
-      <? echo $operacion['Contrato']['fecha_embarque']?>
-    </td>
-    <td>
-      <?php echo $operacion['Contrato']['fecha_entrega'];?>
+      <? echo $tipo_fecha_transporte.'  '.$operacion['Contrato']['fecha_transporte']?>
     </td>
     <td>
       <?php echo $operacion['Contrato']['CalidadNombre']['nombre'];?>

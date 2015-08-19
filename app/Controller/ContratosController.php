@@ -50,11 +50,17 @@ class ContratosController extends AppController {
 			)
 		);
 		$this->set('embalajes', $embalajes);
-		//$this->set('calidades', $this->Contrato->CalidadNombre->find('list'));
+		//desplegable con las calidades de café
 		$this->set('calidades',$this->Contrato->CalidadNombre->find('list', array(
 			'order' => array('CalidadNombre.nombre' => 'ASC')
 			)
 		));
+		//El tipo de fecha: embarque o entrega
+		$this->set('tipos_fecha_transporte', array(
+			'0'=>'embarque',
+			'1'=>'entrega'
+			)
+		);
 		//Rellenamos la fecha de posicion con el mes/año de hoy sólo si esta vacío,
 		//si ya tenía valor y que el usuario vuelve al formulario, se guarda lo que
 		//habia metido antes.
@@ -97,16 +103,24 @@ class ContratosController extends AppController {
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$this->loadModel('CalidadNombre');
 		//mysql almacena la fecha en formato ymd
-		$fecha = $contrato['Contrato']['fecha_embarque'];
+//		$fecha = $contrato['Contrato']['fecha_embarque'];
+//		$dia = substr($fecha,8,2);
+//		$mes = substr($fecha,5,2);
+//		$anyo = substr($fecha,0,4);
+//		$this->set('fecha_embarque', $dia.'-'.$mes.'-'.$anyo);
+//		$fecha = $contrato['Contrato']['fecha_entrega'];
+//		$dia = substr($fecha,8,2);
+//		$mes = substr($fecha,5,2);
+//		$anyo = substr($fecha,0,4);
+//		$this->set('fecha_entrega', $dia.'-'.$mes.'-'.$anyo);
+		//tipo de fecha (embarque/entrega)
+		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
+		//mysql almacena la fecha en formato ymd
+		$fecha = $contrato['Contrato']['fecha_transporte'];
 		$dia = substr($fecha,8,2);
 		$mes = substr($fecha,5,2);
 		$anyo = substr($fecha,0,4);
-		$this->set('fecha_embarque', $dia.'-'.$mes.'-'.$anyo);
-		$fecha = $contrato['Contrato']['fecha_entrega'];
-		$dia = substr($fecha,8,2);
-		$mes = substr($fecha,5,2);
-		$anyo = substr($fecha,0,4);
-		$this->set('fecha_entrega', $dia.'-'.$mes.'-'.$anyo);
+		$this->set('fecha_transporte', $dia.'-'.$mes.'-'.$anyo);
 		$fecha = $contrato['Contrato']['posicion_bolsa'];
 		//sacamos el nombre del mes en castellano
 		setlocale(LC_TIME, "es_ES.UTF-8");
@@ -157,6 +171,14 @@ class ContratosController extends AppController {
 			)
 		);
 		$this->set('embalajes', $embalajes);
+		//El tipo de fecha: embarque o entrega
+		$this->set('tipos_fecha_transporte', array(
+			'0'=>'embarque',
+			'1'=>'entrega'
+			)
+		);
+		//la fecha de transporte (embarque o entrega)
+		$this->set('si_entrega', $contrato['Contrato']['si_entrega']);
 		if($this->request->is('get')):
 			$this->request->data = $this->Contrato->read();
 			foreach($contrato['ContratoEmbalaje'] as $embalaje) {
