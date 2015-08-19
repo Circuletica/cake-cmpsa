@@ -33,4 +33,3 @@ class Banco extends AppModel {
 	);
 	//var $name = 'Banco';
 }
-
