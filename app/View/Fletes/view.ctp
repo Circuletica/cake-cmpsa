@@ -1,57 +1,39 @@
-<?php $this->Html->addCrumb('Fletes', array(
+<?php
+$this->extend('/Common/view');
+$this->assign('titulo', 'Flete '.$referencia);
+$this->assign('id',$flete['Flete']['id']);
+$this->assign('clase','Flete');
+$this->assign('controller','fletes');
+$this->Html->addCrumb('Fletes', array(
 	'controller'=>'fletes',
 	'action'=>'index'
-	));
+));
+$this->start('filtro');
 ?>
-<h2>Costes Flete <?php echo $flete['Flete']['id']?></h2>
 <div class="actions">
-	<?php
-	echo $this->element('filtromuestra');
-	?>
+	<?php echo $this->element('filtroflete'); ?>
 </div>
-<div class="acciones">
-<?php
-//	echo
-//	$this->Html->link(
-//		'<i class="fa fa-pencil-square-o"></i> Modificar',
-//		array(
-//			'action'=>'edit',
-//			$flete['Flete']['id']),
-//		array(
-//			'title'=>'Modificar Flete',
-//			'escape'=>false
-//		)
-//	).' '.
-//	$this->Form->postLink(
-//		'<i class="fa fa-trash"></i> Borrar',
-//		array(
-//			'action'=>'delete',
-//			$flete['Flete']['id'],
-//			'from_controller' => 'fletes',
-//			'from_id' => $flete['Flete']['id']
-//		),
-//		array(
-//			'escape'=>false,
-//			'title'=> 'Borrar',
-//			'confirm'=>'¿Realmente quiere borrar el flete '.$flete['Flete']['id'].'?'
-//		)
-//	);
-?>
-</div>
+<?php $this->end()?>
 <div class='view'>
 	<?php
+		echo "<dl>";
+		echo "  <dt>Puerto de Carga:</dt>\n";
+		echo "  <dd>".$flete['PuertoCarga']['nombre'].'&nbsp;'."</dd>";
+		echo "  <dt>Puerto de Destino:</dt>\n";
+		echo "  <dd>".$flete['PuertoDestino']['nombre'].'&nbsp;'."</dd>";
+		echo "</dl>";
 		//la tabla con los costes de flete
 		echo "<table>";
-	echo $this->Html->tableHeaders(array(
-		'válido desde','válido hasta','coste contenedor','coste $/Tm'));
-		foreach ($costes as $coste):
-			echo $this->Html->tableCells(array(
-				$coste['PrecioFlete']['fecha_inicio'],
-				$coste['PrecioFlete']['fecha_fin'],
-				$coste['PrecioFlete']['coste_contenedor_dolar'],
-				$coste['PrecioFlete']['coste_contenedor_dolar']
-				)
-			);
-		endforeach;
+			echo $this->Html->tableHeaders(array(
+				'válido desde','válido hasta','coste contenedor','coste $/Tm'));
+			foreach ($costes as $coste):
+				echo $this->Html->tableCells(array(
+					$coste['PrecioFlete']['fecha_inicio'],
+					$coste['PrecioFlete']['fecha_fin'],
+					$coste['PrecioFlete']['coste_contenedor_dolar'],
+					$coste['PrecioFlete']['coste_contenedor_dolar']
+					)
+				);
+			endforeach;
 		echo "</table>";
 ?>

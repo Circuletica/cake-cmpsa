@@ -46,7 +46,6 @@
 	<?php
 		echo "<dl>";
 		echo "  <dt>Referencia Contrato:</dt>\n";
-		//echo "  <dd>".$operacion['Contrato']['referencia'].'&nbsp;'."</dd>";
 		echo "<dd>";
 		echo $this->html->link($operacion['Contrato']['referencia'], array(
 			'controller' => 'contratos',

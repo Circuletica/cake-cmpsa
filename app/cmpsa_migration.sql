@@ -764,16 +764,16 @@ CREATE TABLE `operaciones` (
   `despacho_aduana` decimal(8,2) unsigned zerofill DEFAULT NULL,
   `seguro_total` decimal(8,2) unsigned zerofill DEFAULT NULL,
   `puerto_destino_id` int(11) NOT NULL,
-  `comentario` text,
+  `observaciones` text,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_linea_contratos_contratos1_idx` (`contrato_id`),
   KEY `fk_linea_contratos_embalajes1_idx` (`embalaje_id`),
   KEY `fk_operaciones_puertos1_idx` (`puerto_destino_id`),
-  CONSTRAINT `fk_operaciones_puertos1` FOREIGN KEY (`puerto_destino_id`) REFERENCES `puertos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_linea_contratos_embalajes1` FOREIGN KEY (`embalaje_id`) REFERENCES `embalajes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_operaciones_contratos` FOREIGN KEY (`contrato_id`) REFERENCES `contratos` (`id`) ON DELETE CASCADE
+  CONSTRAINT `fk_operaciones_contratos` FOREIGN KEY (`contrato_id`) REFERENCES `contratos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_operaciones_puertos1` FOREIGN KEY (`puerto_destino_id`) REFERENCES `puertos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1055,10 +1055,10 @@ DROP TABLE IF EXISTS `transportes`;
 CREATE TABLE `transportes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `naviera_id` int(11) NOT NULL,
-  `puerto_id` int(11) NOT NULL,
-  `agente_id` int(11) NOT NULL,
+  `puerto_id` int(11) DEFAULT NULL,
+  `agente_id` int(11) DEFAULT NULL,
   `operacion_id` int(11) NOT NULL,
-  `aseguradora_id` int(11) NOT NULL,
+  `aseguradora_id` int(11) DEFAULT NULL,
   `fecha_entradamerc` date DEFAULT NULL,
   `fecha_carga` date DEFAULT NULL,
   `fecha_llegada` date DEFAULT NULL,
@@ -1069,8 +1069,8 @@ CREATE TABLE `transportes` (
   `fecha_reclamacion` date DEFAULT NULL,
   `fecha_limite_retirada` date DEFAULT NULL,
   `fecha_reclamacion_factura` date DEFAULT NULL,
-  `nombre_vehiculo` varchar(45) DEFAULT NULL,
-  `matricula` varchar(45) DEFAULT NULL,
+  `nombre_vehiculo` varchar(45) NOT NULL,
+  `matricula` varchar(45) NOT NULL,
   `observaciones` text,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
@@ -1081,12 +1081,12 @@ CREATE TABLE `transportes` (
   KEY `fk_transportes_agentes1_idx` (`agente_id`),
   KEY `fk_transportes_operaciones1_idx` (`operacion_id`),
   KEY `fk_transportes_aseguradoras1_idx` (`aseguradora_id`),
-  CONSTRAINT `fk_transportes_agentes1` FOREIGN KEY (`agente_id`) REFERENCES `agentes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_aseguradoras1` FOREIGN KEY (`aseguradora_id`) REFERENCES `aseguradoras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_navieras1` FOREIGN KEY (`naviera_id`) REFERENCES `navieras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_transportes_agentes1` FOREIGN KEY (`agente_id`) REFERENCES `agentes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_operaciones1` FOREIGN KEY (`operacion_id`) REFERENCES `operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_puertos1` FOREIGN KEY (`puerto_id`) REFERENCES `puertos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1260,4 +1260,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-20  0:05:21
+-- Dump completed on 2015-08-20 12:18:22
