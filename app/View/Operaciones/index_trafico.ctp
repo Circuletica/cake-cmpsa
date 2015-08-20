@@ -40,32 +40,19 @@
     <th><?php echo $this->Paginator->sort('PesoOperacion.cantidad_embalaje', 'Bultos')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
-  <?php foreach($operaciones as $operacion): ?>
-  <tr>
-    <td>
-      <?php echo $operacion['Operacion']['referencia']?>
-    </td>
-    <td>
-      <? echo $operacion['Contrato']['referencia']?>
-    </td>
-    <td>
-      <? echo $tipo_fecha_transporte.'  '.$operacion['Contrato']['fecha_transporte']?>
-    </td>
-    <td>
-      <?php echo $operacion['Contrato']['CalidadNombre']['nombre'];?>
-    </td>
-    <td>
-      <?php echo $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'];?>
-    </td>
-    <td>
-      <?php echo $operacion['PesoOperacion']['cantidad_embalaje']?>
-    </td>
-    <td>
-      <?php echo $this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view_trafico',$operacion['Operacion']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'));
-      ?>
-    </td>
-  </tr>
-  <?php endforeach;?>
+  <?php
+  foreach($operaciones as $operacion):
+    echo $this->Html->tableCells(array(
+      $operacion['Operacion']['referencia'],
+      $operacion['Contrato']['referencia'],
+      $operacion['Contrato']['fecha_transporte'],
+      $operacion['Contrato']['CalidadNombre']['nombre'],
+      $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'],
+      $operacion['PesoOperacion']['cantidad_embalaje'],
+      $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view_trafico',$operacion['Operacion']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))
+      ));
+  endforeach;
+  ?>
   </table>
  <!-- <div class="btabla">
       <?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Operación',array('action'=>'add'), array('title'=>'Añadir Operación','escape' => false)); ?>

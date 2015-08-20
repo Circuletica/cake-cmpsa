@@ -80,6 +80,71 @@ public function view($id = null) {
 	}
 
 
+	public function edit( $id = null) {
+
+		if (!$id) {
+			$this->Session->setFlash('URL mal formado');
+			$this->redirect(array('action'=>'view'));
+		}
+		$this->Transporte->id = $id;
+
+			if($this->Transporte->save($this->request->data) ):
+				$this->Session->setFlash('Línea de transporte modificada');
+				$this->redirect(array(
+					'controller' => 'operaciones',
+					'action' => 'view_trafico',
+					$this->params['named']['from_id']));
+				else:
+				$this->Session->setFlash('Línea de transporte NO guardada');
+			endif;
+		$this->set('puertos', $this->Transporte->Puerto->find('list'));
+		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
+			'fields' => array('Naviera.id','Empresa.nombre_corto'),
+			'recursive' => 1))
+		);
+		$this->set('agentes', $this->Transporte->Agente->find('list',array(
+			'fields' => array('Agente.id','Empresa.nombre_corto'),
+			'recursive' => 1))
+		);
+		$this->set('almacenes', $this->Transporte->AlmacenesTransporte->Almacen->find('list', array(
+			'fields' => array('Almacen.id','Empresa.nombre_corto'),
+			'recursive' => 1))
+		);
+		$this->set('almacenes_transportes', $this->Transporte->AlmacenesTransporte->Almacen->find('list'));
+		//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
+		$this->set('aseguradoras', $this->Transporte->Aseguradora->find('list', array(
+			'fields' => array('Aseguradora.id','Empresa.nombre_corto'),
+			'recursive' => 1))
+		);
+	//sacamos los datos de la operacion  al que pertenece la linea
+		//nos sirven en la vista para detallar campos
+		$operacion = $this->Transporte->Operacion->find('first', array(
+			'conditions' => array('Operacion.id' => $this->params['named']['from_id']),
+			'recursive' => 2,
+			'fields' => array(
+				'Operacion.id',
+				'Operacion.precio_compra',
+				'Operacion.referencia')
+		));
+		$this->set('operacion',$operacion);
+
+		$transporte = $this->Transporte->find('all');	
+		$this->set('transporte',$transporte);
+
+		$almacenaje = $this->Transporte->AlmacenesTransporte->find('first', array(
+			'conditions' => array('Transporte.id' => $this->params['named']['from_id']),
+			'recursive' => 2,
+			'fields' => array(
+				'AlmacenesTransporte.cantidad_cuenta',
+				'AlmacenesTransporte.cuenta_almacen')
+		));
+		$this->set('almacenajes',$almacenaje);		
+
+
+
+	}
+
+
 	public function delete($id = null) {
 		if (!$id or $this->request->is('get')) :
     			throw new MethodNotAllowedException();
@@ -94,29 +159,5 @@ public function view($id = null) {
 		endif;
 	}
 
-	
-	public function edit( $id = null) {
-		if (!$id) {
-			$this->Session->setFlash('URL mal formado');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->Operacion->id = $id;
-		$operacion = $this->Operacion->find('first',array(
-			'conditions' => array('Operacion.id' => $id)));
-		$this->set('operacion',$operacion);
-		if($this->request->is('get')):
-			$this->request->data = $this->Operacion->read();
-		else:
-			//if ($this->BancoPrueba->save($this->request->data)):
-			if ($this->Operacion->Empresa->save($this->request->data) and $this->Operacion->save($this->request->data)):
-				$this->Session->setFlash('Operacion '.
-				$this->request->data['Operacion']['referencia'].
-			        ' modificado con éxito');
-				$this->redirect(array('action' => 'view', $id));
-			else:
-				$this->Session->setFlash('Operación NO guardada');
-			endif;
-		endif;
-	}
 }
 ?>

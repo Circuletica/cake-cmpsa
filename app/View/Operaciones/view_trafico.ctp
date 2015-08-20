@@ -76,14 +76,21 @@
 		$operacion['PesoOperacion']['cantidad_embalaje'].' x '.
 		$embalaje['Embalaje']['nombre'].
 		' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
-	echo "  <dt>Precio €/Tm total:</dt>\n";
-	//echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_forfait_total'].'&nbsp;'."</dd>";
-	echo "</dl>";?>
+	echo "  <dt>Precio $/Tm total:</dt>\n";
+		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_dolar_tonelada'].'$/Tm&nbsp;'."</dd>";
+		if ($operacion['Contrato']['Incoterm']['si_flete']) {
+			echo "  <dt>Flete:</dt>\n";
+			echo "  <dd>".$operacion['Operacion']['flete'].'$/Tm&nbsp;'."</dd>";
+		}
+	echo "  <dt>Observaciones</dt>\n";
+	echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
+	echo "</dl>";
+	?>
 	<!--Se hace un index de la Linea de contratos-->
 
 	<!--Se listan los asociados que forman parte de la operación-->
 	<div class="detallado">
-	<h3>Línea de transporte</h3>
+	<h3>Líneas de transporte</h3>
 	<table>
 	<?php
 	echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
@@ -128,14 +135,13 @@
 	<h3>Asociados</h3>
 	<table>
 		<?php
-		echo $this->Html->tableHeaders(array('Cuenta','Asociado', 'Cantidad de embalajes', 'Peso'));
-		foreach ($operacion['AsociadoOperacion'] as $linea_asociado):
-			$peso_asociado = $linea_asociado['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+		echo $this->Html->tableHeaders($columnas_reparto);
+		foreach ($lineas_reparto as $codigo => $linea_reparto):
 			echo $this->Html->tableCells(array(
-				//$linea_asociado['Asociado']['Empresa']['codigo_contable'],
-			//	$linea_asociado['Asociado']['Empresa']['nombre_corto'],
-				$linea_asociado['cantidad_embalaje_asociado'],
-				$peso_asociado.'kg'
+				$codigo,
+				$linea_reparto['Nombre'],
+				$linea_reparto['Cantidad'],
+				$linea_reparto['Peso'],
 				)
 			);
 		endforeach;

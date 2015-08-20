@@ -1,4 +1,4 @@
-<h2>Añadir País</h2>
+<h2>Añadir Puerto</h2>
 <?php echo $this->Form->create('Puerto'); ?>
 <fieldset>
 <div class="columna2">

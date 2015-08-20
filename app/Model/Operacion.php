@@ -2,6 +2,11 @@
 class Operacion extends AppModel {
 	public $recursive = 2;
 	//public $actsAs = array('Containable');
+	public $validate = array(
+      'referencia' => array(
+      'rule' => 'notEmpty',
+      'message' => 'La referencia no puede estar vacía')
+    );
 	public $belongsTo = array(
 		'Contrato' => array(
 			'className' => 'Contrato',
@@ -13,6 +18,10 @@ class Operacion extends AppModel {
 	public $hasOne = array(
 		'PrecioOperacion' => array(
 			'className' => 'PrecioOperacion',
+			'foreignKey' => 'id'
+		),
+		'PrecioTotalOperacion' => array(
+			'className' => 'PrecioTotalOperacion',
 			'foreignKey' => 'id'
 		),
 		'PesoOperacion' => array(

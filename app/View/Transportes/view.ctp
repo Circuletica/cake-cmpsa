@@ -131,10 +131,6 @@
 		echo "<dd>";
 			echo $transporte['Transporte']['fecha_despacho_op'].'&nbsp;';
 		echo "</dd>";
-		echo "  <dt>Vencimiento seguro</dt>\n";
-		echo "<dd>";
-			echo $transporte['Transporte']['fecha_vencimiento_seg'].'&nbsp;';
-		echo "</dd>";
 		echo "  <dt>Fecha de reclamación</dt>\n";
 		echo "<dd>";
 			echo $transporte['Transporte']['fecha_reclamacion'].'&nbsp;';
@@ -160,7 +156,12 @@
 		echo "<dd>";
 			echo $transporte['Transporte']['fecha_seguro'].'&nbsp;';
 		echo "</dd>";
-		echo "  <dt>Precio del seguro</dt>\n";
+		echo "  <dt>Vencimiento del seguro</dt>\n";
+		echo "<dd>";
+		$transporte['Transporte']['fecha_vencimiento_seg'] = $transporte['Transporte']['fecha_seguro'];
+			echo $transporte['Transporte']['fecha_vencimiento_seg'].'&nbsp;';
+		echo "</dd>";
+		echo "  <dt>Coste del seguro</dt>\n";
 		echo "<dd>";
 		echo $transporte['Transporte']['fecha_seguro'].'&nbsp;';
 		echo "</dd>";

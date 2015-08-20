@@ -32,7 +32,7 @@
       $operacion['Contrato']['CalidadNombre']['nombre'],
       $operacion['PesoOperacion']['peso'].'kg',
       $operacion['Operacion']['lotes_operacion'],
-      $this->Html->link('Detalles',array('action'=>'view',$operacion['Operacion']['id']), array('class' =>'boton' , ))
+      $this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$operacion['Operacion']['id']), array('class' =>'boton' , ))
   ));
   endforeach;?>
   </table>

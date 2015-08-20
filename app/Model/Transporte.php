@@ -1,6 +1,25 @@
 <?php
 class Transporte extends AppModel {
 	public $recursive = 3;
+ 	public $validate = array(
+    	'nombre_vehiculo' => array(
+      	'rule' => 'notEmpty',
+     	'message' => 'El nombre del vehículo no puede estar vacío'
+      ),
+  	  'matricula' => array(
+      'rule' => 'notEmpty',
+      'message' => 'El BL/matrícula no puede estar vacío'
+      ),
+      'puerto_id' => array(
+      'rule' => 'notEmpty',
+      'message' => 'El puerto no puede estar vacío'
+      ),
+      'naviera_id' => array(
+      'rule' => 'notEmpty',
+      'message' => 'La naviera no puede estar vacía'
+      )
+    );
+
 	public $belongsTo = array(
 			'Aseguradora' => array(
 			'className' => 'Aseguradora',
@@ -27,11 +46,7 @@ class Transporte extends AppModel {
 			'className' => 'EmbalajeTransporte',
 			'foreignKey' => 'transporte_id')
 	);
-  	public $validate = array(
-    'referencia' => array(
-      'rule' => 'notEmpty',
-      'message' => 'La referencia no puede estar vacía')
-    );
+
 
 }
 

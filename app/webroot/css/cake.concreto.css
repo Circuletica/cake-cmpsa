@@ -193,7 +193,7 @@ input[type=submit]:active,
  -webkit-column-rule: 1px dotted #ddd;
 	 -moz-column-rule: 1px dotted #ddd;
    		 column-rule: 1px dotted #ddd;
-   		 width:740px;
+   		/* width:740px;*/
 }
 
 .columna3{
@@ -206,7 +206,7 @@ input[type=submit]:active,
   -webkit-column-rule: 1px dotted #ddd;
      -moz-column-rule: 1px dotted #ddd;
           column-rule: 1px dotted #ddd;
-          width: 740px
+         /* width: 740px*/
 }
 
 /*Botones genéricos y en tabla de detalle*/
