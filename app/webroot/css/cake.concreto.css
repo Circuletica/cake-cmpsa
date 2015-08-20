@@ -720,5 +720,11 @@ background: #5FCF80;
 color: #fff;
 }
 .portada ul, li {
+<<<<<<< HEAD
     margin: 2% 0.5%;
 }
+=======
+    margin: 4% 1%;
+}
+/* Fin CSS PORTADA*/
+>>>>>>> parent of 7eb5ba9... Highcharts plugin y widget tiempo agregado
