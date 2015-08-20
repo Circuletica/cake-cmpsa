@@ -31,6 +31,7 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+	var $scaffold = 'admin';
 	//public $components = array('Session','RequestHandler');
 	public $components = array('DebugKit.Toolbar','Session','RequestHandler');
 	public function iban($codigoPais,$ccc){
