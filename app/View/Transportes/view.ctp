@@ -109,39 +109,93 @@
 	<?php
 		echo "  <dt>Carga mercancía</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['fecha_carga'].'&nbsp;';
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_carga'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_carga= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_carga.'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Fecha de llegada</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['fecha_llegada'].'&nbsp;';
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_llegada'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_llegada= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_llegada.'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Pago</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['fecha_pago'].'&nbsp;';
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_pago'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_pago= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_pago.'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Envío documentación</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['fecha_enviodoc'].'&nbsp;';
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_enviodoc'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_enviodoc= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_enviodoc.'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Entrada mercancía</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['fecha_entradamerc'].'&nbsp;';
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_entradamerc'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_entradamerc= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_entradamerc.'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Despacho operación</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['fecha_despacho_op'].'&nbsp;';
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_despacho_op'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_despacho_op= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_despacho_op.'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Fecha de reclamación</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['fecha_reclamacion'].'&nbsp;';
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_reclamacion'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_reclamacion= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_reclamacion.'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Límite de retirada</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['fecha_limite_retirada'].'&nbsp;';
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_limite_retirada'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_limite_retirada= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_limite_retirada.'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Reclamación factura</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['fecha_reclamacion_factura'].'&nbsp;';
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_reclamacion_factura'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_reclamacion_factura= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_reclamacion_factura.'&nbsp;';
 		echo "</dd>";
 
 ?>	</dl>
@@ -154,16 +208,18 @@
 		echo "</dd>";
 		echo "  <dt>Fecha del seguro</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['fecha_seguro'].'&nbsp;';
+		$fecha = $transporte['Transporte']['fecha_seguro'];
+		echo date("d-m-Y", strtotime("$fecha"));
 		echo "</dd>";
 		echo "  <dt>Vencimiento del seguro</dt>\n";
 		echo "<dd>";
-		$transporte['Transporte']['fecha_vencimiento_seg'] = $transporte['Transporte']['fecha_seguro'];
-			echo $transporte['Transporte']['fecha_vencimiento_seg'].'&nbsp;';
+		$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha +1 month"));
+		$transporte['Transporte']['fecha_vencimiento_seg'] = $fecha_vencimiento_seg; //Asigno una fecha + 1 mes
+		echo $fecha_vencimiento_seg.'&nbsp;' ;
 		echo "</dd>";
 		echo "  <dt>Coste del seguro</dt>\n";
 		echo "<dd>";
-		echo $transporte['Transporte']['fecha_seguro'].'&nbsp;';
+		echo $transporte['Transporte']['coste_seguro'].'&nbsp;';
 		echo "</dd>";
 	?>		
 </dl>

@@ -5,10 +5,11 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
 'action'=>'view_trafico',
 $operacion['Operacion']['id']
 ));
-$this->Html->addCrumb('Añadir Transporte', array(
+$this->Html->addCrumb('Transporte', array(
 'controller' => 'transportes',
-'action' => 'edit')
-);
+'action'=>'view',
+$transportes['Transporte']['matricula']
+));
 ?>
 <?php
 	//Formulario para rellenar transporte
@@ -95,7 +96,8 @@ $this->Html->addCrumb('Añadir Transporte', array(
 		</div>
 	<br><br>
 	<h3>Fechas</h3>
-<div class="linea">
+	<div class="columna3">
+	<div class="linea">
 	<?php
 	echo $this->Form->input('fecha_carga', array(
 	'dateFormat' => 'DMY',
@@ -103,7 +105,7 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	'maxYear' => date('Y')+2,
 	'orderYear' => 'asc',
 	'timeFormat' => null ,
-	'label' => 'Fecha de carga',
+	'label' => 'Carga mercancía',
 	'empty' => ' ')
 	);
 
@@ -122,7 +124,7 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	'maxYear' => date('Y')+2,
 	'orderYear' => 'asc',
 	'timeFormat' => null ,
-	'label' => 'Fecha de pago',
+	'label' => 'Pago',
 	'empty' => ' ')
 	);
 	echo $this->Form->input('fecha_enviodoc', array(
@@ -131,7 +133,7 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	'maxYear' => date('Y')+2,
 	'orderYear' => 'asc',
 	'timeFormat' => null ,
-	'label' => 'Fecha de envío documentación',
+	'label' => 'Envío documentación',
 	'empty' => ' ')
 	);
 	echo $this->Form->input('fecha_entradamerc', array(
@@ -140,7 +142,7 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	'maxYear' => date('Y')+2,
 	'orderYear' => 'asc',
 	'timeFormat' => null ,
-	'label' => 'Fecha Entrada mercancía',
+	'label' => 'Entrada mercancía',
 	'empty' => ' ')
 	);
 	echo $this->Form->input('fecha_despacho_op', array(
@@ -149,7 +151,7 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	'maxYear' => date('Y')+2,
 	'orderYear' => 'asc',
 	'timeFormat' => null ,
-	'label' => 'Fecha despacho operación',
+	'label' => 'Despacho operación',
 	'empty' => ' ')
 	);
 
@@ -168,7 +170,7 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	'maxYear' => date('Y')+2,
 	'orderYear' => 'asc',
 	'timeFormat' => null ,
-	'label' => 'Fecha límite de retirada',
+	'label' => 'Límite de retirada',
 	'empty' => ' ')
 	);
 	echo $this->Form->input('fecha_reclamacion_factura', array(
@@ -177,18 +179,19 @@ $this->Html->addCrumb('Añadir Transporte', array(
 	'maxYear' => date('Y')+2,
 	'orderYear' => 'asc',
 	'timeFormat' => null ,
-	'label' => 'Fecha reclamacion factura',
+	'label' => 'Reclamación factura',
 	'empty' => ' ')
 	);
 	?>
 	</div>
-
+	</div>
 	<?php
 	echo $this->Form->input('observaciones', array('label'=>'Observaciones del transporte'));
 
 	?>
 <div class="detalladoform">
 <h3>Seguro</h3>
+		<div class="columna3">
 		<div class="formuboton">
 			<ul>
 			<li><?php
@@ -218,19 +221,8 @@ $this->Html->addCrumb('Añadir Transporte', array(
 		?>
 		</div>
 		<?php
-		echo '<label>Coste del seguro</label>';
-		//echo $transporte['Transporte']['costeseguro'] .'€';
-
-				echo $this->Form->input('fecha_vencimiento_seg', array(
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+2,
-	'orderYear' => 'asc',
-	'timeFormat' => null ,
-	'label' => 'Fecha vencimiento seguro',
-	'empty' => ' ')
-	);
+		echo $this->Form->input('coste_seguro'.'€',array('label'=>'Coste del seguro'));
 		?>
-		
-	</div>
+		</div>
+</div>
 	<?php	echo $this->Form->end('Modificar Línea Transporte'); ?>

@@ -10,7 +10,7 @@ class TransportesController extends AppController {
 public function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada Transporte/view ');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index_trafico'));
 		}
 		$transporte = $this->Transporte->find('first',array(
 			'conditions' => array('Transporte.id' => $id),
@@ -79,24 +79,12 @@ public function view($id = null) {
 
 	}
 
-
 	public function edit( $id = null) {
-
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado');
-			$this->redirect(array('action'=>'view'));
+			$this->Session->setFlash('URL mal formada');
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->Transporte->id = $id;
-
-			if($this->Transporte->save($this->request->data) ):
-				$this->Session->setFlash('Línea de transporte modificada');
-				$this->redirect(array(
-					'controller' => 'operaciones',
-					'action' => 'view_trafico',
-					$this->params['named']['from_id']));
-				else:
-				$this->Session->setFlash('Línea de transporte NO guardada');
-			endif;
 		$this->set('puertos', $this->Transporte->Puerto->find('list'));
 		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
 			'fields' => array('Naviera.id','Empresa.nombre_corto'),
@@ -119,12 +107,8 @@ public function view($id = null) {
 	//sacamos los datos de la operacion  al que pertenece la linea
 		//nos sirven en la vista para detallar campos
 		$operacion = $this->Transporte->Operacion->find('first', array(
-			'conditions' => array('Operacion.id' => $this->params['named']['from_id']),
-			'recursive' => 2,
-			'fields' => array(
-				'Operacion.id',
-				'Operacion.precio_compra',
-				'Operacion.referencia')
+			'conditions' => array('Operacion.id' => $id),
+			'recursive' => 2
 		));
 		$this->set('operacion',$operacion);
 
@@ -132,16 +116,27 @@ public function view($id = null) {
 		$this->set('transporte',$transporte);
 
 		$almacenaje = $this->Transporte->AlmacenesTransporte->find('first', array(
-			'conditions' => array('Transporte.id' => $this->params['named']['from_id']),
-			'recursive' => 2,
-			'fields' => array(
-				'AlmacenesTransporte.cantidad_cuenta',
-				'AlmacenesTransporte.cuenta_almacen')
+			'conditions' => array('Transporte.id' => $id),
+			'recursive' => 2
 		));
-		$this->set('almacenajes',$almacenaje);		
+		$this->set('almacenajes',$almacenaje);	
 
-
-
+		if($this->request->is('get')): //al abrir el edit, meter los datos de la bdd
+			$this->request->data = $this->Transporte->read();
+		else:
+			if ($this->Transporte->save($this->request->data)):	
+				$this->Session->setFlash('Transporte '.
+				$this->request->data['Transporte']['matricula'].
+			        ' modificada con éxito');
+				$this->redirect(array(
+					'action' => 'view',
+					$id
+					)
+				);
+			else:
+				$this->Session->setFlash('Operacion NO guardada');
+			endif;
+		endif;
 	}
 
 
