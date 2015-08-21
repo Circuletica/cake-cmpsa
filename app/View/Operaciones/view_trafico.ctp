@@ -64,12 +64,7 @@
 	echo "<dd>";
 	echo $operacion['Contrato']['Incoterm']['nombre'];
 	echo "</dd>";
-	echo "  <dt>Peso embalaje</dt>\n";
-	echo "<dd>";
-	echo $operacion['Embalaje']['peso_embalaje'].' Kg';
-	echo "</dd>";
 		echo "  <dt>Peso:</dt>\n";
-	echo "<dd>";
 	echo "  <dd>".$operacion['PesoOperacion']['peso'].'kg&nbsp;'."</dd>";
 	echo "  <dt>Embalaje:</dt>\n";
 	echo "  <dd>".
@@ -94,7 +89,7 @@
 	<table>
 	<?php
 	echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
-	       'Fecha Carga','Cantidad','Asegurado','Acciones'));
+	       'Fecha Carga','Cantidad/Bultos','Asegurado','Acciones'));
 	//hay que numerar las líneas
 	$i = 1;
 	foreach($operacion['Transporte'] as $linea):
@@ -102,9 +97,11 @@
 			$i,
 			$linea['nombre_vehiculo'],
 			$linea['matricula'],
+			//date("d-m-Y", strtotime("$linea['fecha_carga']")),
 			$linea['fecha_carga'],
-			$linea['Operacion']['embalaje_id'],
-			$linea['aseguradora_id'],
+		    $linea['fecha_carga'],
+			//$linea['EmbalajeTransporte']['cantidad'],
+			$linea['fecha_seguro'],
 			//$linea['referencia_almacen'],
 			$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array(
 				'controller'=>'transportes',

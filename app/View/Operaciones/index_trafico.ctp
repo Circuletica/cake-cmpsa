@@ -46,6 +46,11 @@
       $operacion['Operacion']['referencia'],
       $operacion['Contrato']['referencia'],
       $operacion['Contrato']['fecha_transporte'],
+//        if ($operacion['Contrato']['si_entrega'] == 1):
+//          echo "Entrega";
+//        else:
+//          echo "Embarque";
+ //       endif;
       $operacion['Contrato']['CalidadNombre']['nombre'],
       $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'],
       $operacion['PesoOperacion']['cantidad_embalaje'],

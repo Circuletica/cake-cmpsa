@@ -12,6 +12,7 @@ public function view($id = null) {
 			$this->Session->setFlash('URL mal formada Transporte/view ');
 			$this->redirect(array('action'=>'index_trafico'));
 		}
+		
 		$transporte = $this->Transporte->find('first',array(
 			'conditions' => array('Transporte.id' => $id),
 			'recursive' => 2));
@@ -52,6 +53,8 @@ public function view($id = null) {
 			'fields' => array('Aseguradora.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
+		$embalaje_transporte = $this->Transporte->EmbalajeTransporte->find('all');
+		$this->set('embalaje_transportes',$embalaje_transporte);
 	//sacamos los datos de la operacion  al que pertenece la linea
 		//nos sirven en la vista para detallar campos
 		$operacion = $this->Transporte->Operacion->find('first', array(
@@ -66,7 +69,7 @@ public function view($id = null) {
 
 		$transporte = $this->Transporte->find('all');	
 		$this->set('transporte',$transporte);
-
+//NO NECESARIO SE PASA A INDEX LINEA TRANSPORTE
 		$almacenaje = $this->Transporte->AlmacenesTransporte->find('first', array(
 			'conditions' => array('Transporte.id' => $this->params['named']['from_id']),
 			'recursive' => 2,

@@ -94,11 +94,19 @@
 		echo "</dd>";
 		echo "  <dt>Agente de aduanas</dt>\n";
 		echo "<dd>";
-		echo $this->Html->link($transporte['Agente']['Empresa']['nombre'], array(
-			'controller' => 'agentes',
-			'action' => 'view',
-			$transporte['Agente']['id'])
-		);
+		if ($transporte['Transporte']['agente_id'] !=NULL):
+			echo $this->Html->link($transporte['Agente']['Empresa']['nombre'], array(
+				'controller' => 'agentes',
+				'action' => 'view',
+				$transporte['Agente']['id'])
+			);
+					else:
+			echo "Sin asignar";
+		endif;
+		echo "</dd>";
+		echo "  <dt>Cantidad/Bultos Totales</dt>\n";
+		echo "<dd>";
+		echo $transporte['Transporte']['observaciones'].'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Observaciones</dt>\n";
 		echo "<dd>";
@@ -204,23 +212,41 @@
 	<dl><?php
 		echo "  <dt>Aseguradora</dt>\n";
 		echo "<dd>";
-			echo $transporte['Aseguradora']['Empresa']['nombre_corto'].'&nbsp;';
+		if ($transporte['Transporte']['aseguradora_id']!=NULL):
+			echo $this->Html->link($transporte['Aseguradora']['Empresa']['nombre_corto'], array(
+			'controller' => 'aseguradoras',
+			'action' => 'view',
+			$transporte['Aseguradora']['id'])
+		);
+			else:
+				echo "Sin asegurar";
+		endif;
 		echo "</dd>";
 		echo "  <dt>Fecha del seguro</dt>\n";
 		echo "<dd>";
-		$fecha = $transporte['Transporte']['fecha_seguro'];
-		echo date("d-m-Y", strtotime("$fecha"));
-		echo "</dd>";
-		echo "  <dt>Vencimiento del seguro</dt>\n";
-		echo "<dd>";
-		$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha +1 month"));
-		$transporte['Transporte']['fecha_vencimiento_seg'] = $fecha_vencimiento_seg; //Asigno una fecha + 1 mes
-		echo $fecha_vencimiento_seg.'&nbsp;' ;
-		echo "</dd>";
-		echo "  <dt>Coste del seguro</dt>\n";
-		echo "<dd>";
-		echo $transporte['Transporte']['coste_seguro'].'&nbsp;';
-		echo "</dd>";
+		if ($transporte['Transporte']['fecha_seguro'] !=NULL):
+			$fecha = $transporte['Transporte']['fecha_seguro'];
+				$dia = substr($fecha,8,2);
+				$mes = substr($fecha,5,2);
+				$anyo = substr($fecha,0,4);
+				$fecha_seguro= $dia.'-'.$mes.'-'.$anyo;
+			echo $fecha_seguro.'&nbsp;';
+			echo "</dd>";
+			//echo date("d-m-Y", strtotime("$fecha"));
+			echo "</dd>";
+			echo "  <dt>Vencimiento del seguro</dt>\n";
+			echo "<dd>";
+			$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha +1 month"));
+			$transporte['Transporte']['fecha_vencimiento_seg'] = $fecha_vencimiento_seg; //Asigno una fecha + 1 mes
+			echo $fecha_vencimiento_seg.'&nbsp;' ;
+			echo "</dd>";
+			echo "  <dt>Coste del seguro</dt>\n";
+			echo "<dd>";
+			echo $transporte['Transporte']['coste_seguro'].' €&nbsp;';
+			echo "</dd>";
+			else:
+			echo "Sin asegurar";
+		endif;
 	?>		
 </dl>
 	<div class="detallado">

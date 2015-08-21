@@ -1,5 +1,4 @@
 
-<h2>Añadir Línea de Transporte: Operación <?php echo $operacion['Operacion']['referencia'] ?><em></h2>
 <?php
 $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
 'controller'=>'operaciones',
@@ -8,16 +7,18 @@ $operacion['Operacion']['id']
 ));
 $this->Html->addCrumb('Añadir Transporte');
 ?>
+<fieldset>
+<h2>Añadir Línea de Transporte: Operación <?php echo $operacion['Operacion']['referencia'] ?><em></h2>
+
 <?php
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
 	?>
-	<div class="col2">
 	<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
+	echo $this->Form->input('EmbalajeTransprote.cantidad', array('label' => 'Cantidad transportada'));
 	?>
-	</div>
 	<div class="formuboton">
 		<ul>
 			<li>
@@ -192,7 +193,10 @@ $this->Html->addCrumb('Añadir Transporte');
 		<div class="formuboton">
 			<ul>
 			<li><?php
-			echo $this->Form->input('aseguradora_id',array('label'=>'Aseguradora'));
+			echo $this->Form->input('aseguradora_id',
+				array(
+					'label'=>'Aseguradora',
+					'empty' =>true));
 			?>
 			</li>
 			<li>
@@ -211,16 +215,21 @@ $this->Html->addCrumb('Añadir Transporte');
 		<?php
 		echo $this->Form->input('fecha_seguro', array(
 		'dateFormat' => 'DMY',
+		'minYear' => date('Y')-1,
+		'maxYear' => date('Y')+2,
+		'orderYear' => 'asc',
 		'timeFormat' => null ,
 		'label' => 'Fecha del seguro',
 		'empty' => ' ')
 		);
+
+		
 		?>
 		</div>
 		<?php
-		echo $this->Form->input('coste_seguro'.'€',array('label'=>'Coste del seguro'));
+		echo $this->Form->input('coste_seguro',array('label'=>'Coste del seguro €'));
 		?>
 		</div>
 </div>
 	<?php	echo $this->Form->end('Guardar Línea Transporte'); ?>
-
+</fieldset>

@@ -19,6 +19,7 @@ $transportes['Transporte']['matricula']
 	<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
+	echo $this->Form->input('EmbalajeTransprote.cantidad', array('label' => 'Cantidad transportada'));
 	?>
 	</div>
 	<div class="formuboton">
@@ -195,7 +196,10 @@ $transportes['Transporte']['matricula']
 		<div class="formuboton">
 			<ul>
 			<li><?php
-			echo $this->Form->input('aseguradora_id',array('label'=>'Aseguradora'));
+			echo $this->Form->input('aseguradora_id',
+				array(
+					'label'=>'Aseguradora',
+					'empty' =>true));
 			?>
 			</li>
 			<li>
@@ -214,6 +218,9 @@ $transportes['Transporte']['matricula']
 		<?php
 		echo $this->Form->input('fecha_seguro', array(
 		'dateFormat' => 'DMY',
+		'minYear' => date('Y')-1,
+		'maxYear' => date('Y')+2,
+		'orderYear' => 'asc',
 		'timeFormat' => null ,
 		'label' => 'Fecha del seguro',
 		'empty' => ' ')
@@ -221,7 +228,7 @@ $transportes['Transporte']['matricula']
 		?>
 		</div>
 		<?php
-		echo $this->Form->input('coste_seguro'.'€',array('label'=>'Coste del seguro'));
+		echo $this->Form->input('coste_seguro',array('label'=>'Coste del seguro €'));
 		?>
 		</div>
 </div>

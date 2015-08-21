@@ -83,6 +83,10 @@ public function view_trafico($id = null) {
 			'conditions' => array('Operacion.id' => $id),
 			'recursive' => 3));
 		$this ->set('operacion',$operacion);
+		//$transporte = $this->Operacion->Transporte->find('list',array(
+		//	'conditions' => array('Transporte.id'),
+		//	'recursive' => 1));
+		//$this->set('transporte',$transporte);
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$this->loadModel('ContratoEmbalaje');
 
@@ -96,6 +100,8 @@ public function view_trafico($id = null) {
 				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
 			)
 		);
+		//$embalaje_transporte = $this->Transporte->EmbalajeTransporte->find('all');
+		//$this->set('embalaje_transportes',$embalaje_transporte);
 		$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 		//mysql almacena la fecha en formato ymd
 		$fecha = $operacion['Contrato']['fecha_transporte'];
@@ -106,6 +112,14 @@ public function view_trafico($id = null) {
 
 		$this->set('embalaje', $embalaje);
 		$this->loadModel('CalidadNombre');
+//Línea de transporte
+		//	$this->set('tipo_fecha_carga', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
+		//mysql almacena la fecha en formato ymd
+		//$fecha = $transporte['Transporte']['fecha_carga'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
 
 //Líneas de reparto
 			foreach ($operacion['AsociadoOperacion'] as $linea):
