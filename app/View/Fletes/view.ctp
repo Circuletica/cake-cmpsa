@@ -20,7 +20,9 @@ $this->start('filtro');
 		echo "  <dt>Naviera:</dt>\n";
 		echo "  <dd>".$flete['Naviera']['Empresa']['nombre_corto'].'&nbsp;'."</dd>";
 		echo "  <dt>Puerto de Carga:</dt>\n";
-		echo "  <dd>".$flete['PuertoCarga']['nombre'].'&nbsp;'."</dd>";
+		echo "  <dd>".$flete['PuertoCarga']['nombre']
+			.' ('.$flete['PuertoCarga']['Pais']['nombre'].')'
+			.'&nbsp;'."</dd>";
 		echo "  <dt>Puerto de Destino:</dt>\n";
 		echo "  <dd>".$flete['PuertoDestino']['nombre'].'&nbsp;'."</dd>";
 		echo "  <dt>Tipo embalajes:</dt>\n";
@@ -31,16 +33,37 @@ $this->start('filtro');
 		//la tabla con los costes de flete
 		echo "<table>";
 			echo $this->Html->tableHeaders(array(
-				'válido desde','válido hasta','coste contenedor','coste $/Tm'));
+				'válido desde','válido hasta','coste contenedor','coste $/Tm', ''));
 			foreach ($costes as $coste):
 				echo $this->Html->tableCells(array(
-					$coste['PrecioFlete']['fecha_inicio'],
-					$coste['PrecioFlete']['fecha_fin'],
-					$coste['PrecioFlete']['coste_contenedor_dolar'],
-					$coste['PrecioFlete']['coste_contenedor_dolar']
+					$coste['PrecioFleteTonelada']['fecha_inicio'],
+					$coste['PrecioFleteTonelada']['fecha_fin'],
+					$coste['PrecioFleteTonelada']['coste_contenedor_dolar'],
+					$coste['PrecioFleteTonelada']['precio_dolar'],
+					$this->Html->link(
+						'<i class="fa fa-pencil-square-o"></i>',
+						array(
+							'controller'=>'precio_fletes',
+							'action' => 'edit',
+							$coste['PrecioFleteTonelada']['id'],
+							'from'=>'fletes',
+							'from_id'=>$coste['PrecioFleteTonelada']['flete_id']
+						),
+						array(
+							'class'=>'botond',
+							'escape'=>false,
+							'title'=>'Modificar'
+						)
 					)
-				);
+					));
 			endforeach;
 		echo "</table>";
 ?>
+	<div class="btabla">
+			<?php echo $this->Html->link('<i class="fa fa-user-plus"></i> Añadir precio',array(
+		'controller'=>'precio_fletes',
+		'action'=>'add',
+		'from'=>'fletes',
+		'from_id' => $flete['Flete']['id']), array('escape' => false,'title'=>'Añadir precio'));?>
+	</div>
 </div>

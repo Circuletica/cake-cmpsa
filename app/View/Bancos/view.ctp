@@ -11,16 +11,9 @@
 if (empty($banco)):
 	echo "No hay bancos en esta lista";
 else:
-	//echo "<pre>";
-	//print_r($banco);
-	////print_r($banco['Empresa']['Contacto']);
-	//echo "</pre>";
-
 	echo "<div class='acciones'>\n";
       echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array('action'=>'edit',$banco['Banco']['id']),array('title'=>'Modificar Banco','escape'=>false)).' '.
       $this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array('action'=>'delete',$banco['Banco']['id']),array('escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$banco['Empresa']['nombre_corto'].'?'));
-      //echo "\n";
-     // echo '<p>';
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
 ?>
 </div>

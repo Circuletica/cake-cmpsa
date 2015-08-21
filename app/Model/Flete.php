@@ -2,7 +2,12 @@
 class Flete extends AppModel {
 	public $recursive = 2;
 	//public $displayField = 'nombre'; //bug No existe
-	public $hasMany = 'PrecioFlete';
+	public $hasMany = array(
+		'PrecioFlete',
+		'PrecioFleteTonelada' => array(
+			'foreignKey' => 'id'
+		)
+	);
 	public $belongsTo = array(
 		'Naviera',
 		'Embalaje',

@@ -104,11 +104,14 @@ class FletesController extends AppController {
 			'conditions' => array('Flete.id' => $id),
 			'recursive' => 2));
 		$this->set('flete',$flete);
-		$this->set('referencia', $flete['PuertoCarga']['Pais']['nombre'].'-'.$flete['PuertoDestino']['nombre']);
-		$costes = $this->Flete->PrecioFlete->find(
+		$this->set('referencia',
+			$flete['PuertoCarga']['nombre']
+			.' ('.$flete['PuertoCarga']['Pais']['nombre'].')'
+			.' - '.$flete['PuertoDestino']['nombre']);
+		$costes = $this->Flete->PrecioFleteTonelada->find(
 			'all',
 			array(
-				'conditions' => array('PrecioFlete.id' => $id)
+				'conditions' => array('PrecioFleteTonelada.id' => $id)
 			)
 		);
 		$this->set('costes',$costes);
