@@ -17,6 +17,16 @@ public function view($id = null) {
 			'conditions' => array('Transporte.id' => $id),
 			'recursive' => 2));
 		$this->set('transporte',$transporte);
+
+		$bulto = $this->Transporte->EmbalajeTransporte->find(
+			'first',
+			array(
+				'conditions' => array('EmbalajeTransporte.embalaje_id' => $transporte['Transporte']['embalaje_id']
+				),
+				'fields' => array('EmbalajeTransporte.cantidad')
+			)
+		);
+		$this->set('bulto', $bulto);
 	}
 
 	public function add() {
@@ -85,7 +95,10 @@ public function view($id = null) {
 	public function edit( $id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada');
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array(
+					'controller' => 'operaciones',
+					'action' => 'view_trafico',
+					$this->params['named']['from_id']));
 		}
 		$this->Transporte->id = $id;
 		$this->set('puertos', $this->Transporte->Puerto->find('list'));

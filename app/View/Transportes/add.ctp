@@ -1,5 +1,6 @@
 
 <?php
+$this->Html->addCrumb('Contratos','/contratos');
 $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
 'controller'=>'operaciones',
 'action'=>'view_trafico',
@@ -7,9 +8,9 @@ $operacion['Operacion']['id']
 ));
 $this->Html->addCrumb('Añadir Transporte');
 ?>
+
 <fieldset>
 <h2>Añadir Línea de Transporte: Operación <?php echo $operacion['Operacion']['referencia'] ?><em></h2>
-
 <?php
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
@@ -17,7 +18,7 @@ $this->Html->addCrumb('Añadir Transporte');
 	<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
-	echo $this->Form->input('EmbalajeTransprote.cantidad', array('label' => 'Cantidad transportada'));
+	echo $this->Form->input('EmbalajeTransporte.cantidad', array('label' => 'Cantidad transportada'));
 	?>
 	<div class="formuboton">
 		<ul>
@@ -232,4 +233,4 @@ $this->Html->addCrumb('Añadir Transporte');
 		</div>
 </div>
 	<?php	echo $this->Form->end('Guardar Línea Transporte'); ?>
-</fieldset>
+</fieldset>		

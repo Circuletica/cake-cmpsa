@@ -1,27 +1,16 @@
-<h2>Modificar Línea de Transporte: Operación <?php echo $operacion['Operacion']['referencia'] ?><em></h2>
+<h2>Modificar Línea de Transporte: Operación <?php //echo $operacion['Operacion']['referencia'] ?><em></h2>
 <?php
-$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-'controller'=>'operaciones',
-'action'=>'view_trafico',
-$operacion['Operacion']['id']
-));
-$this->Html->addCrumb('Transporte', array(
-'controller' => 'transportes',
-'action'=>'view',
-$transportes['Transporte']['matricula']
-));
+$this->Html->addCrumb('Contratos','/contratos');
+$this->Html->addCrumb('Operación','/operaciones/index_trafico');
+//$this->Html->addCrumb('Transporte ','/operacion/view_trafico/'.$operacion['Operacion']['id']);
 ?>
 <?php
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
-	?>
-	<div class="col2">
-	<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
 	echo $this->Form->input('EmbalajeTransprote.cantidad', array('label' => 'Cantidad transportada'));
 	?>
-	</div>
 	<div class="formuboton">
 		<ul>
 			<li>
