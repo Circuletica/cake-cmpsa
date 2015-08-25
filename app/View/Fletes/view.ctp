@@ -33,11 +33,15 @@ $this->start('filtro');
 		//la tabla con los costes de flete
 		echo "<table>";
 			echo $this->Html->tableHeaders(array(
-				'válido desde','válido hasta','coste contenedor','coste $/Tm', ''));
+				'fecha de validez','coste contenedor','coste $/Tm', ''));
 			foreach ($costes as $coste):
+				$fecha = $coste['PrecioFleteTonelada']['fecha_inicio'];
+				$anyo = substr($fecha,0,4);
+				$mes = substr($fecha,5,2);
+				$dia = substr($fecha,8,2);	
+				$fecha_validez = $dia.'-'.$mes.'-'.$anyo;
 				echo $this->Html->tableCells(array(
-					$coste['PrecioFleteTonelada']['fecha_inicio'],
-					$coste['PrecioFleteTonelada']['fecha_fin'],
+					$fecha_validez,
 					$coste['PrecioFleteTonelada']['coste_contenedor_dolar'],
 					$coste['PrecioFleteTonelada']['precio_dolar'],
 					$this->Html->link(

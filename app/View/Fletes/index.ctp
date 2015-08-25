@@ -47,7 +47,7 @@
 		$this->Paginator->sort('PuertoCarga.nombre','Puerto de carga'),
 		$this->Paginator->sort('PuertoDestino.nombre','Puerto de destino'),
 		$this->Paginator->sort('Embalaje.nombre','Tipo embalaje'),
-		$this->Paginator->sort('Flete.peso_contenedor_tm','Peso contenedor(Tm)'),
+		$this->Paginator->sort('Flete.peso_contenedor_tm','Coste actual ($/Tm)'),
 		'')
 	);
 
@@ -59,7 +59,7 @@
 				$flete['PuertoCarga']['nombre'],
 				$flete['PuertoDestino']['nombre'],
 				$flete['Embalaje']['nombre'],
-				$flete['Flete']['peso_contenedor_tm'],
+				$flete['PrecioActualFlete']['precio_dolar'],
 				//$this->Html->link('Costes',array('action'=>'view',$flete['Flete']['id']), array('class' =>'boton'))
 				$this->Html->link(
 					'<i class="fa fa-info-circle"></i>',
