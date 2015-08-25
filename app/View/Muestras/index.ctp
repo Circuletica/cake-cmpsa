@@ -37,13 +37,7 @@
     </td>
     <td>
       <?php
-	//no queremos la hora
-	//mysql almacena la fecha en formato YMD
-	$fecha = $muestra['Muestra']['fecha'];
-	$dia = substr($fecha,8,2);
-	$mes = substr($fecha,5,2);
-	$anyo = substr($fecha,0,4);
-	echo $dia.'-'.$mes.'-'.$anyo;
+	echo $this->Date->format($muestra['Muestra']['fecha']);
      ?>
     </td>
     <td>
