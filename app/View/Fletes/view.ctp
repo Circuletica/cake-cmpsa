@@ -35,8 +35,13 @@ $this->start('filtro');
 			echo $this->Html->tableHeaders(array(
 				'válido desde','válido hasta','coste contenedor','coste $/Tm', ''));
 			foreach ($costes as $coste):
+				$fecha_inicio = $this->Date->format($coste['PrecioFleteTonelada']['fecha_inicio']);
+				$fecha_fin = $this->Date->format($coste['PrecioFleteTonelada']['fecha_fin']);
 				echo $this->Html->tableCells(array(
-					$coste['PrecioFleteTonelada']['fecha_inicio'],
+					//$coste['PrecioFleteTonelada']['fecha_inicio'],
+					$fecha_inicio,
+					//$coste['PrecioFleteTonelada']['fecha_inicio'],
+					$fecha_fin,
 					$coste['PrecioFleteTonelada']['fecha_fin'],
 					$coste['PrecioFleteTonelada']['coste_contenedor_dolar'],
 					$coste['PrecioFleteTonelada']['precio_dolar'],

@@ -1,7 +1,11 @@
 <?php
 class Flete extends AppModel {
 	public $recursive = 2;
-	//public $displayField = 'nombre'; //bug No existe
+	public $hasOne = array(
+		'PrecioActualFlete' => array(
+			'foreignKey' => 'flete_id'
+		)
+	);
 	public $hasMany = array(
 		'PrecioFlete',
 		'PrecioFleteTonelada' => array(
