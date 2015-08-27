@@ -51,10 +51,17 @@
 	echo "</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
+	//echo $muestra['Calidad']['nombre'].'&nbsp;';
 	echo $calidad_nombre['CalidadNombre']['nombre'].'&nbsp;';
+//	echo $this->Html->link($calidad_nombre['CalidadNombre']['nombre'], array(
+//		'controller' => 'calidades',
+//		'action' => 'view',
+//		$muestra['Muestra']['id'])
+//	);
 	echo "</dd>";
 	echo "  <dt>Proveedor</dt>\n";
 	echo "<dd>";
+	//echo $muestra['Proveedor']['Empresa']['nombre'].'&nbsp;';
 	echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre'], array(
 		'controller' => 'proveedores',
 		'action' => 'view',
@@ -70,14 +77,8 @@
 	);
 	echo "</dd>";
 	echo "  <dt>Fecha</dt>\n";
-	//no queremos la hora
-	//mysql almacena la fecha en formato YMD
-	$fecha = $muestra['Muestra']['fecha'];
-	$dia = substr($fecha,8,2);
-	$mes = substr($fecha,5,2);
-	$anyo = substr($fecha,0,4);
 	echo "<dd>";
-	echo $dia.'-'.$mes.'-'.$anyo;
+	echo $this->Date->format($muestra['Muestra']['fecha']);
 	echo "</dd>";
 	echo "  <dt>Resultado</dt>\n";
 	echo "<dd>";
@@ -138,4 +139,3 @@
 		</div>
 	</div>
 </div>
-

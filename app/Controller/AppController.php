@@ -18,9 +18,7 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
 App::uses('Controller', 'Controller');
-
 /**
  * Application Controller
  *
@@ -31,7 +29,9 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+	var $scaffold = 'admin';
 	//public $components = array('Session','RequestHandler');
+	public $helpers = array('Date');
 	public $components = array('DebugKit.Toolbar','Session','RequestHandler');
 	public function iban($codigoPais,$ccc){
 	  $pesos = array('A' => '10',
@@ -75,7 +75,6 @@ class AppController extends Controller {
 			2 => 'Emb.',
 			3 => 'Entr.'
 		);	
-
 	public function filtroListado() { //FILTRO-BUSCADOR
 		//la página a la que redirigimos después de mandar  el formulario de filtro
 		$url['action'] = 'index';
@@ -86,9 +85,7 @@ class AppController extends Controller {
 			foreach ($v as $kk=>$vv){ 
 			if ($vv) {$url[$k.'.'.$kk]=$vv;} 
 			} 
-
 		}
 		$this->redirect($url,null,true);
 	}
-
 }

@@ -10,7 +10,6 @@
   } else {
     $this->Html->addCrumb($title, '/muestras/index');
   }
-
 ?>
 
 <div class="actions">
@@ -37,13 +36,7 @@
     </td>
     <td>
       <?php
-	//no queremos la hora
-	//mysql almacena la fecha en formato YMD
-	$fecha = $muestra['Muestra']['fecha'];
-	$dia = substr($fecha,8,2);
-	$mes = substr($fecha,5,2);
-	$anyo = substr($fecha,0,4);
-	echo $dia.'-'.$mes.'-'.$anyo;
+  echo $this->Date->format($muestra['Muestra']['fecha']);
      ?>
     </td>
     <td>
@@ -53,30 +46,16 @@
       <?php echo $muestra['Proveedor']['Empresa']['nombre']; ?>
     </td>
     <td>
-<?php echo
-	$this->Html->link(
-		'<i class="fa fa-info-circle"></i>',
-		array(
-			'action'=>'view',
-			$muestra['Muestra']['id']),
-		array(
-			'class'=>'botond',
-			'escape' => false,
-			'title'=>'Detalles')
-	).' '.
-	$this->Form->postLink(
-			'<i class="fa fa-trash"></i>',
-			array(
-				'action'=>'delete',
-				$muestra['Muestra']['id']),
-			array(
-				'class'=>'botond',
-				'escape'=>false,
-				'title'=> 'Borrar',
-				'confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?'
-			)
-	)
-?>
+      <?php echo $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$muestra['Muestra']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles')).' '.
+      $this->Form->postLink(
+  '<i class="fa fa-trash"></i>',
+  array('action'=>'delete',$muestra['Muestra']['id']),
+  array(
+    'class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
+    'confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?'
+  )
+      )
+      ?>
     </td>
   </tr>
   <?php endforeach;?>
@@ -86,16 +65,16 @@
   <?php 
     if(isset($this->request->data['Search']['tipo_id'])){
       echo $this->Html->link(
-	'<i class="fa fa-plus"></i> Añadir Muestra',
-	array(
-	  'action'=>'add',
-	  'tipo_id'=>$this->request->data['Search']['tipo_id']
-	),array(
+  '<i class="fa fa-plus"></i> Añadir Muestra',
+  array(
+    'action'=>'add',
+    'tipo_id'=>$this->request->data['Search']['tipo_id']
+  ),array(
   'class'=>'botond','escape'=>false, 'title'=>'Añadir Muestra'));
     } else {
     echo $this->Html->link(
-	'<i class="fa fa-plus"></i> Añadir Muestra',
-	array('action'=>'add'),array('class'=>'botond','escape'=>false, 'title'=>'Añadir Muestra'));
+  '<i class="fa fa-plus"></i> Añadir Muestra',
+  array('action'=>'add'),array('class'=>'botond','escape'=>false, 'title'=>'Añadir Muestra'));
     }
   ?>
   </div>
