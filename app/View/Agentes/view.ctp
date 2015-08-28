@@ -12,12 +12,8 @@ if (empty($empresa)):
 	echo "No hay agentes en esta lista";
 else:
 	echo "<div class='acciones'>\n";
-	echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
-		'action'=>'edit',$empresa['Agente']['id']),array(
-		'title'=>'Modificar Agente','escape'=>false)
-		).' '.
-   $this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array('action'=>'delete',$empresa['Agente']['id']),array('escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$empresa['Empresa']['nombre'].'?'));
-
+	echo $this->Button->edit('agentes',$empresa['Agente']['id'])
+	.' '.$this->Button->delete('agentes',$empresa['Agente']['id'],$empresa['Empresa']['nombre']);
    ?>
 </div>
    <h2>Detalles Agente <?php echo $empresa['Empresa']['nombre']?></h2>
@@ -90,23 +86,9 @@ else:
 		    $contacto['telefono1'],
 		    $contacto['telefono2'],
 		    $contacto['email'],
-		    $this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
-			'controller'=>'contactos',
-			'action' => 'edit',
-			$contacto['id'],
-			'from'=>'agentes',
-			'from_id'=>$contacto['empresa_id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar'))
-			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
-			array(
-			    'controller'=>'contactos',
-			    'action' => 'delete',
-			    $contacto['id'],
-			    'from' => 'agentes',
-			    'from_id' => $contacto['empresa_id']),
-			    array('class'=>'botond','escape'=>false, 'title'=>'Borrar',
-			    'confirm' => '¿Seguro que quieres borrar a '.$contacto['nombre'].'?'))
-	));
-		//print_r($contacto);
+		    $this->Button->editLine('contactos',$contacto['id'],'agentes',$contacto['empresa_id'])
+		    .' '.$this->Button->deleteLine('contactos',$contacto['id'],'agentes',$contacto['empresa_id'],$contacto['nombre'])
+		));
 		endforeach;
 	endif;?>
 	</table>

@@ -70,14 +70,8 @@
 	);
 	echo "</dd>";
 	echo "  <dt>Fecha</dt>\n";
-	//no queremos la hora
-	//mysql almacena la fecha en formato YMD
-	$fecha = $muestra['Muestra']['fecha'];
-	$dia = substr($fecha,8,2);
-	$mes = substr($fecha,5,2);
-	$anyo = substr($fecha,0,4);
 	echo "<dd>";
-	echo $dia.'-'.$mes.'-'.$anyo;
+	echo $this->Date->format($muestra['Muestra']['fecha']);
 	echo "</dd>";
 	echo "  <dt>Resultado</dt>\n";
 	echo "<dd>";

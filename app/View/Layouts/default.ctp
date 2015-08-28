@@ -13,7 +13,6 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
 $cakeDescription = __d('cake_dev', 'CMPSA Gestión');
 $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 ?>
@@ -48,44 +47,32 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
 				</ul>
 			</li>
-			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','/operaciones', array('escape' => false));?></li>
+			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','/operaciones/index_trafico', array('escape' => false));?></li>
 			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/contratos',array('escape' => false));?></li>
 		</ul>	
 	</div>
 </div>
-	
-		<div id="content">
+
+<div id="content">
 		<div id="bread">
 		<i class="fa fa-home"></i>
 		<?php echo $this->Html->getCrumbs(' > ', 'Inicio');	?>
 		</div>
-			<?php echo $this->Session->flash(); ?>
-			<?php echo $this->fetch('content'); ?>
+		<?php echo $this->Session->flash(); ?>
+		<?php echo $this->fetch('content'); ?>
 
-		</div>
-				
+</div>
 		
-		<div id="footer">
-	
-	</div>
-			<div class="menufooter">
-				<ul class="tabs">
-					<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/pages/informes',array('escape' => false));?></li>
-					<li ><?php echo $this->Html->link('<i class="fa fa-cog"></i> PREFERENCIAS','/pages/preferencias',array('escape' => false));?></li>
-					<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?></li>
-				</ul>
-			</div>
-	
-					<?php /*echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/', array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered'));
-					*/?>
-			
-				<?php echo $cakeVersion.' - Optimizado para resolución superior a 1280x720'; ?>
-			
+<div id="footer">
+		<div class="menufooter">
+			<ul class="tabs">
+				<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/highcharts/highcharts_demo',array('escape' => false));?></li>
+				<li ><?php echo $this->Html->link('<i class="fa fa-cog"></i> PREFERENCIAS','/pages/preferencias',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?></li>
+			</ul>
 		</div>
-	
-	<?php //echo $this->element('sql_dump'); ?>
+		<?php echo '&nbsp&nbsp'.$cakeVersion.' - Optimizado para resolución superior a 1280x720'; ?>
+</div>
 	<?php echo $this->Js->writeBuffer(); //write cached scripts ?>
 </body>
 </html>
