@@ -1,12 +1,14 @@
-<h2>Agregar precio a <em><?php echo $flete['Flete']['id']?></em></h2>
 <?php
-  $this->Html->addCrumb('Fletes','/'.$this->params['named']['from']);
-  $this->Html->addCrumb($flete['Flete']['id'], '/'.$this->params['named']['from'].'/view/'.$this->params['named']['from_id']);
-  $this->Html->addCrumb('Añadir Precio de flete ', '/precio_fletes/add/'.'from:'.$this->params['named']['from'].'/from_id:'.$this->params['named']['from_id']);
-  echo $this->Form->create();
-   ?>
-  <fieldset>
-  <?php
+$this->extend('/Common/edit');
+$this->assign('objeto', 'Precio Flete '.$flete['Flete']['id']);
+$this->Html->addCrumb('Fletes','/fletes');
+$this->Html->addCrumb('Fletes','/'.$this->params['named']['from']);
+$this->Html->addCrumb('Flete '.$flete['Flete']['id'],'/fletes/view/'.$flete['Flete']['id']);
+echo $this->Form->create('PrecioFlete');
+echo '	<fieldset>';
+echo "<table>";
+echo"<tr>";
+echo"<td>";
   echo "<div class='linea'>\n";
     echo $this->Form->input('fecha_inicio', array(
 	  'label'=>'Fecha de Validez',
@@ -17,6 +19,8 @@
 	  )
     );
   echo "</div>\n";
+echo"</td>";
+echo"<td>";
   echo "<div class='linea'>\n";
     echo $this->Form->input('fecha_fin', array(
 	  'label'=>'Fecha de Caducidad',
@@ -27,10 +31,13 @@
 	  )
     );
   echo "</div>\n";
+echo"</td>";
+echo"</tr>";
+echo "</table>";
   echo $this->Form->input('coste_contenedor_dolar', array(
       'label' => 'Coste de flete ($/contenedor)'
   )
 );
-  echo $this->Form->end('Guardar precio');
+	echo $this->Form->end('Guardar Precio');
+echo'	</fieldset>';
 ?>
-</fieldset>

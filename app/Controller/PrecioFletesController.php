@@ -54,6 +54,12 @@ class PrecioFletesController extends AppController {
 				'controller' => $this->params['named']['from'],
 				'action'=>'index'));
 		}
+		$flete = $this->PrecioFlete->Flete->find('first',
+			array(
+				'conditions' => array('Flete.id' => $this->params['named']['from_id']),
+				'recursive' => -1
+		));
+		$this->set('flete',$flete);
 		$this->PrecioFlete->id = $id;
 		if($this->request->is('get')):
 			$this->request->data = $this->PrecioFlete->read();

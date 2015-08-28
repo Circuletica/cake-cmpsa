@@ -1,11 +1,11 @@
 <h2><?php echo $this->fetch('titulo'); ?></h2>
 
-<div class="actions">
+<!--div class="actions">
     <h3>Búsqueda</h3>
     <ul>
-    <?php echo $this->fetch('filtro'); ?>
+    <?php //echo $this->fetch('filtro'); ?>
     </ul>
-</div>
+</div-->
 <div class="acciones">
 <?php
 	$id = $this->fetch('id');

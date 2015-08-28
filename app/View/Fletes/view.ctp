@@ -38,11 +38,8 @@ $this->start('filtro');
 				$fecha_inicio = $this->Date->format($coste['PrecioFleteTonelada']['fecha_inicio']);
 				$fecha_fin = $this->Date->format($coste['PrecioFleteTonelada']['fecha_fin']);
 				echo $this->Html->tableCells(array(
-					//$coste['PrecioFleteTonelada']['fecha_inicio'],
 					$fecha_inicio,
-					//$coste['PrecioFleteTonelada']['fecha_inicio'],
 					$fecha_fin,
-					$coste['PrecioFleteTonelada']['fecha_fin'],
 					$coste['PrecioFleteTonelada']['coste_contenedor_dolar'],
 					$coste['PrecioFleteTonelada']['precio_dolar'],
 					$this->Html->link(
@@ -59,8 +56,25 @@ $this->start('filtro');
 							'escape'=>false,
 							'title'=>'Modificar'
 						)
+					).
+					$this->Form->postLink(
+						'<i class="fa fa-trash"></i>',
+						array(
+							'controller'=>'precio_fletes',
+							'action' => 'delete',
+							$coste['PrecioFleteTonelada']['id'],
+							'from'=>'fletes',
+							'from_id'=>$coste['PrecioFleteTonelada']['flete_id']
+						),
+						array(
+							'class'=>'botond',
+							'escape'=>false,
+							'title'=>'Borrar',
+							'confirm' =>'¿Realmente quiere borrar el coste '.$coste['PrecioFleteTonelada']['id'].'?'
+						)
 					)
-					));
+				)
+			);
 			endforeach;
 		echo "</table>";
 ?>

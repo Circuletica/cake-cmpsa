@@ -9,7 +9,7 @@ class Flete extends AppModel {
 	public $hasMany = array(
 		'PrecioFlete',
 		'PrecioFleteTonelada' => array(
-			'foreignKey' => 'id'
+			'foreignKey' => 'flete_id'
 		)
 	);
 	public $belongsTo = array(

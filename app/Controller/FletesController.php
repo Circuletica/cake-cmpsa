@@ -111,7 +111,8 @@ class FletesController extends AppController {
 		$costes = $this->Flete->PrecioFleteTonelada->find(
 			'all',
 			array(
-				'conditions' => array('PrecioFleteTonelada.flete_id' => $id)
+				'conditions' => array('PrecioFleteTonelada.flete_id' => $id),
+				'order' => array('PrecioFleteTonelada.fecha_inicio' => 'ASC')
 			)
 		);
 		$this->set('costes',$costes);
