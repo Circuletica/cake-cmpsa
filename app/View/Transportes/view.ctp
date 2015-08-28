@@ -76,6 +76,11 @@
 		echo "<dd>";
 			echo $transporte['Transporte']['matricula'].'&nbsp;';
 		echo "</dd>";
+		echo "  <dt>Embalaje transportado</dt>\n";
+		echo "<dd>";
+			echo $embalaje['EmbalajeTransporte']['cantidad'].' x '.
+				 $embalaje['Embalaje']['nombre'].'&nbsp;';
+		echo "</dd>";				
 				echo "  <dt>Puerto destino</dt>\n";
 		echo "<dd>";
 		echo $this->Html->link( $transporte['Puerto']['nombre'], array(
@@ -104,7 +109,7 @@
 			echo "Sin asignar";
 		endif;
 		echo "</dd>";
-		echo "  <dt>Cantidad/Bultos Totales</dt>\n";
+		echo "  <dt>Cantidad/Bultos línea</dt>\n";
 		echo "<dd>";
 		echo $transporte['Transporte']['observaciones'].'&nbsp;';
 		echo "</dd>";

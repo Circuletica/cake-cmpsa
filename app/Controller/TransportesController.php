@@ -18,15 +18,15 @@ public function view($id = null) {
 			'recursive' => 2));
 		$this->set('transporte',$transporte);
 
-		$bulto = $this->Transporte->EmbalajeTransporte->find(
+		$embalaje = $this->Transporte->EmbalajeTransporte->find(
 			'first',
 			array(
-				'conditions' => array('EmbalajeTransporte.embalaje_id' => $transporte['Transporte']['embalaje_id']
-				),
-				'fields' => array('EmbalajeTransporte.cantidad')
+				'fields' => array('Embalaje.nombre', 'EmbalajeTransporte.cantidad')
 			)
-		);
-		$this->set('bulto', $bulto);
+		);		
+		$this->set('embalaje',$embalaje);
+
+
 	}
 
 	public function add() {
@@ -44,7 +44,19 @@ public function view($id = null) {
 			endif;
 		endif;
 
+
+//		$this->set('embalaje', $this->Transporte->Operacion->Embalaje->find('list'));
 		$this->set('puertos', $this->Transporte->Puerto->find('list'));
+		
+//		$incoterm = $this->Transporte->Operacion->Contrato->Incoterm->find('first', array(
+//			'conditions' => array('Operacion.id' => $this->params['named']['from_id']),
+//			'recursive' =>3,
+//			'fields' => array(
+//				'Incoterm.id',
+//				'Incoterms.nombre')
+//		));
+//		$this->set('incoterm',$incoterm);
+		$this->set('embalajes', $this->Transporte->EmbalajeTransporte->Embalaje->find('list'));
 		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
 			'fields' => array('Naviera.id','Empresa.nombre_corto'),
 			'recursive' => 1))
@@ -69,7 +81,7 @@ public function view($id = null) {
 		//nos sirven en la vista para detallar campos
 		$operacion = $this->Transporte->Operacion->find('first', array(
 			'conditions' => array('Operacion.id' => $this->params['named']['from_id']),
-			'recursive' => 2,
+			'recursive' => 3,
 			'fields' => array(
 				'Operacion.id',
 				'Operacion.precio_compra',

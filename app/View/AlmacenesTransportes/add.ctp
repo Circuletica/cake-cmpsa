@@ -1,15 +1,20 @@
-<h2>Agregar Cuenta Corriente/Referencia almacén</h2>
+
 <?php
-$this->Html->addCrumb(['Transporte'], array(
-'controller'=>'transporte',
-'action'=>'view'
+$this->Html->addCrumb('Contratos','/contratos');
+$this->Html->addCrumb('Operación '.$transporte['Transporte']['Operacion']['referencia'], array(
+'controller'=>'operaciones',
+'action'=>'view_trafico',
+$transporte['Transporte']['Operacion']['id']
 ));
-//$this->Html->addCrumb('Añadir Cuenta Corriente', array(
-//'controller' => 'almacenestransportes',
-//'action' => 'add')
-//);
+$this->Html->addCrumb('Transporte', array(
+'controller'=>'transportes',
+'action'=>'view',
+$transporte['Transporte']['id']
+));
+$this->Html->addCrumb('Añadir Cuenta Corriente');
 ?>
 <fieldset>
+<h2>Agregar Cuenta Corriente/Referencia almacén</h2>
 			<div class="formuboton">
 			<ul>
 				<li><?php
@@ -32,7 +37,7 @@ $this->Html->addCrumb(['Transporte'], array(
 		<?php
 		echo $this->Form->input('cuenta_almacen',array('label'=>'Cuenta corriente / Referencia almacén'));
 		echo $this->Form->input('cantidad_cuenta',array('label'=>'Cantidad embalajes en cuenta'));
-		echo $this->Form->input('MarcaAlmacen.nombre',array('label'=>'Marca'));
+		echo $this->Form->input('MarcaAlmacen.nombre',array('label'=>'Marca almacenada'));
 		echo $this->Form->end('Guardar Cuenta Almacén');
 	?> 
 </fieldset>

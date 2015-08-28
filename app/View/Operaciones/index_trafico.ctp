@@ -16,20 +16,6 @@
   <!--h3>Filtro de operacion</h3-->
 </div>
 <div class='index'>
-  <?php
-//  //mysql almacena la fecha en formato ymd
-//  $fecha = $operacion['Contrato']['fecha_embarque'];
-//  $dia = substr($fecha,8,2);
-//  $mes = substr($fecha,5,2);
-//  $anyo = substr($fecha,0,4);
-//  $fecha_embarque = $dia.'-'.$mes.'-'.$anyo;
-//  $fecha = $operaciones['Contrato']['fecha_entrega'];
-//  $dia = substr($fecha,8,2);
-//  $mes = substr($fecha,5,2);
-//  $anyo = substr($fecha,0,4);
-//  $fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
- 
-  ?>  
   <table>
   <tr>
     <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Referencia')?></th>

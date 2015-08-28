@@ -15,11 +15,14 @@ $this->Html->addCrumb('Añadir Transporte');
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
 	?>
+	<div class="col2">
 	<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
-	echo $this->Form->input('EmbalajeTransporte.cantidad', array('label' => 'Cantidad transportada'));
+	echo $this->Form->input('embalaje_id',array('label'=>'Tipo de bulto','empty' =>true));
+	echo $this->Form->input('EmbalajeTransporte.cantidad', array('label' => 'Cantidad bultos'));
 	?>
+	</div>
 	<div class="formuboton">
 		<ul>
 			<li>
@@ -43,33 +46,39 @@ $this->Html->addCrumb('Añadir Transporte');
 			</li>
 		</ul>
 		</div>
-		<div class="formuboton">
-		<ul>
-			<li>
-			<?php
-			echo $this->Form->input('naviera_id',
-				array(
-					'label'=>'Naviera',
-					'empty' =>true 
-					));
-			?>
-			</li>
-			<li>
-				<div class="enlinea">
-				<?php
-				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Naviera',
-					 array(
-					'controller'=>'navieras',
-					'action'=>'add'),
-					array(
-					"class"=>"botond",
-					'escape' => false)
-				);
-				?>
+		<?php
+		// id = 3 es el valor de IN STORE
+		//echo $operacion['Contrato']['Incoterm']['nombre']
+		//if ($incoterms['Contrato']['Incoterm']['id'] != 3 ){ 
+		?>		<div class="formuboton">
+				<ul>
+					<li>
+					<?php
+					echo $this->Form->input('naviera_id',
+						array(
+							'label'=>'Naviera',
+							'empty' =>true 
+							));
+					?>
+					</li>
+					<li>
+						<div class="enlinea">
+						<?php
+						echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Naviera',
+							 array(
+							'controller'=>'navieras',
+							'action'=>'add'),
+							array(
+							"class"=>"botond",
+							'escape' => false)
+						);
+						?>
+						</div>
+					</li>
+				</ul>
 				</div>
-			</li>
-		</ul>
-		</div>
+		<?php// } ?>
+
 		<div class="formuboton">
 		<ul>
 			<li>

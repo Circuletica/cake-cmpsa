@@ -9,14 +9,6 @@ class Transporte extends AppModel {
   	  'matricula' => array(
       'rule' => 'notEmpty',
       'message' => 'El BL/matrícula no puede estar vacío'
-      ),
-      'puerto_id' => array(
-      'rule' => 'notEmpty',
-      'message' => 'El puerto no puede estar vacío'
-      ),
-      'naviera_id' => array(
-      'rule' => 'notEmpty',
-      'message' => 'La naviera no puede estar vacía'
       )
     );
 

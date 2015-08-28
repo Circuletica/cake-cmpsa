@@ -23,17 +23,6 @@
 
 	<div class='view'>
 	<?php
-		//mysql almacena la fecha en formato ymd
-//	$fecha = $operacion['Operacion']['Contrato']['fecha_embarque'];
-//	$dia = substr($fecha,8,2);
-//	$mes = substr($fecha,5,2);
-//	$anyo = substr($fecha,0,4);
-//	$fecha_embarque = $dia.'-'.$mes.'-'.$anyo;
-//	$fecha = $operacion['Operacion']['Contrato']['fecha_entrega'];
-//	$dia = substr($fecha,8,2);
-//	$mes = substr($fecha,5,2);
-//	$anyo = substr($fecha,0,4);
-//	$fecha_entrega = $dia.'-'.$mes.'-'.$anyo;
 	echo "<dl>";
 	echo "  <dt>Operación</dt>\n";
 	echo "<dd>";
@@ -69,7 +58,7 @@
 	echo "  <dt>Embalaje:</dt>\n";
 	echo "  <dd>".
 		$operacion['PesoOperacion']['cantidad_embalaje'].' x '.
-		$embalaje['Embalaje']['nombre'].
+		$embalajetransporte['EmbalajeTransporte']['cantidad'].
 		' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
 	echo "  <dt>Precio $/Tm total:</dt>\n";
 		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_dolar_tonelada'].'$/Tm&nbsp;'."</dd>";
@@ -97,11 +86,11 @@
 			$i,
 			$linea['nombre_vehiculo'],
 			$linea['matricula'],
-			//date("d-m-Y", strtotime("$linea['fecha_carga']")),
-			$linea['fecha_carga'],
-		    $linea['fecha_carga'],
+			//Nos da el formato DD-MM-YYYY
+			$this->Date->format($linea['fecha_carga']), 
+		    "PENDIENTE",
 			//$linea['EmbalajeTransporte']['cantidad'],
-			$linea['fecha_seguro'],
+			$this->Date->format($linea['fecha_seguro']),
 			//$linea['referencia_almacen'],
 			$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array(
 				'controller'=>'transportes',
