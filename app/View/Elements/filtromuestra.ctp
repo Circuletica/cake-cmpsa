@@ -1,5 +1,3 @@
-
-
   <?php echo $this->Form->create('Muestra', array('action'=>'filtroListado'));?>
   <div class="radiomuestra">
   <?php

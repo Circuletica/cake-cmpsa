@@ -3,6 +3,7 @@ class BancosController extends AppController {
 	public $paginate = array(
 		'order' => array('Empresa.nombre' => 'asc')
 	);
+
 		function index($id = null) {
 		//$this -> set('bancos', $this->Banco->find('all'));
 		$this->set('bancos', $this->paginate());
@@ -22,6 +23,7 @@ class BancosController extends AppController {
 		 $this->render();
 				
 	}
+
 	public function view($id = null) {
 		if (!$id) {
 			//$this->set('params',$this->request->params);
@@ -39,6 +41,7 @@ class BancosController extends AppController {
 		$iban_cliente = $this->iban("ES",$cuenta_cliente);
 		$this->set('iban_cliente',$iban_cliente);
 		//debug($iban_cliente);
+
 		//Exportar PDF
 		$this->pdfConfig = array(
 			'orientation'=>'portrait',
@@ -46,6 +49,7 @@ class BancosController extends AppController {
 			'filename'=>'bancos-'.$id.'pdf'
 			);
 	}
+
 	public function add() {
 		//los paises que rellenan el desplegable de 'País'
 		$this->set('paises', $this->Banco->Empresa->Pais->find('list'));
@@ -73,6 +77,7 @@ class BancosController extends AppController {
 			endif;
 		endif;
 	}
+
 	public function delete( $id = null) {
 		if (!$id or $this->request->is('get')) :
     			throw new MethodNotAllowedException();
@@ -84,6 +89,7 @@ class BancosController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}
+
 	public function edit( $id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');

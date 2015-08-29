@@ -15,8 +15,8 @@ if (empty($empresa)):
 	echo "No hay almacenes en esta lista";
 else:
 	echo "<div class='acciones'>\n";
-	echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array('action'=>'edit',$empresa['Almacen']['id']),array('title'=>'Modificar Almacén','escape'=>false)).' '.
-   $this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array('action'=>'delete',$empresa['Almacen']['id']),array('escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$empresa['Empresa']['nombre'].'?'));
+	echo $this->Button->edit('almacenes',$empresa['Almacen']['id'])
+	    .' '.$this->Button->delete('almacenes',$empresa['Almacen']['id'],$empresa['Empresa']['nombre']);
    	?>
    </div>
    <h2>Detalles Almacén <?php echo $empresa['Empresa']['nombre_corto']?></h2>
@@ -91,39 +91,14 @@ else:
 		$contacto['email'],
 		$this->Html->link('<i class="fa fa-envelope-o"></i>', 'mailto:'.$contacto['email'],array(
 			'class'=>'botond', 'escape'=>false,'target' => '_blank', 'title'=>'Enciar e-mail'))
-		.' '.
-		$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
-			'controller'=>'contactos',
-			'action' => 'edit',
-			$contacto['id'],
-              		'from'=>'almacenes',
-              		'from_id'=>$contacto['empresa_id']),array(
-              		'class'=>'botond','escape'=>false, 'title'=>'Modificar'))
-			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
-			array(
-				'controller'=>'contactos',
-				'action' => 'delete',
-				$contacto['id'],
-				'from' => 'almacenes',
-				'from_id' => $contacto['empresa_id']),
-				array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-					'confirm' => '¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
+		.' '.$this->Button->editLine('contactos',$contacto['id'],'almacenes',$contacto['empresa_id'])
+		.' '.$this->Button->deleteLine('contactos',$contacto['id'],'almacenes',$contacto['empresa_id',$contacto['nombre'])
 		)
-	));
-		//print_r($contacto);
+	);
 	endforeach;
 	endif;?>
 </table>
 	<div class="btabla">
-		<?php	echo $this->Html->link('<i class="fa fa-user-plus"></i>Añadir contacto',array(
-				'controller'=>'contactos',
-				'action'=>'add',
-				'from'=>'almacenes',
-				'from_id' => $empresa['Empresa']['id']), array(
-				'escape' => false,'title'=>'Añadir contacto'));
-				?>	
+	    <?php echo $this->Button->addLine('contactos','almacenes',$empresa['Empresa']['id'],'contacto'); ?>
 	</div>
 </div>
-
-
-

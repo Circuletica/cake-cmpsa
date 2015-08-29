@@ -17,18 +17,9 @@
 	</div>
 	<div class="acciones">
 	<?php
-		echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
-		'from_controller' => 'linea_muestras',
-		'action'=>'edit',
-		'from_id' => $linea['LineaMuestra']['id'],
-		$linea['LineaMuestra']['id']),
-		array('title'=>'Modificar muestra','escape'=>false))
-		.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
-		'action'=>'delete',
-		$linea['LineaMuestra']['id']),
-		array('escape'=>false, 'title'=> 'Borrar',
-		'confirm'=>'Realmente quiere borrar '.$linea['LineaMuestra']['marca'].'?')
-	);?>
+		echo $this->Button->edit('linea_muestras',$linea['LineaMuestra']['id'])
+		.' '.$this->Button->delete('linea_muestras',$linea['LineaMuestra']['id'],$linea['LineaMuestra']['marca'])
+	?>
 	</div>
 	<div class='view'>
 <?php

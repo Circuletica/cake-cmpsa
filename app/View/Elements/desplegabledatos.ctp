@@ -1,11 +1,7 @@
 <script language=javascript>
-
 function destino(){
-
 url = document.navegador.secciones.options[document.navegador.secciones.selectedIndex].value
-
 if (url != "no") window.location = url;
-
 }
 </script>
 <form name=navegador>
