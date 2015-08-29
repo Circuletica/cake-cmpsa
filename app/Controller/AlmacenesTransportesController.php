@@ -27,11 +27,6 @@ class AlmacenesTransportesController extends AppController {
 	$this->set('almacenestransportes', $this->AlmacenesTransporte->Almacen->find('list'));
 
 	
-	$this->set('transporte', $this->AlmacenesTransporte->Transporte->find('first', array(
-		'conditions' => array('Transporte.id' => $id),
-		'recursive' => 2
-		)));
-	$this->set('transporte',$transporte);
 	}
 
 }?>
