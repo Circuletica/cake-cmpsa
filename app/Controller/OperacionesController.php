@@ -97,6 +97,9 @@ class OperacionesController extends AppController {
 		$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
 		ksort($asociados);
 		$this->set('asociados', $asociados);
+		//Por defecto ponemos las opciones y el forfait a cero
+		$this->request->data['Operacion']['opciones'] = 0;
+		$this->request->data['Operacion']['forfait'] = 0;
 	
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué contrato pertenece
