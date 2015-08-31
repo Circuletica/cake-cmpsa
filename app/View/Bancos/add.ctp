@@ -14,7 +14,6 @@
 		'controller' => 'bancos',
 		'action' => 'index')
 	);
-
 	$this->Html->addCrumb('Añadir Banco', array(
 		'controller' => 'bancos',
 		'action' => 'add')

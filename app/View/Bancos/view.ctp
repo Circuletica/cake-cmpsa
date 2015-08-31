@@ -1,4 +1,4 @@
-	<?php //$this->Html->getCrumbs(' > ');?>
+<?php //$this->Html->getCrumbs(' > ');?>
 <?php $this->Html->addCrumb('Bancos', array(
 	'controller'=>'bancos',
 	'action'=>'index'
@@ -11,9 +11,16 @@
 if (empty($banco)):
 	echo "No hay bancos en esta lista";
 else:
+	//echo "<pre>";
+	//print_r($banco);
+	////print_r($banco['Empresa']['Contacto']);
+	//echo "</pre>";
 	echo "<div class='acciones'>\n";
-	echo $this->Button->edit('bancos',$banco['Banco']['id'])
-	.' '.$this->Button->delete('bancos',$banco['Banco']['id'],$banco['Empresa']['nombre_corto']);
+      echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array('action'=>'edit',$banco['Banco']['id']),array('title'=>'Modificar Banco','escape'=>false)).' '.
+      $this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array('action'=>'delete',$banco['Banco']['id']),array('escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$banco['Empresa']['nombre_corto'].'?'));
+      //echo "\n";
+     // echo '<p>';
+      //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
 ?>
 </div>
 <h2>Detalles Banco <?php echo $banco['Empresa']['nombre_corto']?></h2>
@@ -103,15 +110,32 @@ else:
 		$contacto['email'],
 		$this->Html->link('<i class="fa fa-envelope-o"></i>', 'mailto:'.$contacto['email'],array(
 			'class'=>'botond', 'escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'))
-			.' '.$this->Button->edit('contactos',$contacto['id'],'bancos',$contacto['empresa_id'])
-			.' '.$this->Button->delete('contactos',$contacto['id'],'bancos',$contacto['empresa_id'],$contacto['nombre'])
+		.' '.$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
+			'controller'=>'contactos',
+			'action' => 'edit',
+			$contacto['id'],
+              		'from'=>'bancos',
+              		'from_id'=>$contacto['empresa_id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar'))
+			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
+			array(
+				'controller'=>'contactos',
+				'action' => 'delete',
+				$contacto['id'],
+				'from' => 'bancos',
+				'from_id' => $contacto['empresa_id']),
+				array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
+					'confirm' =>'¿Seguro que quieres borrar a '.$contacto['nombre'].'?')
+		)
 	));
 	endforeach;
 endif;
 ?>
 </table>
 	<div class="btabla">
-<?php echo $this->Button->addLine('contactos','bancos',$banco['Empresa']['id'],'contacto');?>
+			<?php echo $this->Html->link('<i class="fa fa-user-plus"></i> Añadir contacto',array(
+		'controller'=>'contactos',
+		'action'=>'add',
+		'from'=>'bancos',
+		'from_id' => $banco['Empresa']['id']), array('escape' => false,'title'=>'Añadir contacto'));?>
 	</div>
 </div>
-

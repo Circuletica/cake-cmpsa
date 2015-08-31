@@ -27,7 +27,6 @@
 		'Agencia',
 		'Teléfono',
 		'Acciones'));
-
 	foreach($bancos as $banco):
 	echo $this->Html->tableCells(array(
 		//$banco['BancoPrueba']['id'],
@@ -39,7 +38,6 @@
 		//$this->Html->link('Modificar',array('action'=>'edit',$banco['BancoPrueba']['id'])).' '.
 		//$this->Form->postLink('Borrar',array('action'=>'delete',$banco['BancoPrueba']['id']),array('confirm'=>'Realmente quiere borrar '.$banco['Empresa']['nombre'].'?'))
 	));
-
 	endforeach;?>
 	</table>
 	<div class="btabla">
@@ -58,4 +56,3 @@
 
 
 <?php endif; ?>
-

@@ -5,7 +5,7 @@
 		'action' => 'index')
 	); ?>
 
-	<div class="printdet">
+<div class="printdet">
 <ul><li>
 	<?php 
 	echo $this->element('imprimirI');

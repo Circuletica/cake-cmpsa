@@ -16,7 +16,7 @@ else:
 	.' '.$this->Button->delete('agentes',$empresa['Agente']['id'],$empresa['Empresa']['nombre']);
    ?>
 </div>
-   <h2>Detalles Agente <?php echo $empresa['Empresa']['nombre']?></h2>
+   <h2>Detalles del Agente de Aduanas: <?php echo $empresa['Empresa']['nombre']?></h2>
    <?php
       //pasamos también de qué clase de entidad venimos, para luego volver a esta vista
       //formateamos el número de cuenta de la entidad

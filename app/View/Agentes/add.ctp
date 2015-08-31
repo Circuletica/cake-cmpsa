@@ -49,4 +49,3 @@ echo $this->Form->input('BancoPrueba.bic', array('label'=>'BIC'));
 //echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
 echo $this->Form->end('Guardar Agente');
 ?></fieldset>
-
