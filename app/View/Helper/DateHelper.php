@@ -8,6 +8,4 @@ class DateHelper extends AppHelper {
 	return $day.'-'.$month.'-'.$year;
 	}
 }
-
 ?>
-

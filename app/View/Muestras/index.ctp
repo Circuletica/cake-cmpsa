@@ -36,7 +36,7 @@
     </td>
     <td>
       <?php
-  echo $this->Date->format($muestra['Muestra']['fecha']);
+	echo $this->Date->format($muestra['Muestra']['fecha']);
      ?>
     </td>
     <td>

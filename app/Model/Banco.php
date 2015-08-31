@@ -31,6 +31,5 @@ class Banco extends AppModel {
 		'className' => 'Empresa',
 		'foreignKey' => 'id')
 	);
-
 }
 
