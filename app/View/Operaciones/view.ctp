@@ -124,6 +124,6 @@
 			);
 		endforeach;
 		echo "</table>";
-		echo "  <dt>Comentario:</dt>\n";
-		echo "  <dd>".$operacion['Operacion']['comentario'].'&nbsp;'."</dd>";
+		echo "  <dt>Observaciones:</dt>\n";
+		echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
 ?>

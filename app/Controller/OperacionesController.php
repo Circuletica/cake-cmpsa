@@ -97,6 +97,9 @@ class OperacionesController extends AppController {
 		$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
 		ksort($asociados);
 		$this->set('asociados', $asociados);
+		//para los puertos de carga y destino
+		$this->set('puertos',$this->Operacion->PuertoCarga->find('list'));
+		$this->set('puertoDestinos',$this->Operacion->PuertoCarga->find('list'));
 		//Por defecto ponemos las opciones y el forfait a cero
 		$this->request->data['Operacion']['opciones'] = 0;
 		$this->request->data['Operacion']['forfait'] = 0;
