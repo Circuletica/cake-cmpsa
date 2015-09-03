@@ -37,6 +37,11 @@
 		'empty' => array('' => 'Selecciona'),
 	    )
 	);
+	echo $this->Form->input('puerto_id', array(
+		'label' => 'Puerto de destino',
+		'empty' => array('' => ''),
+	    )
+	);
 	echo $this->Form->input('calidad_id', array(
 		'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 		'empty' => array('' => 'Selecciona'),
@@ -104,15 +109,6 @@
 					)
 				);
 			}
-//		    echo $this->Form->input(
-//			    'Embalaje.'.$embalaje['Embalaje']['id'].'.peso_embalaje_real',
-//			    array(
-//				'label' => '',
-//				'class' => 'peso',
-//				'onblur' => 'totalDesglose()',
-//				'oninput' => 'totalDesglose()'
-//			)
-//		);
 		    echo '</td>';
 		    echo '</tr>';
 	    endforeach;
@@ -134,18 +130,41 @@
 //		    'onclick' => 'canalCompra()'
 //	    		)
 //	    );
+//		echo "<div class='linea'>\n";
+//		echo $this->Form->input('fecha_embarque', array(
+//			'label' => 'Fecha de embarque',
+//			'dateFormat' => 'DMY')
+//		);
+//		echo "</div>\n";
+//		echo "<div class='linea'>\n";
+//		echo $this->Form->input('fecha_entrega', array(
+//			'label' => 'Fecha de entrega',
+//			'dateFormat' => 'DMY')
+//		);
+//		echo "</div>\n";
+		echo "<div class='radiomuestra'>\n";
+		echo $this->Form->radio(
+			'si_entrega',
+			$tipos_fecha_transporte,
+			array(
+				'legend' => 'Fecha:',
+				'value' => $si_entrega
+			)
+		);
+		echo "</div>\n";
 		echo "<div class='linea'>\n";
-		echo $this->Form->input('fecha_embarque', array(
-			'label' => 'Fecha de embarque',
+		echo $this->Form->input('fecha_transporte', array(
+			'label' => '',
 			'dateFormat' => 'DMY')
 		);
 		echo "</div>\n";
 		echo "<div class='linea'>\n";
-		echo $this->Form->input('fecha_entrega', array(
-			'label' => 'Fecha de entrega',
-			'dateFormat' => 'DMY')
+		echo $this->Form->input('posicion_bolsa', array(
+			'label' => 'Posición de bolsa',
+			'dateFormat' => 'MY')
 		);
 		echo "</div>\n";
+		echo $this->Form->input('comentario');
 		echo $this->Form->input('id', array('type'=>'hidden'));
 		echo $this->Form->end('Guardar Contrato');
 	?>

@@ -189,7 +189,8 @@
 	    );
 	    echo $this->Form->input('proveedor_id', array(
 		    'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
-		    'empty' => array('' => 'Selecciona'),
+		    //'empty' => array('' => 'Selecciona'),
+		    'empty' => true,
 		    'class' => 'ui-widget',
 		    'id' => 'combobox'
 		    )

@@ -37,10 +37,8 @@ class BancosController extends AppController {
 		$cuenta_cliente = $banco['Banco']['cuenta_cliente_1'];
 		//la funcion necesita una cadena como parametro
 		settype($cuenta_cliente,"string");
-		//debug($ccc);
 		$iban_cliente = $this->iban("ES",$cuenta_cliente);
 		$this->set('iban_cliente',$iban_cliente);
-		//debug($iban_cliente);
 
 		//Exportar PDF
 		$this->pdfConfig = array(

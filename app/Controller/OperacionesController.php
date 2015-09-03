@@ -5,6 +5,7 @@ class OperacionesController extends AppController {
 		'order' => array('referencia' => 'asc'),
 		'recursive' => 3
 	);
+
 	public function index() {
 		$this->set('operaciones', $this->paginate());
 	}
@@ -124,6 +125,7 @@ class OperacionesController extends AppController {
 			endif;
 		endif;
 	}
+
 	public function edit($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');
@@ -166,6 +168,7 @@ class OperacionesController extends AppController {
 			)
 		));
 		$this->set('embalaje', $embalaje);
+
 		if($this->request->is('get')): //al abrir el edit, meter los datos de la bdd
 			$this->request->data = $this->Operacion->read();
 			foreach ($asociados_operacion as $asociado_id => $asociado) {
@@ -195,6 +198,7 @@ class OperacionesController extends AppController {
 					$id
 					)
 				);
+
 			else:
 				$this->Session->setFlash('Operacion NO guardada');
 			endif;
@@ -246,6 +250,7 @@ class OperacionesController extends AppController {
 		$this->set('columnas_reparto',$columnas_reparto);
 		$this->set('lineas_reparto',$lineas_reparto);
 	}
+
 	public function delete($id = null) {
 		if (!$id or $this->request->is('get')) :
     			throw new MethodNotAllowedException();
@@ -259,6 +264,7 @@ class OperacionesController extends AppController {
 		));
 		endif;
 	}
+
 
 	public function index_trafico() {
 	$this->set('operaciones', $this->paginate());
@@ -344,5 +350,5 @@ public function view_trafico($id = null) {
 		$this->set('lineas_reparto',$lineas_reparto);
 
 	}
-}
+
 ?>

@@ -189,6 +189,11 @@
 		    'empty' => array('' => 'Selecciona')
 		    )
 	    );
+	    echo $this->Form->input('puerto_id', array(
+		    'label' => 'Puerto de destino',
+		    'empty' => array('' => 'Selecciona')
+		    )
+	    );
 	    echo $this->Form->input('calidad_id', array(
 		    'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 		    'empty' => array('' => 'Selecciona'),
@@ -207,6 +212,18 @@
 		)
 	    );
 	    echo $this->Form->input('lotes_contrato');
+		echo "<div class='linea'>\n";
+		echo $this->Form->input('posicion_bolsa', array(
+			'label' => 'Posición de bolsa',
+			'dateFormat' => 'MY',
+			'minYear' => date('Y'),
+			'maxYear' => date('Y')+5,
+			'orderYear' => 'asc',
+			//'selected' => date('Y-m'),
+			//'div' => false
+			)
+		);
+		echo "</div>\n";
     ?>
     <table>
 	<tr>
@@ -272,28 +289,50 @@
 		//	)
 		//);
 		echo '<p id="divisa_opciones"></p>';
-		echo "<div class='linea'>\n";
-		echo $this->Form->input('fecha_embarque', array(
-			'label' => 'Fecha de embarque',
-			'dateFormat' => 'DMY',
-			'minYear' => date('Y')-1,
-			'maxYear' => date('Y')+5,
-			//'selected' => date('Y-m-1'),
-			'empty' => true
+//		echo "<div class='linea'>\n";
+//		echo $this->Form->input('fecha_embarque', array(
+//			'label' => 'Fecha de embarque',
+//			'dateFormat' => 'DMY',
+//			'minYear' => date('Y')-1,
+//			'maxYear' => date('Y')+5,
+//			//'selected' => date('Y-m-1'),
+//			'empty' => true
+//			)
+//		);
+//		echo "</div>\n";
+//		echo "<div class='linea'>\n";
+//		echo $this->Form->input('fecha_entrega', array(
+//			'label' => 'Fecha de entrega',
+//			'dateFormat' => 'DMY',
+//			'minYear' => date('Y')-1,
+//			'maxYear' => date('Y')+5,
+//			//'selected' => date('Y-m-1'),
+//			'empty' => true
+//			)
+//		);
+//		echo "</div>\n";
+		echo "<div class='radiomuestra'>\n";
+		echo $this->Form->radio(
+			'si_entrega',
+			$tipos_fecha_transporte,
+			array(
+				'legend' => 'Fecha de transporte:',
+				'value' => '0'
 			)
 		);
 		echo "</div>\n";
 		echo "<div class='linea'>\n";
-		echo $this->Form->input('fecha_entrega', array(
-			'label' => 'Fecha de entrega',
+		echo $this->Form->input('fecha_transporte', array(
+			'label' => '',
 			'dateFormat' => 'DMY',
-			'minYear' => date('Y')-1,
+			'minYear' => date('Y'),
 			'maxYear' => date('Y')+5,
-			//'selected' => date('Y-m-1'),
-			'empty' => true
+			'orderYear' => 'asc',
+			'selected' => date('Y-m-1', strtotime("+30 days"))
 			)
 		);
 		echo "</div>\n";
+		    echo $this->Form->input('comentario');
 		echo $this->Form->end('Guardar Contrato');
 	?>
     </fieldset>
