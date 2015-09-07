@@ -60,14 +60,10 @@
 		$peso_total += $peso_embalaje;
 	endforeach;
 	echo "  </table>\n";
-//	echo "  <dt>Fecha de embarque</dt>\n";
-//	echo "  <dd>".$fecha_embarque."</dd>";
-//	echo "  <dt>Fecha de entrega</dt>\n";
-//	echo "  <dd>".$fecha_entrega."</dd>";
 	echo "  <dt>$tipo_fecha_transporte</dt>\n";
-	echo "  <dd>".$fecha_transporte."</dd>";
-	echo "  <dt>Puerto de destino</dt>\n";
-	echo "  <dd>".$contrato['Puerto']['nombre']."&nbsp;</dd>";
+	echo "  <dd>".$this->Date->format($fecha_transporte)."</dd>";
+	echo "  <dt>$tipo_puerto</dt>\n";
+	echo "  <dd>".$puerto."&nbsp;</dd>";
 	echo "  <dt>Bolsa</dt>\n";
 	echo "  <dd>".$contrato['CanalCompra']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Diferencial</dt>\n";

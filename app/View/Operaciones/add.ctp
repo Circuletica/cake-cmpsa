@@ -61,12 +61,13 @@ echo $this->Form->input('fecha_pos_fijacion', array(
 );
 		echo "</div>\n";
 echo $this->Form->input('puerto_carga_id', array(
-	'options' => $puertos,
-	'default' => '6'
+	'default' => $puerto_carga_contrato_id,
+	'empty' => array('' => '')
 	)
 );
 echo $this->Form->input('puerto_destino_id', array(
-	'default' => '6'
+	'default' => $puerto_destino_contrato_id,
+	'empty' => array('' => '')
 	)
 );
 echo $this->Form->input('precio_fijacion', array(

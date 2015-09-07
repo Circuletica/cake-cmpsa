@@ -31,8 +31,12 @@ class ContratosController extends AppController {
 			)
 		);
 		$this->set('proveedores', $proveedores);
-		$this->set('puertos', $this->Contrato->Puerto->find('list', array(
-			'order' => array('Puerto.nombre' => 'ASC')
+		$this->set('puertoCargas', $this->Contrato->PuertoCarga->find('list', array(
+			'order' => array('PuertoCarga.nombre' => 'ASC')
+			))
+		);
+		$this->set('puertoDestinos', $this->Contrato->PuertoDestino->find('list', array(
+			'order' => array('PuertoDestino.nombre' => 'ASC')
 			))
 		);
 		$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
@@ -105,25 +109,12 @@ class ContratosController extends AppController {
 		$this->set('contrato',$contrato);
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$this->loadModel('CalidadNombre');
-		//mysql almacena la fecha en formato ymd
-//		$fecha = $contrato['Contrato']['fecha_embarque'];
-//		$dia = substr($fecha,8,2);
-//		$mes = substr($fecha,5,2);
-//		$anyo = substr($fecha,0,4);
-//		$this->set('fecha_embarque', $dia.'-'.$mes.'-'.$anyo);
-//		$fecha = $contrato['Contrato']['fecha_entrega'];
-//		$dia = substr($fecha,8,2);
-//		$mes = substr($fecha,5,2);
-//		$anyo = substr($fecha,0,4);
-//		$this->set('fecha_entrega', $dia.'-'.$mes.'-'.$anyo);
-		//tipo de fecha (embarque/entrega)
+		//si embarque o entrega
 		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
+		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');
+		$this->set('puerto', $contrato['Contrato']['si_entrega'] ? $contrato['PuertoDestino']['nombre'] : $contrato['PuertoCarga']['nombre']);
 		//mysql almacena la fecha en formato ymd
-		$fecha = $contrato['Contrato']['fecha_transporte'];
-		$dia = substr($fecha,8,2);
-		$mes = substr($fecha,5,2);
-		$anyo = substr($fecha,0,4);
-		$this->set('fecha_transporte', $dia.'-'.$mes.'-'.$anyo);
+		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
 		$fecha = $contrato['Contrato']['posicion_bolsa'];
 		//sacamos el nombre del mes en castellano
 		setlocale(LC_TIME, "es_ES.UTF-8");
@@ -151,8 +142,12 @@ class ContratosController extends AppController {
 			'order' => array('Incoterm.nombre' => 'ASC')
 			)
 		));
-		$this->set('puertos', $this->Contrato->Puerto->find('list', array(
-			'order' => array('Puerto.nombre' => 'ASC')
+		$this->set('puertoCargas', $this->Contrato->PuertoCarga->find('list', array(
+			'order' => array('PuertoCarga.nombre' => 'ASC')
+			))
+		);
+		$this->set('puertoDestinos', $this->Contrato->PuertoDestino->find('list', array(
+			'order' => array('PuertoDestino.nombre' => 'ASC')
 			))
 		);
 		$this->set('proveedores', $this->Contrato->Proveedor->find('list', array(

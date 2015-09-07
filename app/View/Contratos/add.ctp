@@ -20,8 +20,8 @@
     </style>
 
     <?php
-      $this->Html->addCrumb('Contratos', '/contratos');
-	    echo $this->Html->script('jquery')."\n"; // Include jQuery library
+	$this->Html->addCrumb('Contratos', '/contratos');
+	echo $this->Html->script('jquery')."\n"; // Include jQuery library
 	//Pasamos la lista de 'bolsas' al javascript de la vista
 	$this->Js->set('canalCompraDivisa', $canal_compras_divisa);
 	echo $this->Js->writeBuffer(array('onDomReady' => false));
@@ -189,9 +189,16 @@
 		    'empty' => array('' => 'Selecciona')
 		    )
 	    );
-	    echo $this->Form->input('puerto_id', array(
+	    echo $this->Form->input('puerto_carga_id', array(
+		    'label' => 'Puerto de carga',
+		    //'empty' => array('' => 'Selecciona')
+		    'empty' => true
+		    )
+	    );
+	    echo $this->Form->input('puerto_destino_id', array(
 		    'label' => 'Puerto de destino',
-		    'empty' => array('' => 'Selecciona')
+		    //'empty' => array('' => 'Selecciona')
+		    'empty' => true
 		    )
 	    );
 	    echo $this->Form->input('calidad_id', array(

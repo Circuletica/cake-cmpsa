@@ -29,6 +29,8 @@ class OperacionesController extends AppController {
 				'Contrato.referencia',
 				'Contrato.proveedor_id',
 				'Contrato.peso_comprado',
+				'Contrato.puerto_carga_id',
+				'Contrato.puerto_destino_id',
 				'CanalCompra.nombre',
 				'CanalCompra.divisa',
 				'Incoterm.nombre',
@@ -37,9 +39,13 @@ class OperacionesController extends AppController {
 				'CalidadNombre.nombre')
 		));
 		$this->set('contrato',$contrato);
+		$this->set('puerto_carga_contrato_id', $contrato['Contrato']['puerto_carga_id']);
+		$this->set('puerto_destino_contrato_id', $contrato['Contrato']['puerto_destino_id']);
 		$this->set('divisa', $contrato['CanalCompra']['divisa']);
 		$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find('all', array(
-			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
+			'conditions' => array(
+				'ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']
+			),
 			'fields' => array(
 				'Embalaje.id',
 				'Embalaje.nombre',
@@ -98,8 +104,11 @@ class OperacionesController extends AppController {
 		ksort($asociados);
 		$this->set('asociados', $asociados);
 		//para los puertos de carga y destino
-		$this->set('puertos',$this->Operacion->PuertoCarga->find('list'));
-		$this->set('puertoDestinos',$this->Operacion->PuertoCarga->find('list'));
+		$this->set('puertoCargas',$this->Operacion->PuertoCarga->find('list', array(
+			'order' => array('PuertoCarga.nombre' =>'ASC')
+			)
+		));
+		$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find('list'));
 		//Por defecto ponemos las opciones y el forfait a cero
 		$this->request->data['Operacion']['opciones'] = 0;
 		$this->request->data['Operacion']['forfait'] = 0;

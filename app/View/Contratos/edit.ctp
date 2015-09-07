@@ -37,7 +37,12 @@
 		'empty' => array('' => 'Selecciona'),
 	    )
 	);
-	echo $this->Form->input('puerto_id', array(
+	echo $this->Form->input('puerto_carga_id', array(
+		'label' => 'Puerto de carga',
+		'empty' => array('' => ''),
+	    )
+	);
+	echo $this->Form->input('puerto_destino_id', array(
 		'label' => 'Puerto de destino',
 		'empty' => array('' => ''),
 	    )
@@ -51,7 +56,7 @@
 	);
 	echo $this->Form->input('proveedor_id', array(
 		'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
-		'empty' => array('' => 'Selecciona')
+		'empty' => array('' => '')
 		)
 	);
 	echo $this->Form->input('peso_comprado', array(
