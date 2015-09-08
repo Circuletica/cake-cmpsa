@@ -1,7 +1,25 @@
 <?php
 class FletesController extends AppController {
+	public $components = array('Paginator');
 	function index() {
-		$this->set('fletes', $this->paginate());
+		$this->Paginator->settings = array(
+		//$paginate = array(
+			'fields' => array(
+				//'Pais.nombre',
+				'Empresa.nombre_corto',
+				'PuertoCarga.nombre',
+				'PuertoDestino.nombre',
+				'Embalaje.nombre',
+				'Flete.peso_contenedor_tm',
+				'PrecioActualFlete.fecha_fin'
+			),
+			'order' => array(
+				'Pais.nombre' => 'ASC'
+			),
+			'recursive' => 4
+		);
+		//$this->Paginator->settings = $this->paginate;
+		$this->set('fletes', $this->Paginator->paginate());
 	}
 
 	function add() {
