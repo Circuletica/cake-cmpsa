@@ -55,8 +55,8 @@
 	foreach($fletes as $flete):
 		echo $this->Html->tableCells(
 			array(
-				$flete['PuertoCarga']['Pais']['nombre'],
-				$flete['Naviera']['Empresa']['nombre_corto'],
+				$flete['Pais']['nombre'],
+				$flete['Empresa']['nombre_corto'],
 				$flete['PuertoCarga']['nombre'],
 				$flete['PuertoDestino']['nombre'],
 				$flete['Embalaje']['nombre'],

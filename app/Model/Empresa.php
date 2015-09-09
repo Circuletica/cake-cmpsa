@@ -4,9 +4,9 @@ class Empresa extends AppModel {
 		'Banco' => array(
 			'className' => 'Banco',
 			'foreignKey' => 'id'),
-		'Proveedor' => array(
-			'className' => 'Proveedor',
-			'foreignKey' => 'id')
+		//'Proveedor' => array(
+		//	'className' => 'Proveedor',
+		//	'foreignKey' => 'id')
 	);
         public $hasMany = 'Contacto';
         public $belongsTo = array(

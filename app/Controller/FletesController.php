@@ -1,25 +1,52 @@
 <?php
 class FletesController extends AppController {
 	public $components = array('Paginator');
+//	public $paginate = array(
+//			'fields' => array(
+//				'Pais.nombre',
+//				'Empresa.nombre_corto',
+//				'PuertoCarga.nombre',
+//				'PuertoDestino.nombre',
+//				'Embalaje.nombre',
+//				'Flete.peso_contenedor_tm',
+//				'PrecioActualFlete.fecha_fin'
+//			),
+//			'order' => array(
+//				'Pais.nombre' => 'ASC'
+//			),
+//			//'recursive' => 4
+//		);
+
 	function index() {
-		$this->Paginator->settings = array(
-		//$paginate = array(
-			'fields' => array(
-				//'Pais.nombre',
-				'Empresa.nombre_corto',
-				'PuertoCarga.nombre',
+		$this->Flete->bindModel(array(
+			'belongsTo' => array(
+				'Pais' => array(
+					'foreignKey' => false,
+					'conditions' => array('Pais.id = PuertoCarga.pais_id')
+				),
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Empresa.id = Flete.naviera_id')
+				)
+			)
+		));
+		$this->paginate = array(
+			'contain' => array(
+				'Naviera',
+				'Empresa',
+				'PuertoCarga',
+				'Pais',
 				'PuertoDestino.nombre',
 				'Embalaje.nombre',
-				'Flete.peso_contenedor_tm',
-				'PrecioActualFlete.fecha_fin'
+				'PrecioActualFlete'
 			),
 			'order' => array(
 				'Pais.nombre' => 'ASC'
 			),
-			'recursive' => 4
+			'recursive' => 2
 		);
-		//$this->Paginator->settings = $this->paginate;
-		$this->set('fletes', $this->Paginator->paginate());
+		$fletes = $this->paginate();
+		$this->set(compact('fletes'));
 	}
 
 	function add() {
@@ -29,13 +56,14 @@ class FletesController extends AppController {
 			'recursive' => 1
 			)
 		);
-		$this->set('navieras', $navieras);
+		$this->set(compact('navieras'));
 		$puerto_cargas = $this->Flete->PuertoCarga->find(
 			'list', array(
 				'order' => array('PuertoCarga.nombre' => 'ASC')
 			)
 		);
-		$this->set('puerto_cargas', $puerto_cargas);
+		//$this->set('puerto_cargas', $puerto_cargas);
+		$this->set(compact('puerto_cargas'));
 		$puerto_destinos = $this->Flete->PuertoDestino->find(
 			'list', array(
 				'order' => array('PuertoDestino.nombre' => 'ASC')

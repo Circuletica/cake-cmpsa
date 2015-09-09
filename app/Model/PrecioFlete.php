@@ -8,6 +8,6 @@ class PrecioFlete extends AppModel {
 	//	)
 	//);
 	public $belongsTo = array(
-		'Flete',
+		//'Flete',
 	);
 }
