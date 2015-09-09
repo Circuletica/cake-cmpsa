@@ -1,6 +1,5 @@
 <?php
 class PuertosController extends AppController {
-
 	public $paginate = array(
 		'limit' => 10,
 		'order' => array('Puertos.nombre' => 'asc')
@@ -63,4 +62,3 @@ endif;
 
 
 ?>
-

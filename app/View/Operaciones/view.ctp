@@ -110,7 +110,6 @@
 		echo "  <dt>Precio €/kg estimado:</dt>\n";
 		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
 		echo "</dl>";
-
 		//la tabla con el reparto de sacos para los asociados
 		echo "<table>";
 		echo $this->Html->tableHeaders($columnas_reparto);
@@ -127,4 +126,3 @@
 		echo "  <dt>Comentario:</dt>\n";
 		echo "  <dd>".$operacion['Operacion']['observacion'].'&nbsp;'."</dd>";
 ?>
-

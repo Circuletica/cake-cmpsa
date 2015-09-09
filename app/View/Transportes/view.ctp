@@ -111,7 +111,7 @@
 		echo "</dd>";
 		echo "  <dt>Cantidad/Bultos línea</dt>\n";
 		echo "<dd>";
-		echo $transporte['Transporte']['observaciones'].'&nbsp;';
+		echo $embalaje['EmbalajeTransporte']['cantidad'].'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Observaciones</dt>\n";
 		echo "<dd>";

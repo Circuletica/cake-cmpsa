@@ -16,7 +16,7 @@ class CalidadesController extends AppController {
 		if($this->request->is('post')):
 			if($this->Calidad->save($this->request->data)):
 				$this->Session->setFlash('Calidad guardada');
-				//debug($this->params['named']);
+				debug($this->params['named']);
 				$this->redirect(array(
 					'controller' => $this->params['named']['from_controller'],
 					'action' => $this->params['named']['from_action']));

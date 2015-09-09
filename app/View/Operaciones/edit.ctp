@@ -3,7 +3,6 @@
 <?php
 $this->Html->addCrumb('Contratos','/contratos');
 $this->Html->addCrumb('Contrato '.$operacion['Contrato']['referencia'],'/contratos/view/'.$operacion['Contrato']['id']);
-
 echo 'Contrato: '.$operacion['Contrato']['referencia']."\n";
 echo "<p>\n";
 echo 'Proveedor: '.$operacion['Contrato']['Proveedor']['Empresa']['nombre']."\n";
@@ -98,6 +97,4 @@ echo $this->Form->input('cambio_dolar_euro', array(
 echo $this->Form->input('comentario');
 echo $this->Form->end('Guardar Operacion');
 ?>
-
 </div>
-

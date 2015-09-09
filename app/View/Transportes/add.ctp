@@ -20,7 +20,7 @@ $this->Html->addCrumb('Añadir Transporte');
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
 	echo $this->Form->input('embalaje_id',array('label'=>'Tipo de bulto','empty' =>true));
-	echo $this->Form->input('EmbalajeTransporte.cantidad', array('label' => 'Cantidad bultos'));
+	echo $this->Form->input('cantidad', array('label' => 'Cantidad bultos'));
 	?>
 	</div>
 	<div class="formuboton">
@@ -77,8 +77,6 @@ $this->Html->addCrumb('Añadir Transporte');
 					</li>
 				</ul>
 				</div>
-		<?php// } ?>
-
 		<div class="formuboton">
 		<ul>
 			<li>

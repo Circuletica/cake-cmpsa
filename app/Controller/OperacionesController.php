@@ -5,7 +5,6 @@ class OperacionesController extends AppController {
 		'order' => array('referencia' => 'asc'),
 		'recursive' => 3
 	);
-
 	public function index() {
 		$this->set('operaciones', $this->paginate());
 	}
@@ -28,6 +27,8 @@ class OperacionesController extends AppController {
 				'Contrato.referencia',
 				'Contrato.proveedor_id',
 				'Contrato.peso_comprado',
+				'Contrato.puerto_carga_id',
+				'Contrato.puerto_destino_id',
 				'CanalCompra.nombre',
 				'CanalCompra.divisa',
 				'Incoterm.nombre',
@@ -36,9 +37,13 @@ class OperacionesController extends AppController {
 				'CalidadNombre.nombre')
 		));
 		$this->set('contrato',$contrato);
+		$this->set('puerto_carga_contrato_id', $contrato['Contrato']['puerto_carga_id']);
+		$this->set('puerto_destino_contrato_id', $contrato['Contrato']['puerto_destino_id']);
 		$this->set('divisa', $contrato['CanalCompra']['divisa']);
 		$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find('all', array(
-			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
+			'conditions' => array(
+				'ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']
+			),
 			'fields' => array(
 				'Embalaje.id',
 				'Embalaje.nombre',
@@ -96,6 +101,15 @@ class OperacionesController extends AppController {
 		$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
 		ksort($asociados);
 		$this->set('asociados', $asociados);
+		//para los puertos de carga y destino
+		$this->set('puertoCargas',$this->Operacion->PuertoCarga->find('list', array(
+			'order' => array('PuertoCarga.nombre' =>'ASC')
+			)
+		));
+		$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find('list'));
+		//Por defecto ponemos las opciones y el forfait a cero
+		$this->request->data['Operacion']['opciones'] = 0;
+		$this->request->data['Operacion']['forfait'] = 0;
 	
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué contrato pertenece
@@ -125,7 +139,6 @@ class OperacionesController extends AppController {
 			endif;
 		endif;
 	}
-
 	public function edit($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');
@@ -168,7 +181,6 @@ class OperacionesController extends AppController {
 			)
 		));
 		$this->set('embalaje', $embalaje);
-
 		if($this->request->is('get')): //al abrir el edit, meter los datos de la bdd
 			$this->request->data = $this->Operacion->read();
 			foreach ($asociados_operacion as $asociado_id => $asociado) {
@@ -198,7 +210,6 @@ class OperacionesController extends AppController {
 					$id
 					)
 				);
-
 			else:
 				$this->Session->setFlash('Operacion NO guardada');
 			endif;
@@ -250,7 +261,6 @@ class OperacionesController extends AppController {
 		$this->set('columnas_reparto',$columnas_reparto);
 		$this->set('lineas_reparto',$lineas_reparto);
 	}
-
 	public function delete($id = null) {
 		if (!$id or $this->request->is('get')) :
     			throw new MethodNotAllowedException();
@@ -264,8 +274,6 @@ class OperacionesController extends AppController {
 		));
 		endif;
 	}
-
-
 	public function index_trafico() {
 	$this->set('operaciones', $this->paginate());
 	$proveedores = $this->Operacion->Contrato->Proveedor->find('list', array(
@@ -305,10 +313,19 @@ public function view_trafico($id = null) {
 					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
 					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
 				),
-				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
+				'fields' => array('Embalaje.nombre','ContratoEmbalaje.peso_embalaje_real')
 			)
 		);
-		//$embalaje_transporte = $this->Transporte->EmbalajeTransporte->find('all');
+		//$embalajetransporte = $this->Operacion->Transporte->EmbalajeTransporte->find(
+		//	'all',
+		//	array(
+			//	'conditions' => array(
+			//		'EmbalajeTransporte.transporte_id' => $operacion['Operacion']['Transporte']['transporte_id'],
+			//		'EmbalajeTransporte.embalaje_id' => $operacion['Operacion']['Transporte']['embalaje_id']
+			//	),
+		//		'fields' => array('EmbalajeTransporte.cantidad')
+		//	)
+		//);		
 		//$this->set('embalaje_transportes',$embalaje_transporte);
 		$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 		//mysql almacena la fecha en formato ymd
@@ -350,5 +367,5 @@ public function view_trafico($id = null) {
 		$this->set('lineas_reparto',$lineas_reparto);
 
 	}
-
+}
 ?>

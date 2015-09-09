@@ -62,6 +62,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<?php echo $this->fetch('content'); ?>
 
 </div>
+				
 		
 <div id="footer">
 		<div class="menufooter">
@@ -73,6 +74,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		</div>
 		<?php echo '&nbsp&nbsp'.$cakeVersion.' - Optimizado para resolución superior a 1280x720'; ?>
 </div>
+	<?php //echo $this->element('sql_dump'); ?>
 	<?php echo $this->Js->writeBuffer(); //write cached scripts ?>
 </body>
 </html>

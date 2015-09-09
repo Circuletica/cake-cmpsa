@@ -29,7 +29,14 @@ class Contrato extends AppModel {
 		)
 	);
 	public $belongsTo = array(
-		'Puerto',
+		'PuertoCarga' => array(
+			'className' => 'Puerto',
+			'foreignKey' => 'puerto_carga_id'
+		),
+		'PuertoDestino' => array(
+			'className' => 'Puerto',
+			'foreignKey' => 'puerto_destino_id'
+		),
 		'CanalCompra' => array(
 			'className' => 'CanalCompra',
 			'foreignKey' => 'canal_compra_id'),

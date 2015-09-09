@@ -44,19 +44,20 @@ public function view($id = null) {
 			endif;
 		endif;
 
+		//opcion 1 = 2 queries
+	//	$transportes = $this->Transporte->find('all');
+	//	$contrato_embalajes = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find('all');
 
-//		$this->set('embalaje', $this->Transporte->Operacion->Embalaje->find('list'));
+		//opcion 2 = 1 query
+	//	$transportes = $this->Transporte->find('all');
+	//	$contrato_embalajes = $transportes['Operacion']['Contrato']['ContratoEmbalaje'];
+
+
+		$this->set('embalaje', $this->Transporte->Operacion->Contrato->ContratoEmbalaje->Embalaje->find('list',array(
+			'fields' => array('nombre'),
+			'recursive' => 3))
+		);
 		$this->set('puertos', $this->Transporte->Puerto->find('list'));
-		
-//		$incoterm = $this->Transporte->Operacion->Contrato->Incoterm->find('first', array(
-//			'conditions' => array('Operacion.id' => $this->params['named']['from_id']),
-//			'recursive' =>3,
-//			'fields' => array(
-//				'Incoterm.id',
-//				'Incoterms.nombre')
-//		));
-//		$this->set('incoterm',$incoterm);
-		$this->set('embalajes', $this->Transporte->EmbalajeTransporte->Embalaje->find('list'));
 		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
 			'fields' => array('Naviera.id','Empresa.nombre_corto'),
 			'recursive' => 1))
@@ -75,8 +76,6 @@ public function view($id = null) {
 			'fields' => array('Aseguradora.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
-		$embalaje_transporte = $this->Transporte->EmbalajeTransporte->find('all');
-		$this->set('embalaje_transportes',$embalaje_transporte);
 	//sacamos los datos de la operacion  al que pertenece la linea
 		//nos sirven en la vista para detallar campos
 		$operacion = $this->Transporte->Operacion->find('first', array(
@@ -88,7 +87,6 @@ public function view($id = null) {
 				'Operacion.referencia')
 		));
 		$this->set('operacion',$operacion);
-
 		$transporte = $this->Transporte->find('all');	
 		$this->set('transporte',$transporte);
 //NO NECESARIO SE PASA A INDEX LINEA TRANSPORTE

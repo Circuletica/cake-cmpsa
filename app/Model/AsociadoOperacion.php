@@ -1,3 +1,4 @@
+
 <?php
 class AsociadoOperacion extends AppModel {
 	public $belongsTo = array(
@@ -6,4 +7,3 @@ class AsociadoOperacion extends AppModel {
 	);
 }
 ?>
-

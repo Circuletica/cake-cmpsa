@@ -88,8 +88,8 @@
 			$linea['nombre_vehiculo'],
 			$linea['matricula'],
 			//Nos da el formato DD-MM-YYYY
-			$this->Date->format($linea['fecha_carga']), 
-		    "PENDIENTE",
+			$this->Date->format($linea['fecha_carga']),
+			$linea['cantidad'],
 			//$linea['EmbalajeTransporte']['cantidad'],
 			$this->Date->format($linea['fecha_seguro']),
 			//$linea['referencia_almacen'],
