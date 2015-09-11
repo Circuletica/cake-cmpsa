@@ -24,7 +24,7 @@
     <th><?php echo $this->Paginator->sort('referencia')?></th>
     <th><?php echo $this->Paginator->sort('fecha')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
-    <th><?php echo $this->Paginator->sort('proveedor')?></th>
+    <th><?php echo $this->Paginator->sort('Empresa.nombre_corto')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
   <?php foreach($muestras as $muestra):?>
@@ -44,7 +44,7 @@
       <?php echo $muestra['CalidadNombre']['nombre']; ?>
     </td>
     <td>
-      <?php echo $muestra['Proveedor']['Empresa']['nombre']; ?>
+      <?php echo $muestra['Proveedor']['Empresa']['nombre_corto']; ?>
     </td>
     <td>
       <?php echo $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$muestra['Muestra']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles')).' '.
