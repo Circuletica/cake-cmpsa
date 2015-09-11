@@ -8,6 +8,16 @@ class MuestrasController extends AppController {
 
 	
 	public function index() {
+		$this->Muestra->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array(
+						'Empresa.id = Muestra.proveedor_id'
+					)
+				)
+			)
+		));
 		$this->set('tipos', $this->tipoMuestras);
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
