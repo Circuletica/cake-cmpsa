@@ -1,13 +1,37 @@
 <?php
 class MuestrasController extends AppController {
-	public $paginate = array(
-		'recursive' => 2,
-		'order' => array('Muestra.referencia' => 'asc')
-	);
-
-
+//	public $paginate = array(
+//		'recursive' => 2,
+//		'order' => array('Muestra.referencia' => 'asc')
+//	);
 	
+	public $components = array('Paginator');
+
 	public function index() {
+		//Necesitamos subir de un nivel la asociación
+		//con la Empresa para que funcione el paginador
+		$this->Muestra->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array(
+						'Empresa.id = Muestra.proveedor_id')
+						)
+			)
+		));
+//		$this->paginate = array(
+//			'contain' => array(
+//				//'Calidad',
+//				'CalidadNombre',
+//				'Proveedor'
+//			),
+//			'order' => array(
+//				'Muestra.referencia' => 'ASC'
+//			),
+//			'recursive' => 2
+//		);
+		//$muestras =  $this->paginate();
+
 		$this->set('tipos', $this->tipoMuestras);
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
@@ -101,7 +125,6 @@ class MuestrasController extends AppController {
 //				'Muestras aprobadas' : 'Muestras rechazadas';
 //		}
 
-		$muestras =  $this->paginate();
 		//generamos el título
 		if (isset($tipo)) { //en caso de que se quiera mostrar todos los tipos de muestra
 			if (isset($title)) { //si hay criterios de filtro, excluyendo el tipo
@@ -114,6 +137,7 @@ class MuestrasController extends AppController {
 			$title = 'Todas las muestras';
 		}
 		//pasamos los datos a la vista
+		$muestras =  $this->paginate();
 		$this->set(compact('muestras','title'));
 	}
 
