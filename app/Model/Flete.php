@@ -24,5 +24,5 @@ class Flete extends AppModel {
 			'foreignKey' => 'puerto_destino_id'
 		)
 	);
-	//public $actsAs = array('Containable');
+	public $actsAs = array('Containable');
 }
