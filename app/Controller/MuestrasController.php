@@ -12,17 +12,24 @@ class MuestrasController extends AppController {
 			'belongsTo' => array(
 				'Empresa' => array(
 					'foreignKey' => false,
-					'conditions' => array(
-						'Empresa.id = Muestra.proveedor_id'
-					)
+					'conditions' => array('Empresa.id = Muestra.proveedor_id')
 				)
 			)
 		));
+		$this->paginate['contain'] = array(
+			'Proveedor',
+			'CalidadNombre'
+			);
+		$this->paginate['order'] =  array(
+			'Muestra.referencia' => 'ASC'
+			);
+		$this->paginate['recursive'] = 1;
+
 		$this->set('tipos', $this->tipoMuestras);
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
 		$proveedores = $this->Muestra->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre'),
+			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
 			'recursive' => 1
 			)
 		);
@@ -35,16 +42,6 @@ class MuestrasController extends AppController {
 		//Si queremos un titulo con los criterios de busqueda
 		$titulo = array();
 
-		//primero el filtro por id
-//		if(isset($this->passedArgs['Search.id'])) {
-//			//ponemos la condicion
-//			debug($this->passedArgs['Search.id']);
-//			$this->paginate['conditions'][]['Muestra.id'] = $this->passedArgs['Search.id'];
-//			//guardamos los datos de búsqueda para que el formulario 'se acuerde' de la opcion
-//			$this->request->data['Search']['id'] = $this->passedArgs['Search.id'];
-//			//generamos el titulo
-//			$title[] = 'ID: '.$this->passedArgs['Search.id'];
-//		}
 		//filtramos por referencia
 		if(isset($this->passedArgs['Search.referencia'])) {
 			$referencia = $this->passedArgs['Search.referencia'];
