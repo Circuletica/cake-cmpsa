@@ -1,25 +1,43 @@
 <?php
 class ContratosController extends AppController {
-	var $scaffold = 'admin';
+	//public $components = array('Paginator');
 	var $displayField = 'referencia';
-	public $paginate = array(
-		'order' => array('Contrato.referencia' => 'asc')
-	);
+//	public $paginate = array(
+//		'order' => array('Contrato.referencia' => 'asc')
+//	);
 
 	public function index() {
-		$proveedores = $this->Contrato->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-			'recursive' => 1
+		$this->paginate = array(
+			'contain' => array(
+				'Empresa',
+				'Incoterm',
+				'CalidadNombre',
+				'CanalCompra'
+			),
+			'order' => array(
+				'Contrato.posicion_bolsa' => 'asc'
 			)
 		);
+//		$proveedores = $this->Contrato->Proveedor->find('list', array(
+//			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+//			'recursive' => 1
+//			)
+//		);
+//		$this->set('proveedores', $proveedores);
 //		$canales = array(
 //			'0' => 'Bolsa LND',
 //			'1' => 'Bolsa NY',
 //			'2' => 'Precio fijo'
 //		);
-		$canales = $this->Contrato->CanalCompra->find('all');
-		$this->set('proveedores', $proveedores);
-		//$contratos = $this->paginate();
+		//$canales = $this->Contrato->CanalCompra->find('all');
+		$this->Contrato->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Empresa.id = Contrato.proveedor_id')
+					)
+				)
+		));
 		$this->set('contratos', $this->paginate());
 	}
 

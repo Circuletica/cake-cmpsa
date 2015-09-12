@@ -16,9 +16,8 @@
 	else:
 	echo "<table>\n";
 	echo $this->Html->tableHeaders(array(
-		//'Id',
 		$this->Paginator->sort('Contrato.referencia','Referencia'),
-		$this->Paginator->sort('Proveedor.Empresa.nombre_corto','Proveedor'),
+		$this->Paginator->sort('Empresa.nombre_corto','Proveedor'),
 		$this->Paginator->sort('Incoterm.nombre','Incoterm'),
 		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
 		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
@@ -41,18 +40,14 @@
 		$anyo = substr($fecha,0,4);
 		$posicion_bolsa = $mes.' '.$anyo;
 		echo $this->Html->tableCells(array(
-			//$contrato['Contrato']['id'],
 			$contrato['Contrato']['referencia'],
-			$contrato['Proveedor']['Empresa']['nombre_corto'],
+			$contrato['Empresa']['nombre_corto'],
 			$contrato['Incoterm']['nombre'],
 			$contrato['CalidadNombre']['nombre'],
 			$contrato['Contrato']['peso_comprado'].'kg',
 			$contrato['CanalCompra']['nombre'],
 			$contrato['Contrato']['lotes_contrato'],
 			$posicion_bolsa,
-			//$contrato['Contrato']['diferencial'].$contrato['CanalCompra']['divisa'],
-			//Las opciones en Operacion
-			//$contrato['Contrato']['opciones'].$contrato['CanalCompra']['divisa'],
 			$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))
 	));
 
