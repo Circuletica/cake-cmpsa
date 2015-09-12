@@ -23,10 +23,6 @@
 	if (empty($empresas)):
 		echo "No hay navieras en esta lista";
 	else:
-	//echo "<pre>";
-	//print_r($bancopruebas);
-	////print_r($bancopruebas['Empresa']['nombre']);
-	//echo "</pre>";
 ?>
 	<table><?php
 	echo $this->Html->tableHeaders(array(
