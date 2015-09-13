@@ -1,10 +1,6 @@
 <?php
 class OperacionesController extends AppController {
 	public $scaffold = 'admin';
-	//public $paginate = array(
-	//	'order' => array('referencia' => 'asc'),
-	//	'recursive' => 3
-	//);
 
 	public function index() {
 		$this->paginate = array(
@@ -14,7 +10,6 @@ class OperacionesController extends AppController {
 				'Empresa',
 				'CalidadNombre'
 			),
-			'recursive' => 3
 		);
 		$this->Operacion->bindModel(array(
 			'belongsTo' => array(
