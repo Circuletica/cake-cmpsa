@@ -1,12 +1,33 @@
 <?php
 class OperacionesController extends AppController {
 	public $scaffold = 'admin';
-	public $paginate = array(
-		'order' => array('referencia' => 'asc'),
-		'recursive' => 3
-	);
+	//public $paginate = array(
+	//	'order' => array('referencia' => 'asc'),
+	//	'recursive' => 3
+	//);
 
 	public function index() {
+		$this->paginate = array(
+			'contain' => array(
+				'Contrato',
+				'PesoOperacion',
+				'Empresa',
+				'CalidadNombre'
+			),
+			'recursive' => 3
+		);
+		$this->Operacion->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Empresa.id = Contrato.proveedor_id')
+				),
+				'CalidadNombre' => array(
+					'foreignKey' => false,
+					'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+				)
+			)
+		));
 		$this->set('operaciones', $this->paginate());
 	}
 

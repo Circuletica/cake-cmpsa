@@ -18,7 +18,7 @@
 	echo $this->Html->tableHeaders(array(
 		$this->Paginator->sort('Operacion.referencia','Referencia'),
 		$this->Paginator->sort('Contrato.referencia','Contrato'),
-		$this->Paginator->sort('Contrato.Proveedor.Empresa.nombre_corto','Proveedor'),
+		$this->Paginator->sort('Empresa.nombre_corto','Proveedor'),
 		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
 		$this->Paginator->sort('PesoOperacion.peso','Peso'),
 		$this->Paginator->sort('Operacion.lotes_operacion','Lotes'),
@@ -29,8 +29,8 @@
 		echo $this->Html->tableCells(array(
 			$operacion['Operacion']['referencia'],
 			$operacion['Contrato']['referencia'],
-			$operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'],
-			$operacion['Contrato']['CalidadNombre']['nombre'],
+			$operacion['Empresa']['nombre_corto'],
+			$operacion['CalidadNombre']['nombre'],
 			$operacion['PesoOperacion']['peso'].'kg',
 			$operacion['Operacion']['lotes_operacion'],
 			$this->Html->link('Detalles',array('action'=>'view',$operacion['Operacion']['id']), array('class' =>'boton' , ))
