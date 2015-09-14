@@ -22,11 +22,6 @@
 	if (empty($empresas)):
 		echo "No hay almacenes en esta lista";
 	else:
-	//echo "<pre>";
-	//print_r($bancopruebas);
-	////print_r($bancopruebas['Empresa']['nombre']);
-	//echo "</pre>";
-
 	echo "<table>\n";
 	echo $this->Html->tableHeaders(array(
 		$this->Paginator->sort('Empresa.nombre_corto','Almacén'),
@@ -40,7 +35,7 @@
 		$empresa['Empresa']['nombre_corto'],
 		$empresa['Empresa']['codigo_contable'],
 		//substr($empresa['Empresa']['cuenta_bancaria'],4,4),
-		$empresa['Empresa']['Pais']['nombre'],
+		$empresa['Pais']['nombre'],
 		$empresa['Empresa']['telefono'],
 		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$empresa['Almacen']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))//.' '.
 		//$this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id'])).' '.

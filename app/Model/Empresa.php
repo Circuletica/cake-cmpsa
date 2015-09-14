@@ -1,13 +1,13 @@
 <?php
 class Empresa extends AppModel {
-	public $hasOne = array(
-		'Banco' => array(
-			'className' => 'Banco',
-			'foreignKey' => 'id'),
-		'Proveedor' => array(
-			'className' => 'Proveedor',
-			'foreignKey' => 'id')
-	);
+//	public $hasOne = array(
+//		'Banco' => array(
+//			'className' => 'Banco',
+//			'foreignKey' => 'id'),
+//		'Proveedor' => array(
+//			'className' => 'Proveedor',
+//			'foreignKey' => 'id')
+//	);
         public $hasMany = 'Contacto';
         public $belongsTo = array(
                 'Pais' => array(
