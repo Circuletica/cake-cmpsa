@@ -5,14 +5,10 @@ class ProveedoresController extends AppController {
 	);
 
 		function index() {
-		//$this -> set('bancopruebas', $this->BancoPrueba->find('all'));
 		$this->set('proveedores', $this->paginate());
 	}
 
 	public function view($id = null) {
-		//debug($this->request->params);
-		//debug(func_get_args());
-		//debug($this->referer());
 		if (!$id) {
 			//$this->set('params',$this->request->params);
 			$this->Session->setFlash('URL mal formado Proveedor/view ');

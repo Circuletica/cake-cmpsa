@@ -5,14 +5,37 @@ class AlmacenesController extends AppController {
 	);
 
 	public function index() {
-		//$this -> set('bancopruebas', $this->BancoPrueba->find('all'));
+		//hay que cambiar el 'hasOne' del Model por un 'belongsTo'
+		//para que el LEFT JOIN de 3r nivel de la query se haga
+		//después del de 2o nivel, es decir primero el JOIN con Empresa,
+		//luego el JOIN con Pais si no queremos errores de SQL
+		$this->Almacen->unbindModel(array(
+			'hasOne' => array('Empresa')
+		));
+		$this->Almacen->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Almacen.id = Empresa.id')
+				),
+				'Pais' => array(
+					'foreignKey' => false,
+					'conditions' => array('Pais.id = Empresa.pais_id')
+				)
+			)
+		));
+		$this->paginate = array(
+			'contain' => array(
+				'Empresa',
+				'Pais.nombre',
+			),
+			'recursive' => 1,
+			'order' => array('Empresa.nombre_corto' => 'ASC')
+		);
 		$this->set('empresas', $this->paginate());
 	}
 
 	public function view($id = null) {
-		//debug($this->request->params);
-		//debug(func_get_args());
-		//debug($this->referer());
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado Almacen/view ');
 			$this->redirect(array('action'=>'index'));
@@ -24,10 +47,8 @@ class AlmacenesController extends AppController {
 		//el método iban() definido en AppController necesita
 		//como parametro un 'string'
 		settype($cuenta_bancaria,"string");
-		//debug($ccc);
 		$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
 		$this->set('iban_bancaria',$iban_bancaria);
-		//debug($iban_cliente);
 	}
 
 	public function add() {
@@ -78,7 +99,6 @@ class AlmacenesController extends AppController {
 		if($this->request->is('get')):
 			$this->request->data = $this->Almacen->read();
 		else:
-			//if ($this->BancoPrueba->save($this->request->data)):
 			if ($this->Almacen->Empresa->save($this->request->data) and $this->Almacen->save($this->request->data)):
 				$this->Session->setFlash('Almacen '.
 				$this->request->data['Empresa']['nombre'].

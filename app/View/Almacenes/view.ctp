@@ -92,7 +92,7 @@ else:
 		$this->Html->link('<i class="fa fa-envelope-o"></i>', 'mailto:'.$contacto['email'],array(
 			'class'=>'botond', 'escape'=>false,'target' => '_blank', 'title'=>'Enciar e-mail'))
 		.' '.$this->Button->editLine('contactos',$contacto['id'],'almacenes',$contacto['empresa_id'])
-		.' '.$this->Button->deleteLine('contactos',$contacto['id'],'almacenes',$contacto['empresa_id',$contacto['nombre'])
+		.' '.$this->Button->deleteLine('contactos',$contacto['id'],'almacenes',$contacto['empresa_id'],$contacto['nombre'])
 		)
 	);
 	endforeach;
