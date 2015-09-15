@@ -74,7 +74,7 @@ class AppController extends Controller {
 	//3 - entrega
 	public $tipoMuestras =  array(
 			1 => 'Oferta',
-			2 => 'Emb.',
+			2 => 'Embar.',
 			3 => 'Entr.'
 		);	
 

@@ -1,50 +1,31 @@
-<?php $this->Html->addCrumb('Muestras', array(
-	'controller'=>'muestras',
-	'action'=>'index'
-	));
-	$this->Html->addCrumb('Muestra '.$muestra['Muestra']['referencia'], array(
-	'controller'=>'muestras',
-	'action'=>'view',
-	$muestra['Muestra']['id']
-));
-?><div class="acciones">
-	<div class="printdet">
-	<ul><li>
-		<?php 
-		echo $this->element('imprimirV');
-		?>	
-		
-	</li>
-	<li>
-			<?php
-		echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
-			'action'=>'edit',
-			$muestra['Muestra']['id']),array('title'=>'Modificar Muestra','escape'=>false))
-		.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
-			'action'=>'delete',
-			$muestra['Muestra']['id']),array(
-			'escape'=>false, 'title'=> 'Borrar Muestra',
-			'confirm'=>'¿Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?')
-		);
-	?>
-	</li>
-	</ul>
-	</div>
-</div>
-<h2>Detalles Muestra <?php echo 'de '.$tipo.' '.$muestra['Muestra']['referencia']?></h2>
-<div class="actions">
-	<?php
+<?php
+// Usamos plantilla clásica de vistas View/Common/view.ctp
+$this->extend('/Common/view');
+$this->assign('titulo', 'Muestra de '.$tipo.' '.$muestra['Muestra']['referencia']);
+$this->assign('id',$muestra['Muestra']['id']);
+$this->assign('clase','Muestra');
+$this->assign('controller','muestras');
+$this->Html->addCrumb('Muestras', array(
+			'controller'=>'muestras',
+			'action'=>'index'
+			));
+$this->Html->addCrumb('Muestra '.$muestra['Muestra']['referencia'], array(
+			'controller'=>'muestras',
+			'action'=>'view',
+			$muestra['Muestra']['id']
+			));
+$this->start('filtro');
 	echo $this->element('filtromuestra');
-	?>
-</div>
+$this->end()?> 
+
 
 	<div class='view'>
 	<?php
 	echo "<dl>";
-	echo "  <dt>Id</dt>\n";
-	echo "<dd>";
-	echo $muestra['Muestra']['id'].'&nbsp;';
-	echo "</dd>";
+	//echo "  <dt>Id</dt>\n";
+	//echo "<dd>";
+	//echo $muestra['Muestra']['id'].'&nbsp;';
+	//echo "</dd>";
 	echo "  <dt>Referencia</dt>\n";
 	echo "<dd>";
 	echo $muestra['Muestra']['referencia'].'&nbsp;';
@@ -70,11 +51,15 @@
 	echo "</dd>";
 	echo "  <dt>Almacen</dt>\n";
 	echo "<dd>";
-	echo $this->Html->link( $muestra['Almacen']['Empresa']['nombre'], array(
-		'controller' => 'almacenes',
-		'action' => 'view',
-		$muestra['Almacen']['id'])
-	);
+		if (isset($muestra['Almacen']['Empresa']['nombre'])):
+			echo $this->Html->link( $muestra['Almacen']['Empresa']['nombre'], array(
+			'controller' => 'almacenes',
+			'action' => 'view',
+			$muestra['Almacen']['id']));
+		else:
+			echo '--';
+		endif;
+
 	echo "</dd>";
 	echo "  <dt>Fecha</dt>\n";
 	echo "<dd>";
@@ -128,14 +113,7 @@
 	endforeach;
 ?>	</table>
 		<div class="btabla">
-		<?php
-		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir',array(
-		'controller' => 'linea_muestras',
-		'action' => 'add',
-		'from_controller' => 'muestras',
-		'from_id' => $muestra['Muestra']['id']),
-		 array('escape' => false,'title'=>'Añadir línea'));
-		?>
+		 <?php echo $this->Button->addLine('linea_muestras','muestras',$muestra['Muestra']['id'],'Línea');?>
 		</div>
 	</div>
 </div>

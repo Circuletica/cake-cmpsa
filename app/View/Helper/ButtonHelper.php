@@ -11,7 +11,7 @@ class ButtonHelper extends AppHelper {
     //$id: el id del objeto de la clase a la que volvemos después de modificar
     public function view($controller,$id) {
 	    return $this->Html->link(
-		 '<i class="fa fa-info-circle"></i> Ver',
+		 '<i class="fa fa-info-circle"></i>',
 		array(
 			'controller' => $controller,
 			'action' => 'view',
@@ -96,7 +96,7 @@ class ButtonHelper extends AppHelper {
     }
     public function add($controller,$objeto) {
 	return $this->Html->link(
-	    '<i class="fa fa-user-plus"></i>Añadir '.$objeto,
+	    '<i class="fa fa-user-plus"></i> Añadir '.$objeto,
 	    array(
 		'controller' => $controller,
 		'action' => 'add'
@@ -109,11 +109,11 @@ class ButtonHelper extends AppHelper {
     }
     public function addLine($controller,$from,$from_id,$objeto) {
 	return $this->Html->link(
-	    '<i class="fa fa-user-plus"></i>Añadir '.$objeto,
+	    '<i class="fa fa-plus"></i> Añadir '.$objeto,
 	    array(
 		'controller' => $controller,
 		'action' => 'add',
-		'from' => $from,
+		'from_controller' => $from,
 		'from_id' => $from_id
 	    ),
 	    array(
