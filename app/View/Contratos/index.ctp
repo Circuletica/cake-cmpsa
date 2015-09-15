@@ -65,6 +65,7 @@
 	</div>
 	<?php endif; ?>
 	<div class="btabla">
-		<?php echo $this->Html->link('Añadir Contrato',array('action'=>'add')); ?>
+		<?php //echo $this->Html->link('Añadir Contrato',array('action'=>'add')); ?>
+		<?php echo $this->Button->add('contratos','Contrato'); ?>
 	</div>
 </div>
