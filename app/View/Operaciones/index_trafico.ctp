@@ -22,23 +22,22 @@
     <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Contrato')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.fecha_transporte','Embarque/Entrega')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
-    <th><?php echo $this->Paginator->sort('proveedor', 'Proveedor');?></th>
+    <th><?php echo $this->Paginator->sort('Empresa.nombre_corto', 'Proveedor');?></th>
     <th><?php echo $this->Paginator->sort('PesoOperacion.cantidad_embalaje', 'Bultos')?></th>
     <th><?php echo 'Acciones'?></th>
   </tr>
   <?php
   foreach($operaciones as $operacion):
+	  if (isset($operacion['Contrato']['si_entrega'])) {
+		  $entrega  = $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
+		  $entrega = ' ('.$entrega.')';
+	  } else { $entrega ='';}
     echo $this->Html->tableCells(array(
       $operacion['Operacion']['referencia'],
       $operacion['Contrato']['referencia'],
-      $operacion['Contrato']['fecha_transporte'],
-//        if ($operacion['Contrato']['si_entrega'] == 1):
-//          echo "Entrega";
-//        else:
-//          echo "Embarque";
- //       endif;
-      $operacion['Contrato']['CalidadNombre']['nombre'],
-      $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'],
+      $this->Date->format($operacion['Contrato']['fecha_transporte']).$entrega,
+      $operacion['CalidadNombre']['nombre'],
+      $operacion['Empresa']['nombre_corto'],
       $operacion['PesoOperacion']['cantidad_embalaje'],
       $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view_trafico',$operacion['Operacion']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))
       ));

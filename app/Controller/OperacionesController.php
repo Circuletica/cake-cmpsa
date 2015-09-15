@@ -1,10 +1,10 @@
 <?php
 class OperacionesController extends AppController {
 	public $scaffold = 'admin';
-	public $paginate = array(
-		'order' => array('referencia' => 'asc'),
-		'recursive' => 3
-	);
+//	public $paginate = array(
+//		'order' => array('referencia' => 'asc'),
+//		'recursive' => 3
+//	);
 	public function index() {
 		$this->set('operaciones', $this->paginate());
 	}
@@ -275,21 +275,35 @@ class OperacionesController extends AppController {
 		endif;
 	}
 	public function index_trafico() {
-	$this->set('operaciones', $this->paginate());
-	$proveedores = $this->Operacion->Contrato->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre'),
+		$this->paginate=array(
+			'contain' => array(
+				'Contrato',
+				'CalidadNombre',
+				'Empresa',
+				'PesoOperacion'
+			),
 			'recursive' => 1
-		)
-	);
-	$calidades = $this->Operacion->Contrato->CalidadNombre->find('list', array(
-		'fields' => array('CalidadNombre.nombre'),
-		'recursive' => 1
-		)
-	);	
-
-	$this->set('proveedores', $proveedores);
-	$this->set('calidades', $calidades);
-}
+		);
+		$this->Operacion->unbindModel(array(
+			'hasMany' => array(
+				'AsociadoOperacion',
+				'Transporte'
+			)
+		));
+		$this->Operacion->bindModel(array(
+			'belongsTo' => array(
+				'CalidadNombre' => array(
+					'foreignKey' => false,
+					'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+				),
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Empresa.id = Contrato.proveedor_id')
+				)
+			)
+		));
+		$this->set('operaciones', $this->paginate());
+	}
 public function view_trafico($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada Operación/view_trafico ');
