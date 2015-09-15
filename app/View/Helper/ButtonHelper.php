@@ -9,6 +9,22 @@ class ButtonHelper extends AppHelper {
     //$id: el id del objeto que editamos
     //$from: la clase a la que volvemos después de terminar la modificación
     //$id: el id del objeto de la clase a la que volvemos después de modificar
+    public function view($controller,$id) {
+	    return $this->Html->link(
+		 '<i class="fa fa-info-circle"></i> Ver',
+		array(
+			'controller' => $controller,
+			'action' => 'view',
+			$id,
+		),
+		    array(
+			'class' => 'botond',
+			'title' => 'Modificar',
+			'escape' => false
+		    )
+		);
+
+    }
     public function edit($controller,$id) {
 	    return $this->Html->link(
 		    '<i class="fa fa-pencil-square-o"></i> Modificar',
