@@ -72,8 +72,8 @@ $this->end()?>
 	<h3>Líneas</h3>
 <table>
 <?php
-	echo $this->Html->tableHeaders(array('Id','Marca', 'Número de Sacos',
-	       'Ref. Proveedor', 'Ref Almacén', 'Acciones'));
+	echo $this->Html->tableHeaders(array('Nº','Marca', 'Número de Sacos',
+	       'Ref. Proveedor', 'Ref Almacén', 'Detalle'));
 	//mostramos todas las catas de esta muestra
 	//hay que numerar las líneas
 	$i = 1;
@@ -84,24 +84,9 @@ $this->end()?>
 			$linea['numero_sacos'],
 			$linea['referencia_proveedor'],
 			$linea['referencia_almacen'],
-			$this->Html->link('<i class="fa fa-info-circle"></i>', array(
-				'controller'=>'linea_muestras',
-				'action' => 'view',
-				$linea['id'],
-              			'from_controller'=>'muestras',
-              			'from_id'=>$linea['muestra_id']),array(
-              			'class'=>'botond','escape' => false,'title'=>'Detalles'))
-			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
-				array(
-					'controller'=>'linea_muestras',
-					'action' => 'delete',
-					$linea['id'],
-					'from_controller' => 'muestras',
-					'from_id' => $linea['muestra_id']),
-					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-						'confirm' => '¿Seguro que quieres borrar a '.$linea['marca'].'?')
+			$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
 				)
-			));
+			);
 		//numero de la línea siguiente
 		$i++;
 	endforeach;

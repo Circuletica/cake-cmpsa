@@ -75,11 +75,11 @@ Configure::write('Config.language', 'spa');
  * CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
  */
 CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
-CakePlugin::load('Highcharts'); // Plugin de gráficas
-CakePlugin::load('CakePdf',array(
-	'bootstrap'=>true,
-	'routes'=> true
-));
+//CakePlugin::load('Highcharts'); // Plugin de gráficas
+//CakePlugin::load('CakePdf',array(
+//	'bootstrap'=>true,
+//	'routes'=> true
+//));
 
 Configure::write('CakePdf', array(
 	'engine' => 'CakePdf.WkHtmlToPdf',
