@@ -1,37 +1,21 @@
-<?php $this->Html->addCrumb('Contratos', array(
-	'controller'=>'contratos',
-	'action'=>'index'
-	));
-	$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'], array(
-	'controller'=>'contratos',
-	'action'=>'view',
-	$contrato['Contrato']['id']
-));
-?>
-<h2>Detalles Contrato <?php echo $contrato['Contrato']['referencia']?></h2>
-<div class="actions">
-	<?php
-	echo $this->element('filtromuestra');
-	?>
-</div>
-<div class="acciones">
 <?php
-	echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',array(
-		'action'=>'edit',
-		$contrato['Contrato']['id']),array('title'=>'Modificar Contrato','escape'=>false))
-	.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',array(
-		'action'=>'delete',
-		$contrato['Contrato']['id']),array(
-		'escape'=>false, 'title'=> 'Borrar',
-		'confirm'=>'¿Realmente quiere borrar el contrato '.$contrato['Contrato']['referencia'].'?')
-	);
-?>
-</div>
-	<div class='view'>
-	<?php
+	$this->extend('/Common/view');
+	$this->assign('object', 'Contrato '.$referencia);
+	$this->assign('line_object', 'operación');
+	$this->assign('id',$contrato['Contrato']['id']);
+	$this->assign('class','Contrato');
+	$this->assign('controller','contratos');
+	$this->assign('line_controller','operaciones');
+
+	$this->start('filter');
+	//echo $this->element('filtrocontrato');
+	echo 'Filtro contrato';
+	$this->end();
+
+	$this->start('main');
 	echo "<dl>";
 	echo "  <dt>Referencia</dt>\n";
-	echo "  <dd>".$contrato['Contrato']['referencia'].'&nbsp;'."</dd>";
+	echo "  <dd>".$referencia.'&nbsp;'."</dd>";
 	echo "  <dt>Proveedor</dt>\n";
 	echo "<dd>";
 	echo $this->html->link($contrato['Proveedor']['Empresa']['nombre_corto'], array(
@@ -72,12 +56,12 @@
 	echo "  <dd>".$contrato['Incoterm']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Comentarios</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['comentario'].'&nbsp;'."</dd>";
-	echo "</dl>";?>
-	<div class="detallado">
-	<h3>Operaciones</h3>
-<table>
-<?php
+	echo "</dl>";
+	$this->end();
+
+	$this->start('lines');
 	$peso_fijado = 0;
+	echo "<table>";
 	echo $this->html->tableheaders(array('referencia','peso','fecha de fijación', 'precio de fijación', 'precio de factura'));
 	foreach($contrato['Operacion'] as $linea):
 		//guardamos el total del peso de las líneas para calcular
@@ -89,35 +73,16 @@
 			$linea['fecha_pos_fijacion'],
 			$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
 			$linea['precio_compra']." ".$contrato['CanalCompra']['divisa'],
-			$this->html->link(
-				'<i class="fa fa-info-circle"></i>',
-				array(
-					'controller'=>'operaciones',
-					'action'=>'view',
-					$linea['id']),
-				array(
-					'class'=>'botond',
-					'escape' => false,
-					'title'=>'detalles')
-			)
+			$this->Button->view('operaciones',$linea['id']);
 		));
 	endforeach;
-?>
-</table>
-<?php
+	echo "</table>";
 	//calculamos la cantidad que queda por fijar
 	$queda_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado; 
 	echo "<em>Quedan por fijar ".$contrato['RestoLotesContrato']['lotes_restantes']
 		." lotes (".$queda_por_fijar."kg)</em>";
-	echo '<div class="btabla">';
-	echo $this->html->link('<i class="fa fa-plus"></i> añadir operacion',array(
-		'controller' => 'operaciones',
-		'action' => 'add',
-		'from_controller' => 'contratos',
-		'from_id' => $contrato['Contrato']['id']),
-		 array('escape' => false,'title'=>'añadir operacion'));
+	$this->end();
 ?>
-		</div>
 	</div>
 </div>
 

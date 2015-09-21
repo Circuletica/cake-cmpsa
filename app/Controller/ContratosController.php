@@ -124,7 +124,8 @@ class ContratosController extends AppController {
 		$contrato = $this->Contrato->find('first', array(
 			'conditions' => array('Contrato.id' => $id),
 			'recursive' => 2));
-		$this->set('contrato',$contrato);
+		$this->set('contrato', $contrato);
+		$this->set('referencia', $contrato['Contrato']['referencia']);
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$this->loadModel('CalidadNombre');
 		//si embarque o entrega

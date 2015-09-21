@@ -1,21 +1,17 @@
 <?php
-$this->extend('/Common/view');
-$this->assign('titulo', 'Flete '.$referencia);
-$this->assign('id',$flete['Flete']['id']);
-$this->assign('clase','Flete');
-$this->assign('controller','fletes');
-$this->Html->addCrumb('Fletes', array(
-	'controller'=>'fletes',
-	'action'=>'index'
-));
-$this->start('filtro');
-?>
-<div class="actions">
-	<?php echo $this->element('filtroflete'); ?>
-</div>
-<?php $this->end()?>
-<div class='view'>
-	<?php
+	$this->extend('/Common/view');
+	$this->assign('object', 'Flete '.$referencia);
+	$this->assign('line_object', 'precio');
+	$this->assign('id',$flete['Flete']['id']);
+	$this->assign('class','Flete');
+	$this->assign('controller','fletes');
+	$this->assign('line_controller','precio_fletes');
+
+	$this->start('filter');
+		//echo $this->element('filtroflete');
+		echo 'Filtro flete';
+	$this->end();
+	$this->start('main');
 		echo "<dl>";
 		echo "  <dt>Naviera:</dt>\n";
 		echo "  <dd>".$flete['Naviera']['Empresa']['nombre_corto'].'&nbsp;'."</dd>";
@@ -30,6 +26,8 @@ $this->start('filtro');
 		echo "  <dt>Peso contenedor:</dt>\n";
 		echo "  <dd>".$flete['Flete']['peso_contenedor_tm'].'Tm&nbsp;'."</dd>";
 		echo "</dl>";
+	$this->end();
+	$this->start('lines');
 		//la tabla con los costes de flete
 		echo "<table>";
 			echo $this->Html->tableHeaders(array(
@@ -77,12 +75,6 @@ $this->start('filtro');
 			);
 			endforeach;
 		echo "</table>";
+	$this->end();
 ?>
-	<div class="btabla">
-			<?php echo $this->Html->link('<i class="fa fa-user-plus"></i> Añadir precio',array(
-		'controller'=>'precio_fletes',
-		'action'=>'add',
-		'from'=>'fletes',
-		'from_id' => $flete['Flete']['id']), array('escape' => false,'title'=>'Añadir precio'));?>
-	</div>
 </div>
