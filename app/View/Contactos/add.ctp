@@ -4,9 +4,9 @@
   //print_r($empresa);
   //echo '</pre>';
   //echo $this->Form->create('Contacto');
-  $this->Html->addCrumb('Entidades','/'.$this->params['named']['from']);
-  $this->Html->addCrumb($empresa['Empresa']['nombre'], '/'.$this->params['named']['from'].'/view/'.$this->params['named']['from_id']);
-  $this->Html->addCrumb('Añadir Contacto ', '/contactos/add/'.'from:'.$this->params['named']['from'].'/from_id:'.$this->params['named']['from_id']);
+  $this->Html->addCrumb('Entidades','/'.$this->params['named']['from_controller']);
+  $this->Html->addCrumb($empresa['Empresa']['nombre'], '/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
+  $this->Html->addCrumb('Añadir Contacto ', '/contactos/add/'.'from_controller:'.$this->params['named']['from_controller'].'/from_id:'.$this->params['named']['from_id']);
   echo $this->Form->create();
    ?>
   <fieldset>

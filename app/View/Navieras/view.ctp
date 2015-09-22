@@ -21,22 +21,12 @@ else:
 <h2>Detalles Naviera <?php echo $empresa['Empresa']['nombre']?></h2>
 <?php
 	//formateamos el número de cuenta de la entidad
-	$numero_bruto=$empresa['Empresa']['cuenta_bancaria'];
-	$cuenta_entidad=substr($numero_bruto,0,4).
-	      '-'.substr($numero_bruto,4,4).
-	      '-'.substr($numero_bruto,8,2).
-	      '-'.substr($numero_bruto,10,10);
-	//formateamos el número de cuenta cliente
-//      $numero_bruto=$bancoprueba['BancoPrueba']['cuenta_cliente_1'];
-//      $cuenta_cliente=substr($numero_bruto,0,4).
+//	$numero_bruto=$empresa['Empresa']['cuenta_bancaria'];
+//	$cuenta_entidad=substr($numero_bruto,0,4).
 //	      '-'.substr($numero_bruto,4,4).
 //	      '-'.substr($numero_bruto,8,2).
 //	      '-'.substr($numero_bruto,10,10);
 	echo "<dl>";
-//	echo "  <dt>Id</dt>\n";
-//	echo "<dd>";
-//	echo $empresa['Naviera']['id'].'&nbsp;';
-//	echo "</dd>";
 	echo "  <dt>Nombre corto</dt>\n";
 	echo "<dd>";
         echo $empresa['Empresa']['nombre_corto'];
@@ -68,9 +58,9 @@ else:
 	echo "<dd>";
         echo $empresa['Empresa']['bic'].'&nbsp;';
 	echo "</dd>";
-	echo "  <dt>Cuenta entidad</dt>\n";
+	echo "  <dt>Cuenta bancaria</dt>\n";
 	echo "<dd>";
-        echo $cuenta_entidad.'&nbsp;';
+        echo $iban_bancaria.'&nbsp;';
 	echo "</dd>";
 	echo '</dl>';
 	?>
