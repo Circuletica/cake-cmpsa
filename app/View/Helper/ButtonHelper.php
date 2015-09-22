@@ -5,20 +5,39 @@ class ButtonHelper extends AppHelper {
     public $helpers = array('Html','Form');
     public function view($controller,$id) {
 	    return $this->Html->link(
-		 '<i class="fa fa-info-circle"></i> Ver',
-		array(
+		 '<i class="fa fa-info-circle"></i> ',
+			array(
 			'controller' => $controller,
 			'action' => 'view',
 			$id,
-		),
+			),
 		    array(
-			'class' => 'botond',
-			'title' => 'Detalles',
+			'class' => 'boton',
+			'title' => 'Detalle',
 			'escape' => false
 		    )
 		);
 
     }
+     //la versión pequeña, solo el botón sin texto, con retorno
+    //a la página 'padre'. Se usa en los listados dentro de una vista
+    public function viewLine($controller,$id,$from,$from_id) {
+	    return $this->Html->link(
+		 '<i class="fa fa-info-circle"></i> ',
+			array(
+			'controller' => $controller,
+			'action' => 'view',
+			$id,
+			'from_controller' => $from,
+			'from_id' => $from_id
+		    ),
+		    array(
+			'class' => 'boton',
+			'title' => 'Detalle línea',
+			'escape' => false
+		    )
+		);
+    }    
     //dibujar un boton de 'editar', el tipico que aparece
     //en view(). Como variables pasamos:
     //$controller: el contralador de la clase del objeto a modificar
@@ -52,7 +71,7 @@ class ButtonHelper extends AppHelper {
 		    ),
 		    array(
 			'class' => 'botond',
-			'title' => 'Modificar',
+			'title' => 'Modificar línea',
 			'escape' => false
 		    )
 		);
@@ -94,7 +113,7 @@ class ButtonHelper extends AppHelper {
     }
     public function add($controller,$object) {
 	return $this->Html->link(
-	    '<i class="fa fa-user-plus"></i>Añadir '.$object,
+	    '<i class="fa fa-user-plus"></i> Añadir '.$object,
 	    array(
 		'controller' => $controller,
 		'action' => 'add'
@@ -107,7 +126,7 @@ class ButtonHelper extends AppHelper {
     }
     public function addLine($controller,$from_controller,$from_id,$object) {
 	return $this->Html->link(
-	    '<i class="fa fa-user-plus"></i>Añadir '.$object,
+	    '<i class="fa fa-user-plus"></i> Añadir '.$object,
 	    array(
 		'controller' => $controller,
 		'action' => 'add',

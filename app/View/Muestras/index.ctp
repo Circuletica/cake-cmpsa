@@ -25,7 +25,7 @@
     <th><?php echo $this->Paginator->sort('fecha')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('Empresa.nombre_corto', 'Proveedor')?></th>
-    <th><?php echo 'Acciones'?></th>
+    <th><?php echo 'Detalle'?></th>
   </tr>
   <?php foreach($muestras as $muestra):?>
   <tr>

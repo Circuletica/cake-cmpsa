@@ -44,7 +44,7 @@ echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));
 	<?php
 echo $this->Form->input('Empresa.codigo_contable', array('label'=>'Código Contable'));
 echo $this->Form->input('Empresa.cuenta_bancaria');
-echo $this->Form->input('BancoPrueba.bic', array('label'=>'BIC'));
+echo $this->Form->input('Empresa.bic', array('label'=>'BIC'));
 //echo $this->Form->input('BancoPrueba.cuenta_cliente_1');
 //echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
 echo $this->Form->end('Guardar Agente');

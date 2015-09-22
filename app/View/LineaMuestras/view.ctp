@@ -1,4 +1,12 @@
-<?php $this->Html->addCrumb('Muestras', array(
+<?php
+// Usamos plantilla clásica de vistas View/Common/view.ctp
+$this->extend('/Common/view');
+$this->assign('titulo', 'Línea '.$linea['Muestra']['referencia'].' de la muestra '.$linea['Muestra']['referencia']);
+$this->assign('id',$linea['LineaMuestra']['id']);
+$this->assign('clase','LineaMuestra');
+$this->assign('controller','linea_muestras');
+
+$this->Html->addCrumb('Muestras', array(
 	'controller'=>'muestras',
 	'action'=>'index'
 	));
@@ -7,24 +15,14 @@
 	'action'=>'view',
 	$linea['Muestra']['id']
 ));
-?>
-<h2>Detalles Línea <?php echo $linea['LineaMuestra']['marca']?> de muestra <?php echo $linea['Muestra']['referencia']?></h2>
-
-	<div class='actions'>
-	<?php
+$this->start('filtro');
 	echo $this->element('filtromuestra');
-	?>
-	</div>
-	<div class="acciones">
-	<?php
-		echo $this->Button->edit('linea_muestras',$linea['LineaMuestra']['id'])
-		.' '.$this->Button->delete('linea_muestras',$linea['LineaMuestra']['id'],$linea['LineaMuestra']['marca'])
-	?>
-	</div>
+$this->end()?> 
+
 	<div class='view'>
 <?php
 	echo "<dl>\n";
-	echo "  <dt>Id</dt><dd>".$linea['LineaMuestra']['id']."</dd>\n";
+	//echo "  <dt>Id</dt><dd>".$linea['LineaMuestra']['id']."</dd>\n";
 	echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."</dd>\n";
 	echo "  <dt>Referencia Almacen</dt><dd>".$linea['LineaMuestra']['referencia_almacen']."</dd>\n";
 	echo "  <dt>Marca</dt><dd>".$linea['LineaMuestra']['marca']."&nbsp;</dd>\n";
@@ -140,14 +138,10 @@
 		));
 	?>
 	</table>
-	<div class="negrita">
-	<?php
-	echo "Criba Media";
-	echo $linea['CribaPonderada']['criba_media'];
-		?>
 
-			</div>
 
 	</div>
-
+	<div class="negrita">
+	<?php echo 'Criba Media '.$linea['CribaPonderada']['criba_media'];?>
+	</div>
 </div>

@@ -162,6 +162,10 @@ div.view {
 	width: 79%;
 	padding: 1% 0% 8% 2%;
 }
+.view .negrita{
+	float:right;
+	font-weight: bold;
+}
 div.actions {
 	float:left;
 	width:17%;

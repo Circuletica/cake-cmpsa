@@ -47,8 +47,8 @@
 	?></div>
 	<div class="columna3"><?php
 	echo $this->Form->input('Empresa.cuenta_bancaria');
-	echo $this->Form->input('BancoPrueba.bic', array('label'=>'BIC'));
-	echo $this->Form->input('BancoPrueba.cuenta_cliente_1', array('label'=>'Cuenta Cliente Nº1'));
+	echo $this->Form->input('Empresa.bic', array('label'=>'BIC'));
+	echo $this->Form->input('Empresa.cuenta_cliente_1', array('label'=>'Cuenta Cliente Nº1'));
 	//echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
 	      ?>
     </div>
