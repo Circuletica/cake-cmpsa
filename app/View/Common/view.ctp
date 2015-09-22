@@ -28,7 +28,7 @@
 	</li>
 	<li>
 <?php
-	echo $this->Button->edit($class,$id)
+	echo $this->Button->edit($controller,$id)
 	.' '.$this->Button->delete($controller,$id,$object);
 ?>
 	</li>
