@@ -1,6 +1,5 @@
 <?php
 App::uses('AppHelper', 'View/Helper');
-
 class ButtonHelper extends AppHelper {
     public $helpers = array('Html','Form');
     //dibujar un boton de 'editar', el tipico que aparece
@@ -9,6 +8,21 @@ class ButtonHelper extends AppHelper {
     //$id: el id del objeto que editamos
     //$from: la clase a la que volvemos después de terminar la modificación
     //$id: el id del objeto de la clase a la que volvemos después de modificar
+    public function view($controller,$id) {
+	    return $this->Html->link(
+		 '<i class="fa fa-info-circle"></i> info',
+		array(
+			'controller' => $controller,
+			'action' => 'view',
+			$id,
+		),
+		    array(
+			'class' => 'boton',
+			'title' => 'Detalles',
+			'escape' => false
+		    )
+		);
+    }
     public function edit($controller,$id) {
 	    return $this->Html->link(
 		    '<i class="fa fa-pencil-square-o"></i> Modificar',
@@ -80,7 +94,7 @@ class ButtonHelper extends AppHelper {
     }
     public function add($controller,$objeto) {
 	return $this->Html->link(
-	    '<i class="fa fa-user-plus"></i>Añadir '.$objeto,
+	    '<i class="fa fa-user-plus"></i> Añadir '.$objeto,
 	    array(
 		'controller' => $controller,
 		'action' => 'add'
@@ -93,11 +107,11 @@ class ButtonHelper extends AppHelper {
     }
     public function addLine($controller,$from,$from_id,$objeto) {
 	return $this->Html->link(
-	    '<i class="fa fa-user-plus"></i>Añadir '.$objeto,
+	    '<i class="fa fa-plus"></i> Añadir '.$objeto,
 	    array(
 		'controller' => $controller,
 		'action' => 'add',
-		'from' => $from,
+		'from_controller' => $from,
 		'from_id' => $from_id
 	    ),
 	    array(
