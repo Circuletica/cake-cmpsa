@@ -37,7 +37,10 @@
 </div>
 <div class='view'>
 	<?php echo $this->fetch('main'); ?>
+	<div class="detallado">
+	<?php echo "<h3>".ucfirst($line_object)."</h3>\n";?>
 	<?php echo $this->fetch('lines'); ?>
+	</div>
 	<div class="btabla">
 		<?php echo $this->Button->addLine($line_controller,$controller,$id,$line_object);?>
 	</div>

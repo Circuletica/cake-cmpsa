@@ -77,4 +77,3 @@
 		echo "</table>";
 	$this->end();
 ?>
-</div>

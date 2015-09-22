@@ -73,7 +73,7 @@
 			$linea['fecha_pos_fijacion'],
 			$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
 			$linea['precio_compra']." ".$contrato['CanalCompra']['divisa'],
-			$this->Button->view('operaciones',$linea['id']);
+			$this->Button->view('operaciones',$linea['id'])
 		));
 	endforeach;
 	echo "</table>";
