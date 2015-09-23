@@ -76,26 +76,22 @@
 		echo "<dd>";
 			echo $transporte['Transporte']['matricula'].'&nbsp;';
 		echo "</dd>";
-		echo "  <dt>Embalaje transportado</dt>\n";
+		
+		echo "  <dt>Puerto destino</dt>\n";
 		echo "<dd>";
-			echo $embalaje['EmbalajeTransporte']['cantidad'].' x '.
-				 $embalaje['Embalaje']['nombre'].'&nbsp;';
-		echo "</dd>";				
-				echo "  <dt>Puerto destino</dt>\n";
-		echo "<dd>";
-		echo $this->Html->link( $transporte['Puerto']['nombre'], array(
-			'controller' => 'puertos',
-			'action' => 'view',
-			$transporte['Puerto']['id'])
-		);
+			echo $this->Html->link( $transporte['Puerto']['nombre'], array(
+				'controller' => 'puertos',
+				'action' => 'view',
+				$transporte['Puerto']['id'])
+			);
 		echo "</dd>";
 		echo "  <dt>Naviera</dt>\n";
 		echo "<dd>";
-		echo $this->Html->link($transporte['Naviera']['Empresa']['nombre'], array(
-			'controller' => 'navieras',
-			'action' => 'view',
-			$transporte['Naviera']['id'])
-		);
+			echo $this->Html->link($transporte['Naviera']['Empresa']['nombre'], array(
+				'controller' => 'navieras',
+				'action' => 'view',
+				$transporte['Naviera']['id'])
+			);
 		echo "</dd>";
 		echo "  <dt>Agente de aduanas</dt>\n";
 		echo "<dd>";
@@ -109,13 +105,17 @@
 			echo "Sin asignar";
 		endif;
 		echo "</dd>";
+		echo "  <dt>Tipo embalaje</dt>\n";
+		echo "<dd>";
+			echo $embalaje['Embalaje']['nombre'].'&nbsp;';
+		echo "</dd>";				
 		echo "  <dt>Cantidad/Bultos línea</dt>\n";
 		echo "<dd>";
-		echo $embalaje['EmbalajeTransporte']['cantidad'].'&nbsp;';
+			echo $transporte['Transporte']['cantidad'].'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Observaciones</dt>\n";
 		echo "<dd>";
-		echo $transporte['Transporte']['observaciones'].'&nbsp;';?>
+			echo $transporte['Transporte']['observaciones'].'&nbsp;';?>
 		</dd>
 	<br>
 	<h3>Fechas</h3>
@@ -292,7 +292,7 @@
 		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Cuenta Corriente',array(
 		'controller' => 'almacenes_transportes',
 		'action' => 'add',
-		'from_controller' => 'trasportes',
+		'from_controller' => 'transportes',
 		'from_id' => $transporte['Transporte']['id']),
 		 array('escape' => false,'title'=>'Añadir cuenta corriente almacén'));
 		?>

@@ -40,7 +40,7 @@
       $operacion['Empresa']['nombre_corto'],
       $operacion['PesoOperacion']['cantidad_embalaje'],
       //No se puede usar el ButtonHelper. Enlace distinto.
-      $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view_trafico',$operacion['Operacion']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))
+      $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view_trafico',$operacion['Operacion']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalle'))
       ));
   endforeach;
   ?>

@@ -19,6 +19,14 @@ class AlmacenesTransportesController extends AppController {
 		}
 	}
 
+	if($this->AlmacenesTransporte->save($this->request->data)):
+				$this->Session->setFlash('Cuenta corriente almacén guardada');
+				$this->redirect(array(
+					'controller' => 'transportes',
+					'action' => 'view',
+					$this->params['named']['from_id']));
+	endif;
+
 	$this->set('almacenes', $this->AlmacenesTransporte->Almacen->find('list', array(
 	'fields' => array('Almacen.id','Empresa.nombre_corto'),
 	'recursive' => 1))
@@ -26,7 +34,8 @@ class AlmacenesTransportesController extends AppController {
 
 	$this->set('almacenestransportes', $this->AlmacenesTransporte->Almacen->find('list'));
 
-	
 	}
 
-}?>
+}
+
+?>
