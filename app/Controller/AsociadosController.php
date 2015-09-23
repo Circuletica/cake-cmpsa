@@ -44,10 +44,13 @@ class AsociadosController extends AppController {
 			$this->Session->setFlash('URL mal formado Asociado/view ');
 			$this->redirect(array('action'=>'index'));
 		}
-		$empresa = $this->Asociado->find('first',array(
-			'conditions' => array('Asociado.id' => $id)));
+		$empresa = $this->Asociado->find(
+			'first',
+			array('conditions' => array('Asociado.id' => $id))
+		);
 		$this->set('empresa',$empresa);
 		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
+		$this->set('referencia', $empresa['Empresa']['nombre_corto']);
 		//el método iban() definido en AppController necesita
 		//como parametro un 'string'
 		settype($cuenta_bancaria,"string");

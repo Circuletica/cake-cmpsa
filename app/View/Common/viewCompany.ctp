@@ -13,10 +13,10 @@
 	$this->end();
 	$this->start('main');
 	echo "<dl>";
-	echo "  <dt>Nombre corto</dt>\n";
-	echo "<dd>";
-        echo $empresa['Empresa']['nombre_corto'];
-	echo "</dd>";
+	//echo "  <dt>Nombre corto</dt>\n";
+	//echo "<dd>";
+        //echo $empresa['Empresa']['nombre_corto'];
+	//echo "</dd>";
 	echo "  <dt>Razón social</dt>\n";
 	echo "<dd>";
         echo $empresa['Empresa']['nombre'];

@@ -45,6 +45,7 @@ class AseguradorasController extends AppController {
 		$empresa = $this->Aseguradora->find('first',array(
 			'conditions' => array('Aseguradora.id' => $id)));
 		$this->set('empresa',$empresa);
+		$this->set('referencia', $empresa['Empresa']['nombre_corto']);
 		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
 		//el método iban() definido en AppController necesita
 		//como parametro un 'string'
