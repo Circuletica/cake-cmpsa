@@ -40,10 +40,13 @@ class AsociadosController extends AppController {
 			$this->Session->setFlash('URL mal formado Asociado/view ');
 			$this->redirect(array('action'=>'index'));
 		}
-		$empresa = $this->Asociado->find('first',array(
-			'conditions' => array('Asociado.id' => $id)));
+		$empresa = $this->Asociado->find(
+			'first',
+			array('conditions' => array('Asociado.id' => $id))
+		);
 		$this->set('empresa',$empresa);
 		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
+		$this->set('referencia', $empresa['Empresa']['nombre_corto']);
 		//el método iban() definido en AppController necesita
 		//como parametro un 'string'
 		settype($cuenta_bancaria,"string");
@@ -77,14 +80,9 @@ class AsociadosController extends AppController {
 			//$this->Session->setFlash('URL mal formado');
 			//$this->redirect(array('action'=>'index'));
 		endif;
-<<<<<<< HEAD
-		if ($this->Naviera->Empresa->delete($id)):
-			$this->Session->setFlash('Asociado borrado');
-=======
 		if ($this->Asociado->delete($id)):
 			$this->Session->setFlash('Asociado borrado');
 			$this->Asociado->Empresa->delete($id);
->>>>>>> master
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}
@@ -95,23 +93,13 @@ class AsociadosController extends AppController {
 		}
 		$this->Asociado->id = $id;
 		$this->Asociado->Empresa->id = $id;
-<<<<<<< HEAD
 		$asociado = $this->Asociado->find('first',array(
 			'conditions' => array('Asociado.id' => $id)));
 		$this->set('empresa',$asociado);
-=======
-		$agente = $this->Asociado->find('first',array(
-			'conditions' => array('Asociado.id' => $id)));
-		$this->set('empresa',$agente);
->>>>>>> master
 		$this->set('paises', $this->Asociado->Empresa->Pais->find('list'));
 		if($this->request->is('get')):
 			$this->request->data = $this->Asociado->read();
 		else:
-<<<<<<< HEAD
-=======
-			//if ($this->BancoPrueba->save($this->request->data)):
->>>>>>> master
 			if ($this->Asociado->Empresa->save($this->request->data) and $this->Asociado->save($this->request->data)):
 				$this->Session->setFlash('Asociado '.
 				$this->request->data['Empresa']['nombre'].

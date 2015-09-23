@@ -53,21 +53,19 @@ class BancosController extends AppController {
 
 	public function view($id = null) {
 		if (!$id) {
-			//$this->set('params',$this->request->params);
 			$this->Session->setFlash('URL mal formado Banco/view ');
 			$this->redirect(array('action'=>'index'));
 		}
 		//sacamos el banco cuyo id se ha pasado al view
-		$banco = $this->Banco->findById($id);
-		$this->set('banco',$banco);
+		$empresa = $this->Banco->findById($id);
+		$this->set('empresa',$empresa);
+		$this->set('referencia', $empresa['Empresa']['nombre_corto']);
 		//calculamos el IBAN
-		$cuenta_cliente = $banco['Banco']['cuenta_cliente_1'];
+		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
 		//la funcion necesita una cadena como parametro
-		settype($cuenta_cliente,"string");
-		//debug($ccc);
-		$iban_cliente = $this->iban("ES",$cuenta_cliente);
-		$this->set('iban_cliente',$iban_cliente);
-		//debug($iban_cliente);
+		settype($cuenta_bancaria,"string");
+		$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
+		$this->set('iban_bancaria',$iban_bancaria);
 
 		//Exportar PDF
 		$this->pdfConfig = array(

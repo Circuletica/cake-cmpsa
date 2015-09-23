@@ -43,6 +43,7 @@ class AlmacenesController extends AppController {
 		$empresa = $this->Almacen->find('first',array(
 			'conditions' => array('Almacen.id' => $id)));
 		$this->set('empresa',$empresa);
+		$this->set('referencia', $empresa['Empresa']['nombre_corto']);
 		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
 		//el método iban() definido en AppController necesita
 		//como parametro un 'string'
