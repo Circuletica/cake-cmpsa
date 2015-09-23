@@ -16,7 +16,7 @@
 </div>
 <h2>Proveedores</h2>
 <?php 
-if (empty($proveedores)):
+if (empty($empresas)):
 	echo "No hay proveedores en esta lista";
 else:
 	echo "<table>\n";
@@ -28,15 +28,15 @@ else:
 		'Teléfono',
 		'Acciones'));
 
-	foreach($proveedores as $proveedor):
+	foreach($empresas as $empresa):
 		echo $this->Html->tableCells(array(
-			//$proveedor['Proveedor']['id'],
-			$proveedor['Empresa']['nombre_corto'],
-			$proveedor['Empresa']['codigo_contable'],
-			//substr($proveedor['Empresa']['cuenta_bancaria'],4,4),
-			$proveedor['Empresa']['Pais']['nombre'],
-			$proveedor['Empresa']['telefono'],
-			$this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$proveedor['Proveedor']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))//.' '.
+			//$empresa['Proveedor']['id'],
+			$empresa['Empresa']['nombre_corto'],
+			$empresa['Empresa']['codigo_contable'],
+			//substr($empresa['Empresa']['cuenta_bancaria'],4,4),
+			$empresa['Pais']['nombre'],
+			$empresa['Empresa']['telefono'],
+			$this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$empresa['Proveedor']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))//.' '.
 			//$this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id'])).' '.
 			//$this->Form->postLink('Borrar',array('action'=>'delete',$proveedor['Empresa']['id']),array('confirm'=>'Realmente quiere borrar '.$proveedor['Empresa']['nombre'].'?'))
 		));
