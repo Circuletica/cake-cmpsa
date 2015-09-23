@@ -24,7 +24,7 @@
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('Empresa.nombre_corto', 'Proveedor');?></th>
     <th><?php echo $this->Paginator->sort('PesoOperacion.cantidad_embalaje', 'Bultos')?></th>
-    <th><?php echo 'Acciones'?></th>
+    <th><?php echo 'Detalle'?></th>
   </tr>
   <?php
   foreach($operaciones as $operacion):
@@ -39,6 +39,7 @@
       $operacion['CalidadNombre']['nombre'],
       $operacion['Empresa']['nombre_corto'],
       $operacion['PesoOperacion']['cantidad_embalaje'],
+      //No se puede usar el ButtonHelper. Enlace distinto.
       $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view_trafico',$operacion['Operacion']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))
       ));
   endforeach;
