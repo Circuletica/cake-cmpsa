@@ -6,6 +6,33 @@ class AsociadosController extends AppController {
 	public $scaffold = 'admin';
 
 	public function index() {
+		//hay que cambiar el 'hasOne' del Model por un 'belongsTo'
+		//para que el LEFT JOIN de 3r nivel de la query se haga
+		//después del de 2o nivel, es decir primero el JOIN con Empresa,
+		//luego el JOIN con Pais si no queremos errores de SQL
+		$this->Asociado->unbindModel(array(
+			'hasOne' => array('Empresa')
+		));
+		$this->Asociado->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Asociado.id = Empresa.id')
+				),
+				'Pais' => array(
+					'foreignKey' => false,
+					'conditions' => array('Pais.id = Empresa.pais_id')
+				)
+			)
+		));
+		$this->paginate = array(
+			'contain' => array(
+				'Empresa',
+				'Pais.nombre',
+			),
+			'recursive' => 1,
+			'order' => array('Empresa.nombre_corto' => 'ASC')
+		);
 		$this->set('empresas', $this->paginate());
 	}
 	public function view($id = null) {
@@ -50,8 +77,14 @@ class AsociadosController extends AppController {
 			//$this->Session->setFlash('URL mal formado');
 			//$this->redirect(array('action'=>'index'));
 		endif;
+<<<<<<< HEAD
 		if ($this->Naviera->Empresa->delete($id)):
 			$this->Session->setFlash('Asociado borrado');
+=======
+		if ($this->Asociado->delete($id)):
+			$this->Session->setFlash('Asociado borrado');
+			$this->Asociado->Empresa->delete($id);
+>>>>>>> master
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}
@@ -62,13 +95,23 @@ class AsociadosController extends AppController {
 		}
 		$this->Asociado->id = $id;
 		$this->Asociado->Empresa->id = $id;
+<<<<<<< HEAD
 		$asociado = $this->Asociado->find('first',array(
 			'conditions' => array('Asociado.id' => $id)));
 		$this->set('empresa',$asociado);
+=======
+		$agente = $this->Asociado->find('first',array(
+			'conditions' => array('Asociado.id' => $id)));
+		$this->set('empresa',$agente);
+>>>>>>> master
 		$this->set('paises', $this->Asociado->Empresa->Pais->find('list'));
 		if($this->request->is('get')):
 			$this->request->data = $this->Asociado->read();
 		else:
+<<<<<<< HEAD
+=======
+			//if ($this->BancoPrueba->save($this->request->data)):
+>>>>>>> master
 			if ($this->Asociado->Empresa->save($this->request->data) and $this->Asociado->save($this->request->data)):
 				$this->Session->setFlash('Asociado '.
 				$this->request->data['Empresa']['nombre'].

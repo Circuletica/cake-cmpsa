@@ -21,7 +21,6 @@
 ?>
 	<table><?php
 		echo $this->Html->tableHeaders(array(
-		//'Id',
 		$this->Paginator->sort('Empresa.nombre_corto','Banco'),
 		$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
 		'Agencia',
@@ -29,14 +28,11 @@
 		'Acciones'));
 	foreach($bancos as $banco):
 	echo $this->Html->tableCells(array(
-		//$banco['BancoPrueba']['id'],
 		$banco['Empresa']['nombre_corto'],
 		$banco['Empresa']['codigo_contable'],
 		substr($banco['Banco']['cuenta_cliente_1'],4,4),
 		$banco['Empresa']['telefono'],
-		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array('action'=>'view',$banco['Banco']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))//.' '.
-		//$this->Html->link('Modificar',array('action'=>'edit',$banco['BancoPrueba']['id'])).' '.
-		//$this->Form->postLink('Borrar',array('action'=>'delete',$banco['BancoPrueba']['id']),array('confirm'=>'Realmente quiere borrar '.$banco['Empresa']['nombre'].'?'))
+		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array('action'=>'view',$banco['Banco']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))
 	));
 	endforeach;?>
 	</table>

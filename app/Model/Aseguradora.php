@@ -9,9 +9,10 @@ class Aseguradora extends AppModel{
   );
 
   public $hasMany = array(
-  'Seguro' => array(
-    'className' => 'Seguro',
-    'foreignKey' => 'aseguradora_id')
+//    'Seguro' => array(
+//      'className' => 'Seguro',
+//      'foreignKey' => 'aseguradora_id'
+//    )
   );
 }
 ?>

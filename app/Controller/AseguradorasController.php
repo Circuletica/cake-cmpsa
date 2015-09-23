@@ -1,14 +1,39 @@
 <?php
 class AseguradorasController extends AppController {
-	var $scaffold = 'admin';
 
-	public $helpers = array('Html', 'Form');
-	public $components = array('Session');
 	public $paginate = array(
 		'limit' => 10,
 		'order' => array('Aseguradora.nombre' => 'asc')
 	);
+
 	public function index() {
+		//hay que cambiar el 'hasOne' del Model por un 'belongsTo'
+		//para que el LEFT JOIN de 3r nivel de la query se haga
+		//después del de 2o nivel, es decir primero el JOIN con Empresa,
+		//luego el JOIN con Pais si no queremos errores de SQL
+		$this->Aseguradora->unbindModel(array(
+			'hasOne' => array('Empresa')
+		));
+		$this->Aseguradora->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Aseguradora.id = Empresa.id')
+				),
+				'Pais' => array(
+					'foreignKey' => false,
+					'conditions' => array('Pais.id = Empresa.pais_id')
+				)
+			)
+		));
+		$this->paginate = array(
+			'contain' => array(
+				'Empresa',
+				'Pais.nombre',
+			),
+			'recursive' => 1,
+			'order' => array('Empresa.nombre_corto' => 'ASC')
+		);
 		$this->set('empresas', $this->paginate());
 	}
 
@@ -73,8 +98,9 @@ class AseguradorasController extends AppController {
 			//$this->Session->setFlash('URL mal formado');
 			//$this->redirect(array('action'=>'index'));
 		endif;
-		if ($this->Aseguradora->Empresa->delete($id)):
+		if ($this->Aseguradora->delete($id)):
 			$this->Session->setFlash('Aseguradora borrada');
+			$this->Aseguradora->Empresa->delete($id);
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}

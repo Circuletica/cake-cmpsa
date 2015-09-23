@@ -40,7 +40,7 @@
 		$empresa['Empresa']['nombre_corto'],
 		$empresa['Empresa']['codigo_contable'],
 		//substr($empresa['Empresa']['cuenta_bancaria'],4,4),
-		$empresa['Empresa']['Pais']['nombre'],
+		$empresa['Pais']['nombre'],
 		$empresa['Empresa']['telefono'],
 		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$empresa['Aseguradora']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))//.' '.
 		//$this->Html->link('Modificar',array('action'=>'edit',$bancoprueba['BancoPrueba']['id'])).' '.
