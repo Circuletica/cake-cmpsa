@@ -28,9 +28,10 @@ class Proveedor extends AppModel {
 //		//	'message' => 'número de cuenta erroneo'
 //		//)
 //	);
-	public $hasMany = array('Contrato' => array(
-		'className' => 'Contrato',
-		'foreignKey' => 'id')
+	public $hasMany = array(
+//		'Contrato' => array(
+//			'className' => 'Contrato',
+//			'foreignKey' => 'id')
 	);
 	public $hasOne = array('Empresa' => array(
 		'className' => 'Empresa',

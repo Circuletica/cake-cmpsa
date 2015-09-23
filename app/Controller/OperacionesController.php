@@ -103,12 +103,6 @@ class OperacionesController extends AppController {
 		//solo para mostrar el proveedor a nivel informativo
 		$this->set('proveedor',$contrato['Proveedor']['Empresa']['nombre']);
 		//a quienes van asociadas las lineas de contrato
-		//$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('list', array(
-		//	'fields' => array('Asociado.id','Empresa.nombre_corto'),
-		//	'recursive' => 1
-		//	)
-		//);
-		//$this->set('asociados', $asociados);
 		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
 			'fields' => array('Asociado.id','Empresa.codigo_contable','Empresa.nombre_corto'),
 			'order' => array('Empresa.codigo_contable' => 'ASC'),

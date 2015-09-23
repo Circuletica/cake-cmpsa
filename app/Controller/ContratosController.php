@@ -2,9 +2,6 @@
 class ContratosController extends AppController {
 	//public $components = array('Paginator');
 	var $displayField = 'referencia';
-//	public $paginate = array(
-//		'order' => array('Contrato.referencia' => 'asc')
-//	);
 
 	public function index() {
 		$this->paginate = array(
@@ -18,18 +15,6 @@ class ContratosController extends AppController {
 				'Contrato.posicion_bolsa' => 'asc'
 			)
 		);
-//		$proveedores = $this->Contrato->Proveedor->find('list', array(
-//			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-//			'recursive' => 1
-//			)
-//		);
-//		$this->set('proveedores', $proveedores);
-//		$canales = array(
-//			'0' => 'Bolsa LND',
-//			'1' => 'Bolsa NY',
-//			'2' => 'Precio fijo'
-//		);
-		//$canales = $this->Contrato->CanalCompra->find('all');
 		$this->Contrato->bindModel(array(
 			'belongsTo' => array(
 				'Empresa' => array(

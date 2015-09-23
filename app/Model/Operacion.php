@@ -1,7 +1,11 @@
 <?php
 class Operacion extends AppModel {
 	public $recursive = 2;
-	//public $actsAs = array('Containable');
+	//esto podría valer para sumar los lotes de un contrato
+	//pero algo esta fallando. A investigar.
+//	var $virtualFields = array(
+//		'total_lotes' => 'SUM(Operacion.lotes_operacion)'
+//	);
 	public $belongsTo = array(
 		'PuertoCarga' => array(
 			'className' => 'Puerto',
