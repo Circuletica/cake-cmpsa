@@ -1,11 +1,28 @@
 <?php
 class OperacionesController extends AppController {
 	public $scaffold = 'admin';
-//	public $paginate = array(
-//		'order' => array('referencia' => 'asc'),
-//		'recursive' => 3
-//	);
+
 	public function index() {
+		$this->paginate = array(
+			'contain' => array(
+				'Contrato',
+				'PesoOperacion',
+				'Empresa',
+				'CalidadNombre'
+			),
+		);
+		$this->Operacion->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Empresa.id = Contrato.proveedor_id')
+				),
+				'CalidadNombre' => array(
+					'foreignKey' => false,
+					'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+				)
+			)
+		));
 		$this->set('operaciones', $this->paginate());
 	}
 	public function add() {
@@ -330,17 +347,6 @@ public function view_trafico($id = null) {
 				'fields' => array('Embalaje.nombre','ContratoEmbalaje.peso_embalaje_real')
 			)
 		);
-		//$embalajetransporte = $this->Operacion->Transporte->EmbalajeTransporte->find(
-		//	'all',
-		//	array(
-			//	'conditions' => array(
-			//		'EmbalajeTransporte.transporte_id' => $operacion['Operacion']['Transporte']['transporte_id'],
-			//		'EmbalajeTransporte.embalaje_id' => $operacion['Operacion']['Transporte']['embalaje_id']
-			//	),
-		//		'fields' => array('EmbalajeTransporte.cantidad')
-		//	)
-		//);		
-		//$this->set('embalaje_transportes',$embalaje_transporte);
 		$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 		//mysql almacena la fecha en formato ymd
 	//	$this->Date->format($operacion['Contrato']['fecha_transporte']);
@@ -349,7 +355,6 @@ public function view_trafico($id = null) {
 		$mes = substr($fecha,5,2);
 		$anyo = substr($fecha,0,4);
 		$this->set('fecha_transporte', $dia.'-'.$mes.'-'.$anyo);		
-
 		$this->set('embalaje', $embalaje);
 		$this->loadModel('CalidadNombre');
 //Línea de transporte
@@ -379,6 +384,9 @@ public function view_trafico($id = null) {
 		ksort($lineas_reparto);
 		$this->set('columnas_reparto',$columnas_reparto);
 		$this->set('lineas_reparto',$lineas_reparto);
+//		$this->Operacion->Transporte->find('all',array(
+//			'fields' => array('Transporte.operacion_id', 'Transporte.cantidad')));
+//		$this->set('transporte',$transporte);
 
 	}
 }

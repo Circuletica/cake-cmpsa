@@ -14,7 +14,7 @@
 		?>	
 	</div>
 </div>
-<h2>Detalles Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
+<h2>Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
 <div class="actions">
 	<?php
 	echo $this->element('filtrooperacion');
@@ -51,7 +51,7 @@
 	echo "</dd>";
 	echo "  <dt>Incoterms</dt>\n";
 	echo "<dd>";
-	echo $operacion['Contrato']['Incoterm']['nombre'];
+	echo $operacion['Contrato']['Incoterm']['nombre'].'&nbsp;';
 	echo "</dd>";
 		echo "  <dt>Peso:</dt>\n";
 	echo "  <dd>".$operacion['PesoOperacion']['peso'].'kg&nbsp;'."</dd>";
@@ -79,7 +79,7 @@
 	<table>
 	<?php
 	echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
-	       'Fecha Carga','Cantidad/Bultos','Asegurado','Acciones'));
+	       'Fecha Carga','Cantidad/Bultos','Asegurado','Detalle'));
 	//hay que numerar las líneas
 	$i = 1;
 	foreach($operacion['Transporte'] as $linea):
@@ -93,27 +93,26 @@
 			//$linea['EmbalajeTransporte']['cantidad'],
 			$this->Date->format($linea['fecha_seguro']),
 			//$linea['referencia_almacen'],
-			$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array(
-				'controller'=>'transportes',
-				'action' => 'view',
-				$linea['id'],
-              			'from_controller'=>'transportes',
-              			'from_id'=>$operacion['Operacion']['id']),array(
-              			'class'=>'boton','escape' => false,'title'=>'Detalles'))
+			$this->Button->viewLine('transportes',$linea['id'],'transportes',$linea['operacion_id'])
 			));
 		//numero de la línea siguiente
 		$i++;
 	endforeach;
 ?>	</table>
-
+<?php
+//	if($operacion['Operacion']['id']!= NULL):
+//		$suma=0;
+//		foreach ($transporte as $transportado => $transporte):
+//			if ($transporte['operacion_id']=$operacion['Operacion']['id']):
+//			$suma= $suma + $transporte['cantidad'];
+//			endif;
+//		endforeach;
+		echo "Total transportado:";//.$suma;
+//	endif;
+?>
 		<div class="btabla">
 		<?php
-		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Línea',array(
-		'controller' => 'transportes',
-		'action' => 'add',
-		'from_controller' => 'operaciones',
-		'from_id' => $operacion['Operacion']['id']),
-		 array('escape' => false,'title'=>'Añadir línea de transporte'));
+		echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
 		?>
 		</div>
 	</div>

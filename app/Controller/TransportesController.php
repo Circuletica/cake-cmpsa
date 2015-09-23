@@ -18,10 +18,10 @@ public function view($id = null) {
 			'recursive' => 2));
 		$this->set('transporte',$transporte);
 
-		$embalaje = $this->Transporte->EmbalajeTransporte->find(
+		$embalaje = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find(
 			'first',
 			array(
-				'fields' => array('Embalaje.nombre', 'EmbalajeTransporte.cantidad')
+				'fields' => array('Embalaje.nombre')
 			)
 		);		
 		$this->set('embalaje',$embalaje);

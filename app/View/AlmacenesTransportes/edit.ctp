@@ -1,33 +1,16 @@
-
+<h2>Modificar Línea de Transporte: Operación <?php //echo $operacion['Operacion']['referencia'] ?><em></h2>
 <?php
 $this->Html->addCrumb('Contratos','/contratos');
-$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-'controller'=>'operaciones',
-'action'=>'view_trafico',
-$operacion['Operacion']['id']
-));
-$this->Html->addCrumb('Añadir Transporte');
+$this->Html->addCrumb('Operación','/operaciones/index_trafico');
+//$this->Html->addCrumb('Transporte ','/operacion/view_trafico/'.$operacion['Operacion']['id']);
 ?>
-<h2>Añadir Línea de Transporte: Operación <?php echo $operacion['Operacion']['referencia'] ?><em></h2>
 <?php
-echo 'Cantidad/Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'];
-echo "<br>\n";
-
-echo 'Cantidad/Bultos por transportar: XXXXXXX';
-
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
-	?>
-	<br>
-	<div class="columna3">
-	<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
-	//echo $this->Form->input('embalaje_id',array('label'=>'Tipo de bulto','empty' =>true));
-	echo $this->Form->input('cantidad', array('label' => 'Cantidad bultos'));
+	echo $this->Form->input('EmbalajeTransprote.cantidad', array('label' => 'Cantidad transportada'));
 	?>
-	</div>
-	<div class="columna3">
 	<div class="formuboton">
 		<ul>
 			<li>
@@ -51,38 +34,33 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 			</li>
 		</ul>
 		</div>
-
-		<?php
-		// id = 3 es el valor de IN STORE
-		//echo $operacion['Contrato']['Incoterm']['nombre']
-		//if ($incoterms['Contrato']['Incoterm']['id'] != 3 ){ 
-		?>		<div class="formuboton">
-				<ul>
-					<li>
-					<?php
-					echo $this->Form->input('naviera_id',
-						array(
-							'label'=>'Naviera',
-							'empty' =>true 
-							));
-					?>
-					</li>
-					<li>
-						<div class="enlinea">
-						<?php
-						echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Naviera',
-							 array(
-							'controller'=>'navieras',
-							'action'=>'add'),
-							array(
-							"class"=>"botond",
-							'escape' => false)
-						);
-						?>
-						</div>
-					</li>
-				</ul>
+		<div class="formuboton">
+		<ul>
+			<li>
+			<?php
+			echo $this->Form->input('naviera_id',
+				array(
+					'label'=>'Naviera',
+					'empty' =>true 
+					));
+			?>
+			</li>
+			<li>
+				<div class="enlinea">
+				<?php
+				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Naviera',
+					 array(
+					'controller'=>'navieras',
+					'action'=>'add'),
+					array(
+					"class"=>"botond",
+					'escape' => false)
+				);
+				?>
 				</div>
+			</li>
+		</ul>
+		</div>
 		<div class="formuboton">
 		<ul>
 			<li>
@@ -106,8 +84,7 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 			</li>
 		</ul>
 		</div>
-		</div>
-	<br>
+	<br><br>
 	<h3>Fechas</h3>
 	<div class="columna3">
 	<div class="linea">
@@ -198,14 +175,14 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 	?>
 	</div>
 	</div>
-	<div class="col2">
 	<?php
 	echo $this->Form->input('observaciones', array('label'=>'Observaciones del transporte'));
 
 	?>
-
+<div class="detalladoform">
 <h3>Seguro</h3>
-			<div class="formuboton">
+		<div class="columna3">
+		<div class="formuboton">
 			<ul>
 			<li><?php
 			echo $this->Form->input('aseguradora_id',
@@ -226,7 +203,6 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 			</li>
 			</ul>
 		</div>
-		<div class='col2'>
 		<div class="linea">
 		<?php
 		echo $this->Form->input('fecha_seguro', array(
@@ -238,8 +214,6 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 		'label' => 'Fecha del seguro',
 		'empty' => ' ')
 		);
-
-		
 		?>
 		</div>
 		<?php
@@ -247,4 +221,4 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 		?>
 		</div>
 </div>
-	<?php	echo $this->Form->end('Guardar Línea Transporte'); ?>
+	<?php	echo $this->Form->end('Modificar Línea Transporte'); ?>
