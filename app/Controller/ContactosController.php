@@ -8,9 +8,9 @@ class ContactosController extends AppController {
 	public function add() {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$this->params['named']['from_id']) {
-			$this->Session->setFlash('URL mal formado controller/add '.$this->params['named']['from']);
+			$this->Session->setFlash('URL mal formado controller/add '.$this->params['named']['from_controller']);
 			$this->redirect(array(
-				'controller' => $this->params['named']['from'],
+				'controller' => $this->params['named']['from_controller'],
 				'action' => 'index'));
 		}
 		//necesitamos el nombre de la empresa para el breadcrumb y el título de la vista
@@ -27,7 +27,7 @@ class ContactosController extends AppController {
 			if($this->Contacto->save($this->request->data) ):
 				$this->Session->setFlash('Contacto guardado');
 				$this->redirect(array(
-					'controller' => $this->params['named']['from'],
+					'controller' => $this->params['named']['from_controller'],
 					'action' => 'view',
 					$this->params['named']['from_id']
 				));
@@ -41,7 +41,7 @@ class ContactosController extends AppController {
 			if($this->Contacto->delete($id)):
 				$this->Session->setFlash('Contacto borrado');
 				$this->redirect(array(
-					'controller' => $this->params['named']['from'],
+					'controller' => $this->params['named']['from_controller'],
 					'action' => 'view',
 					$this->params['named']['from_id']
 				));
@@ -52,13 +52,11 @@ class ContactosController extends AppController {
 	}
 
 	public function edit($id = null) {
-		//debug($this->params['named']);
-		//debug(func_get_args());
 		if (!$id) {
 			//throw new MethodNotAllowedException();
-			$this->Session->setFlash('URL mal formado controller/edit '.$this->params['named']['from'].' '.$this->params['named']['from_id']);
+			$this->Session->setFlash('URL mal formado controller/edit '.$this->params['named']['from_controller'].' '.$this->params['named']['from_id']);
 			$this->redirect(array(
-				'controller' => $this->params['named']['from'],
+				'controller' => $this->params['named']['from_controller'],
 				'action'=>'index'));
 		}
 		$this->Contacto->id = $id;
@@ -68,7 +66,7 @@ class ContactosController extends AppController {
 			if($this->Contacto->save($this->request->data)):
 				$this->Session->setFlash('Contacto modificado');
 				$this->redirect(array(
-					'controller' => $this->params['named']['from'],
+					'controller' => $this->params['named']['from_controller'],
 					'action' => 'view',
 					$this->params['named']['from_id']));
 			else:

@@ -52,7 +52,7 @@
     <div class="columna2">
     <?php	
     echo $this->Form->input('Empresa.cuenta_bancaria');
-	echo $this->Form->input('BancoPrueba.bic', array('label'=>'BIC'));
+	echo $this->Form->input('Empresa.bic', array('label'=>'BIC'));
 	?>
     </div>
     <?php

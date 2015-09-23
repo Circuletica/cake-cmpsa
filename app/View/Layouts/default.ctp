@@ -39,7 +39,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<h1><?php echo $this->Html->link($cakeDescription, '/'); ?></h1>
 		<div class="menuheader"> 
 		<ul class="tabs">
-			<li><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','/contabilidades',array('escape' => false));?></li>
+			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/contratos',array('escape' => false));?></li>
 			<li><?php echo $this->Html->link('<i class="fa fa-flask"></i> LABORATORIO','#',array('escape' => false));?>
 				<ul>
 				<li><?php echo $this->Html->link('OFERTA','/muestras/index/Search.tipo_id:1',array('escape' => false));?></li>
@@ -49,11 +49,20 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			</li>
 			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','#', array('escape' => false));?>
 				<ul>
+<<<<<<< HEAD
 				<li><?php echo $this->Html->link('OPERACIONES','/operaciones/index_trafico',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('RETIRADAS','/retiradas	',array('escape' => false));?></li>
 				</ul>
 			</li>
 			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/contratos',array('escape' => false));?></li>
+=======
+				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('RETIRADA','/retiradas',array('escape' => false));?></li>
+				</ul>
+			</li>
+
+			<li><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','/pages/contabilidad',array('escape' => false));?></li>
+>>>>>>> master
 		</ul>	
 	</div>
 </div>

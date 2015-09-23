@@ -48,7 +48,7 @@
 				echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));
 				echo $this->Form->input('Empresa.codigo_contable', array('label'=>'Código Contable'));
 				echo $this->Form->input('Empresa.cuenta_bancaria');
-				echo $this->Form->input('BancoPrueba.bic', array('label'=>'BIC'));
+				echo $this->Form->input('Empresa.bic', array('label'=>'BIC'));
 				echo $this->Form->input('id',array('type'=>'hidden'));
 				echo $this->Form->end('Guardar almacén');
 			?>

@@ -130,16 +130,34 @@ class MuestrasController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('tipos', $this->tipoMuestras);
+		$this->Muestra->bindModel(array(
+			'belongsTo' => array(
+				'CalidadNombre' => array(
+					'foreignKey' => false,
+					'conditions' => array('CalidadNombre.id = Muestra.calidad_id'),
+					//'recursive' => 1
+				)
+			)
+		));
 		$muestra = $this->Muestra->find('first', array(
 			'conditions' => array('Muestra.id' => $id),
-			'recursive' => 2));
+//			'contain' => array(
+//				'CalidadNombre',
+//				'Proveedor',
+//				'Almacen'
+//			),
+			'fields' => array(
+				'Muestra.*',
+				'CalidadNombre.*'
+			),
+			'recursive' => 1));
 		$tipo = $this->tipoMuestras[$muestra['Muestra']['tipo']];
 		$this->set('tipo',$tipo);
 		$this->set('muestra',$muestra);
-		$this->loadModel('CalidadNombre');
+		//$this->loadModel('CalidadNombre');
 		//el nombre de calidad concatenado esta en una view de MSQL
-		$calidad_nombre = $this->CalidadNombre->findById($muestra['Calidad']['id']);
-		$this->set('calidad_nombre',$calidad_nombre);
+		//$calidad_nombre = $this->CalidadNombre->findById($muestra['Calidad']['id']);
+		//$this->set('calidad_nombre',$calidad_nombre);
 
 				//Exportar PDF
 		 //$this->set('title_for_layout', 'Factura');

@@ -10,19 +10,38 @@ class ButtonHelper extends AppHelper {
     //$id: el id del objeto de la clase a la que volvemos después de modificar
     public function view($controller,$id) {
 	    return $this->Html->link(
-		 '<i class="fa fa-info-circle"></i> info',
-		array(
+		 '<i class="fa fa-info-circle"></i> ',
+			array(
 			'controller' => $controller,
 			'action' => 'view',
 			$id,
-		),
+			),
 		    array(
 			'class' => 'boton',
-			'title' => 'Detalles',
+			'title' => 'Detalle',
 			'escape' => false
 		    )
 		);
     }
+        //la versión pequeña, solo el botón sin texto, con retorno
+    //a la página 'padre'. Se usa en los listados dentro de una vista
+    public function viewLine($controller,$id,$from,$from_id) {
+	    return $this->Html->link(
+		 '<i class="fa fa-info-circle"></i> ',
+			array(
+			'controller' => $controller,
+			'action' => 'view',
+			$id,
+			'from_controller' => $from,
+			'from_id' => $from_id
+		    ),
+		    array(
+			'class' => 'boton',
+			'title' => 'Detalle línea',
+			'escape' => false
+		    )
+		);
+    }    
     public function edit($controller,$id) {
 	    return $this->Html->link(
 		    '<i class="fa fa-pencil-square-o"></i> Modificar',
@@ -47,12 +66,12 @@ class ButtonHelper extends AppHelper {
 			'controller' => $controller,
 			'action' => 'edit',
 			$id,
-			'from' => $from,
+			'from_controller' => $from,
 			'from_id' => $from_id
 		    ),
 		    array(
 			'class' => 'botond',
-			'title' => 'Modificar',
+			'title' => 'Modificar línea',
 			'escape' => false
 		    )
 		);
@@ -81,7 +100,7 @@ class ButtonHelper extends AppHelper {
 		'controller' => $controller,
 		'action' => 'delete',
 		$id,
-		'from' => $from,
+		'from_controller' => $from,
 		'from_id' => $from_id
 	    ),
 	    array(
