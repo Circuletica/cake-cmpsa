@@ -42,11 +42,11 @@ class NavierasController extends AppController {
 		$empresa = $this->Naviera->find('first',array(
 			'conditions' => array('Naviera.id' => $id)));
 		$this->set('empresa',$empresa);
+		$this->set('referencia', $empresa['Empresa']['nombre_corto']);
 		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
 		//el método iban() definido en AppController necesita
 		//como parametro un 'string'
 		settype($cuenta_bancaria,"string");
-		//debug($ccc);
 		$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
 		$this->set('iban_bancaria',$iban_bancaria);
 	}
@@ -99,7 +99,6 @@ class NavierasController extends AppController {
 		if($this->request->is('get')):
 			$this->request->data = $this->Naviera->read();
 		else:
-			//if ($this->BancoPrueba->save($this->request->data)):
 			if ($this->Naviera->Empresa->save($this->request->data) and $this->Naviera->save($this->request->data)):
 				$this->Session->setFlash('Naviera '.
 				$this->request->data['Empresa']['nombre'].

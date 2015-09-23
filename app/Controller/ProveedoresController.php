@@ -37,21 +37,21 @@ class ProveedoresController extends AppController {
 
 	public function view($id = null) {
 		if (!$id) {
-			//$this->set('params',$this->request->params);
 			$this->Session->setFlash('URL mal formado Proveedor/view ');
 			$this->redirect(array('action'=>'index'));
 		}
-		$proveedor = $this->Proveedor->find('first',array(
-			'conditions' => array('Proveedor.id' => $id)));
-		$this->set('proveedor',$proveedor);
-		$cuenta_bancaria = $proveedor['Empresa']['cuenta_bancaria'];
+		$empresa = $this->Proveedor->find(
+			'first',
+			array('conditions' => array('Proveedor.id' => $id))
+		);
+		$this->set('empresa',$empresa);
+		$this->set('referencia', $empresa['Empresa']['nombre_corto']);
+		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
 		//el método iban() definido en AppController necesita
 		//como parametro un 'string'
 		settype($cuenta_bancaria,"string");
-		//debug($ccc);
 		$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
 		$this->set('iban_bancaria',$iban_bancaria);
-		//debug($iban_cliente);
 	}
 
 	public function add() {
