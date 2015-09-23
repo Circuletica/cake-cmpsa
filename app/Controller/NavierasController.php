@@ -3,8 +3,34 @@ class NavierasController extends AppController {
 	public $paginate = array(
 		'order' => array('Empresa.nombre' => 'asc')
 	);
-
 	public function index() {
+		//hay que cambiar el 'hasOne' del Model por un 'belongsTo'
+		//para que el LEFT JOIN de 3r nivel de la query se haga
+		//después del de 2o nivel, es decir primero el JOIN con Empresa,
+		//luego el JOIN con Pais si no queremos errores de SQL
+		$this->Naviera->unbindModel(array(
+			'hasOne' => array('Empresa')
+		));
+		$this->Naviera->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Naviera.id = Empresa.id')
+				),
+				'Pais' => array(
+					'foreignKey' => false,
+					'conditions' => array('Pais.id = Empresa.pais_id')
+				)
+			)
+		));
+		$this->paginate = array(
+			'contain' => array(
+				'Empresa',
+				'Pais.nombre',
+			),
+			'recursive' => 1,
+			'order' => array('Empresa.nombre_corto' => 'ASC')
+		);
 		$this->set('empresas', $this->paginate());
 	}
 
@@ -24,7 +50,6 @@ class NavierasController extends AppController {
 		$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
 		$this->set('iban_bancaria',$iban_bancaria);
 	}
-
 	public function add() {
 		$this->set('paises', $this->Naviera->Empresa->Pais->find('list'));
 		if($this->request->is('post')):
@@ -53,8 +78,9 @@ class NavierasController extends AppController {
 			//$this->Session->setFlash('URL mal formado');
 			//$this->redirect(array('action'=>'index'));
 		endif;
-		if ($this->Naviera->Empresa->delete($id)):
-			$this->Session->setFlash('Naviera borrado');
+		if ($this->Naviera->delete($id)):
+			$this->Session->setFlash('Naviera borrada');
+			$this->Naviera->Empresa->delete($id);
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}

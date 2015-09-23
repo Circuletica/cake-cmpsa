@@ -79,8 +79,9 @@ class AlmacenesController extends AppController {
 			//$this->Session->setFlash('URL mal formado');
 			//$this->redirect(array('action'=>'index'));
 		endif;
-		if ($this->Almacen->Empresa->delete($id)):
+		if ($this->Almacen->delete($id)):
 			$this->Session->setFlash('Almacen borrado');
+			$this->Almacen->Empresa->delete($id);
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}
