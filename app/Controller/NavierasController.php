@@ -49,8 +49,9 @@ class NavierasController extends AppController {
 			//$this->Session->setFlash('URL mal formado');
 			//$this->redirect(array('action'=>'index'));
 		endif;
-		if ($this->Naviera->Empresa->delete($id)):
-			$this->Session->setFlash('Naviera borrado');
+		if ($this->Naviera->delete($id)):
+			$this->Session->setFlash('Naviera borrada');
+			$this->Naviera->Empresa->delete($id);
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}
