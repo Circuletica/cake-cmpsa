@@ -109,10 +109,15 @@
 		echo "  <dd>".$operacion['Operacion']['forfait'].'€/Tm&nbsp;'."</dd>";
 		echo "  <dt>Precio €/kg estimado:</dt>\n";
 		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
+		echo "  <dt>Observaciones:</dt>\n";
+		echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
 		echo "</dl>";
-
 		//la tabla con el reparto de sacos para los asociados
-		echo "<table>";
+		?><br>
+		<div class="detallado">
+		<h3>Reparto asociados</h3>
+		<table>
+		<?php
 		echo $this->Html->tableHeaders($columnas_reparto);
 		foreach ($lineas_reparto as $codigo => $linea_reparto):
 			echo $this->Html->tableCells(array(
@@ -123,7 +128,7 @@
 				)
 			);
 		endforeach;
-		echo "</table>";
-		echo "  <dt>Observaciones:</dt>\n";
-		echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
-?>
+		?>
+		</table>
+		</div>
+</div>

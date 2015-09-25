@@ -113,7 +113,7 @@ class ButtonHelper extends AppHelper {
     }
     public function add($controller,$object) {
 	return $this->Html->link(
-	    '<i class="fa fa-user-plus"></i> Añadir '.$object,
+	    '<i class="fa fa-plus"></i> Añadir '.$object,
 	    array(
 		'controller' => $controller,
 		'action' => 'add'
@@ -126,7 +126,7 @@ class ButtonHelper extends AppHelper {
     }
     public function addLine($controller,$from_controller,$from_id,$object) {
 	return $this->Html->link(
-	    '<i class="fa fa-user-plus"></i> Añadir '.$object,
+	    '<i class="fa fa-plus"></i> Añadir '.$object,
 	    array(
 		'controller' => $controller,
 		'action' => 'add',

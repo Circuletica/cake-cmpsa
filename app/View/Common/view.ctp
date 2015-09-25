@@ -22,7 +22,7 @@
 	<div class="printdet">
 	<ul><li>
 		<?php 
-		//echo $this->element('imprimirV');
+		echo $this->element('imprimirV');
 		?>	
 		
 	</li>

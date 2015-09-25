@@ -4,6 +4,11 @@
 		'controller' => 'operaciones',
 		'action' => 'index')
 	); ?>
+	<div class="printdet">
+  <?php // Botones de impresión
+  echo $this->element('imprimirI');
+  ?>
+</div>
 <h2>Operaciones</h2>
 	<div class="actions">
 		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
@@ -22,7 +27,7 @@
 		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
 		$this->Paginator->sort('PesoOperacion.peso','Peso'),
 		$this->Paginator->sort('Operacion.lotes_operacion','Lotes'),
-		'')
+		'Detalle')
 	);
 
 	foreach($operaciones as $operacion):
@@ -33,11 +38,16 @@
 			$operacion['CalidadNombre']['nombre'],
 			$operacion['PesoOperacion']['peso'].'kg',
 			$operacion['Operacion']['lotes_operacion'],
-			$this->Html->link('Detalles',array('action'=>'view',$operacion['Operacion']['id']), array('class' =>'boton' , ))
+			$this->Button->view('operaciones',$operacion['Operacion']['id'])
+//			$this->Html->link('Detalles',array('action'=>'view',$operacion['Operacion']['id']), array('class' =>'boton' , ))
 	));
 
 	endforeach;?>
 	</table>
+		<div class="btabla">
+		<?php echo $this->Button->add('operaciones','Operación');
+		// echo $this->Html->link('Añadir Operacion',array('action'=>'add')); ?>
+		</div>
 	<?php
 	echo $this->Paginator->counter(
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));
@@ -49,7 +59,5 @@
 		echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled')); ?>
 	</div>
 	<?php endif; ?>
-	<div class="btabla">
-		<?php echo $this->Html->link('Añadir Operacion',array('action'=>'add')); ?>
-	</div>
+
 </div>

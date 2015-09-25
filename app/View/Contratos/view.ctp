@@ -30,8 +30,12 @@
 	echo "  <dd>".$contrato['Contrato']['lotes_contrato'].' ('.$posicion_bolsa.')&nbsp;'."</dd>";
 	echo "  <dt>Peso</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['peso_comprado'].' kg&nbsp;'."</dd>";
-	echo "  <table>\n";
-	echo $this->html->tableheaders(array('cantidad','embalaje', 'peso ud.', 'peso'));
+	?>
+	</dl>
+<div class="detallado">
+	<table>
+	<?php
+	echo $this->html->tableheaders(array('Cantidad','Embalaje', 'Peso ud.', 'Peso'));
 	$peso_total = 0;
 	foreach($contrato['ContratoEmbalaje'] as $embalaje):
 		$peso_embalaje = $embalaje['cantidad_embalaje'] * $embalaje['peso_embalaje_real'];
@@ -43,7 +47,11 @@
 			));
 		$peso_total += $peso_embalaje;
 	endforeach;
-	echo "  </table>\n";
+	?>
+	</table>
+</div>
+	<?php
+	echo "<dl>";
 	echo "  <dt>$tipo_fecha_transporte</dt>\n";
 	echo "  <dd>".$this->Date->format($fecha_transporte)."</dd>";
 	echo "  <dt>$tipo_puerto</dt>\n";
@@ -61,8 +69,10 @@
 
 	$this->start('lines');
 	$peso_fijado = 0;
-	echo "<table>";
-	echo $this->html->tableheaders(array('referencia','peso','fecha de fijación', 'precio de fijación', 'precio de factura'));
+	?>
+	<table>
+	<?php
+	echo $this->html->tableheaders(array('Referencia','Peso','Fecha de fijación', 'Precio de fijación', 'Precio de factura','Detalle'));
 	foreach($contrato['Operacion'] as $linea):
 		//guardamos el total del peso de las líneas para calcular
 		//lo que falta por fijar
@@ -76,7 +86,9 @@
 			$this->Button->view('operaciones',$linea['id'])
 		));
 	endforeach;
-	echo "</table>";
+	?>
+	</table>
+	<?php
 	//calculamos la cantidad que queda por fijar
 	$queda_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado; 
 	echo "<em>Quedan por fijar ".$contrato['RestoLotesContrato']['lotes_restantes']

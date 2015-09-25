@@ -4,6 +4,13 @@
 		'controller' => 'contratos',
 		'action' => 'index')
 	); ?>
+
+<div class="printdet">
+  <?php // Botones de impresión
+  echo $this->element('imprimirI');
+  ?>
+</div>
+
 <h2>Contratos</h2>
 	<div class="actions">
 		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
@@ -28,7 +35,7 @@
 		//'Diferencial',
 		//Las opciones en Operacion
 		//'Opciones',
-		'')
+		'Detalle')
 	);
 
 	foreach($contratos as $contrato):
@@ -48,11 +55,15 @@
 			$contrato['CanalCompra']['nombre'],
 			$contrato['Contrato']['lotes_contrato'],
 			$posicion_bolsa,
-			$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))
+			$this->Button->view('contratos',$contrato['Contrato']['id'])
+			//$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))
 	));
 
 	endforeach;?>
 	</table>
+		<div class="btabla">
+		<?php echo $this->Button->add('contratos','Contrato'); ?>
+		</div>
 	<?php
 	echo $this->Paginator->counter(
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));
@@ -64,8 +75,5 @@
 		echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled')); ?>
 	</div>
 	<?php endif; ?>
-	<div class="btabla">
-		<?php //echo $this->Html->link('Añadir Contrato',array('action'=>'add')); ?>
-		<?php echo $this->Button->add('contratos','Contrato'); ?>
-	</div>
+
 </div>

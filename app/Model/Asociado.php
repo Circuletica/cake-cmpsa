@@ -10,4 +10,5 @@ class Asociado extends AppModel {
 			'className' => 'AsociadoOperacion',
 			'foreignKey' => 'asociado_id'
 		)
+	);
 }
