@@ -12,7 +12,7 @@ $this->Html->addCrumb('Transporte', array(
 $this->Html->addCrumb('Añadir Cuenta Corriente');
 ?>
 <h2>Agregar Cuenta Corriente/Referencia almacén</h2>
-			<?php echo $this->Form->create('AlmacenTransporte');
+			<?php echo $this->Form->create('AlmacenesTransporte');
 ?>
 			<div class="formuboton">
 			<ul>

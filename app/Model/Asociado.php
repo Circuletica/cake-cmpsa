@@ -8,6 +8,6 @@ class Asociado extends AppModel {
 	public $hasMany = array(
 		'AsociadoOperacion' => array(
 			'className' => 'AsociadoOperacion',
-			'foreignKey' => 'asociado_id'
-		)
+			'foreignKey' => 'asociado_id')
+		);
 }
