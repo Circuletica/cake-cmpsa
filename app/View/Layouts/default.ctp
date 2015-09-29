@@ -26,8 +26,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
-		echo $this->Html->css(array('cake.generic','cake.concreto'));
-		echo $this->Html->css('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
+		echo $this->Html->css(array('cake.generic','cake.concreto','font-awesome-4.4.0/css/font-awesome.min.css'));
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
@@ -39,18 +38,23 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<h1><?php echo $this->Html->link($cakeDescription, '/'); ?></h1>
 		<div class="menuheader"> 
 		<ul class="tabs">
-			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/contratos',array('escape' => false));?></li>
+			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/contratos',array('escape' => false));?>
+				<ul>
+				<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> CONTRATO','/contratos',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones',array('escape' => false));?></li>
+				</ul>
+			</li>
 			<li><?php echo $this->Html->link('<i class="fa fa-flask"></i> LABORATORIO','#',array('escape' => false));?>
 				<ul>
-				<li><?php echo $this->Html->link('OFERTA','/muestras/index/Search.tipo_id:1',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('EMBARQUE','/muestras/index/Search.tipo_id:2	',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OFERTA','/muestras/index/Search.tipo_id:1',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> EMBARQUE','/muestras/index/Search.tipo_id:2	',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
 				</ul>
 			</li>
 			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','#', array('escape' => false));?>
 				<ul>
-				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('RETIRADA','/retiradas',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> RETIRADA','/retiradas',array('escape' => false));?></li>
 				</ul>
 			</li>
 
