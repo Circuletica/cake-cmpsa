@@ -27,8 +27,8 @@ CREATE TABLE `agentes` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_agentes_empresas` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_agentes_empresas` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `agentes` (
 
 LOCK TABLES `agentes` WRITE;
 /*!40000 ALTER TABLE `agentes` DISABLE KEYS */;
-INSERT INTO `agentes` VALUES (64,'2015-05-26 14:22:05','2015-05-26 14:22:05'),(87,'2015-07-24 17:06:33','2015-07-24 17:06:33');
+INSERT INTO `agentes` VALUES (59,NULL,NULL),(60,NULL,NULL),(64,'2015-05-26 14:22:05','2015-05-26 14:22:05'),(87,'2015-07-24 17:06:33','2015-07-24 17:06:33'),(105,'2015-09-15 14:39:35','2015-09-15 14:39:35');
 /*!40000 ALTER TABLE `agentes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,8 +53,8 @@ CREATE TABLE `almacenes` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_almacenes_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_almacenes_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,11 +81,11 @@ CREATE TABLE `almacenes_transportes` (
   `cuenta_almacen` varchar(45) DEFAULT NULL,
   `cantidad_cuenta` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_almacenes_has_transportes_transportes1_idx` (`transporte_id`),
   KEY `fk_almacenes_has_transportes_almacenes1_idx` (`almacen_id`),
-  CONSTRAINT `fk_almacenes_has_transportes_almacenes1` FOREIGN KEY (`almacen_id`) REFERENCES `almacenes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_almacenes_has_transportes_transportes1` FOREIGN KEY (`transporte_id`) REFERENCES `transportes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `fk_almacenes_transportes_transportes1_idx` (`transporte_id`),
+  CONSTRAINT `fk_almacenes_transportes_transportes1` FOREIGN KEY (`transporte_id`) REFERENCES `transportes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_almacenes_has_transportes_almacenes1` FOREIGN KEY (`almacen_id`) REFERENCES `almacenes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,6 +94,7 @@ CREATE TABLE `almacenes_transportes` (
 
 LOCK TABLES `almacenes_transportes` WRITE;
 /*!40000 ALTER TABLE `almacenes_transportes` DISABLE KEYS */;
+INSERT INTO `almacenes_transportes` VALUES (8,59,45,'54131',20.00);
 /*!40000 ALTER TABLE `almacenes_transportes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,7 +110,7 @@ CREATE TABLE `aseguradoras` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_aseguradoras_empresas` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_aseguradoras_empresas` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -167,7 +168,7 @@ CREATE TABLE `asociados` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_asociados_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_asociados_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -193,7 +194,7 @@ CREATE TABLE `bancos` (
   `bic` char(11) DEFAULT NULL,
   `cuenta_cliente_1` char(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_bancos_pruebas_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_bancos_pruebas_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -302,7 +303,7 @@ CREATE TABLE `contactos` (
   PRIMARY KEY (`id`,`empresa_id`),
   KEY `fk_contactos_empresas1_idx` (`empresa_id`),
   CONSTRAINT `fk_contactos_empresas1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,7 +312,7 @@ CREATE TABLE `contactos` (
 
 LOCK TABLES `contactos` WRITE;
 /*!40000 ALTER TABLE `contactos` DISABLE KEYS */;
-INSERT INTO `contactos` VALUES (3,4,'Emilio Botín','emilio@listafalciani.com','653306436','918695233','Golfista','2015-02-13 18:55:11','2015-02-17 23:41:31'),(6,3,'Juan Carlos Castro','','','','responsable cuenta','2015-02-17 15:25:01','2015-02-17 15:25:01'),(8,18,'Toto Cutugno','toto@libero.it','666 55 44 33','777 88 99 00','cantautor','2015-02-17 21:42:49','2015-02-17 23:59:22'),(9,26,'Lola Flores','','','','Cantaora','2015-02-24 12:30:26','2015-02-24 12:30:26'),(11,3,'Jordi Évole','','','','tocapelotas','2015-02-24 22:36:33','2015-02-24 22:36:33'),(13,50,'Camilo Sesto','','666554433','','Peluquero','2015-03-10 13:25:07','2015-05-05 16:12:28'),(15,18,'Pablo Iglesias','pabloiglesias@podemos.es','913241201','','Cofundador','2015-03-24 13:10:36','2015-04-07 15:03:34'),(18,40,'persona','correo@correos.es','3423423424','453452522','funcionando','2015-04-07 17:45:55','2015-04-07 17:46:05'),(19,3,'hola','hola@hola.com','1548721','157892118','que tal','2015-04-09 13:54:40','2015-04-09 13:54:40'),(23,16,'','pepito@movistar.com','','','','2015-05-07 22:10:09','2015-05-07 22:10:09'),(25,16,'','lacosa@loes.com','','','','2015-05-07 22:10:36','2015-05-07 22:10:36'),(26,47,'Jesús','empleadojesus@gmail.com','913341568','','Empleado','2015-05-28 20:39:44','2015-05-28 20:39:44'),(28,64,'Juan José','juanjo@importente.org','','','','2015-05-30 12:26:05','2015-05-30 12:26:05'),(29,39,'Ada Colau','adacolau@bcn.org','938521478','','Activista','2015-05-30 12:33:51','2015-08-29 00:55:54'),(30,40,'Pedro','unomas@carla.es','633354547','','jefe - Tráfico','2015-06-02 13:24:53','2015-06-02 13:24:53'),(31,40,'Pedro','unomas@carla.es','633354547','','jefe - Tráfico','2015-06-02 13:24:56','2015-06-02 13:24:56'),(32,38,'Jaun','Juan@gerente.com','93622255','','Gerente','2015-07-23 20:44:29','2015-07-23 20:44:29'),(34,89,'Michael','michaael@dorf.de','34625457','','Boss','2015-08-24 18:26:46','2015-08-24 18:26:46');
+INSERT INTO `contactos` VALUES (3,4,'Emilio Botín','emilio@listafalciani.com','653306436','918695233','Golfista','2015-02-13 18:55:11','2015-02-17 23:41:31'),(6,3,'Juan Carlos Castro','','','','responsable cuenta','2015-02-17 15:25:01','2015-02-17 15:25:01'),(8,18,'Toto Cutugno','toto@libero.it','666 55 44 33','777 88 99 00','cantautor','2015-02-17 21:42:49','2015-02-17 23:59:22'),(9,26,'Lola Flores','','','','Cantaora','2015-02-24 12:30:26','2015-02-24 12:30:26'),(11,3,'Jordi Évole','','','','tocapelotas','2015-02-24 22:36:33','2015-02-24 22:36:33'),(13,50,'Camilo Sesto','','666554433','','Peluquero','2015-03-10 13:25:07','2015-05-05 16:12:28'),(15,18,'Pablo Iglesias','pabloiglesias@podemos.es','913241201','','Cofundador','2015-03-24 13:10:36','2015-04-07 15:03:34'),(18,40,'persona','correo@correos.es','3423423424','453452522','funcionando','2015-04-07 17:45:55','2015-04-07 17:46:05'),(19,3,'hola','hola@hola.com','1548721','157892118','que tal','2015-04-09 13:54:40','2015-04-09 13:54:40'),(23,16,'','pepito@movistar.com','','','','2015-05-07 22:10:09','2015-05-07 22:10:09'),(25,16,'','lacosa@loes.com','','','','2015-05-07 22:10:36','2015-05-07 22:10:36'),(26,47,'Jesús','empleadojesus@gmail.com','913341568','','Empleado','2015-05-28 20:39:44','2015-05-28 20:39:44'),(28,64,'Juan José','juanjo@importente.org','','','','2015-05-30 12:26:05','2015-05-30 12:26:05'),(29,39,'Ada Colau','adacolau@bcn.org','938521478','','Activista','2015-05-30 12:33:51','2015-08-29 00:55:54'),(30,40,'Pedro','unomas@carla.es','633354547','','jefe - Tráfico','2015-06-02 13:24:53','2015-06-02 13:24:53'),(31,40,'Pedro','unomas@carla.es','633354547','','jefe - Tráfico','2015-06-02 13:24:56','2015-06-02 13:24:56'),(32,38,'Jaun','Juan@gerente.com','93622255','','Gerente','2015-07-23 20:44:29','2015-07-23 20:44:29'),(34,89,'Michael','michaael@dorf.de','34625457','','Boss','2015-08-24 18:26:46','2015-08-24 18:26:46'),(35,95,'Francisco López','FLopez.mad@mscspain.com','91 436 39 40','696 092 262','Director Importación','2015-09-22 10:35:16','2015-09-22 12:25:07'),(36,95,'Iratxe Martín','IMartin.mad@mscspain.com','91 436 39 40','','Dpto. Importación','2015-09-22 12:07:24','2015-09-22 14:26:22');
 /*!40000 ALTER TABLE `contactos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -479,7 +480,7 @@ CREATE TABLE `empresas` (
   KEY `fk_empresas_paises1_idx` (`pais_id`),
   KEY `nombre` (`nombre`),
   CONSTRAINT `fk_empresas_paises140` FOREIGN KEY (`pais_id`) REFERENCES `paises` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -488,7 +489,7 @@ CREATE TABLE `empresas` (
 
 LOCK TABLES `empresas` WRITE;
 /*!40000 ALTER TABLE `empresas` DISABLE KEYS */;
-INSERT INTO `empresas` VALUES (3,'BBVA','BBVA','Paseo Castellana, 108','','Madrid',3,'918652010',NULL,'57200005',NULL,NULL,NULL,NULL,'2015-03-10 11:41:32'),(4,'Santander','Santander','Serrano, 21','28012','Madrid',3,NULL,'A-39000013','57200011',NULL,NULL,NULL,'2015-02-13 18:51:30','2015-02-17 15:13:25'),(14,'La Caixa','Caixa','','','',3,NULL,NULL,'57200002',NULL,NULL,NULL,'2015-02-17 14:57:48','2015-02-17 14:57:48'),(15,'Sabadell','Sabadell','','','',3,NULL,NULL,'57200003','00815760340001359645',NULL,NULL,'2015-02-17 14:59:17','2015-02-24 11:57:16'),(16,'Deutsche Bank','Deutsche Bank','','','',3,NULL,NULL,'57200006',NULL,NULL,NULL,'2015-02-17 15:05:12','2015-02-17 15:06:25'),(17,'Banco Popular Español','Popular','','','',3,NULL,NULL,'57200007',NULL,NULL,NULL,'2015-02-17 15:10:30','2015-02-17 15:10:30'),(18,'Banca March','March','','28000','',3,NULL,NULL,'57200009',NULL,NULL,NULL,'2015-02-17 15:11:11','2015-05-26 15:26:57'),(26,'Bankinter','Bankinter','','','',3,'',NULL,'57200010',NULL,NULL,NULL,'2015-02-24 11:59:17','2015-05-26 15:30:32'),(36,'Icona Café SA','Icona','','','',3,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:26:57','2015-03-10 11:26:57'),(37,'Louis Dreyfus Commodities España ','Dreyfus España','','','',3,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:39:25','2015-03-10 11:45:29'),(38,'Coprocafé Ibérica S.A.','Coprocafé','','','',3,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:39:46','2015-03-10 11:39:46'),(39,'C.Dorman Limited','Dorman','','','',8,'','','','','',NULL,'2015-03-10 11:43:30','2015-08-29 00:47:31'),(40,'Louis Dreyfus Commodities Brasil','Dreyfus Brasil','','','',1,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:45:06','2015-03-10 11:45:06'),(41,'List & Beisler GmbH','Beisler','','','',9,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:49:34','2015-03-10 11:49:34'),(43,'Olam International Ltd','Olam','','','',10,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:54:18','2015-03-10 11:54:18'),(44,'Mercon Coffee Corporation','Mercon','','','',11,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:57:06','2015-03-10 11:57:06'),(45,'Coffein Compagnie Dr. Erich Scheele GmbH & Co','Coffein','','','',9,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:59:26','2015-03-10 11:59:26'),(46,'Outspan Brasil Ltda','Outspan','','','',1,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 12:01:15','2015-03-10 12:01:15'),(47,'Exportadora Atlantic S.A.','Atlantic','','','',12,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 12:03:17','2015-03-10 12:03:17'),(48,'InterAmerican Coffee GmbH','InterAmerican','','','',9,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 12:05:28','2015-03-10 12:05:28'),(50,'Almacenes Viorvi SA','Viorvi','','','Barcelona',3,'987654321',NULL,NULL,NULL,NULL,NULL,'2015-03-10 12:51:59','2015-03-10 13:29:35'),(58,'Almacén  BIT','BIT','','','Barcelona',3,'',NULL,NULL,NULL,NULL,NULL,'2015-04-08 17:18:29','2015-05-05 16:10:39'),(59,'Molenbergnatie','Molenbergnatie','','','Barcelona',3,'',NULL,NULL,NULL,NULL,NULL,'2015-04-08 17:19:45','2015-05-05 16:11:16'),(60,'Pacorini','Pacorini','','','Gijón',3,'',NULL,NULL,NULL,NULL,NULL,'2015-04-08 17:20:25','2015-05-05 16:11:45'),(61,'Almacén Europa','Europa','','','',9,'',NULL,NULL,NULL,NULL,NULL,'2015-04-08 17:20:57','2015-04-08 17:20:57'),(64,'Coma y Ribas','Coma','c/ Obradors, 7','08130','Santa Perpètua de Mogoda',3,'933021414',NULL,NULL,NULL,NULL,NULL,'2015-05-26 14:22:04','2015-05-26 14:22:04'),(68,'Germán De Erausquin, S.A.','Erausquin','Urgel, 37 1º - 3ª','08011','Barcelona',3,'933255640','ESA-08259368','43401006','',NULL,NULL,'2015-07-08 02:55:15','2015-07-14 12:45:22'),(75,'Cafés Baqué, S.L.U.','Baqué','P.Ind. Sta. Apolonia - U.A.I., 2-2','48215','Iurreta',3,'946215610','ESB-95445508','43401007','',NULL,NULL,'2015-07-14 12:40:47','2015-07-14 12:46:08'),(76,'Juan Iriondo, S.A.','Iriondo','Pol. Ugaldetxo - C/ Zuaznabar, 49','20180','Oiartzun',3,'943491642','ESA-20063954','43401010','',NULL,NULL,'2015-07-14 12:48:24','2015-07-14 12:50:49'),(77,'Rodriguez y Mateus, S.L.U.','Mateus','Alfonso Gómez, 15','28037','Madrid',3,'913271216','ESB-28577799','43401011','',NULL,NULL,'2015-07-14 12:50:14','2015-07-14 12:50:14'),(78,'Cafés la Brasileña, S.A.','Brasileña','Oñate, 12','01013','Vitoria',3,'945265000','ESA-01016450','43401013','',NULL,NULL,'2015-07-14 12:52:19','2015-07-14 12:52:19'),(79,'Cafés Orus, S.A.','Orus','Ctra. Logroño - P.I. Portazgo - 101-102-83','50011','Zaragoza',3,'976347272','ESA-50004860','43401014','',NULL,NULL,'2015-07-14 12:54:01','2015-07-14 12:54:01'),(80,'U.N.I.C. , S.L.','Unic','Sancho de Avila, 73-75','08018','Barcelona',3,'933006007','ESB-08266009','43401015','',NULL,NULL,'2015-07-14 12:55:26','2015-07-14 12:55:26'),(81,'Café Dromedario, S.A.','Dromedario','Recta de Heras, s/nº.','39792','Heras',3,'942540725','ESA-39000690','43401019','',NULL,NULL,'2015-07-14 12:56:52','2015-07-14 12:56:52'),(82,'Cafento Norte, S.L.','Cafento','Pol.Ind. La Curiscada - Entrada Sur.','33877','Tineo',3,'902117218','ESB-33019688','43401024','',NULL,NULL,'2015-07-14 12:58:26','2015-07-14 12:58:26'),(83,'Tupinamba, S.A.','Tupinamba','Domenech Pascual, 3 - P.I. Can Misser','08360','Canet de Mar',3,'937943110','ESA-58476961','43401031','',NULL,NULL,'2015-07-14 13:00:16','2015-07-14 13:00:16'),(84,'La Ind. Levantina de Cafés Durbán, S.L.','Durbán','Ctra. Valencia - Ademuz, Km.11','46980','Paterna',3,'961320998','ESB-46012506','43401038','',NULL,NULL,'2015-07-14 13:01:52','2015-08-18 14:41:22'),(86,'Banco Bilbao Vizcaya','BBVA Frances','','','',3,'','','','',NULL,NULL,'2015-07-22 18:20:17','2015-07-22 18:50:48'),(87,'Fernando Flores Barcelona S.L.','Flores','Av. Diagonal, 618 5°B','08021','Barcelona',3,'932290352','B-58284779','','',NULL,NULL,'2015-07-24 17:06:33','2015-07-24 17:06:33'),(88,'Louis Dreyfus Commodities Suisse SA','Dreyfus Suiza','29, route del l\'Aéroport - PO Box 236','1215','Geneva 15',10,'+41227992700','','','',NULL,NULL,'2015-07-25 14:32:58','2015-07-25 14:32:58'),(89,'Zurich Gmbh','Zurich','C/ Pluton','28777','Basel',6,'963963','','','',NULL,NULL,'2015-07-27 14:48:22','2015-08-24 18:25:06'),(90,'ALLIANZ, COMPAÑIA DE SEGUROS Y REASEGUROS, SO','Allianz','','','',9,'902232629','','','',NULL,NULL,'2015-07-27 14:49:04','2015-07-27 14:49:04'),(91,'Axa Seguros Generales, S. A. de seguros y reaseguros','Axa','','','Madrid',3,'971767700','','','','',NULL,'2015-07-27 14:49:25','2015-08-25 12:59:52'),(93,'Euromutua de seguros y reaseguros a prima fija','Euromutua','','','Basel',10,'12345','','','','',NULL,'2015-07-27 14:50:00','2015-08-25 12:58:49'),(95,'MEDITERRANEAN SHIPPING','MSC','','','',3,'','','','',NULL,NULL,'2015-08-19 18:17:54','2015-09-08 12:10:47'),(96,'CMA-CGM GROUP','CMA-CGM','','','',3,'','','','',NULL,NULL,'2015-08-19 18:18:21','2015-09-08 12:59:02'),(97,'Hamburg Sud','Hamburg Sud','','','',3,'','','','',NULL,NULL,'2015-08-19 18:19:08','2015-09-08 12:55:24'),(98,'Agencia Marítima Evge','Marfret','','','',3,'','','','',NULL,NULL,'2015-08-19 18:19:29','2015-09-08 12:56:03'),(99,'WEC','WEC','','','',3,'','','','',NULL,NULL,'2015-08-19 18:20:01','2015-09-08 13:01:53'),(100,'Maersk Line Shipping','Maersk','','','',3,'','','','',NULL,NULL,'2015-09-08 13:00:08','2015-09-08 13:00:08'),(101,'K-LINE','K-LINE','','','',3,'','','','',NULL,NULL,'2015-09-08 13:28:37','2015-09-08 13:28:37'),(102,'NYK Line','NYK Line','','','',3,'','','','',NULL,NULL,'2015-09-08 13:29:16','2015-09-08 13:29:16'),(103,'Happag Lloyd','Happag Lloyd','','','',3,'','','','',NULL,NULL,'2015-09-08 13:29:42','2015-09-08 13:29:42'),(104,'HYUNDAI','HYUNDAI','','','',3,'','','','',NULL,NULL,'2015-09-08 13:30:00','2015-09-08 13:30:00');
+INSERT INTO `empresas` VALUES (3,'BBVA','BBVA','Paseo Castellana, 108','','Madrid',3,'918652010',NULL,'57200005',NULL,NULL,NULL,NULL,'2015-03-10 11:41:32'),(4,'Santander','Santander','Serrano, 21','28012','Madrid',3,NULL,'A-39000013','57200011',NULL,NULL,NULL,'2015-02-13 18:51:30','2015-02-17 15:13:25'),(14,'La Caixa','Caixa','','','',3,NULL,NULL,'57200002',NULL,NULL,NULL,'2015-02-17 14:57:48','2015-02-17 14:57:48'),(15,'Sabadell','Sabadell','','','',3,NULL,NULL,'57200003','00815760340001359645',NULL,NULL,'2015-02-17 14:59:17','2015-02-24 11:57:16'),(16,'Deutsche Bank','Deutsche Bank','','','',3,NULL,NULL,'57200006',NULL,NULL,NULL,'2015-02-17 15:05:12','2015-02-17 15:06:25'),(17,'Banco Popular Español','Popular','','','',3,NULL,NULL,'57200007',NULL,NULL,NULL,'2015-02-17 15:10:30','2015-02-17 15:10:30'),(18,'Banca March','March','','28000','',3,NULL,NULL,'57200009',NULL,NULL,NULL,'2015-02-17 15:11:11','2015-05-26 15:26:57'),(26,'Bankinter','Bankinter','','','',3,'',NULL,'57200010',NULL,NULL,NULL,'2015-02-24 11:59:17','2015-05-26 15:30:32'),(36,'Icona Café SA','Icona','','','',3,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:26:57','2015-03-10 11:26:57'),(37,'Louis Dreyfus Commodities España ','Dreyfus España','','','',3,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:39:25','2015-03-10 11:45:29'),(38,'Coprocafé Ibérica S.A.','Coprocafé','','','',3,'','','','','MESHXXX',NULL,'2015-03-10 11:39:46','2015-09-22 12:39:32'),(39,'C.Dorman Limited','Dorman','','','',8,'','','','','',NULL,'2015-03-10 11:43:30','2015-08-29 00:47:31'),(40,'Louis Dreyfus Commodities Brasil','Dreyfus Brasil','','','',1,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:45:06','2015-03-10 11:45:06'),(41,'List & Beisler GmbH','Beisler','','','',9,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:49:34','2015-03-10 11:49:34'),(43,'Olam International Ltd','Olam','','','',10,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:54:18','2015-03-10 11:54:18'),(44,'Mercon Coffee Corporation','Mercon','','','',11,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:57:06','2015-03-10 11:57:06'),(45,'Coffein Compagnie Dr. Erich Scheele GmbH & Co','Coffein','','','',9,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 11:59:26','2015-03-10 11:59:26'),(46,'Outspan Brasil Ltda','Outspan','','','',1,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 12:01:15','2015-03-10 12:01:15'),(47,'Exportadora Atlantic S.A.','Atlantic','','','',12,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 12:03:17','2015-03-10 12:03:17'),(48,'InterAmerican Coffee GmbH','InterAmerican','','','',9,'',NULL,NULL,NULL,NULL,NULL,'2015-03-10 12:05:28','2015-03-10 12:05:28'),(50,'Almacenes Viorvi SA','Viorvi','','','Barcelona',3,'987654321',NULL,NULL,NULL,NULL,NULL,'2015-03-10 12:51:59','2015-03-10 13:29:35'),(58,'Almacén  BIT','BIT','','','Barcelona',3,'',NULL,NULL,NULL,NULL,NULL,'2015-04-08 17:18:29','2015-05-05 16:10:39'),(59,'Molenbergnatie','Molenbergnatie','','','Barcelona',3,'',NULL,NULL,NULL,NULL,NULL,'2015-04-08 17:19:45','2015-05-05 16:11:16'),(60,'Pacorini','Pacorini','','','Gijón',3,'',NULL,NULL,NULL,NULL,NULL,'2015-04-08 17:20:25','2015-05-05 16:11:45'),(61,'Almacén Europa','Europa','','','',9,'',NULL,NULL,NULL,NULL,NULL,'2015-04-08 17:20:57','2015-04-08 17:20:57'),(64,'Coma y Ribas','Coma','c/ Obradors, 7','08130','Santa Perpètua de Mogoda',3,'933021414',NULL,NULL,NULL,NULL,NULL,'2015-05-26 14:22:04','2015-05-26 14:22:04'),(68,'Germán De Erausquin, S.A.','Erausquin','Urgel, 37 1º - 3ª','08011','Barcelona',3,'933255640','ESA-08259368','43401006','',NULL,NULL,'2015-07-08 02:55:15','2015-07-14 12:45:22'),(75,'Cafés Baqué, S.L.U.','Baqué','P.Ind. Sta. Apolonia - U.A.I., 2-2','48215','Iurreta',3,'946215610','ESB-95445508','43401007','',NULL,NULL,'2015-07-14 12:40:47','2015-07-14 12:46:08'),(76,'Juan Iriondo, S.A.','Iriondo','Pol. Ugaldetxo - C/ Zuaznabar, 49','20180','Oiartzun',3,'943491642','ESA-20063954','43401010','',NULL,NULL,'2015-07-14 12:48:24','2015-07-14 12:50:49'),(77,'Rodriguez y Mateus, S.L.U.','Mateus','Alfonso Gómez, 15','28037','Madrid',3,'913271216','ESB-28577799','43401011','',NULL,NULL,'2015-07-14 12:50:14','2015-07-14 12:50:14'),(78,'Cafés la Brasileña, S.A.','Brasileña','Oñate, 12','01013','Vitoria',3,'945265000','ESA-01016450','43401013','',NULL,NULL,'2015-07-14 12:52:19','2015-07-14 12:52:19'),(79,'Cafés Orus, S.A.','Orus','Ctra. Logroño - P.I. Portazgo - 101-102-83','50011','Zaragoza',3,'976347272','ESA-50004860','43401014','',NULL,NULL,'2015-07-14 12:54:01','2015-07-14 12:54:01'),(80,'U.N.I.C. , S.L.','Unic','Sancho de Avila, 73-75','08018','Barcelona',3,'933006007','ESB-08266009','43401015','',NULL,NULL,'2015-07-14 12:55:26','2015-07-14 12:55:26'),(81,'Café Dromedario, S.A.','Dromedario','Recta de Heras, s/nº.','39792','Heras',3,'942540725','ESA-39000690','43401019','',NULL,NULL,'2015-07-14 12:56:52','2015-07-14 12:56:52'),(82,'Cafento Norte, S.L.','Cafento','Pol.Ind. La Curiscada - Entrada Sur.','33877','Tineo',3,'902117218','ESB-33019688','43401024','',NULL,NULL,'2015-07-14 12:58:26','2015-07-14 12:58:26'),(83,'Tupinamba, S.A.','Tupinamba','Domenech Pascual, 3 - P.I. Can Misser','08360','Canet de Mar',3,'937943110','ESA-58476961','43401031','',NULL,NULL,'2015-07-14 13:00:16','2015-07-14 13:00:16'),(84,'La Ind. Levantina de Cafés Durbán, S.L.','Durbán','Ctra. Valencia - Ademuz, Km.11','46980','Paterna',3,'961320998','ESB-46012506','43401038','',NULL,NULL,'2015-07-14 13:01:52','2015-08-18 14:41:22'),(86,'Banco Bilbao Vizcaya','BBVA Frances','','','',3,'','','','',NULL,NULL,'2015-07-22 18:20:17','2015-07-22 18:50:48'),(87,'Fernando Flores Barcelona S.L.','Flores','Av. Diagonal, 618 5°B','08021','Barcelona',3,'932290352','B-58284779','','',NULL,NULL,'2015-07-24 17:06:33','2015-07-24 17:06:33'),(88,'Louis Dreyfus Commodities Suisse SA','Dreyfus Suiza','29, route del l\'Aéroport - PO Box 236','1215','Geneva 15',10,'+41227992700','','','',NULL,NULL,'2015-07-25 14:32:58','2015-07-25 14:32:58'),(89,'Zurich Gmbh','Zurich','C/ Pluton','28777','Basel',6,'963963','','','',NULL,NULL,'2015-07-27 14:48:22','2015-08-24 18:25:06'),(90,'ALLIANZ, COMPAÑIA DE SEGUROS Y REASEGUROS, SO','Allianz','','','',9,'902232629','','','',NULL,NULL,'2015-07-27 14:49:04','2015-07-27 14:49:04'),(91,'Axa Seguros Generales, S. A. de seguros y reaseguros','Axa','','','Madrid',3,'971767700','','','','',NULL,'2015-07-27 14:49:25','2015-08-25 12:59:52'),(93,'Euromutua de seguros y reaseguros a prima fija','Euromutua','','','Basel',10,'12345','','','','',NULL,'2015-07-27 14:50:00','2015-08-25 12:58:49'),(95,'MEDITERRANEAN SHIPPING COMPANY ESPAÑA, S.L.U.','MSC','','28020','MADRID',3,'91 436 39 40','B98261944','41003023','00810166140001563062','MESHXXX',NULL,'2015-08-19 18:17:54','2015-09-22 13:57:57'),(96,'CMA-CGM GROUP','CMA-CGM','','','',3,'','','','',NULL,NULL,'2015-08-19 18:18:21','2015-09-08 12:59:02'),(97,'Hamburg Sud','Hamburg Sud','','','',3,'','','','',NULL,NULL,'2015-08-19 18:19:08','2015-09-08 12:55:24'),(98,'Agencia Marítima Evge','Marfret','','','',3,'','','','',NULL,NULL,'2015-08-19 18:19:29','2015-09-08 12:56:03'),(99,'WEC','WEC','','','',3,'','','','',NULL,NULL,'2015-08-19 18:20:01','2015-09-08 13:01:53'),(100,'Maersk Line Shipping','Maersk','','','',3,'','','','',NULL,NULL,'2015-09-08 13:00:08','2015-09-08 13:00:08'),(101,'K-LINE','K-LINE','','','',3,'','','','',NULL,NULL,'2015-09-08 13:28:37','2015-09-08 13:28:37'),(102,'NYK Line','NYK Line','','','',3,'','','','',NULL,NULL,'2015-09-08 13:29:16','2015-09-08 13:29:16'),(103,'Happag Lloyd','Happag Lloyd','','','',3,'','','','',NULL,NULL,'2015-09-08 13:29:42','2015-09-08 13:29:42'),(104,'HYUNDAI','HYUNDAI','','','',3,'','','','',NULL,NULL,'2015-09-08 13:30:00','2015-09-08 13:30:00'),(105,'Masiques','Masiques','','','',9,'','','','',NULL,NULL,'2015-09-15 14:39:33','2015-09-15 14:39:33');
 /*!40000 ALTER TABLE `empresas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -696,7 +697,7 @@ CREATE TABLE `muestras` (
 
 LOCK TABLES `muestras` WRITE;
 /*!40000 ALTER TABLE `muestras` DISABLE KEYS */;
-INSERT INTO `muestras` VALUES (1,38,5,NULL,'104/17','2015-03-13 18:37:00',1,'',NULL,1,'2015-03-14 01:23:07','2015-03-14 01:23:07'),(4,39,9,NULL,'15/027','2015-03-26 00:00:00',1,'El café ha llegado a puerto',NULL,1,'2015-03-26 12:48:01','2015-03-26 12:48:01'),(6,40,24,NULL,'15/031','2015-03-27 00:00:00',0,'Muestra de embarque llegada antes del embarque',NULL,1,'2015-03-27 13:43:17','2015-04-14 00:42:02'),(10,41,24,NULL,'15/003','2014-04-07 00:00:00',1,'MUESTRA APROBADA RECIBIDA DESDE ALMACEN EN ALMENIA\r\nEL CAFE LLEGARA AL ALACEN DEL SOCIO\r\nCAFE MU BUENO + INTRO\r\nCAFE MEJOR\r\n',NULL,1,'2015-04-07 13:40:59','2015-04-27 01:01:06'),(14,43,10,NULL,'007/007','2015-04-26 00:00:00',0,'',NULL,1,'2015-04-26 19:04:48','2015-04-26 19:04:48'),(15,48,6,NULL,'008/008','2015-04-26 00:00:00',0,'Pues no me gusta',50,1,'2015-04-26 19:39:44','2015-09-09 12:44:25'),(16,46,25,NULL,'123/456','2015-04-26 00:00:00',0,'',NULL,1,'2015-04-26 23:43:14','2015-04-26 23:46:00'),(17,36,9,NULL,'000/111','2015-05-08 00:00:00',1,'',59,2,'2015-05-08 16:48:02','2015-07-01 16:34:53'),(18,47,6,NULL,'001/001/001','2015-05-08 00:00:00',1,'',NULL,3,'2015-05-08 17:24:47','2015-05-08 17:24:47'),(19,41,5,NULL,'69/69','2014-05-08 00:00:00',1,'',61,2,'2015-05-08 17:25:34','2015-07-01 16:35:30');
+INSERT INTO `muestras` VALUES (1,38,5,NULL,'104/17','2015-03-13 18:37:00',1,'',NULL,1,'2015-03-14 01:23:07','2015-03-14 01:23:07'),(4,39,9,NULL,'15/027','2015-03-26 00:00:00',1,'El café ha llegado a puerto',NULL,1,'2015-03-26 12:48:01','2015-03-26 12:48:01'),(6,40,24,NULL,'15/031','2015-03-27 00:00:00',0,'Muestra de embarque llegada antes del embarque',NULL,1,'2015-03-27 13:43:17','2015-04-14 00:42:02'),(10,41,24,NULL,'15/003','2014-04-07 00:00:00',1,'MUESTRA APROBADA RECIBIDA DESDE ALMACEN EN ALMENIA\r\nEL CAFE LLEGARA AL ALACEN DEL SOCIO\r\nCAFE MU BUENO + INTRO\r\nCAFE MEJOR\r\n',60,1,'2015-04-07 13:40:59','2015-09-15 15:28:59'),(14,43,10,NULL,'007/007','2015-04-26 00:00:00',0,'',NULL,1,'2015-04-26 19:04:48','2015-04-26 19:04:48'),(15,48,6,NULL,'008/008','2015-04-26 00:00:00',0,'Pues no me gusta',50,1,'2015-04-26 19:39:44','2015-09-09 12:44:25'),(16,46,25,NULL,'123/456','2015-04-26 00:00:00',0,'',NULL,1,'2015-04-26 23:43:14','2015-04-26 23:46:00'),(17,36,9,NULL,'000/111','2015-05-08 00:00:00',1,'',59,2,'2015-05-08 16:48:02','2015-07-01 16:34:53'),(18,47,6,NULL,'001/001/001','2015-05-08 00:00:00',1,'',NULL,3,'2015-05-08 17:24:47','2015-05-08 17:24:47'),(19,41,5,NULL,'69/69','2014-05-08 00:00:00',1,'',61,2,'2015-05-08 17:25:34','2015-07-01 16:35:30');
 /*!40000 ALTER TABLE `muestras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -712,8 +713,8 @@ CREATE TABLE `navieras` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_navieras_empresas` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_navieras_empresas` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -722,7 +723,7 @@ CREATE TABLE `navieras` (
 
 LOCK TABLES `navieras` WRITE;
 /*!40000 ALTER TABLE `navieras` DISABLE KEYS */;
-INSERT INTO `navieras` VALUES (95,'2015-08-19 18:17:54','2015-09-08 12:10:48'),(96,'2015-08-19 18:18:21','2015-09-08 12:59:02'),(97,'2015-08-19 18:19:08','2015-09-08 12:55:24'),(98,'2015-08-19 18:19:29','2015-09-08 12:56:04'),(99,'2015-08-19 18:20:01','2015-09-08 13:01:53'),(100,'2015-09-08 13:00:08','2015-09-08 13:00:08'),(101,'2015-09-08 13:28:37','2015-09-08 13:28:37'),(102,'2015-09-08 13:29:16','2015-09-08 13:29:16'),(103,'2015-09-08 13:29:43','2015-09-08 13:29:43'),(104,'2015-09-08 13:30:00','2015-09-08 13:30:00');
+INSERT INTO `navieras` VALUES (95,'2015-08-19 18:17:54','2015-09-22 13:57:57'),(96,'2015-08-19 18:18:21','2015-09-08 12:59:02'),(97,'2015-08-19 18:19:08','2015-09-08 12:55:24'),(98,'2015-08-19 18:19:29','2015-09-08 12:56:04'),(99,'2015-08-19 18:20:01','2015-09-08 13:01:53'),(100,'2015-09-08 13:00:08','2015-09-08 13:00:08'),(101,'2015-09-08 13:28:37','2015-09-08 13:28:37'),(102,'2015-09-08 13:29:16','2015-09-08 13:29:16'),(103,'2015-09-08 13:29:43','2015-09-08 13:29:43'),(104,'2015-09-08 13:30:00','2015-09-08 13:30:00');
 /*!40000 ALTER TABLE `navieras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -900,7 +901,7 @@ CREATE TABLE `precio_fletes` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_precio_fletes_fletes1_idx` (`flete_id`),
   CONSTRAINT `fk_precio_fletes_fletes1` FOREIGN KEY (`flete_id`) REFERENCES `fletes` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -909,7 +910,7 @@ CREATE TABLE `precio_fletes` (
 
 LOCK TABLES `precio_fletes` WRITE;
 /*!40000 ALTER TABLE `precio_fletes` DISABLE KEYS */;
-INSERT INTO `precio_fletes` VALUES (8,4,'2014-09-30',NULL,1000.00,'2015-08-25 01:13:46','2015-08-25 01:13:46'),(9,5,'2014-09-30',NULL,1000.00,'2015-08-25 01:14:28','2015-08-25 01:14:28'),(10,6,'2014-09-30',NULL,1000.00,'2015-08-25 01:15:21','2015-08-25 01:15:21'),(11,7,'2014-09-30',NULL,1000.00,'2015-08-25 01:16:21','2015-08-25 01:16:21'),(12,8,'2014-09-30',NULL,1000.00,'2015-08-25 01:16:57','2015-08-25 01:16:57'),(17,1,'2015-06-02','2015-09-30',811.00,'2015-09-08 10:22:12','2015-09-08 10:22:12'),(18,2,'2015-06-02','2015-09-30',811.00,'2015-09-08 10:23:36','2015-09-08 10:23:36'),(19,3,'2015-06-02','2015-09-30',811.00,'2015-09-08 10:27:35','2015-09-08 10:27:35'),(20,9,'2015-06-02','2015-09-30',1036.00,'2015-09-08 10:31:07','2015-09-08 10:31:07'),(21,10,'2015-06-02','2015-09-30',1036.00,'2015-09-08 10:31:37','2015-09-08 10:31:37'),(22,11,'2015-06-02','2015-09-30',1036.00,'2015-09-08 10:32:05','2015-09-08 10:32:05');
+INSERT INTO `precio_fletes` VALUES (8,4,'2014-09-30',NULL,1000.00,'2015-08-25 01:13:46','2015-08-25 01:13:46'),(9,5,'2014-09-30',NULL,1000.00,'2015-08-25 01:14:28','2015-08-25 01:14:28'),(10,6,'2014-09-30',NULL,1000.00,'2015-08-25 01:15:21','2015-08-25 01:15:21'),(11,7,'2014-09-30',NULL,1000.00,'2015-08-25 01:16:21','2015-08-25 01:16:21'),(12,8,'2014-09-30',NULL,1000.00,'2015-08-25 01:16:57','2015-08-25 01:16:57'),(17,1,'2015-06-02','2015-09-30',811.00,'2015-09-08 10:22:12','2015-09-08 10:22:12'),(18,2,'2015-06-02','2015-09-30',811.00,'2015-09-08 10:23:36','2015-09-08 10:23:36'),(19,3,'2015-06-02','2015-09-30',811.00,'2015-09-08 10:27:35','2015-09-08 10:27:35'),(20,9,'2015-06-02','2015-09-30',1036.00,'2015-09-08 10:31:07','2015-09-08 10:31:07'),(21,10,'2015-06-02','2015-09-30',1036.00,'2015-09-08 10:31:37','2015-09-08 10:31:37'),(22,11,'2015-06-02','2015-09-30',1036.00,'2015-09-08 10:32:05','2015-09-08 10:32:05'),(24,3,'2015-10-01','2015-12-31',736.00,'2015-09-22 10:23:44','2015-09-22 10:23:44');
 /*!40000 ALTER TABLE `precio_fletes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -958,7 +959,7 @@ CREATE TABLE `proveedores` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_proveedores_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_proveedores_empresas1` FOREIGN KEY (`id`) REFERENCES `empresas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -968,7 +969,7 @@ CREATE TABLE `proveedores` (
 
 LOCK TABLES `proveedores` WRITE;
 /*!40000 ALTER TABLE `proveedores` DISABLE KEYS */;
-INSERT INTO `proveedores` VALUES (36,'2015-03-10 11:26:58','2015-03-10 11:26:58'),(37,'2015-03-10 11:39:25','2015-03-10 11:45:29'),(38,'2015-03-10 11:39:47','2015-03-10 11:39:47'),(39,'2015-03-10 11:43:30','2015-08-29 00:47:31'),(40,'2015-03-10 11:45:07','2015-03-10 11:45:07'),(41,'2015-03-10 11:49:34','2015-03-10 11:49:34'),(43,'2015-03-10 11:54:19','2015-03-10 11:54:19'),(44,'2015-03-10 11:57:06','2015-03-10 11:57:06'),(45,'2015-03-10 11:59:27','2015-03-10 11:59:27'),(46,'2015-03-10 12:01:15','2015-03-10 12:01:15'),(47,'2015-03-10 12:03:18','2015-03-10 12:03:18'),(48,'2015-03-10 12:05:28','2015-03-10 12:05:28'),(88,'2015-07-25 14:32:58','2015-07-25 14:32:58');
+INSERT INTO `proveedores` VALUES (36,'2015-03-10 11:26:58','2015-03-10 11:26:58'),(37,'2015-03-10 11:39:25','2015-03-10 11:45:29'),(38,'2015-03-10 11:39:47','2015-09-22 12:39:32'),(39,'2015-03-10 11:43:30','2015-08-29 00:47:31'),(40,'2015-03-10 11:45:07','2015-03-10 11:45:07'),(41,'2015-03-10 11:49:34','2015-03-10 11:49:34'),(43,'2015-03-10 11:54:19','2015-03-10 11:54:19'),(44,'2015-03-10 11:57:06','2015-03-10 11:57:06'),(45,'2015-03-10 11:59:27','2015-03-10 11:59:27'),(46,'2015-03-10 12:01:15','2015-03-10 12:01:15'),(47,'2015-03-10 12:03:18','2015-03-10 12:03:18'),(48,'2015-03-10 12:05:28','2015-03-10 12:05:28'),(88,'2015-07-25 14:32:58','2015-07-25 14:32:58');
 /*!40000 ALTER TABLE `proveedores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1086,6 +1087,7 @@ CREATE TABLE `transportes` (
   `agente_id` int(11) DEFAULT NULL,
   `operacion_id` int(11) NOT NULL,
   `aseguradora_id` int(11) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
   `fecha_entradamerc` date DEFAULT NULL,
   `fecha_carga` date DEFAULT NULL,
   `fecha_llegada` date DEFAULT NULL,
@@ -1103,7 +1105,6 @@ CREATE TABLE `transportes` (
   `created` datetime DEFAULT NULL,
   `coste_seguro` decimal(8,2) DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
-  `cantidad` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_transportes_navieras1_idx` (`naviera_id`),
   KEY `fk_transportes_puertos1_idx` (`puerto_id`),
@@ -1115,7 +1116,7 @@ CREATE TABLE `transportes` (
   CONSTRAINT `fk_transportes_navieras1` FOREIGN KEY (`naviera_id`) REFERENCES `navieras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_operaciones1` FOREIGN KEY (`operacion_id`) REFERENCES `operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_puertos1` FOREIGN KEY (`puerto_id`) REFERENCES `puertos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1124,7 +1125,7 @@ CREATE TABLE `transportes` (
 
 LOCK TABLES `transportes` WRITE;
 /*!40000 ALTER TABLE `transportes` DISABLE KEYS */;
-INSERT INTO `transportes` VALUES (45,96,1,NULL,27,NULL,NULL,NULL,NULL,'2015-01-02',NULL,NULL,NULL,NULL,NULL,NULL,'Titanicq','MRC4569872423','El barco vendrá antes de tiempo. Esten atentos ¡¡IMPORTANTE!!',NULL,'2015-08-21 10:22:44',NULL,'2015-08-24 18:28:30',NULL),(47,99,21,NULL,24,93,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Barquito C','ESX123456','','2017-03-18','2015-08-21 10:44:07',456000.00,'2015-08-21 10:44:07',NULL);
+INSERT INTO `transportes` VALUES (45,96,1,NULL,27,NULL,NULL,NULL,NULL,NULL,'2015-01-02',NULL,NULL,NULL,NULL,NULL,NULL,'Titanicq','MRC4569872423','El barco vendrá antes de tiempo. Esten atentos ¡¡IMPORTANTE!!',NULL,'2015-08-21 10:22:44',NULL,'2015-08-24 18:28:30'),(47,99,21,NULL,24,93,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Barquito C','ESX123456','','2017-03-18','2015-08-21 10:44:07',456000.00,'2015-08-21 10:44:07'),(50,97,1,60,19,NULL,55,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Titanic','M354342','',NULL,'2015-09-23 09:21:50',NULL,'2015-09-23 09:21:50'),(51,103,7,64,19,89,98,NULL,'2016-05-03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Periquito','HJA987654','',NULL,'2015-09-23 09:22:27',5000.00,'2015-09-23 09:22:27'),(52,98,6,60,19,90,9,NULL,'2015-02-03',NULL,NULL,'2016-02-03',NULL,NULL,NULL,NULL,NULL,'La Casa','POI984834872','',NULL,'2015-09-23 09:28:08',85000.00,'2015-09-23 11:00:43');
 /*!40000 ALTER TABLE `transportes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1346,4 +1347,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-13  0:01:42
+-- Dump completed on 2015-09-29 11:41:38
