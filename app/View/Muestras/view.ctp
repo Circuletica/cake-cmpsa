@@ -1,31 +1,17 @@
 <?php
 // Usamos plantilla clásica de vistas View/Common/view.ctp
 $this->extend('/Common/view');
-$this->assign('titulo', 'Muestra de '.$tipo.' '.$muestra['Muestra']['referencia']);
 $this->assign('id',$muestra['Muestra']['id']);
-$this->assign('clase','Muestra');
+$this->assign('class','Muestra');
 $this->assign('controller','muestras');
-$this->Html->addCrumb('Muestras', array(
-			'controller'=>'muestras',
-			'action'=>'index'
-			));
-$this->Html->addCrumb('Muestra '.$muestra['Muestra']['referencia'], array(
-			'controller'=>'muestras',
-			'action'=>'view',
-			$muestra['Muestra']['id']
-			));
+$this->assign('line_controller','linea_muestras');
+$this->assign('object', 'Muestra de '.$tipo.' '.$muestra['Muestra']['referencia']);
+$this->assign('line_object', 'Línea');
 $this->start('filtro');
 	echo $this->element('filtromuestra');
-$this->end()?> 
-
-
-	<div class='view'>
-	<?php
+$this->end();
+$this->start('main');
 	echo "<dl>";
-	//echo "  <dt>Id</dt>\n";
-	//echo "<dd>";
-	//echo $muestra['Muestra']['id'].'&nbsp;';
-	//echo "</dd>";
 	echo "  <dt>Referencia</dt>\n";
 	echo "<dd>";
 	echo $muestra['Muestra']['referencia'].'&nbsp;';
@@ -36,7 +22,6 @@ $this->end()?>
 	echo "</dd>";
 	echo "  <dt>Proveedor</dt>\n";
 	echo "<dd>";
-	//echo $muestra['Proveedor']['Empresa']['nombre'].'&nbsp;';
 	echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre_corto'], array(
 		'controller' => 'proveedores',
 		'action' => 'view',
@@ -67,11 +52,10 @@ $this->end()?>
 	echo "<dd>";
 	echo nl2br(h($muestra['Muestra']['incidencia'])).'&nbsp;';
 	echo "</dd>";
-	echo "</dl>";?>
-	<div class="detallado">
-	<h3>Líneas</h3>
-<table>
-<?php
+	echo "</dl>";
+	$this->end();
+	$this->start('lines');
+	echo "<table>";
 	echo $this->Html->tableHeaders(array('Nº','Marca', 'Número de Sacos',
 	       'Ref. Proveedor', 'Ref Almacén', 'Detalle'));
 	//mostramos todas las catas de esta muestra
@@ -90,10 +74,6 @@ $this->end()?>
 		//numero de la línea siguiente
 		$i++;
 	endforeach;
-?>	</table>
-		<div class="btabla">
-		 <?php echo $this->Button->addLine('linea_muestras','muestras',$muestra['Muestra']['id'],'Línea');?>
-		</div>
-	</div>
-</div>
-
+	echo "</table>";
+	$this->end();
+?>
