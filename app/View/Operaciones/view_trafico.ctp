@@ -121,13 +121,16 @@
 	<h3>Asociados</h3>
 	<table>
 		<?php
-		echo $this->Html->tableHeaders($columnas_reparto);
+		echo $this->Html->tableHeaders(array('Código Contable','Nombre Asociado', 'Sacos',
+	       'Peso total', 'Sacos retirados','Detalle'));
 		foreach ($lineas_reparto as $codigo => $linea_reparto):
 			echo $this->Html->tableCells(array(
 				$codigo,
 				$linea_reparto['Nombre'],
 				$linea_reparto['Cantidad'],
 				$linea_reparto['Peso'],
+				'Sacos retirados',
+				$this->Button->viewLine('retiradas',$retiradas['id'],'retiradas',$linea['operacion_id'])
 				)
 			);
 		endforeach;
