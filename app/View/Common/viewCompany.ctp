@@ -53,7 +53,7 @@
 	$this->start('lines');
 	echo "<table>";
 	echo $this->Html->tableHeaders(array('Nombre', 'Función',
-	   'Teléfono 1', 'Teléfono 2', 'Email','Acciones'));
+	   'Teléfono 1', 'Teléfono 2', 'Email','Detalle'));
 	foreach($empresa['Empresa']['Contacto'] as $contacto):
 		echo $this->Html->tableCells(array(
 		    $contacto['nombre'],

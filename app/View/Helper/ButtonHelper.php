@@ -115,7 +115,7 @@ class ButtonHelper extends AppHelper {
     }
     public function add($controller,$objeto) {
 	return $this->Html->link(
-	    '<i class="fa fa-user-plus"></i> Añadir '.$objeto,
+	    '<i class="fa fa-plus"></i> Añadir '.$objeto,
 	    array(
 		'controller' => $controller,
 		'action' => 'add'

@@ -1,4 +1,14 @@
-<h2>Modificar Proveedor: <?php echo $proveedor['Empresa']['nombre_corto']?></h2>
+POR HACER
+FORMATO MODELO PROVEEDORES EDIT.CTP
+
+<?php
+	$this->extend('/Common/edit');
+	$this->assign('object', $this->fetch('object'));
+	$this->assign('id',$empresa['Empresa']['id']);
+	$this->assign('class',$this->fetch('class'));
+	$this->assign('controller',$this->fetch('controller'));
+?>
+<h2>Modificar Proveedor: <?php echo $empresa['Empresa']['nombre_corto']?></h2>
 <?php
 	$this->Html->addCrumb('Proveedores', array(
 		'controller'=>'proveedores',
@@ -70,4 +80,3 @@
 		echo $this->Form->input('id',array('type'=>'hidden'));
 		echo $this->Form->end('Guardar proveedor');
 	?>
-

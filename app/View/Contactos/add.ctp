@@ -9,7 +9,6 @@
   $this->Html->addCrumb('Añadir Contacto ', '/contactos/add/'.'from_controller:'.$this->params['named']['from_controller'].'/from_id:'.$this->params['named']['from_id']);
   echo $this->Form->create();
    ?>
-  <fieldset>
   <div class="columna2">
   <?php
   echo $this->Form->input('nombre');
@@ -37,4 +36,4 @@
   //echo $this->Form->select('empresa_id', $empresas);
   echo $this->Form->end('Guardar contacto');
 ?>
-</fieldset>
+
