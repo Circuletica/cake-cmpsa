@@ -26,7 +26,8 @@ class FletesController extends AppController {
 				'PrecioActualFlete'
 			),
 			'order' => array(
-				'Pais.nombre' => 'ASC'
+				'Pais.nombre' => 'ASC',
+				'PuertoCarga.nombre' => 'ASC'
 			),
 			'recursive' => 2
 		);
