@@ -118,7 +118,14 @@ class OperacionesController extends AppController {
 			'order' => array('PuertoCarga.nombre' =>'ASC')
 			)
 		));
-		$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find('list'));
+		$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find(
+			'list',
+			#el café solo llega a puerto españoles
+			array(
+				'contain' => array('Pais'),
+				'conditions' => array( 'Pais.nombre' => 'España')
+			)
+		));
 		//Por defecto ponemos las opciones y el forfait a cero
 		$this->request->data['Operacion']['opciones'] = 0;
 		$this->request->data['Operacion']['forfait'] = 0;
