@@ -27,7 +27,8 @@ class FletesController extends AppController {
 			),
 			'order' => array(
 				'Pais.nombre' => 'ASC',
-				'PuertoCarga.nombre' => 'ASC'
+				'PuertoCarga.nombre' => 'ASC',
+				'PuertoDestino.nombre' => 'ASC'
 			),
 			'recursive' => 2
 		);
