@@ -129,6 +129,22 @@ class OperacionesController extends AppController {
 		//Por defecto ponemos las opciones y el forfait a cero
 		$this->request->data['Operacion']['opciones'] = 0;
 		$this->request->data['Operacion']['forfait'] = 0;
+		
+		//Queremos la lista de costes de fletes
+		$this->loadModel('Flete');
+		$coste_fletes = $this->Flete->find('all', array(
+			'recursive' => 3,
+//			'fields' => array(
+//				'Flete.naviera_id',
+//				'Naviera.id',
+//				'Empresa.id',
+//				'Empresa.nombre_corto',
+//				'PuertoCarga.nombre',
+//				'PuertoDestino.nombre',
+//				'PrecioActualFlete.precio_dolar'
+//			)
+		));
+		$this->set(compact('coste_fletes'));
 	
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué contrato pertenece

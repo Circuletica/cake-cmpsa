@@ -110,9 +110,21 @@ class ContratosController extends AppController {
 			'conditions' => array('Contrato.id' => $id),
 			'recursive' => 2));
 		$this->set('contrato', $contrato);
+		
+		//La suma del peso de todas las operaciones de un contrato
+		$peso_fijado = $this->Contrato->query(
+			"SELECT
+				SUM(p.peso) as peso_fijado
+			FROM peso_operaciones p
+			LEFT JOIN contratos c ON (p.contrato_id = c.id)
+			WHERE c.id = $id;
+			"
+		);
+		$this->set(compact('peso_fijado'));
+		$queda_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado[0][0]['peso_fijado']; 
+		$this->set(compact('queda_por_fijar'));
+
 		$this->set('referencia', $contrato['Contrato']['referencia']);
-		//el nombre de calidad concatenado esta en una view de MSQL
-		$this->loadModel('CalidadNombre');
 		//si embarque o entrega
 		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
 		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');

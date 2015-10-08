@@ -30,6 +30,8 @@
 	echo "  <dd>".$contrato['Contrato']['lotes_contrato'].' ('.$posicion_bolsa.')&nbsp;'."</dd>";
 	echo "  <dt>Peso</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['peso_comprado'].' kg&nbsp;'."</dd>";
+	echo "  <dt>Peso sin repartir</dt>\n";
+	echo "  <dd>".$queda_por_fijar." kg&nbsp;</dd>";
 	?>
 	</dl>
 <div class="detallado">
@@ -68,15 +70,11 @@
 	$this->end();
 
 	$this->start('lines');
-	$peso_fijado = 0;
 	?>
 	<table>
 	<?php
 	echo $this->html->tableheaders(array('Referencia','Peso','Fecha de fijación', 'Precio de fijación', 'Precio de factura','Detalle'));
 	foreach($contrato['Operacion'] as $linea):
-		//guardamos el total del peso de las líneas para calcular
-		//lo que falta por fijar
-		$peso_fijado += $linea['PesoOperacion']['peso'];
 		echo $this->html->tablecells(array(
 			$linea['referencia'],
 			$linea['PesoOperacion']['peso']." kg",
@@ -89,10 +87,9 @@
 	?>
 	</table>
 	<?php
-	//calculamos la cantidad que queda por fijar
-	$queda_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado; 
+	//lotes que quedan por fijar
 	echo "<em>Quedan por fijar ".$contrato['RestoLotesContrato']['lotes_restantes']
-		." lotes (".$queda_por_fijar."kg)</em>";
+		." lotes</em>";
 	$this->end();
 ?>
 	</div>

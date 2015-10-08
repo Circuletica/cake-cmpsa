@@ -2,11 +2,6 @@
 	'controller'=>'operaciones',
 	'action'=>'index'
 	));
-//	$this->Html->addCrumb('Contrato '.$operacion['Contrato']['referencia'], array(
-//		'controller'=>'contratos',
-//		'action'=>'view',
-//		$operacion['Contrato']['id']
-//	));
 ?>
 <h2>Detalles Operacion <?php echo $operacion['Operacion']['referencia']?></h2>
 <div class="actions">
@@ -81,7 +76,6 @@
 		echo "  <dt>Precio fijación:</dt>\n";
 		echo "  <dd>".$operacion['Operacion']['precio_fijacion']
 			.$divisa
-			// (factura: '.$operacion['Operacion']['precio_compra'].$divisa.')'
 			.'&nbsp;'."</dd>";
 		echo "  <dt>Diferencial:</dt>\n";
 		echo "  <dd>".$operacion['Contrato']['diferencial'].$divisa.'&nbsp;'."</dd>";
