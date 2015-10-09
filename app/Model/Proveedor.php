@@ -1,5 +1,6 @@
 <?php
 class Proveedor extends AppModel {
+	//public $displayField = 'nombre';
 	public $recursive = 2;
 	//public $belongTo = 'Empresa';
 //	public $belongTo = array('Empresa' => array(
@@ -27,10 +28,14 @@ class Proveedor extends AppModel {
 //		//	'message' => 'número de cuenta erroneo'
 //		//)
 //	);
+	public $hasMany = array(
+//		'Contrato' => array(
+//			'className' => 'Contrato',
+//			'foreignKey' => 'id')
+	);
 	public $hasOne = array('Empresa' => array(
 		'className' => 'Empresa',
 		'foreignKey' => 'id')
 	);
-	//var $name = 'BancoPrueba';
 }
 

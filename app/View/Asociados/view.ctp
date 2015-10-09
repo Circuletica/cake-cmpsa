@@ -4,6 +4,3 @@
 	$this->assign('class','Asociado');
 	$this->assign('controller','asociados');
 ?>
-
-
-

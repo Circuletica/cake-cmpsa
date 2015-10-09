@@ -1,7 +1,8 @@
 <?php
 class Calidad extends AppModel {
 	public $recursive = 2;
-	public $displayField = 'nombre';
+	//public $displayField = 'nombre'; //bug No existe
+	public $hasMany = 'Contrato';
 	public $belongsTo = array(
 		'Pais',
 		'CalidadNombre' =>array(

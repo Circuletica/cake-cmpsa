@@ -1,6 +1,6 @@
 <?php
 class Muestra extends AppModel {
-	public $recursive = 3;
+	public $recursive = 2;
 //	public $belongTo = array('Empresa' => array(
 	public $displayField = 'referencia';
 	//no sabemos si este sirve de algo
@@ -22,7 +22,5 @@ class Muestra extends AppModel {
 			'foreignKey' => 'almacen_id'),
 	);
 	public $hasMany = 'LineaMuestra';
-//	);
-	//var $name = 'BancoPrueba';
 }
 

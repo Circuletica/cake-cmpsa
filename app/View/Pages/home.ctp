@@ -9,7 +9,6 @@
 				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
 				</ul>
 			</li>
-
 			<li><?php echo $this->Html->link('<i class="fa fa-ship fa-3x"></i> <br>TRÁFICO','/operaciones', array('escape' => false));?>
 				<ul>
 				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
@@ -17,4 +16,4 @@
 				</ul>
 			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart fa-3x"></i> <br>COMERCIAL','/contratos',array('escape' => false));?></li>
 </ul>
-<script type='text/javascript' src='http://www.aemet.es/es/eltiempo/prediccion/municipios/launchwidget/madrid-id28079?w=g3p10010011ovmffffffw300z275x3F8EC1t42B4D6r1s3n2'></script>
+</div>

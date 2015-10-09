@@ -5,4 +5,10 @@ class Asociado extends AppModel {
 		'className' => 'Empresa',
 		'foreignKey' => 'id')
 	);
+	public $hasMany = array(
+		'AsociadoOperacion' => array(
+			'className' => 'AsociadoOperacion',
+			'foreignKey' => 'asociado_id'
+		)
+	);
 }

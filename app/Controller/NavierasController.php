@@ -33,7 +33,6 @@ class NavierasController extends AppController {
 		);
 		$this->set('empresas', $this->paginate());
 	}
-
 	public function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado Naviera/view ');
@@ -71,7 +70,6 @@ class NavierasController extends AppController {
 			endif;
 		endif;
 	}
-
 	public function delete( $id = null) {
 		if (!$id or $this->request->is('get')) :
     			throw new MethodNotAllowedException();
@@ -84,7 +82,6 @@ class NavierasController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}
-
 	public function edit( $id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');

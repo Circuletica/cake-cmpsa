@@ -320,9 +320,10 @@ fieldset {
 	/*margin: 0 30px 10px 0;*/
 }
 fieldset legend {
-	color: #e32;
-	font-size: 130%;
-	font-weight: normal;
+	color: #2c6877;
+	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
+	font-size: 135%;
+	font-weight: bold;
 }
 fieldset fieldset {
 	margin-top: 0;

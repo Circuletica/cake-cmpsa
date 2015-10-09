@@ -93,8 +93,8 @@ div.detallado h3{
 /* Información detallada del add o edit*/
 div.detalladoform{
 	/*float:right;*/
-	margin-top: 20px;
-	border-top: 3px dotted #2C6877;
+	margin: 20px 650px 0px 0px;
+	border-top: 2px dotted #2C6877;
 }
 div.detalladoform h3{
 	padding-top:20px;
@@ -208,7 +208,7 @@ input[type=submit]:active,
          /* width: 740px*/
 }
 
-.columna3{
+.col3{
 	-webkit-column-count: 3; /* Chrome, Safari, Opera */	
 	-moz-column-count: 3; /* Firefox */
 	column-count: 3;

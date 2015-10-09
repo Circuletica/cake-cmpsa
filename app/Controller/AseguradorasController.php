@@ -106,7 +106,4 @@ class AseguradorasController extends AppController {
 		endif;
 	}
 }
-
-
-
 ?>

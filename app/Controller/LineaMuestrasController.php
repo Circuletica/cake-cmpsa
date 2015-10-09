@@ -1,12 +1,11 @@
 <?php
 class LineaMuestrasController extends AppController {
+	public $scaffold = 'admin';
 	public $paginate = array(
 		'order' => array('marca' => 'asc')
 	);
 
 	public function index() {
-		//$this->Calidad->recursive = 1;
-		//debug($this->paginate());
 		$this->set('lineas', $this->paginate());
 	}
 
@@ -56,8 +55,8 @@ class LineaMuestrasController extends AppController {
 				$this->request->data['LineaMuestra']['criba8p']+
 				$this->request->data['LineaMuestra']['criba13']+
 				$this->request->data['LineaMuestra']['criba12'];
-			debug($this->request->data['LineaMuestra']);
-			debug($suma_criba);
+			//debug($this->request->data['LineaMuestra']);
+			//debug($suma_criba);
 			if($suma_criba != 100){
 				$this->Session->setFlash('Linea de Muestra no guardada, la suma de criba no es 100%');
 				$this->redirect(array(
@@ -69,10 +68,10 @@ class LineaMuestrasController extends AppController {
 			if($this->LineaMuestra->save($this->request->data)):
 				$this->Session->setFlash('Linea de Muestra guardada');
 			//volvemos a la muestra a la que pertenece la linea creada
-			$this->redirect(array(
-				'controller' => $this->params['named']['from_controller'],
-				'action' => 'view',
-				$this->params['named']['from_id']));
+				$this->redirect(array(
+					'controller' => $this->params['named']['from_controller'],
+					'action' => 'view',
+					$this->params['named']['from_id']));
 			endif;
 		endif;
 	}
@@ -85,7 +84,6 @@ class LineaMuestrasController extends AppController {
 		$linea = $this->LineaMuestra->findById($id);
 		$this->set('tipos', $this->tipoMuestras);
 		$this->set('linea',$linea);
-		//debug($linea['LineaMuestra']);
 		//Sacamos la criba ponderada correspondiente
 		//$this->loadModel('CribaPonderada');
 		//$this->CribaPonderada->findById($id);

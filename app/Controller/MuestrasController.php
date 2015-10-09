@@ -1,5 +1,6 @@
 <?php
 class MuestrasController extends AppController {
+	public $scaffold = 'admin';
 	public $paginate = array(
 		'recursive' => 2,
 		'order' => array('Muestra.referencia' => 'asc')
@@ -126,7 +127,7 @@ class MuestrasController extends AppController {
 
 	public function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado Muestra/view');
+			$this->Session->setFlash('URL mal formada Muestra/view');
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('tipos', $this->tipoMuestras);
