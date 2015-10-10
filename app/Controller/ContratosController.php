@@ -241,58 +241,46 @@ class ContratosController extends AppController {
 	}
 
 	public function copy($id = null) {
+		//para duplicar un registro, se hace una copia del mismo con
+		//los registros relacionados en otras tablas, teniendo cuidado
+		//de usar una clave primaria nueva (id) y se hace un redirect
+		//al edit del nuevo registro para poder modificar los campos
+		//que lo necesitan (entre otros la referencia que es UNIQUE)
+
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->data = $this->Contrato->findById($id);
-		$contrato = $this->Contrato->findById($id);
-		$this->set(compact('contrato'));
-		$this->set('calidades',$this->Contrato->CalidadNombre->find('list', array(
-			'order' => array('CalidadNombre.nombre' => 'ASC')
-			)
-		));
-		$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
-			'order' => array('Incoterm.nombre' => 'ASC')
-			)
-		));
-		$this->set('puertoCargas', $this->Contrato->PuertoCarga->find('list', array(
-			'order' => array('PuertoCarga.nombre' => 'ASC')
-			))
-		);
-		$this->set('puertoDestinos', $this->Contrato->PuertoDestino->find('list', array(
-			'order' => array('PuertoDestino.nombre' => 'ASC')
-			))
-		);
-		$this->set('proveedores', $this->Contrato->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-			'recursive' => 1,
-			'order' => array('Empresa.nombre_corto' => 'ASC')
-			))
-		);
-		//Donde se compra el café (London, New-York, ...)
-		$canal = $this->Contrato->CanalCompra->find('first', array(
-			'conditions' => array('CanalCompra.id' => $contrato['CanalCompra']['id']),
-			'fields' => array('id','nombre','divisa')
+		
+		$nuevo_contrato = $this->Contrato->findById($id);
+		unset($nuevo_contrato['Contrato']['id']);
+		unset($nuevo_contrato['Contrato']['created']);
+		unset($nuevo_contrato['Contrato']['modified']);
+		//no podemos tener dos contratos con la misma referencia
+		$nuevo_contrato['Contrato']['referencia'] .= '###';
+		$this->Contrato->create();
+		$this->Contrato->save($nuevo_contrato);
+		
+		//hay que recuperar los embalajes del contrato copiado
+		$contrato_embalajes = $this->Contrato->ContratoEmbalaje->find('all', array(
+			'conditions' => array('ContratoEmbalaje.contrato_id' => $id)
 			)
 		);
-		$this->set('canal',$canal);
-		//En la vista se muestra la lista de todos los embalajes existentes
-		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
-			'order' => array('Embalaje.nombre' => 'asc')
-			)
-		);
-		$this->set('embalajes', $embalajes);
-		//El tipo de fecha: embarque o entrega
-		$this->set('tipos_fecha_transporte', array(
-			'0'=>'embarque',
-			'1'=>'entrega'
-			)
-		);
-		//la fecha de transporte (embarque o entrega)
-		$this->set('si_entrega', $contrato['Contrato']['si_entrega']);
+		//y copiar los registros de ContratoEmbalaje pero con el id del nuevo contrato
+		foreach($contrato_embalajes as $contrato_embalaje) {
+			unset($contrato_embalaje['ContratoEmbalaje']['id']);
+			unset($contrato_embalaje['ContratoEmbalaje']['created']);
+			unset($contrato_embalaje['ContratoEmbalaje']['modified']);
+			$contrato_embalaje['ContratoEmbalaje']['contrato_id'] = $this->Contrato->id;
+			$this->Contrato->ContratoEmbalaje->create();
+			$this->Contrato->ContratoEmbalaje->save($contrato_embalaje);
+		}
 
-
+		$this->redirect(array(
+			'action'=>'edit',
+			$this->Contrato->id
+			)
+		);
 	}
 
 	public function delete($id = null) {
