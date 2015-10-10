@@ -120,9 +120,11 @@ class ContratosController extends AppController {
 			WHERE c.id = $id;
 			"
 		);
+		//el sql devuelve un array, solo queremos el campo de peso sin decimales
+		$peso_fijado = intval($peso_fijado[0][0]['peso_fijado']);
 		$this->set(compact('peso_fijado'));
-		$queda_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado[0][0]['peso_fijado']; 
-		$this->set(compact('queda_por_fijar'));
+		//$peso_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado; 
+		$this->set('peso_por_fijar', $contrato['Contrato']['peso_comprado'] - $peso_fijado);
 
 		$this->set('referencia', $contrato['Contrato']['referencia']);
 		//si embarque o entrega

@@ -28,10 +28,12 @@
 	echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Lotes</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['lotes_contrato'].' ('.$posicion_bolsa.')&nbsp;'."</dd>";
-	echo "  <dt>Peso</dt>\n";
+	echo "  <dt>Peso comprado</dt>\n";
 	echo "  <dd>".$contrato['Contrato']['peso_comprado'].' kg&nbsp;'."</dd>";
-	echo "  <dt>Peso sin repartir</dt>\n";
-	echo "  <dd>".$queda_por_fijar." kg&nbsp;</dd>";
+	echo "  <dt>Peso distribuido</dt>\n";
+	echo "  <dd>".$peso_fijado." kg&nbsp;</dd>";
+	echo "  <dt>Peso no distribuido</dt>\n";
+	echo "  <dd>".$peso_por_fijar." kg&nbsp;</dd>";
 	?>
 	</dl>
 <div class="detallado">
