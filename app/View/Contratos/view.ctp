@@ -8,8 +8,20 @@
 	$this->assign('line_controller','operaciones');
 
 	$this->start('filter');
+	echo $this->Html->link(
+		'Duplicar contrato',
+		array(
+			'controller' => 'contratos',
+			'action' => 'copy',
+			$contrato['Contrato']['id'],
+		),
+		array(
+			'class' => 'boton',
+			'title' => 'Duplicar contrato',
+			'escape' => false
+		)
+	);
 	//echo $this->element('filtrocontrato');
-	echo 'Filtro contrato';
 	$this->end();
 
 	$this->start('main');

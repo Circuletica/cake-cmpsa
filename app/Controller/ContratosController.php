@@ -26,6 +26,46 @@ class ContratosController extends AppController {
 		$this->set('contratos', $this->paginate());
 	}
 
+	public function view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash('URL mal formado Contrato/view');
+			$this->redirect(array('action'=>'index'));
+		}
+		$contrato = $this->Contrato->find('first', array(
+			'conditions' => array('Contrato.id' => $id),
+			'recursive' => 2));
+		$this->set('contrato', $contrato);
+		
+		//La suma del peso de todas las operaciones de un contrato
+		$peso_fijado = $this->Contrato->query(
+			"SELECT
+				SUM(p.peso) as peso_fijado
+			FROM peso_operaciones p
+			LEFT JOIN contratos c ON (p.contrato_id = c.id)
+			WHERE c.id = $id;
+			"
+		);
+		//el sql devuelve un array, solo queremos el campo de peso sin decimales
+		$peso_fijado = intval($peso_fijado[0][0]['peso_fijado']);
+		$this->set(compact('peso_fijado'));
+		//$peso_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado; 
+		$this->set('peso_por_fijar', $contrato['Contrato']['peso_comprado'] - $peso_fijado);
+
+		$this->set('referencia', $contrato['Contrato']['referencia']);
+		//si embarque o entrega
+		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
+		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');
+		$this->set('puerto', $contrato['Contrato']['si_entrega'] ? $contrato['PuertoDestino']['nombre'] : $contrato['PuertoCarga']['nombre']);
+		//mysql almacena la fecha en formato ymd
+		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
+		$fecha = $contrato['Contrato']['posicion_bolsa'];
+		//sacamos el nombre del mes en castellano
+		setlocale(LC_TIME, "es_ES.UTF-8");
+		$mes = strftime("%B", strtotime($fecha));
+		$anyo = substr($fecha,0,4);
+		$this->set('posicion_bolsa', $mes.' '.$anyo);
+	}
+
 	public function add() {
 		$proveedores = $this->Contrato->Proveedor->find('list', array(
 			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
@@ -86,7 +126,6 @@ class ContratosController extends AppController {
 				//son realmente el embalaje_id
 				foreach ($this->request->data['Embalaje'] as $embalaje_id => $valor) {
 					//no interesa guardar lineas vacías
-					//if ($this->request->data['ContratoEmbalaje']['cantidad_embalaje'] != NULL) {
 					if ($valor['cantidad_embalaje'] != NULL) {
 						$this->request->data['ContratoEmbalaje']['contrato_id'] = $this->Contrato->id;
 						$this->request->data['ContratoEmbalaje']['embalaje_id'] = $embalaje_id;
@@ -99,46 +138,6 @@ class ContratosController extends AppController {
 				$this->redirect(array('action' => 'index'));
 			endif;
 		endif;
-	}
-
-	public function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash('URL mal formado Contrato/view');
-			$this->redirect(array('action'=>'index'));
-		}
-		$contrato = $this->Contrato->find('first', array(
-			'conditions' => array('Contrato.id' => $id),
-			'recursive' => 2));
-		$this->set('contrato', $contrato);
-		
-		//La suma del peso de todas las operaciones de un contrato
-		$peso_fijado = $this->Contrato->query(
-			"SELECT
-				SUM(p.peso) as peso_fijado
-			FROM peso_operaciones p
-			LEFT JOIN contratos c ON (p.contrato_id = c.id)
-			WHERE c.id = $id;
-			"
-		);
-		//el sql devuelve un array, solo queremos el campo de peso sin decimales
-		$peso_fijado = intval($peso_fijado[0][0]['peso_fijado']);
-		$this->set(compact('peso_fijado'));
-		//$peso_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado; 
-		$this->set('peso_por_fijar', $contrato['Contrato']['peso_comprado'] - $peso_fijado);
-
-		$this->set('referencia', $contrato['Contrato']['referencia']);
-		//si embarque o entrega
-		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
-		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');
-		$this->set('puerto', $contrato['Contrato']['si_entrega'] ? $contrato['PuertoDestino']['nombre'] : $contrato['PuertoCarga']['nombre']);
-		//mysql almacena la fecha en formato ymd
-		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
-		$fecha = $contrato['Contrato']['posicion_bolsa'];
-		//sacamos el nombre del mes en castellano
-		setlocale(LC_TIME, "es_ES.UTF-8");
-		$mes = strftime("%B", strtotime($fecha));
-		$anyo = substr($fecha,0,4);
-		$this->set('posicion_bolsa', $mes.' '.$anyo);
 	}
 
 	public function edit($id = null) {
@@ -155,7 +154,6 @@ class ContratosController extends AppController {
 			'order' => array('CalidadNombre.nombre' => 'ASC')
 			)
 		));
-		//$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
 		$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
 			'order' => array('Incoterm.nombre' => 'ASC')
 			)
@@ -175,7 +173,6 @@ class ContratosController extends AppController {
 			))
 		);
 		//Donde se compra el café (London, New-York, ...)
-		//$canales = $this->Contrato->CanalCompra->find('list', array(
 		$canal = $this->Contrato->CanalCompra->find('first', array(
 			'conditions' => array('CanalCompra.id' => $contrato['CanalCompra']['id']),
 			'fields' => array('id','nombre','divisa')
@@ -196,6 +193,7 @@ class ContratosController extends AppController {
 		);
 		//la fecha de transporte (embarque o entrega)
 		$this->set('si_entrega', $contrato['Contrato']['si_entrega']);
+
 		if($this->request->is('get')):
 			$this->request->data = $this->Contrato->read();
 			foreach($contrato['ContratoEmbalaje'] as $embalaje) {
@@ -240,6 +238,61 @@ class ContratosController extends AppController {
 				$this->Session->setFlash('Contrato NO guardado');
 			endif;
 		endif;
+	}
+
+	public function copy($id = null) {
+		if (!$id) {
+			$this->Session->setFlash('URL mal formado');
+			$this->redirect(array('action'=>'index'));
+		}
+		$this->data = $this->Contrato->findById($id);
+		$contrato = $this->Contrato->findById($id);
+		$this->set(compact('contrato'));
+		$this->set('calidades',$this->Contrato->CalidadNombre->find('list', array(
+			'order' => array('CalidadNombre.nombre' => 'ASC')
+			)
+		));
+		$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
+			'order' => array('Incoterm.nombre' => 'ASC')
+			)
+		));
+		$this->set('puertoCargas', $this->Contrato->PuertoCarga->find('list', array(
+			'order' => array('PuertoCarga.nombre' => 'ASC')
+			))
+		);
+		$this->set('puertoDestinos', $this->Contrato->PuertoDestino->find('list', array(
+			'order' => array('PuertoDestino.nombre' => 'ASC')
+			))
+		);
+		$this->set('proveedores', $this->Contrato->Proveedor->find('list', array(
+			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+			'recursive' => 1,
+			'order' => array('Empresa.nombre_corto' => 'ASC')
+			))
+		);
+		//Donde se compra el café (London, New-York, ...)
+		$canal = $this->Contrato->CanalCompra->find('first', array(
+			'conditions' => array('CanalCompra.id' => $contrato['CanalCompra']['id']),
+			'fields' => array('id','nombre','divisa')
+			)
+		);
+		$this->set('canal',$canal);
+		//En la vista se muestra la lista de todos los embalajes existentes
+		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
+			'order' => array('Embalaje.nombre' => 'asc')
+			)
+		);
+		$this->set('embalajes', $embalajes);
+		//El tipo de fecha: embarque o entrega
+		$this->set('tipos_fecha_transporte', array(
+			'0'=>'embarque',
+			'1'=>'entrega'
+			)
+		);
+		//la fecha de transporte (embarque o entrega)
+		$this->set('si_entrega', $contrato['Contrato']['si_entrega']);
+
+
 	}
 
 	public function delete($id = null) {

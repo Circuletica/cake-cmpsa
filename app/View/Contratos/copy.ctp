@@ -1,4 +1,4 @@
-<h1>Modificar Contrato</h1>
+<h1>Duplicar Contrato</h1>
 <p>
 <?php
 	echo "Bolsa: ".$canal['CanalCompra']['nombre']."(".$canal['CanalCompra']['divisa'].")";
@@ -10,7 +10,7 @@
 		'controller' => 'calidades',
 		'action' => 'add',
 		'from_controller' => 'contratos',
-		'from_action' => 'edit',
+		'from_action' => 'copy',
 		'from_id' => $contrato['Contrato']['id']
 		)
 	);
@@ -20,12 +20,13 @@
 		'controller' => 'proveedores',
 		'action' => 'add',
 		'from_controller' => 'contratos',
-		'from_action' => 'add'
+		'from_action' => 'copy',
+		'from_id' => $contrato['Contrato']['id']
 		)
 	);
 
 	echo $this->Form->create('Contrato', array(
-		'action' => 'edit',
+		'action' => 'copy',
 		)
 	);
 ?>
@@ -133,30 +134,6 @@
 	<?php
 		echo $this->Form->input('diferencial');
 		    //Las opciones estan en Operacion
-		//echo $this->Form->input('opciones');
-//		echo $this->Form->input('si_londres', array(
-//			'label' => 'Bolsa de Londres'
-//			)
-//		);
-//	    echo $this->Form->radio('canal_compra', $canales, array(
-//		    'legend' => false,
-//		    //'value' => 1,
-//		    'separator' => '<br/>',
-//		    'onclick' => 'canalCompra()'
-//	    		)
-//	    );
-//		echo "<div class='linea'>\n";
-//		echo $this->Form->input('fecha_embarque', array(
-//			'label' => 'Fecha de embarque',
-//			'dateFormat' => 'DMY')
-//		);
-//		echo "</div>\n";
-//		echo "<div class='linea'>\n";
-//		echo $this->Form->input('fecha_entrega', array(
-//			'label' => 'Fecha de entrega',
-//			'dateFormat' => 'DMY')
-//		);
-//		echo "</div>\n";
 		?>
 		<br><br><br>
 		<?php
