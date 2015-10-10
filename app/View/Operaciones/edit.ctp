@@ -4,6 +4,11 @@
 $this->Html->addCrumb('Contratos','/contratos');
 $this->Html->addCrumb('Contrato '.$operacion['Contrato']['referencia'],'/contratos/view/'.$operacion['Contrato']['id']);
 
+	//Pasamos el peso del embalaje de la operacion al javascript de la vista
+	echo $this->Html->script('jquery')."\n"; // Include jQuery library
+	$this->Js->set(compact('pesoEmbalaje'));
+	echo $this->Js->writeBuffer(array('onDomReady' => false));
+
 echo 'Contrato: '.$operacion['Contrato']['referencia']."\n";
 echo "<p>\n";
 echo 'Proveedor: '.$operacion['Contrato']['Proveedor']['Empresa']['nombre']."\n";
@@ -13,7 +18,7 @@ echo "<p>\n";
 echo 'Bolsa: '.$operacion['Contrato']['CanalCompra']['nombre'].
 	' ('.$operacion['Contrato']['Incoterm']['nombre'].")\n";
 echo "<p>\n";
-echo 'Peso total: '.$operacion['Contrato']['peso_comprado']."kg\n";
+echo 'Peso total del contrato: '.$operacion['Contrato']['peso_comprado']."kg\n";
 echo "<p>\n";
 echo 'Embalaje: '.$embalaje['Embalaje']['nombre']."\n";
 echo "<p>\n";
@@ -21,7 +26,6 @@ echo $this->Form->create('Operacion');
 echo $this->Form->input('referencia');
 //necesitamos un array con la cantidad asignada a cada socio
 echo "<table>";
-//foreach ($asociados as $id => $asociado):
 foreach ($asociados as $codigo => $asociado):
 	echo "<tr>";
 	echo "<td>";
@@ -31,12 +35,15 @@ foreach ($asociados as $codigo => $asociado):
 	echo "<td>";
 	//echo $this->Form->input('CantidadAsociado.'.$id, array(
 	echo $this->Form->input('CantidadAsociado.'.$asociado['Asociado']['id'], array(
-		'label' => ''
+		'label' => '',
+		'class' => 'cantidad',
+		'id' => $asociado['Asociado']['id'],
+		'oninput' => 'pesoAsociadoEdit()'
 		)
 	);
 	echo "</td>";
 	echo "<td>";
-	echo "?????? kg";
+	echo '<div id=pesoAsociado'.$asociado['Asociado']['id'].'>'." = ??????kg".'</div>';
 	echo "</td>";
 	echo "</tr>";
 endforeach;
@@ -100,3 +107,7 @@ echo $this->Form->input('comentario');
 echo $this->Form->end('Guardar Operacion');
 ?>
 </div>
+
+<script type="text/javascript">
+	window.onload = pesoAsociadoEdit();
+</script>

@@ -189,12 +189,6 @@ class OperacionesController extends AppController {
 			)
 		);
 		$this->set('operacion', $operacion);
-//		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('list', array(
-//			'fields' => array('Asociado.id','Empresa.nombre_corto'),
-//			'order' => array('Empresa.codigo_contable' => 'ASC'),
-//			'recursive' => 1
-//			)
-//		);
 		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
 			'fields' => array('Asociado.id','Empresa.codigo_contable','Empresa.nombre_corto'),
 			'order' => array('Empresa.codigo_contable' => 'ASC'),
@@ -219,6 +213,7 @@ class OperacionesController extends AppController {
 			)
 		));
 		$this->set('embalaje', $embalaje);
+		$this->set('pesoEmbalaje', $embalaje['ContratoEmbalaje']['peso_embalaje_real']);
 
 		if($this->request->is('get')): //al abrir el edit, meter los datos de la bdd
 			$this->request->data = $this->Operacion->read();

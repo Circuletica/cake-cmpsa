@@ -55,8 +55,7 @@
 			);
 			echo "</td>";
 			echo "<td>";
-			//echo $embalajes_completo[1]['peso_embalaje_real'];
-			echo '<div id=pesoAsociado'.$asociado['Asociado']['id'].'>'."?????? kg".'</div>';
+			echo '<div id=pesoAsociado'.$asociado['Asociado']['id'].'>'."= ??????kg".'</div>';
 			echo "</td>";
 			echo "</tr>";
 		endforeach;

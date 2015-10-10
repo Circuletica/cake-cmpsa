@@ -24,7 +24,6 @@ function totalDesglose(){
     }
 }
 
-//function pesoAsociado(select){
 function pesoAsociado(){
 	//la tabla con el peso de los embalajes del contrato que nos viene de la View
 	var embalajes = window.app.embalajesCompleto;
@@ -46,7 +45,27 @@ function pesoAsociado(){
 		//el elemento html donde vamos a escribir el peso
 		var textoPesoAsociado = document.getElementById('pesoAsociado' + id);
 		//escribimos el peso
-		textoPesoAsociado.innerHTML = pesoAsociado + "kg";
+		textoPesoAsociado.innerHTML = "= " + pesoAsociado + "kg";
+	}
+}
+
+function pesoAsociadoEdit(){
+	//la tabla con el peso de los embalajes del contrato que nos viene de la View
+	var pesoEmbalaje = window.app.pesoEmbalaje;
+	console.log(pesoEmbalaje);
+	//un array con las cantidades de cada socio
+	var cantidades = document.getElementsByClassName('cantidad');
+	for(var i=0;i<cantidades.length;i++){
+		//el id del socio
+		var id = cantidades[i].id;
+		//la cantidad de embalajes del socio
+		var cantidad = cantidades[i].value;
+		//el peso que representa
+		var pesoAsociado = cantidad * pesoEmbalaje;
+		//el elemento html donde vamos a escribir el peso
+		var textoPesoAsociado = document.getElementById('pesoAsociado' + id);
+		//escribimos el peso
+		textoPesoAsociado.innerHTML = "= " + pesoAsociado + "kg";
 	}
 }
 
