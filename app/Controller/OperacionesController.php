@@ -126,9 +126,11 @@ class OperacionesController extends AppController {
 				'conditions' => array( 'Pais.nombre' => 'España')
 			)
 		));
-		//Por defecto ponemos las opciones y el forfait a cero
+		//Por defecto ponemos las opciones, el forfait, el seguro y el flete a cero
 		$this->request->data['Operacion']['opciones'] = 0;
 		$this->request->data['Operacion']['forfait'] = 0;
+		$this->request->data['Operacion']['seguro'] = 0;
+		$this->request->data['Operacion']['flete'] = 0;
 		
 		//Queremos la lista de costes de fletes
 		$this->loadModel('Flete');
