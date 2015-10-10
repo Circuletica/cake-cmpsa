@@ -1,8 +1,13 @@
 <h2>Agregar Operacion a Contrato <em><?php echo $contrato['Contrato']['referencia']?></em></h2>
 
 <?php
-$this->Html->addCrumb('Contratos','/contratos');
-$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
+	$this->Html->addCrumb('Contratos','/contratos');
+	$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
+
+	//Pasamos la lista de 'embalajes_completo' del contrato al javascript de la vista
+	echo $this->Html->script('jquery')."\n"; // Include jQuery library
+	$this->Js->set('embalajesCompleto', $embalajes_completo);
+	echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 	echo 'Proveedor: '.$proveedor."\n";
 	echo "<p>\n";
@@ -23,7 +28,9 @@ $this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this-
 	echo $this->Form->input('referencia');
 	echo $this->Form->input('embalaje_id', array(
 		//'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
-		'after' => '(quedan ????? sin fijar)'
+		'after' => '(quedan ????? sin fijar)',
+		//'onchange' => 'pesoAsociado(this)'
+		'onchange' => 'pesoAsociado()'
 		)
 	);
 	//necesitamos un array con la cantidad asignada a cada socio
@@ -32,7 +39,6 @@ $this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this-
 <h3>Asociados</h3>
 		<table>
 		<?php
-		//foreach ($asociados as $id => $asociado):
 		foreach ($asociados as $codigo => $asociado):
 			echo "<tr>";
 			echo "<td>";
@@ -41,13 +47,16 @@ $this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this-
 			echo "<td>".$asociado['Empresa']['nombre_corto']."</td>\n";
 			echo "<td>";
 			echo $this->Form->input('CantidadAsociado.'.$asociado['Asociado']['id'], array(
-				'label' => ''
+				'label' => '',
+				'class' => 'cantidad',
+				'id' => $asociado['Asociado']['id'],
+				'oninput' => 'pesoAsociado()'
 				)
 			);
 			echo "</td>";
 			echo "<td>";
 			//echo $embalajes_completo[1]['peso_embalaje_real'];
-			echo "?????? kg";
+			echo '<div id=pesoAsociado'.$asociado['Asociado']['id'].'>'."?????? kg".'</div>';
 			echo "</td>";
 			echo "</tr>";
 		endforeach;
@@ -131,4 +140,6 @@ echo $this->Form->input('cambio_dolar_euro', array(
 ?>
 </div>
 
-
+<script type="text/javascript">
+	window.onload = pesoAsociado();
+</script>

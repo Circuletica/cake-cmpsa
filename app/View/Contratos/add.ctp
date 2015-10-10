@@ -25,8 +25,8 @@
 	//Pasamos la lista de 'bolsas' al javascript de la vista
 	$this->Js->set('canalCompraDivisa', $canal_compras_divisa);
 	echo $this->Js->writeBuffer(array('onDomReady' => false));
-
     ?>
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css">
@@ -172,9 +172,6 @@
 	    );
 
 	 echo $this->Form->create('Contrato');
-	//	echo $this->Form->input('si_londres', array(
-	//	    'label' => 'Bolsa de Londres')
-	//	);
 	?>
 	<div class='radiomuestra'>
 	<?php
