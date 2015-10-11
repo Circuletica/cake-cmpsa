@@ -59,6 +59,19 @@ echo $this->Form->input('lotes_operacion',
 
 	)
 );
+
+echo $this->Form->input('puerto_carga_id', array(
+	'label' => 'Puerto de Carga',
+	'empty' => array('' => '')
+	)
+);
+
+echo $this->Form->input('puerto_destino_id', array(
+	'label' => 'Puerto de Destino',
+	'empty' => array('' => '')
+	)
+);
+
 echo $this->Form->input('fecha_pos_fijacion', array(
 	'label' => 'Fecha de fijación',
 	'dateFormat' => 'DMY',

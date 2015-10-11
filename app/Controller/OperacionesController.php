@@ -214,6 +214,19 @@ class OperacionesController extends AppController {
 		));
 		$this->set('embalaje', $embalaje);
 		$this->set('pesoEmbalaje', $embalaje['ContratoEmbalaje']['peso_embalaje_real']);
+		//para los puertos de carga y destino
+		$this->set('puertoCargas',$this->Operacion->PuertoCarga->find('list', array(
+			'order' => array('PuertoCarga.nombre' =>'ASC')
+			)
+		));
+		$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find(
+			'list',
+			#el café solo llega a puerto españoles
+			array(
+				'contain' => array('Pais'),
+				'conditions' => array( 'Pais.nombre' => 'España')
+			)
+		));
 
 		if($this->request->is('get')): //al abrir el edit, meter los datos de la bdd
 			$this->request->data = $this->Operacion->read();

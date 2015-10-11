@@ -65,6 +65,10 @@
 			' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
 		echo "  <dt>Lotes:</dt>\n";
 		echo "  <dd>".$operacion['Operacion']['lotes_operacion'].'&nbsp;'."</dd>";
+		echo "  <dt>Puerto de Embarque:</dt>\n";
+		echo "  <dd>".$operacion['PuertoCarga']['nombre'].'&nbsp;'."</dd>";
+		echo "  <dt>Puerto de Destino:</dt>\n";
+		echo "  <dd>".$operacion['PuertoDestino']['nombre'].'&nbsp;'."</dd>";
 		//mysql almacena la fecha en formato ymd
 		$fecha = $operacion['Operacion']['fecha_pos_fijacion'];
 		$dia = substr($fecha,8,2);

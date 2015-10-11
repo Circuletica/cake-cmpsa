@@ -70,8 +70,12 @@
 	echo "<dl>";
 	echo "  <dt>$tipo_fecha_transporte</dt>\n";
 	echo "  <dd>".$this->Date->format($fecha_transporte)."</dd>";
-	echo "  <dt>$tipo_puerto</dt>\n";
-	echo "  <dd>".$puerto."&nbsp;</dd>";
+//	echo "  <dt>$tipo_puerto</dt>\n";
+//	echo "  <dd>".$puerto."&nbsp;</dd>";
+	echo "  <dt>Puerto de embarque</dt>\n";
+	echo "  <dd>".$puerto_carga."&nbsp;</dd>";
+	echo "  <dt>Puerto de destino</dt>\n";
+	echo "  <dd>".$puerto_destino."&nbsp;</dd>";
 	echo "  <dt>Bolsa</dt>\n";
 	echo "  <dd>".$contrato['CanalCompra']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Diferencial</dt>\n";

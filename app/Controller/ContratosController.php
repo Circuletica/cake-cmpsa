@@ -54,8 +54,10 @@ class ContratosController extends AppController {
 		$this->set('referencia', $contrato['Contrato']['referencia']);
 		//si embarque o entrega
 		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
-		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');
-		$this->set('puerto', $contrato['Contrato']['si_entrega'] ? $contrato['PuertoDestino']['nombre'] : $contrato['PuertoCarga']['nombre']);
+//		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');
+//		$this->set('puerto', $contrato['Contrato']['si_entrega'] ? $contrato['PuertoDestino']['nombre'] : $contrato['PuertoCarga']['nombre']);
+		$this->set('puerto_carga', $contrato['PuertoCarga']['nombre']);
+		$this->set('puerto_destino', $contrato['PuertoDestino']['nombre']);
 		//mysql almacena la fecha en formato ymd
 		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
 		$fecha = $contrato['Contrato']['posicion_bolsa'];
@@ -276,6 +278,26 @@ class ContratosController extends AppController {
 			$this->Contrato->ContratoEmbalaje->save($contrato_embalaje);
 		}
 
+		//recuperar las operaciones asociadas al contrato
+		$operaciones = $this->Contrato->Operacion->find('all', array(
+			'conditions' => array('Operacion.contrato_id' => $id)
+			)
+		);
+		//y copiarlas con el id del nuevo contrato y una nueva referencia
+		$i = 1; //hay que incrementar cada referencia de operacion
+		foreach ($operaciones as $operacion) {
+			unset($operacion['Operacion']['id']);
+			unset($operacion['Operacion']['created']);
+			unset($operacion['Operacion']['modified']);
+			$operacion['Operacion']['contrato_id'] = $this->Contrato->id;
+			$operacion['Operacion']['referencia'] .= '###'.$i;
+			$this->Contrato->Operacion->create();
+			$this->Contrato->Operacion->save($operacion);
+			$i++;
+		}
+
+		//vamos al edit del nuevo contrato creado para poder modificar
+		//datos como la referencia o la fecha de fijacion
 		$this->redirect(array(
 			'action'=>'edit',
 			$this->Contrato->id
