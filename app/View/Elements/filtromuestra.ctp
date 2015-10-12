@@ -9,7 +9,6 @@
     echo $this->Form->input('Search.referencia');
     echo $this->Form->input('Search.fecha', array('after'=>'aaaa o mm-aaaa'));
     echo $this->Form->input('Search.calidad');
-    //echo $this->Form->input('Search.calidad_id');
     echo $this->Form->input('Search.proveedor_id', array(
       'label' => 'Proveedor',
       'empty' => true

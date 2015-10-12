@@ -11,8 +11,8 @@
 </div>
 <h2>Operaciones</h2>
 	<div class="actions">
-		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
-		?>
+		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos ?>
+		<?php	echo $this->element('filtrooperacion'); //Elemento del Filtro de operaciones?>
 	</div>
 	<div class='index'>
 	<?php
@@ -39,14 +39,12 @@
 			$operacion['PesoOperacion']['peso'].'kg',
 			$operacion['Operacion']['lotes_operacion'],
 			$this->Button->view('operaciones',$operacion['Operacion']['id'])
-//			$this->Html->link('Detalles',array('action'=>'view',$operacion['Operacion']['id']), array('class' =>'boton' , ))
 	));
 
 	endforeach;?>
 	</table>
 		<div class="btabla">
-		<?php echo $this->Button->add('operaciones','Operación');
-		// echo $this->Html->link('Añadir Operacion',array('action'=>'add')); ?>
+		<?php echo $this->Button->add('operaciones','Operación');?>
 		</div>
 	<?php
 	echo $this->Paginator->counter(
