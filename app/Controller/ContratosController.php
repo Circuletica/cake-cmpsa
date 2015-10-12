@@ -286,6 +286,7 @@ class ContratosController extends AppController {
 		//y copiarlas con el id del nuevo contrato y una nueva referencia
 		$i = 1; //hay que incrementar cada referencia de operacion
 		foreach ($operaciones as $operacion) {
+			$id_operacion_copiada = $operacion['Operacion']['id'];
 			unset($operacion['Operacion']['id']);
 			unset($operacion['Operacion']['created']);
 			unset($operacion['Operacion']['modified']);
@@ -293,6 +294,19 @@ class ContratosController extends AppController {
 			$operacion['Operacion']['referencia'] .= '###'.$i;
 			$this->Contrato->Operacion->create();
 			$this->Contrato->Operacion->save($operacion);
+			$asociado_operaciones = $this->Contrato->Operacion->AsociadoOperacion->find('all', array(
+				'conditions' => array('AsociadoOperacion.operacion_id' => $id_operacion_copiada)
+				)
+			);
+			//después de crear la operacion, hay que meterle los repartos de asociados
+			foreach ($asociado_operaciones as $asociado_operacion){
+				$asociado_operacion['AsociadoOperacion']['operacion_id'] = $this->Contrato->Operacion->id;
+				unset ($asociado_operacion['AsociadoOperacion']['id']);
+				unset ($asociado_operacion['AsociadoOperacion']['created']);
+				unset ($asociado_operacion['AsociadoOperacion']['modified']);
+				$this->Contrato->Operacion->AsociadoOperacion->create();
+				$this->Contrato->Operacion->AsociadoOperacion->save($asociado_operacion);
+			}
 			$i++;
 		}
 
