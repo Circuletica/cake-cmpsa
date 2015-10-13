@@ -1,20 +1,87 @@
 <?php
 class ContratosController extends AppController {
-	//public $components = array('Paginator');
 	var $displayField = 'referencia';
-
-	public function index() {
-		$this->paginate = array(
-			'contain' => array(
-				'Empresa',
-				'Incoterm',
-				'CalidadNombre',
-				'CanalCompra'
-			),
+	public $paginate = array(
 			'order' => array(
 				'Contrato.posicion_bolsa' => 'asc'
 			)
 		);
+
+	public function index() {
+		$this->paginate['contain'] = array(
+				'Empresa',
+				'Incoterm',
+				'CalidadNombre',
+				'CanalCompra'
+			);
+		//necesitamos la lista de proveedor_id/nombre para rellenar el select
+		//del formulario de busqueda
+		$proveedores = $this->Contrato->Proveedor->find('list', array(
+			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+			'order' => array('Empresa.nombre_corto' => 'asc'),
+			'recursive' => 1
+			)
+		);
+		$this->set('proveedores',$proveedores);
+
+		//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
+		//por ej.
+		//$passedArgs['Search.palabras'] = mipalabra
+		//$passedArgs['Search.id'] = 3
+		
+		//Si queremos un titulo con los criterios de busqueda
+		$titulo = array();
+
+		//filtramos por referencia
+		if(isset($this->passedArgs['Search.referencia'])) {
+			$criterio = $this->passedArgs['Search.referencia'];
+			$this->paginate['conditions']['Contrato.referencia LIKE'] = "%$criterio%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['referencia'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Referencia: '.$criterio;
+		}
+		
+		//filtramos por calidad
+		if(isset($this->passedArgs['Search.calidad'])) {
+			$criterio = $this->passedArgs['Search.calidad'];
+			$this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$criterio%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['calidad'] = $criterio;
+			//completamos el titulo
+			$title[] ='Calidad: '.$criterio;
+		}
+		
+		//filtramos por proveedor
+		if(isset($this->passedArgs['Search.proveedor_id'])) {
+			$criterio = $this->passedArgs['Search.proveedor_id'];
+			$this->paginate['conditions']['Empresa.id LIKE'] = "$criterio";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['proveedor_id'] = $criterio;
+			//completamos el titulo
+			$title[] ='Proveedor: '.$proveedores[$criterio];
+		}
+		//filtramos por fecha
+		if(isset($this->passedArgs['Search.fecha'])) {
+			$criterio = $this->passedArgs['Search.fecha'];
+			//Si solo se ha introducido un año (aaaa)
+			if (preg_match('/^\d{4}$/',$criterio)) { $anyo = $criterio; }
+			//la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
+		       	elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
+				list($mes,$anyo) = explode('-',$criterio);
+			} else {
+				$this->Session->setFlash('Error de fecha');
+				$this->redirect(array('action' => 'index'));
+			}
+			//si se ha introducido un año, filtramos por el año
+			if($anyo) { $this->paginate['conditions']['YEAR(Contrato.posicion_bolsa) ='] = $anyo;};
+			//si se ha introducido un mes, filtramos por el mes
+			if(isset($mes)) { $this->paginate['conditions']['MONTH(Contrato.posicion_bolsa) ='] = $mes;};
+			$this->request->data['Search']['fecha'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Fecha: '.$criterio;
+		}
+
 		$this->Contrato->bindModel(array(
 			'belongsTo' => array(
 				'Empresa' => array(
@@ -23,7 +90,59 @@ class ContratosController extends AppController {
 					)
 				)
 		));
-		$this->set('contratos', $this->paginate());
+		$contratos=$this->paginate();
+		
+		//generamos el título
+		if (isset($title)) { //si hay criterios de filtro
+			$title = implode(' | ', $title);
+			$title = 'Contratos de '.$title;
+		} else {
+			$title = 'Contratos';
+		}
+		
+		//pasamos los datos a la vista
+		$this->set(compact('contratos','title'));
+	}
+
+	public function view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash('URL mal formado Contrato/view');
+			$this->redirect(array('action'=>'index'));
+		}
+		$contrato = $this->Contrato->find('first', array(
+			'conditions' => array('Contrato.id' => $id),
+			'recursive' => 2));
+		$this->set('contrato', $contrato);
+		
+		//La suma del peso de todas las operaciones de un contrato
+		$peso_fijado = $this->Contrato->query(
+			"SELECT
+				SUM(p.peso) as peso_fijado
+			FROM peso_operaciones p
+			LEFT JOIN contratos c ON (p.contrato_id = c.id)
+			WHERE c.id = $id;
+			"
+		);
+		//el sql devuelve un array, solo queremos el campo de peso sin decimales
+		$peso_fijado = intval($peso_fijado[0][0]['peso_fijado']);
+		$this->set(compact('peso_fijado'));
+		$this->set('peso_por_fijar', $contrato['Contrato']['peso_comprado'] - $peso_fijado);
+
+		$this->set('referencia', $contrato['Contrato']['referencia']);
+		//si embarque o entrega
+		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
+//		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');
+//		$this->set('puerto', $contrato['Contrato']['si_entrega'] ? $contrato['PuertoDestino']['nombre'] : $contrato['PuertoCarga']['nombre']);
+		$this->set('puerto_carga', $contrato['PuertoCarga']['nombre']);
+		$this->set('puerto_destino', $contrato['PuertoDestino']['nombre']);
+		//mysql almacena la fecha en formato ymd
+		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
+		$fecha = $contrato['Contrato']['posicion_bolsa'];
+		//sacamos el nombre del mes en castellano
+		setlocale(LC_TIME, "es_ES.UTF-8");
+		$mes = strftime("%B", strtotime($fecha));
+		$anyo = substr($fecha,0,4);
+		$this->set('posicion_bolsa', $mes.' '.$anyo);
 	}
 
 	public function add() {
@@ -99,46 +218,6 @@ class ContratosController extends AppController {
 				$this->redirect(array('action' => 'index'));
 			endif;
 		endif;
-	}
-
-	public function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash('URL mal formado Contrato/view');
-			$this->redirect(array('action'=>'index'));
-		}
-		$contrato = $this->Contrato->find('first', array(
-			'conditions' => array('Contrato.id' => $id),
-			'recursive' => 2));
-		$this->set('contrato', $contrato);
-		
-		//La suma del peso de todas las operaciones de un contrato
-		$peso_fijado = $this->Contrato->query(
-			"SELECT
-				SUM(p.peso) as peso_fijado
-			FROM peso_operaciones p
-			LEFT JOIN contratos c ON (p.contrato_id = c.id)
-			WHERE c.id = $id;
-			"
-		);
-		//el sql devuelve un array, solo queremos el campo de peso sin decimales
-		$peso_fijado = intval($peso_fijado[0][0]['peso_fijado']);
-		$this->set(compact('peso_fijado'));
-		//$peso_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado; 
-		$this->set('peso_por_fijar', $contrato['Contrato']['peso_comprado'] - $peso_fijado);
-
-		$this->set('referencia', $contrato['Contrato']['referencia']);
-		//si embarque o entrega
-		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
-		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');
-		$this->set('puerto', $contrato['Contrato']['si_entrega'] ? $contrato['PuertoDestino']['nombre'] : $contrato['PuertoCarga']['nombre']);
-		//mysql almacena la fecha en formato ymd
-		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
-		$fecha = $contrato['Contrato']['posicion_bolsa'];
-		//sacamos el nombre del mes en castellano
-		setlocale(LC_TIME, "es_ES.UTF-8");
-		$mes = strftime("%B", strtotime($fecha));
-		$anyo = substr($fecha,0,4);
-		$this->set('posicion_bolsa', $mes.' '.$anyo);
 	}
 
 	public function edit($id = null) {
