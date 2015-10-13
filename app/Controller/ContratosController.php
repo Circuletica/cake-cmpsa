@@ -145,48 +145,6 @@ class ContratosController extends AppController {
 		$this->set('posicion_bolsa', $mes.' '.$anyo);
 	}
 
-	public function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash('URL mal formado Contrato/view');
-			$this->redirect(array('action'=>'index'));
-		}
-		$contrato = $this->Contrato->find('first', array(
-			'conditions' => array('Contrato.id' => $id),
-			'recursive' => 2));
-		$this->set('contrato', $contrato);
-		
-		//La suma del peso de todas las operaciones de un contrato
-		$peso_fijado = $this->Contrato->query(
-			"SELECT
-				SUM(p.peso) as peso_fijado
-			FROM peso_operaciones p
-			LEFT JOIN contratos c ON (p.contrato_id = c.id)
-			WHERE c.id = $id;
-			"
-		);
-		//el sql devuelve un array, solo queremos el campo de peso sin decimales
-		$peso_fijado = intval($peso_fijado[0][0]['peso_fijado']);
-		$this->set(compact('peso_fijado'));
-		//$peso_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado; 
-		$this->set('peso_por_fijar', $contrato['Contrato']['peso_comprado'] - $peso_fijado);
-
-		$this->set('referencia', $contrato['Contrato']['referencia']);
-		//si embarque o entrega
-		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
-//		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');
-//		$this->set('puerto', $contrato['Contrato']['si_entrega'] ? $contrato['PuertoDestino']['nombre'] : $contrato['PuertoCarga']['nombre']);
-		$this->set('puerto_carga', $contrato['PuertoCarga']['nombre']);
-		$this->set('puerto_destino', $contrato['PuertoDestino']['nombre']);
-		//mysql almacena la fecha en formato ymd
-		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
-		$fecha = $contrato['Contrato']['posicion_bolsa'];
-		//sacamos el nombre del mes en castellano
-		setlocale(LC_TIME, "es_ES.UTF-8");
-		$mes = strftime("%B", strtotime($fecha));
-		$anyo = substr($fecha,0,4);
-		$this->set('posicion_bolsa', $mes.' '.$anyo);
-	}
-
 	public function add() {
 		$proveedores = $this->Contrato->Proveedor->find('list', array(
 			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
