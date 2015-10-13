@@ -6,18 +6,17 @@
 	); ?>
 
 <div class="printdet">
-  <?php // Botones de impresión
-  echo $this->element('imprimirI');
-  ?>
-</div>
-
-<h2>Contratos</h2>
-	<div class="actions">
-		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
-		?>
+<?php // Botones de impresión
+    echo $this->element('imprimirI');
+    echo "</div>";
+    echo "<h2>$title</h2>";
+    echo '<div class="actions">';
+    echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
+    echo $this->element('filtrocontrato'); //Elemento del buscador de contrato
+?>
 	</div>
 	<div class='index'>
-	<?php
+    <?php
 	if (empty($contratos)):
 		echo "No hay contratos en esta lista";
 	else:
