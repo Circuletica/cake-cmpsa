@@ -1,13 +1,9 @@
 <?php
 class AsociadosController extends AppController {
-<<<<<<< HEAD
-=======
 	var $scaffold = 'admin';
->>>>>>> master
 	public $paginate = array(
 		'order' => array('Empresa.nombre' => 'asc')
 	);
-	public $scaffold = 'admin';
 
 	public function index() {
 		//hay que cambiar el 'hasOne' del Model por un 'belongsTo'
@@ -84,14 +80,9 @@ class AsociadosController extends AppController {
 			//$this->Session->setFlash('URL mal formado');
 			//$this->redirect(array('action'=>'index'));
 		endif;
-<<<<<<< HEAD
-		if ($this->Naviera->Empresa->delete($id)):
-			$this->Session->setFlash('Asociado borrado');
-=======
 		if ($this->Asociado->delete($id)):
 			$this->Session->setFlash('Asociado borrado');
 			$this->Asociado->Empresa->delete($id);
->>>>>>> master
 			$this->redirect(array('action'=>'index'));
 		endif;
 	}
@@ -102,23 +93,13 @@ class AsociadosController extends AppController {
 		}
 		$this->Asociado->id = $id;
 		$this->Asociado->Empresa->id = $id;
-<<<<<<< HEAD
 		$asociado = $this->Asociado->find('first',array(
 			'conditions' => array('Asociado.id' => $id)));
 		$this->set('empresa',$asociado);
-=======
-		$agente = $this->Asociado->find('first',array(
-			'conditions' => array('Asociado.id' => $id)));
-		$this->set('empresa',$agente);
->>>>>>> master
 		$this->set('paises', $this->Asociado->Empresa->Pais->find('list'));
 		if($this->request->is('get')):
 			$this->request->data = $this->Asociado->read();
 		else:
-<<<<<<< HEAD
-=======
-			//if ($this->BancoPrueba->save($this->request->data)):
->>>>>>> master
 			if ($this->Asociado->Empresa->save($this->request->data) and $this->Asociado->save($this->request->data)):
 				$this->Session->setFlash('Asociado '.
 				$this->request->data['Empresa']['nombre'].
