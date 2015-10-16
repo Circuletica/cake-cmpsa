@@ -92,3 +92,8 @@ function lotesPorFijar() {
 	    document.getElementById('OperacionLotesOperacion').style.color = "black";
     }
 }
+
+function closeSelf(f) {
+     f.submit();
+     window.close();
+}

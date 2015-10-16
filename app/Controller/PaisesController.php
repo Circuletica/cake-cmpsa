@@ -3,7 +3,7 @@ class PaisesController extends AppController {
 	public $helpers = array('Html', 'Form');
 	public $components = array('Session');
 	public $paginate = array(
-		'limit' => 10,
+		'limit' => 20,
 		'order' => array('Pais.nombre' => 'asc')
 	);
 
@@ -13,6 +13,16 @@ class PaisesController extends AppController {
 		$this->set('paises', $this->paginate());
 	}
 	public function add() {
+		if($this->request->is('post')):
+			if($this->Pais->save($this->request->data) ):
+				$this->Session->setFlash('Pais guardado');
+				$this->redirect(array(
+					'controller' => $this->params['named']['from_controller'],
+					'action' => $this->params['named']['from_action']));
+			endif;
+		endif;
+	}
+	public function addPopup() {
 		if($this->request->is('post')):
 			if($this->Pais->save($this->request->data) ):
 				$this->Session->setFlash('Pais guardado');
