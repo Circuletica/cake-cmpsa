@@ -2,9 +2,7 @@
 class ContratosController extends AppController {
 	var $displayField = 'referencia';
 	public $paginate = array(
-			'order' => array(
-				'Contrato.posicion_bolsa' => 'asc'
-			)
+			'order' => array('Contrato.posicion_bolsa' => 'asc')
 		);
 
 	public function index() {

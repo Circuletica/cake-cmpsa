@@ -32,7 +32,6 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	var $scaffold = 'admin';
-	//public $components = array('Session','RequestHandler');
 	public $helpers = array('Html','Form','Date','Button');
 	public $components = array('DebugKit.Toolbar','Session','RequestHandler');
 	public function iban($codigoPais,$ccc){

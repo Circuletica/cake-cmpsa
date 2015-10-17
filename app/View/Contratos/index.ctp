@@ -11,8 +11,10 @@
     echo "</div>";
     echo "<h2>$title</h2>";
     echo '<div class="actions">';
-    echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
     echo $this->element('filtrocontrato'); //Elemento del buscador de contrato
+    echo "<p>\n";
+    echo "<hr>\n";
+    echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
 ?>
 	</div>
 	<div class='index'>
