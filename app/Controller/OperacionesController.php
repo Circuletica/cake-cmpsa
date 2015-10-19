@@ -391,10 +391,12 @@ class OperacionesController extends AppController {
 	    $this->Session->setFlash('URL mal formado Operacion/generarFinanciacion');
 	    $this->redirect(array('action'=>'index'));
 	}
-	//vamos al edit del nuevo contrato creado para poder modificar
-	//datos como la referencia o la fecha de fijacion
+	//vamos al add de la nueva financiacion
+	$this->request->data['algo'] = 'algo';
 	$this->redirect(array(
-	    'controller' => 'financiacion',
+	    'controller' => 'financiaciones',
+	    'from_controller' => 'operaciones',
+	    'from_id' => $id,
 	    'action' => 'add'
 	    )
 	);

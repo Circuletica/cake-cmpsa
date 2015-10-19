@@ -62,5 +62,48 @@ class FinanciacionesController extends AppController {
 	$cuenta = $financiacion['Banco']['Empresa']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['Empresa']['cuenta_bancaria']);
 	$this->set(compact('cuenta'));
     }
+    public function add() {
+	if (!$this->params['named']['from_id']) {
+	    $this->Session->setFlash('URL mal formado financiaciones/add '.$this->params['named']['from_controller']);
+	    $this->redirect(array(
+		    'controller' => $this->params['named']['from_controller'],
+		    'action' => 'index')
+	    );
+	}
+	$operacion = $this->Financiacion->Operacion->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Operacion.id' => $this->params['named']['from_id']
+		),
+		'recursive' => 4
+	    )
+	);
+	$this->set(compact('operacion'));
+	$bancos = $this->Financiacion->Banco->find('list', array(
+		'fields' => array('Banco.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
+		)
+	);
+	$this->set(compact('bancos'));
+	$ivas = $this->Financiacion->Iva->find('list');
+	$this->set(compact('ivas'));
+    	$this->set('referencia', $operacion['Operacion']['referencia']);
+	$this->set('proveedor', $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto']);
+	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
+	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
+	$transporte = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
+	//solo el año de embarque/entrega
+	$transporte .= ' '.substr($operacion['Contrato']['fecha_transporte'],0,4);
+	$this->set(compact('transporte'));
+	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
+	if($this->request->is('post')):
+	    if($this->Financiacion->save($this->request->data)):
+		$this->Session->setFlash('Financiación guardada');
+		$this->redirect(array('action' => 'index'));
+	    endif;
+	endif;
+}
 }
 ?>

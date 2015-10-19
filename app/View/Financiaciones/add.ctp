@@ -1,0 +1,39 @@
+<h2>Agregar Financiación a Operación <em><?php echo $operacion['Operacion']['referencia']?></em></h2>
+
+<?php
+    $this->Html->addCrumb('Operaciones','/operaciones');
+    //$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
+    echo "<dl>";
+    echo "  <dt>Operación</dt>\n";
+    echo "  <dd>".$referencia.'&nbsp;'."</dd>";
+    echo "  <dt>Calidad</dt>\n";
+    echo "  <dd>".$calidad.'&nbsp;'."</dd>";
+    echo "  <dt>Proveedor</dt>\n";
+    echo "<dd>";
+    echo $this->html->link($proveedor, array(
+	    'controller' => 'proveedores',
+	    'action' => 'view',
+	    $proveedor_id)
+    );
+    echo "</dd>";
+    echo "  <dt>Transporte</dt>\n";
+    echo "<dd>".$transporte.'&nbsp;'."</dd>";
+    //echo "  <dt>Precio</dt>\n";
+    //echo "<dd>".$precio_euro_kilo.'€/kg&nbsp;'."</dd>";
+    echo "</dl>";
+    echo $this->Form->create('Financiacion');
+    echo $this->Form->hidden('id', array(
+	'value' => $operacion['Operacion']['id']
+	)
+    );
+    echo "<div class='linea'>\n";
+    echo $this->Form->input('fecha_vencimiento');
+    echo "</div>\n";
+    echo $this->Form->input('banco_id');
+    echo $this->Form->input('iva_id');
+    echo $this->Form->input('precio_euro_kilo', array(
+	'value' => $precio_euro_kilo
+	)
+    );
+    echo $this->Form->end('Guardar Financiación');
+
