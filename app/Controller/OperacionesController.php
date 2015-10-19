@@ -325,63 +325,79 @@ class OperacionesController extends AppController {
 	}
 	
 	public function view($id = null) {
-		//el id y la clase de la entidad de origen vienen en la URL
-		if (!$id) {
-			$this->Session->setFlash('URL mal formado Muestra/view');
-			$this->redirect(array('action'=>'index'));
-		}
-		$operacion = $this->Operacion->find(
-			'first',
-			array(
-				'conditions' => array('Operacion.id' => $id),
-				'recursive' => 3
-			)
-		);
-		$this->set('operacion', $operacion);
-		$this->loadModel('ContratoEmbalaje');
-		$embalaje = $this->ContratoEmbalaje->find(
-			'first',
-			array(
-				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
-				),
-				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
-			)
-		);
-		$this->set('embalaje', $embalaje);
-		$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
-		foreach ($operacion['AsociadoOperacion'] as $linea):
-			$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-			$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
-			$lineas_reparto[] = array(
-				'Código' => $codigo,
-				'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
-				'Cantidad' => $linea['cantidad_embalaje_asociado'],
-				'Peso' => $peso
-			);	
-		endforeach;
-		$columnas_reparto = array_keys($lineas_reparto[0]);
-		//indexamos el array por el codigo de asociado
-		$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
-		//se ordena por codigo ascendente
-		ksort($lineas_reparto);
-		$this->set('columnas_reparto',$columnas_reparto);
-		$this->set('lineas_reparto',$lineas_reparto);
+	    //el id y la clase de la entidad de origen vienen en la URL
+	    if (!$id) {
+		    $this->Session->setFlash('URL mal formado Muestra/view');
+		    $this->redirect(array('action'=>'index'));
+	    }
+	    $operacion = $this->Operacion->find(
+		    'first',
+		    array(
+			    'conditions' => array('Operacion.id' => $id),
+			    'recursive' => 3
+		    )
+	    );
+	    $this->set('operacion', $operacion);
+	    $this->loadModel('ContratoEmbalaje');
+	    $embalaje = $this->ContratoEmbalaje->find(
+		    'first',
+		    array(
+			    'conditions' => array(
+				    'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
+				    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+			    ),
+			    'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
+		    )
+	    );
+	    $this->set('embalaje', $embalaje);
+	    $this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
+	    foreach ($operacion['AsociadoOperacion'] as $linea):
+		    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+		    $codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
+		    $lineas_reparto[] = array(
+			    'Código' => $codigo,
+			    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
+			    'Cantidad' => $linea['cantidad_embalaje_asociado'],
+			    'Peso' => $peso
+		    );	
+	    endforeach;
+	    $columnas_reparto = array_keys($lineas_reparto[0]);
+	    //indexamos el array por el codigo de asociado
+	    $lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
+	    //se ordena por codigo ascendente
+	    ksort($lineas_reparto);
+	    $this->set('columnas_reparto',$columnas_reparto);
+	    $this->set('lineas_reparto',$lineas_reparto);
+	    $this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
 	}
 
-	public function delete($id = null) {
-		if (!$id or $this->request->is('get')) :
-    			throw new MethodNotAllowedException();
-		endif;
-		if ($this->Operacion->delete($id)):
-			$this->Session->setFlash('Línea de contrato borrada');
-		$this->redirect(array(
-			'controller' => $this->params['named']['from_controller'],
-			'action'=>'view',
-			$this->params['named']['from_id']
-		));
-		endif;
+    public function delete($id = null) {
+	if (!$id or $this->request->is('get')) :
+		throw new MethodNotAllowedException();
+	endif;
+	if ($this->Operacion->delete($id)):
+		$this->Session->setFlash('Línea de contrato borrada');
+	$this->redirect(array(
+		'controller' => $this->params['named']['from_controller'],
+		'action'=>'view',
+		$this->params['named']['from_id']
+	));
+	endif;
+    }
+
+    public function generarFinanciacion($id = null) {
+	//el id y la clase de la entidad de origen vienen en la URL
+	if (!$id) {
+	    $this->Session->setFlash('URL mal formado Operacion/generarFinanciacion');
+	    $this->redirect(array('action'=>'index'));
 	}
+	//vamos al edit del nuevo contrato creado para poder modificar
+	//datos como la referencia o la fecha de fijacion
+	$this->redirect(array(
+	    'controller' => 'financiacion',
+	    'action' => 'add'
+	    )
+	);
+    }
 }
 ?>
