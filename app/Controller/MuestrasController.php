@@ -15,7 +15,7 @@ class MuestrasController extends AppController {
 			'CalidadNombre'
 			);
 		$this->paginate['order'] =  array(
-			'Muestra.referencia' => 'ASC'
+			'Muestra.fecha' => 'ASC'
 			);
 		$this->paginate['recursive'] = 1;
 
