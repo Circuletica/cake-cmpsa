@@ -27,7 +27,11 @@
 	)
     );
     echo "<div class='linea'>\n";
-    echo $this->Form->input('fecha_vencimiento');
+    echo $this->Form->input('fecha_vencimiento', array(
+	'label' => 'Fecha de vencimiento',
+	'dateFormat' => 'DMY'
+	)
+);
     echo "</div>\n";
     echo $this->Form->input('banco_id');
     echo $this->Form->input('iva_id');
