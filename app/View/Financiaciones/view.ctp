@@ -31,6 +31,8 @@
 	echo "<dd>".$cuenta.'&nbsp;'."</dd>";
 	echo "  <dt>Fecha de vencimiento</dt>\n";
 	echo "<dd>".$this->Date->format($fecha_vencimiento).'&nbsp;'."</dd>";
+	echo "  <dt>Precio</dt>\n";
+	echo "<dd>".$precio_euro_kilo.'€/kg&nbsp;'."</dd>";
 	echo "</dl>";
 	$this->end();
 

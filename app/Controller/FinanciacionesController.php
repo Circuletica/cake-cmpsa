@@ -61,6 +61,7 @@ class FinanciacionesController extends AppController {
 	$this->set('fecha_vencimiento',$financiacion['Financiacion']['fecha_vencimiento']);
 	$cuenta = $financiacion['Banco']['Empresa']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['Empresa']['cuenta_bancaria']);
 	$this->set(compact('cuenta'));
+	$this->set('precio_euro_kilo', $financiacion['Financiacion']['precio_euro_kilo']);
     }
     public function add() {
 	if (!$this->params['named']['from_id']) {
@@ -104,6 +105,18 @@ class FinanciacionesController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	    endif;
 	endif;
-}
+    }
+    public function delete($id = null) {
+	if (!$id or $this->request->is('get')) :
+		throw new MethodNotAllowedException();
+	endif;
+	if ($this->Financiacion->delete($id)):
+		$this->Session->setFlash('Financiación borrada');
+	$this->redirect(array(
+		'controller' => 'financiaciones',
+		'action'=>'index',
+	));
+	endif;
+    }
 }
 ?>
