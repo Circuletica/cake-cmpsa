@@ -43,7 +43,7 @@
 	echo $this->html->tableheaders(array('Asociado','Reparto (%)','Bultos', 'Peso (kg)', 'Precio sin IVA (€)','Precio con IVA (€)'));
 	foreach($repartos as $linea):
 		echo $this->Html->tableCells(array(
-			$linea['asociado_id'],
+			$linea['Asociado']['Empresa']['nombre_corto'],
 			array(
 			    //$this->Number->roundTo2($linea['porcentaje_embalaje_socio'])."%",
 			    $this->Number->roundTo2($linea['porcentaje_embalaje_socio']),
