@@ -40,12 +40,13 @@
 	?>
 	<table>
 	<?php
-	echo $this->html->tableheaders(array('Asociado','Reparto','Bultos', 'Peso', 'Precio sin IVA','Precio con IVA'));
+	echo $this->html->tableheaders(array('Asociado','Reparto (%)','Bultos', 'Peso (kg)', 'Precio sin IVA (€)','Precio con IVA (€)'));
 	foreach($repartos as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['asociado_id'],
 			array(
-			    $linea['porcentaje_embalaje_socio']."%",
+			    //$this->Number->roundTo2($linea['porcentaje_embalaje_socio'])."%",
+			    $this->Number->roundTo2($linea['porcentaje_embalaje_socio']),
 			    array('style' => 'text-align:right')
 			),
 			array(
@@ -53,15 +54,18 @@
 			    array('style' => 'text-align:right')
 			),
 			array(
-			    $linea['peso_asociado'],
+			    //$linea['peso_asociado'].'kg',
+			    $this->Number->roundTo2($linea['peso_asociado']),
 			    array('style' => 'text-align:right')
 			),
 			array(
-			    $linea['precio_asociado'],
+			    //$this->Number->roundTo2($linea['precio_asociado']).'€',
+			    $this->Number->roundTo2($linea['precio_asociado']),
 			    array('style' => 'text-align:right')
 			),
 			array(
-			    $linea['precio_asociado_con_iva'],
+			    //$this->Number->roundTo2($linea['precio_asociado_con_iva']).'€',
+			    $this->Number->roundTo2($linea['precio_asociado_con_iva']),
 			    array('style' => 'text-align:right')
 			),
 		    )
@@ -70,7 +74,8 @@
 	echo $this->html->tablecells(array(
 	    'TOTALES',
 	    array(
-		$totales['total_porcentaje_embalaje']."%",
+		//$this->Number->roundTo2($totales['total_porcentaje_embalaje'])."%",
+		$this->Number->roundTo2($totales['total_porcentaje_embalaje']),
 		array(
 		    'style' => 'text-align:right',
 		    'bgcolor' => '#00FF00'
@@ -84,21 +89,24 @@
 		)
 	    ),
 	    array(
-		$totales['total_peso'],
+		//$totales['total_peso'].'kg',
+		$this->Number->roundTo2($totales['total_peso']),
 		array(
 		    'style' => 'text-align:right',
 		    'bgcolor' => '#00FF00'
 		)
 	    ),
 	    array(
-		$totales['total_precio'],
+		//$this->Number->roundTo2($totales['total_precio']).'€',
+		$this->Number->roundTo2($totales['total_precio']),
 		array(
 		    'style' => 'text-align:right',
 		    'bgcolor' => '#00FF00'
 		)
 	    ),
 	    array(
-		$totales['total_precio_con_iva'],
+		//$this->Number->roundTo2($totales['total_precio_con_iva']).'€',
+		$this->Number->roundTo2($totales['total_precio_con_iva']),
 		array(
 		    'style' => 'text-align:right',
 		    'bgcolor' => '#00FF00'
