@@ -338,6 +338,7 @@ class OperacionesController extends AppController {
 		    )
 	    );
 	    $this->set('operacion', $operacion);
+	    $this->set('referencia', $operacion['Operacion']['referencia']);
 	    $this->loadModel('ContratoEmbalaje');
 	    $embalaje = $this->ContratoEmbalaje->find(
 		    'first',
