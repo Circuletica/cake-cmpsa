@@ -43,11 +43,11 @@ echo $this->Form->create();
 	);
 	echo $this->Html->tableCells(array(
 		$this->Form->input('referencia_proveedor',array(
-			'label' => 'Referencia Proveedor - '.$proveedor.''
+			'label' => 'Referencia Proveedor ('.$proveedor.')'
 				)
 			),
 		$this->Form->input('referencia_almacen',array(
-			'label' => 'Referencia Almacén - '.$almacen.''
+			'label' => 'Referencia Almacén ('.$almacen.')'
 				)
 			)
 		)

@@ -30,8 +30,8 @@ class LineaMuestrasController extends AppController {
 				'Muestra.almacen_id')
 		));
 		$this->set('muestra',$muestra);
-		$this->set('proveedor',$muestra['Proveedor']['Empresa']['nombre']);
-		$this->set('almacen',$muestra['Almacen']['Empresa']['nombre']);
+		$this->set('proveedor',$muestra['Proveedor']['Empresa']['nombre_corto']);
+		$this->set('almacen',$muestra['Almacen']['Empresa']['nombre_corto']);
 		////el titulado completo de la Calidad sale de una vista
 		////de MySQL que concatena descafeinado, pais y descripcion
 		//$this->loadModel('CalidadNombre');
