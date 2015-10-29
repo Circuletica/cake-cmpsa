@@ -70,4 +70,6 @@
 	endforeach;
 	echo "</table>";
 	$this->end();
+	echo 'esto seria el content';
+	$this->fetch('content');
 ?>

@@ -202,7 +202,10 @@
 		    ?>
 			   
 	 	<?php 
-	 	echo $this->Form->input('almacen_id');
+	    echo $this->Form->input('almacen_id', array(
+		'empty' => true
+	    )
+	    );
 	    echo $this->Form->input('aprobado');
 	    ?>
  <div class="linea">
