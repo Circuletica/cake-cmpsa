@@ -73,8 +73,8 @@ class AppController extends Controller {
 	//3 - entrega
 	public $tipoMuestras =  array(
 			1 => 'Oferta',
-			2 => 'Embar.',
-			3 => 'Entr.'
+			2 => 'Embarque',
+			3 => 'Entrega'
 		);	
 
 	public function filtroListado() { //FILTRO-BUSCADOR

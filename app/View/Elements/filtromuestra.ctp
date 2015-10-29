@@ -1,9 +1,8 @@
   <?php echo $this->Form->create('Muestra', array('action'=>'filtroListado'));?>
   <div class="radiomuestra">
   <?php
-    //echo $this->Form->input('Search.id');
-    echo $this->Form->radio('Search.tipo_id', $tipos, array(
-  'legend' => ''));?>
+    //echo $this->Form->radio('Search.tipo_id', $tipos, array( 'legend' => ''));
+  ?>
   </div>
   <?php
     echo $this->Form->input('Search.referencia');

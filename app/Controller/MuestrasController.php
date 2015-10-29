@@ -11,7 +11,6 @@ class MuestrasController extends AppController {
 	public function index() {
 		$this->paginate['contain'] = array(
 			'Empresa',
-			//'Proveedor',
 			'CalidadNombre'
 			);
 		$this->paginate['order'] =  array(
