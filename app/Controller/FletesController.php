@@ -49,7 +49,6 @@ class FletesController extends AppController {
 				'order' => array('PuertoCarga.nombre' => 'ASC')
 			)
 		);
-		//$this->set('puerto_cargas', $puerto_cargas);
 		$this->set(compact('puerto_cargas'));
 		$puerto_destinos = $this->Flete->PuertoDestino->find(
 			'list', array(
@@ -66,7 +65,6 @@ class FletesController extends AppController {
 		if($this->request->is('post')):
 			if($this->Flete->save($this->request->data)):
 				$this->Session->setFlash('Flete guardado');
-				//debug($this->params['named']);
 				$this->redirect(array(
 					//'controller' => $this->params['named']['from_controller'],
 					'controller' => 'fletes',

@@ -1,7 +1,6 @@
 <?php
 class Puerto extends AppModel{
   public $displayField = 'nombre';
-  //public $hasMany = 'Operacion';
   public $belongsTo = array(
   	'Pais' => array(
 	'className' => 'Pais',
