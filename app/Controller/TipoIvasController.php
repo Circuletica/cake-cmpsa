@@ -51,6 +51,21 @@ class TipoIvasController extends AppController {
 	endif;
     }
 
+    public function view($id = null) {
+	//el id y la clase del tipo de iva vienen en la URL
+	if (!$id) {
+		$this->Session->setFlash('URL mal formado TipoIva/view');
+		$this->redirect(array('action'=>'index'));
+	}
+	$tipo_iva = $this->TipoIva->find(
+	    'first',
+	    array(
+		'conditions' => array('TipoIva.id' => $id)
+	    )
+	);
+	$this->set(compact('tipo_iva'));
+    }
+
     public function edit($id = null) {
 	$this->TipoIva->id = $id;
 	if($this->request->is('get')):
