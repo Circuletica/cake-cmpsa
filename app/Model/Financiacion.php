@@ -5,12 +5,15 @@ class Financiacion extends AppModel {
 		'Banco' => array(
 			'className' => 'Banco',
 			'foreignKey' => 'banco_id'),
-		'Iva' => array(
-			'className' => 'Iva',
-			'foreignKey' => 'iva_id'),
+		'TipoIva' => array(
+			'className' => 'TipoIva',
+			'foreignKey' => 'tipo_iva_id'),
 		'Operacion' => array(
 			'className' => 'Operacion',
 			'foreignKey' => 'id')
+	);
+	public $hasOne = array(
+	    'ValorIvaFinanciacion'
 	);
 	public $hasMany = array(
 		'RepartoOperacionAsociado' => array(

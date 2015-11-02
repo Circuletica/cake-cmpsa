@@ -39,9 +39,9 @@ class FinanciacionesController extends AppController {
 		'conditions' => array('RepartoOperacionAsociado.id' => $id),
 		'fields' => array(
 		    'sum(porcentaje_embalaje_socio) AS total_porcentaje_embalaje',
-		    'sum(cantidad_embalaje_asociado) AS total_cantidad_embalaje',
 		    'sum(peso_asociado) AS total_peso',
 		    'sum(precio_asociado) AS total_precio',
+		    'sum(iva) AS total_iva',
 		    'sum(precio_asociado_con_iva) AS total_precio_con_iva',
 		)
 	    )
@@ -61,6 +61,7 @@ class FinanciacionesController extends AppController {
 	$this->set('fecha_vencimiento',$financiacion['Financiacion']['fecha_vencimiento']);
 	$cuenta = $financiacion['Banco']['Empresa']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['Empresa']['cuenta_bancaria']);
 	$this->set(compact('cuenta'));
+	$this->set('iva',$financiacion['ValorIvaFinanciacion']['valor']);
     }
     public function add() {
 	if (!$this->params['named']['from_id']) {
