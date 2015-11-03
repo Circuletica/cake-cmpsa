@@ -23,7 +23,7 @@
 		'controller' => 'proveedores',
 		'action' => 'view',
 		$proveedor_id)
-	);
+	).'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Condición</dt>\n";
 	echo "<dd>".$transporte.'&nbsp;'."</dd>";

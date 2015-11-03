@@ -29,8 +29,33 @@ class FinanciacionesController extends AppController {
 	$financiacion = $this->Financiacion->find(
 		'first',
 		array(
-			'conditions' => array('Financiacion.id' => $id),
-			'recursive' => 4
+		    'contain' => array(
+			'Banco' => array(
+			    'Empresa'
+			),
+			'TipoIva',
+			'Operacion' => array(
+			    'Contrato' => array(
+				'CalidadNombre',
+				'Proveedor' => array(
+				    'Empresa'
+				)
+			    ),
+			    'AsociadoOperacion' => array(
+				'Asociado' => array(
+				    'Empresa'
+				)
+			    )
+			),
+			'ValorIvaFinanciacion',
+			'RepartoOperacionAsociado' => array(
+			    'Asociado' => array(
+				'Empresa'
+			    )
+			)
+		    ),
+		    'conditions' => array('Financiacion.id' => $id),
+		    'recursive' => 4
 		)
 	);
 	$totales = $this->Financiacion->RepartoOperacionAsociado->find(
