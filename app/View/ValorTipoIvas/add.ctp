@@ -19,7 +19,8 @@ echo $this->Form->input('fecha_fin', array(
     'dateFormat' => 'DMY',
     'minYear' => date('Y')-1,
     'maxYear' => date('Y')+5,
-    'orderYear' => 'asc'
+    'orderYear' => 'asc',
+    'empty' => true
     ));
 echo "</div>\n";
 echo $this->Form->input('valor', array('label' => 'Valor'));
