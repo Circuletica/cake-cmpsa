@@ -48,6 +48,12 @@
 	echo "<dd>";
         echo $iban_bancaria.'&nbsp;';
 	echo "</dd>";
+	if ($this->fetch('class') == 'Asociado'){
+	echo "  <dt>Comisión</dt>\n";
+	echo "<dd>";
+        echo $comision.$this->Button->view('asociado_comisiones',$empresa['Empresa']['id']).'&nbsp;';
+	echo "</dd>";
+	}
 	echo '</dl>';
 	$this->end();
 	$this->start('lines');

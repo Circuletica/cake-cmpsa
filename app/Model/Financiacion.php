@@ -8,6 +8,9 @@ class Financiacion extends AppModel {
 		'TipoIva' => array(
 			'className' => 'TipoIva',
 			'foreignKey' => 'tipo_iva_id'),
+		'TipoIvaComision' => array(
+			'className' => 'TipoIva',
+			'foreignKey' => 'tipo_iva_comision_id'),
 		'Operacion' => array(
 			'className' => 'Operacion',
 			'foreignKey' => 'id')
