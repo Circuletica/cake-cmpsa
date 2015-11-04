@@ -38,6 +38,7 @@ class FinanciacionesController extends AppController {
 			'Operacion' => array(
 			    'Contrato' => array(
 				'CalidadNombre',
+				'Incoterm',
 				'Proveedor' => array(
 				    'Empresa'
 				)
@@ -80,15 +81,18 @@ class FinanciacionesController extends AppController {
 	$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $financiacion['Operacion']['Contrato']['CalidadNombre']['nombre']);
 	$this->set('repartos', $financiacion['RepartoOperacionAsociado']);
-	$transporte = $financiacion['Operacion']['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
+	$condicion = $financiacion['Operacion']['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
 	//solo el año de embarque/entrega
-	$transporte .= ' '.substr($financiacion['Operacion']['Contrato']['fecha_transporte'],0,4);
-	$this->set(compact('transporte'));
+	$condicion .= ' '.substr($financiacion['Operacion']['Contrato']['fecha_transporte'],0,4);
+	$condicion .= ' ('.$financiacion['Operacion']['Contrato']['Incoterm']['nombre'].')';
+	$this->set(compact('condicion'));
 	$this->set('fecha_vencimiento',$financiacion['Financiacion']['fecha_vencimiento']);
 	$cuenta = $financiacion['Banco']['Empresa']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['Empresa']['cuenta_bancaria']);
 	$this->set(compact('cuenta'));
+	$this->set('precio_euro_kilo', $financiacion['Financiacion']['precio_euro_kilo']);
 	$this->set('iva',$financiacion['ValorIvaFinanciacion']['valor']);
     }
+
     public function add() {
 	if (!$this->params['named']['from_id']) {
 	    $this->Session->setFlash('URL mal formado financiaciones/add '.$this->params['named']['from_controller']);
@@ -121,10 +125,11 @@ class FinanciacionesController extends AppController {
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
-	$transporte = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
+	$condicion = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
 	//solo el año de embarque/entrega
-	$transporte .= ' '.substr($operacion['Contrato']['fecha_transporte'],0,4);
-	$this->set(compact('transporte'));
+	$condicion .= ' '.substr($operacion['Contrato']['fecha_transporte'],0,4);
+	$condicion .= ' ('.$operacion['Contrato']['Incoterm']['nombre'].')';
+	$this->set(compact('condicion'));
 	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
 	if($this->request->is('post')):
 	    if($this->Financiacion->save($this->request->data)):
@@ -132,6 +137,18 @@ class FinanciacionesController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	    endif;
 	endif;
-}
+    }
+    public function delete($id = null) {
+	if (!$id or $this->request->is('get')) :
+		throw new MethodNotAllowedException();
+	endif;
+	if ($this->Financiacion->delete($id)):
+		$this->Session->setFlash('Financiación borrada');
+	$this->redirect(array(
+		'controller' => 'financiaciones',
+		'action'=>'index',
+	));
+	endif;
+    }
 }
 ?>

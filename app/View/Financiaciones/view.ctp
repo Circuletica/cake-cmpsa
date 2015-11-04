@@ -26,11 +26,13 @@
 	).'&nbsp;';
 	echo "</dd>";
 	echo "  <dt>Condición</dt>\n";
-	echo "<dd>".$transporte.'&nbsp;'."</dd>";
+	echo "<dd>".$condicion.'&nbsp;'."</dd>";
 	echo "  <dt>Cuenta bancaria</dt>\n";
 	echo "<dd>".$cuenta.'&nbsp;'."</dd>";
 	echo "  <dt>Fecha de vencimiento</dt>\n";
 	echo "<dd>".$this->Date->format($fecha_vencimiento).'&nbsp;'."</dd>";
+	echo "  <dt>Precio</dt>\n";
+	echo "<dd>".$precio_euro_kilo.'€/kg&nbsp;'."</dd>";
 	echo "</dl>";
 	$this->end();
 

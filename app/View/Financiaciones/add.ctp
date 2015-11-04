@@ -16,8 +16,8 @@
 	    $proveedor_id)
     );
     echo "</dd>";
-    echo "  <dt>Transporte</dt>\n";
-    echo "<dd>".$transporte.'&nbsp;'."</dd>";
+    echo "  <dt>Condición</dt>\n";
+    echo "<dd>".$condicion.'&nbsp;'."</dd>";
     echo "</dl>";
     echo $this->Form->create('Financiacion');
     echo $this->Form->hidden('id', array(
@@ -25,7 +25,11 @@
 	)
     );
     echo "<div class='linea'>\n";
-    echo $this->Form->input('fecha_vencimiento');
+    echo $this->Form->input('fecha_vencimiento', array(
+	'label' => 'Fecha de vencimiento',
+	'dateFormat' => 'DMY'
+	)
+);
     echo "</div>\n";
     echo $this->Form->input('banco_id');
     echo $this->Form->input('tipo_iva_id', array(
