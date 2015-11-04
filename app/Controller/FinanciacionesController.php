@@ -38,6 +38,7 @@ class FinanciacionesController extends AppController {
 			'Operacion' => array(
 			    'Contrato' => array(
 				'CalidadNombre',
+				'Incoterm',
 				'Proveedor' => array(
 				    'Empresa'
 				)
@@ -80,10 +81,11 @@ class FinanciacionesController extends AppController {
 	$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $financiacion['Operacion']['Contrato']['CalidadNombre']['nombre']);
 	$this->set('repartos', $financiacion['RepartoOperacionAsociado']);
-	$transporte = $financiacion['Operacion']['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
+	$condicion = $financiacion['Operacion']['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
 	//solo el año de embarque/entrega
-	$transporte .= ' '.substr($financiacion['Operacion']['Contrato']['fecha_transporte'],0,4);
-	$this->set(compact('transporte'));
+	$condicion .= ' '.substr($financiacion['Operacion']['Contrato']['fecha_transporte'],0,4);
+	$condicion .= ' ('.$financiacion['Operacion']['Contrato']['Incoterm']['nombre'].')';
+	$this->set(compact('condicion'));
 	$this->set('fecha_vencimiento',$financiacion['Financiacion']['fecha_vencimiento']);
 	$cuenta = $financiacion['Banco']['Empresa']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['Empresa']['cuenta_bancaria']);
 	$this->set(compact('cuenta'));
@@ -123,10 +125,11 @@ class FinanciacionesController extends AppController {
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
-	$transporte = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
+	$condicion = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
 	//solo el año de embarque/entrega
-	$transporte .= ' '.substr($operacion['Contrato']['fecha_transporte'],0,4);
-	$this->set(compact('transporte'));
+	$condicion .= ' '.substr($operacion['Contrato']['fecha_transporte'],0,4);
+	$condicion .= ' ('.$operacion['Contrato']['Incoterm']['nombre'].')';
+	$this->set(compact('condicion'));
 	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
 	if($this->request->is('post')):
 	    if($this->Financiacion->save($this->request->data)):

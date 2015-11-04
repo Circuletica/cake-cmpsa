@@ -16,8 +16,8 @@
 	    $proveedor_id)
     );
     echo "</dd>";
-    echo "  <dt>Transporte</dt>\n";
-    echo "<dd>".$transporte.'&nbsp;'."</dd>";
+    echo "  <dt>Condición</dt>\n";
+    echo "<dd>".$condicion.'&nbsp;'."</dd>";
     echo "</dl>";
     echo $this->Form->create('Financiacion');
     echo $this->Form->hidden('id', array(
