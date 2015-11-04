@@ -29,8 +29,34 @@ class FinanciacionesController extends AppController {
 	$financiacion = $this->Financiacion->find(
 		'first',
 		array(
-			'conditions' => array('Financiacion.id' => $id),
-			'recursive' => 4
+		    'contain' => array(
+			'Banco' => array(
+			    'Empresa'
+			),
+			'TipoIva',
+			'TipoIvaComision',
+			'Operacion' => array(
+			    'Contrato' => array(
+				'CalidadNombre',
+				'Proveedor' => array(
+				    'Empresa'
+				)
+			    ),
+			    'AsociadoOperacion' => array(
+				'Asociado' => array(
+				    'Empresa'
+				)
+			    )
+			),
+			'ValorIvaFinanciacion',
+			'RepartoOperacionAsociado' => array(
+			    'Asociado' => array(
+				'Empresa'
+			    )
+			)
+		    ),
+		    'conditions' => array('Financiacion.id' => $id),
+		    'recursive' => 4
 		)
 	);
 	$totales = $this->Financiacion->RepartoOperacionAsociado->find(
@@ -39,9 +65,9 @@ class FinanciacionesController extends AppController {
 		'conditions' => array('RepartoOperacionAsociado.id' => $id),
 		'fields' => array(
 		    'sum(porcentaje_embalaje_socio) AS total_porcentaje_embalaje',
-		    'sum(cantidad_embalaje_asociado) AS total_cantidad_embalaje',
 		    'sum(peso_asociado) AS total_peso',
 		    'sum(precio_asociado) AS total_precio',
+		    'sum(iva) AS total_iva',
 		    'sum(precio_asociado_con_iva) AS total_precio_con_iva',
 		)
 	    )
@@ -62,7 +88,9 @@ class FinanciacionesController extends AppController {
 	$cuenta = $financiacion['Banco']['Empresa']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['Empresa']['cuenta_bancaria']);
 	$this->set(compact('cuenta'));
 	$this->set('precio_euro_kilo', $financiacion['Financiacion']['precio_euro_kilo']);
+	$this->set('iva',$financiacion['ValorIvaFinanciacion']['valor']);
     }
+
     public function add() {
 	if (!$this->params['named']['from_id']) {
 	    $this->Session->setFlash('URL mal formado financiaciones/add '.$this->params['named']['from_controller']);
@@ -88,8 +116,9 @@ class FinanciacionesController extends AppController {
 		)
 	);
 	$this->set(compact('bancos'));
-	$ivas = $this->Financiacion->Iva->find('list');
-	$this->set(compact('ivas'));
+	$tipoIvas = $this->Financiacion->TipoIva->find('list');
+	$this->set(compact('tipoIvas'));
+	$this->set('tipoIvaComisiones', $tipoIvas);
     	$this->set('referencia', $operacion['Operacion']['referencia']);
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
