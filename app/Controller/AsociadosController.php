@@ -52,6 +52,7 @@ class AsociadosController extends AppController {
 	settype($cuenta_bancaria,"string");
 	$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
 	$this->set('iban_bancaria',$iban_bancaria);
+	$this->set('comisiones', $empresa['AsociadoComision']);
 	$asociado_comision = $this->Asociado->AsociadoComision->find('first', array(
 	    'conditions' => array(
 		'AND' => array(
