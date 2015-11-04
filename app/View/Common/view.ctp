@@ -39,7 +39,6 @@
 </div>
 <div class='view'>
 	<?php echo $this->fetch('main'); ?>
-	<?php echo $this->fetch('content'); ?>
 	<div class="detallado">
 	<?php echo "<h3>".ucfirst($line_object)."</h3>\n";?>
 	<?php echo $this->fetch('lines'); ?>
