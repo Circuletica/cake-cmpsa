@@ -34,6 +34,7 @@ class FinanciacionesController extends AppController {
 			    'Empresa'
 			),
 			'TipoIva',
+			'TipoIvaComision',
 			'Operacion' => array(
 			    'Contrato' => array(
 				'CalidadNombre',
@@ -113,8 +114,9 @@ class FinanciacionesController extends AppController {
 		)
 	);
 	$this->set(compact('bancos'));
-	$ivas = $this->Financiacion->Iva->find('list');
-	$this->set(compact('ivas'));
+	$tipoIvas = $this->Financiacion->TipoIva->find('list');
+	$this->set(compact('tipoIvas'));
+	$this->set('tipoIvaComisiones', $tipoIvas);
     	$this->set('referencia', $operacion['Operacion']['referencia']);
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);

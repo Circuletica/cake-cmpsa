@@ -18,8 +18,6 @@
     echo "</dd>";
     echo "  <dt>Transporte</dt>\n";
     echo "<dd>".$transporte.'&nbsp;'."</dd>";
-    //echo "  <dt>Precio</dt>\n";
-    //echo "<dd>".$precio_euro_kilo.'€/kg&nbsp;'."</dd>";
     echo "</dl>";
     echo $this->Form->create('Financiacion');
     echo $this->Form->hidden('id', array(
@@ -30,7 +28,14 @@
     echo $this->Form->input('fecha_vencimiento');
     echo "</div>\n";
     echo $this->Form->input('banco_id');
-    echo $this->Form->input('iva_id');
+    echo $this->Form->input('tipo_iva_id', array(
+    	'value' => 3
+	)
+    );
+    echo $this->Form->input('tipo_iva_comision_id', array(
+    	'value' => 4
+	)
+    );
     echo $this->Form->input('precio_euro_kilo', array(
 	'value' => $precio_euro_kilo
 	)
