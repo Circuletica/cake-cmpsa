@@ -41,13 +41,13 @@ class FletesController extends AppController {
 	    'recursive' => 1
 	)
     );
-	$this->set('navieras', $navieras);
+	$this->set(compact('navieras'));
 	$puerto_cargas = $this->Flete->PuertoCarga->find(
 	    'list', array(
 		'order' => array('PuertoCarga.nombre' => 'ASC')
 	    )
 	);
-	$this->set('puerto_cargas', $puerto_cargas);
+	$this->set(compact('puerto_cargas'));
 	$puerto_destinos = $this->Flete->PuertoDestino->find(
 	    'list', array(
 		'order' => array('PuertoDestino.nombre' => 'ASC'),
@@ -56,7 +56,7 @@ class FletesController extends AppController {
 		'conditions' => array('PuertoDestino.pais_id' => 3)
 	    )
 	);
-	$this->set('puerto_destinos', $puerto_destinos);
+	$this->set(compact('puerto_destinos'));
 	$embalajes = $this->Flete->Embalaje->find(
 	    'list', array(
 		'order' => array('Embalaje.nombre' => 'ASC')
