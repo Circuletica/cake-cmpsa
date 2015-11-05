@@ -118,9 +118,7 @@ endif;
 	    if($this->Flete->save($this->request->data)):
 		$this->Session->setFlash('Flete guardado');
 	$this->redirect(array(
-	    //'controller' => $this->params['named']['from_controller'],
 	    'controller' => 'fletes',
-	    //'action' => $this->params['named']['from_action']));
 	    'action' => 'view'));
 endif;
 endif;
@@ -149,5 +147,18 @@ endif;
 	$this->set('costes',$costes);
     }
 
+    public function delete($id) {
+	if($this->request->is('post')):
+	    if($this->Flete->delete($id)):
+		$this->Session->setFlash('Flete borrado');
+		$this->redirect(array(
+		    'controller' => 'fletes',
+		    'action' => 'index'
+		));
+	    endif;
+	else:
+	    throw new MethodNotAllowedException();
+	endif;
+    }
 }
 ?>
