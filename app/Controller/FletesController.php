@@ -118,5 +118,17 @@ class FletesController extends AppController {
 		$this->set('costes',$costes);
 	}
 	
+    public function delete($id) {
+	if($this->request->is('post')):
+	    if($this->Flete->delete($id)):
+		$this->Session->setFlash('Flete borrado');
+	$this->redirect(array(
+	    'controller' => 'fletes',
+	    'action' => 'index'
+	));
+endif;
+else:
+    throw new MethodNotAllowedException();
+endif;    }
 }
 ?>
