@@ -1,7 +1,5 @@
 <?php
 class FletesController extends AppController {
-    public $components = array('Paginator');
-
     function index() {
 	$this->Flete->bindModel(array(
 	    'belongsTo' => array(
@@ -43,16 +41,19 @@ class FletesController extends AppController {
 	    'recursive' => 1
 	)
     );
-	$this->set(compact('navieras'));
+	$this->set('navieras', $navieras);
 	$puerto_cargas = $this->Flete->PuertoCarga->find(
 	    'list', array(
 		'order' => array('PuertoCarga.nombre' => 'ASC')
 	    )
 	);
-	$this->set(compact('puerto_cargas'));
+	$this->set('puerto_cargas', $puerto_cargas);
 	$puerto_destinos = $this->Flete->PuertoDestino->find(
 	    'list', array(
-		'order' => array('PuertoDestino.nombre' => 'ASC')
+		'order' => array('PuertoDestino.nombre' => 'ASC'),
+		//solo puertos de destino en España.
+		//No mola naaaaada el tener el pais_id hard-codeado...
+		'conditions' => array('PuertoDestino.pais_id' => 3)
 	    )
 	);
 	$this->set('puerto_destinos', $puerto_destinos);
@@ -65,6 +66,7 @@ class FletesController extends AppController {
 	if($this->request->is('post')):
 	    if($this->Flete->save($this->request->data)):
 		$this->Session->setFlash('Flete guardado');
+	//debug($this->params['named']);
 	$this->redirect(array(
 	    //'controller' => $this->params['named']['from_controller'],
 	    'controller' => 'fletes',
@@ -118,7 +120,9 @@ endif;
 	    if($this->Flete->save($this->request->data)):
 		$this->Session->setFlash('Flete guardado');
 	$this->redirect(array(
+	    //'controller' => $this->params['named']['from_controller'],
 	    'controller' => 'fletes',
+	    //'action' => $this->params['named']['from_action']));
 	    'action' => 'view'));
 endif;
 endif;
@@ -151,14 +155,14 @@ endif;
 	if($this->request->is('post')):
 	    if($this->Flete->delete($id)):
 		$this->Session->setFlash('Flete borrado');
-		$this->redirect(array(
-		    'controller' => 'fletes',
-		    'action' => 'index'
-		));
-	    endif;
-	else:
-	    throw new MethodNotAllowedException();
-	endif;
+	$this->redirect(array(
+	    'controller' => 'fletes',
+	    'action' => 'index'
+	));
+endif;
+else:
+    throw new MethodNotAllowedException();
+endif;    
     }
 }
 ?>
