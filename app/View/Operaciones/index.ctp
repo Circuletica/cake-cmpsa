@@ -43,9 +43,6 @@
 
 	endforeach;?>
 	</table>
-		<div class="btabla">
-		<?php echo $this->Button->add('operaciones','Operación');?>
-		</div>
 	<?php
 	echo $this->Paginator->counter(
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));

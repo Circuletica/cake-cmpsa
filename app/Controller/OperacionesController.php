@@ -89,9 +89,9 @@ class OperacionesController extends AppController {
 	public function add() {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$this->params['named']['from_id']) {
-			$this->Session->setFlash('URL mal formado operaciones/add '.$this->params['named']['from']);
+			$this->Session->setFlash('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
 			$this->redirect(array(
-				'controller' => $this->params['named']['from'],
+				'controller' => $this->params['named']['from_controller'],
 				'action' => 'index')
 			);
 		}
