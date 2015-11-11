@@ -23,50 +23,49 @@ $this->Html->addCrumb('Muestras','/muestras');
 $this->Html->addCrumb('Muestra '.$muestra['Muestra']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 
 ?>
-<div class="laterali">
 <?php
 echo $this->Form->create();
 ?>
+	<div class="col3">
+	<?php
+	echo $this->Html->tableCells(array(
+		$this->Form->input('marca'),
+		$this->Form->input('numero_sacos', array(
+			'label' => 'Número de sacos'
+			)
+		)
+	)
+	);
+	echo $this->Html->tableCells(array(
+		$this->Form->input('humedad'),
+		$this->Form->input('tueste')
+		)
+	);
+	echo $this->Html->tableCells(array(
+		$this->Form->input('referencia_proveedor',array(
+			'label' => 'Referencia Proveedor ('.$proveedor.')'
+				)
+			),
+		$this->Form->input('referencia_almacen',array(
+			'label' => 'Referencia Almacén ('.$almacen.')'
+				)
+			)
+		)
+	);
+	?>
+	</div>
 	<div class="col2">
-<?php
-echo $this->Html->tableCells(array(
-	$this->Form->input('marca'),
-	$this->Form->input('numero_sacos', array(
-		'label' => 'Número de sacos'
-		)
-	)
-)
-);
-echo $this->Html->tableCells(array(
-	$this->Form->input('humedad'),
-	$this->Form->input('tueste')
-	)
-);
-echo $this->Html->tableCells(array(
-	$this->Form->input('referencia_proveedor',array(
-		'label' => 'Referencia Proveedor - '.$proveedor.''
-			)
-		),
-	$this->Form->input('referencia_almacen',array(
-		'label' => 'Referencia Almacén - '.$almacen.''
-			)
-		)
-	)
-);
-?>
-</div>
-<?php
-echo $this->Form->input('apreciacion_bebida', array(
+	<?php
+	echo $this->Form->input('apreciacion_bebida', array(
 	'label' => 'Bebida')
 );
 
 echo $this->Form->input('defecto');
-echo $this->Form->end('Guardar Linea de muestra');
+	?>
+	</div>
+	<div class="col4">
+	<?php
 
-?>
-</div>
-<div class="laterald">
-<?php
 echo $this->Html->tableCells(array(
 		$this->Form->input('criba20', array(
 			'label' => 'Criba 20',
@@ -174,6 +173,8 @@ echo $this->Html->tableCells(array(
 		'Total : <input type="number" name="total" id="total"/>'
 		)
 	);
-
 ?>
 </div>
+<?php
+echo $this->Form->end('Guardar Linea de muestra');
+?>

@@ -1,4 +1,3 @@
-
 <?php $this->Html->addCrumb('Países', '/paises');?>
 <div class="printdet">
 <ul><li>

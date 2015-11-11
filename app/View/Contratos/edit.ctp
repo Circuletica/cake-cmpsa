@@ -2,9 +2,7 @@
 <p>
 <?php
 	echo "Bolsa: ".$canal['CanalCompra']['nombre']."(".$canal['CanalCompra']['divisa'].")";
-?>
-<fieldset>
-  <?php
+
 	$this->Html->addCrumb('Contratos', '/contratos');
 	//si no esta la calidad en el listado, dejamos un enlace para
 	//agragarla
@@ -27,9 +25,11 @@
 	);
 	echo $this->Form->create('Contrato', array(
 		'action' => 'edit',
-		//'onload' => 'totalDesglose()'
 		)
 	);
+?>
+<div class="col4">
+<?php
 	echo $this->Form->input('referencia');
 	echo $this->Form->input('incoterm_id', array(
 		'label' => 'Incoterms',
@@ -46,6 +46,10 @@
 		'empty' => array('' => ''),
 	    )
 	);
+?>
+</div>
+<div class="col2">
+<?php
 	echo $this->Form->input('calidad_id', array(
 		'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 		'empty' => array('' => 'Selecciona'),
@@ -58,6 +62,10 @@
 		'empty' => array('' => '')
 		)
 	);
+?>
+</div>
+<div class="col2">
+<?php
 	echo $this->Form->input('peso_comprado', array(
 		'id' => 'pesoComprado',
 		'onblur' => 'totalDesglose()',
@@ -66,11 +74,13 @@
 	);
 	echo $this->Form->input('lotes_contrato');
   ?>
+  </div>
+  <div class="col2">
      <table>
 	<tr>
-      <th> </th>
-      <th>cantidad</th>
-      <th>peso</th>
+      <th>Tipo de bulto</th>
+      <th>Cantidad</th>
+      <th>Peso</th>
 	</tr>
 	
 	<?php
@@ -146,6 +156,9 @@
 //			'dateFormat' => 'DMY')
 //		);
 //		echo "</div>\n";
+		?>
+		<br><br><br>
+		<?php
 		echo "<div class='radiomuestra'>\n";
 		echo $this->Form->radio(
 			'si_entrega',
@@ -172,7 +185,8 @@
 		echo $this->Form->input('id', array('type'=>'hidden'));
 		echo $this->Form->end('Guardar Contrato');
 	?>
-</fieldset>
+</div>
+
 <script type="text/javascript">
 	window.onload = totalDesglose();
 </script>

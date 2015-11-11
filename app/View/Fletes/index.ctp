@@ -8,33 +8,6 @@
 		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
 		?>
 	</div>
-	<div class="acciones">
-		<?php
-//		echo
-//		$this->Html->link(
-//			'<i class="fa fa-pencil-square-o"></i> Modificar',
-//			array(
-//				'action'=>'edit',
-//				$flete['Flete']['id']),
-//			array(
-//				'title'=>'Modificar Flete',
-//				'escape'=>false
-//			)
-//		).' '.
-//		$this->Form->postLink(
-//			'<i class="fa fa-trash"></i> Borrar',
-//			array(
-//				'action'=>'delete',
-//				$flete['Flete']['id']
-//			),
-//			array(
-//				'escape'=>false,
-//				'title'=> 'Borrar',
-//				'confirm'=>'¿Realmente quiere borrar el flete '.$flete['Flete']['id'].'?'
-//			)
-//		);
-	?>
-	</div>
 <div class='index'>
 	<?php
 	if (empty($fletes)):
@@ -55,8 +28,8 @@
 	foreach($fletes as $flete):
 		echo $this->Html->tableCells(
 			array(
-				$flete['PuertoCarga']['Pais']['nombre'],
-				$flete['Naviera']['Empresa']['nombre_corto'],
+				$flete['Pais']['nombre'],
+				$flete['Empresa']['nombre_corto'],
 				$flete['PuertoCarga']['nombre'],
 				$flete['PuertoDestino']['nombre'],
 				$flete['Embalaje']['nombre'],

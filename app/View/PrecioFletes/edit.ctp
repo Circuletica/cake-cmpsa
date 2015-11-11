@@ -2,7 +2,7 @@
 $this->extend('/Common/edit');
 $this->assign('objeto', 'Precio Flete '.$flete['Flete']['id']);
 $this->Html->addCrumb('Fletes','/fletes');
-$this->Html->addCrumb('Fletes','/'.$this->params['named']['from']);
+$this->Html->addCrumb('Fletes','/'.$this->params['named']['from_controller']);
 $this->Html->addCrumb('Flete '.$flete['Flete']['id'],'/fletes/view/'.$flete['Flete']['id']);
 echo $this->Form->create('PrecioFlete');
 echo '	<fieldset>';

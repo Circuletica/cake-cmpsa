@@ -1,16 +1,74 @@
 <?php
 class OperacionesController extends AppController {
 	public $scaffold = 'admin';
+	public $paginate = array(
+		'order' => array('Operacion.referencia' => 'asc')
+	);
 
 	public function index() {
-		$this->paginate = array(
-			'contain' => array(
+		$this->paginate['contain'] = array(
 				'Contrato',
 				'PesoOperacion',
 				'Empresa',
 				'CalidadNombre'
-			),
 		);
+		//necesitamos la lista de proveedor_id/nombre para rellenar el select
+		//del formulario de busqueda
+		$proveedores = $this->Operacion->Contrato->Proveedor->find('list', array(
+			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+			'order' => array('Empresa.nombre_corto' => 'asc'),
+			'recursive' => 1
+			)
+		);
+		$this->set('proveedores',$proveedores);
+		//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
+		//por ej.
+		//$passedArgs['Search.palabras'] = mipalabra
+		//$passedArgs['Search.id'] = 3
+		
+		//Si queremos un titulo con los criterios de busqueda
+		$titulo = array();
+
+		//filtramos por referencia
+		if(isset($this->passedArgs['Search.referencia'])) {
+			$criterio = $this->passedArgs['Search.referencia'];
+			$this->paginate['conditions']['Operacion.referencia LIKE'] = "%$criterio%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['referencia'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Referencia: '.$criterio;
+		}
+		
+		//filtramos por contrato
+		if(isset($this->passedArgs['Search.contrato_referencia'])) {
+			$criterio = $this->passedArgs['Search.contrato_referencia'];
+			$this->paginate['conditions']['Contrato.referencia LIKE'] = "%$criterio%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['contrato_referencia'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Contrato: '.$criterio;
+		}
+		
+		//filtramos por calidad
+		if(isset($this->passedArgs['Search.calidad'])) {
+			$criterio = $this->passedArgs['Search.calidad'];
+			$this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$criterio%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['calidad'] = $criterio;
+			//completamos el titulo
+			$title[] ='Calidad: '.$criterio;
+		}
+		
+		//filtramos por proveedor
+		if(isset($this->passedArgs['Search.proveedor_id'])) {
+			$criterio = $this->passedArgs['Search.proveedor_id'];
+			$this->paginate['conditions']['Empresa.id LIKE'] = "$criterio";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['proveedor_id'] = $criterio;
+			//completamos el titulo
+			$title[] ='Proveedor: '.$proveedores[$criterio];
+		}
+
 		$this->Operacion->bindModel(array(
 			'belongsTo' => array(
 				'Empresa' => array(
@@ -23,8 +81,11 @@ class OperacionesController extends AppController {
 				)
 			)
 		));
-		$this->set('operaciones', $this->paginate());
+		$operaciones = $this->paginate();
+		//pasamos los datos a la vista
+		$this->set(compact('operaciones','title'));
 	}
+
 	public function add() {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$this->params['named']['from_id']) {
@@ -102,12 +163,6 @@ class OperacionesController extends AppController {
 		//solo para mostrar el proveedor a nivel informativo
 		$this->set('proveedor',$contrato['Proveedor']['Empresa']['nombre']);
 		//a quienes van asociadas las lineas de contrato
-		//$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('list', array(
-		//	'fields' => array('Asociado.id','Empresa.nombre_corto'),
-		//	'recursive' => 1
-		//	)
-		//);
-		//$this->set('asociados', $asociados);
 		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
 			'fields' => array('Asociado.id','Empresa.codigo_contable','Empresa.nombre_corto'),
 			'order' => array('Empresa.codigo_contable' => 'ASC'),
@@ -123,10 +178,37 @@ class OperacionesController extends AppController {
 			'order' => array('PuertoCarga.nombre' =>'ASC')
 			)
 		));
-		$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find('list'));
-		//Por defecto ponemos las opciones y el forfait a cero
+
+		$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find(
+			'list',
+			#el café solo llega a puerto españoles
+			array(
+				'contain' => array('Pais'),
+				'conditions' => array( 'Pais.nombre' => 'España')
+			)
+		));
+		//Por defecto ponemos las opciones, el forfait, el seguro y el flete a cero
 		$this->request->data['Operacion']['opciones'] = 0;
 		$this->request->data['Operacion']['forfait'] = 0;
+		$this->request->data['Operacion']['seguro'] = 0;
+		$this->request->data['Operacion']['flete'] = 0;
+		
+		//Queremos la lista de costes de fletes
+		$this->loadModel('Flete');
+		$coste_fletes = $this->Flete->find('all', array(
+			'recursive' => 3,
+//			'fields' => array(
+//				'Flete.naviera_id',
+//				'Naviera.id',
+//				'Empresa.id',
+//				'Empresa.nombre_corto',
+//				'PuertoCarga.nombre',
+//				'PuertoDestino.nombre',
+//				'PrecioActualFlete.precio_dolar'
+//			)
+		));
+		$this->set(compact('coste_fletes'));
+
 	
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué contrato pertenece
@@ -168,12 +250,6 @@ class OperacionesController extends AppController {
 			)
 		);
 		$this->set('operacion', $operacion);
-//		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('list', array(
-//			'fields' => array('Asociado.id','Empresa.nombre_corto'),
-//			'order' => array('Empresa.codigo_contable' => 'ASC'),
-//			'recursive' => 1
-//			)
-//		);
 		$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
 			'fields' => array('Asociado.id','Empresa.codigo_contable','Empresa.nombre_corto'),
 			'order' => array('Empresa.codigo_contable' => 'ASC'),
@@ -198,6 +274,21 @@ class OperacionesController extends AppController {
 			)
 		));
 		$this->set('embalaje', $embalaje);
+		$this->set('pesoEmbalaje', $embalaje['ContratoEmbalaje']['peso_embalaje_real']);
+		//para los puertos de carga y destino
+		$this->set('puertoCargas',$this->Operacion->PuertoCarga->find('list', array(
+			'order' => array('PuertoCarga.nombre' =>'ASC')
+			)
+		));
+		$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find(
+			'list',
+			#el café solo llega a puerto españoles
+			array(
+				'contain' => array('Pais'),
+				'conditions' => array( 'Pais.nombre' => 'España')
+			)
+		));
+
 		if($this->request->is('get')): //al abrir el edit, meter los datos de la bdd
 			$this->request->data = $this->Operacion->read();
 			foreach ($asociados_operacion as $asociado_id => $asociado) {
@@ -234,63 +325,53 @@ class OperacionesController extends AppController {
 	}
 	
 	public function view($id = null) {
-		//el id y la clase de la entidad de origen vienen en la URL
-		if (!$id) {
-			$this->Session->setFlash('URL mal formado Muestra/view');
-			$this->redirect(array('action'=>'index'));
-		}
-		$operacion = $this->Operacion->find(
-			'first',
-			array(
-				'conditions' => array('Operacion.id' => $id),
-				'recursive' => 3
-			)
-		);
-		$this->set('operacion', $operacion);
-		$this->loadModel('ContratoEmbalaje');
-		$embalaje = $this->ContratoEmbalaje->find(
-			'first',
-			array(
-				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
-				),
-				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
-			)
-		);
-		$this->set('embalaje', $embalaje);
-		$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
-		foreach ($operacion['AsociadoOperacion'] as $linea):
-			$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-			$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
-			$lineas_reparto[] = array(
-				'Código' => $codigo,
-				'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
-				'Cantidad' => $linea['cantidad_embalaje_asociado'],
-				'Peso' => $peso
-			);	
-		endforeach;
-		$columnas_reparto = array_keys($lineas_reparto[0]);
-		//indexamos el array por el codigo de asociado
-		$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
-		//se ordena por codigo ascendente
-		ksort($lineas_reparto);
-		$this->set('columnas_reparto',$columnas_reparto);
-		$this->set('lineas_reparto',$lineas_reparto);
+	    //el id y la clase de la entidad de origen vienen en la URL
+	    if (!$id) {
+		    $this->Session->setFlash('URL mal formado Muestra/view');
+		    $this->redirect(array('action'=>'index'));
+	    }
+	    $operacion = $this->Operacion->find(
+		    'first',
+		    array(
+			    'conditions' => array('Operacion.id' => $id),
+			    'recursive' => 3
+		    )
+	    );
+	    $this->set('operacion', $operacion);
+	    $this->set('referencia', $operacion['Operacion']['referencia']);
+	    $this->loadModel('ContratoEmbalaje');
+	    $embalaje = $this->ContratoEmbalaje->find(
+		    'first',
+		    array(
+			    'conditions' => array(
+				    'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
+				    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+			    ),
+			    'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
+		    )
+	    );
+	    $this->set('embalaje', $embalaje);
+	    $this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
+	    foreach ($operacion['AsociadoOperacion'] as $linea):
+		    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+		    $codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
+		    $lineas_reparto[] = array(
+			    'Código' => $codigo,
+			    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
+			    'Cantidad' => $linea['cantidad_embalaje_asociado'],
+			    'Peso' => $peso
+		    );	
+	    endforeach;
+	    $columnas_reparto = array_keys($lineas_reparto[0]);
+	    //indexamos el array por el codigo de asociado
+	    $lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
+	    //se ordena por codigo ascendente
+	    ksort($lineas_reparto);
+	    $this->set('columnas_reparto',$columnas_reparto);
+	    $this->set('lineas_reparto',$lineas_reparto);
+	    $this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
 	}
-	public function delete($id = null) {
-		if (!$id or $this->request->is('get')) :
-    			throw new MethodNotAllowedException();
-		endif;
-		if ($this->Operacion->delete($id)):
-			$this->Session->setFlash('Línea de contrato borrada');
-		$this->redirect(array(
-			'controller' => $this->params['named']['from_controller'],
-			'action'=>'view',
-			$this->params['named']['from_id']
-		));
-		endif;
-	}
+
 	public function index_trafico() {
 		$this->paginate=array(
 			'contain' => array(
@@ -389,5 +470,36 @@ public function view_trafico($id = null) {
 //		$this->set('transporte',$transporte);
 
 	}
+
+    public function delete($id = null) {
+	if (!$id or $this->request->is('get')) :
+		throw new MethodNotAllowedException();
+	endif;
+	if ($this->Operacion->delete($id)):
+		$this->Session->setFlash('Línea de contrato borrada');
+	$this->redirect(array(
+		'controller' => $this->params['named']['from_controller'],
+		'action'=>'view',
+		$this->params['named']['from_id']
+	));
+	endif;
+    }
+
+    public function generarFinanciacion($id = null) {
+	//el id y la clase de la entidad de origen vienen en la URL
+	if (!$id) {
+	    $this->Session->setFlash('URL mal formado Operacion/generarFinanciacion');
+	    $this->redirect(array('action'=>'index'));
+	}
+	//vamos al add de la nueva financiacion
+	$this->request->data['algo'] = 'algo';
+	$this->redirect(array(
+	    'controller' => 'financiaciones',
+	    'from_controller' => 'operaciones',
+	    'from_id' => $id,
+	    'action' => 'add'
+	    )
+	);
+    }
 }
 ?>

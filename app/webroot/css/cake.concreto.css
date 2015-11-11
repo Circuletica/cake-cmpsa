@@ -93,8 +93,8 @@ div.detallado h3{
 /* Información detallada del add o edit*/
 div.detalladoform{
 	/*float:right;*/
-	margin-top: 20px;
-	border-top: 3px dotted #2C6877;
+	margin: 20px 650px 0px 0px;
+	border-top: 2px dotted #2C6877;
 }
 div.detalladoform h3{
 	padding-top:20px;
@@ -195,11 +195,36 @@ input[type=submit]:active,
    		 column-rule: 1px dotted #ddd;
    		/* width:740px;*/
 }
-
-.columna3{
+.col3{
 	-webkit-column-count: 3; /* Chrome, Safari, Opera */	
 	-moz-column-count: 3; /* Firefox */
 	column-count: 3;
+	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+	-moz-column-gap: 40px; /* Firefox */
+	column-gap: 40px;
+  -webkit-column-rule: 1px dotted #ddd;
+     -moz-column-rule: 1px dotted #ddd;
+          column-rule: 1px dotted #ddd;
+         /* width: 740px*/
+}
+
+.col3{
+	-webkit-column-count: 3; /* Chrome, Safari, Opera */	
+	-moz-column-count: 3; /* Firefox */
+	column-count: 3;
+	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+	-moz-column-gap: 40px; /* Firefox */
+	column-gap: 40px;
+  -webkit-column-rule: 1px dotted #ddd;
+     -moz-column-rule: 1px dotted #ddd;
+          column-rule: 1px dotted #ddd;
+         /* width: 740px*/
+}
+
+.col4{
+	-webkit-column-count: 4; /* Chrome, Safari, Opera */	
+	-moz-column-count: 4; /* Firefox */
+	column-count: 4;
 	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
 	-moz-column-gap: 40px; /* Firefox */
 	column-gap: 40px;
@@ -637,7 +662,7 @@ div.laterali {
 /* PORTADA En el comiendo de la aplicación se colocan los botones */
 .portada{
 	position: relative;
-	padding-right:5%;
+	padding-right:4%;
 	display: inline;
 	font-size: 12	5%;
 

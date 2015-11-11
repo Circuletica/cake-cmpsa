@@ -30,9 +30,7 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	var $scaffold = 'admin';
-	//public $components = array('Session','RequestHandler');
-	public $helpers = array('Html','Form','Date','Button'
-		);
+	public $helpers = array('Html','Form','Date','Button');
 	public $components = array('DebugKit.Toolbar','Session','RequestHandler');
 	public function iban($codigoPais,$ccc){
 	  $pesos = array('A' => '10',
@@ -73,15 +71,15 @@ class AppController extends Controller {
 	//3 - entrega
 	public $tipoMuestras =  array(
 			1 => 'Oferta',
-			2 => 'Embar.',
-			3 => 'Entr.'
+			2 => 'Embarque',
+			3 => 'Entrega'
 		);	
 	public function filtroListado() { //FILTRO-BUSCADOR
 		//la página a la que redirigimos después de mandar  el formulario de filtro
 		$url['action'] = 'index';
 		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
 		//la URL final tiene ese aspecto:
-		//http://cake-cmpsa.gargantilla.net/muestras/index/Search.referencia:mireferencia/Search.id:3
+		//http://gestion.gargantilla.net/controller/index/Search.referencia:mireferencia/Search.id:3
 		foreach ($this->data as $k=>$v){ 
 			foreach ($v as $kk=>$vv){ 
 			if ($vv) {$url[$k.'.'.$kk]=$vv;} 

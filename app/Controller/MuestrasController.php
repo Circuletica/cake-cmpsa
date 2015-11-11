@@ -8,20 +8,12 @@ class MuestrasController extends AppController {
 
 	
 	public function index() {
-		$this->Muestra->bindModel(array(
-			'belongsTo' => array(
-				'Empresa' => array(
-					'foreignKey' => false,
-					'conditions' => array('Empresa.id = Muestra.proveedor_id')
-				)
-			)
-		));
 		$this->paginate['contain'] = array(
-			'Proveedor',
+			'Empresa',
 			'CalidadNombre'
 			);
 		$this->paginate['order'] =  array(
-			'Muestra.referencia' => 'ASC'
+			'Muestra.fecha' => 'ASC'
 			);
 		$this->paginate['recursive'] = 1;
 
@@ -30,6 +22,7 @@ class MuestrasController extends AppController {
 		//del formulario de busqueda
 		$proveedores = $this->Muestra->Proveedor->find('list', array(
 			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+			'order' => array('Empresa.nombre_corto' => 'asc'),
 			'recursive' => 1
 			)
 		);
@@ -65,7 +58,7 @@ class MuestrasController extends AppController {
 		//filtramos por proveedor
 		if(isset($this->passedArgs['Search.proveedor_id'])) {
 			$proveedor_id = $this->passedArgs['Search.proveedor_id'];
-			$this->paginate['conditions']['Proveedor.id LIKE'] = "$proveedor_id";
+			$this->paginate['conditions']['Empresa.id LIKE'] = "$proveedor_id";
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['proveedor_id'] = $proveedor_id;
 			//completamos el titulo
@@ -108,6 +101,14 @@ class MuestrasController extends AppController {
 //				'Muestras aprobadas' : 'Muestras rechazadas';
 //		}
 
+		$this->Muestra->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Empresa.id = Muestra.proveedor_id')
+				)
+			)
+		));
 		$muestras =  $this->paginate();
 		//generamos el título
 		if (isset($tipo)) { //en caso de que se quiera mostrar todos los tipos de muestra

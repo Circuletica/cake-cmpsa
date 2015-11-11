@@ -15,15 +15,13 @@
 	  'from_id'=>$this->params['named']['from_id']
   )));
     ?>
-
-  <fieldset>
-  <div class="columna2">
+  <div class="col2">
   <?php
   echo $this->Form->input('nombre');
   echo $this->Form->input('funcion',array('label'=>'Función'));
   ?> 
   </div> 
-  <div class="columna3">
+  <div class="colu3">
   <?php
   echo $this->Form->input('telefono1',array('label'=>'  Teléfono Nº1'));
   echo $this->Form->input('telefono2',array('label'=>'Teléfono Nº2'));
@@ -37,5 +35,5 @@
     </div>
     <?php
   echo $this->Form->end('Guardar contacto');
-?></fieldset>
+?>
 

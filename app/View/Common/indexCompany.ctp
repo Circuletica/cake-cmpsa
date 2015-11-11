@@ -32,7 +32,7 @@
 		$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
 		'País',
 		'Teléfono',
-		''));
+		'Detalle'));
 
 	foreach($empresas as $empresa):
 	echo $this->Html->tableCells(array(

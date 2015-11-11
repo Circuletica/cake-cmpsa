@@ -1,14 +1,18 @@
 <?php
 class CalidadesController extends AppController {
-//	public $paginate = array(
-//		'order' => array('descripcion' => 'asc')
-//	);
+	public $paginate = array(
+	    'order' => array(
+		'Pais.nombre' => 'asc',
+		'Calidad.descripcion' => 'asc'
+	    )
+	);
 
 	public function index() {
-		//$this->Calidad->recursive = 1;
-		//$this->Calidad->setSource('CalidadNombre');
-		$this->set('calidades', $this->paginate());
-		$this->set('tipos', $this->tipoMuestras);
+	    $this->paginate['contain'] = array(
+		//'Calidad',
+		'Pais'
+	    );
+	    $this->set('calidades', $this->paginate());
 	}
 
 	public function add() {
@@ -16,7 +20,6 @@ class CalidadesController extends AppController {
 		if($this->request->is('post')):
 			if($this->Calidad->save($this->request->data)):
 				$this->Session->setFlash('Calidad guardada');
-				debug($this->params['named']);
 				$this->redirect(array(
 					'controller' => $this->params['named']['from_controller'],
 					'action' => $this->params['named']['from_action']));

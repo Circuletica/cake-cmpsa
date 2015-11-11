@@ -1,6 +1,6 @@
 <?php
 class Flete extends AppModel {
-	public $recursive = 2;
+	public $recursive = 3;
 	public $hasOne = array(
 		'PrecioActualFlete' => array(
 			'foreignKey' => 'flete_id'
@@ -24,5 +24,5 @@ class Flete extends AppModel {
 			'foreignKey' => 'puerto_destino_id'
 		)
 	);
-	//public $actsAs = array('Containable');
+	public $actsAs = array('Containable');
 }

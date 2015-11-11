@@ -30,8 +30,8 @@ class LineaMuestrasController extends AppController {
 				'Muestra.almacen_id')
 		));
 		$this->set('muestra',$muestra);
-		$this->set('proveedor',$muestra['Proveedor']['Empresa']['nombre']);
-		$this->set('almacen',$muestra['Almacen']['Empresa']['nombre']);
+		$this->set('proveedor',$muestra['Proveedor']['Empresa']['nombre_corto']);
+		$this->set('almacen',$muestra['Almacen']['Empresa']['nombre_corto']);
 		////el titulado completo de la Calidad sale de una vista
 		////de MySQL que concatena descafeinado, pais y descripcion
 		//$this->loadModel('CalidadNombre');
@@ -39,6 +39,7 @@ class LineaMuestrasController extends AppController {
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué muestra pertenece
 			$this->request->data['LineaMuestra']['muestra_id'] = $this->params['named']['from_id'];
+			debug($this->request->data['LineaMuestra']);
 			//comprobamos que el total de criba es de 100%
 			$suma_criba = $this->request->data['LineaMuestra']['criba20']+
 				$this->request->data['LineaMuestra']['criba19']+
@@ -55,7 +56,6 @@ class LineaMuestrasController extends AppController {
 				$this->request->data['LineaMuestra']['criba8p']+
 				$this->request->data['LineaMuestra']['criba13']+
 				$this->request->data['LineaMuestra']['criba12'];
-			//debug($this->request->data['LineaMuestra']);
 			//debug($suma_criba);
 			if($suma_criba != 100){
 				$this->Session->setFlash('Linea de Muestra no guardada, la suma de criba no es 100%');

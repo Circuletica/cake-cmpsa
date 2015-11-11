@@ -1,25 +1,145 @@
 <?php
 class ContratosController extends AppController {
-	var $scaffold = 'admin';
 	var $displayField = 'referencia';
 	public $paginate = array(
-		'order' => array('Contrato.referencia' => 'asc')
-	);
+			'order' => array('Contrato.posicion_bolsa' => 'asc')
+		);
 	public function index() {
+		$this->paginate['contain'] = array(
+				'Empresa',
+				'Incoterm',
+				'CalidadNombre',
+				'CanalCompra'
+			);
+		//necesitamos la lista de proveedor_id/nombre para rellenar el select
+		//del formulario de busqueda
 		$proveedores = $this->Contrato->Proveedor->find('list', array(
 			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+			'order' => array('Empresa.nombre_corto' => 'asc'),
 			'recursive' => 1
 			)
 		);
-//		$canales = array(
-//			'0' => 'Bolsa LND',
-//			'1' => 'Bolsa NY',
-//			'2' => 'Precio fijo'
-//		);
-		$canales = $this->Contrato->CanalCompra->find('all');
-		$this->set('proveedores', $proveedores);
-		//$contratos = $this->paginate();
-		$this->set('contratos', $this->paginate());
+		$this->set('proveedores',$proveedores);
+
+		//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
+		//por ej.
+		//$passedArgs['Search.palabras'] = mipalabra
+		//$passedArgs['Search.id'] = 3
+		
+		//Si queremos un titulo con los criterios de busqueda
+		$titulo = array();
+
+		//filtramos por referencia
+		if(isset($this->passedArgs['Search.referencia'])) {
+			$criterio = $this->passedArgs['Search.referencia'];
+			$this->paginate['conditions']['Contrato.referencia LIKE'] = "%$criterio%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['referencia'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Referencia: '.$criterio;
+		}
+		
+		//filtramos por calidad
+		if(isset($this->passedArgs['Search.calidad'])) {
+			$criterio = $this->passedArgs['Search.calidad'];
+			$this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$criterio%";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['calidad'] = $criterio;
+			//completamos el titulo
+			$title[] ='Calidad: '.$criterio;
+		}
+		
+		//filtramos por proveedor
+		if(isset($this->passedArgs['Search.proveedor_id'])) {
+			$criterio = $this->passedArgs['Search.proveedor_id'];
+			$this->paginate['conditions']['Empresa.id LIKE'] = "$criterio";
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['proveedor_id'] = $criterio;
+			//completamos el titulo
+			$title[] ='Proveedor: '.$proveedores[$criterio];
+		}
+		//filtramos por fecha
+		if(isset($this->passedArgs['Search.fecha'])) {
+			$criterio = $this->passedArgs['Search.fecha'];
+			//Si solo se ha introducido un año (aaaa)
+			if (preg_match('/^\d{4}$/',$criterio)) { $anyo = $criterio; }
+			//la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
+		       	elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
+				list($mes,$anyo) = explode('-',$criterio);
+			} else {
+				$this->Session->setFlash('Error de fecha');
+				$this->redirect(array('action' => 'index'));
+			}
+			//si se ha introducido un año, filtramos por el año
+			if($anyo) { $this->paginate['conditions']['YEAR(Contrato.posicion_bolsa) ='] = $anyo;};
+			//si se ha introducido un mes, filtramos por el mes
+			if(isset($mes)) { $this->paginate['conditions']['MONTH(Contrato.posicion_bolsa) ='] = $mes;};
+			$this->request->data['Search']['fecha'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Fecha: '.$criterio;
+		}
+
+		$this->Contrato->bindModel(array(
+			'belongsTo' => array(
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Empresa.id = Contrato.proveedor_id')
+					)
+				)
+		));
+		$contratos=$this->paginate();
+		
+		//generamos el título
+		if (isset($title)) { //si hay criterios de filtro
+			$title = implode(' | ', $title);
+			$title = 'Contratos de '.$title;
+		} else {
+			$title = 'Contratos';
+		}
+		
+		//pasamos los datos a la vista
+		$this->set(compact('contratos','title'));
+	}
+
+	public function view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash('URL mal formado Contrato/view');
+			$this->redirect(array('action'=>'index'));
+		}
+		$contrato = $this->Contrato->find('first', array(
+			'conditions' => array('Contrato.id' => $id),
+			'recursive' => 2));
+		$this->set('contrato', $contrato);
+		
+		//La suma del peso de todas las operaciones de un contrato
+		$peso_fijado = $this->Contrato->query(
+			"SELECT
+				SUM(p.peso) as peso_fijado
+			FROM peso_operaciones p
+			LEFT JOIN contratos c ON (p.contrato_id = c.id)
+			WHERE c.id = $id;
+			"
+		);
+		//el sql devuelve un array, solo queremos el campo de peso sin decimales
+		$peso_fijado = intval($peso_fijado[0][0]['peso_fijado']);
+		$this->set(compact('peso_fijado'));
+		$this->set('peso_por_fijar', $contrato['Contrato']['peso_comprado'] - $peso_fijado);
+
+		$this->set('referencia', $contrato['Contrato']['referencia']);
+		//si embarque o entrega
+		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
+//		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');
+//		$this->set('puerto', $contrato['Contrato']['si_entrega'] ? $contrato['PuertoDestino']['nombre'] : $contrato['PuertoCarga']['nombre']);
+		$this->set('puerto_carga', $contrato['PuertoCarga']['nombre']);
+		$this->set('puerto_destino', $contrato['PuertoDestino']['nombre']);
+		//mysql almacena la fecha en formato ymd
+		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
+		$fecha = $contrato['Contrato']['posicion_bolsa'];
+		//sacamos el nombre del mes en castellano
+		setlocale(LC_TIME, "es_ES.UTF-8");
+		$mes = strftime("%B", strtotime($fecha));
+		$anyo = substr($fecha,0,4);
+		$this->set('posicion_bolsa', $mes.' '.$anyo);
 	}
 	public function add() {
 		$proveedores = $this->Contrato->Proveedor->find('list', array(
@@ -81,7 +201,6 @@ class ContratosController extends AppController {
 				//son realmente el embalaje_id
 				foreach ($this->request->data['Embalaje'] as $embalaje_id => $valor) {
 					//no interesa guardar lineas vacías
-					//if ($this->request->data['ContratoEmbalaje']['cantidad_embalaje'] != NULL) {
 					if ($valor['cantidad_embalaje'] != NULL) {
 						$this->request->data['ContratoEmbalaje']['contrato_id'] = $this->Contrato->id;
 						$this->request->data['ContratoEmbalaje']['embalaje_id'] = $embalaje_id;
@@ -95,30 +214,7 @@ class ContratosController extends AppController {
 			endif;
 		endif;
 	}
-	public function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash('URL mal formado Contrato/view');
-			$this->redirect(array('action'=>'index'));
-		}
-		$contrato = $this->Contrato->find('first', array(
-			'conditions' => array('Contrato.id' => $id),
-			'recursive' => 2));
-		$this->set('contrato',$contrato);
-		//el nombre de calidad concatenado esta en una view de MSQL
-		$this->loadModel('CalidadNombre');
-		//si embarque o entrega
-		$this->set('tipo_fecha_transporte', $contrato['Contrato']['si_entrega'] ? 'Fecha de entrega' : 'Fecha de embarque');
-		$this->set('tipo_puerto', $contrato['Contrato']['si_entrega'] ? 'Puerto de destino' : 'Puerto de carga');
-		$this->set('puerto', $contrato['Contrato']['si_entrega'] ? $contrato['PuertoDestino']['nombre'] : $contrato['PuertoCarga']['nombre']);
-		//mysql almacena la fecha en formato ymd
-		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
-		$fecha = $contrato['Contrato']['posicion_bolsa'];
-		//sacamos el nombre del mes en castellano
-		setlocale(LC_TIME, "es_ES.UTF-8");
-		$mes = strftime("%B", strtotime($fecha));
-		$anyo = substr($fecha,0,4);
-		$this->set('posicion_bolsa', $mes.' '.$anyo);
-	}
+
 	public function edit($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');
@@ -133,7 +229,6 @@ class ContratosController extends AppController {
 			'order' => array('CalidadNombre.nombre' => 'ASC')
 			)
 		));
-		//$this->set('incoterms', $this->Contrato->Incoterm->find('list'));
 		$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
 			'order' => array('Incoterm.nombre' => 'ASC')
 			)
@@ -153,7 +248,6 @@ class ContratosController extends AppController {
 			))
 		);
 		//Donde se compra el café (London, New-York, ...)
-		//$canales = $this->Contrato->CanalCompra->find('list', array(
 		$canal = $this->Contrato->CanalCompra->find('first', array(
 			'conditions' => array('CanalCompra.id' => $contrato['CanalCompra']['id']),
 			'fields' => array('id','nombre','divisa')
@@ -174,6 +268,7 @@ class ContratosController extends AppController {
 		);
 		//la fecha de transporte (embarque o entrega)
 		$this->set('si_entrega', $contrato['Contrato']['si_entrega']);
+
 		if($this->request->is('get')):
 			$this->request->data = $this->Contrato->read();
 			foreach($contrato['ContratoEmbalaje'] as $embalaje) {
@@ -219,6 +314,84 @@ class ContratosController extends AppController {
 			endif;
 		endif;
 	}
+
+	public function copy($id = null) {
+		//para duplicar un registro, se hace una copia del mismo con
+		//los registros relacionados en otras tablas, teniendo cuidado
+		//de usar una clave primaria nueva (id) y se hace un redirect
+		//al edit del nuevo registro para poder modificar los campos
+		//que lo necesitan (entre otros la referencia que es UNIQUE)
+
+		if (!$id) {
+			$this->Session->setFlash('URL mal formado');
+			$this->redirect(array('action'=>'index'));
+		}
+		
+		$nuevo_contrato = $this->Contrato->findById($id);
+		unset($nuevo_contrato['Contrato']['id']);
+		unset($nuevo_contrato['Contrato']['created']);
+		unset($nuevo_contrato['Contrato']['modified']);
+		//no podemos tener dos contratos con la misma referencia
+		$nuevo_contrato['Contrato']['referencia'] .= '###';
+		$this->Contrato->create();
+		$this->Contrato->save($nuevo_contrato);
+		
+		//hay que recuperar los embalajes del contrato copiado
+		$contrato_embalajes = $this->Contrato->ContratoEmbalaje->find('all', array(
+			'conditions' => array('ContratoEmbalaje.contrato_id' => $id)
+			)
+		);
+		//y copiar los registros de ContratoEmbalaje pero con el id del nuevo contrato
+		foreach($contrato_embalajes as $contrato_embalaje) {
+			unset($contrato_embalaje['ContratoEmbalaje']['id']);
+			unset($contrato_embalaje['ContratoEmbalaje']['created']);
+			unset($contrato_embalaje['ContratoEmbalaje']['modified']);
+			$contrato_embalaje['ContratoEmbalaje']['contrato_id'] = $this->Contrato->id;
+			$this->Contrato->ContratoEmbalaje->create();
+			$this->Contrato->ContratoEmbalaje->save($contrato_embalaje);
+		}
+
+		//recuperar las operaciones asociadas al contrato
+		$operaciones = $this->Contrato->Operacion->find('all', array(
+			'conditions' => array('Operacion.contrato_id' => $id)
+			)
+		);
+		//y copiarlas con el id del nuevo contrato y una nueva referencia
+		$i = 1; //hay que incrementar cada referencia de operacion
+		foreach ($operaciones as $operacion) {
+			$id_operacion_copiada = $operacion['Operacion']['id'];
+			unset($operacion['Operacion']['id']);
+			unset($operacion['Operacion']['created']);
+			unset($operacion['Operacion']['modified']);
+			$operacion['Operacion']['contrato_id'] = $this->Contrato->id;
+			$operacion['Operacion']['referencia'] .= '###'.$i;
+			$this->Contrato->Operacion->create();
+			$this->Contrato->Operacion->save($operacion);
+			$asociado_operaciones = $this->Contrato->Operacion->AsociadoOperacion->find('all', array(
+				'conditions' => array('AsociadoOperacion.operacion_id' => $id_operacion_copiada)
+				)
+			);
+			//después de crear la operacion, hay que meterle los repartos de asociados
+			foreach ($asociado_operaciones as $asociado_operacion){
+				$asociado_operacion['AsociadoOperacion']['operacion_id'] = $this->Contrato->Operacion->id;
+				unset ($asociado_operacion['AsociadoOperacion']['id']);
+				unset ($asociado_operacion['AsociadoOperacion']['created']);
+				unset ($asociado_operacion['AsociadoOperacion']['modified']);
+				$this->Contrato->Operacion->AsociadoOperacion->create();
+				$this->Contrato->Operacion->AsociadoOperacion->save($asociado_operacion);
+			}
+			$i++;
+		}
+
+		//vamos al edit del nuevo contrato creado para poder modificar
+		//datos como la referencia o la fecha de fijacion
+		$this->redirect(array(
+			'action'=>'edit',
+			$this->Contrato->id
+			)
+		);
+	}
+
 	public function delete($id = null) {
 		if (!$id or $this->request->is('get')) :
 			throw new MethodNotAllowedException();

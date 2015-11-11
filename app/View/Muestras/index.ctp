@@ -19,7 +19,7 @@
 <div class='index'>
   <table>
   <tr>
-    <th><?php echo $this->Paginator->sort('tipo')?></th>
+    <!--th><?php //echo $this->Paginator->sort('tipo')?></th!-->
     <th><?php echo $this->Paginator->sort('referencia')?></th>
     <th><?php echo $this->Paginator->sort('fecha')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
@@ -29,7 +29,7 @@
   <?php foreach($muestras as $muestra):?>
   <tr>
     <td>
-      <?php echo $muestra['Muestra']['tipo']?>
+      <?php //echo $muestra['Muestra']['tipo']?>
     </td>
     <td>
       <?php echo $muestra['Muestra']['referencia']?>
@@ -70,14 +70,6 @@
     }
   ?>
   </div>
-
-  <?php echo $this->Paginator->counter(
-    array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
-  );?>
-
-  <div class="paging">
-    <?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
-    <?php echo $this->Paginator->numbers(array('separator' => ''));?>
-    <?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
-  </div>
+<?php echo $this->element('paginador');?>
 </div>
+
