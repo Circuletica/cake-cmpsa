@@ -1,7 +1,7 @@
 <?php
 	$this->extend('/Common/view');
 	$this->assign('object', 'Contrato '.$referencia);
-	$this->assign('line_object', 'operación');
+	$this->assign('line_object', 'Operación');
 	$this->assign('id',$contrato['Contrato']['id']);
 	$this->assign('class','Contrato');
 	$this->assign('controller','contratos');

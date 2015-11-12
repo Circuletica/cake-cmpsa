@@ -1,5 +1,4 @@
 <h1>Modificar Muestra<?php echo ' de '.$tipo;?></h1>
-<fieldset>
 <?php
   $this->Html->addCrumb('Muestras', '/muestras');
 	//si no esta la calidad en el listado, dejamos un enlace para
@@ -23,6 +22,9 @@
 	);
 
 	echo $this->Form->create('Muestra', array('action' => 'edit'));
+	?>
+    <div class="col2">
+	<?php	
 	echo $this->Form->input('calidad_id', array(
 		'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 		'id' => 'combobox'
@@ -33,7 +35,7 @@
 		)
 	);
 	?>
-	<div class="columna2">
+	<div class="col2">
 	<?php
 	echo $this->Form->input('referencia');
 	 ?>
@@ -55,5 +57,4 @@
 			echo $this->Form->input('id', array('type'=>'hidden'));
 			echo $this->Form->end('Guardar Muestra');
 		?>
-    </fieldset>
 </div>

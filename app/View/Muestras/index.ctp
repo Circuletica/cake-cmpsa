@@ -29,9 +29,9 @@
   </tr>
   <?php foreach($muestras as $muestra):?>
   <tr>
-    <td>
+    <!--<td>
       <?php //echo $muestra['Muestra']['tipo']?>
-    </td>
+    </td>-->
     <td>
       <?php echo $muestra['Muestra']['referencia']?>
     </td>

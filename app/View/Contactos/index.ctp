@@ -27,7 +27,7 @@ No hay contactos en esta lista
   <th>Teléfono2</th>
   <th>Email</th>
   <th>Empresa</th>
-  <th>Acciones</th>
+  <th>Detalle</th>
 </tr>
 <?php foreach ($contactos as $contacto): ?>
 <tr>

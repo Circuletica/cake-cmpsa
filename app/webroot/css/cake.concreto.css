@@ -12,7 +12,7 @@
 	}
 .tabs li {
 	/*margin: 0 0.5%  1em 0;*/
-	margin: 0px 1px;
+	margin: 0px 2px;
 }
 .tabs > li {
 	float:left;
@@ -39,7 +39,7 @@
 .tabs li ul {
 	display:none;
 	position:absolute;
-	min-width:100px;
+	min-width:150px;
 }
 .tabs li:hover > ul {
 	display:block;

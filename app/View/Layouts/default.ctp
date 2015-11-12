@@ -38,7 +38,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 	<h1><?php echo $this->Html->link($cakeDescription, '/'); ?></h1>
 		<div class="menuheader"> 
 		<ul class="tabs">
-			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/contratos',array('escape' => false));?>
+			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','#',array('escape' => false));?>
 				<ul>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> CONTRATO','/contratos',array('escape' => false));?></li>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones',array('escape' => false));?></li>

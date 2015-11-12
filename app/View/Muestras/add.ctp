@@ -147,7 +147,6 @@
     });
     </script>
      <h2>Añadir Muestra</h2>
-    <fieldset>
     <?php
 	    //si no esta la calidad en el listado, dejamos un enlace para
 	    //agragarla
@@ -170,6 +169,7 @@
 
 	    echo $this->Form->create('Muestra');
 	    ?>
+	 <div class="col2">
 	    <div class="radiomuestra">
   		<?php
 	    echo $this->Form->radio('tipo', $tipos, array(
@@ -179,6 +179,7 @@
 	    );
 	    ?>
 		</div>
+
 	    <?php
 	    echo $this->Form->input('calidad_id', array(
 		    'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
@@ -196,7 +197,7 @@
 		    )
 	    );
 	    ?>
-	    <div class="columna2">
+	    <div class="col2">
 	    <?php
 	    echo $this->Form->input('referencia');
 		    ?>
@@ -206,6 +207,10 @@
 		'empty' => true
 	    )
 	    );
+	    ?>
+	    </div>
+	<div class="col2"> 
+	    <?php
 	    echo $this->Form->input('aprobado');
 	    ?>
  <div class="linea">
@@ -216,11 +221,11 @@
 			    );
 			    ?>
 				</div>
-	    </div>		
+	 </div>
 	    <?php
 	    echo $this->Form->input('incidencia');
 	    //echo $this->Form->input('reclamacion');
 	    echo $this->Form->end('Guardar Muestra');
 			?>
-    </fieldset>
+	</div>
 </div>
