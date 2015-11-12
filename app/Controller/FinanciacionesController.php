@@ -39,8 +39,8 @@ class FinanciacionesController extends AppController {
 		    'Banco' => array(
 			'Empresa'
 		    ),
-		    'TipoIva',
-		    'TipoIvaComision',
+		    //'TipoIva',
+		    //'TipoIvaComision',
 		    'Operacion' => array(
 			'Contrato' => array(
 			    'CalidadNombre',
@@ -57,20 +57,20 @@ class FinanciacionesController extends AppController {
 		    ),
 		    'ValorIvaFinanciacion',
 		    'ValorIvaComision',
-		    'RepartoOperacionAsociado' => array(
-			'fields' => array(
-			    'porcentaje_embalaje_asociado',
-			    'peso_asociado',
-			    'precio_asociado',
-			    'iva',
-			    'comision',
-			    'iva_comision',
-			    'total'
-			),
-			'Asociado' => array(
-			    'Empresa'
-			)
-		    )
+		    //'RepartoOperacionAsociado' => array(
+		    //    'fields' => array(
+		    //        'porcentaje_embalaje_asociado',
+		    //        'peso_asociado',
+		    //        'precio_asociado',
+		    //        'iva',
+		    //        'comision',
+		    //        'iva_comision',
+		    //        'total'
+		    //    ),
+		    //    'Asociado' => array(
+		    //        'Empresa'
+		    //    )
+		    //)
 		),
 		'conditions' => array('Financiacion.id' => $id),
 		'recursive' => 4
