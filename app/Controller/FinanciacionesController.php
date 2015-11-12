@@ -50,7 +50,16 @@ class FinanciacionesController extends AppController {
 			    )
 			),
 			'ValorIvaFinanciacion',
+			'ValorIvaComision',
 			'RepartoOperacionAsociado' => array(
+			    'fields' => array(
+				'porcentaje_embalaje_asociado',
+				'peso_asociado',
+				'precio_asociado',
+				'iva',
+				'comision',
+				'iva_comision',
+				'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0) as total'),
 			    'Asociado' => array(
 				'Empresa'
 			    )
@@ -60,27 +69,29 @@ class FinanciacionesController extends AppController {
 		    'recursive' => 4
 		)
 	);
+	$this->set(compact('financiacion'));
+	$this->set('repartos',$financiacion['RepartoOperacionAsociado']);
 	$totales = $this->Financiacion->RepartoOperacionAsociado->find(
 	    'first',
 	    array(
 		'conditions' => array('RepartoOperacionAsociado.id' => $id),
 		'fields' => array(
-		    'sum(porcentaje_embalaje_socio) AS total_porcentaje_embalaje',
+		    'sum(porcentaje_embalaje_asociado) AS total_porcentaje_embalaje',
 		    'sum(peso_asociado) AS total_peso',
 		    'sum(precio_asociado) AS total_precio',
 		    'sum(iva) AS total_iva',
-		    'sum(precio_asociado_con_iva) AS total_precio_con_iva',
+		    'sum(comision) AS total_comision',
+		    'sum(iva_comision) AS total_iva_comision',
+		    'sum(precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)) AS total_general',
 		)
 	    )
 	);
 	//quitamos un nivel de anidacion en el array que obtenemos
 	$this->set('totales',$totales[0]);
-	$this->set(compact('financiacion'));
 	$this->set('referencia', $financiacion['Operacion']['referencia']);
 	$this->set('proveedor', $financiacion['Operacion']['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $financiacion['Operacion']['Contrato']['CalidadNombre']['nombre']);
-	$this->set('repartos', $financiacion['RepartoOperacionAsociado']);
 	$condicion = $financiacion['Operacion']['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
 	//solo el año de embarque/entrega
 	$condicion .= ' '.substr($financiacion['Operacion']['Contrato']['fecha_transporte'],0,4);
@@ -91,6 +102,7 @@ class FinanciacionesController extends AppController {
 	$this->set(compact('cuenta'));
 	$this->set('precio_euro_kilo', $financiacion['Financiacion']['precio_euro_kilo']);
 	$this->set('iva',$financiacion['ValorIvaFinanciacion']['valor']);
+	$this->set('iva_comision',$financiacion['ValorIvaComision']['valor']);
     }
 
     public function add() {
