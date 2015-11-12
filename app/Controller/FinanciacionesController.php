@@ -11,83 +11,128 @@ class FinanciacionesController extends AppController {
 	    'Operacion'
 	);
 	$this->Financiacion->bindModel(array(
-		'belongsTo' => array(
-			'Empresa' => array(
-				'foreignKey' => false,
-				'conditions' => array('Empresa.id = Financiacion.banco_id')
-				)
-			)
+	    'belongsTo' => array(
+		'Empresa' => array(
+		    'foreignKey' => false,
+		    'conditions' => array('Empresa.id = Financiacion.banco_id')
+		)
+	    )
 	));
 	$this->set('financiaciones', $this->paginate());
     }
     public function view($id = null) {
 	//el id y la clase de la financiación de origen vienen en la URL
 	if (!$id) {
-		$this->Session->setFlash('URL mal formado Financiación/view');
-		$this->redirect(array('action'=>'index'));
+	    $this->Session->setFlash('URL mal formado Financiación/view');
+	    $this->redirect(array('action'=>'index'));
 	}
+	//calculamos el total de cada línea de reparto como campo virtual del modelo
+	//Si metemos el campo nuevo directamente en el 'contain' del find, sale
+	//un element [0] en el resultado
+	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
+	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)'
+	);
 	$financiacion = $this->Financiacion->find(
-		'first',
-		array(
-		    'contain' => array(
-			'Banco' => array(
-			    'Empresa'
-			),
-			'TipoIva',
-			'TipoIvaComision',
-			'Operacion' => array(
-			    'Contrato' => array(
-				'CalidadNombre',
-				'Incoterm',
-				'Proveedor' => array(
-				    'Empresa'
-				)
-			    ),
-			    'AsociadoOperacion' => array(
-				'Asociado' => array(
-				    'Empresa'
-				)
+	    'first',
+	    array(
+		'contain' => array(
+		    'Banco' => array(
+			'Empresa'
+		    ),
+		    'TipoIva',
+		    'TipoIvaComision',
+		    'Operacion' => array(
+			'Contrato' => array(
+			    'CalidadNombre',
+			    'Incoterm',
+			    'Proveedor' => array(
+				'Empresa'
 			    )
 			),
-			'ValorIvaFinanciacion',
-			'ValorIvaComision',
-			'RepartoOperacionAsociado' => array(
-			    'fields' => array(
-				'porcentaje_embalaje_asociado',
-				'peso_asociado',
-				'precio_asociado',
-				'iva',
-				'comision',
-				'iva_comision',
-				'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0) as total'),
+			'AsociadoOperacion' => array(
 			    'Asociado' => array(
 				'Empresa'
 			    )
 			)
 		    ),
-		    'conditions' => array('Financiacion.id' => $id),
-		    'recursive' => 4
-		)
+		    'ValorIvaFinanciacion',
+		    'ValorIvaComision',
+		    'RepartoOperacionAsociado' => array(
+			'fields' => array(
+			    'porcentaje_embalaje_asociado',
+			    'peso_asociado',
+			    'precio_asociado',
+			    'iva',
+			    'comision',
+			    'iva_comision',
+			    'total'
+			),
+			'Asociado' => array(
+			    'Empresa'
+			)
+		    )
+		),
+		'conditions' => array('Financiacion.id' => $id),
+		'recursive' => 4
+	    )
 	);
 	$this->set(compact('financiacion'));
-	$this->set('repartos',$financiacion['RepartoOperacionAsociado']);
+	//$this->set('repartos',$financiacion['RepartoOperacionAsociado']);
+	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
+	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)');
+	$this->Financiacion->RepartoOperacionAsociado->unbindModel(array(
+	    'belongsTo' => array('Asociado')
+	));
+	$this->Financiacion->RepartoOperacionAsociado->bindModel(array(
+	    'belongsTo' => array(
+		'Empresa' => array(
+		    'foreignKey' => false,
+		    'conditions' => array('Empresa.id = RepartoOperacionAsociado.asociado_id')
+		)
+	    )
+	));
+	$repartos = $this->Financiacion->RepartoOperacionAsociado->find(
+	    'all',
+	    array(
+		'conditions'=>array(
+		    'RepartoOperacionAsociado.id' => $id
+		),
+		'contains' => array(
+		    'Empresa' => array(
+			'fields' => array('nombre_corto')
+		    )
+		),
+		'order' => array('Empresa.nombre_corto' => 'ASC')
+	    )
+	);
+	$this->set(compact('repartos'));
+	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
+	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
+	    'total_porcentaje_embalaje' => 'sum(porcentaje_embalaje_asociado)',
+	    'total_peso' => 'sum(peso_asociado)',
+	    'total_precio' => 'sum(precio_asociado)',
+	    'total_iva' => 'sum(iva)',
+	    'total_comision' => 'sum(comision)',
+	    'total_iva_comision' => 'sum(iva_comision)',
+	    'total_general' => 'sum(precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0))',
+	);
 	$totales = $this->Financiacion->RepartoOperacionAsociado->find(
 	    'first',
 	    array(
 		'conditions' => array('RepartoOperacionAsociado.id' => $id),
 		'fields' => array(
-		    'sum(porcentaje_embalaje_asociado) AS total_porcentaje_embalaje',
-		    'sum(peso_asociado) AS total_peso',
-		    'sum(precio_asociado) AS total_precio',
-		    'sum(iva) AS total_iva',
-		    'sum(comision) AS total_comision',
-		    'sum(iva_comision) AS total_iva_comision',
-		    'sum(precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)) AS total_general',
+		    'total',
+		    'total_porcentaje_embalaje',
+		    'total_peso',
+		    'total_precio',
+		    'total_iva',
+		    'total_comision',
+		    'total_iva_comision',
+		    'total_general',
 		)
 	    )
 	);
-	//quitamos un nivel de anidacion en el array que obtenemos
-	$this->set('totales',$totales[0]);
+	$this->set('totales',$totales['RepartoOperacionAsociado']);
 	$this->set('referencia', $financiacion['Operacion']['referencia']);
 	$this->set('proveedor', $financiacion['Operacion']['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);
@@ -109,8 +154,8 @@ class FinanciacionesController extends AppController {
 	if (!$this->params['named']['from_id']) {
 	    $this->Session->setFlash('URL mal formado financiaciones/add '.$this->params['named']['from_controller']);
 	    $this->redirect(array(
-		    'controller' => $this->params['named']['from_controller'],
-		    'action' => 'index')
+		'controller' => $this->params['named']['from_controller'],
+		'action' => 'index')
 	    );
 	}
 	$operacion = $this->Financiacion->Operacion->find(
@@ -124,16 +169,16 @@ class FinanciacionesController extends AppController {
 	);
 	$this->set(compact('operacion'));
 	$bancos = $this->Financiacion->Banco->find('list', array(
-		'fields' => array('Banco.id','Empresa.nombre_corto'),
-		'order' => array('Empresa.nombre_corto' => 'asc'),
-		'recursive' => 1
-		)
-	);
+	    'fields' => array('Banco.id','Empresa.nombre_corto'),
+	    'order' => array('Empresa.nombre_corto' => 'asc'),
+	    'recursive' => 1
+	)
+    );
 	$this->set(compact('bancos'));
 	$tipoIvas = $this->Financiacion->TipoIva->find('list');
 	$this->set(compact('tipoIvas'));
 	$this->set('tipoIvaComisiones', $tipoIvas);
-    	$this->set('referencia', $operacion['Operacion']['referencia']);
+	$this->set('referencia', $operacion['Operacion']['referencia']);
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
@@ -146,21 +191,21 @@ class FinanciacionesController extends AppController {
 	if($this->request->is('post')):
 	    if($this->Financiacion->save($this->request->data)):
 		$this->Session->setFlash('Financiación guardada');
-		$this->redirect(array('action' => 'index'));
-	    endif;
-	endif;
+	$this->redirect(array('action' => 'index'));
+endif;
+endif;
     }
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) :
-		throw new MethodNotAllowedException();
-	endif;
-	if ($this->Financiacion->delete($id)):
-		$this->Session->setFlash('Financiación borrada');
-	$this->redirect(array(
-		'controller' => 'financiaciones',
-		'action'=>'index',
-	));
-	endif;
+	    throw new MethodNotAllowedException();
+endif;
+if ($this->Financiacion->delete($id)):
+    $this->Session->setFlash('Financiación borrada');
+$this->redirect(array(
+    'controller' => 'financiaciones',
+    'action'=>'index',
+));
+endif;
     }
 }
 ?>

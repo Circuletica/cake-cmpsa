@@ -43,33 +43,33 @@
 	echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA Comisión('.$iva_comision.'%)','Precio final'));
 	foreach($repartos as $linea):
 		echo $this->Html->tableCells(array(
-			$linea['Asociado']['Empresa']['nombre_corto'],
+			$linea['Empresa']['nombre_corto'],
 			array(
-			    $this->Number->roundTo2($linea['porcentaje_embalaje_asociado']),
+			    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['porcentaje_embalaje_asociado']),
 			    array('style' => 'text-align:right')
 			),
 			array(
-			    $this->Number->roundTo2($linea['peso_asociado']),
+			    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['peso_asociado']),
 			    array('style' => 'text-align:right')
 			),
 			array(
-			    $this->Number->roundTo2($linea['precio_asociado']),
+			    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['precio_asociado']),
 			    array('style' => 'text-align:right')
 			),
 			array(
-			    $this->Number->roundTo2($linea['iva']),
+			    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['iva']),
 			    array('style' => 'text-align:right')
 			),
 			array(
-			    $this->Number->roundTo2($linea['comision']),
+			    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['comision']),
 			    array('style' => 'text-align:right')
 			),
 			array(
-			    $this->Number->roundTo2($linea['iva_comision']),
+			    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['iva_comision']),
 			    array('style' => 'text-align:right')
 			),
 			array(
-			    $this->Number->roundTo2($linea['RepartoOperacionAsociado'][0]['total']),
+			    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['total']),
 			    array('style' => 'text-align:right')
 			),
 		    )
