@@ -4,6 +4,3 @@
 	$this->assign('class','Banco');
 	$this->assign('controller','bancos');
 ?>
-
-
-

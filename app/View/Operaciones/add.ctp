@@ -79,16 +79,19 @@ echo $this->Form->input('fecha_pos_fijacion', array(
 	'selected' => date('Y-m-1')
 	)
 );
+
 ?>
 </div>
 <?php
 echo $this->Form->input('puerto_carga_id', array(
 	'label' => 'Puerto de embarque',
+>>>>>>> refs/remotes/origin/test
 	'default' => $puerto_carga_contrato_id,
 	'empty' => array('' => '')
 	)
 );
 echo $this->Form->input('puerto_destino_id', array(
+
 	'label' => 'Puerto de destino',
 	'default' => $puerto_destino_contrato_id,
 	'empty' => array('' => '')
@@ -137,6 +140,7 @@ echo $this->Form->input('cambio_dolar_euro', array(
 	echo $this->Form->input('comentario');
 	echo $this->Form->end('Guardar Operacion');
 ?>
+
 </div>
 
 <script type="text/javascript">

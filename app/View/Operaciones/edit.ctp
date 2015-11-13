@@ -56,7 +56,6 @@ echo $this->Form->input('lotes_operacion',
 	array(
 		'label' => 'Lotes <em>(Quedan por fijar <var id="lotes">'.$lotes_por_fijar.'</var> lotes)</em>',
 		'oninput' => 'lotesPorFijar()'
-
 	)
 );
 
@@ -124,3 +123,4 @@ echo $this->Form->end('Guardar Operacion');
 <script type="text/javascript">
 	window.onload = pesoAsociadoEdit();
 </script>
+

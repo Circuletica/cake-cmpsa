@@ -1,5 +1,6 @@
 <?php //$this->Html->getCrumbs(' > ');?>
 <?php
+
 	$this->Html->addCrumb('Operaciones', array(
 		'controller' => 'operaciones',
 		'action' => 'index')
@@ -54,5 +55,4 @@
 		echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled')); ?>
 	</div>
 	<?php endif; ?>
-
 </div>

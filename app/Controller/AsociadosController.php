@@ -1,5 +1,6 @@
 <?php
 class AsociadosController extends AppController {
+
     var $scaffold = 'admin';
     public $paginate = array(
 	'order' => array('Empresa.nombre' => 'asc')

@@ -1,6 +1,5 @@
 <?php
 App::uses('AppHelper', 'View/Helper');
-
 class DateHelper extends AppHelper {
     public function format($date) {
        $year = substr($date,0,4);

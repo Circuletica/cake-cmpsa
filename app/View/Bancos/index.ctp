@@ -26,7 +26,6 @@
 		'Agencia',
 		'Teléfono',
 		'Acciones'));
-
 	foreach($bancos as $banco):
 	echo $this->Html->tableCells(array(
 		$banco['Empresa']['nombre_corto'],
@@ -35,7 +34,6 @@
 		$banco['Empresa']['telefono'],
 		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array('action'=>'view',$banco['Banco']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))
 	));
-
 	endforeach;?>
 	</table>
 	<div class="btabla">
@@ -54,4 +52,3 @@
 
 
 <?php endif; ?>
-

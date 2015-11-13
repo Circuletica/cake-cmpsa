@@ -190,8 +190,7 @@
 	    );
 	    echo $this->Form->input('proveedor_id', array(
 		    'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
-		    //'empty' => array('' => 'Selecciona'),
-		    'empty' => true,
+		    'empty' => array('' => 'Selecciona'),
 		    'class' => 'ui-widget',
 		    'id' => 'combobox'
 		    )
@@ -213,7 +212,7 @@
 	    <?php
 	    echo $this->Form->input('aprobado');
 	    ?>
- <div class="linea">
+				<div class="linea">
 			    	<?php
 			    echo $this->Form->input('fecha', array(
 				    'dateFormat' => 'DMY',

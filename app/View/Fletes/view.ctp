@@ -1,4 +1,5 @@
 <?php
+
 $this->extend('/Common/view');
 $this->assign('object', 'Flete '.$referencia);
 $this->assign('line_object', 'precio');
@@ -47,4 +48,5 @@ foreach ($costes as $coste):
 endforeach;
 echo "</table>";
 $this->end();
+
 ?>

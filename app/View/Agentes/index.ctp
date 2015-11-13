@@ -3,6 +3,3 @@
 	$this->assign('class','Agente');
 	$this->assign('controller','agentes');
 ?>
-
-
-
