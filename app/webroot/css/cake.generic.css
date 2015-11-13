@@ -316,13 +316,13 @@ fieldset {
 	float: left;
 	/*display: block;*/
 	/*width: 15%;*/
-	width: 749px;
+	width: 50%;
 	/*margin: 0 30px 10px 0;*/
 }
 fieldset legend {
 	color: #2c6877;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 135%;
+	font-size: 110%;
 	font-weight: bold;
 }
 fieldset fieldset {

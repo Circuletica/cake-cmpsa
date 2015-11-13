@@ -8,7 +8,10 @@
 	echo $this->Html->script('jquery')."\n"; // Include jQuery library
 	$this->Js->set('embalajesCompleto', $embalajes_completo);
 	echo $this->Js->writeBuffer(array('onDomReady' => false));
-
+	?>
+	<fieldset>
+	<legend>
+	<?php
 	echo 'Proveedor: '.$proveedor."\n";
 	echo "<p>\n";
 	echo 'Calidad: '.$contrato['CalidadNombre']['nombre']."\n";
@@ -20,20 +23,13 @@
 	echo "<p>\n";
 	echo 'Peso sin fijar: '.$contrato['RestoContrato']['peso_restante']."\n";
 	echo "<p>\n";
-
-
-	echo $this->Form->create('Operacion');
-	echo $this->Form->input('referencia');
-	echo $this->Form->input('embalaje_id', array(
-		//'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
-		'after' => '(quedan ????? sin fijar)',
-		//'onchange' => 'pesoAsociado(this)'
-		'onchange' => 'pesoAsociado()'
-		)
-	);
-	//necesitamos un array con la cantidad asignada a cada socio
 	?>
-
+	</legend>
+	</fieldset>
+	<?php
+	echo $this->Form->create('Operacion');
+	?>
+		<fieldset>
 <h3>Asociados</h3>
 		<table>
 		<?php
@@ -59,6 +55,25 @@
 		endforeach;
 		?>
 		</table>
+	</fieldset>
+	<fieldset>
+
+	<div class="col2">
+	<?php
+	echo $this->Form->input('referencia');
+	echo $this->Form->input('embalaje_id', array(
+		//'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
+		'after' => '(quedan ????? sin fijar)',
+		//'onchange' => 'pesoAsociado(this)'
+		'onchange' => 'pesoAsociado()'
+		)
+	);
+	//necesitamos un array con la cantidad asignada a cada socio
+	?>
+
+	</div>
+
+	<br><br>
 <div class="col2">
 <?php
 echo $this->Form->input('lotes_operacion',
@@ -85,7 +100,6 @@ echo $this->Form->input('fecha_pos_fijacion', array(
 <?php
 echo $this->Form->input('puerto_carga_id', array(
 	'label' => 'Puerto de embarque',
->>>>>>> refs/remotes/origin/test
 	'default' => $puerto_carga_contrato_id,
 	'empty' => array('' => '')
 	)
@@ -138,9 +152,9 @@ echo $this->Form->input('cambio_dolar_euro', array(
 	)
 );
 	echo $this->Form->input('comentario');
-	echo $this->Form->end('Guardar Operacion');
+	echo $this->Form->end('Guardar Operación');
 ?>
-
+</fieldset>
 </div>
 
 <script type="text/javascript">

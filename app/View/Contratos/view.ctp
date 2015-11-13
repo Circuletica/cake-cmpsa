@@ -76,7 +76,6 @@
 	echo "  <dd>".$puerto_carga."&nbsp;</dd>";
 	echo "  <dt>Puerto de destino</dt>\n";
 	echo "  <dd>".$puerto_destino."&nbsp;</dd>";
->>>>>>> refs/remotes/origin/test
 	echo "  <dt>Bolsa</dt>\n";
 	echo "  <dd>".$contrato['CanalCompra']['nombre'].'&nbsp;'."</dd>";
 	echo "  <dt>Diferencial</dt>\n";
