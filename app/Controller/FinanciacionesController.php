@@ -116,6 +116,7 @@ class FinanciacionesController extends AppController {
 	    )
 	);
 	$this->set('totales',$totales['RepartoOperacionAsociado']);
+	$this->set('financiacion_id', $financiacion['Financiacion']['id']);
 	$this->set('referencia', $financiacion['Operacion']['referencia']);
 	$this->set('proveedor', $financiacion['Operacion']['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);

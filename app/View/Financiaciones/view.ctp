@@ -14,7 +14,15 @@
 	$this->start('main');
 	echo "<dl>";
 	echo "  <dt>Operación</dt>\n";
-	echo "  <dd>".$referencia.'&nbsp;'."</dd>";
+	//echo "  <dd>".$referencia.'&nbsp;'."</dd>";
+	echo "<dd>";
+	echo $this->html->link($referencia, array(
+		'controller' => 'operaciones',
+		'action' => 'view',
+		$financiacion_id
+	    )
+	).'&nbsp;';
+	echo "</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "  <dd>".$calidad.'&nbsp;'."</dd>";
 	echo "  <dt>Proveedor</dt>\n";
@@ -30,7 +38,7 @@
 	echo "  <dt>Cuenta bancaria</dt>\n";
 	echo "<dd>".$cuenta.'&nbsp;'."</dd>";
 	echo "  <dt>Fecha de vencimiento</dt>\n";
-	echo "<dd>".$this->Date->format($fecha_vencimiento).'&nbsp;'."</dd>";
+	echo "<dd style='font-weight:bold'>".$this->Date->format($fecha_vencimiento).'&nbsp;'."</dd>";
 	echo "  <dt>Precio</dt>\n";
 	echo "<dd>".$precio_euro_kilo.'€/kg&nbsp;'."</dd>";
 	echo "</dl>";
@@ -40,7 +48,7 @@
 	?>
 	<table>
 	<?php
-	echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA Comisión('.$iva_comision.'%)','Total anticipo'));
+	echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA ('.$iva_comision.'%)','Total anticipo'));
 	foreach($repartos as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['Empresa']['nombre'],
@@ -70,7 +78,7 @@
 			),
 			array(
 			    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['total']),
-			    array('style' => 'text-align:right')
+			    array('style' => 'text-align:right; font-weight:bold')
 			),
 		    )
 		);
@@ -127,7 +135,7 @@
 		//$this->Number->roundTo2($totales['total_precio_con_iva']).'€',
 		$this->Number->roundTo2($totales['total_general']),
 		array(
-		    'style' => 'text-align:right',
+		    'style' => 'text-align:right; font-weight:bold',
 		    'bgcolor' => '#00FF00'
 		)
 	    )
