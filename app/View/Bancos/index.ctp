@@ -30,7 +30,7 @@
 	echo $this->Html->tableCells(array(
 		$banco['Empresa']['nombre_corto'],
 		$banco['Empresa']['codigo_contable'],
-		substr($banco['Banco']['cuenta_cliente_1'],4,4),
+		substr($banco['Empresa']['cuenta_bancaria'],4,4),
 		$banco['Empresa']['telefono'],
 		$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array('action'=>'view',$banco['Banco']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalles'))
 	));
