@@ -39,8 +39,6 @@ class FinanciacionesController extends AppController {
 		    'Banco' => array(
 			'Empresa'
 		    ),
-		    //'TipoIva',
-		    //'TipoIvaComision',
 		    'Operacion' => array(
 			'Contrato' => array(
 			    'CalidadNombre',
@@ -57,27 +55,12 @@ class FinanciacionesController extends AppController {
 		    ),
 		    'ValorIvaFinanciacion',
 		    'ValorIvaComision',
-		    //'RepartoOperacionAsociado' => array(
-		    //    'fields' => array(
-		    //        'porcentaje_embalaje_asociado',
-		    //        'peso_asociado',
-		    //        'precio_asociado',
-		    //        'iva',
-		    //        'comision',
-		    //        'iva_comision',
-		    //        'total'
-		    //    ),
-		    //    'Asociado' => array(
-		    //        'Empresa'
-		    //    )
-		    //)
 		),
 		'conditions' => array('Financiacion.id' => $id),
 		'recursive' => 4
 	    )
 	);
 	$this->set(compact('financiacion'));
-	//$this->set('repartos',$financiacion['RepartoOperacionAsociado']);
 	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
 	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)');
 	$this->Financiacion->RepartoOperacionAsociado->unbindModel(array(
@@ -102,7 +85,7 @@ class FinanciacionesController extends AppController {
 			'fields' => array('nombre_corto')
 		    )
 		),
-		'order' => array('Empresa.nombre_corto' => 'ASC')
+		'order' => array('Empresa.codigo_contable' => 'ASC')
 	    )
 	);
 	$this->set(compact('repartos'));
