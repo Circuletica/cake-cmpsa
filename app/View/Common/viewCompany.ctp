@@ -48,6 +48,11 @@ echo "  <dt>Cuenta bancaria</dt>\n";
 echo "<dd>";
 echo $iban_bancaria.'&nbsp;';
 echo "</dd>";
+echo "  <dt>Sitio web</dt>\n";
+echo "<dd>";
+echo '<a href="'.$empresa['Empresa']['website'].'">'.$empresa['Empresa']['website'].'</a>'
+    .'&nbsp;';
+echo "</dd>";
 if ($this->fetch('class') == 'Asociado'){
     echo "  <dt>Comisión actual</dt>\n";
     echo "<dd>";

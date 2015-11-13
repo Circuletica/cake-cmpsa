@@ -64,7 +64,6 @@
 	echo $this->Form->input('embalaje_id', array(
 		//'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
 		'after' => '(quedan ????? sin fijar)',
-		//'onchange' => 'pesoAsociado(this)'
 		'onchange' => 'pesoAsociado()'
 		)
 	);
