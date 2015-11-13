@@ -40,10 +40,10 @@
 	?>
 	<table>
 	<?php
-	echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA Comisión('.$iva_comision.'%)','Precio final'));
+	echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA Comisión('.$iva_comision.'%)','Total anticipo'));
 	foreach($repartos as $linea):
 		echo $this->Html->tableCells(array(
-			$linea['Empresa']['nombre_corto'],
+			$linea['Empresa']['nombre'],
 			array(
 			    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['porcentaje_embalaje_asociado']),
 			    array('style' => 'text-align:right')
