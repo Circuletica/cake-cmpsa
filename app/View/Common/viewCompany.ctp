@@ -2,12 +2,13 @@
 $this->extend('/Common/view');
 $this->assign('object', $this->fetch('object'));
 $this->assign('line_object', 'contacto');
-$this->assign('line2_object', 'comisión');
+//$this->assign('line2_object', 'comisión');
+$this->assign('line2_object', $this->fetch('line2_object'));
 $this->assign('id',$empresa['Empresa']['id']);
 $this->assign('class',$this->fetch('class'));
 $this->assign('controller',$this->fetch('controller'));
 $this->assign('line_controller','contactos');
-$this->assign('line2_controller','asociado_comisiones');
+$this->assign('line2_controller',$this->fetch('line2_controller'));
 
 $this->start('filter');
 //echo $this->element('filtroflete');
