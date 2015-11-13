@@ -226,6 +226,7 @@
 	    <div class="col3">
 	    <?php
 	    echo $this->Form->input('peso_comprado', array(
+		'label' => 'Peso comprado (kg)',
 		'id' => 'pesoComprado',
 		'oninput' => 'totalDesglose()'
 		)
