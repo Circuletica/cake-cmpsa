@@ -44,13 +44,13 @@ class TipoIvasController extends AppController {
 	if($this->request->is('post')):
 	    if($this->TipoIva->save($this->request->data) ):
 		$this->Session->setFlash('Tipo de IVA guardado');
-	    $this->redirect(array(
-		'controller' => 'tipo_ivas',
-		'action' => 'index'
-		)
-	    );
-	    endif;
-	endif;
+	$this->redirect(array(
+	    'controller' => 'tipo_ivas',
+	    'action' => 'index'
+	)
+    );
+endif;
+endif;
     }
 
     public function view($id = null) {
@@ -71,7 +71,14 @@ class TipoIvasController extends AppController {
     public function edit($id = null) {
 	$this->TipoIva->id = $id;
 	if($this->request->is('get')):
-	    $this->request->data = $this->TipoIva->read();
+	    $iva = $this->TipoIva->find('first', array(
+		'conditions' => array(
+		    'id' => $id
+		)
+	    )
+	);
+	$this->set('referencia', 'IVA '.$iva['TipoIva']['nombre']);
+	$this->request->data = $this->TipoIva->read();
 	else:
 	    if($this->TipoIva->save($this->request->data)):
 		$this->Session->setFlash(' Tipo de IVA '.$this->request->data['Iva']['nombre'].' guardado');
