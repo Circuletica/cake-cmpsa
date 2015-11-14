@@ -1,8 +1,7 @@
 <?php
 $this->extend('/Common/index');
-$this->assign('object', 'Tipo de IVA');
-$this->assign('controller', 'tipo_ivas');
 $this->assign('class', 'TipoIva');
+//$this->assign('object', 'Tipo de IVA');
 
 $this->start('filter');
 $this->end();
