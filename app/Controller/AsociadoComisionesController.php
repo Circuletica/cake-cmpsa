@@ -17,6 +17,35 @@ class AsociadoComisionesController extends AppController {
     }
 
     function add() {
+	if($this->request->is('post')):
+	    debug($this->request->data);
+	    if($this->AsociadoComision->save($this->request->data)):
+		$this->Session->setFlash('Comisión guardada'.$this->request->data['AsociadoComision']['asociado_id']);
+		$asociado_id = $this->request->data['AsociadoComision']['asociado_id'];
+		$this->redirect(
+		    array(
+			'controller' => 'asociados',
+			'action' => 'view',
+			$asociado_id
+		    )
+		);
+	    endif;
+	else:
+	    $asociado = $this->AsociadoComision->Asociado->Empresa->find(
+		'first', array(
+		    'conditions' => array(
+			'Empresa.id' => $this->params['named']['from_id']
+		    )
+		)
+	    );
+	    $this->set('asociado_nombre', $asociado['Empresa']['nombre_corto']);
+	    $this->set('asociado_id', $asociado['Empresa']['id']);
+	    $comisiones = $this->AsociadoComision->Comision->find(
+		'list',
+		array('recursive' => -1)
+	    );
+	    $this->set(compact('comisiones'));
+	endif;
     }
 
     function edit($id = null) {
@@ -46,8 +75,8 @@ class AsociadoComisionesController extends AppController {
 	    $this->params['named']['from_id']));
 	    else:
 		$this->Session->setFlash('No se ha podido guardar!');
-	    endif;
-	endif;
+endif;
+endif;
     }
 
     function delete($id) {

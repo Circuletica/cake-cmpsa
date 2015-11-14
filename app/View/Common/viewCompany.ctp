@@ -84,7 +84,7 @@ echo "</table>";
 $this->end();
 
 $this->start('lines2');
-//la tabla con el historial de comisiones
+//la tabla con el segundo grupo de lineas
 echo "<table>";
 echo $this->Html->tableHeaders(array(
     'válido desde','válido hasta','comisión',''));
