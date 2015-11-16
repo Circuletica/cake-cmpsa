@@ -134,20 +134,25 @@ class LineaMuestrasController extends AppController {
 	public function edit( $id = null) {
 		//DRY, guardamos la página de donde venimos,
 		//para volver después de editar
-		$anterior = array(
-			'controller' => $this->params['named']['from_controller'],
-			'action'=>'view',
-			$this->params['named']['from_id']
-		);
+//		$anterior = array(
+//			'controller' => $this->params['named']['from_controller'],
+//			'action'=>'view',
+//			$this->params['named']['from_id']
+//		);
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');
-			$this->redirect($anterior);
+			//$this->redirect($anterior);
 	//		$this->redirect(array(
 	//			'controller' => $this->params['named']['from_controller'],
 	//			'action'=>'view',
 	//			$this->params['named']['from_id']
 	//			)
 	//		);
+			$this->redirect(array(
+				'controller' => 'muestras',
+				'action'=>'index'
+				)
+			);
 		}
 		$this->LineaMuestra->id = $id;
 		//sacamos los datos de la muestra a la que pertenece la linea
