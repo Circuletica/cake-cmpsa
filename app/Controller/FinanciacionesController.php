@@ -1,6 +1,6 @@
 <?php
 class FinanciacionesController extends AppController {
-    public $scaffold = 'admin';
+    //public $scaffold = 'admin';
     public $paginate = array(
 	'order' => array('Operacion.referencia' => 'asc')
     );
@@ -77,7 +77,7 @@ class FinanciacionesController extends AppController {
 	    )
 	);
 	$this->set(compact('financiacion'));
-	//$this->set('repartos',$financiacion['RepartoOperacionAsociado']);
+
 	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
 	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)');
 	$this->Financiacion->RepartoOperacionAsociado->unbindModel(array(
@@ -106,6 +106,7 @@ class FinanciacionesController extends AppController {
 	    )
 	);
 	$this->set(compact('repartos'));
+
 	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
 	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
 	    'total_porcentaje_embalaje' => 'sum(porcentaje_embalaje_asociado)',
@@ -133,6 +134,11 @@ class FinanciacionesController extends AppController {
 	    )
 	);
 	$this->set('totales',$totales['RepartoOperacionAsociado']);
+<<<<<<< Updated upstream
+=======
+
+	$this->set('financiacion_id', $financiacion['Financiacion']['id']);
+>>>>>>> Stashed changes
 	$this->set('referencia', $financiacion['Operacion']['referencia']);
 	$this->set('proveedor', $financiacion['Operacion']['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);
@@ -140,6 +146,7 @@ class FinanciacionesController extends AppController {
 	$condicion = $financiacion['Operacion']['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
 	//solo el año de embarque/entrega
 	$condicion .= ' '.substr($financiacion['Operacion']['Contrato']['fecha_transporte'],0,4);
+	//y el incoterm del contrato
 	$condicion .= ' ('.$financiacion['Operacion']['Contrato']['Incoterm']['nombre'].')';
 	$this->set(compact('condicion'));
 	$this->set('fecha_vencimiento',$financiacion['Financiacion']['fecha_vencimiento']);
