@@ -38,7 +38,6 @@
 		//'Opciones',
 		'Detalle')
 	);
-
 	foreach($contratos as $contrato):
 		//mysql almacena la fecha en formato ymd
 		$fecha = $contrato['Contrato']['posicion_bolsa'];
@@ -59,7 +58,6 @@
 			$this->Button->view('contratos',$contrato['Contrato']['id'])
 			//$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))
 	));
-
 	endforeach;?>
 	</table>
 		<div class="btabla">
@@ -78,3 +76,4 @@
 	<?php endif; ?>
 
 </div>
+

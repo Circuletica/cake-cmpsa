@@ -10,7 +10,6 @@
   } else {
     $this->Html->addCrumb($title, '/muestras/index');
   }
-
 ?>
 
 <div class="actions">
@@ -20,7 +19,7 @@
 <div class='index'>
   <table>
   <tr>
-    <th><?php echo $this->Paginator->sort('tipo')?></th>
+    <!--th><?php //echo $this->Paginator->sort('tipo')?></th!-->
     <th><?php echo $this->Paginator->sort('referencia')?></th>
     <th><?php echo $this->Paginator->sort('fecha')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
@@ -29,9 +28,9 @@
   </tr>
   <?php foreach($muestras as $muestra):?>
   <tr>
-    <td>
-      <?php echo $muestra['Muestra']['tipo']?>
-    </td>
+    <!--<td>
+      <?php //echo $muestra['Muestra']['tipo']?>
+    </td>-->
     <td>
       <?php echo $muestra['Muestra']['referencia']?>
     </td>
@@ -58,16 +57,16 @@
   <?php 
     if(isset($this->request->data['Search']['tipo_id'])){
       echo $this->Html->link(
-	'<i class="fa fa-plus"></i> Añadir Muestra',
-	array(
-	  'action'=>'add',
-	  'tipo_id'=>$this->request->data['Search']['tipo_id']
-	),array(
+  '<i class="fa fa-plus"></i> Añadir Muestra',
+  array(
+    'action'=>'add',
+    'tipo_id'=>$this->request->data['Search']['tipo_id']
+  ),array(
   'class'=>'botond','escape'=>false, 'title'=>'Añadir Muestra'));
     } else {
     echo $this->Html->link(
-	'<i class="fa fa-plus"></i> Añadir Muestra',
-	array('action'=>'add'),array('class'=>'botond','escape'=>false, 'title'=>'Añadir Muestra'));
+  '<i class="fa fa-plus"></i> Añadir Muestra',
+  array('action'=>'add'),array('class'=>'botond','escape'=>false, 'title'=>'Añadir Muestra'));
     }
   ?>
   </div>

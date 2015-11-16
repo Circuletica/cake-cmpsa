@@ -58,6 +58,6 @@ echo $this->Form->input('Empresa.telefono', array('label'=>'Teléfono'));
 	<?php
 //echo $this->Form->input('BancoPrueba.cuenta_cliente_1');
 //echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
-echo $this->Form->end('Guardar agente');
-?>
 
+echo $this->Form->end('Guardar Agente');
+?>

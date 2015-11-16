@@ -312,17 +312,18 @@ form {
 fieldset {
 	border: none;
 	/*margin-bottom: 1em;*/
-	padding: 16px 0px;
+	padding: 10px 0px;
 	float: left;
 	/*display: block;*/
 	/*width: 15%;*/
-	width: 749px;
+	width: 48%;
+	margin-right: 10px; 
 	/*margin: 0 30px 10px 0;*/
 }
 fieldset legend {
 	color: #2c6877;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 135%;
+	font-size: 125%;
 	font-weight: bold;
 }
 fieldset fieldset {
@@ -337,6 +338,7 @@ fieldset fieldset div {
 	clear: left;
 	margin: 0 20px;
 }
+
 form div {
 	clear: both;
 	margin-bottom: 1em;

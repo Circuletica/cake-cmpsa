@@ -81,13 +81,18 @@ CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
 //	'routes'=> true
 //));
 
-Configure::write('CakePdf', array(
-	'engine' => 'CakePdf.WkHtmlToPdf',
-	'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',//Solo con windows, con linux instalar en /usr/bin/wkhtmltopdf y por defecto funciona.
+//CakePlugin::load('CakePdf',array(
+//	'bootstrap'=>true,
+//	'routes'=> true
+//));
+
+//Configure::write('CakePdf', array(
+//	'engine' => 'CakePdf.WkHtmlToPdf',
+//	'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',//Solo con windows, con linux instalar en /usr/bin/wkhtmltopdf y por defecto funciona.
 	//'binary'=>'/usr/local/bin/wkhtmltopdf',
-	'pageSize'=> 'A4',
-	'orientation'=> 'landscape'
-));
+//	'pageSize'=> 'A4',
+//	'orientation'=> 'landscape'
+//));
 
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:

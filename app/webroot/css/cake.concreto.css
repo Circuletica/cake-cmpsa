@@ -12,7 +12,7 @@
 	}
 .tabs li {
 	/*margin: 0 0.5%  1em 0;*/
-	margin: 0px 1px;
+	margin: 0px 2px;
 }
 .tabs > li {
 	float:left;
@@ -39,7 +39,7 @@
 .tabs li ul {
 	display:none;
 	position:absolute;
-	min-width:100px;
+	min-width:150px;
 }
 .tabs li:hover > ul {
 	display:block;
@@ -662,9 +662,9 @@ div.laterali {
 /* PORTADA En el comiendo de la aplicación se colocan los botones */
 .portada{
 	position: relative;
-	padding-right:4%;
+	padding-right:10%;
 	display: inline;
-	font-size: 12	5%;
+	font-size: 12 5%;
 
 }
 .portada ul { 
@@ -691,9 +691,9 @@ div.laterali {
 	background-image: linear-gradient(top, #42B4D6, #3F8EC1);
 	color:#fff;
 	border:1px solid #bbb;
-	-webkit-border-radius: 33px;
-	-moz-border-radius: 33px;
-	border-radius: 33px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
 	text-decoration: none;
 	display:block;
 	text-align: center;
@@ -746,3 +746,4 @@ color: #fff;
 .portada ul, li {
     margin: 2% 2.5%;
 }
+/* Cuadrando las cajas de texto*/

@@ -178,6 +178,7 @@ class OperacionesController extends AppController {
 			'order' => array('PuertoCarga.nombre' =>'ASC')
 			)
 		));
+
 		$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find(
 			'list',
 			#el café solo llega a puerto españoles
@@ -207,6 +208,7 @@ class OperacionesController extends AppController {
 //			)
 		));
 		$this->set(compact('coste_fletes'));
+
 	
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué contrato pertenece
@@ -236,7 +238,6 @@ class OperacionesController extends AppController {
 			endif;
 		endif;
 	}
-
 	public function edit($id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formado');
@@ -317,7 +318,6 @@ class OperacionesController extends AppController {
 					$id
 					)
 				);
-
 			else:
 				$this->Session->setFlash('Operacion NO guardada');
 			endif;
@@ -338,6 +338,7 @@ class OperacionesController extends AppController {
 		    )
 	    );
 	    $this->set('operacion', $operacion);
+	    $this->set('referencia', $operacion['Operacion']['referencia']);
 	    $this->loadModel('ContratoEmbalaje');
 	    $embalaje = $this->ContratoEmbalaje->find(
 		    'first',
@@ -369,6 +370,105 @@ class OperacionesController extends AppController {
 	    $this->set('columnas_reparto',$columnas_reparto);
 	    $this->set('lineas_reparto',$lineas_reparto);
 	    $this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
+	}
+
+	public function index_trafico() {
+		$this->paginate=array(
+			'contain' => array(
+				'Contrato',
+				'CalidadNombre',
+				'Empresa',
+				'PesoOperacion'
+			),
+			'recursive' => 1
+		);
+		$this->Operacion->unbindModel(array(
+			'hasMany' => array(
+				'AsociadoOperacion',
+				'Transporte'
+			)
+		));
+		$this->Operacion->bindModel(array(
+			'belongsTo' => array(
+				'CalidadNombre' => array(
+					'foreignKey' => false,
+					'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+				),
+				'Empresa' => array(
+					'foreignKey' => false,
+					'conditions' => array('Empresa.id = Contrato.proveedor_id')
+				)
+			)
+		));
+		$this->set('operaciones', $this->paginate());
+	}
+public function view_trafico($id = null) {
+		if (!$id) {
+			$this->Session->setFlash('URL mal formada Operación/view_trafico ');
+			$this->redirect(array('action'=>'index_trafico'));
+		}
+		$operacion = $this->Operacion->find('first',array(
+			'conditions' => array('Operacion.id' => $id),
+			'recursive' => 3));
+		$this ->set('operacion',$operacion);
+		//$transporte = $this->Operacion->Transporte->find('list',array(
+		//	'conditions' => array('Transporte.id'),
+		//	'recursive' => 1));
+		//$this->set('transporte',$transporte);
+		//el nombre de calidad concatenado esta en una view de MSQL
+		$this->loadModel('ContratoEmbalaje');
+
+		$embalaje = $this->ContratoEmbalaje->find(
+			'first',
+			array(
+				'conditions' => array(
+					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
+					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+				),
+				'fields' => array('Embalaje.nombre','ContratoEmbalaje.peso_embalaje_real')
+			)
+		);
+		$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
+		//mysql almacena la fecha en formato ymd
+	//	$this->Date->format($operacion['Contrato']['fecha_transporte']);
+		$fecha = $operacion['Contrato']['fecha_transporte'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$this->set('fecha_transporte', $dia.'-'.$mes.'-'.$anyo);		
+		$this->set('embalaje', $embalaje);
+		$this->loadModel('CalidadNombre');
+//Línea de transporte
+		//	$this->set('tipo_fecha_carga', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
+		//mysql almacena la fecha en formato ymd
+		//$fecha = $transporte['Transporte']['fecha_carga'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
+
+//Líneas de reparto
+			foreach ($operacion['AsociadoOperacion'] as $linea):
+			$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+			$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
+			$lineas_reparto[] = array(
+				'Código' => $codigo,
+				'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
+				'Cantidad' => $linea['cantidad_embalaje_asociado'],
+				'Peso' => $peso.' Kg'
+			);	
+		endforeach;
+		$columnas_reparto = array_keys($lineas_reparto[0]);
+		//indexamos el array por el codigo de asociado
+		$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
+		//se ordena por codigo ascendente
+		ksort($lineas_reparto);
+		$this->set('columnas_reparto',$columnas_reparto);
+		$this->set('lineas_reparto',$lineas_reparto);
+//		$this->Operacion->Transporte->find('all',array(
+//			'fields' => array('Transporte.operacion_id', 'Transporte.cantidad')));
+//		$this->set('transporte',$transporte);
+
 	}
 
     public function delete($id = null) {

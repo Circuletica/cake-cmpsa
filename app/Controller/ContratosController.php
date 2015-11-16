@@ -4,7 +4,6 @@ class ContratosController extends AppController {
 	public $paginate = array(
 			'order' => array('Contrato.posicion_bolsa' => 'asc')
 		);
-
 	public function index() {
 		$this->paginate['contain'] = array(
 				'Empresa',
@@ -142,7 +141,6 @@ class ContratosController extends AppController {
 		$anyo = substr($fecha,0,4);
 		$this->set('posicion_bolsa', $mes.' '.$anyo);
 	}
-
 	public function add() {
 		$proveedores = $this->Contrato->Proveedor->find('list', array(
 			'fields' => array('Proveedor.id','Empresa.nombre_corto'),

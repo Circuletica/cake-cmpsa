@@ -1,5 +1,6 @@
   <?php echo $this->Form->create('Operacion', array('action'=>'filtroListado'));?>
   <?php
+
   echo $this->Form->input('Search.referencia');
   echo $this->Form->input('Search.contrato_referencia', array(
 	  'label' => 'Contrato',

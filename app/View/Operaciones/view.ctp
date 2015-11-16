@@ -6,7 +6,6 @@ $this->assign('id',$operacion['Operacion']['id']);
 $this->assign('class','Operacion');
 $this->assign('controller','operaciones');
 $this->assign('line_controller','asociado_operaciones');
-
 $this->start('filter');
 //echo $this->element('filtrooperacion');
 echo $this->Html->link('Generar financiación', array(
@@ -16,7 +15,6 @@ echo $this->Html->link('Generar financiación', array(
     )
 ); 
 $this->end();
-
 $this->start('main');
 echo "<dl>";
 echo "  <dt>Referencia Contrato:</dt>\n";
@@ -85,7 +83,6 @@ echo "  <dt>Observaciones:</dt>\n";
 echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
 echo "</dl>";
 $this->end();
-
 $this->start('lines');
 //la tabla con el reparto de sacos para los asociados
 echo "<table>\n";

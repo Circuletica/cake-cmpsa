@@ -4,7 +4,13 @@ class Pais extends AppModel{
   public $validate = array(
     'nombre' => array(
       'rule' => 'notEmpty',
-      'message' => 'El nombre no puede ser vacio'
+      'message' => 'El nombre no puede estar vacio'
       )
     );
+
+   public $hasMany = array(
+   		'Empresa' => array(
+			'className' => 'Empresa',
+			'foreignKey' => 'id')
+   		);
 }

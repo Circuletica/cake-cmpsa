@@ -39,8 +39,6 @@ class FinanciacionesController extends AppController {
 		    'Banco' => array(
 			'Empresa'
 		    ),
-		    //'TipoIva',
-		    //'TipoIvaComision',
 		    'Operacion' => array(
 			'Contrato' => array(
 			    'CalidadNombre',
@@ -91,7 +89,7 @@ class FinanciacionesController extends AppController {
 			'fields' => array('nombre_corto')
 		    )
 		),
-		'order' => array('Empresa.nombre_corto' => 'ASC')
+		'order' => array('Empresa.codigo_contable' => 'ASC')
 	    )
 	);
 	$this->set(compact('repartos'));
@@ -184,21 +182,21 @@ class FinanciacionesController extends AppController {
 	if($this->request->is('post')):
 	    if($this->Financiacion->save($this->request->data)):
 		$this->Session->setFlash('Financiación guardada');
-	$this->redirect(array('action' => 'index'));
-endif;
-endif;
+		$this->redirect(array('action' => 'index'));
+	    endif;
+	endif;
     }
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) :
-	    throw new MethodNotAllowedException();
-endif;
-if ($this->Financiacion->delete($id)):
-    $this->Session->setFlash('Financiación borrada');
-$this->redirect(array(
-    'controller' => 'financiaciones',
-    'action'=>'index',
-));
-endif;
+		throw new MethodNotAllowedException();
+	endif;
+	if ($this->Financiacion->delete($id)):
+		$this->Session->setFlash('Financiación borrada');
+	$this->redirect(array(
+		'controller' => 'financiaciones',
+		'action'=>'index',
+	));
+	endif;
     }
 }
 ?>

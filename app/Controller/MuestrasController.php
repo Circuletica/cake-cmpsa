@@ -1,6 +1,5 @@
 <?php
 class MuestrasController extends AppController {
-	public $scaffold = 'admin';
 	public $paginate = array(
 		'recursive' => 2,
 		'order' => array('Muestra.referencia' => 'asc')
@@ -11,11 +10,10 @@ class MuestrasController extends AppController {
 	public function index() {
 		$this->paginate['contain'] = array(
 			'Empresa',
-			//'Proveedor',
 			'CalidadNombre'
 			);
 		$this->paginate['order'] =  array(
-			'Muestra.referencia' => 'ASC'
+			'Muestra.fecha' => 'ASC'
 			);
 		$this->paginate['recursive'] = 1;
 

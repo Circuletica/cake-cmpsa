@@ -1,9 +1,8 @@
   <?php echo $this->Form->create('Muestra', array('action'=>'filtroListado'));?>
   <div class="radiomuestra">
   <?php
-    //echo $this->Form->input('Search.id');
-    echo $this->Form->radio('Search.tipo_id', $tipos, array(
-  'legend' => ''));?>
+    //echo $this->Form->radio('Search.tipo_id', $tipos, array( 'legend' => ''));
+  ?>
   </div>
   <?php
     echo $this->Form->input('Search.referencia');
@@ -25,9 +24,11 @@
     <ul>
       <li><?php
   if(isset($this->request->data['Search']['tipo_id'])){
-    echo $this->Html->Link('Resetear filtro',array(
+    echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array(
       'action'=>'index',
-      'Search.tipo_id'=>$this->request->data['Search']['tipo_id'])
+      'Search.tipo_id'=>$this->request->data['Search']['tipo_id']),
+      array(
+      'escape'=>false)
     );
   } else {
     echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>'index'), array('escape'=>false));

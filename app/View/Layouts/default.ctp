@@ -38,7 +38,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 	<h1><?php echo $this->Html->link($cakeDescription, '/'); ?></h1>
 		<div class="menuheader"> 
 		<ul class="tabs">
-			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','/contratos',array('escape' => false));?>
+			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','#',array('escape' => false));?>
 				<ul>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> CONTRATO','/contratos',array('escape' => false));?></li>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones',array('escape' => false));?></li>
@@ -78,7 +78,6 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 
 </div>
 
-
 <div id="footer">
 		<div class="menufooter">
 			<ul class="tabs">
@@ -89,6 +88,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 		</div>
 		<?php echo '&nbsp&nbsp'.$cakeVersion.' - Optimizado para resolución superior a 1280x720'; ?>
 </div>
+	<?php //echo $this->element('sql_dump'); ?>
 	<?php echo $this->Js->writeBuffer(); //write cached scripts ?>
 </body>
 </html>

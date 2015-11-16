@@ -1,8 +1,7 @@
 <?php
 $this->extend('/Common/index');
-$this->assign('object', 'Tipo de IVA');
-$this->assign('controller', 'tipo_ivas');
 $this->assign('class', 'TipoIva');
+//$this->assign('object', 'Tipo de IVA');
 
 $this->start('filter');
 $this->end();
@@ -13,6 +12,7 @@ $this->start('main');
   <tr>
     <th><?php echo $this->Paginator->sort('nombre', 'Tipo')?></th>
     <th><?php echo 'Valor a día de hoy'?></th>
+    <th><?php echo 'Detalle'?></th>
   </tr>
 <?php foreach($tipo_ivas as $tipo_iva):?>
   <tr>

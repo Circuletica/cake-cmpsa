@@ -23,7 +23,6 @@
 		'from_action' => 'add'
 		)
 	);
-
 	echo $this->Form->create('Contrato', array(
 		'action' => 'edit',
 		)

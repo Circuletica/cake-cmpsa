@@ -1,7 +1,5 @@
 <?php
 class FletesController extends AppController {
-    public $components = array('Paginator');
-
     function index() {
 	$this->Flete->bindModel(array(
 	    'belongsTo' => array(
@@ -52,10 +50,13 @@ class FletesController extends AppController {
 	$this->set(compact('puerto_cargas'));
 	$puerto_destinos = $this->Flete->PuertoDestino->find(
 	    'list', array(
-		'order' => array('PuertoDestino.nombre' => 'ASC')
+		'order' => array('PuertoDestino.nombre' => 'ASC'),
+		//solo puertos de destino en España.
+		//No mola naaaaada el tener el pais_id hard-codeado...
+		'conditions' => array('PuertoDestino.pais_id' => 3)
 	    )
 	);
-	$this->set('puerto_destinos', $puerto_destinos);
+	$this->set(compact('puerto_destinos'));
 	$embalajes = $this->Flete->Embalaje->find(
 	    'list', array(
 		'order' => array('Embalaje.nombre' => 'ASC')
@@ -149,5 +150,18 @@ endif;
 	$this->set('costes',$costes);
     }
 
+    public function delete($id) {
+	if($this->request->is('post')):
+	    if($this->Flete->delete($id)):
+		$this->Session->setFlash('Flete borrado');
+	$this->redirect(array(
+	    'controller' => 'fletes',
+	    'action' => 'index'
+	));
+endif;
+else:
+    throw new MethodNotAllowedException();
+endif;    
+    }
 }
 ?>
