@@ -57,26 +57,15 @@ class FinanciacionesController extends AppController {
 		    ),
 		    'ValorIvaFinanciacion',
 		    'ValorIvaComision',
-		    //'RepartoOperacionAsociado' => array(
-		    //    'fields' => array(
-		    //        'porcentaje_embalaje_asociado',
-		    //        'peso_asociado',
-		    //        'precio_asociado',
-		    //        'iva',
-		    //        'comision',
-		    //        'iva_comision',
-		    //        'total'
-		    //    ),
-		    //    'Asociado' => array(
-		    //        'Empresa'
-		    //    )
-		    //)
+		    'Anticipo'
 		),
 		'conditions' => array('Financiacion.id' => $id),
 		'recursive' => 4
 	    )
 	);
 	$this->set(compact('financiacion'));
+
+	$this->set('anticipos', $financiacion['Anticipo']);
 
 	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
 	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)');
@@ -134,11 +123,8 @@ class FinanciacionesController extends AppController {
 	    )
 	);
 	$this->set('totales',$totales['RepartoOperacionAsociado']);
-<<<<<<< Updated upstream
-=======
 
 	$this->set('financiacion_id', $financiacion['Financiacion']['id']);
->>>>>>> Stashed changes
 	$this->set('referencia', $financiacion['Operacion']['referencia']);
 	$this->set('proveedor', $financiacion['Operacion']['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);

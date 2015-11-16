@@ -10,5 +10,6 @@ class AnticiposController extends AppController {
 	    'Financiacion'
 	);
 	$this->set('anticipos', $this->paginate());
+    }
 }
 ?>
