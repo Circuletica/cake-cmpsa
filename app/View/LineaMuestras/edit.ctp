@@ -20,15 +20,16 @@ function findTotal(){
 
 <?php
 $this->Html->addCrumb('Muestras','/muestras');
-$this->Html->addCrumb('Muestra '.$linea_muestra['Muestra']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
+//$this->Html->addCrumb('Muestra '.$linea_muestra['Muestra']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
+$this->Html->addCrumb('Muestra '.$linea_muestra['Muestra']['referencia'],'/'.'muestras'.'/view/'.$linea_muestra['Muestra']['id']);
 ?>
 <div class="laterali">
 	<?php
 	echo $this->Form->create('LineaMuestra', array(
 	'url' => array(
 		'action' => 'edit',
-		'from_controller' => $this->params['named']['from_controller'],
-		'from_id'=>$this->params['named']['from_id']
+		//'from_controller' => $this->params['named']['from_controller'],
+		//'from_id'=>$this->params['named']['from_id']
 	)
 ));?>
 	<div class="col2">
