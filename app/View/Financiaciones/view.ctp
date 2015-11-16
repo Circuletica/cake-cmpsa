@@ -148,7 +148,9 @@ foreach ($anticipos as $anticipo):
     echo $this->Html->tableCells(array(
 	$anticipo['Asociado']['Empresa']['nombre'],
 	$this->Date->format($anticipo['fecha_conta']),
-	$anticipo['Anticipo']['importe']
+	$anticipo['importe'],
+	$this->Button->editLine('anticipos',$anticipo['id'],'financiaciones',$anticipo['financiacion_id'])
+	.' '.$this->Button->deleteLine('anticipos',$anticipo['id'],'financiaciones',$anticipo['financiacion_id'],'el anticipo de '.$anticipo['importe'].'€')
     ));
 endforeach;
 echo"</table>\n";
