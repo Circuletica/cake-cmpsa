@@ -156,6 +156,4 @@ endforeach;
 echo"</table>\n";
 $this->end();
 ?>
-    </div>
-</div>
 

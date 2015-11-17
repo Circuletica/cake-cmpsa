@@ -11,11 +11,12 @@ if (url != "no") window.location = url;
     <option value="/almacenes">Almacenes
     <option value="/aseguradoras">Aseguradoras
     <option value="/asociados">Asociados
-    <option value="/banco_pruebas">Bancos
+    <option value="/bancos">Bancos
     <option value="/calidades">Calidades
     <option value="/contactos">Contactos
     <option value="/contratos">Contratos
     <option value="/embalajes">Embalajes
+    <option value="/fletes">Fletes
     <option value="/incoterms">Incoterms  
     <option value="/tipoiva">IVA    	
     <option value="/muestras">Muestras
