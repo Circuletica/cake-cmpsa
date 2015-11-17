@@ -19,7 +19,7 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 	echo $this->Form->create('Transporte');
 	?>
 	<br>
-	<div class="columna3">
+	<div class="col3">
 	<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
@@ -27,7 +27,7 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 	echo $this->Form->input('cantidad', array('label' => 'Cantidad bultos'));
 	?>
 	</div>
-	<div class="columna3">
+	<div class="col3">
 	<div class="formuboton">
 		<ul>
 			<li>
@@ -35,7 +35,7 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 			echo $this->Form->input('puerto_id',
 				array('
 					label'=>'Puerto destino',
-					'empty' =>true
+					'empty' =>array('' => 'Selecciona')
 					));
 			?>
 			</li>
@@ -63,7 +63,7 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 					echo $this->Form->input('naviera_id',
 						array(
 							'label'=>'Naviera',
-							'empty' =>true 
+							'empty' =>array('' => 'Selecciona')
 							));
 					?>
 					</li>
@@ -90,7 +90,7 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 			echo $this->Form->input('agente_id',
 				array(
 					'label'=>'Agente aduanas',
-					'empty' =>true 
+					'empty' =>array('' => 'Selecciona')
 				));
 			?>
 			</li>
@@ -108,8 +108,9 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 		</div>
 		</div>
 	<br>
-	<h3>Fechas</h3>
-	<div class="columna3">
+	<fieldset>
+		<legend>Fechas</legend>
+	<div class='col2'>
 	<div class="linea">
 	<?php
 	echo $this->Form->input('fecha_carga', array(
@@ -196,15 +197,15 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 	'empty' => ' ')
 	);
 	?>
+	<br><br>
 	</div>
-	</div>
-	<div class="col2">
+	</div> 
+	</fieldset>
+			<fieldset>
 	<?php
 	echo $this->Form->input('observaciones', array('label'=>'Observaciones del transporte'));
-
 	?>
-
-<h3>Seguro</h3>
+<!--¿Es necesario botón?
 			<div class="formuboton">
 			<ul>
 			<li><?php
@@ -226,7 +227,19 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 			</li>
 			</ul>
 		</div>
-		<div class='col2'>
+		-->
+				</fieldset>
+		<fieldset>
+			<legend>Seguro</legend>
+		<?php echo $this->Form->input('aseguradora_id',
+				array(
+					'label'=>'Aseguradora',
+					'empty' =>array('' => 'Selecciona')
+					)
+				);
+	
+		?>
+		<div class="col2">
 		<div class="linea">
 		<?php
 		echo $this->Form->input('fecha_seguro', array(
@@ -246,5 +259,9 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 		echo $this->Form->input('coste_seguro',array('label'=>'Coste del seguro €'));
 		?>
 		</div>
-</div>
-	<?php	echo $this->Form->end('Guardar Línea Transporte'); ?>
+		<div class="linea">
+		<?php	
+		echo $this->Html->link('Cancelar', $this->request->referer(''), array('class' => 'botond'));
+		echo $this->Form->end('Guardar Línea Transporte'); ?>
+		</div>
+		</fieldset>

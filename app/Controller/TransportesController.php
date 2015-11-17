@@ -30,7 +30,6 @@ public function view($id = null) {
 	}
 
 	public function add() {
-
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué operacion pertenece
 			//debug($this->params['named']['from_id']);

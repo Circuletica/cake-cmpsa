@@ -316,9 +316,10 @@ fieldset {
 	float: left;
 	/*display: block;*/
 	/*width: 15%;*/
-	width: 48%;
-	margin-right: 10px; 
-	/*margin: 0 30px 10px 0;*/
+	width: 47%;
+	/*margin-right: 10px; 
+	margin: 0 30px 10px 0;*/
+	margin: 0 15px 0px 10px;
 }
 fieldset legend {
 	color: #2c6877;

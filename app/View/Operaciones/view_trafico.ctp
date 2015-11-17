@@ -130,7 +130,7 @@
 				$linea_reparto['Cantidad'],
 				$linea_reparto['Peso'],
 				'Sacos retirados',
-				$this->Button->viewLine('retiradas',$retiradas['id'],'retiradas',$linea['operacion_id'])
+//				$this->Button->viewLine('retiradas',$retiradas['id'],'retiradas',$linea['operacion_id'])
 				)
 			);
 		endforeach;

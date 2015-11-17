@@ -7,6 +7,9 @@ $this->Html->addCrumb('Operación','/operaciones/index_trafico');
 <?php
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
+?>
+<fieldset>
+<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
 	echo $this->Form->input('EmbalajeTransprote.cantidad', array('label' => 'Cantidad transportada'));
@@ -84,9 +87,11 @@ $this->Html->addCrumb('Operación','/operaciones/index_trafico');
 			</li>
 		</ul>
 		</div>
+	</fieldset>
 	<br><br>
-	<h3>Fechas</h3>
-	<div class="columna3">
+	<fieldset>
+	<legend>Fechas</legend>
+	<div class="col2">
 	<div class="linea">
 	<?php
 	echo $this->Form->input('fecha_carga', array(
@@ -175,13 +180,15 @@ $this->Html->addCrumb('Operación','/operaciones/index_trafico');
 	?>
 	</div>
 	</div>
+	</fieldset>
+	<fieldset>
 	<?php
 	echo $this->Form->input('observaciones', array('label'=>'Observaciones del transporte'));
-
 	?>
-<div class="detalladoform">
-<h3>Seguro</h3>
-		<div class="columna3">
+</fieldset>
+<fieldset>
+<legend>Aseguradora</legend>
+		<div class="col3">
 		<div class="formuboton">
 			<ul>
 			<li><?php
@@ -220,5 +227,9 @@ $this->Html->addCrumb('Operación','/operaciones/index_trafico');
 		echo $this->Form->input('coste_seguro',array('label'=>'Coste del seguro €'));
 		?>
 		</div>
-</div>
-	<?php	echo $this->Form->end('Modificar Línea Transporte'); ?>
+
+		<?php	
+		echo $this->Html->link('Cancelar', $this->request->referer(''), array('class' => 'botond'));
+		echo $this->Form->end('Modificar Línea Transporte'); ?>
+</fieldset>
+

@@ -260,7 +260,7 @@
 
 	<table>
 <?php
-	echo $this->Html->tableHeaders(array('Cuenta Corriente/Referencia','Nombre', 'Cantidad', 'Marca','Acciones'));
+	echo $this->Html->tableHeaders(array('Cuenta Corriente/Referencia','Nombre', 'Cantidad', 'Marca','Detalle'));
 	foreach($transporte['AlmacenesTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['cuenta_almacen'],

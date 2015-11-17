@@ -55,6 +55,7 @@
 	    <?php
 			echo $this->Form->input('incidencia');
 			echo $this->Form->input('id', array('type'=>'hidden'));
+			echo $this->Html->link('Cancelar', $this->request->referer(''), array('class' => 'botond'));
 			echo $this->Form->end('Guardar Muestra');
 		?>
 </div>
