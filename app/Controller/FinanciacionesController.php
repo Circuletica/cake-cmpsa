@@ -1,6 +1,5 @@
 <?php
 class FinanciacionesController extends AppController {
-    //public $scaffold = 'admin';
     public $paginate = array(
 	'order' => array('Operacion.referencia' => 'asc')
     );
