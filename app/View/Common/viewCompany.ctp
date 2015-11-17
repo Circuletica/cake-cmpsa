@@ -2,13 +2,10 @@
 $this->extend('/Common/view');
 $this->assign('object', $this->fetch('object'));
 $this->assign('line_object', 'contacto');
-//$this->assign('line2_object', 'comisión');
-$this->assign('line2_object', $this->fetch('line2_object'));
 $this->assign('id',$empresa['Empresa']['id']);
 $this->assign('class',$this->fetch('class'));
 $this->assign('controller',$this->fetch('controller'));
 $this->assign('line_controller','contactos');
-$this->assign('line2_controller',$this->fetch('line2_controller'));
 
 $this->start('filter');
 //echo $this->element('filtroflete');
@@ -83,22 +80,26 @@ endforeach;
 echo "</table>";
 $this->end();
 
-$this->start('lines2');
-//la tabla con el segundo grupo de lineas
-echo "<table>";
-echo $this->Html->tableHeaders(array(
+if ($this->fetch('class') == 'Asociado'):
+    $this->assign('line2_object', 'comisión');
+    $this->assign('line2_controller','asociado_comisiones');
+    $this->start('lines2');
+//la tabla con el historial de comisiones
+    echo "<table>";
+    echo $this->Html->tableHeaders(array(
     'válido desde','válido hasta','comisión',''));
-foreach ($comisiones as $comision):
-    $fecha_inicio = $this->Date->format($comision['fecha_inicio']);
-$fecha_fin = $this->Date->format($comision['fecha_fin']);
-echo $this->Html->tableCells(array(
-    $fecha_inicio,
-    $fecha_fin,
-    $comision['Comision']['valor'],
-    $this->Button->editLine('asociado_comisiones',$comision['id'],'asociados',$comision['asociado_id'])
-    .' '.$this->Button->deleteLine('asociado_comisiones',$comision['id'],'asociados',$comision['asociado_id'],$comision['Comision']['valor'])
-));
-endforeach;
-echo "</table>";
-$this->end();
+    foreach ($comisiones as $comision):
+	$fecha_inicio = $this->Date->format($comision['fecha_inicio']);
+	$fecha_fin = $this->Date->format($comision['fecha_fin']);
+	echo $this->Html->tableCells(array(
+	$fecha_inicio,
+	$fecha_fin,
+	$comision['Comision']['valor'],
+	$this->Button->editLine('asociado_comisiones',$comision['id'],'asociados',$comision['asociado_id'])
+	.' '.$this->Button->deleteLine('asociado_comisiones',$comision['id'],'asociados',$comision['asociado_id'],$comision['Comision']['valor'])
+	));
+    endforeach;
+    echo "</table>";
+    $this->end();
+endif;
 ?>

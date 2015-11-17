@@ -13,6 +13,7 @@ class Asociado extends AppModel {
 		'AsociadoOperacion' => array(
 			'className' => 'AsociadoOperacion',
 			'foreignKey' => 'asociado_id'
-		)
+		),
+		'Anticipo'
 	);
 }
