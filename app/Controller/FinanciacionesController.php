@@ -145,20 +145,38 @@ class FinanciacionesController extends AppController {
     }
 
     public function add() {
-	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado financiaciones/add '.$this->params['named']['from_controller']);
+	$this->form($this->params['named']['from_id']);
+	$this->render('form');
+    }
+
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL');
 	    $this->redirect(array(
-		'controller' => $this->params['named']['from_controller'],
-		'action' => 'index')
-	    );
+		'action' => 'index',
+		'controller' => 'financiaciones'
+	    ));
 	}
+	$this->form($id);
+	$this->render('form');
+    }
+
+    public function form($id) { //esta acción vale tanto para edit como add
 	$operacion = $this->Financiacion->Operacion->find(
 	    'first',
 	    array(
-		'conditions' => array(
-		    'Operacion.id' => $this->params['named']['from_id']
-		),
-		'recursive' => 4
+		'conditions' => array('Operacion.id' => $id),
+		'recursive' => 4,
+		'contain' => array(
+		    'Contrato' => array(
+			'Proveedor' => array(
+			    'Empresa'
+			),
+			'CalidadNombre',
+			'Incoterm'
+		    ),
+		    'PrecioTotalOperacion'
+		)
 	    )
 	);
 	$this->set(compact('operacion'));
@@ -166,8 +184,7 @@ class FinanciacionesController extends AppController {
 	    'fields' => array('Banco.id','Empresa.nombre_corto'),
 	    'order' => array('Empresa.nombre_corto' => 'asc'),
 	    'recursive' => 1
-	)
-    );
+	));
 	$this->set(compact('bancos'));
 	$tipoIvas = $this->Financiacion->TipoIva->find('list');
 	$this->set(compact('tipoIvas'));
@@ -182,24 +199,39 @@ class FinanciacionesController extends AppController {
 	$condicion .= ' ('.$operacion['Contrato']['Incoterm']['nombre'].')';
 	$this->set(compact('condicion'));
 	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
-	if($this->request->is('post')):
-	    if($this->Financiacion->save($this->request->data)):
+	$this->set('action', $this->action);
+
+	//si es un edit, hay que rellenar el id, ya que
+	//si no se hace, al guardar el edit, se va a crear
+	//un _nuevo_ registro, como si fuera un add
+	if (!empty($id)) $this->Financiacion->id = $id; 
+	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
+	    if($this->Financiacion->save($this->request->data)){
 		$this->Session->setFlash('Financiación guardada');
-		$this->redirect(array('action' => 'index'));
-	    endif;
-	endif;
+		$this->redirect(array(
+		    'action' => 'view',
+		    'controller' => 'financiaciones',
+		    $id
+		));
+	    } else {
+		$this->Session->setFlash('Financiación NO guardada');
+	    }
+	} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
+	    $this->request->data = $this->Financiacion->read(null, $id);
+	}
     }
+
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) :
-		throw new MethodNotAllowedException();
-	endif;
-	if ($this->Financiacion->delete($id)):
-		$this->Session->setFlash('Financiación borrada');
-	$this->redirect(array(
-		'controller' => 'financiaciones',
-		'action'=>'index',
-	));
-	endif;
+	    throw new MethodNotAllowedException();
+endif;
+if ($this->Financiacion->delete($id)):
+    $this->Session->setFlash('Financiación borrada');
+$this->redirect(array(
+    'controller' => 'financiaciones',
+    'action'=>'index',
+));
+endif;
     }
 }
 ?>
