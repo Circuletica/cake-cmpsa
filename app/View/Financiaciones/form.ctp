@@ -38,20 +38,17 @@ echo $this->Form->input('fecha_vencimiento', array(
 )
 );
 echo "</div>\n";
-echo $this->Form->input('banco_id', array(
-    'value' => 3
-)
-    );
-echo $this->Form->input('tipo_iva_id', array(
-    'value' => 3
-)
-    );
-echo $this->Form->input('tipo_iva_comision_id', array(
-    'value' => 4
-)
-    );
-echo $this->Form->input('precio_euro_kilo', array(
-    'value' => $precio_euro_kilo
-)
-    );
+//solo si es una financiacion nueva, asignamos valores por defecto
+//si es un edit, hay que respetar los valores existentes
+if ($action == 'add') {
+    echo $this->Form->input('banco_id', array( 'value' => 3));
+    echo $this->Form->input('tipo_iva_id', array( 'value' => 3));
+    echo $this->Form->input('tipo_iva_comision_id', array( 'value' => 4));
+    echo $this->Form->input('precio_euro_kilo', array( 'value' => $precio_euro_kilo));
+} else {
+    echo $this->Form->input('banco_id');
+    echo $this->Form->input('tipo_iva_id');
+    echo $this->Form->input('tipo_iva_comision_id');
+    echo $this->Form->input('precio_euro_kilo');
+}
 echo $this->Form->end('Guardar Financiación');
