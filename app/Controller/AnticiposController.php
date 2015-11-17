@@ -70,7 +70,14 @@ class AnticiposController extends AppController {
 	);
 	$this->set(compact('asociados'));
 
-	if (!empty($this->request->data)){
+	$this->set('financiacion_id', $this->params['named']['from_id']);
+
+	//si es un edit, hay que rellenar el id, ya que
+	//si no se hace, al guardar el edit, se va a crear
+	//un _nuevo_ registro, como si fuera un add
+	if (!empty($id)) $this->Anticipo->id = $id; 
+
+	if (!empty($this->request->data)){  //es un POST
 	    if ($this->Anticipo->save($this->request->data)) {
 		$this->Session->setFlash('Anticipo guardado');
 		$this->redirect(array(
@@ -81,7 +88,7 @@ class AnticiposController extends AppController {
 	    } else {
 		$this->Session->setFlash('Anticipo NO guardado');
 	    }
-	} else {
+	} else { //es un GET
 	    $this->request->data = $this->Anticipo->read(null, $id);
 	}
     }

@@ -21,7 +21,6 @@ class ContactosController extends AppController {
 				'fields' => array('Empresa.id','Empresa.nombre')
 		));
 		$this->set('empresa',$empresa);
-		//debug($empresa);
 		if($this->request->is('post')):
 			$this->request->data['Contacto']['empresa_id'] = $this->params['named']['from_id'];
 			if($this->Contacto->save($this->request->data) ):
