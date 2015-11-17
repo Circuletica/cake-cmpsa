@@ -29,7 +29,7 @@ class AnticiposController extends AppController {
 	$this->render('form');
     }
 
-    public function form ($id = null) {
+    public function form ($id = null) { //esta accion vale tanto para edit como add
 	$bancos = $this->Anticipo->Banco->find('list', array(
 	    'fields' => array(
 		'Banco.id',
@@ -91,6 +91,21 @@ class AnticiposController extends AppController {
 	} else { //es un GET
 	    $this->request->data = $this->Anticipo->read(null, $id);
 	}
+    }
+
+    public function delete($id) {
+	if($this->request->is('post')):
+	    if($this->Anticipo->delete($id)):
+		$this->Session->setFlash('Anticipo borrado');
+	$this->redirect(array(
+	    'controller' => $this->params['named']['from_controller'],
+	    'action' => 'view',
+	    $this->params['named']['from_id']
+	));
+endif;
+else:
+    throw new MethodNotAllowedException();
+endif;
     }
 }
 ?>
