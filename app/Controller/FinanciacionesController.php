@@ -55,9 +55,8 @@ class FinanciacionesController extends AppController {
 		    'ValorIvaFinanciacion',
 		    'ValorIvaComision',
 		    'Anticipo' => array(
-			'Asociado' => array(
-			    'Empresa'
-			)
+			'Asociado' => array('Empresa'),
+			'Banco' => array('Empresa')
 		    )
 		),
 		'conditions' => array('Financiacion.id' => $id),

@@ -143,12 +143,13 @@ $this->end();
 $this->start('lines2');
 echo "<table>\n";
 echo $this->Html->tableHeaders(array(
-    'Asociado','fecha','importe',''));
+    'Asociado','fecha','importe','Banco',''));
 foreach ($anticipos as $anticipo):
     echo $this->Html->tableCells(array(
 	$anticipo['Asociado']['Empresa']['nombre'],
 	$this->Date->format($anticipo['fecha_conta']),
 	$anticipo['importe'],
+	$anticipo['Banco']['Empresa']['nombre_corto'],
 	$this->Button->editLine('anticipos',$anticipo['id'],'financiaciones',$anticipo['financiacion_id'])
 	.' '.$this->Button->deleteLine('anticipos',$anticipo['id'],'financiaciones',$anticipo['financiacion_id'],'el anticipo de '.$anticipo['importe'].'€')
     ));
