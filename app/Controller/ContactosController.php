@@ -69,7 +69,7 @@ class ContactosController extends AppController {
 					'action' => 'view',
 					$this->params['named']['from_id']));
 			else:
-				$this->Session->setFlash('No se ha podido guardar!');
+				$this->Session->setFlash('¡No se ha podido guardar!');
 			endif;
 		endif;
 	}

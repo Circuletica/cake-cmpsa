@@ -79,7 +79,7 @@
 		
 		echo "  <dt>Puerto destino</dt>\n";
 		echo "<dd>";
-			echo $this->Html->link( $transporte['Puerto']['nombre'], array(
+			echo $this->Html->link( $transporte['Puerto']['nombre']	, array(
 				'controller' => 'puertos',
 				'action' => 'view',
 				$transporte['Puerto']['id'])
@@ -260,20 +260,20 @@
 
 	<table>
 <?php
-	echo $this->Html->tableHeaders(array('Cuenta Corriente/Referencia','Nombre', 'Cantidad', 'Marca','Detalle'));
+	echo $this->Html->tableHeaders(array('Cuenta Corriente','Nombre', 'Cantidad', 'Marca','Detalle'));
 	foreach($transporte['AlmacenesTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['cuenta_almacen'],
 			$linea['almacen_id'],
 			$linea['cantidad_cuenta'],
 			$linea['MarcaAlmacen']['nombre'],			//$linea['referencia_almacen'],
-			$this->Html->link('<i class="fa fa-info-circle"></i> Detalles', array(
+			$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
 				'controller'=>'almacenes_transportes',
-				'action' => 'view',
+				'action' => 'edit',
 				$linea['id'],
               			'from_controller'=>'almacenestransportes',
               			'from_id'=>$transporte['Transporte']['id']),array(
-              			'class'=>'botond','escape' => false,'title'=>'Detalles'))
+              			'class'=>'botond','escape' => false,'title'=>'Modificar Cuenta Corriente'))
 			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
 				array(
 					'controller'=>'operaciones',

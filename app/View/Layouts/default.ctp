@@ -58,7 +58,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 				</ul>
 			</li>
 
-			<li><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','/pages/contabilidad',array('escape' => false));?>
+			<li><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','#',array('escape' => false));?>
 				<ul>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones',array('escape' => false));?></li>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> FINANCIACIÓN','/financiaciones',array('escape' => false));?></li>

@@ -43,7 +43,7 @@ echo $this->html->link($operacion['Contrato']['Proveedor']['Empresa']['nombre_co
 );
 echo "  </dd>";
 echo "  <dt>Peso:</dt>\n";
-echo "  <dd>".$operacion['PesoOperacion']['peso'].'kg&nbsp;'."</dd>";
+echo "  <dd>".$operacion['PesoOperacion']['peso'].' kg&nbsp;'."</dd>";
 echo "  <dt>Embalaje:</dt>\n";
 echo "  <dd>".
     $operacion['PesoOperacion']['cantidad_embalaje'].' x '.
