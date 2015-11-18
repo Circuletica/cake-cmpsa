@@ -36,7 +36,8 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 				array('
 					label'=>'Puerto destino',
 					'empty' =>array('' => 'Selecciona')
-					));
+					)
+				);
 			?>
 			</li>
 			<li>
@@ -108,114 +109,119 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 		</div>
 		</div>
 	<br>
-	<fieldset>
-		<legend>Fechas</legend>
+
+<fieldset>
+<legend>Fechas</legend>
 	<div class='col2'>
-	<div class="linea">
-	<?php
-	echo $this->Form->input('fecha_carga', array(
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+2,
-	'orderYear' => 'asc',
-	'timeFormat' => null ,
-	'label' => 'Carga mercancía',
-	'empty' => ' ')
-	);
+		<div class="linea">
+			<?php
+			echo $this->Form->input('fecha_carga', array(
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+2,
+			'orderYear' => 'asc',
+			'timeFormat' => null ,
+			'label' => 'Carga mercancía',
+			'empty' => ' ')
+			);
 
-	echo $this->Form->input('fecha_llegada', array(
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+2,
-	'orderYear' => 'asc',
-	'timeFormat' => null ,
-	'label' => 'Fecha de llegada',
-	'empty' => ' ')
-	);
-	echo $this->Form->input('fecha_pago', array(
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+2,
-	'orderYear' => 'asc',
-	'timeFormat' => null ,
-	'label' => 'Pago',
-	'empty' => ' ')
-	);
-	echo $this->Form->input('fecha_enviodoc', array(
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+2,
-	'orderYear' => 'asc',
-	'timeFormat' => null ,
-	'label' => 'Envío documentación',
-	'empty' => ' ')
-	);
-	echo $this->Form->input('fecha_entradamerc', array(
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+2,
-	'orderYear' => 'asc',
-	'timeFormat' => null ,
-	'label' => 'Entrada mercancía',
-	'empty' => ' ')
-	);
-	echo $this->Form->input('fecha_despacho_op', array(
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+2,
-	'orderYear' => 'asc',
-	'timeFormat' => null ,
-	'label' => 'Despacho operación',
-	'empty' => ' ')
-	);
+			echo $this->Form->input('fecha_llegada', array(
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+2,
+			'orderYear' => 'asc',
+			'timeFormat' => null ,
+			'label' => 'Fecha de llegada',
+			'empty' => ' ')
+			);
+			echo $this->Form->input('fecha_pago', array(
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+2,
+			'orderYear' => 'asc',
+			'timeFormat' => null ,
+			'label' => 'Pago',
+			'empty' => ' ')
+			);
+			echo $this->Form->input('fecha_enviodoc', array(
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+2,
+			'orderYear' => 'asc',
+			'timeFormat' => null ,
+			'label' => 'Envío documentación',
+			'empty' => ' ')
+			);
+			echo $this->Form->input('fecha_entradamerc', array(
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+2,
+			'orderYear' => 'asc',
+			'timeFormat' => null ,
+			'label' => 'Entrada mercancía',
+			'empty' => ' ')
+			);
+			echo $this->Form->input('fecha_despacho_op', array(
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+2,
+			'orderYear' => 'asc',
+			'timeFormat' => null ,
+			'label' => 'Despacho operación',
+			'empty' => ' ')
+			);
 
-	echo $this->Form->input('fecha_reclamacion', array(
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+2,
-	'orderYear' => 'asc',
-	'timeFormat' => null ,
-	'label' => 'Fecha de reclamación',
-	'empty' => ' ')
-	);
-	echo $this->Form->input('fecha_limite_retirada', array(
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+2,
-	'orderYear' => 'asc',
-	'timeFormat' => null ,
-	'label' => 'Límite de retirada',
-	'empty' => ' ')
-	);
-	echo $this->Form->input('fecha_reclamacion_factura', array(
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+2,
-	'orderYear' => 'asc',
-	'timeFormat' => null ,
-	'label' => 'Reclamación factura',
-	'empty' => ' ')
-	);
-	?>
-	<br><br>
-	</div>
-	</div> 
-	</fieldset>
-			<fieldset>
-	<?php
-	echo $this->Form->input('observaciones', array('label'=>'Observaciones del transporte'));
-	?>
-<!--¿Es necesario botón?
-			<div class="formuboton">
-			<ul>
-			<li><?php
-			echo $this->Form->input('aseguradora_id',
-				array(
-					'label'=>'Aseguradora',
-					'empty' =>true));
+			echo $this->Form->input('fecha_reclamacion', array(
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+2,
+			'orderYear' => 'asc',
+			'timeFormat' => null ,
+			'label' => 'Fecha de reclamación',
+			'empty' => ' ')
+			);
+			echo $this->Form->input('fecha_limite_retirada', array(
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+2,
+			'orderYear' => 'asc',
+			'timeFormat' => null ,
+			'label' => 'Límite de retirada',
+			'empty' => ' ')
+			);
+			echo $this->Form->input('fecha_reclamacion_factura', array(
+			'dateFormat' => 'DMY',
+			'minYear' => date('Y')-1,
+			'maxYear' => date('Y')+2,
+			'orderYear' => 'asc',
+			'timeFormat' => null ,
+			'label' => 'Reclamación factura',
+			'empty' => ' ')
+			);
 			?>
-			</li>
-			<li>
+			<br><br>
+		</div>
+	</div> 
+		<?php
+		echo $this->Form->input('observaciones', array('label'=>'Observaciones del transporte'));
+		?>	
+</fieldset>
+
+<!-- Seguro de la línea transporte -->
+<fieldset>
+<legend>Seguro</legend>
+	<div class="formuboton">
+		<ul>
+		<li><?php
+				echo $this->Form->input('aseguradora_id',
+					array(
+					'label'=>'Aseguradora',
+					'empty' =>array('' => 'Selecciona')
+					)
+				);
+		?>
+		</li>
+		<li>
 			<div class="enlinea">
 				<?php            
 				echo $this->Html->link('<i class="fa fa-plus"></i> Aseguradora', array(
@@ -224,25 +230,13 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 				);
 				?>
 			</div>
-			</li>
-			</ul>
-		</div>
-		-->
-				</fieldset>
-		<fieldset>
-			<legend>Seguro</legend>
-		<?php echo $this->Form->input('aseguradora_id',
-				array(
-					'label'=>'Aseguradora',
-					'empty' =>array('' => 'Selecciona')
-					)
-				);
-	
-		?>
-		<div class="col2">
-		<div class="linea">
-		<?php
-		echo $this->Form->input('fecha_seguro', array(
+		</li>
+		</ul>
+	</div>
+	<div class="col3">
+	<div class="linea">
+	<?php
+	echo $this->Form->input('fecha_seguro', array(
 		'dateFormat' => 'DMY',
 		'minYear' => date('Y')-1,
 		'maxYear' => date('Y')+2,
@@ -251,17 +245,28 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 		'label' => 'Fecha del seguro',
 		'empty' => ' ')
 		);
-
-		
-		?>
+	?>
+	</div>
+	<?php
+		echo $this->Form->input('coste_seguro',array('label'=>'Coste del seguro'));
+		echo $this->Form->input('suplemento_seguro',array('label'=>'Suplemento'));
+		echo $this->Form->input('peso_factura',array('label'=>'Peso facturado'));
+		echo $this->Form->input('peso_neto',array('label'=>'Peso neto'));
+		echo $this->Form->input('averia',array('label'=>'Avería'));
+		?>	
 		</div>
-		<?php
-		echo $this->Form->input('coste_seguro',array('label'=>'Coste del seguro €'));
-		?>
-		</div>
-		<div class="linea">
-		<?php	
-		echo $this->Html->link('Cancelar', $this->request->referer(''), array('class' => 'botond'));
-		echo $this->Form->end('Guardar Línea Transporte'); ?>
-		</div>
-		</fieldset>
+	<div class="formuboton">
+    <ul>
+     	<li>
+     	<?php
+  		 echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
+  		?>
+     	</li>
+     	<li>
+  		<?php           
+		echo $this->Form->end('Guardar Línea Transporte', array('escape'=>false));
+ 		?>
+      	</li>
+  	</ul>
+  	</div>
+</fieldset>

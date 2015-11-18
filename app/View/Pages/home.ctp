@@ -22,7 +22,7 @@
 				<li><?php echo $this->Html->link('RETIRADA','/retiradas',array('escape' => false));?></li>
 				</ul>
 
-		<li><?php echo $this->Html->link('<i class="fa fa-money fa-3x"></i><br>CONTABILIDAD','/pages/contabilidad',array('escape' => false));?>
+		<li><?php echo $this->Html->link('<i class="fa fa-money fa-3x"></i><br>CONTABILIDAD','#',array('escape' => false));?>
 			<ul>
 				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones',array('escape' => false));?>
 				</li>

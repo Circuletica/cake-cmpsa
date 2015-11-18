@@ -90,7 +90,6 @@
 			//Nos da el formato DD-MM-YYYY
 			$this->Date->format($linea['fecha_carga']),
 			$linea['cantidad'],
-			//$linea['EmbalajeTransporte']['cantidad'],
 			$this->Date->format($linea['fecha_seguro']),
 			//$linea['referencia_almacen'],
 			$this->Button->viewLine('transportes',$linea['id'],'transportes',$linea['operacion_id'])
@@ -100,16 +99,18 @@
 	endforeach;
 ?>	</table>
 <?php
-//	if($operacion['Operacion']['id']!= NULL):
-//		$suma=0;
-//		foreach ($transporte as $transportado => $transporte):
-//			if ($transporte['operacion_id']=$operacion['Operacion']['id']):
-//			$suma= $suma + $transporte['cantidad'];
-//			endif;
-//		endforeach;
-		echo "Total transportado:";//.$suma;
-//	endif;
-?>
+	if($operacion['Operacion']['id']!= NULL):
+	$suma = 0;
+	$transportado=0;
+		foreach ($operacion['Transporte'] as $suma):
+			if ($transporte['operacion_id']=$operacion['Operacion']['id']):
+			$transportado = $transportado + $suma['cantidad'];
+			endif;
+		endforeach;
+	
+		echo "<h4>Bultos transportados: ".$transportado."</h4>";
+	endif;
+?></h4>
 		<div class="btabla">
 		<?php
 		echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');

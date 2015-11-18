@@ -43,7 +43,7 @@ foreach($empresas as $empresa):
 	$empresa['Empresa']['codigo_contable'],
 	$empresa['Pais']['nombre'],
 	$empresa['Empresa']['telefono'],
-	$this->Html->link('<i class="fa fa-info-circle"></i> Detalles',array('action'=>'view',$empresa[$class]['id']), array('class' =>'boton','escape' => false,'title'=>'Detalles' ))
+	$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$empresa[$class]['id']), array('class' =>'boton','escape' => false,'title'=>'Detalles' ))
     ));
 
 endforeach;?>
