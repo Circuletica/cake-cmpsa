@@ -32,5 +32,17 @@ class ValorTipoIvasController extends AppController {
 	    endif;
 	endif;
     }
+
+    public function delete($id = null) { 
+	if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
+	if ($this->ValorTipoIva->delete($id)){
+	    $this->Session->setFlash('Valor borrado');
+	    $this->redirect(array(
+		'controller' => $this->params['named']['from_controller'],
+		'action'=>'view',
+		$this->params['named']['from_id']
+	    ));
+	}
+    }
 }
 ?>

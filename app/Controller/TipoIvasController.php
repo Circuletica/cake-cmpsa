@@ -92,7 +92,7 @@ endif;
 	if($this->request->is('get')):
 	    throw new MethodNotAllowedException();
 	else:
-	    if($this->Iva->delete($id)):
+	    if($this->TipoIva->delete($id)):
 		$this->Session->setFlash('Tipo de IVA borrado');
 	$this->redirect(array('action' => 'index'));
 endif;
