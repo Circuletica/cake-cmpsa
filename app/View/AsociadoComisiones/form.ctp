@@ -1,8 +1,15 @@
-<h2>Añadir comisión para asociado <?php echo $asociado_nombre?></h2>
 <?php
 $this->Html->addCrumb('Asociados','/'.$this->params['named']['from_controller']);
 $this->Html->addCrumb($asociado_nombre, '/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
-$this->Html->addCrumb('Modificar Comisión ', '/asociado_comisiones/edit/'.$this->request->data['AsociadoComision']['id'].'/'.'from_controller:'.$this->params['named']['from_controller'].'/from_id:'.$this->params['named']['from_id']);
+
+if ($action == 'add') {
+    echo "<h2>Añadir Comisión a Asociado <em>".$asociado_nombre."</em></h2>\n";
+}
+
+if ($action == 'edit') {
+    echo "<h2>Modificar Comisión de Asociado <em>".$asociado_nombre."</em></h2>\n";
+}
+
 echo $this->Form->create('AsociadoComision');
 echo "<div class='linea'>\n";
 echo $this->Form->input('fecha_inicio', array(
