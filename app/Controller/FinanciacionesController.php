@@ -222,16 +222,14 @@ class FinanciacionesController extends AppController {
     }
 
     public function delete($id = null) {
-	if (!$id or $this->request->is('get')) :
-	    throw new MethodNotAllowedException();
-endif;
-if ($this->Financiacion->delete($id)):
-    $this->Session->setFlash('Financiación borrada');
-$this->redirect(array(
-    'controller' => 'financiaciones',
-    'action'=>'index',
-));
-endif;
+	if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
+	if ($this->Financiacion->delete($id)){
+	    $this->Session->setFlash('Financiación borrada');
+	    $this->redirect(array(
+		'controller' => 'financiaciones',
+		'action'=>'index',
+	    ));
+	}
     }
 }
 ?>

@@ -20,5 +20,5 @@ echo $this->Form->input('AsociadoComision.comision_id', array(
     'options' => $comisiones
     )
 );
-echo $this->Form->end('Guardar contacto');
+echo $this->Form->end('Guardar comisión');
 ?>
