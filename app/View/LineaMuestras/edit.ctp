@@ -22,9 +22,6 @@ function findTotal(){
 $this->Html->addCrumb('Muestras','/muestras');
 //$this->Html->addCrumb('Muestra '.$linea_muestra['Muestra']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 $this->Html->addCrumb('Muestra '.$linea_muestra['Muestra']['referencia'],'/'.'muestras'.'/view/'.$linea_muestra['Muestra']['id']);
-?>
-<div class="laterali">
-	<?php
 	echo $this->Form->create('LineaMuestra', array(
 	'url' => array(
 		'action' => 'edit',
@@ -32,7 +29,7 @@ $this->Html->addCrumb('Muestra '.$linea_muestra['Muestra']['referencia'],'/'.'mu
 		//'from_id'=>$this->params['named']['from_id']
 	)
 ));?>
-	<div class="col2">
+	<div class="col3">
 <?php
 
 echo $this->Html->tableCells(array(
@@ -59,17 +56,18 @@ echo $this->Html->tableCells(array(
 		)
 	)
 );
-?>
-</div>
-<?php
+	?>
+	</div>
+	<div class="col2">
+	<?php
 echo $this->Html->tableCells(array($this->Form->input('apreciacion_bebida', array(
 	'label' => 'Bebida')),
 	$this->Form->input('defecto')));
 echo  $this->Form->input('id',	array('type'=>'hidden'));
-?>
-</div>
-<div class="laterald">
-<?php
+	?>
+	</div>
+	<div class="col4">
+	<?php
 echo $this->Html->tableCells(array(
 		$this->Form->input('criba20', array(
 			'label' => 'Criba 20',
@@ -177,8 +175,10 @@ echo $this->Html->tableCells(array(
 		'Total : <input type="number" name="total" id="total"/>'
 		)
 	);
-echo "</div>";
-echo $this->Form->end('Guardar Linea de muestra');
 ?>
 </div>
+<?php
+echo $this->Form->end('Guardar Linea de muestra');
+?>
+
 
