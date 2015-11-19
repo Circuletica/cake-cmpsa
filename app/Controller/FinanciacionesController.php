@@ -29,7 +29,8 @@ class FinanciacionesController extends AppController {
 	//Si metemos el campo nuevo directamente en el 'contain' del find, sale
 	//un element [0] en el resultado
 	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
-	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)'
+	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
+	    'saldo_anticipo' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)-ifnull(total_anticipo,0)'
 	);
 	$financiacion = $this->Financiacion->find(
 	    'first',
@@ -67,8 +68,13 @@ class FinanciacionesController extends AppController {
 
 	$this->set('anticipos', $financiacion['Anticipo']);
 
+	//calculamos el total de cada línea de reparto como campo virtual del modelo
+	//Si metemos el campo nuevo directamente en el 'contain' del find, sale
+	//un element [0] en el resultado
 	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
-	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)');
+	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
+	    'saldo_anticipo' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)-ifnull(total_anticipo,0)'
+	);
 	$this->Financiacion->RepartoOperacionAsociado->unbindModel(array(
 	    'belongsTo' => array('Asociado')
 	));

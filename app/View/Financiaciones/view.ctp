@@ -49,7 +49,7 @@ $this->start('lines');
 ?>
 	<table>
 <?php
-echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA ('.$iva_comision.'%)','Total anticipo'));
+echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA ('.$iva_comision.'%)','Total anticipo','Pendiente'));
 foreach($repartos as $linea):
     echo $this->Html->tableCells(array(
 	$linea['Empresa']['nombre'],
@@ -80,6 +80,12 @@ foreach($repartos as $linea):
 	array(
 	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['total']),
 	    array('style' => 'text-align:right; font-weight:bold')
+	),
+	array(
+	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['saldo_anticipo']),
+	    array(
+		'style' => 'text-align:right;',
+		'bgcolor' => ($this->Number->roundTo2($linea['RepartoOperacionAsociado']['saldo_anticipo']) == '0,00') ? '#FFFFFF':'#00FFFF')
 	),
     )
 );
