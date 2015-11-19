@@ -454,12 +454,12 @@ endif;
 	//Líneas de reparto
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-	$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
-	$lineas_reparto[] = array(
-	    'Código' => $codigo,
-	    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
-	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
-	    'Peso' => $peso.' Kg'
+		$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
+		$lineas_reparto[] = array(
+		    'Código' => $codigo,
+		    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
+		    'Cantidad' => $linea['cantidad_embalaje_asociado'],
+		    'Peso' => $peso.' Kg'
 	);	
 endforeach;
 $columnas_reparto = array_keys($lineas_reparto[0]);

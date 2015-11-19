@@ -249,31 +249,6 @@
 			echo "<dd>";
 			echo $transporte['Transporte']['coste_seguro'].' €&nbsp;';
 			echo "</dd>";
-		if ($transporte['Transporte']['suplemento_seguro'] !=NULL):
-			echo "  <dt>Suplemento</dt>\n";
-			echo "<dd>";
-			echo $transporte['Transporte']['suplemento_seguro'].' €&nbsp;';
-			echo "</dd>";
-		endif;
-		if ($transporte['Transporte']['peso_factura'] !=NULL):
-			echo "  <dt>Peso facturado</dt>\n";
-			echo "<dd>";
-			echo $transporte['Transporte']['peso_factura'].' Kg&nbsp;';
-			echo "</dd>";
-		endif;
-		if ($transporte['Transporte']['peso_neto'] !=NULL):
-			echo "  <dt>Peso neto</dt>\n";
-			echo "<dd>";
-			echo $transporte['Transporte']['peso_neto'].' Kg&nbsp;';
-			echo "</dd>";
-		endif;
-		if ($transporte['Transporte']['averia'] !=NULL):
-			echo "  <dt>Avería</dt>\n";
-			echo "<dd>";
-			echo $transporte['Transporte']['averia'].' Kg&nbsp;';
-			echo "</dd>";
-		endif;
-
 			else:
 			echo "Sin asegurar";
 		endif;
@@ -319,8 +294,7 @@
 		'action' => 'add',
 		'from_controller' => 'transportes',
 		'from_id' => $transporte['Transporte']['id']),
-		 array('escape' => false,'title'=>'Añadir cuenta corriente almacén')
-		 );
+		 array('escape' => false,'title'=>'Añadir cuenta corriente almacén'));
 		?>
 	</div>
 	</div>

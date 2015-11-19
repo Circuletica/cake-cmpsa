@@ -3,8 +3,8 @@
 $this->Html->addCrumb('Contratos','/contratos');
 $this->Html->addCrumb('Operación','/operaciones/index_trafico');
 //$this->Html->addCrumb('Transporte ','/operacion/view_trafico/'.$operacion['Operacion']['id']);
-?>
-<?php
+echo '<h4>Cantidad/Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].'</h4>';
+echo '<h4>Cantidad/Bultos por transportar: XXXXXXX</h4>';
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
 	?>
@@ -230,6 +230,10 @@ $this->Html->addCrumb('Operación','/operaciones/index_trafico');
 	
 		<?php
 		echo $this->Form->input('coste_seguro',array('label'=>'Coste del seguro'));
+		echo $this->Form->input('suplemento_seguro',array('label'=>'Suplemento'));
+		echo $this->Form->input('peso_factura',array('label'=>'Peso facturado'));
+		echo $this->Form->input('peso_neto',array('label'=>'Peso neto'));
+		echo $this->Form->input('averia',array('label'=>'Avería'));
 		?>
 	<div class="formuboton">
     <ul>
