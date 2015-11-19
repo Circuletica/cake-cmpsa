@@ -1,4 +1,4 @@
-
+<h2>Añadir Línea de Transporte: Operación <?php echo $operacion['Operacion']['referencia'] ?><em></h2>
 <?php
 $this->Html->addCrumb('Contratos','/contratos');
 $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
@@ -7,13 +7,8 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
 $operacion['Operacion']['id']
 ));
 $this->Html->addCrumb('Añadir Transporte');
-?>
-<h2>Añadir Línea de Transporte: Operación <?php echo $operacion['Operacion']['referencia'] ?><em></h2>
-<?php
-echo 'Cantidad/Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'];
-echo "<br>\n";
-
-echo 'Cantidad/Bultos por transportar: XXXXXXX';
+echo '<h4>Cantidad/Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].'</h4>';
+echo '<h4>Cantidad/Bultos por transportar: XXXXXXX</h4>';
 
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
@@ -45,7 +40,10 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 				<?php
 				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Puerto', array(
 				'controller'=>'puertos',
-				'action'=>'add'),array("class"=>"botond", 'escape' => false)
+				'action'=>'add',
+				'from_controller' => $this->params['named']['from_controller'],
+				'from_id' => $this->params['named']['from_id'] ),
+				array("class"=>"botond", 'escape' => false, 'title'=>'Añadir puerto destino')
 				);
 				?>
 				</div>
@@ -100,7 +98,9 @@ echo 'Cantidad/Bultos por transportar: XXXXXXX';
 				<?php
 				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Agente', array(
 				'controller'=>'agentes',
-				'action'=>'add'),array("class"=>"botond", 'escape' => false)
+				'action'=>'add',
+				$this->params['named']['from_id']),
+				array("class"=>"botond", 'escape' => false)
 				);
 				?>
 				</div>

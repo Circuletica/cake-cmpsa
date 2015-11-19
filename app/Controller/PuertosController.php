@@ -47,14 +47,18 @@ public function edit( $id = null) {
 		endif;
 	}
 	public function delete($id) {
-		if($this->request->is('get')):
-			throw new MethodNotAllowedException();
-		else:
-			if($this->Puerto->delete($id)):
+		if($this->request->is('post')):
+			if($this->Contacto->delete($id)):
 				$this->Session->setFlash('Puerto borrado');
-		$this->redirect(array('action' => 'index'));
-endif;
-endif;
+				$this->redirect(array(
+					'controller' => $this->params['named']['from_controller'],
+					'action' => 'view',
+					$this->params['named']['from_id']
+				));
+			endif;
+		else:
+			throw new MethodNotAllowedException();
+		endif;
 	}
 }
 
