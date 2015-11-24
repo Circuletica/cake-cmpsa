@@ -76,22 +76,13 @@
 		echo "<dd>";
 			echo $transporte['Transporte']['matricula'].'&nbsp;';
 		echo "</dd>";
-		echo "  <dt>Puerto carga</dt>\n";
+		echo "  <dt>Puerto de Embarque</dt>\n";
 		echo "<dd>";
-			echo $this->Html->link( $transporte['PuertoCarga']['nombre']	, array(
-				'controller' => 'puertos',
-				'action' => 'view',
-				$transporte['Puerto']['id'])
-			);
+			echo  $transporte['PuertoCarga']['nombre'].'&nbsp;';
 		echo "</dd>";
-		
-		echo "  <dt>Puerto destino</dt>\n";
+			echo "  <dt>Puerto de Destino</dt>\n";
 		echo "<dd>";
-			echo $this->Html->link( $transporte['PuertoDestino']['nombre']	, array(
-				'controller' => 'puertos',
-				'action' => 'view',
-				$transporte['Puerto']['id'])
-			);
+			echo  $transporte['PuertoDestino']['nombre'].'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Naviera</dt>\n";
 		echo "<dd>";
@@ -119,7 +110,7 @@
 		echo "</dd>";				
 		echo "  <dt>Cantidad/Bultos línea</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['cantidad'].'&nbsp;';
+			echo $transporte['Transporte']['cantidad_embalaje'].'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Observaciones</dt>\n";
 		echo "<dd>";

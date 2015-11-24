@@ -9,6 +9,10 @@ class Transporte extends AppModel {
   	  'matricula' => array(
       'rule' => 'notEmpty',
       'message' => 'El BL/matrícula no puede estar vacío'
+      ),
+  	  'naviera_id'=> array(
+      'rule' => 'notEmpty',
+      'message' => 'La Naviera no puede estar vacía'
       )
     );
 
@@ -27,15 +31,15 @@ class Transporte extends AppModel {
 			'foreignKey' => 'puerto_carga_id'),
 			'PuertoDestino' => array(
 			'className' => 'Puerto',
-			'foreignKey' => 'puerto_destino_id)'
+			'foreignKey' => 'puerto_destino_id'),
 			'Agente' => array(
 			'className' => 'Agente',
 			'foreignKey' => 'agente_id')
 	);
 
 	public $hasMany = array(
-		'AlmacenesTransporte'=> array(
-			'className' => 'AlmacenesTransporte',
+		'AlmacenTransporte'=> array(
+			'className' => 'AlmacenTransporte',
 			'foreignKey' => 'transporte_id')
 	);
 

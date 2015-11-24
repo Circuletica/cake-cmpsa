@@ -89,7 +89,7 @@
 			$linea['matricula'],
 			//Nos da el formato DD-MM-YYYY
 			$this->Date->format($linea['fecha_carga']),
-			$linea['cantidad'],
+			$linea['cantidad_embalaje'],
 			$this->Date->format($linea['fecha_seguro']),
 			//$linea['referencia_almacen'],
 			$this->Button->viewLine('transportes',$linea['id'],'transportes',$linea['operacion_id'])
@@ -104,7 +104,7 @@
 	$transportado=0;
 		foreach ($operacion['Transporte'] as $suma):
 			if ($transporte['operacion_id']=$operacion['Operacion']['id']):
-			$transportado = $transportado + $suma['cantidad'];
+			$transportado = $transportado + $suma['cantidad_embalaje'];
 			endif;
 		endforeach;
 	

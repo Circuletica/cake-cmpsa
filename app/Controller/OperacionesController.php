@@ -2,7 +2,7 @@
 class OperacionesController extends AppController {
 
     public function index() {
-	$this->$paginate['order'] = array('Operacion.referencia' => 'asc'));
+	$this->$paginate['order'] = array('Operacion.referencia' => 'asc');
 	$this->paginate['contain'] = array(
 	    'Contrato',
 	    'PesoOperacion',

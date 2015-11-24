@@ -29,9 +29,26 @@ public function view($id = null) {
 
 	}
 
-	public function add() {
-				//el id y la clase de la entidad de origen vienen en la URL
-		if (!$this->params['named']['from_id']) {
+
+    public function add() {
+	$this->form($this->params['named']['from_id']);
+	$this->render('form');
+    }
+
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL');
+	    $this->redirect(array(
+		'action' => 'view',
+		'controller' => 'transportes'
+	    ));
+	}
+	$this->form($id);
+	$this->render('form');
+    }
+
+    public function form($id) { //esta acción vale tanto para edit como add
+	if (!$this->params['named']['from_id']) {
 			$this->Session->setFlash('URL mal formado controller/add '.$this->params['named']['from_controller']);
 			$this->redirect(array(
 				'controller' => $this->params['named']['from_controller'],
@@ -60,19 +77,19 @@ public function view($id = null) {
 	//	$transportes = $this->Transporte->find('all');
 	//	$contrato_embalajes = $transportes['Operacion']['Contrato']['ContratoEmbalaje'];
 
-
+		$this->set('action', $this->action);
 		$this->set('embalaje', $this->Transporte->Operacion->Contrato->ContratoEmbalaje->Embalaje->find('list',array(
 			'fields' => array('nombre'),
 			'recursive' => 3))
 		);
-		$this->set('puertos', $this->Transporte->Puerto->find(
+	/*	$this->set('puertos', $this->Transporte->Puerto->find(
 		    'list',
 		    array(
 			'order' => array(
 			    'nombre' => 'ASC'
 			)
 		    )
-		));
+		));*/
 		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
 			'fields' => array('Naviera.id','Empresa.nombre_corto'),
 			'recursive' => 1))
@@ -81,11 +98,11 @@ public function view($id = null) {
 			'fields' => array('Agente.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
-		$this->set('almacenes', $this->Transporte->AlmacenesTransporte->Almacen->find('list', array(
+		$this->set('almacenes', $this->Transporte->AlmacenTransporte->Almacen->find('list', array(
 			'fields' => array('Almacen.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
-		$this->set('almacenes_transportes', $this->Transporte->AlmacenesTransporte->Almacen->find('list'));
+		$this->set('almacen_transportes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
 		//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
 		$this->set('aseguradoras', $this->Transporte->Aseguradora->find('list', array(
 			'fields' => array('Aseguradora.id','Empresa.nombre_corto'),
@@ -105,19 +122,29 @@ public function view($id = null) {
 		$transporte = $this->Transporte->find('all');	
 		$this->set('transporte',$transporte);
 //NO NECESARIO SE PASA A INDEX LINEA TRANSPORTE
-		$almacenaje = $this->Transporte->AlmacenesTransporte->find('first', array(
+		$almacenaje = $this->Transporte->AlmacenTransporte->find('first', array(
 			'conditions' => array('Transporte.id' => $this->params['named']['from_id']),
 			'recursive' => 2,
 			'fields' => array(
-				'AlmacenesTransporte.cantidad_cuenta',
-				'AlmacenesTransporte.cuenta_almacen')
+				'AlmacenTransporte.cantidad_cuenta',
+				'AlmacenTransporte.cuenta_almacen')
 		));
 		$this->set('almacenajes',$almacenaje);		
 
 
 	}
 
-	public function edit( $id = null) {
+
+
+
+
+
+
+
+
+
+
+/*	public function edit( $id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada');
 			$this->redirect(array(
@@ -179,7 +206,7 @@ public function view($id = null) {
 			endif;
 		endif;
 	}
-
+*/
 
 	public function delete($id = null) {
 		if (!$id or $this->request->is('get')) :
