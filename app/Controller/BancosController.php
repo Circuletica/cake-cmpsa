@@ -2,29 +2,7 @@
 class BancosController extends AppController {
 
     public function index($id = null) {
-	//hay que cambiar el 'hasOne' del Model por un 'belongsTo'
-	//para que el LEFT JOIN de 3r nivel de la query se haga
-	//después del de 2o nivel, es decir primero el JOIN con Empresa,
-	//luego el JOIN con Pais si no queremos errores de SQL
-	$this->Banco->unbindModel(array(
-	    'hasOne' => array('Empresa')
-	));
-	$this->Banco->bindModel(array(
-	    'belongsTo' => array(
-		'Empresa' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Banco.id = Empresa.id')
-		),
-	    )
-	));
-	$this->paginate = array(
-	    'contain' => array(
-		'Empresa',
-		//'Pais.nombre',
-	    ),
-	    'recursive' => 1,
-	    'order' => array('Empresa.nombre_corto' => 'ASC')
-	);
+	$this->bindEmpresa('Banco');
 	$this->set('bancos', $this->paginate());
 
 	//Exportar PDF

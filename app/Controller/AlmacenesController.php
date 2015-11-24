@@ -2,33 +2,7 @@
 class AlmacenesController extends AppController {
 
     public function index() {
-	//hay que cambiar el 'hasOne' del Model por un 'belongsTo'
-	//para que el LEFT JOIN de 3r nivel de la query se haga
-	//después del de 2o nivel, es decir primero el JOIN con Empresa,
-	//luego el JOIN con Pais si no queremos errores de SQL
-	$this->Almacen->unbindModel(array(
-	    'hasOne' => array('Empresa')
-	));
-	$this->Almacen->bindModel(array(
-	    'belongsTo' => array(
-		'Empresa' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Almacen.id = Empresa.id')
-		),
-		'Pais' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Pais.id = Empresa.pais_id')
-		)
-	    )
-	));
-	$this->paginate = array(
-	    'contain' => array(
-		'Empresa',
-		'Pais.nombre',
-	    ),
-	    'recursive' => 1,
-	    'order' => array('Empresa.nombre_corto' => 'ASC')
-	);
+	$this->bindEmpresa('Almacen');
 	$this->set('empresas', $this->paginate());
     }
 
