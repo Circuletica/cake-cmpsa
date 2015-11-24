@@ -22,9 +22,12 @@ class Transporte extends AppModel {
 			'Naviera' => array(
 			'className' => 'Naviera',
 			'foreignKey' => 'naviera_id'),
-			'Puerto' => array(
+			'PuertoCarga' => array(
 			'className' => 'Puerto',
-			'foreignKey' => 'puerto_id'),
+			'foreignKey' => 'puerto_carga_id'),
+			'PuertoDestino' => array(
+			'className' => 'Puerto',
+			'foreignKey' => 'puerto_destino_id)'
 			'Agente' => array(
 			'className' => 'Agente',
 			'foreignKey' => 'agente_id')

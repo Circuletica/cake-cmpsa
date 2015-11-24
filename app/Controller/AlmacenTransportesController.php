@@ -1,11 +1,11 @@
 <?php
-class AlmacenesTransportesController extends AppController {
+class AlmacenTransportesController extends AppController {
 		public $paginate = array(
 		'order' => array('cuenta_almacen' => 'asc')
 	);
 
 	public function index() {
-		$this->set('almacenestransportes', $this->paginate());
+		$this->set('almacentransportes', $this->paginate());
 	}
 
 	public function add() {

@@ -1,5 +1,5 @@
 
-<h2>Modificar Cuenta Corriente almacén</h2>
+<h2>Agregar Cuenta Corriente almacén</h2>
 <?php
 $this->Html->addCrumb('Contratos','/contratos');
 $this->Html->addCrumb('Operación ', array(
@@ -10,8 +10,8 @@ $this->Html->addCrumb('Transporte', array(
 'controller'=>'transportes',
 'action'=>'view'
 ));
-$this->Html->addCrumb('Modificar Cuenta Corriente');
-echo $this->Form->create('AlmacenesTransporte', array('action' => 'edit'));
+$this->Html->addCrumb('Añadir Cuenta Corriente');
+echo $this->Form->create('AlmacenTransporte');
 ?>
 <fieldset>	
 	<div class="formuboton">
