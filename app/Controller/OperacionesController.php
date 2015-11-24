@@ -1,11 +1,8 @@
 <?php
 class OperacionesController extends AppController {
-    public $scaffold = 'admin';
-    public $paginate = array(
-	'order' => array('Operacion.referencia' => 'asc')
-    );
 
     public function index() {
+	$this->$paginate['order'] = array('Operacion.referencia' => 'asc'));
 	$this->paginate['contain'] = array(
 	    'Contrato',
 	    'PesoOperacion',
@@ -354,26 +351,26 @@ endif;
 	$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-	    $codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
-	    $lineas_reparto[] = array(
-		'Código' => $codigo,
-		'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
-		'Cantidad' => $linea['cantidad_embalaje_asociado'],
-		'Peso' => $peso
-	    );	
-	endforeach;
-	$columnas_reparto = array_keys($lineas_reparto[0]);
-	//indexamos el array por el codigo de asociado
-	$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
-	//se ordena por codigo ascendente
-	ksort($lineas_reparto);
-	$this->set('columnas_reparto',$columnas_reparto);
-	$this->set('lineas_reparto',$lineas_reparto);
-	$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
-	//comprobamos si ya existe una financiacion para esta operación
-	if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
-	    $this->set('existe_financiacion', 1);
-	}
+	$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
+	$lineas_reparto[] = array(
+	    'Código' => $codigo,
+	    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
+	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
+	    'Peso' => $peso
+	);	
+endforeach;
+$columnas_reparto = array_keys($lineas_reparto[0]);
+//indexamos el array por el codigo de asociado
+$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
+//se ordena por codigo ascendente
+ksort($lineas_reparto);
+$this->set('columnas_reparto',$columnas_reparto);
+$this->set('lineas_reparto',$lineas_reparto);
+$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
+//comprobamos si ya existe una financiacion para esta operación
+if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
+    $this->set('existe_financiacion', 1);
+}
     }
 
     public function index_trafico() {
@@ -454,12 +451,12 @@ endif;
 	//Líneas de reparto
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-		$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
-		$lineas_reparto[] = array(
-		    'Código' => $codigo,
-		    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
-		    'Cantidad' => $linea['cantidad_embalaje_asociado'],
-		    'Peso' => $peso.' Kg'
+	$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
+	$lineas_reparto[] = array(
+	    'Código' => $codigo,
+	    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
+	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
+	    'Peso' => $peso.' Kg'
 	);	
 endforeach;
 $columnas_reparto = array_keys($lineas_reparto[0]);

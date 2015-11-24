@@ -65,7 +65,14 @@ public function view($id = null) {
 			'fields' => array('nombre'),
 			'recursive' => 3))
 		);
-		$this->set('puertos', $this->Transporte->Puerto->find('list'));
+		$this->set('puertos', $this->Transporte->Puerto->find(
+		    'list',
+		    array(
+			'order' => array(
+			    'nombre' => 'ASC'
+			)
+		    )
+		));
 		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
 			'fields' => array('Naviera.id','Empresa.nombre_corto'),
 			'recursive' => 1))
