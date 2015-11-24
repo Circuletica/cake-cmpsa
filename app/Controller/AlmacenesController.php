@@ -46,16 +46,7 @@ endif;
     }
 
     public function delete( $id = null) {
-	if (!$id or $this->request->is('get')) :
-	    throw new MethodNotAllowedException();
-	//$this->Session->setFlash('URL mal formado');
-	//$this->redirect(array('action'=>'index'));
-endif;
-if ($this->Almacen->delete($id)):
-    $this->Session->setFlash('Almacen borrado');
-$this->Almacen->Empresa->delete($id);
-$this->redirect(array('action'=>'index'));
-endif;
+	$this->deleteCompany('Almacen',$id);
     }
 
     public function edit( $id = null) {

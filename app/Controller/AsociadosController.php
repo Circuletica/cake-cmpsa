@@ -66,18 +66,11 @@ class AsociadosController extends AppController {
 endif;
 endif;
     }
+
     public function delete( $id = null) {
-	if (!$id or $this->request->is('get')) :
-	    throw new MethodNotAllowedException();
-	//$this->Session->setFlash('URL mal formado');
-	//$this->redirect(array('action'=>'index'));
-endif;
-if ($this->Asociado->delete($id)):
-    $this->Session->setFlash('Asociado borrado');
-$this->Asociado->Empresa->delete($id);
-$this->redirect(array('action'=>'index'));
-endif;
+	$this->deleteCompany('Asociado', $id);
     }
+
     public function edit( $id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado');

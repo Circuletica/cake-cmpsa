@@ -49,42 +49,33 @@ class BancosController extends AppController {
     public function add() {
 	//los paises que rellenan el desplegable de 'País'
 	$this->set('paises', $this->Banco->Empresa->Pais->find('list'));
-	if($this->request->is('post')):
+	if($this->request->is('post')){
 	    //quitamos los guiones de la entrada de formulario
 	    $numero_form = $this->data['Banco']['cuenta_cliente_1'];
-	$cuenta_cliente_1 = substr($numero_form,0,4).
-	    substr($numero_form,5,4).
-	    substr($numero_form,10,2).
-	    substr($numero_form,13,10);
-	$numero_form = $this->data['Empresa']['cuenta_bancaria'];
-	$cuenta_bancaria = substr($numero_form,0,4).
-	    substr($numero_form,5,4).
-	    substr($numero_form,10,2).
-	    substr($numero_form,13,10);
-	$this->request->data['Banco']['cuenta_cliente_1'] = $cuenta_cliente_1;
-	$this->request->data['Empresa']['cuenta_bancaria'] = $cuenta_bancaria;
-	//primero se guarda la empresa y con el id que devuelve
-	//mysql guardamos el banco con el mismo id
-	$this->Banco->Empresa->save($this->request->data);
-	$this->request->data['Banco']['id'] = $this->Banco->Empresa->id;
-	if($this->Banco->save($this->request->data)):
-	    $this->Session->setFlash('Banco guardado');
-	$this->redirect(array('action' => 'index'));
-endif;
-endif;
+	    $cuenta_cliente_1 = substr($numero_form,0,4).
+		substr($numero_form,5,4).
+		substr($numero_form,10,2).
+		substr($numero_form,13,10);
+	    $numero_form = $this->data['Empresa']['cuenta_bancaria'];
+	    $cuenta_bancaria = substr($numero_form,0,4).
+		substr($numero_form,5,4).
+		substr($numero_form,10,2).
+		substr($numero_form,13,10);
+	    $this->request->data['Banco']['cuenta_cliente_1'] = $cuenta_cliente_1;
+	    $this->request->data['Empresa']['cuenta_bancaria'] = $cuenta_bancaria;
+	    //primero se guarda la empresa y con el id que devuelve
+	    //mysql guardamos el banco con el mismo id
+	    $this->Banco->Empresa->save($this->request->data);
+	    $this->request->data['Banco']['id'] = $this->Banco->Empresa->id;
+	    if($this->Banco->save($this->request->data)){
+		$this->Session->setFlash('Banco guardado');
+		$this->redirect(array('action' => 'index'));
+	    }
+	}
     }
 
     public function delete( $id = null) {
-	if (!$id or $this->request->is('get')) :
-	    throw new MethodNotAllowedException();
-	//$this->Session->setFlash('URL mal formado');
-	//$this->redirect(array('action'=>'index'));
-endif;
-if ($this->Banco->delete($id)):
-    $this->Session->setFlash('Banco borrado');
-$this->Banco->Empresa->delete($id);
-$this->redirect(array('action'=>'index'));
-endif;
+	$this->deleteCompany('Banco', $id);
     }
 
     public function edit( $id = null) {

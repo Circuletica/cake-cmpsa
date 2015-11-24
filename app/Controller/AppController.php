@@ -67,6 +67,17 @@ class AppController extends Controller {
 	);
     }
 
+    public function deleteCompany($class, $id) {
+    	if (!$id or $this->request->is('get')) {
+	    throw new MethodNotAllowedException();
+	}
+	if ($this->$class->delete($id)) {
+	    $this->Session->setFlash($class.' borrado');
+	    $this->$class->Empresa->delete($id);
+	    $this->redirect(array('action'=>'index'));
+	}
+}
+
     public function iban($codigoPais,$ccc){
 	$pesos = array('A' => '10',
 	    'B' => '11',
