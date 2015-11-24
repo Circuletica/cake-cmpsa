@@ -24,6 +24,6 @@ class Financiacion extends AppModel {
 			'className' => 'RepartoOperacionAsociado',
 			'foreignKey' => 'id'
 		),
-		'Anticipo'
+		//'Anticipo'
 	);
 }

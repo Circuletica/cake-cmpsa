@@ -45,19 +45,6 @@ echo '<h4>Cantidad/Bultos por transportar: '.$transportado.'</h4>';
 				);
 			?>
 			</li>
-			<li>
-				<div class="enlinea">
-				<?php
-				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Puerto', array(
-				'controller'=>'puertos',
-				'action'=>'add',
-				'from_controller' => $this->params['named']['from_controller'],
-				'from_id' => $this->params['named']['from_id'] ),
-				array("class"=>"botond", 'escape' => false, 'title'=>'Añadir puerto destino')
-				);
-				?>
-				</div>
-			</li>
 		</ul>
 		</div>
 
