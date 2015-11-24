@@ -3,8 +3,16 @@
 $this->Html->addCrumb('Contratos','/contratos');
 $this->Html->addCrumb('Operación','/operaciones/index_trafico');
 //$this->Html->addCrumb('Transporte ','/operacion/view_trafico/'.$operacion['Operacion']['id']);
+if($transporte['Transporte']['id']!= NULL):
+	$suma = 0;
+	$transportado=0;
+		foreach ($transporte['Transporte'] as $suma):
+			$transportado = $transportado + $suma['cantidad'];
+		endforeach;
+	endif;
 echo '<h4>Cantidad/Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].'</h4>';
-echo '<h4>Cantidad/Bultos por transportar: XXXXXXX</h4>';
+$transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
+echo '<h4>Cantidad/Bultos por transportar: '.$transportado.'</h4>';
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
 	?>

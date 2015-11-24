@@ -110,7 +110,7 @@
 	
 		echo "<h4>Bultos transportados: ".$transportado."</h4>";
 	endif;
-?></h4>
+?>
 		<div class="btabla">
 		<?php
 		echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
