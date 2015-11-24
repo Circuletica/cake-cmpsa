@@ -3,7 +3,7 @@ class ProveedoresController extends AppController {
 
     public function index() {
 	//por defecto ordenar la lista por nombre de Agente
-	$this->paginate['order'] => array('Empresa.nombre_corto' => 'asc');
+	$this->paginate['order'] = array('Empresa.nombre_corto' => 'asc');
 
 	//hay que cambiar el 'hasOne' del Model por un 'belongsTo'
 	//para que el LEFT JOIN de 3r nivel de la query se haga

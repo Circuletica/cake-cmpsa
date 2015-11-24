@@ -3,7 +3,7 @@ class PaisesController extends AppController {
 
     public function index() {
 	//por defecto ordenar la lista por nombre de Agente
-	$this->paginate['order'] => array('Pais.nombre' => 'asc');
+	$this->paginate['order'] = array('Pais.nombre' => 'asc');
 	$this->set('paises', $this->paginate());
     }
 

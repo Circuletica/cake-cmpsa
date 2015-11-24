@@ -2,9 +2,6 @@
 class BancosController extends AppController {
 
     public function index($id = null) {
-	//por defecto ordenar la lista por nombre de Agente
-	$this->paginate['order'] => array('Empresa.nombre_corto' => 'asc');
-
 	//hay que cambiar el 'hasOne' del Model por un 'belongsTo'
 	//para que el LEFT JOIN de 3r nivel de la query se haga
 	//después del de 2o nivel, es decir primero el JOIN con Empresa,
@@ -18,10 +15,6 @@ class BancosController extends AppController {
 		    'foreignKey' => false,
 		    'conditions' => array('Banco.id = Empresa.id')
 		),
-		//				'Pais' => array(
-		//					'foreignKey' => false,
-		//					'conditions' => array('Pais.id = Empresa.pais_id')
-		//				)
 	    )
 	));
 	$this->paginate = array(

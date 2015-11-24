@@ -2,9 +2,6 @@
 class AsociadosController extends AppController {
 
     public function index() {
-	//por defecto ordenar la lista por nombre de Agente
-	$this->paginate['order'] => array('Empresa.nombre_corto' => 'asc');
-
 	//hay que cambiar el 'hasOne' del Model por un 'belongsTo'
 	//para que el LEFT JOIN de 3r nivel de la query se haga
 	//después del de 2o nivel, es decir primero el JOIN con Empresa,
@@ -34,6 +31,7 @@ class AsociadosController extends AppController {
 	);
 	$this->set('empresas', $this->paginate());
     }
+
     public function view($id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado Asociado/view ');
@@ -66,10 +64,10 @@ class AsociadosController extends AppController {
 	);
 	//si no hay comisión válida a día de hoy, avisar.
 	if (!empty($asociado_comision)) {
-	$this->set('comision', $asociado_comision['Comision']['valor']);
+	    $this->set('comision', $asociado_comision['Comision']['valor']);
 	} else
 	{
-	$this->set('comision', 'comisión no definida');
+	    $this->set('comision', 'comisión no definida');
 	}
     }
 
