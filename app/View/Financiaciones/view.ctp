@@ -50,7 +50,7 @@ $this->start('lines');
 	<table>
 <?php
 echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA ('.$iva_comision.'%)','Total anticipo','Pendiente'));
-foreach($repartos as $linea):
+foreach($distribuciones as $linea):
     echo $this->Html->tableCells(array(
 	$linea['Empresa']['nombre'],
 	array(
@@ -152,12 +152,12 @@ echo $this->Html->tableHeaders(array(
     'Asociado','fecha','importe','Banco',''));
 foreach ($anticipos as $anticipo):
     echo $this->Html->tableCells(array(
-	$anticipo['Asociado']['Empresa']['nombre'],
-	$this->Date->format($anticipo['fecha_conta']),
-	$anticipo['importe'],
+	$anticipo['AsociadoOperacion']['Asociado']['Empresa']['nombre'],
+	$this->Date->format($anticipo['Anticipo']['fecha_conta']),
+	$anticipo['Anticipo']['importe'],
 	$anticipo['Banco']['Empresa']['nombre_corto'],
-	$this->Button->editLine('anticipos',$anticipo['id'],'financiaciones',$anticipo['financiacion_id'])
-	.' '.$this->Button->deleteLine('anticipos',$anticipo['id'],'financiaciones',$anticipo['financiacion_id'],'el anticipo de '.$anticipo['importe'].'€')
+	$this->Button->editLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'])
+	.' '.$this->Button->deleteLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'],'el anticipo de '.$anticipo['Anticipo']['importe'].'€')
     ));
 endforeach;
 echo"</table>\n";

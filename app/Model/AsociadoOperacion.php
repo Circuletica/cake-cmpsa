@@ -5,5 +5,9 @@ class AsociadoOperacion extends AppModel {
 		'Operacion',
 		'Asociado'
 	);
+	public $hasMany = array(
+	    'Anticipo',
+	    'Factura'
+	);
 }
 ?>

@@ -28,10 +28,10 @@ class FinanciacionesController extends AppController {
 	//calculamos el total de cada línea de reparto como campo virtual del modelo
 	//Si metemos el campo nuevo directamente en el 'contain' del find, sale
 	//un element [0] en el resultado
-	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
-	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
-	    'saldo_anticipo' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)-ifnull(total_anticipo,0)'
-	);
+//	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
+//	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
+//	    'saldo_anticipo' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)-ifnull(total_anticipo,0)'
+//	);
 	$financiacion = $this->Financiacion->find(
 	    'first',
 	    array(
@@ -55,10 +55,6 @@ class FinanciacionesController extends AppController {
 		    ),
 		    'ValorIvaFinanciacion',
 		    'ValorIvaComision',
-		    'Anticipo' => array(
-			'Asociado' => array('Empresa'),
-			'Banco' => array('Empresa')
-		    )
 		),
 		'conditions' => array('Financiacion.id' => $id),
 		'recursive' => 4
@@ -66,11 +62,10 @@ class FinanciacionesController extends AppController {
 	);
 	$this->set(compact('financiacion'));
 
-	$this->set('anticipos', $financiacion['Anticipo']);
-
 	//calculamos el total de cada línea de reparto como campo virtual del modelo
 	//Si metemos el campo nuevo directamente en el 'contain' del find, sale
 	//un element [0] en el resultado
+	//$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
 	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
 	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
 	    'saldo_anticipo' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)-ifnull(total_anticipo,0)'
@@ -86,7 +81,7 @@ class FinanciacionesController extends AppController {
 		)
 	    )
 	));
-	$repartos = $this->Financiacion->RepartoOperacionAsociado->find(
+	$distribuciones = $this->Financiacion->RepartoOperacionAsociado->find(
 	    'all',
 	    array(
 		'conditions'=>array(
@@ -100,7 +95,7 @@ class FinanciacionesController extends AppController {
 		'order' => array('Empresa.codigo_contable' => 'ASC')
 	    )
 	);
-	$this->set(compact('repartos'));
+	$this->set(compact('distribuciones'));
 
 	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
 	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
@@ -129,6 +124,31 @@ class FinanciacionesController extends AppController {
 	    )
 	);
 	$this->set('totales',$totales['RepartoOperacionAsociado']);
+
+	$anticipos = $this->Financiacion->Operacion->AsociadoOperacion->Anticipo->find(
+	    'all',
+	    array(
+		'recursive' => 3,
+		'contain' => array(
+		    'Banco' => array(
+			'Empresa' => array(
+			    'fields' => array('nombre_corto')
+			)
+		    ),
+		    'AsociadoOperacion' => array(
+			'fields' => array('asociado_id','operacion_id'),
+			'Asociado' => array(
+			    'fields' => array('id'),
+			    'Empresa' => array(
+				'fields' => array('nombre')
+			    )
+			)
+		    )
+		)
+	    )
+
+	);
+	$this->set(compact('anticipos'));
 
 	$this->set('financiacion_id', $financiacion['Financiacion']['id']);
 	$this->set('referencia', $financiacion['Operacion']['referencia']);
