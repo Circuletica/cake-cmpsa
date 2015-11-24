@@ -59,6 +59,9 @@ class NavierasController extends AppController {
 	      			substr($numero_form,10,2).
 	     			substr($numero_form,13,10);
 			$this->request->data['Empresa']['cuenta_bancaria'] = $cuenta_bancaria;
+			$website = $this->request->data['Empresa']['website'];
+			$website = 'http://'.$website;
+			$this->request->data['Empresa']['website'] = $website;
 			//primero se guarda la nueva empresa y con
 			//el ID que le da mysql, se guarda la entidad
 			//con el mismo ID
@@ -96,6 +99,9 @@ class NavierasController extends AppController {
 		if($this->request->is('get')):
 			$this->request->data = $this->Naviera->read();
 		else:
+			$website = $this->request->data['Empresa']['website'];
+			$website = 'http://'.$website;
+			$this->request->data['Empresa']['website'] = $website;
 			if ($this->Naviera->Empresa->save($this->request->data) and $this->Naviera->save($this->request->data)):
 				$this->Session->setFlash('Naviera '.
 				$this->request->data['Empresa']['nombre'].

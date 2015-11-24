@@ -66,7 +66,13 @@ class AsociadosController extends AppController {
 		))
 	    )
 	);
+	//si no hay comisión válida a día de hoy, avisar.
+	if (!empty($asociado_comision)) {
 	$this->set('comision', $asociado_comision['Comision']['valor']);
+	} else
+	{
+	$this->set('comision', 'comisión no definida');
+	}
     }
 
     public function add() {

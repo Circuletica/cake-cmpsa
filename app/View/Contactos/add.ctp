@@ -26,10 +26,6 @@
       ?>
     </div>
     <?php
-  //echo 'Empresa';
-  //echo $this->Form->select('pais_id', array($paises,
-  //'label' => 'País'));
-  //echo $this->Form->select('empresa_id', $empresas);
   echo $this->Form->end('Guardar contacto');
 ?>
 

@@ -70,12 +70,12 @@ echo $this->Html->tableCells(array(
 		$this->Form->input('criba20', array(
 			'label' => 'Criba 20',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			),
 		$this->Form->input('criba19', array(
 			'label' => 'Criba 19',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			)
 		)
 
@@ -84,12 +84,12 @@ echo $this->Html->tableCells(array(
 		$this->Form->input('criba13p', array(
 			'label' => 'Caracol 13',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			),
 		$this->Form->input('criba18', array(
 			'label' => 'Criba 18',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			)
 		)
 
@@ -98,12 +98,12 @@ echo $this->Html->tableCells(array(
 		$this->Form->input('criba12p', array(
 			'label' => 'Caracol 12',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			),
 		$this->Form->input('criba17', array(
 			'label' => 'Criba 17',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			)
 		)
 
@@ -112,12 +112,12 @@ echo $this->Html->tableCells(array(
 		$this->Form->input('criba11p', array(
 			'label' => 'Caracol 11',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			),
 		$this->Form->input('criba16', array(
 			'label' => 'Criba 16',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			)
 		)
 
@@ -126,12 +126,12 @@ echo $this->Html->tableCells(array(
 		$this->Form->input('criba10p', array(
 			'label' => 'Caracol 10',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			),
 		$this->Form->input('criba15', array(
 			'label' => 'Criba 15',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			)
 		)
 
@@ -140,12 +140,12 @@ echo $this->Html->tableCells(array(
 		$this->Form->input('criba9p', array(
 			'label' => 'Caracol 9',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			),
 		$this->Form->input('criba14', array(
 			'label' => 'Criba 14',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			)
 		)
 
@@ -154,12 +154,12 @@ echo $this->Html->tableCells(array(
 		$this->Form->input('criba8p', array(
 			'label' => 'Caracol 8',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			),
 		$this->Form->input('criba13', array(
 			'label' => 'Criba 13',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			)
 		)
 
@@ -168,7 +168,7 @@ echo $this->Html->tableCells(array(
 		$this->Form->input('criba12', array(
 			'label' => 'Criba 12',
 			'class' => 'criba',
-			'onblur' => 'findTotal()')
+			'oninput' => 'findTotal()')
 			),
 		'Total : <input type="number" name="total" id="total"/>'
 		)

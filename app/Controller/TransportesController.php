@@ -30,6 +30,13 @@ public function view($id = null) {
 	}
 
 	public function add() {
+				//el id y la clase de la entidad de origen vienen en la URL
+		if (!$this->params['named']['from_id']) {
+			$this->Session->setFlash('URL mal formado controller/add '.$this->params['named']['from_controller']);
+			$this->redirect(array(
+				'controller' => $this->params['named']['from_controller'],
+				'action' => 'view'));
+		}
 
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué operacion pertenece
@@ -38,9 +45,10 @@ public function view($id = null) {
 			if($this->Transporte->save($this->request->data) ):
 				$this->Session->setFlash('Línea de transporte guardada');
 				$this->redirect(array(
-					'controller' => 'operaciones',
+					'controller' => $this->params['named']['from_controller'],
 					'action' => 'view_trafico',
-					$this->params['named']['from_id']));
+					$this->params['named']['from_id']
+				));
 			endif;
 		endif;
 

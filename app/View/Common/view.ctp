@@ -55,4 +55,5 @@
 		<?php echo $this->Button->addLine($line2_controller,$controller,$id,$line2_object);?>
 	</div>
 <?php endif;?>
+<?php $this->fetch('content');?>
 </div>

@@ -27,7 +27,7 @@ class BancosController extends AppController {
 		$this->paginate = array(
 			'contain' => array(
 				'Empresa',
-				'Pais.nombre',
+				//'Pais.nombre',
 			),
 			'recursive' => 1,
 			'order' => array('Empresa.nombre_corto' => 'ASC')

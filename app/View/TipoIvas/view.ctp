@@ -22,7 +22,9 @@ $this->start('lines');
 	echo $this->Html->tableCells(array(
 	    $this->Date->format($valor['fecha_inicio']),
 	    $this->Date->format($valor['fecha_fin']),
-	    $valor['valor'].'%'
+	    $valor['valor'].'%',
+	    $this->Button->editLine('valor_tipo_ivas',$valor['id'],'tipo_ivas',$valor['tipo_iva_id'])
+	    .' '.$this->Button->deleteLine('valor_tipo_ivas',$valor['id'],'tipo_ivas',$valor['tipo_iva_id'],$valor['valor'].'%')
 	));
     endforeach;
     echo "</table>";

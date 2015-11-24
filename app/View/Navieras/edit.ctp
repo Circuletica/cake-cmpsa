@@ -53,6 +53,10 @@
 	?>
     </div>
     <?php
+	echo $this->Form->input('Empresa.website', array(
+	    'label'=>'Sitio web',
+	    'between'=>'http://'
+	));
 	echo $this->Form->input('id',array('type'=>'hidden'));
 	echo $this->Form->end('Guardar naviera');
     ?>

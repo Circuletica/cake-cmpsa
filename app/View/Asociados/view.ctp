@@ -3,7 +3,6 @@
 	$this->assign('object', 'Asociado '.$referencia);
 	$this->assign('class','Asociado');
 	$this->assign('controller','asociados');
-//$this->start('filter');
-//$this->end();
-	echo 'esto seria el content';
+	$this->assign('line2_object', 'Comisión');
+	$this->assign('line2_controller','asociado_comisiones');
 ?>
