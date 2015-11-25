@@ -11,8 +11,8 @@ class AlmacenTransportesController extends AppController {
 	public function add() {
 
 	if($this->request->is('post')):
-		$this->request->data['AlmacenesTransporte']['transporte_id'] = $this->params['named']['from_id'];
-			if($this->AlmacenesTransporte->save($this->request->data) ):
+		$this->request->data['AlmacenTransporte']['transporte_id'] = $this->params['named']['from_id'];
+			if($this->AlmacenTransporte->save($this->request->data) ):
 				$this->Session->setFlash('Cuenta corriente almacén guardada guardada');
 				$this->redirect(array(
 					'controller' => 'transportes',
@@ -21,7 +21,7 @@ class AlmacenTransportesController extends AppController {
 	endif;
 		endif;
 
-	$this->set('almacenes', $this->AlmacenesTransporte->Almacen->find('list', array(
+	$this->set('almacenes', $this->AlmacenTransporte->Almacen->find('list', array(
 	'fields' => array('Almacen.id','Empresa.nombre_corto'),
 	'recursive' => 1))
 	);	
@@ -36,11 +36,11 @@ class AlmacenTransportesController extends AppController {
 				'controller' => $this->params['named']['from_controller'],
 				'action'=>'index'));
 		}
-		$this->AlmacenesTransporte->id = $id;
+		$this->AlmacenTransporte->id = $id;
 		if($this->request->is('get')):
-			$this->request->data = $this->AlmacenesTransporte->read();
+			$this->request->data = $this->AlmacenTransporte->read();
 		else:
-			if($this->AlmacenesTransporte->save($this->request->data)):
+			if($this->AlmacenTransporte->save($this->request->data)):
 				$this->Session->setFlash('Cuenta corriente almacén modificada');
 				$this->redirect(array(
 					'controller' => $this->params['named']['from_controller'],
@@ -51,7 +51,7 @@ class AlmacenTransportesController extends AppController {
 			endif;
 		endif;
 
-	$this->set('almacenes', $this->AlmacenesTransporte->Almacen->find('list', array(
+	$this->set('almacenes', $this->AlmacenTransporte->Almacen->find('list', array(
 	'fields' => array('Almacen.id','Empresa.nombre_corto'),
 	'recursive' => 1))
 	);	

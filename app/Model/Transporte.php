@@ -18,23 +18,23 @@ class Transporte extends AppModel {
 
 	public $belongsTo = array(
 			'Aseguradora' => array(
-			'className' => 'Aseguradora',
-			'foreignKey' => 'aseguradora_id'),
+				'className' => 'Aseguradora',
+				'foreignKey' => 'aseguradora_id'),
 			'Operacion' => array(
-			'className' => 'Operacion',
-			'foreignKey' => 'operacion_id'),
+				'className' => 'Operacion',
+				'foreignKey' => 'operacion_id'),
 			'Naviera' => array(
-			'className' => 'Naviera',
-			'foreignKey' => 'naviera_id'),
+				'className' => 'Naviera',
+				'foreignKey' => 'naviera_id'),
 			'PuertoCarga' => array(
-			'className' => 'Puerto',
-			'foreignKey' => 'puerto_carga_id'),
+				'className' => 'Puerto',
+				'foreignKey' => 'puerto_carga_id'),
 			'PuertoDestino' => array(
-			'className' => 'Puerto',
-			'foreignKey' => 'puerto_destino_id'),
+				'className' => 'Puerto',
+				'foreignKey' => 'puerto_destino_id'),
 			'Agente' => array(
-			'className' => 'Agente',
-			'foreignKey' => 'agente_id')
+				'className' => 'Agente',
+				'foreignKey' => 'agente_id')
 	);
 
 	public $hasMany = array(

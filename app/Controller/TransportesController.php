@@ -78,18 +78,28 @@ public function view($id = null) {
 	//	$contrato_embalajes = $transportes['Operacion']['Contrato']['ContratoEmbalaje'];
 
 		$this->set('action', $this->action);
-		$this->set('embalaje', $this->Transporte->Operacion->Contrato->ContratoEmbalaje->Embalaje->find('list',array(
-			'fields' => array('nombre'),
-			'recursive' => 3))
-		);
-	/*	$this->set('puertos', $this->Transporte->Puerto->find(
+		$embalaje = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find(
+			'first',
+			array(
+				'fields' => array('Embalaje.nombre')
+			)
+		);		
+		$this->set('embalaje',$embalaje);
+		
+		$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
 		    'list',
 		    array(
 			'order' => array(
-			    'nombre' => 'ASC'
+			    'PuertoCarga.nombre' => 'ASC'
 			)
 		    )
-		));*/
+		));
+		$this->set('puertoDestinos', $this->Transporte->PuertoDestino->find(
+		    'list',
+ 		   array(
+			'contain' => array('Pais'),
+			'conditions' => array( 'Pais.nombre' => 'España')
+		)));		
 		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
 			'fields' => array('Naviera.id','Empresa.nombre_corto'),
 			'recursive' => 1))

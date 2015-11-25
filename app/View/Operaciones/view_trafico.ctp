@@ -79,7 +79,7 @@
 	<table>
 	<?php
 	echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
-	       'Fecha Carga','Cantidad/Bultos','Asegurado','Detalle'));
+	       'Fecha Carga','Bultos','Asegurado','Detalle'));
 	//hay que numerar las líneas
 	$i = 1;
 	foreach($operacion['Transporte'] as $linea):

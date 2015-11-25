@@ -37,7 +37,7 @@ echo '<h4>Bultos pendientes: '.$transportado.'</h4>';
     echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
     echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
     //echo $this->Form->input('embalaje_id',array('label'=>'Tipo de bulto','empty' =>true));
-    echo $this->Form->input('cantidad_embalaje', array('label' => 'Cantidad bultos'));
+    echo $this->Form->input('cantidad_embalaje', array('label' => 'Cantidad de '.$embalaje['Embalaje']['nombre']));
     ?>
     </div>
     <div class="col4">
