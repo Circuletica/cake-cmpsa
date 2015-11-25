@@ -36,7 +36,6 @@ class AppController extends Controller {
     public $helpers = array('Html','Form','Date','Button');
     public $components = array('DebugKit.Toolbar','Session','RequestHandler');
 
-
     //cambia el 'hasOne' del Model por un 'belongsTo'
     //para que el LEFT JOIN de 3r nivel de la query se haga
     //después del de 2o nivel, es decir primero el JOIN con Empresa,
@@ -65,6 +64,18 @@ class AppController extends Controller {
 	    'recursive' => 1,
 	    'order' => array('Empresa.nombre_corto' => 'ASC')
 	);
+    }
+
+    public function viewCompany($class,$id) {
+	$empresa = $this->{$this->class}->findById($id);
+	$this->set('empresa',$empresa);
+	$this->set('referencia', $empresa['Empresa']['nombre_corto']);
+	$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
+	//el método iban() definido en AppController necesita
+	//como parametro un 'string'
+	settype($cuenta_bancaria,"string");
+	$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
+	$this->set('iban_bancaria',$iban_bancaria);
     }
 
     public function formCompany($class, $id) {

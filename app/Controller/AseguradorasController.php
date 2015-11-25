@@ -13,16 +13,7 @@ class AseguradorasController extends AppController {
 	    $this->Session->setFlash('URL mal formado '.$this->class.'/view ');
 	    $this->redirect(array('action'=>'index'));
 	}
-	$empresa = $this->{$this->class}->find('first',array(
-	    'conditions' => array($this->class.'.id' => $id)));
-	$this->set('empresa',$empresa);
-	$this->set('referencia', $empresa['Empresa']['nombre_corto']);
-	$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
-	//el método iban() definido en AppController necesita
-	//como parametro un 'string'
-	settype($cuenta_bancaria,"string");
-	$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
-	$this->set('iban_bancaria',$iban_bancaria);
+	$this->viewCompany($this->class, $id);
     }
 
     public function add() {

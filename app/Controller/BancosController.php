@@ -1,104 +1,67 @@
 <?php
 class BancosController extends AppController {
 
-    public function index($id = null) {
-	$this->bindEmpresa('Banco');
-	$this->set('bancos', $this->paginate());
+public $class = 'Banco';
+
+    public function index() {
+	$this->bindCompany($this->class);
+	$this->set('empresas', $this->paginate());
 
 	//Exportar PDF
-	$this->pdfConfig = array(
-	    'orientation'=>'landscape',
-	    'filename'=>'Bancos-'.$id.'pdf',
-	    'title'=>'Listado de Bancos',
-	    'margin' => array(
-		'bottom' => 15,
-		'left' => 30,
-		'right' => 30,
-		'top' => 15
-	    ));
-	$this->set('Listado', $this->Banco->read(null, $id));
-	// $this->layout = 'pdf\facturas'; //this will use the pdf.ctp layout
-	$this->render();
+	//$this->pdfConfig = array(
+	//    'orientation'=>'landscape',
+	//    'filename'=>'Bancos-'.$id.'pdf',
+	//    'title'=>'Listado de Bancos',
+	//    'margin' => array(
+	//	'bottom' => 15,
+	//	'left' => 30,
+	//	'right' => 30,
+	//	'top' => 15
+	//    ));
+	//$this->set('Listado', $this->Banco->read(null, $id));
+	//// $this->layout = 'pdf\facturas'; //this will use the pdf.ctp layout
+	//$this->render();
 
     }
 
     public function view($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Banco/view ');
+	    $this->Session->setFlash('URL mal formado '.$this->class.'/view ');
 	    $this->redirect(array('action'=>'index'));
 	}
-	//sacamos el banco cuyo id se ha pasado al view
-	$empresa = $this->Banco->findById($id);
-	$this->set('empresa',$empresa);
-	$this->set('referencia', $empresa['Empresa']['nombre_corto']);
-	//calculamos el IBAN
-	$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
-	//la funcion necesita una cadena como parametro
-	settype($cuenta_bancaria,"string");
-	$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
-	$this->set('iban_bancaria',$iban_bancaria);
+	$this->viewCompany($this->class, $id);
 
 	//Exportar PDF
-	$this->pdfConfig = array(
-	    'orientation'=>'portrait',
-	    'download'=>true,
-	    'filename'=>'bancos-'.$id.'pdf'
-	);
+	//$this->pdfConfig = array(
+	//    'orientation'=>'portrait',
+	//    'download'=>true,
+	//    'filename'=>'bancos-'.$id.'pdf'
+	//);
     }
 
     public function add() {
-	//los paises que rellenan el desplegable de 'País'
-	$this->set('paises', $this->Banco->Empresa->Pais->find('list'));
-	if($this->request->is('post')){
-	    //quitamos los guiones de la entrada de formulario
-	    $numero_form = $this->data['Banco']['cuenta_cliente_1'];
-	    $cuenta_cliente_1 = substr($numero_form,0,4).
-		substr($numero_form,5,4).
-		substr($numero_form,10,2).
-		substr($numero_form,13,10);
-	    $numero_form = $this->data['Empresa']['cuenta_bancaria'];
-	    $cuenta_bancaria = substr($numero_form,0,4).
-		substr($numero_form,5,4).
-		substr($numero_form,10,2).
-		substr($numero_form,13,10);
-	    $this->request->data['Banco']['cuenta_cliente_1'] = $cuenta_cliente_1;
-	    $this->request->data['Empresa']['cuenta_bancaria'] = $cuenta_bancaria;
-	    //primero se guarda la empresa y con el id que devuelve
-	    //mysql guardamos el banco con el mismo id
-	    $this->Banco->Empresa->save($this->request->data);
-	    $this->request->data['Banco']['id'] = $this->Banco->Empresa->id;
-	    if($this->Banco->save($this->request->data)){
-		$this->Session->setFlash('Banco guardado');
-		$this->redirect(array('action' => 'index'));
-	    }
+	$this->form();
+	$this->render('form');
+    }
+
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL');
+	    $this->redirect(array(
+		'action' => 'index',
+		'controller' => Inflector::tableize($this->class)
+	    ));
 	}
+	$this->form($id);
+	$this->render('form');
+    }
+
+    public function form($id = null) {
+	$this->formCompany($this->class, $id);
     }
 
     public function delete( $id = null) {
-	$this->deleteCompany('Banco', $id);
-    }
-
-    public function edit( $id = null) {
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
-	    $this->redirect(array('action'=>'index'));
-	}
-	$this->Banco->id = $id;
-	$this->Banco->Empresa->id = $id;
-	$this->set('paises', $this->Banco->Empresa->Pais->find('list'));
-	if($this->request->is('get')):
-	    $this->request->data = $this->Banco->read();
-	else:
-	    //if ($this->Banco->save($this->request->data)):
-	    if ($this->Banco->Empresa->save($this->request->data) and $this->Banco->save($this->request->data)):
-		$this->Session->setFlash('Banco '.
-		$this->request->data['Empresa']['nombre'].
-		' modificado con éxito');
-	$this->redirect(array('action' => 'view', $id));
-	    else:
-		$this->Session->setFlash('Banco NO guardado');
-endif;
-endif;
+	$this->deleteCompany($this->class, $id);
     }
 }
 ?>

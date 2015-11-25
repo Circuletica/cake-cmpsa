@@ -1,8 +1,10 @@
 <?php
 class AsociadosController extends AppController {
 
+    public $class = 'Asociado';
+
     public function index() {
-	$this->bindEmpresa('Asociado');
+	$this->bindCompany($this->class);
 	$this->set('empresas', $this->paginate());
     }
 
@@ -11,18 +13,8 @@ class AsociadosController extends AppController {
 	    $this->Session->setFlash('URL mal formado Asociado/view ');
 	    $this->redirect(array('action'=>'index'));
 	}
-	$empresa = $this->Asociado->find(
-	    'first',
-	    array('conditions' => array('Asociado.id' => $id))
-	);
-	$this->set('empresa',$empresa);
-	$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
-	$this->set('referencia', $empresa['Empresa']['nombre_corto']);
-	//el método iban() definido en AppController necesita
-	//como parametro un 'string'
-	settype($cuenta_bancaria,"string");
-	$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
-	$this->set('iban_bancaria',$iban_bancaria);
+	$this->viewCompany($this->class,$id);
+	$empresa = $this->{$this->class}->findById($id);
 	$this->set('comisiones', $empresa['AsociadoComision']);
 	$asociado_comision = $this->Asociado->AsociadoComision->find('first', array(
 	    'conditions' => array(
@@ -46,54 +38,29 @@ class AsociadosController extends AppController {
     }
 
     public function add() {
-	$this->set('paises', $this->Asociado->Empresa->Pais->find('list'));
-	if($this->request->is('post')):
-	    //quitamos los guiones  de la CCC
-	    $numero_form = $this->data['Empresa']['cuenta_bancaria'];
-	$cuenta_bancaria = substr($numero_form,0,4).
-	    substr($numero_form,5,4).
-	    substr($numero_form,10,2).
-	    substr($numero_form,13,10);
-	$this->request->data['Empresa']['cuenta_bancaria'] = $cuenta_bancaria;
-	//primero se guarda la nueva empresa y con
-	//el ID que le da mysql, se guarda la entidad
-	//con el mismo ID
-	$this->Asociado->Empresa->save($this->request->data);
-	$this->request->data['Asociado']['id'] = $this->Asociado->Empresa->id;
-	if($this->Asociado->save($this->request->data)):
-	    $this->Session->setFlash('Asociado guardado');
-	$this->redirect(array('action' => 'index'));
-endif;
-endif;
+	$this->form();
+	$this->render('form');
+    }
+
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL');
+	    $this->redirect(array(
+		'action' => 'index',
+		'controller' => Inflector::tableize($this->class)
+	    ));
+	}
+	$this->form($id);
+	$this->render('form');
+    }
+
+    public function form($id = null) {
+	$this->formCompany($this->class, $id);
     }
 
     public function delete( $id = null) {
 	$this->deleteCompany('Asociado', $id);
     }
 
-    public function edit( $id = null) {
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
-	    $this->redirect(array('action'=>'index'));
-	}
-	$this->Asociado->id = $id;
-	$this->Asociado->Empresa->id = $id;
-	$asociado = $this->Asociado->find('first',array(
-	    'conditions' => array('Asociado.id' => $id)));
-	$this->set('empresa',$asociado);
-	$this->set('paises', $this->Asociado->Empresa->Pais->find('list'));
-	if($this->request->is('get')):
-	    $this->request->data = $this->Asociado->read();
-	else:
-	    if ($this->Asociado->Empresa->save($this->request->data) and $this->Asociado->save($this->request->data)):
-		$this->Session->setFlash('Asociado '.
-		$this->request->data['Empresa']['nombre'].
-		' modificado con éxito');
-	$this->redirect(array('action' => 'view', $id));
-	    else:
-		$this->Session->setFlash('Asociado NO guardado');
-endif;
-endif;
-    }
 }
 ?>

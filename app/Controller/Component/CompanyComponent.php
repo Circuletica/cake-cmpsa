@@ -1,12 +1,7 @@
 <?php
-class AgentesController extends AppController {
+App::uses('Component','Controller');
+class CompanyComponent extends Component {
 
-    public $class = 'Agente';
-
-    public function index() {
-	$this->bindCompany($this->class);
-	$this->set('empresas', $this->paginate());
-    }
 
     public function view($id = null) {
 	if (!$id) {
