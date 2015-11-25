@@ -23,49 +23,48 @@ class AgentesController extends AppController {
     }
 
     public function add() {
+	$this->form();
+	$this->render('form');
+    }
+
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL');
+	    $this->redirect(array(
+		'action' => 'index',
+		'controller' => 'agentes'
+	    ));
+	}
+	$this->form($id);
+	$this->render('form');
+    }
+
+    public function form($id = null) {
 	$this->set('paises', $this->Agente->Empresa->Pais->find('list'));
-	if($this->request->is('post')){
-	    //quitamos los guiones  de la CCC
-	    $numero_form = $this->data['Empresa']['cuenta_bancaria'];
-	    $cuenta_bancaria = substr($numero_form,0,4).
-		substr($numero_form,5,4).
-		substr($numero_form,10,2).
-		substr($numero_form,13,10);
+	$this->set('action', $this->action);
+	//si es un edit, hay que rellenar el id, ya que
+	//si no se hace, al guardar el edit, se va a crear
+	//un _nuevo_ registro, como si fuera un add
+	if (!empty($id)) {
+	    $this->Agente->id = $id;
+	    $this->Agente->Empresa->id = $id;
+	}
+
+	if (!empty($this->request->data)) { //es un POST
 	    $this->request->data['Empresa']['cuenta_bancaria'] = $cuenta_bancaria;
-	    //primero se guarda la nueva empresa y con
-	    //el ID que le da mysql, se guarda la entidad
-	    //con el mismo ID
 	    $this->Agente->Empresa->save($this->request->data);
 	    $this->request->data['Agente']['id'] = $this->Agente->Empresa->id;
 	    if($this->Agente->save($this->request->data)) {
 		$this->Session->setFlash('Agente guardado');
-		$this->redirect(array('action' => 'index'));
-	    }
-	}
-    }
-
-    public function edit( $id = null) {
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
-	    $this->redirect(array('action'=>'index'));
-	}
-	$this->Agente->id = $id;
-	$this->Agente->Empresa->id = $id;
-	$agente = $this->Agente->find('first',array(
-	    'conditions' => array('Agente.id' => $id)));
-	$this->set('empresa',$agente);
-	$this->set('paises', $this->Agente->Empresa->Pais->find('list'));
-	if($this->request->is('get')) {
-	    $this->request->data = $this->Agente->read();
-	} else {
-	    if ($this->Agente->Empresa->save($this->request->data) and $this->Agente->save($this->request->data)){
-		$this->Session->setFlash('Agente '.
-		    $this->request->data['Empresa']['nombre'].
-		    ' modificado con éxito');
-		$this->redirect(array('action' => 'view', $id));
+		$this->redirect(array(
+		    'action' => 'view',
+		    $this->Agente->Empresa->id
+		));
 	    } else {
 		$this->Session->setFlash('Agente NO guardado');
 	    }
+	} else { //es un GET
+	    $this->request->data = $this->Agente->read(null, $id);
 	}
     }
 

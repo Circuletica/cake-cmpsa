@@ -26,15 +26,23 @@ class AseguradorasController extends AppController {
     public function add(){
 	//los paises que rellenan el desplegable de 'País'
 	$this->set('paises', $this->Aseguradora->Empresa->Pais->find('list'));
-	if($this->request->is('post')):
+	if($this->request->is('post')){
+	    //quitamos los guiones  de la CCC
+	    $numero_form = $this->data['Empresa']['cuenta_bancaria'];
+	    $cuenta_bancaria = substr($numero_form,0,4).
+		substr($numero_form,5,4).
+		substr($numero_form,10,2).
+		substr($numero_form,13,10);
+	    $this->request->data['Empresa']['cuenta_bancaria'] = $cuenta_bancaria;
 	    //mysql guardamos la aseguradora con el mismo id
 	    $this->Aseguradora->Empresa->save($this->request->data);
-	$this->request->data['Aseguradora']['id'] = $this->Aseguradora->Empresa->id;
-	if($this->Aseguradora->save($this->request->data)):
-	    $this->Session->setFlash('Aseguradora guardada');
-	$this->redirect(array('action' => 'index'));
-endif;
-endif;
+	    $this->request->data['Aseguradora']['id'] = $this->Aseguradora->Empresa->id;
+	    debug($this->request->data);
+	    if($this->Aseguradora->save($this->request->data)) {
+		$this->Session->setFlash('Aseguradora guardada');
+		$this->redirect(array('action' => 'index'));
+	    }
+	}
     }
     public function edit( $id = null) {
 	if (!$id) {
@@ -43,17 +51,16 @@ endif;
 	}
 	$this->Aseguradora->id = $id;
 	$this->Aseguradora->Empresa->id = $id;
-	$naviera = $this->Aseguradora->find('first',array(
+	$aseguradora = $this->Aseguradora->find('first',array(
 	    'conditions' => array('Aseguradora.id' => $id)));
 	$this->set('empresa',$aseguradora);
 	$this->set('paises', $this->Aseguradora->Empresa->Pais->find('list'));
 	if($this->request->is('get')):
 	    $this->request->data = $this->Aseguradora->read();
 	else:
-	    //if ($this->BancoPrueba->save($this->request->data)):
 	    if ($this->Aseguradora->Empresa->save($this->request->data) and $this->Aseguradora->save($this->request->data)):
 		$this->Session->setFlash('Aseguradora '.
-		$this->request->data['Empresa']['nombre'].
+		$this->request->data['Empresa']['nombre_corto'].
 		' modificada con éxito');
 	$this->redirect(array('action' => 'view', $id));
 	    else:

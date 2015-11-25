@@ -17,17 +17,11 @@ class Empresa extends AppModel {
 		//regla, salta un error de SQL, sin que la validación aparezca
 		//en el formulario
 		'cuenta_bancaria' => array(
-//			'empty' => array(
-//				'rule' =>  '#.*#i',  // validate everything
-//				'allowEmpty' => true,
-//				'last' => false
-//			),
 			//un numero de cuenta son 20 digitos
 			'longitud' => array(
 				'allowEmpty' => true,
 				'rule' => '/^[0-9]{20}$/',
 				'message' => 'la cuenta debe tener 20 dígitos'
-				//'required' => 'false',
 			),
 			//los digitos de control se validan en una funcion externa
 			'digitos_control' => array(
