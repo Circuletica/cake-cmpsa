@@ -40,10 +40,10 @@ class AnticiposController extends AppController {
 	));
 	$this->set(compact('bancos'));
 
-	$this->Anticipo->Financiacion->Operacion->AsociadoOperacion->unbindModel(array(
+	$this->Anticipo->AsociadoOperacion->unbindModel(array(
 	    'belongsTo' => array('Asociado')
 	));
-	$this->Anticipo->Financiacion->Operacion->AsociadoOperacion->bindModel(array(
+	$this->Anticipo->AsociadoOperacion->bindModel(array(
 	    'belongsTo' => array(
 		'Empresa' => array(
 		    'foreignKey' => false,
@@ -51,7 +51,7 @@ class AnticiposController extends AppController {
 		)
 	    )
 	));
-	$asociados = $this->Anticipo->Financiacion->Operacion->AsociadoOperacion->find(
+	$asociados = $this->Anticipo->AsociadoOperacion->find(
 	    'list',
 	    array(
 		'contain' => array(
@@ -75,13 +75,26 @@ class AnticiposController extends AppController {
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
 	//un _nuevo_ registro, como si fuera un add
-	if (!empty($id)) $this->Anticipo->id = $id; 
+	if (!empty($id)) {
+	    $this->Anticipo->id = $id;
+	} 
 
 	if (!empty($this->request->data)){  //es un POST
+	    $asociado_operacion = $this->Anticipo->AsociadoOperacion->find(
+		'first',
+		array(
+		    'conditions' => array(
+			'AsociadoOperacion.asociado_id' => $this->request->data['Anticipo']['asociado_id'],
+			'AsociadoOperacion.operacion_id' => $this->params['named']['from_id']
+		    )
+		)
+	    );
+	    $asociado_operacion_id = $asociado_operacion['AsociadoOperacion']['id'];
+	    $this->request->data['Anticipo']['asociado_operacion_id'] = $asociado_operacion_id;
 	    if ($this->Anticipo->save($this->request->data)) {
 		$this->Session->setFlash('Anticipo guardado');
 		$this->redirect(array(
-		    'action' => view,
+		    'action' => 'view',
 		    'controller' => $this->params['named']['from_controller'],
 		    $this->params['named']['from_id']
 		));
