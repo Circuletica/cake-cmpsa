@@ -1,18 +1,15 @@
 <?php
 $class = $this->fetch('class');
-$action  = $this->fetch('action');
-//el controller se calcula por defecto a partir
-//de la clase
+//el controller se calcula por defecto a partir de la clase
 $controller = Inflector::tableize($class);
 //si no hay $object definido explicitamente en
 //la vista padre, se calcula uno por defecto a partir
 //de la clase
 $object = $this->fetch('object');
-if ($object == '')
-    $object = Inflector::humanize(Inflector::singularize($controller));
+if ($object == '') $object = Inflector::humanize(Inflector::singularize($controller));
 
-if ($action == 'add') { echo "<h2>Añadir <em>".$class."</em></h2>\n"; }
-if ($action == 'edit') { echo "<h2>Modificar <em>".$object."</em></h2>\n"; }
+if ($this->action == 'add') { echo "<h2>Añadir <em>".$class."</em></h2>\n"; }
+if ($this->action == 'edit') { echo "<h2>Modificar <em>".$object."</em></h2>\n"; }
 
 $this->Html->addCrumb(Inflector::pluralize($class), array( 'controller' => $controller, 'action' => 'index'));
 
