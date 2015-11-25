@@ -48,21 +48,23 @@ class AgentesController extends AppController {
 	if (!empty($id)) {
 	    $this->Agente->id = $id;
 	    $this->Agente->Empresa->id = $id;
+	    $empresa = $this->Agente->Empresa->find('first',array(
+		'conditions' => array( 'Empresa.id' => $id)
+	    ));
+	    $this->set('object', $empresa['Empresa']['nombre_corto']);
 	}
 
 	if (!empty($this->request->data)) { //es un POST
-	    $this->request->data['Empresa']['cuenta_bancaria'] = $cuenta_bancaria;
-	    $this->Agente->Empresa->save($this->request->data);
-	    $this->request->data['Agente']['id'] = $this->Agente->Empresa->id;
-	    if($this->Agente->save($this->request->data)) {
-		$this->Session->setFlash('Agente guardado');
-		$this->redirect(array(
-		    'action' => 'view',
-		    $this->Agente->Empresa->id
-		));
-	    } else {
-		$this->Session->setFlash('Agente NO guardado');
-	    }
+	    if ($this->Agente->Empresa->save($this->request->data)) {
+		$this->request->data['Agente']['id'] = $this->Agente->Empresa->id;
+		if($this->Agente->save($this->request->data)) {
+		    $this->Session->setFlash('Agente guardado');
+		    $this->redirect(array(
+			'action' => 'view',
+			$this->Agente->Empresa->id
+		    ));
+		} else { $this->Session->setFlash('Agente NO guardado'); }
+	    } else { $this->Session->setFlash('Empresa NO guardada'); }
 	} else { //es un GET
 	    $this->request->data = $this->Agente->read(null, $id);
 	}
