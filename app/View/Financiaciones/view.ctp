@@ -49,6 +49,7 @@ $this->start('lines');
 ?>
 	<table>
 <?php
+setlocale(LC_ALL, "es_ES.UTF-8");
 echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA ('.$iva_comision.'%)','Total anticipo','Pendiente'));
 foreach($distribuciones as $linea):
     echo $this->Html->tableCells(array(
@@ -62,33 +63,33 @@ foreach($distribuciones as $linea):
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['precio_asociado']),
+	    $linea['RepartoOperacionAsociado']['precio_asociado'],
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['iva']),
+	    $linea['RepartoOperacionAsociado']['iva'],
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['comision']),
+	    $linea['RepartoOperacionAsociado']['comision'],
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['iva_comision']),
+	    $linea['RepartoOperacionAsociado']['iva_comision'],
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['total']),
+	    $linea['RepartoOperacionAsociado']['total'],
 	    array('style' => 'text-align:right; font-weight:bold')
 	),
 	array(
 	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['saldo_anticipo']),
 	    array(
 		'style' => 'text-align:right;',
-		'bgcolor' => ($this->Number->roundTo2($linea['RepartoOperacionAsociado']['saldo_anticipo']) == '0,00') ? '#FFFFFF':'#00FFFF')
-	),
-    )
-);
+		'bgcolor' => ((float)$linea['RepartoOperacionAsociado']['saldo_anticipo'] == 0) ? '#FFFFFF':'#00FFFF'
+	    )
+	)
+    ));
 endforeach;
 echo $this->html->tablecells(array(
     'TOTALES',
