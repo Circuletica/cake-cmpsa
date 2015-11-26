@@ -31,8 +31,8 @@ class Transporte extends AppModel {
 	);
 
 	public $hasMany = array(
-		'AlmacenesTransporte'=> array(
-			'className' => 'AlmacenesTransporte',
+		'AlmacenTransporte'=> array(
+			'className' => 'AlmacenTransporte',
 			'foreignKey' => 'transporte_id')
 	);
 
