@@ -1,5 +1,5 @@
 <?php
-class AlmacenesTransporte extends AppModel {
+class AlmacenTransporte extends AppModel {
     public $validate = array(
 	'almacen_id' => array(
 	    'rule' => 'notEmpty',
