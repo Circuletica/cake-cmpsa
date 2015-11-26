@@ -144,9 +144,11 @@ class FinanciacionesController extends AppController {
 			    )
 			)
 		    )
-		)
+		),
+		'conditions' => array(
+			'AsociadoOperacion.operacion_id' => $id
+			)
 	    )
-
 	);
 	$this->set(compact('anticipos'));
 
