@@ -34,18 +34,18 @@ public function view($id = null) {
 	$this->form($this->params['named']['from_id']);
 	$this->render('form');
     }
-
-    public function edit($id = null) {
+    /*public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
 	    $this->Session->setFlash('error en URL');
 	    $this->redirect(array(
-		'action' => 'view',
-		'controller' => 'transportes'
+		'controller' => 'operaciones',
+		'action' => 'view_trafico',
+		$this->params['named']['from_id']
 	    ));
 	}
 	$this->form($id);
 	$this->render('form');
-    }
+    }*/
 
     public function form($id) { //esta acción vale tanto para edit como add
 	if (!$this->params['named']['from_id']) {
@@ -84,8 +84,7 @@ public function view($id = null) {
 				'fields' => array('Embalaje.nombre')
 			)
 		);		
-		$this->set('embalaje',$embalaje);
-		
+		$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
 		$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
 		    'list',
 		    array(
@@ -94,12 +93,14 @@ public function view($id = null) {
 			)
 		    )
 		));
+		//Puertos de destino españoles
 		$this->set('puertoDestinos', $this->Transporte->PuertoDestino->find(
 		    'list',
  		   array(
 			'contain' => array('Pais'),
 			'conditions' => array( 'Pais.nombre' => 'España')
 		)));		
+		//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
 		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
 			'fields' => array('Naviera.id','Empresa.nombre_corto'),
 			'recursive' => 1))
@@ -120,7 +121,7 @@ public function view($id = null) {
 		);
 	//sacamos los datos de la operacion  al que pertenece la linea
 		//nos sirven en la vista para detallar campos
-		$operacion = $this->Transporte->Operacion->find('first', array(
+	$operacion = $this->Transporte->Operacion->find('first', array(
 			'conditions' => array('Operacion.id' => $this->params['named']['from_id']),
 			'recursive' => 3,
 			'fields' => array(
@@ -144,17 +145,9 @@ public function view($id = null) {
 
 	}
 
+//PENDIENTE DE CAMBIAR POR EL FORM
 
-
-
-
-
-
-
-
-
-
-/*	public function edit( $id = null) {
+public function edit( $id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada');
 			$this->redirect(array(
@@ -163,7 +156,32 @@ public function view($id = null) {
 					$this->params['named']['from_id']));
 		}
 		$this->Transporte->id = $id;
-		$this->set('puertos', $this->Transporte->Puerto->find('list'));
+		$transporte = $this->Transporte->find('all');	
+
+		$this->set('transporte',$transporte);
+
+		$embalaje = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find(
+			'first',
+			array(
+				'fields' => array('Embalaje.nombre')
+			)
+		);	
+		$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
+		$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
+		    'list',
+		    array(
+			'order' => array(
+			    'PuertoCarga.nombre' => 'ASC'
+			)
+		    )
+		));
+		//Puertos de destino españoles
+		$this->set('puertoDestinos', $this->Transporte->PuertoDestino->find(
+		    'list',
+ 		   array(
+			'contain' => array('Pais'),
+			'conditions' => array( 'Pais.nombre' => 'España')
+		)));		
 		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
 			'fields' => array('Naviera.id','Empresa.nombre_corto'),
 			'recursive' => 1))
@@ -172,28 +190,29 @@ public function view($id = null) {
 			'fields' => array('Agente.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
-		$this->set('almacenes', $this->Transporte->AlmacenesTransporte->Almacen->find('list', array(
+		$this->set('almacenes', $this->Transporte->AlmacenTransporte->Almacen->find('list', array(
 			'fields' => array('Almacen.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
-		$this->set('almacenes_transportes', $this->Transporte->AlmacenesTransporte->Almacen->find('list'));
-		//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
+		$this->set('almacen_transportes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
 		$this->set('aseguradoras', $this->Transporte->Aseguradora->find('list', array(
 			'fields' => array('Aseguradora.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
 	//sacamos los datos de la operacion  al que pertenece la linea
-		//nos sirven en la vista para detallar campos
 		$operacion = $this->Transporte->Operacion->find('first', array(
 			'conditions' => array('Operacion.id' => $id),
-			'recursive' => 2
+			'recursive' => 3,
+			'fields' => array(
+				'Operacion.id',
+				'Operacion.precio_compra',
+				'Operacion.referencia')
 		));
 		$this->set('operacion',$operacion);
 
-		$transporte = $this->Transporte->find('all');	
-		$this->set('transporte',$transporte);
 
-		$almacenaje = $this->Transporte->AlmacenesTransporte->find('first', array(
+
+		$almacenaje = $this->Transporte->AlmacenTransporte->find('first', array(
 			'conditions' => array('Transporte.id' => $id),
 			'recursive' => 2
 		));
@@ -216,7 +235,6 @@ public function view($id = null) {
 			endif;
 		endif;
 	}
-*/
 
 	public function delete($id = null) {
 		if (!$id or $this->request->is('get')) :

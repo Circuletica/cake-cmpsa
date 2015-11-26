@@ -45,9 +45,6 @@
   endforeach;
   ?>
   </table>
- <!-- <div class="btabla">
-      <?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Operación',array('action'=>'add'), array('title'=>'Añadir Operación','escape' => false)); ?>
-  </div>-->
 
   <div class="btabla">
    </div>

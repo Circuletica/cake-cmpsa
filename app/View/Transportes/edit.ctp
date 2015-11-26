@@ -1,18 +1,20 @@
-<h2>Modificar Línea de Transporte: Operación <?php //echo $operacion['Operacion']['referencia'] ?><em></h2>
+<h2>Modificar Línea de Transporte</h2>
 <?php
 $this->Html->addCrumb('Contratos','/contratos');
 $this->Html->addCrumb('Operación','/operaciones/index_trafico');
 //$this->Html->addCrumb('Transporte ','/operacion/view_trafico/'.$operacion['Operacion']['id']);
-if($transporte['Transporte']['id']!= NULL):
-	$suma = 0;
-	$transportado=0;
-		foreach ($transporte['Transporte'] as $suma):
-			$transportado = $transportado + $suma['cantidad'];
-		endforeach;
-	endif;
-echo '<h4>Cantidad/Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].'</h4>';
-$transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
-echo '<h4>Cantidad/Bultos por transportar: '.$transportado.'</h4>';
+ /*   $suma = 0;
+    $transportado=0;
+        foreach ($transporte['Transporte']['cantidad_embalaje'] as $suma):
+            if ($transporte['operacion_id']=$transporte['Transporte']['Operacion']['id']):
+            $transportado = $transportado + $suma;
+        	echo $transportado;
+            endif;
+        endforeach;*/
+
+echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].'</h4>';
+/*$transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
+echo '<h4>Bultos pendientes: '.$transportado.'</h4>';*/
 	//Formulario para rellenar transporte
 	echo $this->Form->create('Transporte');
 	?>
@@ -20,7 +22,7 @@ echo '<h4>Cantidad/Bultos por transportar: '.$transportado.'</h4>';
 	<?php
 	echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
 	echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
-	echo $this->Form->input('cantidad', array('label' => 'Cantidad bultos'));
+    echo $this->Form->input('cantidad_embalaje', array('label' => 'Cantidad de '.$embalaje['Embalaje']['nombre']));
 	?>
 	</div>
 	<div class="col3">

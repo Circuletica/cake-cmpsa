@@ -118,20 +118,23 @@
 		</div>
 	</div>
 	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
+
 	<div class="detallado">
-	<h3>Asociados</h3>
+	<h3>Retiradas</h3>
 	<table>
 		<?php
-		echo $this->Html->tableHeaders(array('Código Contable','Nombre Asociado', 'Sacos',
-	       'Peso total', 'Sacos retirados','Detalle'));
+		//Se calcula la cantidad total de bultos retirados
+
+
+		echo $this->Html->tableHeaders(array('Código Contable','Asociado', 'Sacos','Peso total', 'Sacos retirados'/*,'Detalle'*/));
 		foreach ($lineas_reparto as $codigo => $linea_reparto):
 			echo $this->Html->tableCells(array(
 				$codigo,
 				$linea_reparto['Nombre'],
 				$linea_reparto['Cantidad'],
 				$linea_reparto['Peso'],
-				'Sacos retirados',
-//				$this->Button->viewLine('retiradas',$retiradas['id'],'retiradas',$linea['operacion_id'])
+				$retirado,
+				//$this->Button->viewLine('retiradas',$retiradas['id'],'retiradas',$linea['operacion_id'])
 				)
 			);
 		endforeach;

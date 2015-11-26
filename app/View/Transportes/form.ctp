@@ -9,13 +9,7 @@ $this->Html->addCrumb('Añadir Transporte');
 
 if ($action == 'add') {
     echo "<h2>Añadir Transporte a Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
-}
-
-if ($action == 'edit') {
-    echo "<h2>Modificar Transporte de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
-}
-
-if($operacion['Operacion']['id']!= NULL):
+    if($operacion['Operacion']['id']!= NULL):
     $suma = 0;
     $transportado=0;
         foreach ($operacion['Transporte'] as $suma):
@@ -24,9 +18,15 @@ if($operacion['Operacion']['id']!= NULL):
             endif;
         endforeach;
     endif;
-echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].'</h4>';
-$transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
-echo '<h4>Bultos pendientes: '.$transportado.'</h4>';
+    echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en'.$embalaje['Embalaje']['nombre'].'</h4>';
+    $transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
+    echo '<h4>Bultos pendientes: '.$transportado.' en'.$embalaje['Embalaje']['nombre'].'</h4>';
+}
+
+if ($action == 'edit') {
+    echo "<h2>Modificar Transporte de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+    echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en'.$embalaje['Embalaje']['nombre'].'</h4>';
+}
 
     //Formulario para rellenar transporte
     echo $this->Form->create('Transporte');

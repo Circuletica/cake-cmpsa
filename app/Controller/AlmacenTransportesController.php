@@ -34,7 +34,7 @@ class AlmacenTransportesController extends AppController {
 			$this->Session->setFlash('URL mal formado controller/edit '.$this->params['named']['from_controller'].' '.$this->params['named']['from_id']);
 			$this->redirect(array(
 				'controller' => $this->params['named']['from_controller'],
-				'action'=>'index'));
+				'action'=>'transportes'));
 		}
 		$this->AlmacenTransporte->id = $id;
 		if($this->request->is('get')):
@@ -43,9 +43,10 @@ class AlmacenTransportesController extends AppController {
 			if($this->AlmacenTransporte->save($this->request->data)):
 				$this->Session->setFlash('Cuenta corriente almacén modificada');
 				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
+					'controller' => 'transportes',
 					'action' => 'view',
-					$this->params['named']['from_id']));
+					$id
+				));
 			else:
 				$this->Session->setFlash('¡No se ha podido guardar!');
 			endif;
