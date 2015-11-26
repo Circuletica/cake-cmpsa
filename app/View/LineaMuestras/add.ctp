@@ -16,7 +16,7 @@ function findTotal(){
 
 </script>
 
-<h2>Agregar linea a Muestra <em><?php echo $muestra['Muestra']['referencia']?></em></h2>
+<h2>Agregar linea a Muestra <em><?php echo $muestra['Muestra']['referencia'].' '.$muestra['CalidadNombre']['nombre']?></em></h2>
 
 <?php
 $this->Html->addCrumb('Muestras','/muestras');
@@ -43,11 +43,11 @@ echo $this->Form->create();
 	);
 	echo $this->Html->tableCells(array(
 		$this->Form->input('referencia_proveedor',array(
-			'label' => 'Referencia Proveedor ('.$proveedor.')'
+			'label' => 'Referencia Proveedor'
 				)
 			),
 		$this->Form->input('referencia_almacen',array(
-			'label' => 'Referencia Almacén ('.$almacen.')'
+			'label' => 'Referencia Almacén' 
 				)
 			)
 		)
