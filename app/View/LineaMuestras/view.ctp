@@ -5,6 +5,8 @@ $this->assign('titulo', 'Línea '.$linea['Muestra']['referencia'].' de la muestr
 $this->assign('id',$linea['LineaMuestra']['id']);
 $this->assign('clase','LineaMuestra');
 $this->assign('controller','linea_muestras');
+$this->assign('from_controller','muestras');
+$this->assign('from_id',$linea['Muestra']['id']);
 
 $this->Html->addCrumb('Muestras', array(
     'controller'=>'muestras',

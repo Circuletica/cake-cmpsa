@@ -121,6 +121,7 @@ class LineaMuestrasController extends AppController {
 		if (!$id or $this->request->is('get')) :
     			throw new MethodNotAllowedException();
 		endif;
+		debug ($this->params['named']);
 		if ($this->LineaMuestra->delete($id)):
 			$this->Session->setFlash('Línea de muestra borrada');
 		$this->redirect(array(
