@@ -290,7 +290,7 @@
 			$linea['cuenta_almacen'],
 			$linea['almacen_id'],
 			$linea['cantidad_cuenta'],
-			$linea['MarcaAlmacen']['nombre'],			//$linea['referencia_almacen'],
+			$linea['MarcaAlmacen']['marca'],			//$linea['referencia_almacen'],
 			$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
 				'controller'=>'almacen_transportes',
 				'action' => 'edit',
@@ -306,7 +306,7 @@
 					'from_controller' => 'operaciones',
 					'from_id'=>$transporte['Transporte']['id']),
 					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-						'confirm' => '¿Seguro que quieres borrar a '.$transporte['Transporte']['referencia'].'?')
+						'confirm' => '¿Seguro que quieres borrar la cuenta corriente'.$linea['cuenta_almacen'].'?')
 				)
 			));
 	endforeach;?>
