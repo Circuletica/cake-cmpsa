@@ -198,10 +198,10 @@ endif;
 	    'recursive' => 1
 	))
     );
-	$this->set('almacenes', $this->Muestra->Almacen->find('list', array(
-	    'fields' => array('Almacen.id','Empresa.nombre'),
-	    'recursive' => 1))
-	);
+	//$this->set('almacenes', $this->Muestra->Almacen->find('list', array(
+	//    'fields' => array('Almacen.id','Empresa.nombre'),
+	//    'recursive' => 1))
+	//);
 	if($this->request->is('post')):
 	    if($this->Muestra->save($this->request->data)):
 		$this->Session->setFlash('Muestra guardada');
@@ -234,10 +234,11 @@ endif;
 	    'recursive' => 1
 	))
     );
-	$this->set('almacenes', $this->Muestra->Almacen->find('list', array(
-	    'fields' => array('Almacen.id','Empresa.nombre'),
-	    'recursive' => 1))
-	);
+	//$this->set('almacenes', $this->Muestra->Almacen->find('list', array(
+	//    'fields' => array('Almacen.id','Empresa.nombre'),
+	//    'recursive' => 1))
+	//);
+
 	if($this->request->is('get')):
 	    $this->request->data = $this->Muestra->read();
 	else:

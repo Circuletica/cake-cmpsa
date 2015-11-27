@@ -36,12 +36,11 @@ class AppController extends Controller {
     public $helpers = array('Html','Form','Date','Button');
     public $components = array('DebugKit.Toolbar','Session','RequestHandler');
 
-
     //cambia el 'hasOne' del Model por un 'belongsTo'
     //para que el LEFT JOIN de 3r nivel de la query se haga
     //después del de 2o nivel, es decir primero el JOIN con Empresa,
     //luego el JOIN con Pais si no queremos errores de SQL
-    public function bindEmpresa($class) {
+    public function bindCompany($class) {
 	$this->$class->unbindModel(array(
 	    'hasOne' => array('Empresa')
 	));
@@ -65,6 +64,60 @@ class AppController extends Controller {
 	    'recursive' => 1,
 	    'order' => array('Empresa.nombre_corto' => 'ASC')
 	);
+    }
+
+    public function viewCompany($class,$id) {
+	$empresa = $this->{$this->class}->findById($id);
+	$this->set('empresa',$empresa);
+	$this->set('referencia', $empresa['Empresa']['nombre_corto']);
+	$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
+	//el método iban() definido en AppController necesita
+	//como parametro un 'string'
+	settype($cuenta_bancaria,"string");
+	$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
+	$this->set('iban_bancaria',$iban_bancaria);
+    }
+
+    public function formCompany($class, $id) {
+	$this->set('paises', $this->$class->Empresa->Pais->find('list'));
+	$this->set('action', $this->action);
+	//si es un edit, hay que rellenar el id, ya que
+	//si no se hace, al guardar el edit, se va a crear
+	//un _nuevo_ registro, como si fuera un add
+	if (!empty($id)) {
+	    $this->$class->id = $id;
+	    $this->$class->Empresa->id = $id;
+	    $empresa = $this->$class->Empresa->find('first',array(
+		'conditions' => array( 'Empresa.id' => $id)
+	    ));
+	    $this->set('object', $empresa['Empresa']['nombre_corto']);
+	}
+
+	if (!empty($this->request->data)) { //es un POST
+	    if ($this->$class->Empresa->save($this->request->data)) {
+		$this->request->data[$class]['id'] = $this->$class->Empresa->id;
+		if($this->$class->save($this->request->data)) {
+		    $this->Session->setFlash($class.' guardado');
+		    $this->redirect(array(
+			'action' => 'view',
+			$this->$class->Empresa->id
+		    ));
+		} else { $this->Session->setFlash($class.' NO guardado'); }
+	    } else { $this->Session->setFlash('Empresa NO guardada'); }
+	} else { //es un GET
+	    $this->request->data = $this->$class->read(null, $id);
+	}
+    }
+
+    public function deleteCompany($class, $id) {
+	if (!$id or $this->request->is('get')) {
+	    throw new MethodNotAllowedException();
+	}
+	if ($this->$class->delete($id)) {
+	    $this->Session->setFlash($class.' borrado');
+	    $this->$class->Empresa->delete($id);
+	    $this->redirect(array('action'=>'index'));
+	}
     }
 
     public function iban($codigoPais,$ccc){

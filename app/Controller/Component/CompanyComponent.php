@@ -1,19 +1,23 @@
 <?php
-class NavierasController extends AppController {
+App::uses('Component','Controller');
+class CompanyComponent extends Component {
 
-    public $class = 'Agente';
-
-    public function index() {
-	$this->bindCompany($this->class);
-	$this->set('empresas', $this->paginate());
-    }
 
     public function view($id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado '.$this->class.'/view ');
 	    $this->redirect(array('action'=>'index'));
 	}
-	$this->viewCompany($this->class, $id);
+	$empresa = $this->{$this->class}->find('first',array(
+	    'conditions' => array($this->class.'.id' => $id)));
+	$this->set('empresa',$empresa);
+	$this->set('referencia', $empresa['Empresa']['nombre_corto']);
+	$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
+	//el método iban() definido en AppController necesita
+	//como parametro un 'string'
+	settype($cuenta_bancaria,"string");
+	$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
+	$this->set('iban_bancaria',$iban_bancaria);
     }
 
     public function add() {

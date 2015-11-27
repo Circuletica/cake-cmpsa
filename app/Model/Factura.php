@@ -1,7 +1,6 @@
 <?php
-class Anticipo extends AppModel {
+class Factura extends AppModel {
     public $belongsTo = array(
 	'AsociadoOperacion',
-	'Banco'
     );
 }

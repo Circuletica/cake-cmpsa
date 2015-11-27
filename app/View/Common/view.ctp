@@ -1,15 +1,18 @@
 <?php
-	$id = $this->fetch('id');
-	$class = $this->fetch('class');
-	$controller = $this->fetch('controller');
-	$line_controller = $this->fetch('line_controller');
-	$line2_controller = $this->fetch('line2_controller');
-	$object = $this->fetch('object');
-	$line_object = $this->fetch('line_object');
-	$line2_object = $this->fetch('line2_object');
-	$this->Html->addCrumb(ucfirst($controller), array(
-		'controller'=>$controller,
-		'action'=>'index'
+$id = $this->fetch('id');
+$class = $this->fetch('class');
+$controller = $this->fetch('controller');
+$line_controller = $this->fetch('line_controller');
+$line2_controller = $this->fetch('line2_controller');
+$object = $this->fetch('object');
+$line_object = $this->fetch('line_object');
+$line2_object = $this->fetch('line2_object');
+$from_controller = $this->fetch('from_controller');
+$from_id = $this->fetch('from_id');
+
+$this->Html->addCrumb(ucfirst($controller), array(
+    'controller'=>$controller,
+    'action'=>'index'
 ));
 ?>
 <h2><?php echo $object; ?></h2>
@@ -23,15 +26,22 @@
 <div class="acciones">
 	<div class="printdet">
 	<ul><li>
-		<?php 
-		echo $this->element('imprimirV');
-		?>	
-		
+<?php 
+echo $this->element('imprimirV');
+?>	
+
 	</li>
 	<li>
 <?php
-	echo $this->Button->edit($controller,$id)
-	.' '.$this->Button->delete($controller,$id,$object);
+echo $this->Button->edit($controller,$id)
+    .' '.
+    //si esta definido el $from_controller, ponemos un botón
+    //que devuelve al controller mencionado,
+    //si no es el caso, volvemos al index del controller del
+    //borrado
+    empty($from_controller) ? 
+    $this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object):
+    $this->Button->delete($controller,$id,$object);
 ?>
 	</li>
 	</ul>

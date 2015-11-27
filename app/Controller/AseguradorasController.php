@@ -1,78 +1,44 @@
 <?php
 class AseguradorasController extends AppController {
 
+    public $class = 'Aseguradora';
+
     public function index() {
-	$this->bindEmpresa('Aseguradora');
+	$this->bindCompany($this->class);
 	$this->set('empresas', $this->paginate());
     }
 
     public function view($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Aseguradora/view ');
+	    $this->Session->setFlash('URL mal formado '.$this->class.'/view ');
 	    $this->redirect(array('action'=>'index'));
 	}
-	$empresa = $this->Aseguradora->find('first',array(
-	    'conditions' => array('Aseguradora.id' => $id)));
-	$this->set('empresa',$empresa);
-	$this->set('referencia', $empresa['Empresa']['nombre_corto']);
-	$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
-	//el método iban() definido en AppController necesita
-	//como parametro un 'string'
-	settype($cuenta_bancaria,"string");
-	$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
-	$this->set('iban_bancaria',$iban_bancaria);
+	$this->viewCompany($this->class, $id);
+    }
 
+    public function add() {
+	$this->form();
+	$this->render('form');
     }
-    public function add(){
-	//los paises que rellenan el desplegable de 'País'
-	$this->set('paises', $this->Aseguradora->Empresa->Pais->find('list'));
-	if($this->request->is('post')):
-	    //mysql guardamos la aseguradora con el mismo id
-	    $this->Aseguradora->Empresa->save($this->request->data);
-	$this->request->data['Aseguradora']['id'] = $this->Aseguradora->Empresa->id;
-	if($this->Aseguradora->save($this->request->data)):
-	    $this->Session->setFlash('Aseguradora guardada');
-	$this->redirect(array('action' => 'index'));
-endif;
-endif;
-    }
-    public function edit( $id = null) {
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
-	    $this->redirect(array('action'=>'index'));
+
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL');
+	    $this->redirect(array(
+		'action' => 'index',
+		'controller' => Inflector::tableize($this->class)
+	    ));
 	}
-	$this->Aseguradora->id = $id;
-	$this->Aseguradora->Empresa->id = $id;
-	$naviera = $this->Aseguradora->find('first',array(
-	    'conditions' => array('Aseguradora.id' => $id)));
-	$this->set('empresa',$aseguradora);
-	$this->set('paises', $this->Aseguradora->Empresa->Pais->find('list'));
-	if($this->request->is('get')):
-	    $this->request->data = $this->Aseguradora->read();
-	else:
-	    //if ($this->BancoPrueba->save($this->request->data)):
-	    if ($this->Aseguradora->Empresa->save($this->request->data) and $this->Aseguradora->save($this->request->data)):
-		$this->Session->setFlash('Aseguradora '.
-		$this->request->data['Empresa']['nombre'].
-		' modificada con éxito');
-	$this->redirect(array('action' => 'view', $id));
-	    else:
-		$this->Session->setFlash('Aseguradora NO guardada');
-endif;
-endif;
+	$this->form($id);
+	$this->render('form');
+    }
+
+    public function form($id = null) {
+	$this->formCompany($this->class, $id);
     }
 
     public function delete( $id = null) {
-	if (!$id or $this->request->is('get')) :
-	    throw new MethodNotAllowedException();
-	//$this->Session->setFlash('URL mal formado');
-	//$this->redirect(array('action'=>'index'));
-endif;
-if ($this->Aseguradora->delete($id)):
-    $this->Session->setFlash('Aseguradora borrada');
-$this->Aseguradora->Empresa->delete($id);
-$this->redirect(array('action'=>'index'));
-endif;
+	$this->deleteCompany($this->class, $id);
     }
 }
 ?>

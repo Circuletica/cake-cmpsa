@@ -49,8 +49,9 @@ $this->start('lines');
 ?>
 	<table>
 <?php
+setlocale(LC_ALL, "es_ES.UTF-8");
 echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA ('.$iva_comision.'%)','Total anticipo','Pendiente'));
-foreach($repartos as $linea):
+foreach($distribuciones as $linea):
     echo $this->Html->tableCells(array(
 	$linea['Empresa']['nombre'],
 	array(
@@ -62,33 +63,33 @@ foreach($repartos as $linea):
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['precio_asociado']),
+	    $linea['RepartoOperacionAsociado']['precio_asociado'],
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['iva']),
+	    $linea['RepartoOperacionAsociado']['iva'],
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['comision']),
+	    $linea['RepartoOperacionAsociado']['comision'],
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['iva_comision']),
+	    $linea['RepartoOperacionAsociado']['iva_comision'],
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['total']),
+	    $linea['RepartoOperacionAsociado']['total'],
 	    array('style' => 'text-align:right; font-weight:bold')
 	),
 	array(
 	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['saldo_anticipo']),
 	    array(
 		'style' => 'text-align:right;',
-		'bgcolor' => ($this->Number->roundTo2($linea['RepartoOperacionAsociado']['saldo_anticipo']) == '0,00') ? '#FFFFFF':'#00FFFF')
-	),
-    )
-);
+		'bgcolor' => ((float)$linea['RepartoOperacionAsociado']['saldo_anticipo'] == 0) ? '#FFFFFF':'#00FFFF'
+	    )
+	)
+    ));
 endforeach;
 echo $this->html->tablecells(array(
     'TOTALES',
@@ -152,12 +153,12 @@ echo $this->Html->tableHeaders(array(
     'Asociado','fecha','importe','Banco',''));
 foreach ($anticipos as $anticipo):
     echo $this->Html->tableCells(array(
-	$anticipo['Asociado']['Empresa']['nombre'],
-	$this->Date->format($anticipo['fecha_conta']),
-	$anticipo['importe'],
+	$anticipo['AsociadoOperacion']['Asociado']['Empresa']['nombre'],
+	$this->Date->format($anticipo['Anticipo']['fecha_conta']),
+	$anticipo['Anticipo']['importe'],
 	$anticipo['Banco']['Empresa']['nombre_corto'],
-	$this->Button->editLine('anticipos',$anticipo['id'],'financiaciones',$anticipo['financiacion_id'])
-	.' '.$this->Button->deleteLine('anticipos',$anticipo['id'],'financiaciones',$anticipo['financiacion_id'],'el anticipo de '.$anticipo['importe'].'€')
+	$this->Button->editLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'])
+	.' '.$this->Button->deleteLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'],'el anticipo de '.$anticipo['Anticipo']['importe'].'€')
     ));
 endforeach;
 echo"</table>\n";
