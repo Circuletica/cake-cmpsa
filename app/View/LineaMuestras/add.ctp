@@ -6,7 +6,7 @@ function findTotal(){
         if(parseFloat(arr[i].value))
             tot += parseFloat(arr[i].value);
     }
-    document.getElementById('total').value = tot;
+    document.getElementById('total').value = tot.toFixed(1);
     console.log(tot);
     if(tot == 100)
     	document.getElementById('total').style.color = "black";
