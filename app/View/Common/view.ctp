@@ -18,7 +18,6 @@ $this->Html->addCrumb(ucfirst($controller), array(
 <h2><?php echo $object; ?></h2>
 
 <div class="actions">
-    <h3>Búsqueda</h3>
     <ul>
     <?php echo $this->fetch('filter'); ?>
     </ul>

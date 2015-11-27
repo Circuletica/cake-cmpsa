@@ -43,44 +43,44 @@ class LineaMuestrasController extends AppController {
 	////de MySQL que concatena descafeinado, pais y descripcion
 	//$this->loadModel('CalidadNombre');
 	//$calidades = $this->CalidadNombre->find('list');
-	if($this->request->is('post')):
+	if($this->request->is('post')){
 	    //al guardar la linea, se incluye a qué muestra pertenece
 	    $this->request->data['LineaMuestra']['muestra_id'] = $this->params['named']['from_id'];
-	debug($this->request->data['LineaMuestra']);
-	//comprobamos que el total de criba es de 100%
-	$suma_criba = $this->request->data['LineaMuestra']['criba20']+
-	    $this->request->data['LineaMuestra']['criba19']+
-	    $this->request->data['LineaMuestra']['criba13p']+
-	    $this->request->data['LineaMuestra']['criba18']+
-	    $this->request->data['LineaMuestra']['criba12p']+
-	    $this->request->data['LineaMuestra']['criba17']+
-	    $this->request->data['LineaMuestra']['criba11p']+
-	    $this->request->data['LineaMuestra']['criba16']+
-	    $this->request->data['LineaMuestra']['criba10p']+
-	    $this->request->data['LineaMuestra']['criba15']+
-	    $this->request->data['LineaMuestra']['criba9p']+
-	    $this->request->data['LineaMuestra']['criba14']+
-	    $this->request->data['LineaMuestra']['criba8p']+
-	    $this->request->data['LineaMuestra']['criba13']+
-	    $this->request->data['LineaMuestra']['criba12'];
-	//debug($suma_criba);
-	if($suma_criba != 100){
-	    $this->Session->setFlash('Linea de Muestra no guardada, la suma de criba no es 100%');
-	    $this->redirect(array(
-		'controller' => 'linea_muestras',
-		'action' => 'add',
-		'from_controller' => $this->params['named']['from_controller'],
-		'from_id' => $this->params['named']['from_id']));
+	    //comprobamos que el total de criba es de 100%
+	    $suma_criba = $this->request->data['LineaMuestra']['criba20']+
+		$this->request->data['LineaMuestra']['criba19']+
+		$this->request->data['LineaMuestra']['criba13p']+
+		$this->request->data['LineaMuestra']['criba18']+
+		$this->request->data['LineaMuestra']['criba12p']+
+		$this->request->data['LineaMuestra']['criba17']+
+		$this->request->data['LineaMuestra']['criba11p']+
+		$this->request->data['LineaMuestra']['criba16']+
+		$this->request->data['LineaMuestra']['criba10p']+
+		$this->request->data['LineaMuestra']['criba15']+
+		$this->request->data['LineaMuestra']['criba9p']+
+		$this->request->data['LineaMuestra']['criba14']+
+		$this->request->data['LineaMuestra']['criba8p']+
+		$this->request->data['LineaMuestra']['criba13']+
+		$this->request->data['LineaMuestra']['criba12'];
+	    if(number_format($suma_criba,2) != 100){
+		debug($suma_criba);
+		$this->Session->setFlash('Linea de Muestra no guardada, la suma de criba no es 100%');
+		//    $this->redirect(array(
+		//	'controller' => 'linea_muestras',
+		//	'action' => 'add',
+		//	'from_controller' => $this->params['named']['from_controller'],
+		//	'from_id' => $this->params['named']['from_id']));
+	    } else {
+		if($this->LineaMuestra->save($this->request->data)){
+		    $this->Session->setFlash('Linea de Muestra guardada');
+		    //volvemos a la muestra a la que pertenece la linea creada
+		    $this->redirect(array(
+			'controller' => $this->params['named']['from_controller'],
+			'action' => 'view',
+			$this->params['named']['from_id']));
+		}
+	    }
 	}
-	if($this->LineaMuestra->save($this->request->data)):
-	    $this->Session->setFlash('Linea de Muestra guardada');
-	//volvemos a la muestra a la que pertenece la linea creada
-	$this->redirect(array(
-	    'controller' => $this->params['named']['from_controller'],
-	    'action' => 'view',
-	    $this->params['named']['from_id']));
-endif;
-endif;
     }
 
     public function view($id = null) {
