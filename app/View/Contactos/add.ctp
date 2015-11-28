@@ -7,7 +7,11 @@
    ?>
   <div class="columna2">
   <?php
-  echo $this->Form->input('nombre');
+  echo $this->Form->input(
+      'nombre',
+      array(
+	  'autofocus' => 'autofocus'
+  );
   echo $this->Form->input('funcion', array(
 	  'label' =>'Función')
   );
