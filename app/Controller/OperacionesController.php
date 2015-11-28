@@ -225,9 +225,13 @@ class OperacionesController extends AppController {
 		'PrecioFleteContrato.precio_flete is not null'
 	    )
 	));
-	$fletes = array();
+	//el desplegable con los costes de flete según los puertos de
+	//carga/destino asociados con el contrato.
+	//Tenemos que hacer un array con name =>, value => para poder
+	//usar el mismo valor para varias opciones del select.
+	//Con un array simple no funciona, no se puede usar la misma clave
+	//varias veces. 
 	foreach($precio_fletes as $precio_flete) {
-	    //$fletes[$precio_flete['PrecioFleteContrato']['precio_flete']][] =
 	    $fletes[] = array( 
 		'name' => $precio_flete['Flete']['Naviera']['Empresa']['nombre_corto'].'('
 		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
@@ -236,7 +240,6 @@ class OperacionesController extends AppController {
 		.$precio_flete['PrecioFleteContrato']['precio_flete'].'$/Tm',
 		'value' => $precio_flete['PrecioFleteContrato']['precio_flete']);
 	}
-	//debug($fletes);
 	$this->set(compact('fletes'));
 
 
