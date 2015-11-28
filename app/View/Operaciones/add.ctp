@@ -28,7 +28,10 @@ echo 'Peso sin fijar: '.$contrato['RestoContrato']['peso_restante']."\n";
 ?>
 		<div class="col2">
 <?php
-echo $this->Form->input('referencia');
+echo $this->Form->input('referencia', array(
+    'autofocus' => 'autofocus'
+    )
+);
 echo $this->Form->input('embalaje_id', array(
     //'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
     'after' => '(quedan ????? sin fijar)',
