@@ -92,10 +92,11 @@ class OperacionesController extends AppController {
 		'action' => 'index')
 	    );
 	}
+	$contrato_id = $this->params['named']['from_id'];
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
 	$contrato = $this->Operacion->Contrato->find('first', array(
-	    'conditions' => array('Contrato.id' => $this->params['named']['from_id']),
+	    'conditions' => array('Contrato.id' => $contrato_id),
 	    'recursive' => 2,
 	    'fields' => array(
 		'Contrato.id',
@@ -117,7 +118,7 @@ class OperacionesController extends AppController {
 	$this->set('divisa', $contrato['CanalCompra']['divisa']);
 	$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find('all', array(
 	    'conditions' => array(
-		'ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']
+		'ContratoEmbalaje.contrato_id' => $contrato_id
 	    ),
 	    'fields' => array(
 		'Embalaje.id',
@@ -191,20 +192,52 @@ class OperacionesController extends AppController {
 	$this->request->data['Operacion']['flete'] = 0;
 
 	//Queremos la lista de costes de fletes
-	$this->loadModel('Flete');
-	$coste_fletes = $this->Flete->find('all', array(
+	$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find('all', array(
 	    'recursive' => 3,
-	    //			'fields' => array(
-	    //				'Flete.naviera_id',
-	    //				'Naviera.id',
-	    //				'Empresa.id',
-	    //				'Empresa.nombre_corto',
-	    //				'PuertoCarga.nombre',
-	    //				'PuertoDestino.nombre',
-	    //				'PrecioActualFlete.precio_dolar'
-	    //			)
+	    'contain' => array(
+		'Flete' => array(
+		    'PuertoCarga' => array(
+			'fields' => array(
+			    'nombre'
+			)
+		    ),
+		    'PuertoDestino' => array(
+			'fields' => array(
+			    'nombre'
+			)
+		    ),
+		    'Naviera' => array(
+			'Empresa' => array(
+			    'fields' => array(
+				'nombre_corto'
+			    )
+			)
+		    ),
+		    'Embalaje' => array(
+			'fields' => array(
+			    'nombre'
+			)
+		    )
+		)
+	    ),
+	    'conditions' => array(
+		'PrecioFleteContrato.contrato_id' => $contrato_id,
+		'PrecioFleteContrato.precio_flete is not null'
+	    )
 	));
-	$this->set(compact('coste_fletes'));
+	$fletes = array();
+	foreach($precio_fletes as $precio_flete) {
+	    //$fletes[$precio_flete['PrecioFleteContrato']['precio_flete']][] =
+	    $fletes[] = array( 
+		'name' => $precio_flete['Flete']['Naviera']['Empresa']['nombre_corto'].'('
+		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
+		.$precio_flete['Flete']['PuertoDestino']['nombre'].')'
+		.$precio_flete['Flete']['Embalaje']['nombre'].'-'
+		.$precio_flete['PrecioFleteContrato']['precio_flete'].'$/Tm',
+		'value' => $precio_flete['PrecioFleteContrato']['precio_flete']);
+	}
+	//debug($fletes);
+	$this->set(compact('fletes'));
 
 
 	if($this->request->is('post')):
