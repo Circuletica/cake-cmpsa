@@ -99,6 +99,7 @@ if ($contrato['Incoterm']['si_flete']) {
     echo $this->Form->input('flete', array(
 	'type' => 'select',
 	'options' => $fletes,
+	'empty' => true,
 	'between' => '($/Tm)',
 	'label' => 'Flete'
     )
