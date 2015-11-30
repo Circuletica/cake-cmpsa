@@ -48,24 +48,40 @@ public function view($id = null) {
     }*/
 
     public function form($id) { //esta acción vale tanto para edit como add
-	if (!$this->params['named']['from_id']) {
-			$this->Session->setFlash('URL mal formado controller/add '.$this->params['named']['from_controller']);
+	if (!$id) {
+			$this->Session->setFlash('URL mal formado controller/add '.$id);
 			$this->redirect(array(
 				'controller' => $this->params['named']['from_controller'],
 				'action' => 'view'));
 		}
-
+	//sacamos los datos de la operacion  al que pertenece la linea
+		//nos sirven en la vista para detallar campos
+	$operacion = $this->Transporte->Operacion->find('first', array(
+			'conditions' => array('Operacion.id' => $id),
+			'recursive' => 3,
+			'fields' => array(
+				'Operacion.id',
+				'Operacion.precio_compra',
+				'Operacion.referencia')
+		));
+	
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué operacion pertenece
 			//debug($this->params['named']['from_id']);
-			$this->request->data['Transporte']['operacion_id'] = $this->params['named']['from_id'];
-			if($this->Transporte->save($this->request->data) ):
-				$this->Session->setFlash('Línea de transporte guardada');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => 'view_trafico',
-					$this->params['named']['from_id']
-				));
+			$this->request->data['Transporte']['operacion_id'] = $id;
+			if($this->request->data['Transporte']['cantidad_embalaje'] <= $operacion['PesoOperacion']['cantidad_embalaje']):
+				if($this->Transporte->save($this->request->data) ):
+					$this->Session->setFlash('Línea de transporte guardada');
+					$this->redirect(array(
+						'controller' => $this->params['named']['from_controller'],
+						'action' => 'view_trafico',
+						$id
+					));
+				else:
+					$this->Session->setFlash('Línea de transporte NO guardada');
+				endif;
+				else:
+				$this->Session->setFlash('La cantidad de bultos debe ser inferior');
 			endif;
 		endif;
 
@@ -119,22 +135,13 @@ public function view($id = null) {
 			'fields' => array('Aseguradora.id','Empresa.nombre_corto'),
 			'recursive' => 1))
 		);
-	//sacamos los datos de la operacion  al que pertenece la linea
-		//nos sirven en la vista para detallar campos
-	$operacion = $this->Transporte->Operacion->find('first', array(
-			'conditions' => array('Operacion.id' => $this->params['named']['from_id']),
-			'recursive' => 3,
-			'fields' => array(
-				'Operacion.id',
-				'Operacion.precio_compra',
-				'Operacion.referencia')
-		));
+
 		$this->set('operacion',$operacion);
 		$transporte = $this->Transporte->find('all');	
 		$this->set('transporte',$transporte);
 //NO NECESARIO SE PASA A INDEX LINEA TRANSPORTE
 		$almacenaje = $this->Transporte->AlmacenTransporte->find('first', array(
-			'conditions' => array('Transporte.id' => $this->params['named']['from_id']),
+			'conditions' => array('Transporte.id' => $id),
 			'recursive' => 2,
 			'fields' => array(
 				'AlmacenTransporte.cantidad_cuenta',

@@ -18,9 +18,9 @@ if ($action == 'add') {
             endif;
         endforeach;
     endif;
-    echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en'.$embalaje['Embalaje']['nombre'].'</h4>';
+    echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje['Embalaje']['nombre'].'</h4>';
     $transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
-    echo '<h4>Bultos pendientes: '.$transportado.' en'.$embalaje['Embalaje']['nombre'].'</h4>';
+    echo '<h4>Bultos pendientes: '.$transportado.' en '.$embalaje['Embalaje']['nombre'].'</h4>';
 }
 
 if ($action == 'edit') {
