@@ -9,8 +9,7 @@
   <?php
   echo $this->Form->input(
       'nombre',
-      array(
-	  'autofocus' => 'autofocus'
+      array( 'autofocus' => 'autofocus')
   );
   echo $this->Form->input('funcion', array(
 	  'label' =>'Función')
