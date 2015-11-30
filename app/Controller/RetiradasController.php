@@ -3,16 +3,17 @@ class RetiradasController extends AppController {
 	public $scaffold = 'admin';
 
 	public function index() {
+		$this->set('retiradas', $this->paginate());
+
 		$this->paginate = array(
 			'contain' => array(
 				'Operacion',
 				'Almacen',
 				'Empresa',
-				'CalidadNombre',
-				'AlmacenesTransporte'
+				'AlmacenTransporte'
 			),
 		);
-//		$this->Operacion->bindModel(array(
+/*		$this->Operacion->bindModel(array(
 //			'belongsTo' => array(
 //				'Empresa' => array(
 //					'foreignKey' => false,
@@ -24,7 +25,7 @@ class RetiradasController extends AppController {
 //				)
 //			)
 //		));
-		$this->set('operaciones', $this->paginate());
+		$this->set('operaciones', $this->paginate());*/
 	}
 
 	public function view($id = null) {
@@ -72,6 +73,94 @@ class RetiradasController extends AppController {
 		$this->set('columnas_reparto',$columnas_reparto);
 		$this->set('lineas_reparto',$lineas_reparto);
 	}
+
+    public function add() {
+	$this->form($this->params['named']['from_id']);
+	$this->render('form');
+    }
+
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL');
+	    $this->redirect(array(
+		'action' => 'index',
+		'controller' => 'retiradas'
+	    ));
+	}
+	$this->form($id);
+	$this->render('form');
+    }
+
+     public function form($id) { //esta acción vale tanto para edit como add
+	$operacion = $this->Retirada->Operacion->find(
+	    'first',
+	    array(
+		'conditions' => array('Operacion.id' => $id),
+		'recursive' => 4,
+		'contain' => array(
+		    'Contrato' => array(
+			'Proveedor' => array(
+			    'Empresa'
+			),
+			'CalidadNombre',
+			'Incoterm'
+		    ),
+		    'PrecioTotalOperacion'
+		)
+	    )
+	);
+	$this->set(compact('operacion'));
+	$bancos = $this->Retirada->Banco->find('list', array(
+	    'fields' => array('Banco.id','Empresa.nombre_corto'),
+	    'order' => array('Empresa.nombre_corto' => 'asc'),
+	    'recursive' => 1
+	));
+	$this->set(compact('bancos'));
+	$tipoIvas = $this->Retirada->TipoIva->find('list');
+	$this->set(compact('tipoIvas'));
+	$this->set('tipoIvaComisiones', $tipoIvas);
+	$this->set('referencia', $operacion['Operacion']['referencia']);
+	$this->set('proveedor', $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto']);
+	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
+	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
+	$condicion = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
+	//solo el año de embarque/entrega
+	$condicion .= ' '.substr($operacion['Contrato']['fecha_transporte'],0,4);
+	$condicion .= ' ('.$operacion['Contrato']['Incoterm']['nombre'].')';
+	$this->set(compact('condicion'));
+	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
+	$this->set('action', $this->action);
+
+	//si es un edit, hay que rellenar el id, ya que
+	//si no se hace, al guardar el edit, se va a crear
+	//un _nuevo_ registro, como si fuera un add
+	if (!empty($id)) $this->Retirada->id = $id; 
+	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
+	    if($this->Retirada->save($this->request->data)){
+		$this->Session->setFlash('Retirada guardada');
+		$this->redirect(array(
+		    'action' => 'view',
+		    'controller' => 'retiradas',
+		    $id
+		));
+	    } else {
+		$this->Session->setFlash('Retirada NO guardada');
+	    }
+	} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
+	    $this->request->data = $this->Retirada->read(null, $id);
+	}
+    }
+
+    public function delete($id = null) {
+	if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
+	if ($this->Retirada->delete($id)){
+	    $this->Session->setFlash('Retirada borrada');
+	    $this->redirect(array(
+		'controller' => 'retiradas',
+		'action'=>'index',
+	    ));
+	}
+    }
 
 }
 ?>
