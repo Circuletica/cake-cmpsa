@@ -232,13 +232,19 @@ class OperacionesController extends AppController {
 	//Con un array simple no funciona, no se puede usar la misma clave
 	//varias veces. 
 	foreach($precio_fletes as $precio_flete) {
-	    $fletes[] = array( 
-		'name' => $precio_flete['Flete']['Naviera']['Empresa']['nombre_corto'].'('
+	    //    $fletes[] = array( 
+	    //	'name' => $precio_flete['Flete']['Naviera']['Empresa']['nombre_corto'].'('
+	    //	.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
+	    //	.$precio_flete['Flete']['PuertoDestino']['nombre'].')'
+	    //	.$precio_flete['Flete']['Embalaje']['nombre'].'-'
+	    //	.$precio_flete['PrecioFleteContrato']['precio_flete'].'$/Tm',
+	    //	'value' => $precio_flete['PrecioFleteContrato']['precio_flete']);
+	    $fletes[$precio_flete['Flete']['Naviera']['Empresa']['nombre_corto'].'('
 		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
 		.$precio_flete['Flete']['PuertoDestino']['nombre'].')'
 		.$precio_flete['Flete']['Embalaje']['nombre'].'-'
-		.$precio_flete['PrecioFleteContrato']['precio_flete'].'$/Tm',
-		'value' => $precio_flete['PrecioFleteContrato']['precio_flete']);
+		.$precio_flete['PrecioFleteContrato']['precio_flete'].'$/Tm'] = 
+		$precio_flete['PrecioFleteContrato']['precio_flete'];
 	}
 	$this->set(compact('fletes'));
 
