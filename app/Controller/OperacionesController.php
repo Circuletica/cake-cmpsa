@@ -193,20 +193,55 @@ class OperacionesController extends AppController {
 	$this->request->data['Operacion']['flete'] = 0;
 
 	//Queremos la lista de costes de fletes
-	$this->loadModel('Flete');
-	$coste_fletes = $this->Flete->find('all', array(
+	$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find('all', array(
 	    'recursive' => 3,
-	    //			'fields' => array(
-	    //				'Flete.naviera_id',
-	    //				'Naviera.id',
-	    //				'Empresa.id',
-	    //				'Empresa.nombre_corto',
-	    //				'PuertoCarga.nombre',
-	    //				'PuertoDestino.nombre',
-	    //				'PrecioActualFlete.precio_dolar'
-	    //			)
+	    'contain' => array(
+		'Flete' => array(
+		    'PuertoCarga' => array(
+			'fields' => array(
+			    'nombre'
+			)
+		    ),
+		    'PuertoDestino' => array(
+			'fields' => array(
+			    'nombre'
+			)
+		    ),
+		    'Naviera' => array(
+			'Empresa' => array(
+			    'fields' => array(
+				'nombre_corto'
+			    )
+			)
+		    ),
+		    'Embalaje' => array(
+			'fields' => array(
+			    'nombre'
+			)
+		    )
+		)
+	    ),
+	    'conditions' => array(
+		'PrecioFleteContrato.contrato_id' => $contrato_id,
+		//'PrecioFleteContrato.precio_flete is not null'
+	    )
 	));
-	$this->set(compact('coste_fletes'));
+	//el desplegable con los costes de flete según los puertos de
+	//carga/destino asociados con el contrato.
+	//Tenemos que hacer un array con name =>, value => para poder
+	//usar el mismo valor para varias opciones del select.
+	//Con un array simple no funciona, no se puede usar la misma clave
+	//varias veces. 
+	foreach($precio_fletes as $precio_flete) {
+	    $fletes[] = array( 
+		'name' => $precio_flete['Flete']['Naviera']['Empresa']['nombre_corto'].'('
+		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
+		.$precio_flete['Flete']['PuertoDestino']['nombre'].')'
+		.$precio_flete['Flete']['Embalaje']['nombre'].'-'
+		.$precio_flete['PrecioFleteContrato']['precio_flete'].'$/Tm',
+		'value' => $precio_flete['PrecioFleteContrato']['precio_flete']);
+	}
+	$this->set(compact('fletes'));
 
 
 	if($this->request->is('post')) {
