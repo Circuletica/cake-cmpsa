@@ -51,35 +51,37 @@ class LineaMuestrasController extends AppController {
 	//primero se sacan todos los almacen_transportes
 	//de todos los transportes de la operacion relativa
 	//de la muestra
-	$transportes = $muestra['Operacion']['Transporte'];
-	$almacen_transportes = array();
-	foreach ($transportes as $transporte) {
-	    $almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
+	if (array_key_exists('Transporte',$muestra['Operacion'])) {
+	    $transportes = $muestra['Operacion']['Transporte'];
+	    $almacen_transportes = array();
+	    foreach ($transportes as $transporte) {
+		$almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
+	    }
+	    //Recombinamos para pasar de:
+	    //array(
+	    //	(int) 0 => array(
+	    //		'id' => '8',
+	    //		'almacen_id' => '59',
+	    //		'transporte_id' => '45',
+	    //		'cuenta_almacen' => '54131',
+	    //		'cantidad_cuenta' => '20.00'
+	    //	),
+	    //	(int) 1 => array(
+	    //		'id' => '9',
+	    //		'almacen_id' => '50',
+	    //		'transporte_id' => '53',
+	    //		'cuenta_almacen' => '251478/5451',
+	    //		'cantidad_cuenta' => '33.00'
+	    //
+	    //A
+	    //
+	    //array(
+	    //	(int) 8 => '54131',
+	    //	(int) 9 => '251478/5451',
+	    //)
+	    $almacen_transportes = Hash::combine($almacen_transportes,'{n}.id','{n}.cuenta_almacen');
+	    $this->set('almacenTransportes', $almacen_transportes);
 	}
-	//Recombinamos para pasar de:
-	//array(
-	//	(int) 0 => array(
-	//		'id' => '8',
-	//		'almacen_id' => '59',
-	//		'transporte_id' => '45',
-	//		'cuenta_almacen' => '54131',
-	//		'cantidad_cuenta' => '20.00'
-	//	),
-	//	(int) 1 => array(
-	//		'id' => '9',
-	//		'almacen_id' => '50',
-	//		'transporte_id' => '53',
-	//		'cuenta_almacen' => '251478/5451',
-	//		'cantidad_cuenta' => '33.00'
-	//
-	//A
-	//
-	//array(
-	//	(int) 8 => '54131',
-	//	(int) 9 => '251478/5451',
-	//)
-	$almacen_transportes = Hash::combine($almacen_transportes,'{n}.id','{n}.cuenta_almacen');
-	$this->set('almacenTransportes', $almacen_transportes);
 
 	if($this->request->is('post')){
 	    //al guardar la linea, se incluye a qué muestra pertenece
