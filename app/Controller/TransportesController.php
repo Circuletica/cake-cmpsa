@@ -25,8 +25,6 @@ public function view($id = null) {
 		);*/
 		$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
 		$this->set('embalaje',$embalaje);
-
-
 	}
 
 

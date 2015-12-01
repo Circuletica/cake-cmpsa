@@ -24,7 +24,8 @@ if ($action == 'add') {
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Transporte de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+    echo "<h2>Modificar Transporte de Operación <em>";
+    //.$operacion['Operacion']['referencia']."</em></h2>\n";
    // echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en'.$embalaje.'</h4>';
 }
 

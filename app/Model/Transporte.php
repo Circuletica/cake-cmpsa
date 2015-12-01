@@ -6,10 +6,10 @@ class Transporte extends AppModel {
       	'rule' => 'notEmpty',
      	'message' => 'El nombre del vehículo no puede estar vacío'
       ),
-  	  'matricula' => array(
+  	/*  'matricula' => array(
       'rule' => 'notEmpty',
       'message' => 'El BL/matrícula no puede estar vacío'
-      )
+      )*/
     );
 
 	public $belongsTo = array(

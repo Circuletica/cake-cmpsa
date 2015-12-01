@@ -452,9 +452,7 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 	//Líneas de reparto
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-	$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
 	$lineas_reparto[] = array(
-	    'Código' => $codigo,
 	    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
 	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
 	    'Peso' => $peso.' Kg'
@@ -462,7 +460,6 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 endforeach;
 $columnas_reparto = array_keys($lineas_reparto[0]);
 //indexamos el array por el codigo de asociado
-$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
 //se ordena por codigo ascendente
 ksort($lineas_reparto);
 $this->set('columnas_reparto',$columnas_reparto);
@@ -471,6 +468,10 @@ $this->set('lineas_reparto',$lineas_reparto);
 //			'fields' => array('Transporte.operacion_id', 'Transporte.cantidad')));
 //		$this->set('transporte',$transporte);
 
+/*
+	$retirada = $this->Operacion->Transporte->AlmacenTransporte->Retirada->find('all');
+	$this ->set('retirada',$retirada);
+*/
     }
 
     public function delete($id = null) {
