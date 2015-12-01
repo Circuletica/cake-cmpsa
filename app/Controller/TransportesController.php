@@ -17,13 +17,13 @@ public function view($id = null) {
 			'conditions' => array('Transporte.id' => $id),
 			'recursive' => 2));
 		$this->set('transporte',$transporte);
-
-		$embalaje = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find(
+		/*$embalaje = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find(
 			'first',
 			array(
-				'fields' => array('Embalaje.nombre')
+			'fields' => array('Embalaje.nombre')
 			)
-		);		
+		);*/
+		$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
 		$this->set('embalaje',$embalaje);
 
 
@@ -34,7 +34,7 @@ public function view($id = null) {
 	$this->form($this->params['named']['from_id']);
 	$this->render('form');
     }
-    /*public function edit($id = null) {
+    public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
 	    $this->Session->setFlash('error en URL');
 	    $this->redirect(array(
@@ -45,7 +45,7 @@ public function view($id = null) {
 	}
 	$this->form($id);
 	$this->render('form');
-    }*/
+    }
 
     public function form($id) { //esta acción vale tanto para edit como add
 	if (!$id) {
@@ -62,28 +62,10 @@ public function view($id = null) {
 			'fields' => array(
 				'Operacion.id',
 				'Operacion.precio_compra',
-				'Operacion.referencia')
+				'Operacion.referencia',
+				'Operacion.embalaje_id')
 		));
 	
-		if($this->request->is('post')):
-			//al guardar la linea, se incluye a qué operacion pertenece
-			//debug($this->params['named']['from_id']);
-			$this->request->data['Transporte']['operacion_id'] = $id;
-			if($this->request->data['Transporte']['cantidad_embalaje'] <= $operacion['PesoOperacion']['cantidad_embalaje']):
-				if($this->Transporte->save($this->request->data) ):
-					$this->Session->setFlash('Línea de transporte guardada');
-					$this->redirect(array(
-						'controller' => $this->params['named']['from_controller'],
-						'action' => 'view_trafico',
-						$id
-					));
-				else:
-					$this->Session->setFlash('Línea de transporte NO guardada');
-				endif;
-				else:
-				$this->Session->setFlash('La cantidad de bultos debe ser inferior');
-			endif;
-		endif;
 
 		//opcion 1 = 2 queries
 	//	$transportes = $this->Transporte->find('all');
@@ -94,12 +76,8 @@ public function view($id = null) {
 	//	$contrato_embalajes = $transportes['Operacion']['Contrato']['ContratoEmbalaje'];
 
 		$this->set('action', $this->action);
-		$embalaje = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find(
-			'first',
-			array(
-				'fields' => array('Embalaje.nombre')
-			)
-		);		
+
+		$embalaje = $operacion['Embalaje']['nombre'];		
 		$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
 		$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
 		    'list',
@@ -150,11 +128,34 @@ public function view($id = null) {
 		$this->set('almacenajes',$almacenaje);		
 
 
+
+				if($this->request->is('post')):
+			//al guardar la linea, se incluye a qué operacion pertenece
+			//debug($this->params['named']['from_id']);
+			$this->request->data['Transporte']['operacion_id'] = $id;
+			if($this->request->data['Transporte']['cantidad_embalaje'] <= $operacion['PesoOperacion']['cantidad_embalaje']):
+				if($this->Transporte->save($this->request->data) ):
+					$this->Session->setFlash('Línea de transporte guardada');
+					$this->redirect(array(
+						'controller' => $this->params['named']['from_controller'],
+						'action' => 'view_trafico',
+						$id
+					));
+				else:
+					$this->Session->setFlash('Línea de transporte NO guardada');
+				endif;
+				else:
+				$this->Session->setFlash('La cantidad de bultos debe ser inferior');
+			endif;
+		endif;
+
+
+
 	}
 
 //PENDIENTE DE CAMBIAR POR EL FORM
 
-public function edit( $id = null) {
+/*public function edit( $id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada');
 			$this->redirect(array(
@@ -256,6 +257,6 @@ public function edit( $id = null) {
 		));
 		endif;
 	}
-
+*/
 }
 ?>

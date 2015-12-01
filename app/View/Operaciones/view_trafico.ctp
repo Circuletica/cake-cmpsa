@@ -126,7 +126,7 @@
 		//Se calcula la cantidad total de bultos retirados
 
 
-		echo $this->Html->tableHeaders(array('Código Contable','Asociado', 'Sacos','Peso total', 'Sacos retirados'/*,'Detalle'*/));
+		echo $this->Html->tableHeaders(array('Código Contable','Asociado', 'Sacos','Peso solicitado', 'Sacos retirados','Peso retirado','Detalle'));
 		foreach ($lineas_reparto as $codigo => $linea_reparto):
 			echo $this->Html->tableCells(array(
 				$codigo,

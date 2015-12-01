@@ -18,14 +18,14 @@ if ($action == 'add') {
             endif;
         endforeach;
     endif;
-    echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje['Embalaje']['nombre'].'</h4>';
+    echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.'</h4>';
     $transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
-    echo '<h4>Bultos pendientes: '.$transportado.' en '.$embalaje['Embalaje']['nombre'].'</h4>';
+    echo '<h4>Bultos pendientes: '.$transportado.' en '.$embalaje.'</h4>';
 }
 
 if ($action == 'edit') {
     echo "<h2>Modificar Transporte de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
-    echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en'.$embalaje['Embalaje']['nombre'].'</h4>';
+   // echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en'.$embalaje.'</h4>';
 }
 
     //Formulario para rellenar transporte
@@ -37,7 +37,7 @@ if ($action == 'edit') {
     echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
     echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
     //echo $this->Form->input('embalaje_id',array('label'=>'Tipo de bulto','empty' =>true));
-    echo $this->Form->input('cantidad_embalaje', array('label' => 'Cantidad de '.$embalaje['Embalaje']['nombre']));
+    echo $this->Form->input('cantidad_embalaje', array('label' => 'Cantidad de '.$embalaje));
     ?>
     </div>
     <div class="col4">
@@ -130,15 +130,6 @@ if ($action == 'edit') {
             'empty' => ' ')
             );
 
-            echo $this->Form->input('fecha_reclamacion', array(
-            'dateFormat' => 'DMY',
-            'minYear' => date('Y')-1,
-            'maxYear' => date('Y')+2,
-            'orderYear' => 'asc',
-            'timeFormat' => null ,
-            'label' => 'Fecha de reclamación',
-            'empty' => ' ')
-            );
             echo $this->Form->input('fecha_limite_retirada', array(
             'dateFormat' => 'DMY',
             'minYear' => date('Y')-1,
@@ -158,11 +149,11 @@ if ($action == 'edit') {
             'empty' => ' ')
             );
             ?>
-            <br><br>
+            
         </div>
     </div> 
         <?php
-        echo $this->Form->input('observaciones', array('label'=>'Observaciones del transporte'));
+        echo $this->Form->input('observaciones', array('label'=>'Observaciones'));
         ?>  
 </fieldset>
 
@@ -191,12 +182,32 @@ if ($action == 'edit') {
         );
     ?>
     </div>
+    <div class='col3'>
     <?php
-        echo $this->Form->input('coste_seguro',array('label'=>'Coste del seguro'));
-        echo $this->Form->input('suplemento_seguro',array('label'=>'Suplemento'));
-        echo $this->Form->input('peso_factura',array('label'=>'Peso facturado'));
-        echo $this->Form->input('peso_neto',array('label'=>'Peso neto'));
-        echo $this->Form->input('averia',array('label'=>'Avería'));
+            echo $this->Form->input('coste_seguro',array('label'=>'Coste del seguro'));
+            echo $this->Form->input('suplemento_seguro',array('label'=>'Suplemento'));
+            echo $this->Form->input('peso_factura',array('label'=>'Peso facturado'));
+    ?>
+    </div>
+    <?php
+            echo $this->Form->input('peso_neto',array('label'=>'Peso neto'));
+
+            echo $this->Form->input('averia',array('label'=>'Avería'));
+            ?>
+            <div class="linea">
+            <?php
+            echo $this->Form->input('fecha_reclamacion', array(
+            'dateFormat' => 'DMY',
+            'minYear' => date('Y')-1,
+            'maxYear' => date('Y')+2,
+            'orderYear' => 'asc',
+            'timeFormat' => null ,
+            'label' => 'Fecha reclamación seguro',
+            'empty' => ' ')
+            );
+            ?>
+            </div>
+        <?php
         echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
         echo $this->Form->end('Guardar Línea Transporte', array('escape'=>false));
         ?>

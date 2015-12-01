@@ -106,7 +106,7 @@
 		echo "</dd>";
 		echo "  <dt>Tipo embalaje</dt>\n";
 		echo "<dd>";
-			echo $embalaje['Embalaje']['nombre'].'&nbsp;';
+			echo $embalaje.'&nbsp;';
 		echo "</dd>";				
 		echo "  <dt>Cantidad/Bultos línea</dt>\n";
 		echo "<dd>";
@@ -179,16 +179,6 @@
 		$fecha_despacho_op= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_despacho_op.'&nbsp;';
 		echo "</dd>";
-		echo "  <dt>Fecha de reclamación</dt>\n";
-		echo "<dd>";
-		//mysql almacena la fecha en formato ymd
-		$fecha = $transporte['Transporte']['fecha_reclamacion'];
-		$dia = substr($fecha,8,2);
-		$mes = substr($fecha,5,2);
-		$anyo = substr($fecha,0,4);
-		$fecha_reclamacion= $dia.'-'.$mes.'-'.$anyo;
-		echo $fecha_reclamacion.'&nbsp;';
-		echo "</dd>";
 		echo "  <dt>Límite de retirada</dt>\n";
 		echo "<dd>";
 		//mysql almacena la fecha en formato ymd
@@ -240,7 +230,7 @@
 			echo "</dd>";
 			echo "  <dt>Vencimiento del seguro</dt>\n";
 			echo "<dd>";
-			$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha +1 month"));
+			$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha_llegada +1 month"));
 			$transporte['Transporte']['fecha_vencimiento_seg'] = $fecha_vencimiento_seg; //Asigno una fecha + 1 mes
 			echo $fecha_vencimiento_seg.'&nbsp;' ;
 			echo "</dd>";
@@ -276,6 +266,16 @@
 			else:
 			echo "Sin asegurar";
 		endif;
+		echo "  <dt>Fecha de reclamación</dt>\n";
+		echo "<dd>";
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_reclamacion'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_reclamacion= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_reclamacion.'&nbsp;';
+		echo "</dd>";
 	?>		
 </dl>
 	<div class="detallado">
