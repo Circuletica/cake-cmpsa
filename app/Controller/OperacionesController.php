@@ -222,7 +222,7 @@ class OperacionesController extends AppController {
 	    ),
 	    'conditions' => array(
 		'PrecioFleteContrato.contrato_id' => $contrato_id,
-		'PrecioFleteContrato.precio_flete is not null'
+		//'PrecioFleteContrato.precio_flete is not null'
 	    )
 	));
 	//el desplegable con los costes de flete según los puertos de
