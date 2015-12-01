@@ -136,11 +136,6 @@ class MuestrasController extends AppController {
 	));
 	$muestra = $this->Muestra->find('first', array(
 	    'conditions' => array('Muestra.id' => $id),
-	    //			'contain' => array(
-	    //				'CalidadNombre',
-	    //				'Proveedor',
-	    //				'Almacen'
-	    //			),
 	    'fields' => array(
 		'Muestra.*',
 		'CalidadNombre.*'
@@ -149,10 +144,6 @@ class MuestrasController extends AppController {
 	$tipo = $this->tipoMuestras[$muestra['Muestra']['tipo']];
 	$this->set('tipo',$tipo);
 	$this->set('muestra',$muestra);
-	//$this->loadModel('CalidadNombre');
-	//el nombre de calidad concatenado esta en una view de MSQL
-	//$calidad_nombre = $this->CalidadNombre->findById($muestra['Calidad']['id']);
-	//$this->set('calidad_nombre',$calidad_nombre);
 
 	//Exportar PDF
 	//$this->set('title_for_layout', 'Factura');
@@ -198,10 +189,21 @@ endif;
 	    'recursive' => 1
 	))
     );
-	//$this->set('almacenes', $this->Muestra->Almacen->find('list', array(
-	//    'fields' => array('Almacen.id','Empresa.nombre'),
-	//    'recursive' => 1))
-	//);
+	$this->Muestra->Operacion->virtualFields = array(
+	    'ref_op_cont' => 'CONCAT(Operacion.referencia,"(",Contrato.referencia,")")'
+	);
+	$this->set('operaciones', $this->Muestra->Operacion->find('list', array(
+	    'fields' => array(
+		'Operacion.id',
+		'ref_op_cont'
+	    ),
+//	    'conditions' => array(
+//		'Operacion.referencia <> ""'
+//	    ),
+	    'recursive' => 1))
+	);
+	$this->set(compact('operaciones'));
+
 	if($this->request->is('post')):
 	    if($this->Muestra->save($this->request->data)):
 		$this->Session->setFlash('Muestra guardada');

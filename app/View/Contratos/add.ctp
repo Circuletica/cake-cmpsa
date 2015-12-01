@@ -186,7 +186,10 @@
 	</div>
 	<div class="col4">
 	<?php
-	    echo $this->Form->input('referencia');
+	    echo $this->Form->input('referencia', array(
+		'autofocus' => 'autofocus'
+	    )
+	    );
 	    echo $this->Form->input('incoterm_id', array(
 		    'label' => 'Incoterms',
 		    'empty' => array('' => 'Selecciona')

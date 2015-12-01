@@ -11,7 +11,7 @@ $this->Html->addCrumb('Transporte', array(
 'action'=>'view'
 ));
 $this->Html->addCrumb('Modificar Cuenta Corriente');
-echo $this->Form->create('AlmacenesTransporte', array('action' => 'edit'));
+echo $this->Form->create('AlmacenTransporte', array('action' => 'edit'));
 ?>
 <fieldset>	
 	<div class="formuboton">

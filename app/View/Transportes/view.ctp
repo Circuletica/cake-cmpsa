@@ -76,14 +76,13 @@
 		echo "<dd>";
 			echo $transporte['Transporte']['matricula'].'&nbsp;';
 		echo "</dd>";
-		
-		echo "  <dt>Puerto destino</dt>\n";
+		echo "  <dt>Puerto de Embarque</dt>\n";
 		echo "<dd>";
-			echo $this->Html->link( $transporte['Puerto']['nombre']	, array(
-				'controller' => 'puertos',
-				'action' => 'view',
-				$transporte['Puerto']['id'])
-			);
+			echo  $transporte['PuertoCarga']['nombre'].'&nbsp;';
+		echo "</dd>";
+			echo "  <dt>Puerto de Destino</dt>\n";
+		echo "<dd>";
+			echo  $transporte['PuertoDestino']['nombre'].'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Naviera</dt>\n";
 		echo "<dd>";
@@ -111,7 +110,7 @@
 		echo "</dd>";				
 		echo "  <dt>Cantidad/Bultos línea</dt>\n";
 		echo "<dd>";
-			echo $transporte['Transporte']['cantidad'].'&nbsp;';
+			echo $transporte['Transporte']['cantidad_embalaje'].'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Observaciones</dt>\n";
 		echo "<dd>";
@@ -286,17 +285,17 @@
 	<table>
 <?php
 	echo $this->Html->tableHeaders(array('Cuenta Corriente','Nombre', 'Cantidad', 'Marca','Detalle'));
-	foreach($transporte['AlmacenesTransporte'] as $linea):
+	foreach($transporte['AlmacenTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['cuenta_almacen'],
 			$linea['almacen_id'],
 			$linea['cantidad_cuenta'],
-			$linea['MarcaAlmacen']['nombre'],			//$linea['referencia_almacen'],
+			$linea['MarcaAlmacen']['marca'],			//$linea['referencia_almacen'],
 			$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
-				'controller'=>'almacenes_transportes',
+				'controller'=>'almacen_transportes',
 				'action' => 'edit',
 				$linea['id'],
-              			'from_controller'=>'almacenestransportes',
+              			'from_controller'=>'almacentransportes',
               			'from_id'=>$transporte['Transporte']['id']),array(
               			'class'=>'botond','escape' => false,'title'=>'Modificar Cuenta Corriente'))
 			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
@@ -307,7 +306,7 @@
 					'from_controller' => 'operaciones',
 					'from_id'=>$transporte['Transporte']['id']),
 					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-						'confirm' => '¿Seguro que quieres borrar a '.$transporte['Transporte']['referencia'].'?')
+						'confirm' => '¿Seguro que quieres borrar la cuenta corriente'.$linea['cuenta_almacen'].'?')
 				)
 			));
 	endforeach;?>
@@ -315,7 +314,7 @@
 	<div class="btabla">
 		<?php
 		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Cuenta Corriente',array(
-		'controller' => 'almacenes_transportes',
+		'controller' => 'almacen_transportes',
 		'action' => 'add',
 		'from_controller' => 'transportes',
 		'from_id' => $transporte['Transporte']['id']),

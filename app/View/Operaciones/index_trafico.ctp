@@ -18,8 +18,8 @@
 <div class='index'>
   <table>
   <tr>
-    <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Referencia')?></th>
-    <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Contrato')?></th>
+    <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Ref. Operación')?></th>
+    <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Ref. Contrato')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.fecha_transporte','Embarque/Entrega')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('Empresa.nombre_corto', 'Proveedor');?></th>
@@ -45,9 +45,6 @@
   endforeach;
   ?>
   </table>
- <!-- <div class="btabla">
-      <?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Operación',array('action'=>'add'), array('title'=>'Añadir Operación','escape' => false)); ?>
-  </div>-->
 
   <div class="btabla">
    </div>

@@ -6,10 +6,10 @@ class Naviera extends AppModel{
 	'className' => 'Empresa',
 	'foreignKey' => 'id')
     );
-// public $validate = array(
-   //     'nombre' => array(
-   //     'rule' => 'notEmpty',
-   //     'message' => 'El nombre no puede ser vacio'
-   //     )
-   // );
+/* public $validate = array(
+       'nombre' => array(
+       'rule' => 'notEmpty',
+       'message' => 'El nombre no puede ser vacio'
+        )
+    );*/
 }
