@@ -11,8 +11,21 @@ $this->Html->addCrumb('Operaciones ', array(
 'action'=>'view'
 ));
 $this->Html->addCrumb('Añadir Cuenta Corriente');*/
-echo $this->Form->create('AlmacenTransporte');
-?>
+    if($transporte['transporte']['id']!= NULL):
+    $suma = 0;
+    $almacenado=0;
+        foreach ($transporte['AlmacenTransporte'] as $suma):
+            if ($AlmacenTransporte['transporte_id']=$transporte['Transporte']['id']):
+            $almacenado = $almacenado + $suma['cantidad_cuenta'];
+            endif;
+        endforeach;
+    endif;
+
+    echo '<h4>Bultos transportados: '.$transporte['Transporte']['cantidad_embalaje'].' en '.$embalaje.'</h4>';
+    $almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
+    echo '<h4>Bultos pendientes: '.$almacenado.' en '.$embalaje.'</h4>';
+	echo $this->Form->create('AlmacenTransporte');
+	?>
 <fieldset>	
 		<div class="col2">
 		<?php

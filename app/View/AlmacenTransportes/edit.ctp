@@ -6,10 +6,10 @@ $this->Html->addCrumb('Operación ', array(
 'controller'=>'operaciones',
 'action'=>'index_trafico'
 ));
-$this->Html->addCrumb('Transporte', array(
+/*$this->Html->addCrumb('Transporte', array(
 'controller'=>'transportes',
 'action'=>'view'
-));
+));*/
 $this->Html->addCrumb('Modificar Cuenta Corriente');
 echo $this->Form->create('AlmacenTransporte', array('action' => 'edit'));
 ?>
@@ -42,7 +42,7 @@ echo $this->Form->create('AlmacenTransporte', array('action' => 'edit'));
 	<?php
 		echo $this->Form->input('cuenta_almacen',array('label'=>'Cuenta corriente / Referencia almacén'));
 		echo $this->Form->input('cantidad_cuenta',array('label'=>'Cantidad embalajes en cuenta'));
-		echo $this->Form->input('MarcaAlmacen.nombre',array('label'=>'Marca almacenada'));
+		echo $this->Form->input('marca_almacen',array('label'=>'Marca almacenada'));
 		echo $this->Form->end('Guardar Cuenta Almacén');
 	?> 
 </fieldset>

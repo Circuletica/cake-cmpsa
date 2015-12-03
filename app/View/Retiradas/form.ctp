@@ -3,9 +3,9 @@ $this->Html->addCrumb('Operaciones','/operaciones');
 //$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 
 if ($action == 'add') {
-    echo "<h2>Añadir Retirada a Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+    echo "<h2>Añadir retirada de almacén <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
 }
-
+/*
 if ($action == 'edit') {
     echo "<h2>Modificar Retirada de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
 }
@@ -37,18 +37,34 @@ echo $this->Form->input('fecha_vencimiento', array(
     'dateFormat' => 'DMY'
 )
 );
-echo "</div>\n";
+echo "</div>\n";*/
 //solo si es una financiacion nueva, asignamos valores por defecto
 //si es un edit, hay que respetar los valores existentes
-if ($action == 'add') {
-    echo $this->Form->input('banco_id', array( 'value' => 3));
+//if ($action == 'add') {
+    echo $this->Form->input('albaran', array( 'value' => 3));
     echo $this->Form->input('tipo_iva_id', array( 'value' => 3));
-    echo $this->Form->input('tipo_iva_comision_id', array( 'value' => 4));
+       ?>
+    <div class="linea">
+    <?php
+    echo $this->Form->input('fecha_retirada',array(
+       'dateFormat' => 'DMY',
+        'minYear' => date('Y')-1,
+        'maxYear' => date('Y')+2,
+        'orderYear' => 'asc',
+        'timeFormat' => null ,
+        'label' => 'Fecha retirada',
+        'empty' => ' ')
+        );
+        ?>
+        </div>
+        <?php
+/*
+
     echo $this->Form->input('precio_euro_kilo', array( 'value' => $precio_euro_kilo));
 } else {
     echo $this->Form->input('banco_id');
     echo $this->Form->input('tipo_iva_id');
     echo $this->Form->input('tipo_iva_comision_id');
     echo $this->Form->input('precio_euro_kilo');
-}
+}*/
 echo $this->Form->end('Guardar Retirada');

@@ -120,12 +120,12 @@
 	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
 
 	<div class="detallado">
-	<h3>Retiradas</h3>
+	<h3>Resumen retiradas</h3>
 	<table>
 		<?php
 		//Se calcula la cantidad total de bultos retirados
 
-		echo $this->Html->tableHeaders(array('Asociado', 'Sacos','Peso solicitado', 'Sacos retirados','Peso retirado','Detalle'));
+		echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado', 'Sacos retirados','Peso retirado','Detalle'));
 		foreach ($lineas_reparto as $codigo  => $linea_reparto):
 			echo $this->Html->tableCells(array(
 				$linea_reparto['Nombre'],
@@ -138,7 +138,85 @@
 			);
 		endforeach;
 		?>
-		</table>		
+		</table>
+			<table>
+<?php
+setlocale(LC_ALL, "es_ES.UTF-8");
+echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso solicitado (kg)','Sacos retirados','Pendiente'));
+foreach($distribuciones as $linea):
+    echo $this->Html->tableCells(array(
+	$linea['Empresa']['nombre'],
+	array(
+	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['porcentaje_embalaje_asociado']),
+	    array('style' => 'text-align:right')
+	),
+	array(
+	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['peso_asociado']),
+	    array('style' => 'text-align:right')
+	),
+	array(
+	    $linea['RepartoOperacionAsociado']['iva'],
+	    array('style' => 'text-align:right')
+	),
+	array(
+	    $linea['RepartoOperacionAsociado']['total'],
+	    array('style' => 'text-align:right; font-weight:bold')
+   )));
+endforeach;
+echo $this->html->tablecells(array(
+    'TOTALES',
+    array(
+	$this->Number->roundTo2($totales['total_porcentaje_embalaje']),
+	array(
+	    'style' => 'text-align:right',
+	    'bgcolor' => '#00FF00'
+	)
+    ),
+    array(
+	$this->Number->roundTo2($totales['total_peso']),
+	array(
+	    'style' => 'text-align:right',
+	    'bgcolor' => '#00FF00'
+	)
+    ),
+    array(
+	$this->Number->roundTo2($totales['total_precio']),
+	array(
+	    'style' => 'text-align:right',
+	    'bgcolor' => '#00FF00'
+	)
+    ),
+    array(
+	$this->Number->roundTo2($totales['total_iva']),
+	array(
+	    'style' => 'text-align:right',
+	    'bgcolor' => '#00FF00'
+	)
+    ),
+    array(
+	$this->Number->roundTo2($totales['total_comision']),
+	array(
+	    'style' => 'text-align:right',
+	    'bgcolor' => '#00FF00'
+	)
+    ),
+    array(
+	$this->Number->roundTo2($totales['total_iva_comision']),
+	array(
+	    'style' => 'text-align:right',
+	    'bgcolor' => '#00FF00'
+	)
+    ),
+    array(
+	$this->Number->roundTo2($totales['total_general']),
+	array(
+	    'style' => 'text-align:right; font-weight:bold',
+	    'bgcolor' => '#00FF00'
+	)
+    )
+)
+	);
+?></table>
 	</div>
 	</div>
 </div>

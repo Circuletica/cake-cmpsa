@@ -16,6 +16,7 @@ public function view($id = null) {
 		$transporte = $this->Transporte->find('first',array(
 			'conditions' => array('Transporte.id' => $id),
 			'recursive' => 2));
+
 		$this->set('transporte',$transporte);
 		/*$embalaje = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find(
 			'first',
@@ -25,6 +26,14 @@ public function view($id = null) {
 		);*/
 		$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
 		$this->set('embalaje',$embalaje);
+
+		$almacenes = $this->Transporte->AlmacenTransporte->Almacen->find('list', array(
+	    'fields' => array('Almacen.id','Empresa.nombre_corto'),
+	    'order' => array('Empresa.nombre_corto' => 'asc'),
+	    'recursive' => 1
+		)
+	    );
+	    $this->set('almacenes',$almacenes);
 	}
 
 
@@ -32,18 +41,17 @@ public function view($id = null) {
 	$this->form($this->params['named']['from_id']);
 	$this->render('form');
     }
-    public function edit($id = null) {
+  /*  public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
 	    $this->Session->setFlash('error en URL');
 	    $this->redirect(array(
-		'controller' => 'operaciones',
 		'action' => 'view_trafico',
-		$this->params['named']['from_id']
+		'controller' => $this->params['named']['from_controller'],
+		$this->params['from_id']
 	    ));
-	}
 	$this->form($id);
 	$this->render('form');
-    }
+    }*/
 
     public function form($id) { //esta acción vale tanto para edit como add
 	if (!$id) {
@@ -153,7 +161,7 @@ public function view($id = null) {
 
 //PENDIENTE DE CAMBIAR POR EL FORM
 
-/*public function edit( $id = null) {
+public function edit( $id = null) {
 		if (!$id) {
 			$this->Session->setFlash('URL mal formada');
 			$this->redirect(array(
@@ -255,6 +263,6 @@ public function view($id = null) {
 		));
 		endif;
 	}
-*/
+
 }
 ?>

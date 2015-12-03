@@ -92,7 +92,7 @@ class RetiradasController extends AppController {
     }
 
      public function form($id) { //esta acción vale tanto para edit como add
-	$operacion = $this->Retirada->Operacion->find(
+	$operacion = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
 	    'first',
 	    array(
 		'conditions' => array('Operacion.id' => $id),
@@ -110,16 +110,7 @@ class RetiradasController extends AppController {
 	    )
 	);
 	$this->set(compact('operacion'));
-	$bancos = $this->Retirada->Banco->find('list', array(
-	    'fields' => array('Banco.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
-	    'recursive' => 1
-	));
-	$this->set(compact('bancos'));
-	$tipoIvas = $this->Retirada->TipoIva->find('list');
-	$this->set(compact('tipoIvas'));
-	$this->set('tipoIvaComisiones', $tipoIvas);
-	$this->set('referencia', $operacion['Operacion']['referencia']);
+/*	$this->set('referencia', $operacion['Operacion']['referencia']);
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto']);
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
@@ -128,7 +119,7 @@ class RetiradasController extends AppController {
 	$condicion .= ' '.substr($operacion['Contrato']['fecha_transporte'],0,4);
 	$condicion .= ' ('.$operacion['Contrato']['Incoterm']['nombre'].')';
 	$this->set(compact('condicion'));
-	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
+	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);*/
 	$this->set('action', $this->action);
 
 	//si es un edit, hay que rellenar el id, ya que
