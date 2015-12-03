@@ -93,10 +93,11 @@ class OperacionesController extends AppController {
 		'action' => 'index')
 	    );
 	}
+	$contrato_id = $this->params['named']['from_id'];
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
 	$contrato = $this->Operacion->Contrato->find('first', array(
-	    'conditions' => array('Contrato.id' => $this->params['named']['from_id']),
+	    'conditions' => array('Contrato.id' => $contrato_id),
 	    'recursive' => 2,
 	    'fields' => array(
 		'Contrato.id',
@@ -118,7 +119,7 @@ class OperacionesController extends AppController {
 	$this->set('divisa', $contrato['CanalCompra']['divisa']);
 	$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find('all', array(
 	    'conditions' => array(
-		'ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']
+		'ContratoEmbalaje.contrato_id' => $contrato_id
 	    ),
 	    'fields' => array(
 		'Embalaje.id',
@@ -192,50 +193,88 @@ class OperacionesController extends AppController {
 	$this->request->data['Operacion']['flete'] = 0;
 
 	//Queremos la lista de costes de fletes
-	$this->loadModel('Flete');
-	$coste_fletes = $this->Flete->find('all', array(
+	$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find('all', array(
 	    'recursive' => 3,
-	    //			'fields' => array(
-	    //				'Flete.naviera_id',
-	    //				'Naviera.id',
-	    //				'Empresa.id',
-	    //				'Empresa.nombre_corto',
-	    //				'PuertoCarga.nombre',
-	    //				'PuertoDestino.nombre',
-	    //				'PrecioActualFlete.precio_dolar'
-	    //			)
+	    'contain' => array(
+		'Flete' => array(
+		    'PuertoCarga' => array(
+			'fields' => array(
+			    'nombre'
+			)
+		    ),
+		    'PuertoDestino' => array(
+			'fields' => array(
+			    'nombre'
+			)
+		    ),
+		    'Naviera' => array(
+			'Empresa' => array(
+			    'fields' => array(
+				'nombre_corto'
+			    )
+			)
+		    ),
+		    'Embalaje' => array(
+			'fields' => array(
+			    'nombre'
+			)
+		    )
+		)
+	    ),
+	    'conditions' => array(
+		'PrecioFleteContrato.contrato_id' => $contrato_id,
+		//'PrecioFleteContrato.precio_flete is not null'
+	    )
 	));
-	$this->set(compact('coste_fletes'));
+	//el desplegable con los costes de flete según los puertos de
+	//carga/destino asociados con el contrato.
+	//Tenemos que hacer un array con name =>, value => para poder
+	//usar el mismo valor para varias opciones del select.
+	//Con un array simple no funciona, no se puede usar la misma clave
+	//varias veces. 
+	foreach($precio_fletes as $precio_flete) {
+		$fletes[] = array( 
+		    'name' => $precio_flete['Flete']['Naviera']['Empresa']['nombre_corto'].'('
+		    .$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
+		    .$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
+		    .(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
+		    .($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
+		    'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
+		);
+	}
+	$this->set(compact('fletes'));
 
-
-	if($this->request->is('post')):
+	if($this->request->is('post')) {
 	    //al guardar la linea, se incluye a qué contrato pertenece
-	    $this->request->data['Operacion']['contrato_id'] = $this->params['named']['from_id'];
-	//primero guardamos los datos de Operacion
-	if($this->Operacion->save($this->request->data)):
-	    //luego las cantidades de cada asociado en AsociadoOperacion
-	    foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
-		if ($cantidad != NULL) {
-		    $this->request->data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
-		    $this->request->data['AsociadoOperacion']['asociado_id'] = $asociado_id;
-		    $this->request->data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
-		    //$cantidad_embalaje_operacion += $cantidad;
-		    if (!$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']))
-			throw New Exception('error en guardar AsociadoOperacion');
+	    $this->request->data['Operacion']['contrato_id'] = $contrato_id;
+	    //primero guardamos los datos de Operacion
+	    if($this->Operacion->save($this->request->data)){
+		//luego las cantidades de cada asociado en AsociadoOperacion
+		foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
+		    if ($cantidad != NULL) {
+			$this->request->data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
+			$this->request->data['AsociadoOperacion']['asociado_id'] = $asociado_id;
+			$this->request->data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
+			//$cantidad_embalaje_operacion += $cantidad;
+			if (!$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']))
+			    throw New Exception('error en guardar AsociadoOperacion');
+		    }
 		}
+		//falta aquí guardar el peso total de la linea de contrato
+		//y el tipo de embalaje
+		//.....
+		$this->Session->setFlash('Linea de Contrato guardada');
+		//volvemos al contrato a la que pertenece la linea creada
+		$this->redirect(array(
+		    'controller' => $this->params['named']['from_controller'],
+		    'action' => 'view',
+		    $contrato_id));
+	    } else {
+		$this->Session->setFlash('Operación NO guardada');
 	    }
-	//falta aquí guardar el peso total de la linea de contrato
-	//y el tipo de embalaje
-	//.....
-	$this->Session->setFlash('Linea de Contrato guardada');
-	//volvemos al contrato a la que pertenece la linea creada
-	$this->redirect(array(
-	    'controller' => $this->params['named']['from_controller'],
-	    'action' => 'view',
-	    $this->params['named']['from_id']));
-endif;
-endif;
+	}
     }
+
     public function edit($id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado');

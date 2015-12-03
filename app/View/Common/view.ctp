@@ -18,7 +18,6 @@ $this->Html->addCrumb(ucfirst($controller), array(
 <h2><?php echo $object; ?></h2>
 
 <div class="actions">
-    <h3>Búsqueda</h3>
     <ul>
     <?php echo $this->fetch('filter'); ?>
     </ul>
@@ -39,9 +38,10 @@ echo $this->Button->edit($controller,$id)
     //que devuelve al controller mencionado,
     //si no es el caso, volvemos al index del controller del
     //borrado
-    empty($from_controller) ? 
-    $this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object):
-    $this->Button->delete($controller,$id,$object);
+    (empty($from_controller) ? 
+	$this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object):
+	$$this->Button->delete($controller,$id,$object)
+    );
 ?>
 	</li>
 	</ul>

@@ -28,13 +28,13 @@ echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre_corto'], array(
     $muestra['Proveedor']['id'])
 );
 echo "</dd>";
-echo "  <dt>Almacen</dt>\n";
+echo "  <dt>Operación</dt>\n";
 echo "<dd>";
-if (isset($muestra['Almacen']['Empresa']['nombre'])):
-    echo $this->Html->link( $muestra['Almacen']['Empresa']['nombre'], array(
-	'controller' => 'almacenes',
+if (isset($muestra['Operacion']['referencia'])):
+    echo $this->Html->link( $muestra['Operacion']['referencia'], array(
+	'controller' => 'operaciones',
 	'action' => 'view',
-	$muestra['Almacen']['id']));
+	$muestra['Operacion']['id']));
 else:
     echo '--';
 endif;

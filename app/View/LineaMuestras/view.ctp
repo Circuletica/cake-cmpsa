@@ -137,6 +137,6 @@ echo $this->Html->tableCells(array(
 ));
 echo "</table>\n";
 echo "</div>\n";
-echo 'Criba Media '.$linea['CribaPonderada']['criba_media'];
+echo '<h3>Criba Media '.$linea['CribaPonderada']['criba_media'].'</h3>';
 $this->end()
 ?>
