@@ -6,6 +6,7 @@ $this->assign('id',$empresa['Empresa']['id']);
 $this->assign('class',$this->fetch('class'));
 $this->assign('controller',$this->fetch('controller'));
 $this->assign('line_controller','contactos');
+$this->assign('line_add', '1');
 
 $this->start('filter');
 //echo $this->element('filtroflete');
