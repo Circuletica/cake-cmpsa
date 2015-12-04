@@ -8,6 +8,8 @@ $this->assign('controller','financiaciones');
 $this->assign('line_controller','reparto_operacion_asociados');
 $this->assign('line2_object', 'anticipo');
 $this->assign('line2_controller','anticipos');
+$this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'
+$this->assign('line2_add', '1'); //si se muestra el botón de añadir 'line2'
 
 $this->start('filter');
 //echo $this->element('filtrofinanciacion');
