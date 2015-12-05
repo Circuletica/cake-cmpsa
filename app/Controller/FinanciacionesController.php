@@ -19,19 +19,13 @@ class FinanciacionesController extends AppController {
 	));
 	$this->set('financiaciones', $this->paginate());
     }
+
     public function view($id = null) {
 	//el id y la clase de la financiación de origen vienen en la URL
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado Financiación/view');
 	    $this->redirect(array('action'=>'index'));
 	}
-	//calculamos el total de cada línea de reparto como campo virtual del modelo
-	//Si metemos el campo nuevo directamente en el 'contain' del find, sale
-	//un element [0] en el resultado
-//	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
-//	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
-//	    'saldo_anticipo' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)-ifnull(total_anticipo,0)'
-//	);
 	$financiacion = $this->Financiacion->find(
 	    'first',
 	    array(
@@ -65,7 +59,6 @@ class FinanciacionesController extends AppController {
 	//calculamos el total de cada línea de reparto como campo virtual del modelo
 	//Si metemos el campo nuevo directamente en el 'contain' del find, sale
 	//un element [0] en el resultado
-	//$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
 	$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
 	    'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
 	    'saldo_anticipo' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)-ifnull(total_anticipo,0)'
@@ -207,7 +200,12 @@ class FinanciacionesController extends AppController {
 	    )
 	);
 	$this->set(compact('operacion'));
+	//$this->Financiacion->Banco->Empresa->virtualFields = array(
+	//    'codigo_nombre' => 'CONCAT(Empresa.codigo_contable,Empresa.nombre_corto)'
+	//);
+	//$this->Financiacion->Banco->virtualFields['codigo_nombre'] = $this->Financiacion->Banco->virtualFields['codigo_nombre']
 	$bancos = $this->Financiacion->Banco->find('list', array(
+//	    'fields' => array('Banco.id','Empresa.codigo_contable'),
 	    'fields' => array('Banco.id','Empresa.nombre_corto'),
 	    'order' => array('Empresa.nombre_corto' => 'asc'),
 	    'recursive' => 1
