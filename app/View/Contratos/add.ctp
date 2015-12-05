@@ -30,36 +30,36 @@ echo $this->Js->writeBuffer(array('onDomReady' => false));
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css">
 <script>
-(function( $ ) {
-    $.widget( "custom.combobox", {
+(function($) {
+    $.widget("custom.combobox", {
     _create: function() {
-	this.wrapper = $( "<span>" )
-	    .addClass( "custom-combobox" )
-	    .insertAfter( this.element );
+	this.wrapper = $("<span>")
+	    .addClass("custom-combobox")
+	    .insertAfter(this.element);
 	this.element.hide();
 	this._createAutocomplete();
 	this._createShowAllButton();
     },
 	_createAutocomplete: function() {
-	    var selected = this.element.children( ":selected" ),
+	    var selected = this.element.children(":selected"),
 		value = selected.val() ? selected.text() : "";
-	    this.input = $( "<input>" )
-		.appendTo( this.wrapper )
-		.val( value )
-		.attr( "title", "" )
-		.addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+	    this.input = $("<input>")
+		.appendTo(this.wrapper)
+		.val(value)
+		.attr("title", "")
+		.addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
 		.autocomplete({
 		delay: 0,
 		    minLength: 0,
-		    source: $.proxy( this, "_source" )
+		    source: $.proxy(this, "_source")
 		})
 		.tooltip({
 		tooltipClass: "ui-state-highlight"
 		});
-	    this._on( this.input, {
-	    autocompleteselect: function( event, ui ) {
+	    this._on(this.input, {
+	    autocompleteselect: function(event, ui) {
 		ui.item.option.selected = true;
-		this._trigger( "select", event, {
+		this._trigger("select", event, {
 		item: ui.item.option
 		});
 	    },
@@ -69,87 +69,88 @@ echo $this->Js->writeBuffer(array('onDomReady' => false));
 	    _createShowAllButton: function() {
 		var input = this.input,
 		    wasOpen = false;
-		$( "<a>" )
-		    .attr( "tabIndex", -1 )
-		    .attr( "title", "Ver todos los valores" )
+		$("<a>")
+		    .attr("tabIndex", -1)
+		    .attr("title", "Ver todos los valores")
 		    .tooltip()
-		    .appendTo( this.wrapper )
+		    .appendTo(this.wrapper)
 		    .button({
 		    icons: {
 		    primary: "ui-icon-triangle-1-s"
 		    },
 		    text: false
 		    })
-		    .removeClass( "ui-corner-all" )
-		    .addClass( "custom-combobox-toggle ui-corner-right" )
+		    .removeClass("ui-corner-all")
+		    .addClass("custom-combobox-toggle ui-corner-right")
 		    .mousedown(function() {
-			wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+			wasOpen = input.autocomplete("widget").is(":visible");
 		    })
 			.click(function() {
 			    input.focus();
 			    // Close if already visible
-			    if ( wasOpen ) {
+			    if (wasOpen) {
 				return;
 			    }
 			    // Pass empty string as value to search for, displaying all results
-			    input.autocomplete( "search", "" );
+			    input.autocomplete("search", "");
 			});
 	    },
-		_source: function( request, response ) {
-		    var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
-		    response( this.element.children( "option" ).map(function() {
-			var text = $( this ).text();
-			if ( this.value && ( !request.term || matcher.test(text) ) )
+		_source: function(request, response) {
+		    var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+		    response(this.element.children("option").map(function() {
+			var text = $(this).text();
+			if (this.value && (!request.term || matcher.test(text)))
 			    return {
 			    label: text,
 				value: text,
 				option: this
 			};
-		    }) );
+		    }));
 		},
-		    _removeIfInvalid: function( event, ui ) {
+		    _removeIfInvalid: function(event, ui) {
 			// Selected an item, nothing to do
-			if ( ui.item ) {
+			if (ui.item) {
 			    return;
 			}
 			// Search for a match (case-insensitive)
 			var value = this.input.val(),
 			    valueLowerCase = value.toLowerCase(),
 	    valid = false;
-			this.element.children( "option" ).each(function() {
-			    if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+			this.element.children("option").each(function() {
+			    if ($(this).text().toLowerCase() === valueLowerCase) {
 				this.selected = valid = true;
 				return false;
 			    }
 			});
 			// Found a match, nothing to do
-			if ( valid ) {
+			if (valid) {
 			    return;
 			}
 			// Remove invalid value
 			this.input
-			    .val( "" )
-			    .attr( "title", value + " no se corresponde a ningun valor" )
-			    .tooltip( "open" );
-			this.element.val( "" );
+			    .val("")
+			    .attr("title", value + " no se corresponde a ningun valor")
+			    .tooltip("open");
+			this.element.val("");
 			this._delay(function() {
-			    this.input.tooltip( "close" ).attr( "title", "" );
-			}, 2500 );
-			this.input.autocomplete( "instance" ).term = "";
+			    this.input.tooltip("close").attr("title", "");
+			}, 2500);
+			this.input.autocomplete("instance").term = "";
 		    },
 			_destroy: function() {
 			    this.wrapper.remove();
 			    this.element.show();
 			}
 });
-})( jQuery );
+})(jQuery);
 $(function() {
-    $( "#combobox" ).combobox();
-    $( "#toggle" ).click(function() {
-	$( "#combobox" ).toggle();
+    $("#combobox").combobox();
+    $("#toggle").click(function() {
+	$("#combobox").toggle();
     });
 });
 </script>
+
 <?php
 //si no esta la calidad en el listado, dejamos un enlace para
 //agragarla
@@ -159,7 +160,7 @@ $enlace_anyadir_calidad = $this->Html->link ('Añadir Calidad', array(
     'from_controller' => 'muestras',
     'from_action' => 'add',
 )
-	    );
+	   );
 //si no esta el proveedor en el listado, dejamos un enlace para
 //agragarlo
 $enlace_anyadir_proveedor = $this->Html->link (
@@ -209,7 +210,6 @@ echo $this->Form->input(
 	'empty' => true
     )
 );
-
 echo $this->Form->input(
     'puerto_destino_id',
     array(
@@ -326,7 +326,7 @@ echo $this->Form->input(
     'diferencial',
     array('between' => '(<var id="divisa_diferencial"></var>)')
 );
-echo '<p id="divisa_opciones"></p>';
+//echo '<p id="divisa_opciones"></p>';
 ?>
 <br><br><br>
     <div class='radiomuestra'>
