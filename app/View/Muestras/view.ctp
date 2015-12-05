@@ -57,6 +57,7 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
+if ($muestra['Muestra']['tipo']==1){ //muestras de oferta
 echo $this->Html->tableHeaders(array('Nº','Marca', 'Número de Sacos',
     'Ref. Proveedor', 'Ref Almacén', 'Detalle'));
 //mostramos todas las catas de esta muestra
@@ -65,16 +66,55 @@ $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
 	$i,
-	$linea['marca'],
-	$linea['numero_sacos'],
+	$linea['AlmacenTransporte']['marca_almacen'],
+	$linea['AlmacenTransporte']['cantidad_cuenta'],
 	$linea['referencia_proveedor'],
-	$linea['referencia_almacen'],
+	$linea['AlmacenTransporte']['marca_almacen'],
 	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
     )
 );
 //numero de la línea siguiente
 $i++;
 endforeach;
+} elseif ($muestra['Muestra']['tipo']==2){ //muestras de embarque
+echo $this->Html->tableHeaders(array('Nº','Marca', 'Número de Sacos',
+    'Ref. Proveedor', 'Ref Almacén', 'Detalle'));
+//mostramos todas las catas de esta muestra
+//hay que numerar las líneas
+$i = 1;
+foreach($muestra['LineaMuestra'] as $linea):
+    echo $this->Html->tableCells(array(
+	$i,
+	$linea['AlmacenTransporte']['marca_almacen'],
+	$linea['AlmacenTransporte']['cantidad_cuenta'],
+	$linea['referencia_proveedor'],
+	$linea['AlmacenTransporte']['marca_almacen'],
+	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
+    )
+);
+//numero de la línea siguiente
+$i++;
+endforeach;
+} elseif ($muestra['Muestra']['tipo']==2){ //muestras de entrega
+echo $this->Html->tableHeaders(array('Nº','Marca', 'Número de Sacos',
+    'Ref. Proveedor', 'Ref Almacén', 'Detalle'));
+//mostramos todas las catas de esta muestra
+//hay que numerar las líneas
+$i = 1;
+foreach($muestra['LineaMuestra'] as $linea):
+    echo $this->Html->tableCells(array(
+	$i,
+	$linea['AlmacenTransporte']['marca_almacen'],
+	$linea['AlmacenTransporte']['cantidad_cuenta'],
+	$linea['referencia_proveedor'],
+	$linea['AlmacenTransporte']['marca_almacen'],
+	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
+    )
+);
+//numero de la línea siguiente
+$i++;
+endforeach;
+}
 echo "</table>";
 $this->end();
 ?>

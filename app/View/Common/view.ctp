@@ -40,7 +40,7 @@ echo $this->Button->edit($controller,$id)
     //borrado
     (empty($from_controller) ? 
 	$this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object):
-	$$this->Button->delete($controller,$id,$object)
+	$this->Button->delete($controller,$id,$object)
     );
 ?>
 	</li>
