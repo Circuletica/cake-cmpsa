@@ -200,16 +200,39 @@ class FinanciacionesController extends AppController {
 	    )
 	);
 	$this->set(compact('operacion'));
-	//$this->Financiacion->Banco->Empresa->virtualFields = array(
-	//    'codigo_nombre' => 'CONCAT(Empresa.codigo_contable,Empresa.nombre_corto)'
-	//);
-	//$this->Financiacion->Banco->virtualFields['codigo_nombre'] = $this->Financiacion->Banco->virtualFields['codigo_nombre']
+
+	//si no se quiere usar el Set::combine de abajo,
+	//podemos crear un campo virtual de Empresa y luego pasarlo
+	//a Banco, pero hay que tener cuidado de borrar los dos después
+	//http://book.cakephp.org/2.0/en/models/virtual-fields.html#limitations-of-virtualfields
+	$this->Financiacion->Banco->Empresa->virtualFields = array(
+	    //en el desplegable de bancos quieren que aparezca los dos últimos
+	    //digitos del codigo contable, seguido por el nombre del banco
+	    'codigo_nombre' => 'CONCAT(SUBSTRING(Empresa.codigo_contable,7),"-",Empresa.nombre_corto)'
+	);
+	$this->Financiacion->Banco->virtualFields['codigo_nombre'] = $this->Financiacion->Banco->Empresa->virtualFields['codigo_nombre'];
 	$bancos = $this->Financiacion->Banco->find('list', array(
-//	    'fields' => array('Banco.id','Empresa.codigo_contable'),
-	    'fields' => array('Banco.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
+	    'fields' => array('Banco.id','Banco.codigo_nombre'),
+	    'order' => array('Banco.codigo_nombre' => 'asc'),
 	    'recursive' => 1
-	));
+	    )
+	);
+	$this->Financiacion->Banco->Empresa->virtualFields = array();
+	$this->Financiacion->Banco->virtualFields = array();
+//	$bancos_enteros = $this->Financiacion->Banco->find('all', array(
+//	    'fields' => array('Empresa.codigo_contable','Empresa.nombre_corto', 'Banco.id'),
+//	    'order' => array('Empresa.codigo_contable' => 'asc'),
+//	    'recursive' => 1
+//	));
+//	$bancos = Set::combine(
+//	    $bancos_enteros,
+//	    '{n}.Banco.id',
+//	    array(
+//		'{0}'.' '.'{1}',
+//		'{n}.Empresa.codigo_contable',
+//		'{n}.Empresa.nombre_corto'
+//	    )
+//	);
 	$this->set(compact('bancos'));
 	$tipoIvas = $this->Financiacion->TipoIva->find('list');
 	$this->set(compact('tipoIvas'));
