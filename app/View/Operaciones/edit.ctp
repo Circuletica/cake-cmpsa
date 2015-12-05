@@ -33,7 +33,6 @@ foreach ($asociados as $codigo => $asociado):
 	echo "</td>\n";
 	echo "<td>".$asociado['Empresa']['nombre_corto']."</td>\n";
 	echo "<td>";
-	//echo $this->Form->input('CantidadAsociado.'.$id, array(
 	echo $this->Form->input('CantidadAsociado.'.$asociado['Asociado']['id'], array(
 		'label' => '',
 		'class' => 'cantidad',

@@ -32,10 +32,14 @@ echo $this->Form->hidden('id', array(
 )
     );
 echo "<div class='linea'>\n";
-echo $this->Form->input('fecha_vencimiento', array(
-    'label' => 'Fecha de vencimiento',
-    'dateFormat' => 'DMY'
-)
+echo $this->Form->input(
+    'fecha_vencimiento',
+    array(
+	'label' => 'Fecha de vencimiento',
+	//'type' => 'text'
+	'dateFormat' => 'DMY',
+	'autofocus' => 'autofocus'
+    )
 );
 echo "</div>\n";
 //solo si es una financiacion nueva, asignamos valores por defecto

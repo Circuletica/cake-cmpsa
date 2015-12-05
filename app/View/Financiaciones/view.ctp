@@ -8,6 +8,8 @@ $this->assign('controller','financiaciones');
 $this->assign('line_controller','reparto_operacion_asociados');
 $this->assign('line2_object', 'anticipo');
 $this->assign('line2_controller','anticipos');
+$this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'
+$this->assign('line2_add', '1'); //si se muestra el botón de añadir 'line2'
 
 $this->start('filter');
 //echo $this->element('filtrofinanciacion');
@@ -55,35 +57,35 @@ foreach($distribuciones as $linea):
     echo $this->Html->tableCells(array(
 	$linea['Empresa']['nombre'],
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['porcentaje_embalaje_asociado']),
+	    $this->Number->round($linea['RepartoOperacionAsociado']['porcentaje_embalaje_asociado']),
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['peso_asociado']),
+	    $this->Number->round($linea['RepartoOperacionAsociado']['peso_asociado']),
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $linea['RepartoOperacionAsociado']['precio_asociado'],
+	    $this->Number->round($linea['RepartoOperacionAsociado']['precio_asociado']),
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $linea['RepartoOperacionAsociado']['iva'],
+	    $this->Number->round($linea['RepartoOperacionAsociado']['iva']),
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $linea['RepartoOperacionAsociado']['comision'],
+	    $this->Number->round($linea['RepartoOperacionAsociado']['comision']),
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $linea['RepartoOperacionAsociado']['iva_comision'],
+	    $this->Number->round($linea['RepartoOperacionAsociado']['iva_comision']),
 	    array('style' => 'text-align:right')
 	),
 	array(
-	    $linea['RepartoOperacionAsociado']['total'],
+	    $this->Number->round($linea['RepartoOperacionAsociado']['total']),
 	    array('style' => 'text-align:right; font-weight:bold')
 	),
 	array(
-	    $this->Number->roundTo2($linea['RepartoOperacionAsociado']['saldo_anticipo']),
+	    $this->Number->round($linea['RepartoOperacionAsociado']['saldo_anticipo']),
 	    array(
 		'style' => 'text-align:right;',
 		'bgcolor' => ((float)$linea['RepartoOperacionAsociado']['saldo_anticipo'] == 0) ? '#FFFFFF':'#00FFFF'
@@ -94,49 +96,49 @@ endforeach;
 echo $this->html->tablecells(array(
     'TOTALES',
     array(
-	$this->Number->roundTo2($totales['total_porcentaje_embalaje']),
+	$this->Number->round($totales['total_porcentaje_embalaje']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_peso']),
+	$this->Number->round($totales['total_peso']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_precio']),
+	$this->Number->round($totales['total_precio']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_iva']),
+	$this->Number->round($totales['total_iva']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_comision']),
+	$this->Number->round($totales['total_comision']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_iva_comision']),
+	$this->Number->round($totales['total_iva_comision']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_general']),
+	$this->Number->round($totales['total_general']),
 	array(
 	    'style' => 'text-align:right; font-weight:bold',
 	    'bgcolor' => '#00FF00'
