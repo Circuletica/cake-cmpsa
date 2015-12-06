@@ -2,7 +2,7 @@
 <?php
 echo $this->Form->create('Anticipo');
 echo $this->Form->input('asociado_id', array(
-    'value' => $this->request->data['AsociadoOperacion']['asociado_id']
+    'value' => $this->request->data['AsociadoOperacion']['asociado_id'],
     'autofocus' => 'autofocus'
 )
 );

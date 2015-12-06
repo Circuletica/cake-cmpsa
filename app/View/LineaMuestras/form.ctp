@@ -15,12 +15,17 @@ function findTotal(){
 }
 
 </script>
-
-<h2>Agregar linea a Muestra <em><?php echo $muestra['Muestra']['referencia'].' '.$muestra['CalidadNombre']['nombre']?></em></h2>
-
 <?php
+if ($action == 'add') {
+    echo "<h2>Añadir Línea a Muestra <em>".$muestra['referencia']."</em></h2>\n";
+}
+
+if ($action == 'edit') {
+    echo "<h2>Modificar Línea a Muestra <em>".$muestra['referencia']."</em></h2>\n";
+}
+
 $this->Html->addCrumb('Muestras','/muestras');
-$this->Html->addCrumb('Muestra '.$muestra['Muestra']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
+$this->Html->addCrumb('Muestra '.$muestra['referencia'],'/muestras/view/'.$muestra['id']);
 
 ?>
 <?php
