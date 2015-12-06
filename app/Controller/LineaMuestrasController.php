@@ -103,8 +103,7 @@ class LineaMuestrasController extends AppController {
 		    )
 		)
 	    );
-	    $this->set('muestra',$linea_muestra['Muestra']);
-	    $muestra=$linea_muestra['Muestra'];
+	    $muestra = $linea_muestra['Muestra'];
 	    $muestra_id=$muestra['id'];
 	} else { //un add()
 	    $muestra_id = $this->params['named']['from_id'];
@@ -135,6 +134,30 @@ class LineaMuestrasController extends AppController {
 		    )
 		)
 	    );
+	    //necesitamos 'subir' el array $muestra['Muestra']
+	    //de 1 nivel para que sea igual al que devuelve el
+	    //find de anterior
+	    //los dos find no devuelven la misma estructura
+	    //pasamos de:
+	    //array(
+	    //	'Muestra' => array(
+	    //		'id' => '22',
+	    //		'calidad_id' => '28',
+	    //		'operacion_id' => '27',
+	    //	),
+	    //	'CalidadNombre' => array(),
+	    //	'Operacion' => array()
+	    //)
+	    //a
+	    //array(
+	    //	'id' => '22',
+	    //	'calidad_id' => '28',
+	    //	'operacion_id' => '27',
+	    //	'CalidadNombre' => array(),
+	    //	'Operacion' => array()
+	    //)
+	    $muestra += $muestra['Muestra'];
+	    unset($muestra['Muestra']);
 	}
 	$this->set('muestra',$muestra);
 

@@ -21,7 +21,7 @@ if ($action == 'add') {
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Línea a Muestra <em>".$muestra['referencia']."</em></h2>\n";
+    echo "<h2>Modificar Línea de Muestra <em>".$muestra['referencia']."</em></h2>\n";
 }
 
 $this->Html->addCrumb('Muestras','/muestras');
@@ -34,18 +34,9 @@ echo $this->Form->create();
 	<div class="col3">
 <?php
 echo $this->Html->tableCells(array(
-    $this->Form->input('marca'),
-    $this->Form->input('numero_sacos', array(
-	'label' => 'Número de sacos'
-    )
-)
-	)
-    );
-echo $this->Html->tableCells(array(
     $this->Form->input('humedad'),
     $this->Form->input('tueste')
-)
-	);
+));
 echo $this->Html->tableCells(
     array(
 	$this->Form->input(
