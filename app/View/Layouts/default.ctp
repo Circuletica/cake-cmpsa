@@ -88,7 +88,6 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 		</div>
 		<?php echo '&nbsp&nbsp'.$cakeVersion.' - Optimizado para resolución superior a 1280x720'; ?>
 </div>
-	<?php //echo $this->element('sql_dump'); ?>
 	<?php echo $this->Js->writeBuffer(); //write cached scripts ?>
 </body>
 </html>

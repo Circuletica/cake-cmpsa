@@ -30,10 +30,19 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
     var $scaffold = 'admin';
+
     public $paginate = array(
 	'limit' => 20
     );
-    public $helpers = array('Html','Form','Date','Button');
+
+    public $helpers = array(
+	'Js' => array('cmpsa'),
+	'Html',
+	'Form',
+	'Date',
+	'Button',
+    );
+
     public $components = array('DebugKit.Toolbar','Session','RequestHandler');
 
     //cambia el 'hasOne' del Model por un 'belongsTo'

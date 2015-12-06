@@ -1,5 +1,5 @@
-<script type="text/javascript">
-function findTotal(){
+<script>
+function totalCriba(){
     var arr = document.getElementsByClassName('criba');
     var tot=0;
     for(var i=0;i<arr.length;i++){
@@ -13,8 +13,8 @@ function findTotal(){
     if(tot != 100)
 	document.getElementById('total').style.color = "red";
 }
-
 </script>
+
 <?php
 if ($action == 'add') {
     echo "<h2>Añadir Línea a Muestra <em>".$muestra['referencia']."</em></h2>\n";
@@ -72,109 +72,109 @@ echo $this->Html->tableCells(array(
     $this->Form->input('criba20', array(
 	'label' => 'Criba 20',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     ),
     $this->Form->input('criba19', array(
 	'label' => 'Criba 19',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     )
 )
 
-	);
+)."\n";
 echo $this->Html->tableCells(array(
     $this->Form->input('criba13p', array(
 	'label' => 'Caracol 13',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     ),
     $this->Form->input('criba18', array(
 	'label' => 'Criba 18',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     )
 )
 
-	);
+	)."\n";
 echo $this->Html->tableCells(array(
     $this->Form->input('criba12p', array(
 	'label' => 'Caracol 12',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     ),
     $this->Form->input('criba17', array(
 	'label' => 'Criba 17',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     )
 )
 
-	);
+	)."\n";
 echo $this->Html->tableCells(array(
     $this->Form->input('criba11p', array(
 	'label' => 'Caracol 11',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     ),
     $this->Form->input('criba16', array(
 	'label' => 'Criba 16',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     )
 )
 
-	);
+	)."\n";
 echo $this->Html->tableCells(array(
     $this->Form->input('criba10p', array(
 	'label' => 'Caracol 10',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     ),
     $this->Form->input('criba15', array(
 	'label' => 'Criba 15',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     )
 )
 
-	);
+	)."\n";
 echo $this->Html->tableCells(array(
     $this->Form->input('criba9p', array(
 	'label' => 'Caracol 9',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     ),
     $this->Form->input('criba14', array(
 	'label' => 'Criba 14',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     )
 )
 
-	);
+	)."\n";
 echo $this->Html->tableCells(array(
     $this->Form->input('criba8p', array(
 	'label' => 'Caracol 8',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     ),
     $this->Form->input('criba13', array(
 	'label' => 'Criba 13',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     )
 )
 
-	);
+	)."\n";
 echo $this->Html->tableCells(array(
     $this->Form->input('criba12', array(
 	'label' => 'Criba 12',
 	'class' => 'criba',
-	'oninput' => 'findTotal()')
+	'oninput' => 'totalCriba()')
     ),
     'Total : <input type="number" name="total" id="total"/>'
 )
-	);
+	)."\n";
 ?>
 </div>
 <?php
