@@ -87,13 +87,6 @@ class MuestrasController extends AppController {
 	    //completamos el titulo
 	    $title[] ='Calidad: '.$calidad;
 	}
-	//filtramos por aprobado
-	//		if(isset($this->passedArgs['Search.aprobado'])) {
-	//			$this->paginate['conditions'][]['Muestra.aprobado'] = $this->passedArgs['Search.aprobado']?1:0;
-	//			$this->data['Search']['aprobado'] = $this->passedArgs['Search.aprobado'];
-	//			$titulo[] = ($this->passedArgs['Search.aprobado']) ?
-	//				'Muestras aprobadas' : 'Muestras rechazadas';
-	//		}
 
 	$this->Muestra->bindModel(array(
 	    'belongsTo' => array(
@@ -124,13 +117,12 @@ class MuestrasController extends AppController {
 	    $this->Session->setFlash('URL mal formada Muestra/view');
 	    $this->redirect(array('action'=>'index'));
 	}
-	$this->set('tipos', $this->tipoMuestras);
+	//$this->set('tipos', $this->tipoMuestras);
 	$this->Muestra->bindModel(array(
 	    'belongsTo' => array(
 		'CalidadNombre' => array(
 		    'foreignKey' => false,
 		    'conditions' => array('CalidadNombre.id = Muestra.calidad_id'),
-		    //'recursive' => 1
 		)
 	    )
 	));
@@ -140,9 +132,9 @@ class MuestrasController extends AppController {
 		'Muestra.*',
 		'CalidadNombre.*'
 	    ),
-	    'recursive' => 1));
-	$tipo = $this->tipoMuestras[$muestra['Muestra']['tipo']];
-	$this->set('tipo',$tipo);
+	    'recursive' => 2));
+	//$tipo = $this->tipoMuestras[$muestra['Muestra']['tipo']];
+	//$this->set('tipo',$tipo);
 	$this->set('muestra',$muestra);
 
 	//Exportar PDF
@@ -157,8 +149,20 @@ class MuestrasController extends AppController {
 	    'download'=>true,
 	    'filename'=>'INFORME-'.$id.'pdf'
 	);
-
-	$this->set('muestra', $this->Muestra->read(null, $id));
+	//hay una view distinta para cada
+	//tipo de muestra, ya que los campos
+	//no son iguales
+	switch ($muestra['Muestra']['tipo']) {
+	case 1:
+	    $this->render('view_oferta');
+	    break;
+	case 2:
+	    $this->render('view_embarque');
+	    break;
+	case 3:
+	    $this->render('view_entrega');
+	    break;
+	}
     }
 
     public function delete( $id = null) {
