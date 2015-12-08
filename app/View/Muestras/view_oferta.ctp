@@ -5,7 +5,7 @@ $this->assign('id',$muestra['Muestra']['id']);
 $this->assign('class','Muestra');
 $this->assign('controller','muestras');
 $this->assign('line_controller','linea_muestras');
-$this->assign('object', 'Muestra de oferta '.$muestra['Muestra']['referencia']);
+$this->assign('object', 'Muestra de oferta '.$muestra['Muestra']['registro']);
 $this->assign('line_object', 'Línea');
 $this->assign('line_add', '1');
 $this->start('filtro');
@@ -13,13 +13,25 @@ echo $this->element('filtromuestra');
 $this->end();
 $this->start('main');
 echo "<dl>";
-echo "  <dt>Referencia</dt>\n";
+echo "  <dt>Registro</dt>\n";
 echo "<dd>";
-echo $muestra['Muestra']['referencia'].'&nbsp;';
+echo $muestra['Muestra']['registro'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
 echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
+echo "</dd>";
+echo "  <dt>Contrato</dt>\n";
+echo "<dd>";
+//echo (!empty($muestra['Contrato']) ? $muestra['Contrato']['referencia'] : '').'&nbsp;';
+if (isset($muestra['Contrato']['referencia'])) {
+    echo $this->Html->link( $muestra['Contrato']['referencia'], array(
+	'controller' => 'contratos',
+	'action' => 'view',
+	$muestra['Contrato']['id']));
+}else{
+    echo '--';
+}
 echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
@@ -47,17 +59,16 @@ $this->end();
 $this->start('lines');
 echo "<table>";
 echo $this->Html->tableHeaders(array('Nº','Marca', 'Número de Sacos',
-    'Ref. Proveedor', 'Ref Almacén', 'Detalle'));
+    'Ref. Proveedor', 'Detalle'));
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas
 $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
 	$i,
-	$linea['AlmacenTransporte']['marca_almacen'],
-	$linea['AlmacenTransporte']['cantidad_cuenta'],
+	(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['marca_almacen'] : '',
+	(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['cantidad_cuenta'] : '',
 	$linea['referencia_proveedor'],
-	$linea['AlmacenTransporte']['marca_almacen'],
 	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
     )
 );

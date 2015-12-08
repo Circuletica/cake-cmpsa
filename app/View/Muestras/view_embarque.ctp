@@ -13,13 +13,17 @@ echo $this->element('filtromuestra');
 $this->end();
 $this->start('main');
 echo "<dl>";
-echo "  <dt>Referencia</dt>\n";
+echo "  <dt>Registro</dt>\n";
 echo "<dd>";
-echo $muestra['Muestra']['referencia'].'&nbsp;';
+echo $muestra['Muestra']['registro'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
 echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
+echo "</dd>";
+echo "  <dt>Contrato</dt>\n";
+echo "<dd>";
+echo (!empty($muestra['Contrato']) ? $muestra['Contrato']['referencia'] : '').'&nbsp;';
 echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
@@ -31,15 +35,14 @@ echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre_corto'], array(
 echo "</dd>";
 echo "  <dt>Contrato</dt>\n";
 echo "<dd>";
-if (isset($muestra['Operacion']['referencia'])):
-    echo $this->Html->link( $muestra['Operacion']['referencia'], array(
-	'controller' => 'operaciones',
+if (isset($muestra['Contrato']['referencia'])) {
+    echo $this->Html->link( $muestra['Contrato']['referencia'], array(
+	'controller' => 'contratos',
 	'action' => 'view',
-	$muestra['Operacion']['id']));
+	$muestra['Contrato']['id']));
 else:
     echo '--';
-endif;
-
+}
 echo "</dd>";
 echo "  <dt>Fecha</dt>\n";
 echo "<dd>";

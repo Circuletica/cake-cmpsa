@@ -14,13 +14,11 @@
 
 <div class="actions">
   <?php echo $this->element('filtromuestra');?>
-  <!--h3>Filtro de muestra</h3-->
 </div>
 <div class='index'>
   <table>
   <tr>
-    <!--th><?php //echo $this->Paginator->sort('tipo')?></th!-->
-    <th><?php echo $this->Paginator->sort('referencia')?></th>
+    <th><?php echo $this->Paginator->sort('registro', 'Registro')?></th>
     <th><?php echo $this->Paginator->sort('fecha')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('Empresa.nombre_corto', 'Proveedor')?></th>
@@ -32,7 +30,7 @@
       <?php //echo $muestra['Muestra']['tipo']?>
     </td>-->
     <td>
-      <?php echo $muestra['Muestra']['referencia']?>
+      <?php echo $muestra['Muestra']['registro']?>
     </td>
     <td>
       <?php
