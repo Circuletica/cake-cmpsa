@@ -14,9 +14,10 @@ class Muestra extends AppModel {
 		//'MarcaAlmacen' => array(
 		//	'className' => 'MarcaAlmacen',
 		//	'foreignKey' => 'marca_almacen_id'),
-		'Operacion' => array(
-			'className' => 'Operacion',
-			'foreignKey' => 'operacion_id')
+		//'Operacion' => array(
+		//	'className' => 'Operacion',
+		//	'foreignKey' => 'operacion_id')
+		'Contrato'
 	);
 	public $hasMany = 'LineaMuestra';
 }

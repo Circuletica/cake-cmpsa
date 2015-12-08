@@ -27,7 +27,8 @@ class Contrato extends AppModel {
 	    'className' => 'ContratoEmbalaje',
 	    'foreignKey' => 'contrato_id'
 	),
-	'PrecioFleteContrato'
+	'PrecioFleteContrato',
+	'Muestra'
     );
     public $belongsTo = array(
 	'PuertoCarga' => array(
