@@ -189,24 +189,37 @@ endif;
 	$calidades = $this->Muestra->CalidadNombre->find('list');
 	$this->set('calidades',$calidades);
 	$this->set('proveedores', $this->Muestra->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre'),
+	    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
 	    'recursive' => 1
 	))
     );
-	$this->Muestra->Operacion->virtualFields = array(
-	    'ref_op_cont' => 'CONCAT(Operacion.referencia,"(",Contrato.referencia,")")'
-	);
-	$this->set('operaciones', $this->Muestra->Operacion->find('list', array(
-	    'fields' => array(
-		'Operacion.id',
-		'ref_op_cont'
-	    ),
-//	    'conditions' => array(
-//		'Operacion.referencia <> ""'
+//	$this->Muestra->Operacion->virtualFields = array(
+//	    'ref_op_cont' => 'CONCAT(Operacion.referencia,"(",Contrato.referencia,")")'
+//	);
+//	$this->set('operaciones', $this->Muestra->Operacion->find('list', array(
+//	    'fields' => array(
+//		'Operacion.id',
+//		'ref_op_cont'
 //	    ),
+////	    'conditions' => array(
+////		'Operacion.referencia <> ""'
+////	    ),
+//	    'recursive' => 1))
+//	);
+	$this->Muestra->Contrato->virtualFields['ref_cal'] = 
+	    'CONCAT(Contrato.referencia," (",CalidadNombre.nombre,")")'
+	;
+	$this->set('contratos', $this->Muestra->Contrato->find('list', array(
+	    'fields' => array(
+		'Contrato.id',
+		'Contrato.ref_cal'
+	    ),
+	    'contain' => array(
+		'CalidadNombre'
+	    ),
 	    'recursive' => 1))
 	);
-	$this->set(compact('operaciones'));
+	$this->set(compact('contratos'));
 
 	if($this->request->is('post')):
 	    if($this->Muestra->save($this->request->data)):
@@ -250,7 +263,7 @@ endif;
 	else:
 	    if ($this->Muestra->save($this->request->data)):
 		$this->Session->setFlash('Muestra '.
-		$this->request->data['Muestra']['referencia'].
+		$this->request->data['Muestra']['registro'].
 		' modificada con éxito');
 	$this->redirect(array(
 	    'action' => 'view',

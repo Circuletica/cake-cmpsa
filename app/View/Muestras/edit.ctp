@@ -37,7 +37,7 @@
 	?>
 	<div class="col2">
 	<?php
-	echo $this->Form->input('referencia');
+	echo $this->Form->input('registro');
 	 ?>
 		    <div class="linea">
 			<?php

@@ -8,6 +8,18 @@ $this->assign('line_controller','linea_muestras');
 $this->assign('object', 'Muestra de embarque'.$muestra['Muestra']['referencia']);
 $this->assign('line_object', 'Línea');
 $this->assign('line_add', '1');
+
+$this->start('breadcrumb');
+$this->Html->addCrumb(
+    'Muestras de embarque',
+    array(
+	'controller' => 'muestras',
+	'action' => 'index',
+	'Search.tipo_id' => '2'
+    )
+);
+$this->end();
+
 $this->start('filtro');
 echo $this->element('filtromuestra');
 $this->end();
@@ -21,10 +33,10 @@ echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
 echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
 echo "</dd>";
-echo "  <dt>Contrato</dt>\n";
-echo "<dd>";
-echo (!empty($muestra['Contrato']) ? $muestra['Contrato']['referencia'] : '').'&nbsp;';
-echo "</dd>";
+//echo "  <dt>Contrato</dt>\n";
+//echo "<dd>";
+//echo (!empty($muestra['Contrato']) ? $muestra['Contrato']['referencia'] : '').'&nbsp;';
+//echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
 echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre_corto'], array(
@@ -40,7 +52,7 @@ if (isset($muestra['Contrato']['referencia'])) {
 	'controller' => 'contratos',
 	'action' => 'view',
 	$muestra['Contrato']['id']));
-else:
+}else{
     echo '--';
 }
 echo "</dd>";
@@ -61,14 +73,15 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
-echo $this->Html->tableHeaders(array('Nº', 'Ref. Proveedor', 'Detalle'));
+echo $this->Html->tableHeaders(array('Nº', 'Operación', 'No sacos', 'Detalle'));
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas
 $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
 	$i,
-	$linea['referencia_proveedor'],
+	'ref. operacion',
+	'cantidad_sacos',
 	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
     )
 );

@@ -197,6 +197,11 @@ echo $this->Form->input('proveedor_id', array(
 ?>
 	    <div class="col2">
 <?php
+echo $this->Form->input('contrato_id',
+    array(
+	'empty' => true
+    )
+);
 echo $this->Form->input('referencia');
 ?>
 

@@ -8,6 +8,18 @@ $this->assign('line_controller','linea_muestras');
 $this->assign('object', 'Muestra de oferta '.$muestra['Muestra']['registro']);
 $this->assign('line_object', 'Línea');
 $this->assign('line_add', '1');
+
+$this->start('breadcrumb');
+$this->Html->addCrumb(
+    'Muestras de oferta',
+    array(
+	'controller' => 'muestras',
+	'action' => 'index',
+	'Search.tipo_id' => '1'
+    )
+);
+$this->end();
+
 $this->start('filtro');
 echo $this->element('filtromuestra');
 $this->end();
@@ -21,18 +33,18 @@ echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
 echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
 echo "</dd>";
-echo "  <dt>Contrato</dt>\n";
-echo "<dd>";
-//echo (!empty($muestra['Contrato']) ? $muestra['Contrato']['referencia'] : '').'&nbsp;';
-if (isset($muestra['Contrato']['referencia'])) {
-    echo $this->Html->link( $muestra['Contrato']['referencia'], array(
-	'controller' => 'contratos',
-	'action' => 'view',
-	$muestra['Contrato']['id']));
-}else{
-    echo '--';
-}
-echo "</dd>";
+//echo "  <dt>Contrato</dt>\n";
+//echo "<dd>";
+////echo (!empty($muestra['Contrato']) ? $muestra['Contrato']['referencia'] : '').'&nbsp;';
+//if (isset($muestra['Contrato']['referencia'])) {
+//    echo $this->Html->link( $muestra['Contrato']['referencia'], array(
+//	'controller' => 'contratos',
+//	'action' => 'view',
+//	$muestra['Contrato']['id']));
+//}else{
+//    echo '--';
+//}
+//echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
 echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre_corto'], array(
@@ -45,9 +57,9 @@ echo "  <dt>Fecha</dt>\n";
 echo "<dd>";
 echo $this->Date->format($muestra['Muestra']['fecha']);
 echo "</dd>";
-echo "  <dt>Resultado</dt>\n";
+echo "  <dt>Comprado</dt>\n";
 echo "<dd>";
-echo $muestra['Muestra']['aprobado'] ? 'Aprobado' : 'Rechazado'.'&nbsp;';
+echo ($muestra['Muestra']['aprobado'] ? 'Sí' : 'No').'/Si comprado ref. contrato'.'&nbsp;';
 echo "</dd>";
 echo "  <dt>Incidencia</dt>\n";
 echo "<dd>";
@@ -58,7 +70,7 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
-echo $this->Html->tableHeaders(array('Nº','Marca', 'Número de Sacos',
+echo $this->Html->tableHeaders(array('Nº', 'Número de Sacos',
     'Ref. Proveedor', 'Detalle'));
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas
@@ -66,8 +78,8 @@ $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
 	$i,
-	(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['marca_almacen'] : '',
-	(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['cantidad_cuenta'] : '',
+	$linea['numero_sacos'],
+	//(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['cantidad_cuenta'] : '',
 	$linea['referencia_proveedor'],
 	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
     )

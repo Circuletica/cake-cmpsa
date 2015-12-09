@@ -12,10 +12,17 @@ $line2_add = $this->fetch('line2_add');
 $from_controller = $this->fetch('from_controller');
 $from_id = $this->fetch('from_id');
 
-$this->Html->addCrumb(ucfirst($controller), array(
-    'controller'=>$controller,
-    'action'=>'index'
-));
+if (!empty($this->fetch('breadcrumb'))) {
+//    $this->fetch('breadcrumb');
+//} else {
+$this->Html->addCrumb(
+    ucfirst($controller),
+    array(
+	'controller'=>$controller,
+	'action'=>'index'
+    )
+);
+}
 ?>
 <h2><?php echo $object; ?></h2>
 
