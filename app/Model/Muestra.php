@@ -1,7 +1,7 @@
 <?php
 class Muestra extends AppModel {
 	public $recursive = 2;
-	public $displayField = 'referencia';
+	public $displayField = 'registro';
 	public $belongsTo = array(
 		'CalidadNombre' => array(
 			'className' => 'CalidadNombre',
@@ -17,7 +17,13 @@ class Muestra extends AppModel {
 		//'Operacion' => array(
 		//	'className' => 'Operacion',
 		//	'foreignKey' => 'operacion_id')
-		'Contrato'
+		'Contrato',
+		//las muestras de entrega 'pertenecen' a muestras
+		//de embarque
+		'MuestraEmbarque' => array(
+		    'className' => 'Muestra',
+		    'foreignKey' => 'muestra_embarque_id'
+		)
 	);
 	public $hasMany = 'LineaMuestra';
 }
