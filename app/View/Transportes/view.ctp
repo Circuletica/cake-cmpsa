@@ -306,7 +306,7 @@
 	</table>
 	<div class="btabla">
 		<?php
-		echo $this->Button->addLine('almacen_transportes','almacen_transportes',$transporte['Transporte']['id'],'cuenta almacén');
+		echo $this->Button->addLine('almacen_transportes','transportes',$transporte['Transporte']['id'],'cuenta almacén');
 		?>
 	</div>
 	</div>

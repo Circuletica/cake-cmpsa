@@ -12,7 +12,7 @@ $this->Html->addCrumb('Operación','/operaciones/index_trafico');
             endif;
         endforeach;*/
 
-echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].'</h4>';
+echo '<h4>Bultos operación: ""PENDIENTE"" '/*.$transporte['Transporte']['Operacion']['PesoOperacion']['cantidad_embalaje']*/.'</h4>';
 /*$transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
 echo '<h4>Bultos pendientes: '.$transportado.'</h4>';*/
 	//Formulario para rellenar transporte
@@ -25,84 +25,35 @@ echo '<h4>Bultos pendientes: '.$transportado.'</h4>';*/
     echo $this->Form->input('cantidad_embalaje', array('label' => 'Cantidad de '.$embalaje['Embalaje']['nombre']));
 	?>
 	</div>
-	<div class="col3">
-	<div class="formuboton">
-		<ul>
-			<li>
-			<?php
-			echo $this->Form->input('puerto_id',
-				array('
-					label'=>'Puerto destino',
-					'empty' =>array('' => 'Selecciona')
-					)
-				);
-			?>
-			</li>
-			<li>
-				<div class="enlinea">
-				<?php
-				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Puerto', array(
-				'controller'=>'puertos',
-				'action'=>'add'),array("class"=>"botond", 'escape' => false)
-				);
-				?>
-				</div>
-			</li>
-		</ul>
-		</div>
-		<div class="formuboton">
-		<ul>
-			<li>
-			<?php
-			echo $this->Form->input('naviera_id',
-				array(
-					'label'=>'Naviera',
-					'empty' =>array('' => 'Selecciona')	
-					)
-				);
-			?>
-			</li>
-			<li>
-				<div class="enlinea">
-				<?php
-				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Naviera',
-					 array(
-					'controller'=>'navieras',
-					'action'=>'add'),
-					array(
-					"class"=>"botond",
-					'escape' => false)
-				);
-				?>
-				</div>
-			</li>
-		</ul>
-		</div>
-		<div class="formuboton">
-		<ul>
-			<li>
-			<?php
-			echo $this->Form->input('agente_id',
-				array(
-					'label'=>'Agente aduanas',
-					'empty' =>array('' => 'Selecciona')
-				));
-			?>
-			</li>
-			<li>
-				<div class="enlinea">
-				<?php
-				echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Agente', array(
-				'controller'=>'agentes',
-				'action'=>'add'),array("class"=>"botond", 'escape' => false)
-				);
-				?>
-				</div>
-			</li>
-		</ul>
-		</div>
-		</div>
-	<br>
+	 <div class="col4">
+       <?php
+            echo $this->Form->input('puerto_carga_id',
+                array('
+                    label'=>'Puerto de embarque',
+                    'empty' =>array('' => 'Selecciona')
+                    )
+                );
+           echo $this->Form->input('puerto_destino_id',
+                array('
+                    label'=>'Puerto de destino',
+                    'empty' =>array('' => 'Selecciona')
+                    )
+                );
+        // id = 3 es el valor de IN STORE
+        //echo $operacion['Contrato']['Incoterm']['nombre']
+        //if ($incoterms['Contrato']['Incoterm']['id'] != 3 ){ 
+            echo $this->Form->input('naviera_id',
+                array(
+                      'label'=>'Naviera',
+                      'empty' =>array('' => 'Selecciona')
+                ));  
+            echo $this->Form->input('agente_id',
+                array(
+                    'label'=>'Agente aduanas',
+                    'empty' =>array('' => 'Selecciona')
+                ));
+        ?>
+    </div>
 
 	<fieldset>
 	<legend>Fechas</legend>

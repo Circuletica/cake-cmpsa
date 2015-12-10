@@ -135,7 +135,7 @@ public function view($id = null) {
 
 
 
-				if($this->request->is('post')):
+			if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué operacion pertenece
 			//debug($this->params['named']['from_id']);
 			$this->request->data['Transporte']['operacion_id'] = $id;
@@ -170,9 +170,9 @@ public function edit( $id = null) {
 					$this->params['named']['from_id']));
 		}
 		$this->Transporte->id = $id;
-		$transporte = $this->Transporte->find('all');	
+		//$transporte = $this->Transporte->find('all');	
 
-		$this->set('transporte',$transporte);
+		//$this->set('transporte',$transporte);
 
 		$embalaje = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find(
 			'first',

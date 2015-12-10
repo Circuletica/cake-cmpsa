@@ -1,5 +1,4 @@
 
-<h2>Agregar Cuenta Corriente almacén</h2>
 <?php
 $this->Html->addCrumb('Contratos','/contratos');
 $this->Html->addCrumb('Operaciones ', array(
@@ -11,7 +10,9 @@ $this->Html->addCrumb('Operaciones ', array(
 'action'=>'view'
 ));
 $this->Html->addCrumb('Añadir Cuenta Corriente');*/
-    if($transporte['transporte']['id']!= NULL):
+if ($action == 'add') {
+	echo "<h2>Agregar Cuenta Corriente almacén</h2>\n";
+ if($transporte['Transporte']['id']!= NULL):
     $suma = 0;
     $almacenado=0;
         foreach ($transporte['AlmacenTransporte'] as $suma):
@@ -19,11 +20,29 @@ $this->Html->addCrumb('Añadir Cuenta Corriente');*/
             $almacenado = $almacenado + $suma['cantidad_cuenta'];
             endif;
         endforeach;
-    endif;
-
-    echo '<h4>Bultos transportados: '.$transporte['Transporte']['cantidad_embalaje'].' en '.$embalaje.'</h4>';
+   endif;
+  
+    echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].'</h4>';
     $almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
-    echo '<h4>Bultos pendientes: '.$almacenado.' en '.$embalaje.'</h4>';
+    echo '<h4>Bultos por almacenar: '.$almacenado.'</h4>';
+   }
+
+if ($action == 'edit') {
+    echo "<h2>Modificar Cuenta Corriente almacén FORM</h2>\n";
+    $suma = 0;
+    $almacenado=0;
+        foreach ($transporte['AlmacenTransporte'] as $suma):
+            if ($AlmacenTransporte['transporte_id']=$transporte['Transporte']['id']):
+            $almacenado = $almacenado + $suma['cantidad_cuenta'];
+            endif;
+        endforeach;   
+  
+  echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].'</h4>';
+  echo '<h4>Bultos almacenados (premodificación): '.$almacenado.'</h4>';  
+
+}
+       //FORMULARIO PARA RELLENAR ALMACEN TRANSPORTE
+
 	echo $this->Form->create('AlmacenTransporte');
 	?>
 <fieldset>	
