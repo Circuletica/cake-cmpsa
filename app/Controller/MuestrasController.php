@@ -177,12 +177,18 @@ endif;
 
     public function add() {
 	$this->set('tipos', $this->tipoMuestras);
-	//Sacamos el tipo de muestra de la URL
-	//y lo metemos ya en el formulario
-	if(isset($this->passedArgs['tipo_id'])) { //por si la URL no incluye el tipo de muestra
-	    $this->request->data['Muestras']['tipo'] = $this->passedArgs['tipo_id'];
+	//Si no esta el tipo de muestra en la URL, volvemos
+	//a muestras de oferta
+	if(!isset($this->passedArgs['tipo_id'])) {
+	    $this->Session->setFlash('Error en URL, falta tipo muestra');
+	    $this->redirect(
+		array(
+		    'action' => 'index',
+		    'Search.tipo_id' => 1
+		)
+	    );
 	} else {
-	    $this->request->data['Muestras']['tipo'] = '';
+	    $this->request->data['Muestra']['tipo'] = $this->passedArgs['tipo_id'];
 	}
 	//el titulado completo de la Calidad sale de una vista
 	//de MySQL que concatena descafeinado, pais y descripcion
@@ -206,20 +212,58 @@ endif;
 ////	    ),
 //	    'recursive' => 1))
 //	);
-	$this->Muestra->Contrato->virtualFields['ref_cal'] = 
-	    'CONCAT(Contrato.referencia," (",CalidadNombre.nombre,")")'
-	;
-	$this->set('contratos', $this->Muestra->Contrato->find('list', array(
-	    'fields' => array(
-		'Contrato.id',
-		'Contrato.ref_cal'
-	    ),
-	    'contain' => array(
-		'CalidadNombre'
-	    ),
-	    'recursive' => 1))
+	//$this->Muestra->Contrato->virtualFields['ref_cal'] = 
+	//    'CONCAT(Contrato.referencia," (",CalidadNombre.nombre,")")'
+	//;
+	//$this->set('contratos', $this->Muestra->Contrato->find('list', array(
+	//    'fields' => array(
+	//	'Contrato.id',
+	//	'Contrato.ref_cal'
+	//    ),
+	//    'contain' => array(
+	//	'CalidadNombre'
+	//    ),
+	//    'recursive' => 1))
+	//);
+	//$this->set(compact('contratos'));
+	$this->set(
+	    'contratos',
+	    $this->Muestra->Contrato->find('list')
 	);
-	$this->set(compact('contratos'));
+	//para el javascript de la view
+	//queremos el transporte como 'embarque 03/2016' o 'entrega 01/2015'
+	$this->Muestra->Contrato->virtualFields = array(
+	    'transporte' => 'CONCAT(
+		CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
+		" ",
+		SUBSTR(Contrato.fecha_transporte,6,2),
+		"/",
+		SUBSTR(Contrato.fecha_transporte,1,4)
+		)'
+	);
+	$contratosMuestra = $this->Muestra->Contrato->find(
+	    'all',
+	    array(
+		'contain' => array(
+		    'Proveedor' => array(
+			'Empresa' => array(
+			    'fields' =>array(
+				'nombre_corto'
+			    )
+			)
+		    ),
+		    'CalidadNombre'
+		),
+		'fields' => array(
+		    'Contrato.id',
+		    'CalidadNombre.nombre',
+		    'Contrato.transporte'
+		)
+	    )
+	);
+	//queremos el id del contrato como index del array
+	$contratosMuestra = Hash::combine($contratosMuestra, '{n}.Contrato.id','{n}');
+	$this->set(compact('contratosMuestra'));
 
 	if($this->request->is('post')):
 	    if($this->Muestra->save($this->request->data)):
@@ -234,7 +278,7 @@ endif;
 
     public function edit( $id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
+	    $this->Session->setFlash('URL mal formada');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$this->Muestra->id = $id;

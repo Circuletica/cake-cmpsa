@@ -36,7 +36,7 @@ class AppController extends Controller {
     );
 
     public $helpers = array(
-	'Js' => array('cmpsa'),
+	//'Js' => array('cmpsa'),
 	'Html',
 	'Form',
 	'Date',

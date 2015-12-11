@@ -52,7 +52,6 @@ function pesoAsociado(){
 function pesoAsociadoEdit(){
 	//la tabla con el peso de los embalajes del contrato que nos viene de la View
 	var pesoEmbalaje = window.app.pesoEmbalaje;
-	console.log(pesoEmbalaje);
 	//un array con las cantidades de cada socio
 	var cantidades = document.getElementsByClassName('cantidad');
 	for(var i=0;i<cantidades.length;i++){
@@ -96,6 +95,7 @@ function lotesPorFijar() {
 function closeSelf(f) {
      f.submit();
      window.close();
+}
 
 function totalCriba(){
     var arr = document.getElementsByClassName('criba');
@@ -110,4 +110,31 @@ function totalCriba(){
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
 	document.getElementById('total').style.color = "red";
+}
+
+function contratosMuestra(){
+    var contratos = window.app.contratosMuestra;
+    //el contrato que seleccionamos
+    var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
+    var selectedOption = document.getElementById('MuestraContratoId').options[selectedIndex].value;
+    //cambiamos el transporte
+    document.getElementById('transporte_contrato').innerHTML = contratos[selectedOption].Contrato.transporte;
+    //cambiamos el 'selected' del combobox
+    var combobox = document.getElementById('combobox');
+    var opts = combobox.options.length;
+    for (var i=0; i<opts; i++){
+	if (combobox.options[i].value == contratos[selectedOption].CalidadNombre.id){
+		combobox.options[i].selected = true;
+		break;
+	}
+    }
+    //cambiamos el 'selected' del proveedor
+    var proveedor = document.getElementById('proveedor');
+    var opts = proveedor.options.length;
+    for (var i=0; i<opts; i++){
+	if (proveedor.options[i].value == contratos[selectedOption].Proveedor.id){
+		proveedor.options[i].selected = true;
+		break;
+	}
+    }
 }

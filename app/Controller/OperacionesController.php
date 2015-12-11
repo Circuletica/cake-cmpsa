@@ -311,6 +311,7 @@ class OperacionesController extends AppController {
 	    )
 	));
 	$this->set('embalaje', $embalaje);
+	//para el js de la view
 	$this->set('pesoEmbalaje', $embalaje['ContratoEmbalaje']['peso_embalaje_real']);
 	//para los puertos de carga y destino
 	$this->set('puertoCargas',$this->Operacion->PuertoCarga->find('list', array(

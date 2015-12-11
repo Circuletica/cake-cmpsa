@@ -59,8 +59,14 @@ echo $this->Date->format($muestra['Muestra']['fecha']);
 echo "</dd>";
 echo "  <dt>Comprado</dt>\n";
 echo "<dd>";
-echo ($muestra['Muestra']['aprobado'] ? 'Sí' : 'No').'/Si comprado ref. contrato'.'&nbsp;';
-echo "</dd>";
+echo ($muestra['Muestra']['aprobado'] ? 'Sí' : 'No');
+if ($muestra['Muestra']['aprobado']) {
+    echo "</dd>";
+    echo "  <dt>Contrato</dt>\n";
+    echo "<dd>";
+    echo (!empty($muestra['Contrato']) ? ($muestra['Contrato']['referencia']) :'').'&nbsp;';
+    echo "</dd>";
+}
 echo "  <dt>Incidencia</dt>\n";
 echo "<dd>";
 echo nl2br(h($muestra['Muestra']['incidencia'])).'&nbsp;';
@@ -90,4 +96,3 @@ endforeach;
 echo "</table>";
 $this->end();
 ?>
-
