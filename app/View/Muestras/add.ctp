@@ -53,57 +53,47 @@ echo $this->Form->create('Muestra');
 	 <div class="col2">
 <?php
 echo $this->Form->input('registro');
-echo $this->Form->input('contrato_id',
-    array(
-	'empty' => true,
-	'onchange' => 'contratosMuestra()'
-    )
-);
-//Si no es muestra de oferta, no se introduce la calidad,
-//se deduce del contrato
-//if ($this->request->data['Muestra']['tipo'] != 1) {
-//    echo "Calidad : <var id='calidad_contrato'></var>\n";
-//    echo "<p>\n";
-//}else{
-echo $this->Form->input(
-    'calidad_id',
-    array(
-	'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
-	'empty' => array('' => 'Selecciona'),
-	'class' => 'ui-widget',
-	'id' => 'combobox'
-    )
-);
-//}
-//Si no es muestra de oferta, no se introduce el proveedor,
-//se deduce del contrato
-//if ($this->request->data['Muestra']['tipo'] != 1) {
-//    echo 'Proveedor : <var id="proveedor_contrato"></var>';
-//    echo "<p>\n";
-//}else{
-echo $this->Form->input(
-    'proveedor_id',
-    array(
-	'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
-	'empty' => array('' => 'Selecciona'),
-	'class' => 'ui-widget',
-	'id' => 'proveedor'
-    )
-);
-//}
-if ($this->request->data['Muestra']['tipo'] != 1) {
-    echo 'Transporte : <var id="transporte_contrato"></var>';
-    echo "<p>\n";
-}
 echo $this->Form->input(
     'aprobado',
     array(
 	'label' => (
 	    $this->request->data['Muestra']['tipo'] == 1 ?
 	    'Comprado' : 'Aprobado'
-	)
+	),
+	'onchange' => ($this->request->data['Muestra']['tipo'] == 1 ? 'muestraOferta()':'')
     )
 );
+echo $this->Form->input('contrato_id',
+    array(
+	'empty' => true,
+	'disabled' => $this->request->data['Muestra']['tipo'] == 1,
+	'onchange' => 'contratosMuestra()'
+    )
+);
+echo $this->Form->input(
+    'calidad_id',
+    array(
+	'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
+	'empty' => array('' => 'Selecciona'),
+	'class' => 'ui-widget',
+	'id' => 'combobox',
+	//si no es oferta, solo se introduce la referencia de contrato
+	'disabled' => $this->request->data['Muestra']['tipo'] != 1
+    )
+);
+echo $this->Form->input(
+    'proveedor_id',
+    array(
+	'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
+	'empty' => array('' => 'Selecciona'),
+	'class' => 'ui-widget',
+	'id' => 'proveedor',
+	//si no es oferta, solo se introduce la referencia de contrato
+	'disabled' => $this->request->data['Muestra']['tipo'] != 1
+    )
+);
+    echo 'Transporte : <var id="transporte_contrato"></var>';
+    echo "<p>\n";
 ?>
 	    <div class="linea">
 <?php

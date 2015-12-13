@@ -29,22 +29,41 @@ echo "  <dt>Registro</dt>\n";
 echo "<dd>";
 echo $muestra['Muestra']['registro'].'&nbsp;';
 echo "</dd>";
+echo "  <dt>Comprado</dt>\n";
+echo "<dd>";
+echo ($muestra['Muestra']['aprobado'] ? 'Sí' : 'No');
+echo "</dd>";
+if (!empty($muestra['Contrato'])) { //si se ha comprado el café
+    echo "  <dt>Contrato</dt>\n";
+    echo "<dd>";
+    echo $this->Html->link(
+	$muestra['Contrato']['referencia'],
+	array(
+	    'controller' => 'contratos',
+	    'action' => 'view',
+	    $muestra['Contrato']['id']
+	)
+    );
+    echo "  <dt>Calidad</dt>\n";
+    echo "<dd>";
+    echo $muestra['Contrato']['CalidadNombre']['nombre'].'&nbsp;';
+    echo "</dd>";
+    echo "  <dt>Proveedor</dt>\n";
+    echo "<dd>";
+    echo $this->Html->link(
+	$muestra['Contrato']['Proveedor']['Empresa']['nombre_corto'],
+	array(
+	    'controller' => 'proveedores',
+	    'action' => 'view',
+	    $muestra['Contrato']['Proveedor']['id']
+	)
+    );
+    echo "</dd>";
+} else {
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
 echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
 echo "</dd>";
-//echo "  <dt>Contrato</dt>\n";
-//echo "<dd>";
-////echo (!empty($muestra['Contrato']) ? $muestra['Contrato']['referencia'] : '').'&nbsp;';
-//if (isset($muestra['Contrato']['referencia'])) {
-//    echo $this->Html->link( $muestra['Contrato']['referencia'], array(
-//	'controller' => 'contratos',
-//	'action' => 'view',
-//	$muestra['Contrato']['id']));
-//}else{
-//    echo '--';
-//}
-//echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
 echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre_corto'], array(
@@ -53,20 +72,11 @@ echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre_corto'], array(
     $muestra['Proveedor']['id'])
 );
 echo "</dd>";
+}
 echo "  <dt>Fecha</dt>\n";
 echo "<dd>";
 echo $this->Date->format($muestra['Muestra']['fecha']);
 echo "</dd>";
-echo "  <dt>Comprado</dt>\n";
-echo "<dd>";
-echo ($muestra['Muestra']['aprobado'] ? 'Sí' : 'No');
-if ($muestra['Muestra']['aprobado']) {
-    echo "</dd>";
-    echo "  <dt>Contrato</dt>\n";
-    echo "<dd>";
-    echo (!empty($muestra['Contrato']) ? ($muestra['Contrato']['referencia']) :'').'&nbsp;';
-    echo "</dd>";
-}
 echo "  <dt>Incidencia</dt>\n";
 echo "<dd>";
 echo nl2br(h($muestra['Muestra']['incidencia'])).'&nbsp;';

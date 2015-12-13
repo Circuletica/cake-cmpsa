@@ -132,9 +132,7 @@ class MuestrasController extends AppController {
 		'Muestra.*',
 		'CalidadNombre.*'
 	    ),
-	    'recursive' => 2));
-	//$tipo = $this->tipoMuestras[$muestra['Muestra']['tipo']];
-	//$this->set('tipo',$tipo);
+	    'recursive' => 3));
 	$this->set('muestra',$muestra);
 
 	//Exportar PDF
@@ -194,38 +192,18 @@ endif;
 	//de MySQL que concatena descafeinado, pais y descripcion
 	$calidades = $this->Muestra->CalidadNombre->find('list');
 	$this->set('calidades',$calidades);
-	$this->set('proveedores', $this->Muestra->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-	    'recursive' => 1
-	))
-    );
-//	$this->Muestra->Operacion->virtualFields = array(
-//	    'ref_op_cont' => 'CONCAT(Operacion.referencia,"(",Contrato.referencia,")")'
-//	);
-//	$this->set('operaciones', $this->Muestra->Operacion->find('list', array(
-//	    'fields' => array(
-//		'Operacion.id',
-//		'ref_op_cont'
-//	    ),
-////	    'conditions' => array(
-////		'Operacion.referencia <> ""'
-////	    ),
-//	    'recursive' => 1))
-//	);
-	//$this->Muestra->Contrato->virtualFields['ref_cal'] = 
-	//    'CONCAT(Contrato.referencia," (",CalidadNombre.nombre,")")'
-	//;
-	//$this->set('contratos', $this->Muestra->Contrato->find('list', array(
-	//    'fields' => array(
-	//	'Contrato.id',
-	//	'Contrato.ref_cal'
-	//    ),
-	//    'contain' => array(
-	//	'CalidadNombre'
-	//    ),
-	//    'recursive' => 1))
-	//);
-	//$this->set(compact('contratos'));
+	$this->set(
+	    'proveedores',
+	    $this->Muestra->Proveedor->find(
+		'list',
+		array(
+		    'fields' => array(
+			'Proveedor.id',
+			'Empresa.nombre_corto'),
+		    'recursive' => 1
+		)
+	    )
+	);
 	$this->set(
 	    'contratos',
 	    $this->Muestra->Contrato->find('list')
@@ -237,9 +215,9 @@ endif;
 		CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
 		" ",
 		SUBSTR(Contrato.fecha_transporte,6,2),
-		"/",
-		SUBSTR(Contrato.fecha_transporte,1,4)
-		)'
+	"/",
+	SUBSTR(Contrato.fecha_transporte,1,4)
+    )'
 	);
 	$contratosMuestra = $this->Muestra->Contrato->find(
 	    'all',
@@ -266,6 +244,8 @@ endif;
 	$this->set(compact('contratosMuestra'));
 
 	if($this->request->is('post')):
+	    //if ($this->request['Contrato']['id']){
+	    //}
 	    if($this->Muestra->save($this->request->data)):
 		$this->Session->setFlash('Muestra guardada');
 	$this->redirect(array(
