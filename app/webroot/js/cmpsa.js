@@ -117,31 +117,37 @@ function contratosMuestra(){
     //el contrato que seleccionamos
     var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
     var selectedOption = document.getElementById('MuestraContratoId').options[selectedIndex].value;
-    //cambiamos el transporte
-    document.getElementById('transporte_contrato').innerHTML = contratos[selectedOption].Contrato.transporte;
-    //cambiamos el 'selected' del combobox
     var combobox = document.getElementById('combobox');
-    var opts = combobox.options.length;
-    for (var i=0; i<opts; i++){
-	if (combobox.options[i].value == contratos[selectedOption].CalidadNombre.id){
-	    combobox.options[i].selected = true;
-	    break;
-	}
-    }
-    //cambiamos el 'selected' del proveedor
     var proveedor = document.getElementById('proveedor');
-    var opts = proveedor.options.length;
-    for (var i=0; i<opts; i++){
-	if (proveedor.options[i].value == contratos[selectedOption].Proveedor.id){
-	    proveedor.options[i].selected = true;
-	    break;
+    if (selectedOption != '') {
+	//console.log(selectedOption);
+	//cambiamos el transporte
+	document.getElementById('transporte_contrato').innerHTML = contratos[selectedOption].Contrato.transporte;
+	//cambiamos el 'selected' del combobox
+	var opts = combobox.options.length;
+	for (var i=0; i<opts; i++){
+	    if (combobox.options[i].value == contratos[selectedOption].CalidadNombre.id){
+		combobox.options[i].selected = true;
+		break;
+	    }
 	}
+	//cambiamos el 'selected' del proveedor
+	var opts = proveedor.options.length;
+	for (var i=0; i<opts; i++){
+	    if (proveedor.options[i].value == contratos[selectedOption].Proveedor.id){
+		proveedor.options[i].selected = true;
+		break;
+	    }
+	}
+    } else { // si se deja el contrato vacío, borramos calidad y proveedor
+	//console.log(combobox.options);
+	combobox.options[0].selected = true;
+	proveedor.options[0].selected = true;
     }
 }
 
 function muestraOferta() {
     var aprobado = document.getElementById('MuestraAprobado').checked;
-    console.log(aprobado);
     document.getElementById('MuestraContratoId').disabled = !aprobado;
     document.getElementById('combobox').disabled = aprobado;
     document.getElementById('proveedor').disabled = aprobado;

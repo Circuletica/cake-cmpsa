@@ -1,28 +1,10 @@
 <div class="add">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <style>
-	.custom-combobox {
-	    position: relative;
-	    display: inline-block;
-	}
-	.custom-combobox-toggle {
-	    position: absolute;
-	    top: 0;
-	    bottom: 0;
-	    margin-left: -1px;
-	    padding: 0;
-	}
-	.custom-combobox-input {
-	    margin: 0;
-	    padding: 5px 10px;
-	}
-    </style>
-
 <?php
 $this->Html->addCrumb('Muestras', '/muestras');
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 //Pasamos la lista de 'contratosMuestra' del contrato al javascript de la vista
 $this->Js->set('contratosMuestra', $contratosMuestra);
+$this->Js->set('muestrasEmbarque', $muestrasEmbarque);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 ?>
 
@@ -30,13 +12,15 @@ echo $this->Js->writeBuffer(array('onDomReady' => false));
 echo "<h2>Añadir Muestra de ".$tipos[$this->request->data['Muestra']['tipo']]."</h2>";
 //si no esta la calidad en el listado, dejamos un enlace para
 //agragarla
-$enlace_anyadir_calidad = $this->Html->link ('Añadir Calidad', array(
-    'controller' => 'calidades',
-    'action' => 'add',
-    'from_controller' => 'muestras',
-    'from_action' => 'add',
-)
-	    );
+$enlace_anyadir_calidad = $this->Html->link (
+    'Añadir Calidad',
+    array(
+	'controller' => 'calidades',
+	'action' => 'add',
+	'from_controller' => 'muestras',
+	'from_action' => 'add',
+    )
+);
 //si no esta el proveedor en el listado, dejamos un enlace para
 //agragarlo
 $enlace_anyadir_proveedor = $this->Html->link (
@@ -63,6 +47,14 @@ echo $this->Form->input(
 	'onchange' => ($this->request->data['Muestra']['tipo'] == 1 ? 'muestraOferta()':'')
     )
 );
+if ($this->request->data['Muestra']['tipo'] == 3) {
+    echo $this->Form->input(
+	'muestra_embarque_id',
+	array(
+	    'empty' => true
+	)
+    );
+}
 echo $this->Form->input('contrato_id',
     array(
 	'empty' => true,
@@ -92,8 +84,8 @@ echo $this->Form->input(
 	'disabled' => $this->request->data['Muestra']['tipo'] != 1
     )
 );
-    echo 'Transporte : <var id="transporte_contrato"></var>';
-    echo "<p>\n";
+echo 'Transporte : <var id="transporte_contrato"></var>';
+echo "<p>\n";
 ?>
 	    <div class="linea">
 <?php

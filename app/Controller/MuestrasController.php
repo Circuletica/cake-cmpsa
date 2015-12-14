@@ -208,6 +208,17 @@ endif;
 	    'contratos',
 	    $this->Muestra->Contrato->find('list')
 	);
+	$this->set(
+	    'muestraEmbarques',
+	    $this->Muestra->find(
+		'list',
+		array(
+		    'conditions' => array(
+			'Muestra.tipo' => 2
+		    )
+		)
+	    )
+	);
 	//para el javascript de la view
 	//queremos el transporte como 'embarque 03/2016' o 'entrega 01/2015'
 	$this->Muestra->Contrato->virtualFields = array(
@@ -219,6 +230,9 @@ endif;
 	SUBSTR(Contrato.fecha_transporte,1,4)
     )'
 	);
+	//el array que se pasa al javascript para cambiar
+	//calidad y proveedor automaticamente
+	//cuando se cambia el contrato
 	$contratosMuestra = $this->Muestra->Contrato->find(
 	    'all',
 	    array(
@@ -242,6 +256,40 @@ endif;
 	//queremos el id del contrato como index del array
 	$contratosMuestra = Hash::combine($contratosMuestra, '{n}.Contrato.id','{n}');
 	$this->set(compact('contratosMuestra'));
+
+	//el array que se pasa al javascript para cambiar
+	//contrato, calidad y proveedor automaticamente
+	//cuando se cambia la muestra de embarque en
+	//muestras de entrega
+	$muestrasEmbarque = $this->Muestra->find(
+	    'all',
+	    array(
+		'contain' => array(
+		    'Contrato' => array(
+			'Proveedor' => array(
+			    'Empresa' => array(
+				'fields' =>array(
+				    'nombre_corto'
+				)
+			    )
+			),
+			'CalidadNombre'
+		    )
+		),
+		'fields' => array(
+		    'Muestra.id',
+		    'Contrato.id',
+		    'Contrato.proveedor_id',
+		    'Contrato.calidad_id'
+		),
+		'conditions' => array(
+		    'tipo' =>2
+		)
+	    )
+	);
+	//queremos el id del contrato como index del array
+	$muestrasEmbarque = Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}');
+	$this->set(compact('muestrasEmbarque'));
 
 	if($this->request->is('post')):
 	    //if ($this->request['Contrato']['id']){
