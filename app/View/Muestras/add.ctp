@@ -34,7 +34,7 @@ $enlace_anyadir_proveedor = $this->Html->link (
 );
 echo $this->Form->create('Muestra');
 ?>
-	 <div class="col2">
+<fieldset>
 <?php
 echo $this->Form->input('registro');
 echo $this->Form->input(
@@ -87,6 +87,8 @@ echo $this->Form->input(
 echo 'Transporte : <var id="transporte_contrato"></var>';
 echo "<p>\n";
 ?>
+</fieldset>
+<fieldset>
 	    <div class="linea">
 <?php
 echo $this->Form->input('fecha', array(
@@ -95,13 +97,14 @@ echo $this->Form->input('fecha', array(
 );
 ?>
 	    </div>
-	</div>
+
 <?php
 echo $this->Form->input('incidencia');
 echo $this->Html->link('Cancelar', $this->request->referer(''), array('class' => 'botond'));  
 echo $this->Form->end('Guardar Muestra');
 ?>
 </div>
+</fieldset>
 
 <script type="text/javascript">
 window.onload = contratosMuestra();
