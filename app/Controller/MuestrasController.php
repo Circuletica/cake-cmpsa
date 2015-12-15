@@ -117,7 +117,6 @@ class MuestrasController extends AppController {
 	    $this->Session->setFlash('URL mal formada Muestra/view');
 	    $this->redirect(array('action'=>'index'));
 	}
-	//$this->set('tipos', $this->tipoMuestras);
 	$this->Muestra->bindModel(array(
 	    'belongsTo' => array(
 		'CalidadNombre' => array(
@@ -208,17 +207,6 @@ endif;
 	    'contratos',
 	    $this->Muestra->Contrato->find('list')
 	);
-	$this->set(
-	    'muestraEmbarques',
-	    $this->Muestra->find(
-		'list',
-		array(
-		    'conditions' => array(
-			'Muestra.tipo' => 2
-		    )
-		)
-	    )
-	);
 	//para el javascript de la view
 	//queremos el transporte como 'embarque 03/2016' o 'entrega 01/2015'
 	$this->Muestra->Contrato->virtualFields = array(
@@ -233,16 +221,36 @@ endif;
 	//el array que se pasa al javascript para cambiar
 	//calidad y proveedor automaticamente
 	//cuando se cambia el contrato
+	//Se 'cortocircuita' el modelo de datos Contrato->Proveedor->Empresa
+	//y nos quedamos con Contrato->Proveedor, ahorrando muchas queries SQL
+	$this->Muestra->Contrato->unbindModel(
+	    array(
+		'belongsTo' => array(
+		    'Proveedor'
+		)
+	    )
+	);
+	$this->Muestra->Contrato->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Proveedor' => array(
+			'className' => 'Empresa',
+			'foreignKey' => false,
+			'conditions' => array(
+			    'Proveedor.id = Contrato.proveedor_id'
+			)
+		    )
+		)
+	    )
+	);
 	$contratosMuestra = $this->Muestra->Contrato->find(
 	    'all',
 	    array(
 		'contain' => array(
 		    'Proveedor' => array(
-			'Empresa' => array(
 			    'fields' =>array(
 				'nombre_corto'
 			    )
-			)
 		    ),
 		    'CalidadNombre'
 		),
@@ -266,42 +274,39 @@ endif;
 	    array(
 		'contain' => array(
 		    'Contrato' => array(
-			'Proveedor' => array(
-			    'Empresa' => array(
-				'fields' =>array(
-				    'nombre_corto'
-				)
-			    )
-			),
-			'CalidadNombre'
 		    )
 		),
 		'fields' => array(
 		    'Muestra.id',
+		    'Muestra.registro',
 		    'Contrato.id',
 		    'Contrato.proveedor_id',
 		    'Contrato.calidad_id'
 		),
 		'conditions' => array(
-		    'tipo' =>2
+		    'tipo' =>2 // solo las muestras de embarque
 		)
 	    )
 	);
-	//queremos el id del contrato como index del array
-	$muestrasEmbarque = Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}');
-	$this->set(compact('muestrasEmbarque'));
+	//queremos el id de la muestra como index del array
+	//por una parte, un array para el js que permite rellenar
+	//los demás campos cuando se selecciona una muestra de embarque
+	$this->set ('muestraEmbarques', Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.registro'));
+	//por otra parte la lista del desplegable de muestras de embarque
+	//para el formulario
+	$this->set('muestrasEmbarque',Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}'));
 
-	if($this->request->is('post')):
-	    //if ($this->request['Contrato']['id']){
-	    //}
-	    if($this->Muestra->save($this->request->data)):
+	if($this->request->is('post')) {
+	    if($this->Muestra->save($this->request->data)) {
 		$this->Session->setFlash('Muestra guardada');
-	$this->redirect(array(
-	    'action' => 'index',
-	    'Search.tipo_id' => $this->request->data['Muestra']['tipo']
-	));
-endif;
-endif;
+		$this->redirect(
+		    array(
+			'action' => 'index',
+			'Search.tipo_id' => $this->request->data['Muestra']['tipo']
+		    )
+		);
+	    }
+	}
     }
 
     public function edit( $id = null) {

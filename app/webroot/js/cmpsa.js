@@ -116,6 +116,7 @@ function contratosMuestra(){
     var contratos = window.app.contratosMuestra;
     //el contrato que seleccionamos
     var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
+    //el id del contrato
     var selectedOption = document.getElementById('MuestraContratoId').options[selectedIndex].value;
     var combobox = document.getElementById('combobox');
     var proveedor = document.getElementById('proveedor');
@@ -151,4 +152,51 @@ function muestraOferta() {
     document.getElementById('MuestraContratoId').disabled = !aprobado;
     document.getElementById('combobox').disabled = aprobado;
     document.getElementById('proveedor').disabled = aprobado;
+}
+
+function muestraEntrega() {
+    var muestrasEmbarque = window.app.muestrasEmbarque;
+    //el desplegable de contrato
+    var contrato = document.getElementById('MuestraContratoId');
+    var combobox = document.getElementById('combobox');
+    var proveedor = document.getElementById('proveedor');
+    //la muestra de embarque que seleccionamos
+    var selectedIndex = document.getElementById('MuestraMuestraEmbarqueId').selectedIndex;
+    //el id de la muestra
+    var selectedOption = document.getElementById('MuestraMuestraEmbarqueId').options[selectedIndex].value;
+    console.log(selectedOption);
+    if (selectedOption != '') {
+	contrato.disabled = 1;
+	var opts = contrato.options.length;
+	for (var i=0; i<opts; i++){
+	    if (contrato.options[i].value == muestrasEmbarque[selectedOption].Contrato.id){
+		contrato.options[i].selected = true;
+		break;
+	    } else { // por si la muestra de embarque no tiene contrato
+		contrato.options[0].selected = true;
+		combobox.options[0].selected = true;
+		proveedor.options[0].selected = true;
+	    }
+	}
+	//cambiamos el transporte
+	//document.getElementById('transporte_contrato').innerHTML = contratos[selectedOption].Contrato.transporte;
+	//cambiamos el 'selected' del combobox
+	var opts = combobox.options.length;
+	for (var i=0; i<opts; i++){
+	    if (combobox.options[i].value == muestrasEmbarque[selectedOption].Contrato.calidad_id){
+		combobox.options[i].selected = true;
+		break;
+	    }
+	}
+	//cambiamos el 'selected' del proveedor
+	var opts = proveedor.options.length;
+	for (var i=0; i<opts; i++){
+	    if (proveedor.options[i].value == muestrasEmbarque[selectedOption].Contrato.proveedor_id){
+		proveedor.options[i].selected = true;
+		break;
+	    }    
+	}
+    } else {
+	document.getElementById('MuestraContratoId').disabled = 0;
+    }
 }

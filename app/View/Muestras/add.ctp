@@ -44,6 +44,8 @@ echo $this->Form->input(
 	    $this->request->data['Muestra']['tipo'] == 1 ?
 	    'Comprado' : 'Aprobado'
 	),
+	//si es una muestra de oferta y esta comprado, podemos indicar el contrato
+	//correspondiente
 	'onchange' => ($this->request->data['Muestra']['tipo'] == 1 ? 'muestraOferta()':'')
     )
 );
@@ -51,7 +53,8 @@ if ($this->request->data['Muestra']['tipo'] == 3) {
     echo $this->Form->input(
 	'muestra_embarque_id',
 	array(
-	    'empty' => true
+	    'empty' => true,
+	    'onchange' => 'muestraEntrega()'
 	)
     );
 }

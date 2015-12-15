@@ -374,6 +374,7 @@ form :focus {
 }
 label {
 	display: block;
+	/*display: inline; si quiere la etiqueta pegada al campo*/
 	font-weight: bold; /*Títulos text area en negrita*/
 	font-size: 110%;
 	margin-bottom:2px;
