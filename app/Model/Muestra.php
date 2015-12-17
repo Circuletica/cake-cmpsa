@@ -7,7 +7,7 @@ class Muestra extends AppModel {
 			'className' => 'CalidadNombre',
 			'foreignKey' => 'calidad_id'),
 		'Proveedor' => array(
-			'className' => 'Proveedor',
+			'className' => 'Empresa',
 			'foreignKey' => 'proveedor_id'),
 		//Quitamos esta hasta que se solucione
 		//en la BDD

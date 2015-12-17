@@ -36,7 +36,12 @@ echo $this->Form->create('Muestra');
 ?>
 <fieldset>
 <?php
-echo $this->Form->input('registro');
+echo $this->Form->input(
+    'registro',
+    array(
+	'autofocus' => 'autofocus'
+    )
+);
 echo $this->Form->input(
     'aprobado',
     array(

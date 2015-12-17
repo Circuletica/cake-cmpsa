@@ -3,8 +3,13 @@ class MuestrasController extends AppController {
 
     public function index() {
 	$this->paginate['contain'] = array(
-	    'Empresa',
-	    'CalidadNombre'
+	    'Proveedor',
+	    'CalidadNombre',
+	    'Contrato' => array(
+		'CalidadNombre',
+		'Proveedor'
+	    ),
+	    'MuestraEmbarque'
 	);
 	$this->paginate['order'] =  array(
 	    'Muestra.fecha' => 'ASC'
@@ -15,17 +20,17 @@ class MuestrasController extends AppController {
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
 	$proveedores = $this->Muestra->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
+	    'fields' => array('Proveedor.id','Proveedor.nombre_corto'),
+	    'order' => array('Proveedor.nombre_corto' => 'asc'),
 	    'recursive' => 1
 	)
     );
 	$this->set('proveedores',$proveedores);
+
 	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
 	//por ej.
 	//$passedArgs['Search.palabras'] = mipalabra
 	//$passedArgs['Search.id'] = 3
-
 	//Si queremos un titulo con los criterios de busqueda
 	$titulo = array();
 
@@ -52,7 +57,7 @@ class MuestrasController extends AppController {
 	//filtramos por proveedor
 	if(isset($this->passedArgs['Search.proveedor_id'])) {
 	    $proveedor_id = $this->passedArgs['Search.proveedor_id'];
-	    $this->paginate['conditions']['Empresa.id LIKE'] = "$proveedor_id";
+	    $this->paginate['conditions']['Proveedor.id LIKE'] = "$proveedor_id";
 	    //guardamos el criterio para el formulario de vuelta
 	    $this->request->data['Search']['proveedor_id'] = $proveedor_id;
 	    //completamos el titulo
@@ -88,14 +93,15 @@ class MuestrasController extends AppController {
 	    $title[] ='Calidad: '.$calidad;
 	}
 
-	$this->Muestra->bindModel(array(
-	    'belongsTo' => array(
-		'Empresa' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Empresa.id = Muestra.proveedor_id')
-		)
-	    )
-	));
+	//$this->Muestra->bindModel(array(
+	//    'belongsTo' => array(
+	//	'Proveedor' => array(
+	//	    'className' => 'Empresa',
+	//	    'foreignKey' => false,
+	//	    'conditions' => array('Empresa.id = Muestra.proveedor_id')
+	//	)
+	//    )
+	//));
 	$muestras =  $this->paginate();
 	//generamos el título
 	if (isset($tipo)) { //en caso de que se quiera mostrar todos los tipos de muestra
@@ -198,7 +204,7 @@ endif;
 		array(
 		    'fields' => array(
 			'Proveedor.id',
-			'Empresa.nombre_corto'),
+			'Proveedor.nombre_corto'),
 		    'recursive' => 1
 		)
 	    )
@@ -291,10 +297,18 @@ endif;
 	//queremos el id de la muestra como index del array
 	//por una parte, un array para el js que permite rellenar
 	//los demás campos cuando se selecciona una muestra de embarque
-	$this->set ('muestraEmbarques', Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.registro'));
+	$this->set (
+	    'muestraEmbarques',
+	    Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.registro'
+	)
+    );
 	//por otra parte la lista del desplegable de muestras de embarque
 	//para el formulario
-	$this->set('muestrasEmbarque',Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}'));
+	$this->set(
+	    'muestrasEmbarque',
+	    Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}'
+	)
+    );
 
 	if($this->request->is('post')) {
 	    if($this->Muestra->save($this->request->data)) {
