@@ -32,7 +32,7 @@
       <?php //echo $muestra['Muestra']['tipo']?>
     </td>-->
     <td>
-      <?php echo $muestra['Muestra']['referencia']?>
+      <?php echo $muestra['Muestra']['registro']?>
     </td>
     <td>
       <?php
