@@ -1,5 +1,6 @@
 <?php
 class Almacen extends AppModel {
+    public $displayfield = 'nombre_corto';
 	public $recursive = 2;
 	public $hasMany = array(
 		'AlmacenTransporte'=> array(

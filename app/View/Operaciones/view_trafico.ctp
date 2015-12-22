@@ -126,7 +126,7 @@
 		//Se calcula la cantidad total de bultos retirados
 
 		echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado', 'Sacos retirados','Peso retirado','Detalle'));
-		foreach ($lineas_reparto as $codigo  => $linea_reparto):
+		foreach ($lineas_reparto as $linea_reparto):
 			echo $this->Html->tableCells(array(
 				$linea_reparto['Nombre'],
 				$linea_reparto['Cantidad'],
@@ -166,49 +166,49 @@ endforeach;
 echo $this->html->tablecells(array(
     'TOTALES',
     array(
-	$this->Number->roundTo2($totales['total_porcentaje_embalaje']),
+	$this->Number->round($totales['total_porcentaje_embalaje']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_peso']),
+	$this->Number->round($totales['total_peso']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_precio']),
+	$this->Number->round($totales['total_precio']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_iva']),
+	$this->Number->round($totales['total_iva']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_comision']),
+	$this->Number->round($totales['total_comision']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_iva_comision']),
+	$this->Number->round($totales['total_iva_comision']),
 	array(
 	    'style' => 'text-align:right',
 	    'bgcolor' => '#00FF00'
 	)
     ),
     array(
-	$this->Number->roundTo2($totales['total_general']),
+	$this->Number->round($totales['total_general']),
 	array(
 	    'style' => 'text-align:right; font-weight:bold',
 	    'bgcolor' => '#00FF00'

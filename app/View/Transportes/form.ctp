@@ -9,7 +9,7 @@ $this->Html->addCrumb('Añadir Transporte');
 
 if ($action == 'add') {
     echo "<h2>Añadir Transporte a Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
-    if($operacion['Operacion']['id']!= NULL):
+  /*  if($operacion['Operacion']['id']!= NULL):
     $suma = 0;
     $transportado=0;
         foreach ($operacion['Transporte'] as $suma):
@@ -17,7 +17,7 @@ if ($action == 'add') {
             $transportado = $transportado + $suma['cantidad_embalaje'];
             endif;
         endforeach;
-    endif;
+    endif;*/
     echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.'</h4>';
     $transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
     echo '<h4>Bultos pendientes: '.$transportado.' en '.$embalaje.'</h4>';

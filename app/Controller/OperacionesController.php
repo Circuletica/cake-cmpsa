@@ -501,16 +501,8 @@ $columnas_reparto = array_keys($lineas_reparto[0]);
 //indexamos el array por el codigo de asociado
 //se ordena por codigo ascendente
 ksort($lineas_reparto);
-$this->set('columnas_reparto',$columnas_reparto);
 $this->set('lineas_reparto',$lineas_reparto);
-//		$this->Operacion->Transporte->find('all',array(
-//			'fields' => array('Transporte.operacion_id', 'Transporte.cantidad')));
-//		$this->set('transporte',$transporte);
 
-/*
-	$retirada = $this->Operacion->Transporte->AlmacenTransporte->Retirada->find('all');
-	$this ->set('retirada',$retirada);
-*/
     }
 
     public function delete($id = null) {

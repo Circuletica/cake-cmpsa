@@ -86,7 +86,7 @@
 		echo "</dd>";
 		echo "  <dt>Naviera</dt>\n";
 		echo "<dd>";
-			echo $this->Html->link($transporte['Naviera']['Empresa']['nombre'], array(
+			echo $this->Html->link($transporte['Naviera']['nombre'], array(
 				'controller' => 'navieras',
 				'action' => 'view',
 				$transporte['Naviera']['id'])
@@ -95,7 +95,7 @@
 		echo "  <dt>Agente de aduanas</dt>\n";
 		echo "<dd>";
 		if ($transporte['Transporte']['agente_id'] !=NULL):
-			echo $this->Html->link($transporte['Agente']['Empresa']['nombre'], array(
+			echo $this->Html->link($transporte['Agente']['nombre'], array(
 				'controller' => 'agentes',
 				'action' => 'view',
 				$transporte['Agente']['id'])
@@ -207,7 +207,7 @@
 		echo "  <dt>Aseguradora</dt>\n";
 		echo "<dd>";
 		if ($transporte['Transporte']['aseguradora_id']!=NULL):
-			echo $this->Html->link($transporte['Aseguradora']['Empresa']['nombre_corto'], array(
+			echo $this->Html->link($transporte['Aseguradora']['nombre_corto'], array(
 			'controller' => 'aseguradoras',
 			'action' => 'view',
 			$transporte['Aseguradora']['id'])
