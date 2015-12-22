@@ -14,13 +14,13 @@ class Transporte extends AppModel {
 
     public $belongsTo = array(
 	'Aseguradora' => array(
-	    'className' => 'Aseguradora',
+	    'className' => 'Empresa',
 	    'foreignKey' => 'aseguradora_id'),
 	'Operacion' => array(
 	    'className' => 'Operacion',
 	    'foreignKey' => 'operacion_id'),
 	'Naviera' => array(
-	    'className' => 'Naviera',
+	    'className' => 'Empresa',
 	    'foreignKey' => 'naviera_id'),
 	'PuertoCarga' => array(
 	    'className' => 'Puerto',
@@ -29,7 +29,7 @@ class Transporte extends AppModel {
 	    'className' => 'Puerto',
 	    'foreignKey' => 'puerto_destino_id'),
 	'Agente' => array(
-	    'className' => 'Agente',
+	    'className' => 'Empresa',
 	    'foreignKey' => 'agente_id')
 	);
 

@@ -6,7 +6,7 @@ class Seguro extends AppModel {
 	//);
 	public $belongsTo = array(
 		'Aseguradora' => array(
-			'className' => 'Aseguradora',
+			'className' => 'Empresa',
 			'foreignKey' => 'aseguradora_id')
 	);
   	public $validate = array(
