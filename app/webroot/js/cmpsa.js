@@ -96,4 +96,18 @@ function lotesPorFijar() {
 function closeSelf(f) {
      f.submit();
      window.close();
+
+function totalCriba(){
+    var arr = document.getElementsByClassName('criba');
+    var tot=0;
+    for(var i=0;i<arr.length;i++){
+	if(parseFloat(arr[i].value))
+	    tot += parseFloat(arr[i].value);
+    }
+    document.getElementById('total').value = tot.toFixed(1);
+    console.log(tot);
+    if(tot == 100)
+	document.getElementById('total').style.color = "black";
+    if(tot != 100)
+	document.getElementById('total').style.color = "red";
 }

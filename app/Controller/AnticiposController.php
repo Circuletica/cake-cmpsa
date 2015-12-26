@@ -11,6 +11,7 @@ class AnticiposController extends AppController {
 	);
 	$this->set('anticipos', $this->paginate());
     }
+
     public function add() {
 	$this->form();
 	$this->render('form');

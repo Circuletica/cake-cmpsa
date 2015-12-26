@@ -23,8 +23,8 @@ $this->end();
 
 $this->start('main');
 echo "<dl>\n";
-echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."</dd>\n";
-echo "  <dt>Cuenta Almacen</dt><dd>".$linea['AlmacenTransporte']['cuenta_almacen']."</dd>\n";
+echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."&nbsp;</dd>\n";
+echo "  <dt>Cuenta Almacen</dt><dd>".$linea['AlmacenTransporte']['cuenta_almacen']."&nbsp;</dd>\n";
 echo "  <dt>Marca</dt><dd>".$linea['AlmacenTransporte']['marca_almacen']."&nbsp;</dd>\n";
 echo "  <dt>Núm. de sacos</dt><dd>".$linea['AlmacenTransporte']['cantidad_cuenta']."&nbsp;</dd>\n";
 echo "  <dt>Humedad</dt><dd>".$linea['LineaMuestra']['humedad']."&nbsp;</dd>\n";

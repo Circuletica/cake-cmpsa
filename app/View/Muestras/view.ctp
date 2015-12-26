@@ -7,6 +7,7 @@ $this->assign('controller','muestras');
 $this->assign('line_controller','linea_muestras');
 $this->assign('object', 'Muestra de '.$tipo.' '.$muestra['Muestra']['referencia']);
 $this->assign('line_object', 'Línea');
+$this->assign('line_add', '1');
 $this->start('filtro');
 echo $this->element('filtromuestra');
 $this->end();
