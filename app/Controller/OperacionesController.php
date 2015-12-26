@@ -7,14 +7,14 @@ class OperacionesController extends AppController {
 	$this->paginate['contain'] = array(
 	    'Contrato',
 	    'PesoOperacion',
-	    'Empresa',
+	    'Proveedor',
 	    'CalidadNombre'
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
 	$proveedores = $this->Operacion->Contrato->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
+	    'fields' => array('Proveedor.id','Proveedor.nombre_corto'),
+	    'order' => array('Proveedor.nombre_corto' => 'asc'),
 	    'recursive' => 1
 	)
     );
@@ -60,7 +60,7 @@ class OperacionesController extends AppController {
 	//filtramos por proveedor
 	if(isset($this->passedArgs['Search.proveedor_id'])) {
 	    $criterio = $this->passedArgs['Search.proveedor_id'];
-	    $this->paginate['conditions']['Empresa.id LIKE'] = "$criterio";
+	    $this->paginate['conditions']['Proveedor.id LIKE'] = "$criterio";
 	    //guardamos el criterio para el formulario de vuelta
 	    $this->request->data['Search']['proveedor_id'] = $criterio;
 	    //completamos el titulo
@@ -69,10 +69,6 @@ class OperacionesController extends AppController {
 
 	$this->Operacion->bindModel(array(
 	    'belongsTo' => array(
-		'Empresa' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Empresa.id = Contrato.proveedor_id')
-		),
 		'CalidadNombre' => array(
 		    'foreignKey' => false,
 		    'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
@@ -160,16 +156,16 @@ class OperacionesController extends AppController {
 	$embalajes_completo = array_replace_recursive($embalajes_nombre,$embalajes_peso);
 	$this->set('embalajes_completo', $embalajes_completo);
 	//solo para mostrar el proveedor a nivel informativo
-	$this->set('proveedor',$contrato['Proveedor']['Empresa']['nombre']);
+	$this->set('proveedor',$contrato['Proveedor']['nombre']);
 	//a quienes van asociadas las lineas de contrato
 	$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
-	    'fields' => array('Asociado.id','Empresa.codigo_contable','Empresa.nombre_corto'),
-	    'order' => array('Empresa.codigo_contable' => 'ASC'),
+	    'fields' => array('Asociado.id','Asociado.codigo_contable','Asociado.nombre_corto'),
+	    'order' => array('Asociado.codigo_contable' => 'ASC'),
 	    'recursive' => 1
 	)
     );
 	//reindexamos los asociados por codigo contable
-	$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
+	$asociados = Hash::combine($asociados, '{n}.Asociado.codigo_contable', '{n}');
 	ksort($asociados);
 	$this->set('asociados', $asociados);
 	//para los puertos de carga y destino
@@ -208,10 +204,8 @@ class OperacionesController extends AppController {
 			)
 		    ),
 		    'Naviera' => array(
-			'Empresa' => array(
-			    'fields' => array(
-				'nombre_corto'
-			    )
+			'fields' => array(
+			    'nombre_corto'
 			)
 		    ),
 		    'Embalaje' => array(
@@ -233,14 +227,14 @@ class OperacionesController extends AppController {
 	//Con un array simple no funciona, no se puede usar la misma clave
 	//varias veces. 
 	foreach($precio_fletes as $precio_flete) {
-		$fletes[] = array( 
-		    'name' => $precio_flete['Flete']['Naviera']['Empresa']['nombre_corto'].'('
-		    .$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
-		    .$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
-		    .(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
-		    .($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
-		    'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
-		);
+	    $fletes[] = array( 
+		'name' => $precio_flete['Flete']['Naviera']['nombre_corto'].'('
+		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
+		.$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
+		.(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
+		.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
+		'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
+	    );
 	}
 	$this->set(compact('fletes'));
 
@@ -288,13 +282,13 @@ class OperacionesController extends AppController {
     );
 	$this->set('operacion', $operacion);
 	$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
-	    'fields' => array('Asociado.id','Empresa.codigo_contable','Empresa.nombre_corto'),
-	    'order' => array('Empresa.codigo_contable' => 'ASC'),
+	    'fields' => array('Asociado.id','Asociado.codigo_contable','Asociado.nombre_corto'),
+	    'order' => array('Asociado.codigo_contable' => 'ASC'),
 	    'recursive' => 1
 	)
     );
 	//reindexamos los asociados por codigo contable
-	$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
+	$asociados = Hash::combine($asociados, '{n}.Asociado.codigo_contable', '{n}');
 	ksort($asociados);
 	$this->set('asociados', $asociados);
 	$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
@@ -392,10 +386,10 @@ endif;
 	$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-	$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
+	$codigo = substr($linea['Asociado']['codigo_contable'],-2);
 	$lineas_reparto[] = array(
 	    'Código' => $codigo,
-	    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
+	    'Nombre' => $linea['Asociado']['nombre_corto'],
 	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
 	    'Peso' => $peso
 	);	
@@ -419,7 +413,7 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 	    'contain' => array(
 		'Contrato',
 		'CalidadNombre',
-		'Empresa',
+		'Proveedor',
 		'PesoOperacion'
 	    ),
 	    'recursive' => 1
@@ -435,10 +429,6 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 		'CalidadNombre' => array(
 		    'foreignKey' => false,
 		    'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
-		),
-		'Empresa' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Empresa.id = Contrato.proveedor_id')
 		)
 	    )
 	));
@@ -492,10 +482,10 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 	//Líneas de reparto
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-	$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
+	$codigo = substr($linea['Asociado']['codigo_contable'],-2);
 	$lineas_reparto[] = array(
 	    'Código' => $codigo,
-	    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
+	    'Nombre' => $linea['Asociado']['nombre_corto'],
 	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
 	    'Peso' => $peso.' Kg'
 	);	

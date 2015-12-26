@@ -43,7 +43,7 @@ class Contrato extends AppModel {
 	    'className' => 'CanalCompra',
 	    'foreignKey' => 'canal_compra_id'),
 	'Proveedor' => array(
-	    'className' => 'Proveedor',
+	    'className' => 'Empresa',
 	    'foreignKey' => 'proveedor_id'),
 	'Incoterm' => array(
 	    'className' => 'Incoterm',

@@ -13,7 +13,10 @@ class Flete extends AppModel {
 		)
 	);
 	public $belongsTo = array(
-		'Naviera',
+	    'Naviera' => array(
+		'className' => 'Empresa',
+		'foreignKey' => 'naviera_id'
+	    ),
 		'Embalaje',
 		'PuertoCarga' =>array(
 			'className' => 'Puerto',
