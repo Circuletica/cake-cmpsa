@@ -43,7 +43,7 @@
 	echo $operacion['Contrato']['CalidadNombre']['nombre'].'&nbsp;';
 	echo "  <dt>Proveedor</dt>\n";
 	echo "<dd>";
-	echo $this->html->link($operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'], array(
+	echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], array(
 		'controller' => 'proveedores',
 		'action' => 'view',
 		$operacion['Contrato']['Proveedor']['id'])
