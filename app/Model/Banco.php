@@ -1,5 +1,6 @@
 <?php
 class Banco extends AppModel {
+    public $displayField = 'nombre_corto';
     public $recursive = 2;
     public $validate = array(
 	'cuenta_cliente_1' => array(
