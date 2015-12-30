@@ -39,7 +39,7 @@ echo "</dd>";
 //echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
-echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre_corto'], array(
+echo $this->Html->link($muestra['Proveedor']['nombre_corto'], array(
     'controller' => 'proveedores',
     'action' => 'view',
     $muestra['Proveedor']['id'])
