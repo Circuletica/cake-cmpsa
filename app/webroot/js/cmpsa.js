@@ -121,7 +121,6 @@ function contratosMuestra(){
     var combobox = document.getElementById('combobox');
     var proveedor = document.getElementById('proveedor');
     if (selectedOption != '') {
-	//console.log(selectedOption);
 	//cambiamos el transporte
 	document.getElementById('transporte_contrato').innerHTML = contratos[selectedOption].Contrato.transporte;
 	//cambiamos el 'selected' del combobox
@@ -149,7 +148,9 @@ function contratosMuestra(){
 
 function muestraOferta() {
     var aprobado = document.getElementById('MuestraAprobado').checked;
+    console.log(7);
     document.getElementById('MuestraContratoId').disabled = !aprobado;
+    //document.getElementById('MuestraContratoId').readonly = !aprobado;
     document.getElementById('combobox').disabled = aprobado;
     document.getElementById('proveedor').disabled = aprobado;
 }
@@ -197,6 +198,6 @@ function muestraEntrega() {
 	    }    
 	}
     } else {
-	document.getElementById('MuestraContratoId').disabled = 0;
+	contrato.disabled = 0;
     }
 }

@@ -9,7 +9,10 @@ class MuestrasController extends AppController {
 		'CalidadNombre',
 		'Proveedor'
 	    ),
-	    'MuestraEmbarque'
+	    'MuestraEmbarque' => array(
+		'CalidadNombre',
+		'Proveedor'
+	    )
 	);
 	$this->paginate['order'] =  array(
 	    'Muestra.fecha' => 'ASC'
@@ -17,6 +20,7 @@ class MuestrasController extends AppController {
 	$this->paginate['recursive'] = 1;
 
 	$this->set('tipos', $this->tipoMuestras);
+
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
 	$this->loadModel('Proveedor');
@@ -95,6 +99,25 @@ class MuestrasController extends AppController {
 	}
 
 	$muestras =  $this->paginate();
+//	//ahora algo de magia, tenemos que rescatar el nombre del proveedor
+//	//que no esta necesariamente en $muestra['Proveedor']['nombre_corto']
+//	//lo mismo con la calidad
+//	//Vamos pues a 'normalizar' el array que recibe la View
+//	foreach ($muestras as $clave => $muestra) {
+//	    if ($muestra['Muestra']['proveedor_id'] == null) {
+//		if ($muestra['MuestraEmbarque']['proveedor_id'] == null) {
+//		    $muestras[$clave]['Proveedor']['nombre_corto'] = $muestra['Contrato']['Proveedor']['nombre_corto'];
+//		    $muestras[$clave]['CalidadNombre']['nombre'] = $muestra['Contrato']['CalidadNombre']['nombre'];
+//		} else {
+//		    $muestras[$clave]['Proveedor']['nombre_corto'] = $muestra['MuestraEmbarque']['Proveedor']['nombre_corto'];
+//		    $muestras[$clave]['CalidadNombre']['nombre'] = $muestra['MuestraEmbarque']['CalidadNombre']['nombre'];
+//		}
+//	    }
+//	    //ya no sirven estos subarrays
+//	    unset($muestras[$clave]['MuestraEmbarque']);
+//	    unset($muestras[$clave]['Contrato']);
+//	}
+
 	//generamos el título
 	if (isset($tipo)) { //en caso de que se quiera mostrar todos los tipos de muestra
 	    if (isset($title)) { //si hay criterios de filtro, excluyendo el tipo
@@ -296,13 +319,29 @@ endif;
     );
 	//por otra parte la lista del desplegable de muestras de embarque
 	//para el formulario
-	$this->set(
-	    'muestrasEmbarque',
-	    Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}'
-	)
-    );
+	$muestrasEmbarque = Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}');
+	$this->set(compact('muestrasEmbarque'));
 
 	if($this->request->is('post')) {
+	    //rellenamos los campos del registro que vienen de otras tablas,
+	    //por ejemplo si la muestra tiene muestra de embarque, hay que sacar el
+	    //contrato_id, proveedor_id y calidad_id para meterlos en el registro de
+	    //la propia tabla de muestras si no queremos problemas con el paginador luego
+	    if (!isset($this->request->data['Muestra']['proveedor_id'])) {
+		if (!isset($this->request->data['Muestra']['muestra_embarque_id'])) {
+		    $this->request->data['Muestra']['proveedor_id'] =
+		       	$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['Proveedor']['id'];
+		    $this->request->data['Muestra']['calidad_id'] =
+		       	$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['CalidadNombre']['id'];
+		} else {
+		    $this->request->data['Muestra']['proveedor_id'] =
+		       	$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['proveedor_id'];
+		    $this->request->data['Muestra']['calidad_id'] =
+		       	$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['calidad_id'];
+		    $this->request->data['Muestra']['contrato_id'] =
+		       	$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['id'];
+		}
+	    }
 	    if($this->Muestra->save($this->request->data)) {
 		$this->Session->setFlash('Muestra guardada');
 		$this->redirect(
