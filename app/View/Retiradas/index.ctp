@@ -12,8 +12,8 @@ $this->start('main');
 ?>
 <table>
   <tr>
-    <th><?php echo $this->Paginator->sort('Transporte.Operacion.referencia','Ref. Operación')?></th>
-    <th><?php echo $this->Paginator->sort('Empresa.nombre_corto','Socio')?></th>
+    <th><?php echo $this->Paginator->sort('Retirada.fecha_retirada','Fecha')?></th>
+    <th><?php echo $this->Paginator->sort('AlmacenTransporte.cuenta_almacen','Cuenta Corriente')?></th>
     <th><?php echo $this->Paginator->sort('Empresa.nombre_corto','Almacén')?></th>
     <th><?php echo $this->Paginator->sort('Retirada.cantidad_retirada','Bultos retirados')?></th>
     <th><?php echo $this->Paginator->sort('AlmacenTransporte.cuenta_almacen','Ref. Almacén')?></th>  

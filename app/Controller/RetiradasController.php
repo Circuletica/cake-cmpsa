@@ -3,16 +3,15 @@ class RetiradasController extends AppController {
 	public $scaffold = 'admin';
 
 	public function index() {
-		$this->set('retiradas', $this->paginate());
+	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'asc');
+	$this->paginate['contain'] = array(
+			'Asociado',
+			'AlmacenTransporte'
+	);
 
-		$this->paginate = array(
-			'contain' => array(
-				'Operacion',
-				'Almacen',
-				'Empresa',
-				'AlmacenTransporte'
-			),
-		);
+	$this->set('retiradas', $this->paginate());
+
+
 /*		$this->Operacion->bindModel(array(
 //			'belongsTo' => array(
 //				'Empresa' => array(
