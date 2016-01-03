@@ -31,7 +31,7 @@ echo "  <dt>Referencia</dt>\n";
 echo "  <dd>".$referencia.'&nbsp;'."</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
-echo $this->html->link($contrato['Proveedor']['Empresa']['nombre_corto'], array(
+echo $this->html->link($contrato['Proveedor']['nombre_corto'], array(
     'controller' => 'proveedores',
     'action' => 'view',
     $contrato['Proveedor']['id'])

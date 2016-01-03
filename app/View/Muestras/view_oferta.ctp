@@ -31,48 +31,31 @@ echo $muestra['Muestra']['registro'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Comprado</dt>\n";
 echo "<dd>";
-echo ($muestra['Muestra']['aprobado'] ? 'Sí' : 'No');
-echo "</dd>";
-if (!empty($muestra['Contrato'])) { //si se ha comprado el café
-    echo "  <dt>Contrato</dt>\n";
-    echo "<dd>";
-    echo $this->Html->link(
+echo ($muestra['Muestra']['aprobado'] ?
+    'Sí ('
+    .$this->Html->link(
 	$muestra['Contrato']['referencia'],
 	array(
-	    'controller' => 'contratos',
+	    'controller'=> 'contratos',
 	    'action' => 'view',
 	    $muestra['Contrato']['id']
 	)
-    );
-    echo "  <dt>Calidad</dt>\n";
-    echo "<dd>";
-    echo $muestra['Contrato']['CalidadNombre']['nombre'].'&nbsp;';
-    echo "</dd>";
-    echo "  <dt>Proveedor</dt>\n";
-    echo "<dd>";
-    echo $this->Html->link(
-	$muestra['Contrato']['Proveedor']['Empresa']['nombre_corto'],
-	array(
-	    'controller' => 'proveedores',
-	    'action' => 'view',
-	    $muestra['Contrato']['Proveedor']['id']
-	)
-    );
-    echo "</dd>";
-} else {
+    )
+    .')'
+    : 'No');
+echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
 echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
-echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre_corto'], array(
+echo $this->Html->link($muestra['Proveedor']['nombre_corto'], array(
     'controller' => 'proveedores',
     'action' => 'view',
     $muestra['Proveedor']['id'])
 );
 echo "</dd>";
-}
 echo "  <dt>Fecha</dt>\n";
 echo "<dd>";
 echo $this->Date->format($muestra['Muestra']['fecha']);
