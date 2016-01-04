@@ -10,21 +10,6 @@ class RetiradasController extends AppController {
 	);
 
 	$this->set('retiradas', $this->paginate());
-
-
-/*		$this->Operacion->bindModel(array(
-//			'belongsTo' => array(
-//				'Empresa' => array(
-//					'foreignKey' => false,
-//					'conditions' => array('Empresa.id = Contrato.proveedor_id')
-//				),
-//				'CalidadNombre' => array(
-//					'foreignKey' => false,
-//					'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
-//				)
-//			)
-//		));
-		$this->set('operaciones', $this->paginate());*/
 	}
 
 	public function view($id = null) {
@@ -113,9 +98,22 @@ class RetiradasController extends AppController {
 		'fields' => array(
 			'Asociado.id',
 			'Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
 		'recursive' => 1)
 	);
 	$this->set(compact('asociados'));
+
+	//Listamos los almacenes
+	$almacentransporte = $this->Retirada->AlmacenTransporte->find('first', array(
+	    'conditions' => array('AlmacenTransporte.Transporte.Operacion.id' => $id),
+	    'recursive' => 3,
+	    'fields' => array(
+		'AlmacenTransporte.id',
+		'AlmacenTransporte.cuenta_almacen',
+		'AlmacenTransporte.cantidad_cuenta',
+		'AlmacenTransporte.marca_almacen')
+		));
+
 
 	$this->set('action', $this->action);
 

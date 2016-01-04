@@ -62,6 +62,7 @@ class TransportesController extends AppController {
 		'fields' => array(
 		    'Naviera.id',
 		    'Empresa.nombre_corto'),
+	    'order' => array('Empresa.nombre_corto' => 'asc'),
 		'recursive' => 1)
 	    );
 	$this->set(compact('navieras'));
@@ -71,6 +72,7 @@ class TransportesController extends AppController {
 	    'fields' => array(
 		'Agente.id',
 		'Empresa.nombre_corto'),
+	    'order' => array('Empresa.nombre_corto' => 'asc'),
 	    'recursive' => 1)
 	);
 	$this->set(compact('agentes'));
@@ -80,18 +82,10 @@ class TransportesController extends AppController {
 	    'fields' => array(
 		'Aseguradora.id',
 		'Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
 	    'recursive' => 1)
 	);
 	$this->set(compact('aseguradoras'));
-
-	$this->loadModel('Almacen');
-	$almacenes = $this->Almacen->find('list',array(
-	    'fields' => array(
-		'Almacen.id',
-		'Empresa.nombre_corto'),
-	    'recursive' => 1)
-	);
-	$this->set(compact('almacenes'));
 
 	//sacamos los datos de la operacion  al que pertenece la linea
 	//nos sirven en la vista para detallar campos
@@ -119,8 +113,6 @@ class TransportesController extends AppController {
 	$embalaje = $operacion['Embalaje']['nombre'];		
 	$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
 
-
-
 	$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
 	    'list',
 	    array(
@@ -133,14 +125,13 @@ class TransportesController extends AppController {
 	$this->set('puertoDestinos', $this->Transporte->PuertoDestino->find(
 	    'list',
 	    array(
+	    'order' => array(
+		    'PuertoDestino.nombre' => 'ASC'
+		),	
 		'contain' => array('Pais'),
 		'conditions' => array( 'Pais.nombre' => 'España')
 	    )));		
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
-
-	//$this->set('almacenes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
-	$this->set('almacen_transportes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
-	//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
 
 	$this->set('operacion',$operacion);
 	$transporte = $this->Transporte->find('all');	

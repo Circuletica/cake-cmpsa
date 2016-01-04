@@ -29,7 +29,16 @@ class AlmacenTransportesController extends AppController {
     }
 
  public function form ($id = null) { //esta accion vale tanto para edit como add
- 		//$transporte = $this->Transporte->find('all');
+ 		$this->loadModel('Almacen');		
+		$almacenes = $this->Almacen->find('list', array(
+		'fields' => array('Almacen.id','Empresa.nombre_corto'),
+	    'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1)
+		);	
+		$this->set(compact('almacenes'));
+
+
+
 		$transporte = $this->AlmacenTransporte->Transporte->find('first', array(
 			'conditions' => array('Transporte.id' => $id),
 			'recursive' => 3,
@@ -65,10 +74,7 @@ class AlmacenTransportesController extends AppController {
 	//	$contrato_embalajes = $transportes['Operacion']['Contrato']['ContratoEmbalaje'];
 
 		$this->set('action', $this->action);
-		$this->set('almacenes', $this->AlmacenTransporte->Almacen->find('list', array(
-		'fields' => array('Almacen.id','Empresa.nombre_corto'),
-		'recursive' => 1))
-		);	
+
 
 
 	if($this->request->is('post')):
