@@ -86,19 +86,21 @@ class LineaMuestrasController extends AppController {
 		    'contain' => array(
 			'Muestra' => array(
 			    'CalidadNombre',
-		//	    'Operacion' => array(
-		//		'fields' => array(
-		//		    'id',
-		//		    'referencia',
-		//		    'embalaje_id'
-		//		),
-		//		'Transporte' => array(
-		//		    'fields' => array(
-		//			'id'
-		//		    ),
-		//		    'AlmacenTransporte'
-		//		)
-		//	    )
+			    'Contrato' => array(
+				'Operacion' => array(
+				    'fields' => array(
+					'id',
+					'referencia',
+					'embalaje_id'
+				    ),
+				    'Transporte' => array(
+					'fields' => array(
+					    'id'
+					),
+					'AlmacenTransporte'
+				    )
+				)
+			    )
 			)
 		    )
 		)
@@ -115,46 +117,49 @@ class LineaMuestrasController extends AppController {
 		    'conditions' => array(
 			'Muestra.id' => $muestra_id
 		    ),
-		    'recursive' => 2,
+		    'recursive' => 3,
 		    'contain' => array(
 			'CalidadNombre',
-		//	'Operacion' => array(
-		//	    'fields' => array(
-		//		'id',
-		//		'referencia',
-		//		'embalaje_id'
-		//	    ),
-		//	    'Transporte' => array(
-		//		'fields' => array(
-		//		    'id'
-		//		),
-		//		'AlmacenTransporte'
-		//	    )
-		//	)
+			'Proveedor',
+			'Contrato' => array(
+			    'Operacion' => array(
+				'fields' => array(
+				    'id',
+				    'referencia',
+				    'embalaje_id'
+				),
+				'Transporte' => array(
+				    'fields' => array(
+					'id'
+				    ),
+				    'AlmacenTransporte'
+				)
+			    )
+			)
 		    )
 		)
 	    );
 	    //necesitamos 'subir' el array $muestra['Muestra']
 	    //de 1 nivel para que sea igual al que devuelve el
-	    //find de anterior
+	    //find anterior
 	    //los dos find no devuelven la misma estructura
 	    //pasamos de:
 	    //array(
 	    //	'Muestra' => array(
 	    //		'id' => '22',
 	    //		'calidad_id' => '28',
-	    //		'operacion_id' => '27',
+	    //		'contrato_id' => '27',
 	    //	),
 	    //	'CalidadNombre' => array(),
-	    //	'Operacion' => array()
+	    //	'Contrato' => array()
 	    //)
 	    //a
 	    //array(
 	    //	'id' => '22',
 	    //	'calidad_id' => '28',
-	    //	'operacion_id' => '27',
+	    //	'contrato_id' => '27',
 	    //	'CalidadNombre' => array(),
-	    //	'Operacion' => array()
+	    //	'Contrato' => array()
 	    //)
 	    $muestra += $muestra['Muestra'];
 	    unset($muestra['Muestra']);
@@ -165,37 +170,46 @@ class LineaMuestrasController extends AppController {
 	//primero se sacan todos los almacen_transportes
 	//de todos los transportes de la operacion relativa
 	//de la muestra
-	if (array_key_exists('Transporte',$muestra['Operacion'])) {
-	    $transportes = $muestra['Operacion']['Transporte'];
+	//	if (array_key_exists('Transporte',$muestra['Operacion'])) {
+	//	    $transportes = $muestra['Operacion']['Transporte'];
+	//	    $almacen_transportes = array();
+	//	    foreach ($transportes as $transporte) {
+	//		$almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
+	//	    }
+	if (isset($muestra['Contrato']['Operacion'])) {
+	    $operaciones = $muestra['Contrato']['Operacion'];
 	    $almacen_transportes = array();
-	    foreach ($transportes as $transporte) {
-		$almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
+	    foreach ($operaciones as $operacion) {
+		$transportes = $operacion['Transporte'];
+		foreach ($transportes as $transporte) {
+		    $almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
+		}
 	    }
-	    //Recombinamos para pasar de:
-	    //array(
-	    //	(int) 0 => array(
-	    //		'id' => '8',
-	    //		'almacen_id' => '59',
-	    //		'transporte_id' => '45',
-	    //		'cuenta_almacen' => '54131',
-	    //		'cantidad_cuenta' => '20.00'
-	    //	),
-	    //	(int) 1 => array(
-	    //		'id' => '9',
-	    //		'almacen_id' => '50',
-	    //		'transporte_id' => '53',
-	    //		'cuenta_almacen' => '251478/5451',
-	    //		'cantidad_cuenta' => '33.00'
-	    //
-	    //A
-	    //
-	    //array(
-	    //	(int) 8 => '54131',
-	    //	(int) 9 => '251478/5451',
-	    //)
-	    $almacen_transportes = Hash::combine($almacen_transportes,'{n}.id','{n}.cuenta_almacen');
-	    $this->set('almacenTransportes', $almacen_transportes);
 	}
+	//Recombinamos para pasar de:
+	//array(
+	//	(int) 0 => array(
+	//		'id' => '8',
+	//		'almacen_id' => '59',
+	//		'transporte_id' => '45',
+	//		'cuenta_almacen' => '54131',
+	//		'cantidad_cuenta' => '20.00'
+	//	),
+	//	(int) 1 => array(
+	//		'id' => '9',
+	//		'almacen_id' => '50',
+	//		'transporte_id' => '53',
+	//		'cuenta_almacen' => '251478/5451',
+	//		'cantidad_cuenta' => '33.00'
+	//
+	//A
+	//
+	//array(
+	//	(int) 8 => '54131',
+	//	(int) 9 => '251478/5451',
+	//)
+	$almacen_transportes = Hash::combine($almacen_transportes,'{n}.id','{n}.cuenta_almacen');
+	$this->set('almacenTransportes', $almacen_transportes);
 
 	$this->set('action', $this->action);
 
