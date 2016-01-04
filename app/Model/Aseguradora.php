@@ -1,6 +1,6 @@
 <?php
 class Aseguradora extends AppModel{
-  //public $belongsTo = 'Empresa';
+  public $displayfield = 'nombre_corto';	
   public $recursive = 2;
   public $hasOne = array(
   'Empresa' => array(
@@ -8,11 +8,5 @@ class Aseguradora extends AppModel{
   	'foreignKey' => 'id')
   );
 
-  public $hasMany = array(
-//    'Seguro' => array(
-//      'className' => 'Seguro',
-//      'foreignKey' => 'aseguradora_id'
-//    )
-  );
 }
 ?>

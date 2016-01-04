@@ -1,6 +1,6 @@
 <?php
 class Agente extends AppModel{
-  //public $belongsTo = 'Empresa';
+  public $displayfield = 'nombre_corto';
   public $recursive = 2;
   public $hasOne = array('Empresa' => array(
 	'className' => 'Empresa',

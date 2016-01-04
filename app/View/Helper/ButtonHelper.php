@@ -26,7 +26,6 @@ class ButtonHelper extends AppHelper {
 			'controller' => $controller,
 			'action' => 'view',
 			$id,
-			'from_controller' => $from,
 			'from_controller' => $from_controller,
 			'from_id' => $from_id
 		    ),
@@ -99,7 +98,7 @@ class ButtonHelper extends AppHelper {
 		'controller' => $controller,
 		'action' => 'delete',
 		$id,
-		'from' => $from_controller,
+		'from_controller' => $from_controller,
 		'from_id' => $from_id
 	    ),
 	    array(

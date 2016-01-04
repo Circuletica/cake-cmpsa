@@ -1,9 +1,10 @@
 <?php
 class Almacen extends AppModel {
+    public $displayfield = 'nombre_corto';
 	public $recursive = 2;
 	public $hasMany = array(
-		'AlmacenesTransporte'=> array(
-			'className' => 'AlmacenesTransporte',
+		'AlmacenTransporte'=> array(
+			'className' => 'AlmacenTransporte',
 			'foreignKey' => 'almacen_id')
 	);
 	public $hasOne = array('Empresa' => array(

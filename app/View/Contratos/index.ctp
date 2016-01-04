@@ -4,21 +4,28 @@
 		'controller' => 'contratos',
 		'action' => 'index')
 	); ?>
-<h2>Contratos</h2>
-	<div class="actions">
-		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
-		?>
+
+<div class="printdet">
+<?php // Botones de impresión
+    echo $this->element('imprimirI');
+    echo "</div>";
+    echo "<h2>$title</h2>";
+    echo '<div class="actions">';
+    echo $this->element('filtrocontrato'); //Elemento del buscador de contrato
+    echo "<p>\n";
+    echo "<hr>\n";
+    echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
+?>
 	</div>
 	<div class='index'>
-	<?php
+    <?php
 	if (empty($contratos)):
 		echo "No hay contratos en esta lista";
 	else:
 	echo "<table>\n";
 	echo $this->Html->tableHeaders(array(
-		//'Id',
 		$this->Paginator->sort('Contrato.referencia','Referencia'),
-		$this->Paginator->sort('Proveedor.Empresa.nombre_corto','Proveedor'),
+		$this->Paginator->sort('Empresa.nombre_corto','Proveedor'),
 		$this->Paginator->sort('Incoterm.nombre','Incoterm'),
 		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
 		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
@@ -29,7 +36,7 @@
 		//'Diferencial',
 		//Las opciones en Operacion
 		//'Opciones',
-		'')
+		'Detalle')
 	);
 	foreach($contratos as $contrato):
 		//mysql almacena la fecha en formato ymd
@@ -40,22 +47,22 @@
 		$anyo = substr($fecha,0,4);
 		$posicion_bolsa = $mes.' '.$anyo;
 		echo $this->Html->tableCells(array(
-			//$contrato['Contrato']['id'],
 			$contrato['Contrato']['referencia'],
-			$contrato['Proveedor']['Empresa']['nombre_corto'],
+			$contrato['Empresa']['nombre_corto'],
 			$contrato['Incoterm']['nombre'],
 			$contrato['CalidadNombre']['nombre'],
 			$contrato['Contrato']['peso_comprado'].'kg',
 			$contrato['CanalCompra']['nombre'],
 			$contrato['Contrato']['lotes_contrato'],
 			$posicion_bolsa,
-			//$contrato['Contrato']['diferencial'].$contrato['CanalCompra']['divisa'],
-			//Las opciones en Operacion
-			//$contrato['Contrato']['opciones'].$contrato['CanalCompra']['divisa'],
-			$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))
+			$this->Button->view('contratos',$contrato['Contrato']['id'])
+			//$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))
 	));
 	endforeach;?>
 	</table>
+		<div class="btabla">
+		<?php echo $this->Button->add('contratos','Contrato'); ?>
+		</div>
 	<?php
 	echo $this->Paginator->counter(
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));
@@ -67,7 +74,6 @@
 		echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled')); ?>
 	</div>
 	<?php endif; ?>
-	<div class="btabla">
-		<?php echo $this->Html->link('Añadir Contrato',array('action'=>'add')); ?>
-	</div>
+
 </div>
+

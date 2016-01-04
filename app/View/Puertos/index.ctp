@@ -1,21 +1,12 @@
-
-<?php $this->Html->addCrumb('Puertos', '/puertos');?>
-<div class="printdet">
-<ul><li>
-  <?php 
-  echo $this->element('imprimirI');
-  ?>
-  </li>
-  <li>
-  <?php
-  echo $this->element('desplegabledatos');
-  ?>
-  </li>
-</ul>
-</div>
-<h2>Listado de puertos</h2>
-<table>
 <?php
+$this->extend('/Common/index');
+$this->assign('class', 'Puerto');
+
+$this->start('filter');
+$this->end();
+
+$this->start('main');
+echo "<table>\n";
 echo $this->Html->tableHeaders(array(
     'Id',
     $this->Paginator->sort('nombre'),
@@ -34,27 +25,7 @@ foreach($puertos as $puerto):
     array('action'=>'delete',$puerto['Puerto']['id']),
     array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$puerto['Puerto']['nombre'].'?'))
  ));
-
-endforeach;?>
-
-</table>
-<div class="btabla">
-    <?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Puerto',array(
-   'controller' => 'puertos',
-   'action' => 'add',
-   'from_controller' => 'puertos',
-   'from_action' => 'index'),array(
-   'escape' => false,
-   'title'=>'Añadir Puerto')); ?>
-</div>
-
-<p>
-<?php echo $this->Paginator->counter(
-	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
-);?>
-</p>
-    <div class="paging">
-    <?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
-	  <?php echo $this->Paginator->numbers(array('separator' => ''));?>
-	  <?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
-    </div>
+endforeach;
+echo "</table>\n";
+$this->end();
+?>

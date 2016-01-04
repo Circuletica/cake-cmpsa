@@ -1,13 +1,24 @@
 <?php
 class Operacion extends AppModel {
 	public $recursive = 2;
-	//public $actsAs = array('Containable');
+
+	public $displayField = 'referencia';
+
 	public $validate = array(
       'referencia' => array(
       'rule' => 'notEmpty',
       'message' => 'La referencia no puede estar vacía')
     );
+
 	public $belongsTo = array(
+		'PuertoCarga' => array(
+			'className' => 'Puerto',
+			'foreignKey' => 'puerto_carga_id'
+		),
+		'PuertoDestino' => array(
+			'className' => 'Puerto',
+			'foreignKey' => 'puerto_destino_id'
+		),
 		'Contrato' => array(
 			'className' => 'Contrato',
 			'foreignKey' => 'contrato_id'),
@@ -26,6 +37,10 @@ class Operacion extends AppModel {
 		),
 		'PesoOperacion' => array(
 			'className' => 'PesoOperacion',
+			'foreignKey' => 'id'
+		),
+		'Financiacion' => array(
+			'className' => 'Financiacion',
 			'foreignKey' => 'id'
 		)
 	);

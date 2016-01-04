@@ -30,6 +30,7 @@ App::uses('Model', 'Model');
  * @package       app.Model
  */
 class AppModel extends Model {
+	public $actsAs = array('Containable');
 	public function validate_ccc($check) { //$cuenta_bancaria seria abcd-efgh-ij-klmnopqrst
 		//para el digito de control de entidad y sucursal (i)
 		//cada digito de abcd-efgh se multiplica por su factor de peso y después

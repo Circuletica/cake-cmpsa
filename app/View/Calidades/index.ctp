@@ -24,7 +24,7 @@
     <th><?php echo $this->Paginator->sort('descafeinado','Proceso')?></th>
     <th><?php echo $this->Paginator->sort('Pais.nombre','Origen')?></th>
     <th><?php echo $this->Paginator->sort('descripcion', 'Descripción')?></th>
-    <th><?php echo 'Acciones'?></th>
+    <th><?php echo 'Detalle'?></th>
   </tr>
 <?php foreach($calidades as $calidad):?>
   <tr>

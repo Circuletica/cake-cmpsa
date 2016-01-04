@@ -26,6 +26,7 @@
 	$this->Js->set('canalCompraDivisa', $canal_compras_divisa);
 	echo $this->Js->writeBuffer(array('onDomReady' => false));
     ?>
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css">
@@ -150,7 +151,6 @@
       });
     });
     </script>
-    <fieldset>
     <?php
 	    //si no esta la calidad en el listado, dejamos un enlace para
 	    //agragarla
@@ -170,18 +170,26 @@
 		    'from_action' => 'add',
 		    )
 	    );
-	    echo $this->Form->create('Contrato');
-	//	echo $this->Form->input('si_londres', array(
-	//	    'label' => 'Bolsa de Londres')
-	//	);
+
+	 echo $this->Form->create('Contrato');
+	?>
+	<div class='radiomuestra'>
+	<?php
 	    echo $this->Form->radio('canal_compra_id', $canal_compras, array(
 		    'legend' => false,
 		    'value' => 1,
-		    'separator' => '<br/>',
+		    'separator' => '-- ',
 		    'onclick' => 'canalCompra()'
-	    		)
+	    		), array('class'=>'radiomuestra')
 	    );
-	    echo $this->Form->input('referencia');
+	?>
+	</div>
+	<div class="col4">
+	<?php
+	    echo $this->Form->input('referencia', array(
+		'autofocus' => 'autofocus'
+	    )
+	    );
 	    echo $this->Form->input('incoterm_id', array(
 		    'label' => 'Incoterms',
 		    'empty' => array('' => 'Selecciona')
@@ -193,12 +201,17 @@
 		    'empty' => true
 		    )
 	    );
+
 	    echo $this->Form->input('puerto_destino_id', array(
 		    'label' => 'Puerto de destino',
 		    //'empty' => array('' => 'Selecciona')
 		    'empty' => true
 		    )
 	    );
+		 ?>
+	  </div>
+	  <div class="col2">
+	  <?php
 	    echo $this->Form->input('calidad_id', array(
 		    'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 		    'empty' => array('' => 'Selecciona'),
@@ -211,7 +224,12 @@
 		    'empty' => array('' => 'Selecciona')
 		    )
 	    );
+	    ?>
+	    </div>
+	    <div class="col3">
+	    <?php
 	    echo $this->Form->input('peso_comprado', array(
+		'label' => 'Peso comprado (kg)',
 		'id' => 'pesoComprado',
 		'oninput' => 'totalDesglose()'
 		)
@@ -228,13 +246,17 @@
 			//'div' => false
 			)
 		);
-		echo "</div>\n";
+		
     ?>
+    	</div>
+    </div>
+    <div class="col2">
+
     <table>
 	<tr>
-      <th> </th>
-      <th>cantidad</th>
-      <th>peso</th>
+      <th>Tipo de bulto</th>
+      <th>Cantidad</th>
+      <th>Peso</th>
 	</tr>
 	
 	<?php
@@ -316,12 +338,15 @@
 //			)
 //		);
 //		echo "</div>\n";
-		echo "<div class='radiomuestra'>\n";
+		?>
+		<br><br><br>
+		<div class='radiomuestra'>
+		<?php
 		echo $this->Form->radio(
 			'si_entrega',
 			$tipos_fecha_transporte,
 			array(
-				'legend' => 'Fecha de transporte:',
+				'legend' => 'Fecha de transporte',
 				'value' => '0'
 			)
 		);
@@ -340,7 +365,7 @@
 		    echo $this->Form->input('comentario');
 		echo $this->Form->end('Guardar Contrato');
 	?>
-    </fieldset>
+	</div>
 </div>
 <script type="text/javascript">
 	window.onload = canalCompra();

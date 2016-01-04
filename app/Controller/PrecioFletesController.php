@@ -1,31 +1,35 @@
 <?php
 class PrecioFletesController extends AppController {
-	function index() {
+
+	public function index() {
 		$this->set('precio_fletes', $this->PrecioFlete->find('all'));
 	}
+
 	public function add() {
-		//el id y la clase de la entidad de origen vienen en la URL
+		$from_controller = $this->params['named']['from_controller'];
 		if (!$this->params['named']['from_id']) {
-			$this->Session->setFlash('URL mal formado controller/add '.$this->params['named']['from']);
+			$this->Session->setFlash('URL mal formado controller/add '.$from_controller);
 			$this->redirect(array(
-				'controller' => $this->params['named']['from'],
+				'controller' => $from_controller,
 				'action' => 'index'));
 		}
+		//el id y la clase de la entidad de origen vienen en la URL
+		$from_id = $this->params['named']['from_id'];
 		//necesitamos el nombre del flete para el breadcrumb y el título de la vista
 		$flete = $this->PrecioFlete->Flete->find('first',
 			array(
-				'conditions' => array('Flete.id' => $this->params['named']['from_id']),
+				'conditions' => array('Flete.id' => $from_id),
 				'recursive' => -1
 		));
 		$this->set('flete',$flete);
 		if($this->request->is('post')):
-			$this->request->data['PrecioFlete']['flete_id'] = $this->params['named']['from_id'];
+			$this->request->data['PrecioFlete']['flete_id'] = $from_id;
 			if($this->PrecioFlete->save($this->request->data) ):
 				$this->Session->setFlash('Precio de flete guardado');
 				$this->redirect(array(
-					'controller' => $this->params['named']['from'],
+					'controller' => $from_controller,
 					'action' => 'view',
-					$this->params['named']['from_id']
+					$from_id
 				));
 			endif;
 		endif;
@@ -37,7 +41,7 @@ class PrecioFletesController extends AppController {
 			if($this->PrecioFlete->delete($id)):
 				$this->Session->setFlash('Precio de flete borrado');
 				$this->redirect(array(
-					'controller' => $this->params['named']['from'],
+					'controller' => $this->params['named']['from_controller'],
 					'action' => 'view',
 					$this->params['named']['from_id']
 				));
@@ -48,15 +52,18 @@ class PrecioFletesController extends AppController {
 	}
 
 	public function edit($id = null) {
+		//el id y la clase de la entidad de origen vienen en la URL
+		$from_controller = $this->params['named']['from_controller'];
+		$from_id = $this->params['named']['from_id'];
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado controller/edit '.$this->params['named']['from'].' '.$this->params['named']['from_id']);
+			$this->Session->setFlash('URL mal formado controller/edit '.$from_controller.' '.$from_id);
 			$this->redirect(array(
-				'controller' => $this->params['named']['from'],
+				'controller' => $from_controller,
 				'action'=>'index'));
 		}
 		$flete = $this->PrecioFlete->Flete->find('first',
 			array(
-				'conditions' => array('Flete.id' => $this->params['named']['from_id']),
+				'conditions' => array('Flete.id' => $from_id),
 				'recursive' => -1
 		));
 		$this->set('flete',$flete);
@@ -67,9 +74,9 @@ class PrecioFletesController extends AppController {
 			if($this->PrecioFlete->save($this->request->data)):
 				$this->Session->setFlash('Precio de flete modificado');
 				$this->redirect(array(
-					'controller' => $this->params['named']['from'],
+					'controller' => $from_controller,
 					'action' => 'view',
-					$this->params['named']['from_id']));
+					$from_id));
 			else:
 				$this->Session->setFlash('No se ha podido guardar!');
 			endif;

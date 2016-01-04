@@ -79,7 +79,7 @@
 	<table>
 	<?php
 	echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
-	       'Fecha Carga','Cantidad/Bultos','Asegurado','Detalle'));
+	       'Fecha Carga','Bultos','Asegurado','Detalle'));
 	//hay que numerar las líneas
 	$i = 1;
 	foreach($operacion['Transporte'] as $linea):
@@ -89,8 +89,7 @@
 			$linea['matricula'],
 			//Nos da el formato DD-MM-YYYY
 			$this->Date->format($linea['fecha_carga']),
-			$linea['cantidad'],
-			//$linea['EmbalajeTransporte']['cantidad'],
+			$linea['cantidad_embalaje'],
 			$this->Date->format($linea['fecha_seguro']),
 			//$linea['referencia_almacen'],
 			$this->Button->viewLine('transportes',$linea['id'],'transportes',$linea['operacion_id'])
@@ -100,15 +99,17 @@
 	endforeach;
 ?>	</table>
 <?php
-//	if($operacion['Operacion']['id']!= NULL):
-//		$suma=0;
-//		foreach ($transporte as $transportado => $transporte):
-//			if ($transporte['operacion_id']=$operacion['Operacion']['id']):
-//			$suma= $suma + $transporte['cantidad'];
-//			endif;
-//		endforeach;
-		echo "Total transportado:";//.$suma;
-//	endif;
+	if($operacion['Operacion']['id']!= NULL):
+	$suma = 0;
+	$transportado=0;
+		foreach ($operacion['Transporte'] as $suma):
+			if ($transporte['operacion_id']=$operacion['Operacion']['id']):
+			$transportado = $transportado + $suma['cantidad_embalaje'];
+			endif;
+		endforeach;
+	
+		echo "<h4>Bultos transportados: ".$transportado."</h4>";
+	endif;
 ?>
 		<div class="btabla">
 		<?php
@@ -117,25 +118,68 @@
 		</div>
 	</div>
 	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
+
 	<div class="detallado">
-	<h3>Asociados</h3>
+	<h3>Resumen retiradas</h3>
 	<table>
 		<?php
-		echo $this->Html->tableHeaders(array('Código Contable','Nombre Asociado', 'Sacos',
-	       'Peso total', 'Sacos retirados','Detalle'));
-		foreach ($lineas_reparto as $codigo => $linea_reparto):
+		//Se calcula la cantidad total de bultos retirados
+
+		echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado', 'Sacos retirados','Peso retirado','Detalle'));
+		foreach ($lineas_reparto as $linea_reparto):
 			echo $this->Html->tableCells(array(
-				$codigo,
 				$linea_reparto['Nombre'],
 				$linea_reparto['Cantidad'],
 				$linea_reparto['Peso'],
-				'Sacos retirados',
-				$this->Button->viewLine('retiradas',$retiradas['id'],'retiradas',$linea['operacion_id'])
+		//		$retirada['peso_retirado'],
+		//		$retirada['saco_retirado'],
+		//		$this->Button->viewLine('retiradas',$retirada['id'],'retiradas',$linea['operacion_id'])
 				)
 			);
 		endforeach;
 		?>
-		</table>		
+		</table>
+<table>
+<?php
+echo $this->html->tablecells(array(
+    'TOTALES',
+    array(
+	$this->Number->round($totales['total_sacos']),
+	array(
+	    'style' => 'text-align:right',
+	    'bgcolor' => '#00FF00'
+	)
+    ),
+    array(
+	$this->Number->round($totales['total_peso_solicitado']),
+	array(
+	    'style' => 'text-align:right',
+	    'bgcolor' => '#00FF00'
+	)
+    ),
+    array(
+	$this->Number->round($totales['total_sacos_retirado']),
+	array(
+	    'style' => 'text-align:right',
+	    'bgcolor' => '#00FF00'
+	)
+    ),
+    array(
+	$this->Number->round($totales['total_peso_retirado']),
+	array(
+	    'style' => 'text-align:right',
+	    'bgcolor' => '#00FF00'
+	)
+    ),
+
+)
+	);
+?></table>
+		<div class="btabla">
+		<?php
+		echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
+		?>
+		</div>
 	</div>
 	</div>
 </div>
