@@ -86,19 +86,19 @@ class LineaMuestrasController extends AppController {
 		    'contain' => array(
 			'Muestra' => array(
 			    'CalidadNombre',
-			    'Operacion' => array(
-				'fields' => array(
-				    'id',
-				    'referencia',
-				    'embalaje_id'
-				),
-				'Transporte' => array(
-				    'fields' => array(
-					'id'
-				    ),
-				    'AlmacenTransporte'
-				)
-			    )
+		//	    'Operacion' => array(
+		//		'fields' => array(
+		//		    'id',
+		//		    'referencia',
+		//		    'embalaje_id'
+		//		),
+		//		'Transporte' => array(
+		//		    'fields' => array(
+		//			'id'
+		//		    ),
+		//		    'AlmacenTransporte'
+		//		)
+		//	    )
 			)
 		    )
 		)
@@ -118,19 +118,19 @@ class LineaMuestrasController extends AppController {
 		    'recursive' => 2,
 		    'contain' => array(
 			'CalidadNombre',
-			'Operacion' => array(
-			    'fields' => array(
-				'id',
-				'referencia',
-				'embalaje_id'
-			    ),
-			    'Transporte' => array(
-				'fields' => array(
-				    'id'
-				),
-				'AlmacenTransporte'
-			    )
-			)
+		//	'Operacion' => array(
+		//	    'fields' => array(
+		//		'id',
+		//		'referencia',
+		//		'embalaje_id'
+		//	    ),
+		//	    'Transporte' => array(
+		//		'fields' => array(
+		//		    'id'
+		//		),
+		//		'AlmacenTransporte'
+		//	    )
+		//	)
 		    )
 		)
 	    );

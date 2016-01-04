@@ -33,10 +33,6 @@ echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
 echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
 echo "</dd>";
-//echo "  <dt>Contrato</dt>\n";
-//echo "<dd>";
-//echo (!empty($muestra['Contrato']) ? $muestra['Contrato']['referencia'] : '').'&nbsp;';
-//echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
 echo $this->Html->link($muestra['Proveedor']['nombre_corto'], array(
@@ -47,7 +43,7 @@ echo $this->Html->link($muestra['Proveedor']['nombre_corto'], array(
 echo "</dd>";
 echo "  <dt>Contrato</dt>\n";
 echo "<dd>";
-if (isset($muestra['Contrato']['referencia'])) {
+if (isset($muestra['Contrato'])) {
     echo $this->Html->link( $muestra['Contrato']['referencia'], array(
 	'controller' => 'contratos',
 	'action' => 'view',
