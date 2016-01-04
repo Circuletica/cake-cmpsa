@@ -1,8 +1,7 @@
 <?php
 class Naviera extends AppModel{
-    public $displayfield = 'nombre_corto';
-    public $recursive = 3;
-    public $displayField = 'id';
+    public $displayField = 'nombre_corto';
+    public $recursive = 2;
     public $hasOne = array('Empresa' => array(
 	'className' => 'Empresa',
 	'foreignKey' => 'id')
