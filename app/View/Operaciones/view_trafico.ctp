@@ -175,6 +175,11 @@ echo $this->html->tablecells(array(
 )
 	);
 ?></table>
+		<div class="btabla">
+		<?php
+		echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
+		?>
+		</div>
 	</div>
 	</div>
 </div>

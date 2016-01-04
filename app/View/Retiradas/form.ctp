@@ -5,11 +5,11 @@ $this->Html->addCrumb('Operaciones','/operaciones');
 if ($action == 'add') {
     echo "<h2>Añadir retirada de almacén <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
 }
-/*
-if ($action == 'edit') {
-    echo "<h2>Modificar Retirada de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
-}
 
+if ($action == 'edit') {
+    echo "<h2>Modificar retirada de almacnén <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+}
+/*
 echo "<dl>";
 echo "  <dt>Operación</dt>\n";
 echo "  <dd>".$referencia.'&nbsp;'."</dd>";
@@ -41,7 +41,14 @@ echo "</div>\n";*/
 //solo si es una financiacion nueva, asignamos valores por defecto
 //si es un edit, hay que respetar los valores existentes
 //if ($action == 'add') {
-    echo $this->Form->input('albaran', array( 'value' => 3));
+?>
+<fieldset>
+<?php
+    echo $this->Form->input('asociado_id',
+         array(
+              'label'=>'Nombre asociado',
+              'empty' =>array('' => 'Selecciona')
+               ));  
     echo $this->Form->input('tipo_iva_id', array( 'value' => 3));
        ?>
     <div class="linea">
@@ -57,14 +64,8 @@ echo "</div>\n";*/
         );
         ?>
         </div>
-        <?php
-/*
 
-    echo $this->Form->input('precio_euro_kilo', array( 'value' => $precio_euro_kilo));
-} else {
-    echo $this->Form->input('banco_id');
-    echo $this->Form->input('tipo_iva_id');
-    echo $this->Form->input('tipo_iva_comision_id');
-    echo $this->Form->input('precio_euro_kilo');
-}*/
-echo $this->Form->end('Guardar Retirada');
+<?php
+    echo $this->Form->end('Guardar Retirada');
+?>
+</fieldset>

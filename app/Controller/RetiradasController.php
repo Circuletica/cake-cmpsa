@@ -98,27 +98,25 @@ class RetiradasController extends AppController {
 		'recursive' => 4,
 		'contain' => array(
 		    'Contrato' => array(
-			'Proveedor' => array(
-			    'Empresa'
-			),
-			'CalidadNombre',
-			'Incoterm'
-		    ),
-		    'PrecioTotalOperacion'
-		)
+		    		'Proveedor',
+		    		'CalidadNombre',
+		    		'Incoterm'),
+		    			)
 	    )
 	);
 	$this->set(compact('operacion'));
-/*	$this->set('referencia', $operacion['Operacion']['referencia']);
-	$this->set('proveedor', $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto']);
-	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
-	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
-	$condicion = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
-	//solo el año de embarque/entrega
-	$condicion .= ' '.substr($operacion['Contrato']['fecha_transporte'],0,4);
-	$condicion .= ' ('.$operacion['Contrato']['Incoterm']['nombre'].')';
-	$this->set(compact('condicion'));
-	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);*/
+	
+	//Listamos el nombre de asociados
+	$this->loadModel('Asociado');	
+	$asociados = $this->Asociado->find('list',
+		array(
+		'fields' => array(
+			'Asociado.id',
+			'Empresa.nombre_corto'),
+		'recursive' => 1)
+	);
+	$this->set(compact('asociados'));
+
 	$this->set('action', $this->action);
 
 	//si es un edit, hay que rellenar el id, ya que

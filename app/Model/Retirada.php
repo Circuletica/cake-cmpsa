@@ -10,7 +10,7 @@ class Retirada extends AppModel {
 */
 	public $belongsTo = array(
 		'Asociado' => array(
-			'className' => 'Asociado',
+			'className' => 'Empresa',
 			'foreignKey' => 'asociado_id'),
 		'AlmacenTransporte' => array(
 			'className' => 'AlmacenTransporte',

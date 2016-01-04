@@ -80,6 +80,9 @@ public function view($id = null) {
 
 		$embalaje = $operacion['Embalaje']['nombre'];		
 		$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
+
+
+
 		$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
 		    'list',
 		    array(
@@ -96,19 +99,34 @@ public function view($id = null) {
 			'conditions' => array( 'Pais.nombre' => 'España')
 		)));		
 		//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
-		$this->set('navieras', $this->Transporte->Naviera->find('list',array(
-			'fields' => array('Naviera.id','Naviera.nombre_corto'),
-			'recursive' => 1))
+
+		//Listamos navieras
+		$this->loadModel('Naviera');	
+		$navieras = $this->Naviera->find('list',
+			array(
+			'fields' => array(
+				'Naviera.id',
+				'Empresa.nombre_corto'),
+			'recursive' => 1)
+			);
+ 		$this->set(compact('navieras'));
+
+		$this->loadModel('Agente');
+		$agente = $this->Agente->find('list',array(
+			'fields' => array(
+				'Agente.id',
+				'Empresa.nombre_corto'),
+			'recursive' => 1)
 		);
-		$this->set('agentes', $this->Transporte->Agente->find('list',array(
-			'fields' => array('Agente.id','Agente.nombre_corto'),
-			'recursive' => 1))
-		);
+ 		$this->set(compact('agentes'));
+
 		$this->set('almacenes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
 		$this->set('almacen_transportes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
 		//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
 		$this->set('aseguradoras', $this->Transporte->Aseguradora->find('list', array(
-			'fields' => array('Aseguradora.id','Aseguradora.nombre_corto'),
+			'fields' => array(
+				'Aseguradora.id',
+				'Aseguradora.nombre_corto'),
 			'recursive' => 1))
 		);
 
@@ -201,8 +219,8 @@ public function edit( $id = null) {
 			'contain' => array('Pais'),
 			'conditions' => array( 'Pais.nombre' => 'España')
 		)));		
-		$this->set('navieras', $this->Transporte->Naviera->find('list'));
-		$this->set('agentes', $this->Transporte->Agente->find('list'));
+	//	$this->set('navieras', $this->Transporte->Naviera->find('list'));
+	//	$this->set('agentes', $this->Transporte->Agente->find('list'));
 		$this->set('almacenes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
 		$this->set('almacen_transportes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
 		$this->set('aseguradoras', $this->Transporte->Aseguradora->find('list'));
