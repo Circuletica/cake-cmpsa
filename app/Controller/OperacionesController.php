@@ -14,13 +14,16 @@ class OperacionesController extends AppController {
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
 	$this->loadModel('Proveedor');
-	$proveedores = $this->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
-	    'recursive' => 1
-	)
-    );
+	$proveedores = $this->Proveedor->find(
+	    'list',
+	    array(
+		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
+	    )
+	);
 	$this->set('proveedores',$proveedores);
+
 	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
 	//por ej.
 	//$passedArgs['Search.palabras'] = mipalabra
@@ -69,14 +72,21 @@ class OperacionesController extends AppController {
 	    $title[] ='Proveedor: '.$proveedores[$criterio];
 	}
 
-	$this->Operacion->bindModel(array(
-	    'belongsTo' => array(
-		'CalidadNombre' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+	$this->Operacion->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'CalidadNombre' => array(
+			'foreignKey' => false,
+			'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+		    ),
+		    'Proveedor' => array(
+			'className' => 'Empresa',
+			'foreignKey' => false,
+			'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+		    )
 		)
 	    )
-	));
+	);
 	$operaciones = $this->paginate();
 	//pasamos los datos a la vista
 	$this->set(compact('operaciones','title'));
@@ -92,6 +102,20 @@ class OperacionesController extends AppController {
 	    );
 	}
 	$contrato_id = $this->params['named']['from_id'];
+
+	//necesitamos la lista de proveedor_id/nombre para rellenar el select
+	//del formulario de busqueda
+	$this->loadModel('Proveedor');
+	$proveedores = $this->Proveedor->find(
+	    'list',
+	    array(
+		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
+	    )
+	);
+	$this->set('proveedores',$proveedores);
+
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
 	$contrato = $this->Operacion->Contrato->find('first', array(
@@ -277,20 +301,29 @@ class OperacionesController extends AppController {
 	    $this->redirect(array('action'=>'index'));
 	}
 	$this->Operacion->id = $id;
-	$operacion = $this->Operacion->find('first', array(
-	    'conditions' => array('Operacion.id' => $id),
-	    'recursive' => 3
-	)
-    );
+	$this->loadModel('Asociado');
+	$asociados = $this->Asociado->find(
+	    'all',
+	    array(
+		'fields' => array(
+		    'Asociado.id',
+		    'Empresa.codigo_contable',
+		    'Empresa.nombre_corto'
+		),
+		'order' => array('Empresa.codigo_contable' => 'asc'),
+		'recursive' => 1
+	    )
+	);
+	$operacion = $this->Operacion->find(
+	    'first',
+	    array(
+		'conditions' => array('Operacion.id' => $id),
+		'recursive' => 3
+	    )
+	);
 	$this->set('operacion', $operacion);
-	$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
-	    'fields' => array('Asociado.id','Asociado.codigo_contable','Asociado.nombre_corto'),
-	    'order' => array('Asociado.codigo_contable' => 'ASC'),
-	    'recursive' => 1
-	)
-    );
 	//reindexamos los asociados por codigo contable
-	$asociados = Hash::combine($asociados, '{n}.Asociado.codigo_contable', '{n}');
+	$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
 	ksort($asociados);
 	$this->set('asociados', $asociados);
 	$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
@@ -401,7 +434,7 @@ endif;
 	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
 	    'Peso' => $peso
 	);	
-	endforeach;
+endforeach;
 $columnas_reparto = array_keys($lineas_reparto[0]);
 //indexamos el array por el codigo de asociado
 $lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
@@ -426,8 +459,8 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 	    $this->Session->setFlash('URL mal formada Operación/view_trafico ');
 	    $this->redirect(array('action'=>'index_trafico'));
 	}
-$this->view($id);
-$this->render('view_trafico');
+	$this->view($id);
+	$this->render('view_trafico');
     }
 
     public function delete($id = null) {

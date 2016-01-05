@@ -46,6 +46,13 @@ echo $this->Html->tableCells(
 	    )
 	),
 	$this->Form->input(
+	    'operacion_id',
+	    array(
+		'empty' => true,
+		'label' => 'Operación'
+	    )
+	),
+	$this->Form->input(
 	    'almacen_transporte_id',
 	    array(
 		'empty' => true,

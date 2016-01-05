@@ -11,7 +11,7 @@ $this->Html->addCrumb('Contrato '.$operacion['Contrato']['referencia'],'/contrat
 
 echo 'Contrato: '.$operacion['Contrato']['referencia']."\n";
 echo "<p>\n";
-echo 'Proveedor: '.$operacion['Contrato']['Proveedor']['Empresa']['nombre']."\n";
+echo 'Proveedor: '.$operacion['Contrato']['Proveedor']['nombre_corto']."\n";
 echo "<p>\n";
 echo 'Calidad: '.$operacion['Contrato']['CalidadNombre']['nombre']."\n";
 echo "<p>\n";

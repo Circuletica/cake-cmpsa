@@ -1,4 +1,4 @@
-<h1>Modificar Contrato</h1>
+<h1>Modificar Contrato <?php echo $contrato['Contrato']['referencia'] ?></h1>
 <p>
 <?php
 $this->Html->addCrumb('Contratos', '/contratos');

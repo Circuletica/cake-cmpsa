@@ -75,6 +75,23 @@ class TransportesController extends AppController {
 	);
 	$this->set(compact('agentes'));
 
+	$this->loadModel('Aseguradora');
+	$aseguradoras = $this->Aseguradora->find('list',array(
+	    'fields' => array(
+		'Aseguradora.id',
+		'Empresa.nombre_corto'),
+	    'recursive' => 1)
+	);
+	$this->set(compact('aseguradoras'));
+
+	$this->loadModel('Almacen');
+	$almacenes = $this->Almacen->find('list',array(
+	    'fields' => array(
+		'Almacen.id',
+		'Empresa.nombre_corto'),
+	    'recursive' => 1)
+	);
+	$this->set(compact('almacenes'));
 
 	//sacamos los datos de la operacion  al que pertenece la linea
 	//nos sirven en la vista para detallar campos
@@ -121,67 +138,56 @@ class TransportesController extends AppController {
 	    )));		
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
 
-
-	$this->set('almacenes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
+	//$this->set('almacenes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
 	$this->set('almacen_transportes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
 	//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
-	$this->set('aseguradoras', $this->Transporte->Aseguradora->find('list', array(
-	    'fields' => array(
-		'Aseguradora.id',
-		'Aseguradora.nombre_corto'),
-	    'recursive' => 1))
-	);
 
 	$this->set('operacion',$operacion);
 	$transporte = $this->Transporte->find('all');	
 	$this->set('transporte',$transporte);
 	//Calculo la cantidad de bultos transportados
-	if($operacion['Operacion']['id']!= NULL):
+	if($operacion['Operacion']['id']!= NULL) {
 	    $suma = 0;
-	$transportado=0;
-	foreach ($operacion['Transporte'] as $suma):
-	    if ($transporte['operacion_id']=$operacion['Operacion']['id']):
-		$transportado = $transportado + $suma['cantidad_embalaje'];
-endif;
-endforeach;
-endif;
-$this->set('transportado',$transportado);
-
-
-//NO NECESARIO SE PASA A INDEX LINEA TRANSPORTE
-$almacenaje = $this->Transporte->AlmacenTransporte->find('first', array(
-    'conditions' => array('Transporte.id' => $id),
-    'recursive' => 2,
-    'fields' => array(
-	'AlmacenTransporte.cantidad_cuenta',
-	'AlmacenTransporte.cuenta_almacen')
-    ));
-$this->set('almacenajes',$almacenaje);		
-
-
-
-if($this->request->is('post')){
-    //al guardar la linea, se incluye a qué operacion pertenece
-    //debug($this->params['named']['from_id']);
-    $this->request->data['Transporte']['operacion_id'] = $id;
-
-    if($this->request->data['Transporte']['cantidad_embalaje'] <= ($operacion['PesoOperacion']['cantidad_embalaje'] - $transportado)){
-	if($this->Transporte->save($this->request->data)){
-	    $this->Session->setFlash('Línea de transporte guardada');
-	    $this->redirect(array(
-		'controller' => $this->params['named']['from_controller'],
-		'action' => 'view_trafico',
-		$id
-	    ));
-	}else{
-	    $this->Session->setFlash('Línea de transporte NO guardada');
+	    $transportado=0;
+	    foreach ($operacion['Transporte'] as $suma){
+		if ($transporte['operacion_id']=$operacion['Operacion']['id']) {
+		    $transportado = $transportado + $suma['cantidad_embalaje'];
+		}
+	    }
 	}
-    }else{
-	$this->Session->setFlash('La cantidad de bultos debe ser inferior');
-    }
-}
+	$this->set('transportado',$transportado);
 
 
+	//NO NECESARIO SE PASA A INDEX LINEA TRANSPORTE
+	$almacenaje = $this->Transporte->AlmacenTransporte->find('first', array(
+	    'conditions' => array('Transporte.id' => $id),
+	    'recursive' => 2,
+	    'fields' => array(
+		'AlmacenTransporte.cantidad_cuenta',
+		'AlmacenTransporte.cuenta_almacen')
+	    ));
+	$this->set('almacenajes',$almacenaje);		
+
+	if($this->request->is('post')){
+	    //al guardar la linea, se incluye a qué operacion pertenece
+	    //debug($this->params['named']['from_id']);
+	    $this->request->data['Transporte']['operacion_id'] = $id;
+
+	    if($this->request->data['Transporte']['cantidad_embalaje'] <= ($operacion['PesoOperacion']['cantidad_embalaje'] - $transportado)){
+		if($this->Transporte->save($this->request->data)){
+		    $this->Session->setFlash('Línea de transporte guardada');
+		    $this->redirect(array(
+			'controller' => $this->params['named']['from_controller'],
+			'action' => 'view_trafico',
+			$id
+		    ));
+		}else{
+		    $this->Session->setFlash('Línea de transporte NO guardada');
+		}
+	    }else{
+		$this->Session->setFlash('La cantidad de bultos debe ser inferior');
+	    }
+	}
     }
 
     //PENDIENTE DE CAMBIAR POR EL FORM

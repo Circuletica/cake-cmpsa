@@ -81,25 +81,26 @@ class LineaMuestrasController extends AppController {
 	    $linea_muestra = $this->LineaMuestra->find(
 		'first',
 		array(
-		    'conditions' => array('LineaMuestra.id' => $id),
+		    'conditions' => array(
+			'LineaMuestra.id' => $id
+		    ),
 		    'recursive' => 4,
 		    'contain' => array(
 			'Muestra' => array(
 			    'CalidadNombre',
-			    'Contrato' => array(
-				'Operacion' => array(
-				    'fields' => array(
-					'id',
-					'referencia',
-					'embalaje_id'
-				    ),
-				    'Transporte' => array(
-					'fields' => array(
-					    'id'
-					),
-					'AlmacenTransporte'
-				    )
-				)
+			    'Contrato'
+			),
+			'Operacion' => array(
+			    'fields' => array(
+				'id',
+				'referencia',
+				'embalaje_id'
+			    ),
+			    'Transporte' => array(
+				'fields' => array(
+				    'id'
+				),
+				'AlmacenTransporte'
 			    )
 			)
 		    )
@@ -210,6 +211,8 @@ class LineaMuestrasController extends AppController {
 	//)
 	$almacen_transportes = Hash::combine($almacen_transportes,'{n}.id','{n}.cuenta_almacen');
 	$this->set('almacenTransportes', $almacen_transportes);
+	$operaciones = Hash::combine($operaciones,'{n}.id','{n}.referencia');
+	$this->set(compact('operaciones'));
 
 	$this->set('action', $this->action);
 

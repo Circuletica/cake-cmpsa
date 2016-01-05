@@ -25,7 +25,7 @@
 	echo "<table>\n";
 	echo $this->Html->tableHeaders(array(
 		$this->Paginator->sort('Contrato.referencia','Referencia'),
-		$this->Paginator->sort('Empresa.nombre_corto','Proveedor'),
+		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 		$this->Paginator->sort('Incoterm.nombre','Incoterm'),
 		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
 		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
@@ -48,7 +48,7 @@
 		$posicion_bolsa = $mes.' '.$anyo;
 		echo $this->Html->tableCells(array(
 			$contrato['Contrato']['referencia'],
-			$contrato['Empresa']['nombre_corto'],
+			$contrato['Proveedor']['nombre_corto'],
 			$contrato['Incoterm']['nombre'],
 			$contrato['CalidadNombre']['nombre'],
 			$contrato['Contrato']['peso_comprado'].'kg',

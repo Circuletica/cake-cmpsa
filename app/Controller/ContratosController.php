@@ -4,19 +4,22 @@ class ContratosController extends AppController {
     public function index() {
 	$this->paginate['order'] = array('Contrato.posicion_bolsa' => 'asc');
 	$this->paginate['contain'] = array(
-	    'Empresa',
+	    'Proveedor',
 	    'Incoterm',
 	    'CalidadNombre',
 	    'CanalCompra'
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
-	$proveedores = $this->Contrato->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
-	    'recursive' => 1
-	)
-    );
+	$this->loadModel('Proveedor');
+	$proveedores = $this->Proveedor->find(
+	    'list',
+	    array(
+		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
+	    )
+	);
 	$this->set('proveedores',$proveedores);
 
 	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
@@ -77,14 +80,6 @@ class ContratosController extends AppController {
 	    $title[] = 'Fecha: '.$criterio;
 	}
 
-	$this->Contrato->bindModel(array(
-	    'belongsTo' => array(
-		'Empresa' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Empresa.id = Contrato.proveedor_id')
-		)
-	    )
-	));
 	$contratos=$this->paginate();
 
 	//generamos el título
@@ -141,20 +136,18 @@ class ContratosController extends AppController {
     }
 
     public function add() {
-	$this->set(
-	    'proveedores',
-	    $this->Contrato->Proveedor->find(
-		'list',
-		array(
-		    'fields' => array(
-			'Proveedor.id',
-			'Empresa.nombre_corto'
-		    ),
-		    'recursive' => 1,
-		    'order' => array('Empresa.nombre_corto' => 'ASC')
-		)
+	//necesitamos la lista de proveedor_id/nombre para rellenar el select
+	//del formulario de busqueda
+	$this->loadModel('Proveedor');
+	$proveedores = $this->Proveedor->find(
+	    'list',
+	    array(
+		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
 	    )
 	);
+	$this->set('proveedores',$proveedores);
 	$this->set(
 	    'puertoCargas',
 	    $this->Contrato->PuertoCarga->find(
@@ -262,6 +255,18 @@ class ContratosController extends AppController {
 	    $this->Session->setFlash('URL mal formado');
 	    $this->redirect(array('action'=>'index'));
 	}
+	//necesitamos la lista de proveedor_id/nombre para rellenar el select
+	//del formulario de busqueda
+	$this->loadModel('Proveedor');
+	$proveedores = $this->Proveedor->find(
+	    'list',
+	    array(
+		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
+	    )
+	);
+	$this->set('proveedores',$proveedores);
 	$this->Contrato->id = $id;
 	$contrato = $this->Contrato->findById($id);
 	$this->set('contrato',$contrato);
@@ -281,12 +286,6 @@ class ContratosController extends AppController {
 		);
 	$this->set('puertoDestinos', $this->Contrato->PuertoDestino->find('list', array(
 			'order' => array('PuertoDestino.nombre' => 'ASC')
-			))
-		);
-	$this->set('proveedores', $this->Contrato->Proveedor->find('list', array(
-			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-			'recursive' => 1,
-			'order' => array('Empresa.nombre_corto' => 'ASC')
 			))
 		);
 	//Donde se compra el café (London, New-York, ...)
