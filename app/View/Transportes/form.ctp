@@ -35,10 +35,21 @@ if ($action == 'edit') {
     <br>
     <div class="col3">
     <?php
-    echo $this->Form->input('nombre_vehiculo', array('label' => 'Nombre del transporte'));
-    echo $this->Form->input('matricula', array('label' => 'BL/Matrícula'));
+    echo $this->Form->input('nombre_vehiculo',
+        array(
+            'label' => 'Nombre del transporte',
+            'autofocus' => 'autofocus'
+            )
+        );
+    echo $this->Form->input('matricula',
+        array('label' => 'BL/Matrícula'
+            )
+        );
     //echo $this->Form->input('embalaje_id',array('label'=>'Tipo de bulto','empty' =>true));
-    echo $this->Form->input('cantidad_embalaje', array('label' => 'Cantidad de '.$embalaje));
+    echo $this->Form->input('cantidad_embalaje',
+        array('label' => 'Cantidad de '.$embalaje
+            )
+        );
     ?>
     </div>
     <div class="col4">

@@ -99,17 +99,7 @@
 	endforeach;
 ?>	</table>
 <?php
-	if($operacion['Operacion']['id']!= NULL):
-	$suma = 0;
-	$transportado=0;
-		foreach ($operacion['Transporte'] as $suma):
-			if ($transporte['operacion_id']=$operacion['Operacion']['id']):
-			$transportado = $transportado + $suma['cantidad_embalaje'];
-			endif;
-		endforeach;
-	
-		echo "<h4>Bultos transportados: ".$transportado."</h4>";
-	endif;
+	echo "<h4>Bultos transportados: ".$transportado."</h4>";
 ?>
 		<div class="btabla">
 		<?php

@@ -87,6 +87,8 @@ class TransportesController extends AppController {
 	);
 	$this->set(compact('aseguradoras'));
 
+	
+
 	//sacamos los datos de la operacion  al que pertenece la linea
 	//nos sirven en la vista para detallar campos
 	$operacion = $this->Transporte->Operacion->find('first', array(
@@ -131,7 +133,7 @@ class TransportesController extends AppController {
 		'contain' => array('Pais'),
 		'conditions' => array( 'Pais.nombre' => 'España')
 	    )));		
-	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
+
 
 	$this->set('operacion',$operacion);
 	$transporte = $this->Transporte->find('all');	

@@ -458,7 +458,6 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 	//$this->set('transporte',$transporte);
 	//el nombre de calidad concatenado esta en una view de MSQL
 	$this->loadModel('ContratoEmbalaje');
-
 	$embalaje = $this->ContratoEmbalaje->find(
 	    'first',
 	    array(
@@ -469,6 +468,21 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 		'fields' => array('Embalaje.nombre','ContratoEmbalaje.peso_embalaje_real')
 	    )
 	);
+
+	//Calculo la cantidad de bultos transportados
+	if($operacion['Operacion']['id']!= NULL){
+		$suma = 0;
+		$transportado=0;
+		foreach ($operacion['Transporte'] as $suma){
+			if ($transporte['operacion_id']=$operacion['Operacion']['id']){
+			$transportado = $transportado + $suma['cantidad_embalaje'];
+			}
+		}
+	}
+	$this->set('transportado',$transportado);
+
+
+
 	$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 	//mysql almacena la fecha en formato ymd
 	//	$this->Date->format($operacion['Contrato']['fecha_transporte']);

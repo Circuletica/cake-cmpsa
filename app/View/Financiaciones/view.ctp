@@ -144,7 +144,8 @@ echo $this->html->tablecells(array(
     )
 )
 	);
-echo"</table>\n";
+echo"</table><br>\n";
+
 $this->end();
 
 $this->start('lines2');

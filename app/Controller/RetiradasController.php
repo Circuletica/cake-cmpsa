@@ -76,20 +76,7 @@ class RetiradasController extends AppController {
     }
 
      public function form($id) { //esta acción vale tanto para edit como add
-	$operacion = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
-	    'first',
-	    array(
-		'conditions' => array('Operacion.id' => $id),
-		'recursive' => 4,
-		'contain' => array(
-		    'Contrato' => array(
-		    		'Proveedor',
-		    		'CalidadNombre',
-		    		'Incoterm'),
-		    			)
-	    )
-	);
-	$this->set(compact('operacion'));
+
 	
 	//Listamos el nombre de asociados
 	$this->loadModel('Asociado');	
@@ -103,16 +90,20 @@ class RetiradasController extends AppController {
 	);
 	$this->set(compact('asociados'));
 
-	//Listamos los almacenes
-	$almacentransporte = $this->Retirada->AlmacenTransporte->find('first', array(
-	    'conditions' => array('AlmacenTransporte.Transporte.Operacion.id' => $id),
-	    'recursive' => 3,
-	    'fields' => array(
-		'AlmacenTransporte.id',
-		'AlmacenTransporte.cuenta_almacen',
-		'AlmacenTransporte.cantidad_cuenta',
-		'AlmacenTransporte.marca_almacen')
-		));
+	//Listamos cuenta de los almacenes
+	$operacion = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find('first',array(
+			'conditions' => array('Operacion.id' => $id)
+				));
+
+    $almacen_transportes = array();
+    foreach ($operaciones as $operacion) {
+		$transportes = $operacion['Transporte'];
+			foreach ($transportes as $transporte) {
+			    $almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
+			}
+	  }
+	$this->set('almacentransportes', $almacen_transportes);
+	$this->set(compact('operaciones'));
 
 
 	$this->set('action', $this->action);

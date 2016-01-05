@@ -17,9 +17,12 @@ if ($action == 'edit') {
     echo $this->Form->input('asociado_id',
          array(
               'label'=>'Nombre asociado',
-              'empty' =>array('' => 'Selecciona')
+              'empty' =>array('' => 'Selecciona'),
+              'autofocus' => 'autofocus'
                ));  
+    echo $this->Form->input('almacen_id');
        ?>
+    
     <div class="linea">
     <?php
     echo $this->Form->input('fecha_retirada',array(
