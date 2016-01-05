@@ -50,7 +50,7 @@ echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
-echo $this->Html->link($muestra['Proveedor']['Empresa']['nombre_corto'], array(
+echo $this->Html->link($muestra['Proveedor']['nombre_corto'], array(
     'controller' => 'proveedores',
     'action' => 'view',
     $muestra['Proveedor']['id'])
@@ -66,7 +66,9 @@ echo "</dd>";
 //echo "</dd>";
 echo "  <dt>Muestra embarque</dt>\n";
 echo "<dd>";
-echo 'registro muestra embarque'.'&nbsp;';
+echo (isset($muestra['MuestraEmbarque']['registro']) ?
+    $muestra['MuestraEmbarque']['registro'] : '--')
+    .'&nbsp;';
 echo "</dd>";
 echo "  <dt>Incidencia</dt>\n";
 echo "<dd>";

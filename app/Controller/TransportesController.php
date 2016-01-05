@@ -27,8 +27,8 @@ class TransportesController extends AppController {
 	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
 	$this->set('embalaje',$embalaje);
 
-	$almacenes = $this->Transporte->AlmacenTransporte->Almacen->find('list');
-	$this->set('almacenes',$almacenes);
+	//	$almacenes = $this->Transporte->AlmacenTransporte->Almacen->find('list');
+	//	$this->set('almacenes',$almacenes);
     }
 
 
@@ -61,9 +61,11 @@ class TransportesController extends AppController {
 	    array(
 		'fields' => array(
 		    'Naviera.id',
-		    'Empresa.nombre_corto'),
-		'recursive' => 1)
-	    );
+		    'Empresa.nombre_corto'
+		),
+		'recursive' => 1
+	    )
+	);
 	$this->set(compact('navieras'));
 
 	$this->loadModel('Agente');
@@ -139,7 +141,7 @@ class TransportesController extends AppController {
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
 
 	//$this->set('almacenes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
-	$this->set('almacen_transportes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
+	//$this->set('almacen_transportes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
 	//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
 
 	$this->set('operacion',$operacion);

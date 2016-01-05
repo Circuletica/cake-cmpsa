@@ -99,24 +99,24 @@ class MuestrasController extends AppController {
 	}
 
 	$muestras =  $this->paginate();
-//	//ahora algo de magia, tenemos que rescatar el nombre del proveedor
-//	//que no esta necesariamente en $muestra['Proveedor']['nombre_corto']
-//	//lo mismo con la calidad
-//	//Vamos pues a 'normalizar' el array que recibe la View
-//	foreach ($muestras as $clave => $muestra) {
-//	    if ($muestra['Muestra']['proveedor_id'] == null) {
-//		if ($muestra['MuestraEmbarque']['proveedor_id'] == null) {
-//		    $muestras[$clave]['Proveedor']['nombre_corto'] = $muestra['Contrato']['Proveedor']['nombre_corto'];
-//		    $muestras[$clave]['CalidadNombre']['nombre'] = $muestra['Contrato']['CalidadNombre']['nombre'];
-//		} else {
-//		    $muestras[$clave]['Proveedor']['nombre_corto'] = $muestra['MuestraEmbarque']['Proveedor']['nombre_corto'];
-//		    $muestras[$clave]['CalidadNombre']['nombre'] = $muestra['MuestraEmbarque']['CalidadNombre']['nombre'];
-//		}
-//	    }
-//	    //ya no sirven estos subarrays
-//	    unset($muestras[$clave]['MuestraEmbarque']);
-//	    unset($muestras[$clave]['Contrato']);
-//	}
+	//	//ahora algo de magia, tenemos que rescatar el nombre del proveedor
+	//	//que no esta necesariamente en $muestra['Proveedor']['nombre_corto']
+	//	//lo mismo con la calidad
+	//	//Vamos pues a 'normalizar' el array que recibe la View
+	//	foreach ($muestras as $clave => $muestra) {
+	//	    if ($muestra['Muestra']['proveedor_id'] == null) {
+	//		if ($muestra['MuestraEmbarque']['proveedor_id'] == null) {
+	//		    $muestras[$clave]['Proveedor']['nombre_corto'] = $muestra['Contrato']['Proveedor']['nombre_corto'];
+	//		    $muestras[$clave]['CalidadNombre']['nombre'] = $muestra['Contrato']['CalidadNombre']['nombre'];
+	//		} else {
+	//		    $muestras[$clave]['Proveedor']['nombre_corto'] = $muestra['MuestraEmbarque']['Proveedor']['nombre_corto'];
+	//		    $muestras[$clave]['CalidadNombre']['nombre'] = $muestra['MuestraEmbarque']['CalidadNombre']['nombre'];
+	//		}
+	//	    }
+	//	    //ya no sirven estos subarrays
+	//	    unset($muestras[$clave]['MuestraEmbarque']);
+	//	    unset($muestras[$clave]['Contrato']);
+	//	}
 
 	//generamos el título
 	if (isset($tipo)) { //en caso de que se quiera mostrar todos los tipos de muestra
@@ -208,22 +208,24 @@ endif;
 	} else {
 	    $this->request->data['Muestra']['tipo'] = $this->passedArgs['tipo_id'];
 	}
-	//el titulado completo de la Calidad sale de una vista
-	//de MySQL que concatena descafeinado, pais y descripcion
-	$calidades = $this->Muestra->CalidadNombre->find('list');
-	$this->set('calidades',$calidades);
+	$this->loadModel('Proveedor');
 	$this->set(
 	    'proveedores',
-	    $this->Muestra->Proveedor->find(
+	    $this->Proveedor->find(
 		'list',
 		array(
 		    'fields' => array(
 			'Proveedor.id',
-			'Proveedor.nombre_corto'),
+			'Empresa.nombre_corto'
+		    ),
 		    'recursive' => 1
 		)
 	    )
 	);
+	//el titulado completo de la Calidad sale de una vista
+	//de MySQL que concatena descafeinado, pais y descripcion
+	$calidades = $this->Muestra->CalidadNombre->find('list');
+	$this->set('calidades',$calidades);
 	$this->set(
 	    'contratos',
 	    $this->Muestra->Contrato->find('list')
@@ -328,18 +330,20 @@ endif;
 	    //contrato_id, proveedor_id y calidad_id para meterlos en el registro de
 	    //la propia tabla de muestras si no queremos problemas con el paginador luego
 	    if (!isset($this->request->data['Muestra']['proveedor_id'])) {
-		if (!isset($this->request->data['Muestra']['muestra_embarque_id'])) {
+		debug($this->request->data['Muestra']);
+		//if (!isset($this->request->data['Muestra']['muestra_embarque_id'])) {
+		if ($this->request->data['Muestra']['muestra_embarque_id'] == '') {
 		    $this->request->data['Muestra']['proveedor_id'] =
-		       	$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['Proveedor']['id'];
+			$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['Proveedor']['id'];
 		    $this->request->data['Muestra']['calidad_id'] =
-		       	$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['CalidadNombre']['id'];
+			$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['CalidadNombre']['id'];
 		} else {
 		    $this->request->data['Muestra']['proveedor_id'] =
-		       	$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['proveedor_id'];
+			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['proveedor_id'];
 		    $this->request->data['Muestra']['calidad_id'] =
-		       	$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['calidad_id'];
+			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['calidad_id'];
 		    $this->request->data['Muestra']['contrato_id'] =
-		       	$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['id'];
+			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['id'];
 		}
 	    }
 	    if($this->Muestra->save($this->request->data)) {
@@ -359,6 +363,23 @@ endif;
 	    $this->Session->setFlash('URL mal formada');
 	    $this->redirect(array('action'=>'index'));
 	}
+	$this->loadModel('Proveedor');
+	$this->set(
+	    'proveedores',
+	    $this->Proveedor->find(
+		'list',
+		array(
+		    'fields' => array(
+			'Proveedor.id',
+			'Empresa.nombre_corto'
+		    ),
+		    'recursive' => 1,
+		    'order' => array(
+			'Empresa.nombre_corto' => 'ASC'
+		    )
+		)
+	    )
+	);
 	$this->Muestra->id = $id;
 	$muestra = $this->Muestra->findById($id);
 	$this->set('muestra',$muestra);
@@ -370,11 +391,6 @@ endif;
 	//de MySQL que concatena descafeinado, pais y descripcion
 	$calidades = $this->Muestra->CalidadNombre->find('list');
 	$this->set('calidades',$calidades);
-	$this->set('proveedores', $this->Muestra->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre'),
-	    'recursive' => 1
-	))
-    );
 	//$this->set('almacenes', $this->Muestra->Almacen->find('list', array(
 	//    'fields' => array('Almacen.id','Empresa.nombre'),
 	//    'recursive' => 1))

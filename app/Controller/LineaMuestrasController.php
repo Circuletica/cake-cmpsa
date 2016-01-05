@@ -165,6 +165,8 @@ class LineaMuestrasController extends AppController {
 	    $muestra += $muestra['Muestra'];
 	    unset($muestra['Muestra']);
 	}
+	//legado a este punto, vengamos de add o edit
+	//$muestra tiene el mismo valor
 	$this->set('muestra',$muestra);
 
 	//necesitamos un array de tipo 'list' de cakephp
@@ -183,7 +185,10 @@ class LineaMuestrasController extends AppController {
 	    foreach ($operaciones as $operacion) {
 		$transportes = $operacion['Transporte'];
 		foreach ($transportes as $transporte) {
-		    $almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
+		    $almacen_transportes = array_merge(
+			$almacen_transportes,
+			$transporte['AlmacenTransporte']
+		    );
 		}
 	    }
 	}
@@ -211,6 +216,7 @@ class LineaMuestrasController extends AppController {
 	//)
 	$almacen_transportes = Hash::combine($almacen_transportes,'{n}.id','{n}.cuenta_almacen');
 	$this->set('almacenTransportes', $almacen_transportes);
+
 	$operaciones = Hash::combine($operaciones,'{n}.id','{n}.referencia');
 	$this->set(compact('operaciones'));
 

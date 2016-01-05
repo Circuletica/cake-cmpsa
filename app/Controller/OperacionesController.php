@@ -422,31 +422,31 @@ endif;
 	$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
 	$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 	$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);	
-	$this->set('fecha_carga', $transporte['Transporte']['fecha_carga']);
+	//$this->set('fecha_carga', $transporte['Transporte']['fecha_carga']);
 
 	//Líneas de reparto
-	foreach ($operacion['AsociadoOperacion'] as $linea):
+	foreach ($operacion['AsociadoOperacion'] as $linea) {
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-	$codigo = substr($linea['Asociado']['codigo_contable'],-2);
-	$lineas_reparto[] = array(
-	    'Código' => $codigo,
-	    'Nombre' => $linea['Asociado']['nombre_corto'],
-	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
-	    'Peso' => $peso
-	);	
-endforeach;
-$columnas_reparto = array_keys($lineas_reparto[0]);
-//indexamos el array por el codigo de asociado
-$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
-//se ordena por codigo ascendente
-ksort($lineas_reparto);
-$this->set('columnas_reparto',$columnas_reparto);
-$this->set('lineas_reparto',$lineas_reparto);
-$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
-//comprobamos si ya existe una financiacion para esta operación
-if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
-    $this->set('existe_financiacion', 1);
-}
+	    $codigo = substr($linea['Asociado']['codigo_contable'],-2);
+	    $lineas_reparto[] = array(
+		'Código' => $codigo,
+		'Nombre' => $linea['Asociado']['nombre_corto'],
+		'Cantidad' => $linea['cantidad_embalaje_asociado'],
+		'Peso' => $peso
+	    );	
+	}
+	$columnas_reparto = array_keys($lineas_reparto[0]);
+	//indexamos el array por el codigo de asociado
+	$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
+	//se ordena por codigo ascendente
+	ksort($lineas_reparto);
+	$this->set('columnas_reparto',$columnas_reparto);
+	$this->set('lineas_reparto',$lineas_reparto);
+	$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
+	//comprobamos si ya existe una financiacion para esta operación
+	if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
+	    $this->set('existe_financiacion', 1);
+	}
     }
 
     public function index_trafico() {
