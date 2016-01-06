@@ -1,6 +1,5 @@
 <?php
 $this->Html->addCrumb('Operaciones','/operaciones');
-//$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 
 if ($action == 'add') {
     echo "<h2>Añadir Financiación a Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";

@@ -99,24 +99,6 @@ class MuestrasController extends AppController {
 	}
 
 	$muestras =  $this->paginate();
-	//	//ahora algo de magia, tenemos que rescatar el nombre del proveedor
-	//	//que no esta necesariamente en $muestra['Proveedor']['nombre_corto']
-	//	//lo mismo con la calidad
-	//	//Vamos pues a 'normalizar' el array que recibe la View
-	//	foreach ($muestras as $clave => $muestra) {
-	//	    if ($muestra['Muestra']['proveedor_id'] == null) {
-	//		if ($muestra['MuestraEmbarque']['proveedor_id'] == null) {
-	//		    $muestras[$clave]['Proveedor']['nombre_corto'] = $muestra['Contrato']['Proveedor']['nombre_corto'];
-	//		    $muestras[$clave]['CalidadNombre']['nombre'] = $muestra['Contrato']['CalidadNombre']['nombre'];
-	//		} else {
-	//		    $muestras[$clave]['Proveedor']['nombre_corto'] = $muestra['MuestraEmbarque']['Proveedor']['nombre_corto'];
-	//		    $muestras[$clave]['CalidadNombre']['nombre'] = $muestra['MuestraEmbarque']['CalidadNombre']['nombre'];
-	//		}
-	//	    }
-	//	    //ya no sirven estos subarrays
-	//	    unset($muestras[$clave]['MuestraEmbarque']);
-	//	    unset($muestras[$clave]['Contrato']);
-	//	}
 
 	//generamos el título
 	if (isset($tipo)) { //en caso de que se quiera mostrar todos los tipos de muestra
@@ -184,30 +166,36 @@ class MuestrasController extends AppController {
     }
 
     public function delete( $id = null) {
-	if (!$id or $this->request->is('get')) :
+	if (!$id or $this->request->is('get')){
 	    throw new MethodNotAllowedException();
-endif;
-if ($this->Muestra->delete($id)):
-    $this->Session->setFlash('Muestra borrada');
-$this->redirect(array('action'=>'index'));
-endif;
+	}
+	if ($this->Muestra->delete($id)) {
+	    $this->Session->setFlash('Muestra borrada');
+	    $this->redirect(array('action'=>'index'));
+	}
     }
 
     public function add() {
-	$this->set('tipos', $this->tipoMuestras);
-	//Si no esta el tipo de muestra en la URL, volvemos
-	//a muestras de oferta
-	if(!isset($this->passedArgs['tipo_id'])) {
-	    $this->Session->setFlash('Error en URL, falta tipo muestra');
-	    $this->redirect(
-		array(
-		    'action' => 'index',
-		    'Search.tipo_id' => 1
-		)
-	    );
-	} else {
-	    $this->request->data['Muestra']['tipo'] = $this->passedArgs['tipo_id'];
+	//$this->form($this->params['named']['from_id']);
+	$this->form();
+	$this->render('form');
+    }
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL');
+	    $this->redirect(array(
+		'action' => 'index',
+		'controller' => 'financiaciones'
+	    ));
 	}
+	$this->form($id);
+	$this->render('form');
+    }
+
+    public function form($id = null) {
+	$this->set('action', $this->action);
+	$tipos = $this->tipoMuestras;
+	$this->set('tipos', $tipos);
 	$this->loadModel('Proveedor');
 	$this->set(
 	    'proveedores',
@@ -222,6 +210,34 @@ endif;
 		)
 	    )
 	);
+
+	//si es un edit, hay que rellenar el id, ya que
+	//si no se hace, al guardar el edit, se va a crear
+	//un _nuevo_ registro, como si fuera un add
+	if (!empty($id)) {
+	    $this->Muestra->id = $id;
+	    $muestra = $this->Muestra->findById($id);
+	    //$this->set('muestra',$muestra);
+	    $tipo = $tipos[$muestra['Muestra']['tipo']];
+	    //$this->request->data['Muestra']['tipo'] = $muestra['Muestra']['tipo'];
+	} else { //es un add()	
+	    //Si no esta el tipo de muestra en la URL, volvemos
+	    //a muestras de oferta
+	    if(!isset($this->passedArgs['tipo_id'])) {
+		$this->Session->setFlash('Error en URL, falta tipo muestra');
+		$this->redirect(
+		    array(
+			'action' => 'index',
+			'Search.tipo_id' => 1
+		    )
+		);
+	    } else {
+		$tipo = $tipos[$this->passedArgs['tipo_id']];
+		$this->request->data['Muestra']['tipo'] = $this->passedArgs['tipo_id'];
+	    }
+	}
+	$this->set('tipo',$tipo);
+
 	//el titulado completo de la Calidad sale de una vista
 	//de MySQL que concatena descafeinado, pais y descripcion
 	$calidades = $this->Muestra->CalidadNombre->find('list');
@@ -324,14 +340,14 @@ endif;
 	$muestrasEmbarque = Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}');
 	$this->set(compact('muestrasEmbarque'));
 
-	if($this->request->is('post')) {
+	//if($this->request->is('post')) {
+	if (!empty($this->request->data)){  //es un POST
 	    //rellenamos los campos del registro que vienen de otras tablas,
 	    //por ejemplo si la muestra tiene muestra de embarque, hay que sacar el
 	    //contrato_id, proveedor_id y calidad_id para meterlos en el registro de
 	    //la propia tabla de muestras si no queremos problemas con el paginador luego
+	    debug('postttt');
 	    if (!isset($this->request->data['Muestra']['proveedor_id'])) {
-		debug($this->request->data['Muestra']);
-		//if (!isset($this->request->data['Muestra']['muestra_embarque_id'])) {
 		if ($this->request->data['Muestra']['muestra_embarque_id'] == '') {
 		    $this->request->data['Muestra']['proveedor_id'] =
 			$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['Proveedor']['id'];
@@ -354,64 +370,69 @@ endif;
 			'Search.tipo_id' => $this->request->data['Muestra']['tipo']
 		    )
 		);
-	    }
-	}
-    }
-
-    public function edit( $id = null) {
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formada');
-	    $this->redirect(array('action'=>'index'));
-	}
-	$this->loadModel('Proveedor');
-	$this->set(
-	    'proveedores',
-	    $this->Proveedor->find(
-		'list',
-		array(
-		    'fields' => array(
-			'Proveedor.id',
-			'Empresa.nombre_corto'
-		    ),
-		    'recursive' => 1,
-		    'order' => array(
-			'Empresa.nombre_corto' => 'ASC'
-		    )
-		)
-	    )
-	);
-	$this->Muestra->id = $id;
-	$muestra = $this->Muestra->findById($id);
-	$this->set('muestra',$muestra);
-	$tipos = $this->tipoMuestras;
-	$this->set('tipos', $tipos);
-	$tipo = $tipos[$muestra['Muestra']['tipo']];
-	$this->set('tipo',$tipo);
-	//el titulado completo de la Calidad sale de una vista
-	//de MySQL que concatena descafeinado, pais y descripcion
-	$calidades = $this->Muestra->CalidadNombre->find('list');
-	$this->set('calidades',$calidades);
-	//$this->set('almacenes', $this->Muestra->Almacen->find('list', array(
-	//    'fields' => array('Almacen.id','Empresa.nombre'),
-	//    'recursive' => 1))
-	//);
-
-	if($this->request->is('get')):
-	    $this->request->data = $this->Muestra->read();
-	else:
-	    if ($this->Muestra->save($this->request->data)):
-		$this->Session->setFlash('Muestra '.
-		$this->request->data['Muestra']['registro'].
-		' modificada con éxito');
-	$this->redirect(array(
-	    'action' => 'view',
-	    $id
-	)
-    );
-	    else:
+	    } else {
 		$this->Session->setFlash('Muestra NO guardada');
-endif;
-endif;
+	    }
+	} else { //es un GET
+	    $this->request->data= $this->Muestra->read(null, $id);
+	}
+	$this->render('form');
     }
+
+//    public function edit( $id = null) {
+//	if (!$id) {
+//	    $this->Session->setFlash('URL mal formada');
+//	    $this->redirect(array('action'=>'index'));
+//	}
+//	$this->loadModel('Proveedor');
+//	$this->set(
+//	    'proveedores',
+//	    $this->Proveedor->find(
+//		'list',
+//		array(
+//		    'fields' => array(
+//			'Proveedor.id',
+//			'Empresa.nombre_corto'
+//		    ),
+//		    'recursive' => 1,
+//		    'order' => array(
+//			'Empresa.nombre_corto' => 'ASC'
+//		    )
+//		)
+//	    )
+//	);
+//	$this->Muestra->id = $id;
+//	$muestra = $this->Muestra->findById($id);
+//	$this->set('muestra',$muestra);
+//	$tipos = $this->tipoMuestras;
+//	$this->set('tipos', $tipos);
+//	$tipo = $tipos[$muestra['Muestra']['tipo']];
+//	$this->set('tipo',$tipo);
+//	//el titulado completo de la Calidad sale de una vista
+//	//de MySQL que concatena descafeinado, pais y descripcion
+//	$calidades = $this->Muestra->CalidadNombre->find('list');
+//	$this->set('calidades',$calidades);
+//	//$this->set('almacenes', $this->Muestra->Almacen->find('list', array(
+//	//    'fields' => array('Almacen.id','Empresa.nombre'),
+//	//    'recursive' => 1))
+//	//);
+//
+//	if($this->request->is('get')) {
+//	    $this->request->data = $this->Muestra->read();
+//	} else {
+//	    if ($this->Muestra->save($this->request->data)) {
+//		$this->Session->setFlash('Muestra '.
+//		$this->request->data['Muestra']['registro'].
+//		' modificada con éxito');
+//	$this->redirect(array(
+//	    'action' => 'view',
+//	    $id
+//	)
+//    );
+//	    } else {
+//		$this->Session->setFlash('Muestra NO guardada');
+//	    }
+//	}
+//    }
 }
 ?>

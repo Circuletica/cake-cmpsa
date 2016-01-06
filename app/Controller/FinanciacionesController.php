@@ -219,20 +219,6 @@ class FinanciacionesController extends AppController {
 	);
 	$this->Financiacion->Banco->Empresa->virtualFields = array();
 	$this->Financiacion->Banco->virtualFields = array();
-//	$bancos_enteros = $this->Financiacion->Banco->find('all', array(
-//	    'fields' => array('Empresa.codigo_contable','Empresa.nombre_corto', 'Banco.id'),
-//	    'order' => array('Empresa.codigo_contable' => 'asc'),
-//	    'recursive' => 1
-//	));
-//	$bancos = Set::combine(
-//	    $bancos_enteros,
-//	    '{n}.Banco.id',
-//	    array(
-//		'{0}'.' '.'{1}',
-//		'{n}.Empresa.codigo_contable',
-//		'{n}.Empresa.nombre_corto'
-//	    )
-//	);
 	$this->set(compact('bancos'));
 	$tipoIvas = $this->Financiacion->TipoIva->find('list');
 	$this->set(compact('tipoIvas'));
