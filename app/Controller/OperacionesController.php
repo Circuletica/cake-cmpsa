@@ -505,17 +505,19 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 	//Líneas de reparto
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-		$lineas_reparto[] = array(
+		$lineas_retirada[] = array(
 	 	   'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
 	 	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
-	 	   'Peso' => $peso.' Kg'
+	 	   'Peso' => $peso.' Kg',
+	 	   'Cantidad_retirado' => $linea['Asociado']['Retirada']['embalaje_retirado'].' Kg',
+	 	   'Peso_retirado' => $linea['Asociado']['Retirada']['peso_retirado']
 		);	
 	endforeach;
-	//$columnas_reparto = array_keys($lineas_reparto[0]);
+	//$columnas_retirada = array_keys($lineas_retirada[0]);
 	//indexamos el array por el codigo de asociado
 	//se ordena por codigo ascendente
-	ksort($lineas_reparto);
-	$this->set('lineas_reparto',$lineas_reparto);
+	ksort($lineas_retirada);
+	$this->set('lineas_retirada',$lineas_retirada);
 
     }
 

@@ -13,19 +13,19 @@
 			'action'=>'edit',
 			$transporte['Transporte']['id']
 			),
-			array('title'=>'Modificar Transporte',
+			array('title'=>'Modificar Retirada',
 				'escape'=>false))
 
 		.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',
 			array(
 			'action'=>'delete',
-			$transporte['Transporte']['id'],
-			'from_controller' => 'transportes',
+			$retirada['Retirada']['id'],
+			'from_controller' => 'retiradas',
 			'from_id' => $transporte['Operacion']['id']
 			),		
 			array(
 			'escape'=>false, 'title'=> 'Borrar Transporte',
-			'confirm'=>'¿Realmente quiere borrar la línea con BL/Matrícula '.$transporte['Transporte']['matricula'].'?')
+			'confirm'=>'¿Realmente quiere borrar la retirada del '.$retirada['Retirada']['fecha_retirada'].'?')
 		);
 	?>
 	</li>

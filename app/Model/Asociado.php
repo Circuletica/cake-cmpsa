@@ -1,6 +1,6 @@
 <?php
 class Asociado extends AppModel {
-	public $recursive = 2;
+	public $recursive = 3;
 	public $hasOne = array('Empresa' => array(
 		'className' => 'Empresa',
 		'foreignKey' => 'id')
@@ -14,6 +14,9 @@ class Asociado extends AppModel {
 			'className' => 'AsociadoOperacion',
 			'foreignKey' => 'asociado_id'
 		),
-		//'Anticipo'
+		'Retirada' => array(
+			'className' => 'Retirada',
+			'foreignKey' => 'asociado_id'
+		)		
 	);
 }
