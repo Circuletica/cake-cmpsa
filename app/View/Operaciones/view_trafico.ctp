@@ -123,14 +123,32 @@
 				$linea_retirada['Peso'],
 				$linea_retirada['Cantidad_retirado'],
 				$linea_retirada['Peso_retirado'],
-				//$this->Button->viewLine('retiradas',$linea['operacion_id'],'operaciones',$linea['operacion_id'])
+				$this->Button->viewLine('retiradas',$operacion['Operacion']['id'],'retiradas',$operacion['Operacion']['id'])
 				)
 			);
 		endforeach;
+		foreach ($lineas_retirada as $linea_retirada):
+			echo $this->Html->tableCells(array(
+				$linea_retirada['Nombre'],
+				$linea_retirada['Cantidad'],
+				$linea_retirada['Peso'],
+				$linea_retirada['Cantidad_retirado'],
+				$linea_retirada['Peso_retirado'],
+				$this->Button->viewLine('retiradas',$linea_retirada['AlmacenTransporte']['Retirada']['id'],'retiradas',$operacion['Operacion']['id'])
+				)
+			);
+		endforeach;
+
+
+	
 		?>
 		</table>
+		<?php
+		echo "<h4>Bultos restantes: ".$restante."</h4>";
+		?>
 <table>
-<?php
+<?php 
+/*
 echo $this->html->tablecells(array(
     'TOTALES',
     array(
@@ -163,7 +181,7 @@ echo $this->html->tablecells(array(
     ),
 
 )
-	);
+	);*/
 ?></table>
 		<div class="btabla">
 		<?php

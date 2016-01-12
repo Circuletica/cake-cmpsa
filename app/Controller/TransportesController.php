@@ -36,7 +36,7 @@ class TransportesController extends AppController {
 	$this->form($this->params['named']['from_id']);
 	$this->render('form');
     }
-  /*  public function edit($id = null) {
+    public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
 	    $this->Session->setFlash('error en URL');
 	    $this->redirect(array(
@@ -44,9 +44,10 @@ class TransportesController extends AppController {
 		'controller' => $this->params['named']['from_controller'],
 		$this->params['from_id']
 	    ));
+	}
 	$this->form($id);
 	$this->render('form');
-  }*/
+	}
 
     public function form($id) { //esta acción vale tanto para edit como add
 	if (!$id) {
@@ -67,6 +68,7 @@ class TransportesController extends AppController {
 	    );
 	$this->set(compact('navieras'));
 
+	//Listamos agentes de aduanas
 	$this->loadModel('Agente');
 	$agentes = $this->Agente->find('list',array(
 	    'fields' => array(
@@ -77,6 +79,7 @@ class TransportesController extends AppController {
 	);
 	$this->set(compact('agentes'));
 
+	//Listamos aseguradoras
 	$this->loadModel('Aseguradora');
 	$aseguradoras = $this->Aseguradora->find('list',array(
 	    'fields' => array(
@@ -110,7 +113,6 @@ class TransportesController extends AppController {
 	//	$transportes = $this->Transporte->find('all');
 	//	$contrato_embalajes = $transportes['Operacion']['Contrato']['ContratoEmbalaje'];
 
-	$this->set('action', $this->action);
 
 	$embalaje = $operacion['Embalaje']['nombre'];		
 	$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
@@ -161,11 +163,11 @@ class TransportesController extends AppController {
 	    ));
 	$this->set('almacenajes',$almacenaje);		
 
-	if($this->request->is('post')){
+	$this->set('action', $this->action);
+		if($this->request->is('post')){
 	    //al guardar la linea, se incluye a qué operacion pertenece
 	    //debug($this->params['named']['from_id']);
 	    $this->request->data['Transporte']['operacion_id'] = $id;
-
 	    if($this->request->data['Transporte']['cantidad_embalaje'] <= ($operacion['PesoOperacion']['cantidad_embalaje'] - $transportado)){
 		if($this->Transporte->save($this->request->data)){
 		    $this->Session->setFlash('Línea de transporte guardada');
@@ -180,11 +182,13 @@ class TransportesController extends AppController {
 	    }else{
 		$this->Session->setFlash('La cantidad de bultos debe ser inferior');
 	    }
+	} else {
+		$this->request->data = $this ->Transporte->read(null, $id);
 	}
     }
 
     //PENDIENTE DE CAMBIAR POR EL FORM
-
+/*
     public function edit( $id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formada');
@@ -260,7 +264,7 @@ class TransportesController extends AppController {
 		$this->Session->setFlash('Operacion NO guardada');
 endif;
 endif;
-    }
+    }*/
 
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) :

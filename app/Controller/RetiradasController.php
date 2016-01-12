@@ -77,7 +77,6 @@ class RetiradasController extends AppController {
 
      public function form($id) { //esta acción vale tanto para edit como add
 
-	
 	//Listamos el nombre de asociados
 	$this->loadModel('Asociado');	
 	$asociados = $this->Asociado->find('list',
@@ -90,18 +89,23 @@ class RetiradasController extends AppController {
 	);
 	$this->set(compact('asociados'));
 
-	//Listamos cuenta de los almacenes
+	//Saco datos de la operación al que pertenece la linea
+	//nos sirven  en la vista para detallar campos
 	$operacion = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find('first',array(
-			'conditions' => array('Operacion.id' => $id)
-				));
-
+			'conditions' => array('Operacion.id' => $id),
+			'recursive' => 5,
+			'fields' => array(
+			'Operacion.id')
+			));
+	
+	//Listamos cuenta de los almacenes
     $almacen_transportes = array();
-    foreach ($operaciones as $operacion) {
-		$transportes = $operacion['Transporte'];
+   // foreach ($operacion as $operaciones) {
+		$transportes = $operaciones['Transporte'];
 			foreach ($transportes as $transporte) {
 			    $almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
 			}
-	  }
+	//  }
 	$this->set('almacentransportes', $almacen_transportes);
 	$this->set(compact('operaciones'));
 
