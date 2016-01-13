@@ -42,6 +42,40 @@ INSERT INTO `agentes` VALUES (59,NULL,NULL),(60,NULL,NULL),(64,'2015-05-26 14:22
 UNLOCK TABLES;
 
 --
+-- Table structure for table `almacen_transportes`
+--
+
+DROP TABLE IF EXISTS `almacen_transportes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `almacen_transportes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `almacen_id` int(11) NOT NULL,
+  `transporte_id` int(11) NOT NULL,
+  `cuenta_almacen` varchar(45) DEFAULT NULL,
+  `cantidad_cuenta` decimal(5,2) DEFAULT NULL,
+  `marca_almacen` varchar(45) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_almacenes_has_transportes_transportes1_idx` (`transporte_id`),
+  KEY `fk_almacenes_has_transportes_almacenes1_idx` (`almacen_id`),
+  CONSTRAINT `fk_almacenes_has_transportes_almacenes1` FOREIGN KEY (`almacen_id`) REFERENCES `almacenes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_almacenes_has_transportes_transportes1` FOREIGN KEY (`transporte_id`) REFERENCES `transportes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `almacen_transportes`
+--
+
+LOCK TABLES `almacen_transportes` WRITE;
+/*!40000 ALTER TABLE `almacen_transportes` DISABLE KEYS */;
+INSERT INTO `almacen_transportes` VALUES (8,59,45,'54131',20.00,NULL,NULL,NULL),(9,58,53,'54131',700.00,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `almacen_transportes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `almacenes`
 --
 
@@ -68,37 +102,6 @@ INSERT INTO `almacenes` VALUES (50,'2015-03-10 12:52:00','2015-03-10 13:29:35'),
 UNLOCK TABLES;
 
 --
--- Table structure for table `almacenes_transportes`
---
-
-DROP TABLE IF EXISTS `almacenes_transportes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `almacenes_transportes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `almacen_id` int(11) NOT NULL,
-  `transporte_id` int(11) NOT NULL,
-  `cuenta_almacen` varchar(45) DEFAULT NULL,
-  `cantidad_cuenta` decimal(5,2) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_almacenes_has_transportes_almacenes1_idx` (`almacen_id`),
-  KEY `fk_almacenes_has_transportes_transportes1_idx` (`transporte_id`),
-  CONSTRAINT `fk_almacenes_has_transportes_transportes1` FOREIGN KEY (`transporte_id`) REFERENCES `transportes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_almacenes_has_transportes_almacenes1` FOREIGN KEY (`almacen_id`) REFERENCES `almacenes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `almacenes_transportes`
---
-
-LOCK TABLES `almacenes_transportes` WRITE;
-/*!40000 ALTER TABLE `almacenes_transportes` DISABLE KEYS */;
-INSERT INTO `almacenes_transportes` VALUES (8,59,45,'54131',20.00),(9,58,53,'54131',700.00);
-/*!40000 ALTER TABLE `almacenes_transportes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `anticipos`
 --
 
@@ -107,18 +110,18 @@ DROP TABLE IF EXISTS `anticipos`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `anticipos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `asociado_id` int(11) NOT NULL,
-  `financiacion_id` int(11) NOT NULL,
+  `asociado_operacion_id` int(11) NOT NULL,
+  `banco_id` int(11) NOT NULL,
   `importe` decimal(8,2) NOT NULL,
   `fecha_conta` date DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_anticipos_asociados1_idx` (`asociado_id`),
-  KEY `fk_anticipos_financiaciones1_idx` (`financiacion_id`),
-  CONSTRAINT `fk_anticipos_asociados1` FOREIGN KEY (`asociado_id`) REFERENCES `asociados` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_anticipos_financiaciones1` FOREIGN KEY (`financiacion_id`) REFERENCES `financiaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `fk_anticipos_bancos1_idx` (`banco_id`),
+  KEY `fk_anticipos_asociado_operaciones1_idx` (`asociado_operacion_id`),
+  CONSTRAINT `fk_anticipos_asociado_operaciones1` FOREIGN KEY (`asociado_operacion_id`) REFERENCES `asociado_operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_anticipos_bancos1` FOREIGN KEY (`banco_id`) REFERENCES `bancos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,6 +130,7 @@ CREATE TABLE `anticipos` (
 
 LOCK TABLES `anticipos` WRITE;
 /*!40000 ALTER TABLE `anticipos` DISABLE KEYS */;
+INSERT INTO `anticipos` VALUES (1,191,26,57893.06,'2015-11-26','2015-11-26 01:01:58','2015-11-26 01:41:48'),(2,192,26,2000.00,'2015-11-26','2015-11-26 14:07:46','2015-11-26 14:07:46'),(3,377,26,3000.00,'2015-11-26','2015-11-26 14:16:06','2015-11-26 14:20:51'),(4,193,26,5000.00,'2015-11-26','2015-11-26 14:32:36','2015-11-26 14:32:36');
 /*!40000 ALTER TABLE `anticipos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -393,7 +397,7 @@ CREATE TABLE `contactos` (
   PRIMARY KEY (`id`,`empresa_id`),
   KEY `fk_contactos_empresas1_idx` (`empresa_id`),
   CONSTRAINT `fk_contactos_empresas1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -584,6 +588,34 @@ INSERT INTO `empresas` VALUES (3,'BBVA','BBVA','Paseo Castellana, 108','','Madri
 UNLOCK TABLES;
 
 --
+-- Table structure for table `facturas`
+--
+
+DROP TABLE IF EXISTS `facturas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `facturas` (
+  `factura_id` int(11) NOT NULL AUTO_INCREMENT,
+  `asociado_operacion_id` int(11) NOT NULL,
+  `referencia` varchar(45) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`factura_id`),
+  KEY `fk_facturas_asociado_operaciones1_idx` (`asociado_operacion_id`),
+  CONSTRAINT `fk_facturas_asociado_operaciones1` FOREIGN KEY (`asociado_operacion_id`) REFERENCES `asociado_operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `facturas`
+--
+
+LOCK TABLES `facturas` WRITE;
+/*!40000 ALTER TABLE `facturas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `facturas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `financiaciones`
 --
 
@@ -604,10 +636,10 @@ CREATE TABLE `financiaciones` (
   KEY `fk_financiaciones_bancos1_idx1` (`banco_id`),
   KEY `fk_financiaciones_ivas1_idx` (`tipo_iva_id`),
   KEY `fk_financiaciones_tipo_ivas1_idx` (`tipo_iva_comision_id`),
-  CONSTRAINT `fk_financiaciones_ivas1` FOREIGN KEY (`tipo_iva_id`) REFERENCES `tipo_ivas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_financiaciones_tipo_ivas1` FOREIGN KEY (`tipo_iva_comision_id`) REFERENCES `tipo_ivas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_financiaciones_bancos1` FOREIGN KEY (`banco_id`) REFERENCES `bancos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_financiaciones_operaciones1` FOREIGN KEY (`id`) REFERENCES `operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_financiaciones_ivas1` FOREIGN KEY (`tipo_iva_id`) REFERENCES `tipo_ivas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_financiaciones_operaciones1` FOREIGN KEY (`id`) REFERENCES `operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_financiaciones_tipo_ivas1` FOREIGN KEY (`tipo_iva_comision_id`) REFERENCES `tipo_ivas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -662,7 +694,7 @@ CREATE TABLE `fletes` (
   CONSTRAINT `fk_fletes_navieras1` FOREIGN KEY (`naviera_id`) REFERENCES `navieras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_fletes_puertos1` FOREIGN KEY (`puerto_carga_id`) REFERENCES `puertos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_fletes_puertos2` FOREIGN KEY (`puerto_destino_id`) REFERENCES `puertos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -713,10 +745,7 @@ DROP TABLE IF EXISTS `linea_muestras`;
 CREATE TABLE `linea_muestras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `muestra_id` int(11) NOT NULL,
-  `marca` varchar(45) DEFAULT NULL,
-  `numero_sacos` varchar(45) DEFAULT NULL,
   `referencia_proveedor` varchar(45) DEFAULT NULL,
-  `referencia_almacen` varchar(45) DEFAULT NULL,
   `humedad` varchar(45) DEFAULT NULL,
   `tueste` varchar(45) DEFAULT NULL,
   `defecto` text,
@@ -738,10 +767,13 @@ CREATE TABLE `linea_muestras` (
   `apreciacion_bebida` text,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`,`muestra_id`),
+  `almacen_transporte_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
   KEY `fk_linea_muestra_muestras1_idx` (`muestra_id`),
+  KEY `fk_linea_muestras_almacen_transportes1_idx` (`almacen_transporte_id`),
+  CONSTRAINT `fk_linea_muestras_almacen_transportes1` FOREIGN KEY (`almacen_transporte_id`) REFERENCES `almacen_transportes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_linea_muestra_muestras1` FOREIGN KEY (`muestra_id`) REFERENCES `muestras` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -750,7 +782,7 @@ CREATE TABLE `linea_muestras` (
 
 LOCK TABLES `linea_muestras` WRITE;
 /*!40000 ALTER TABLE `linea_muestras` DISABLE KEYS */;
-INSERT INTO `linea_muestras` VALUES (1,1,'Hacienda Sao Tomé','240','5576/15','4365432/CM12','85%','suave','ninguno',10.0,20.0,05.0,05.0,15.0,05.0,05.0,05.0,05.0,05.0,05.0,05.0,NULL,NULL,NULL,'Sabor a café','2015-03-19 00:19:01','2015-03-19 00:19:01'),(3,1,'002/1848/1111111','20 Big bags','345','00030000/934','12,3%','ffffffffffff','black and broken beans: 4,5%',NULL,NULL,04.0,25.0,02.0,26.0,03.0,30.0,NULL,10.0,NULL,NULL,NULL,NULL,NULL,'Acidez media alta\r\ncuerpo medio bajo\r\nleve suavidad todas las tazas\r\n1 Taza fermentada\r\n1 Taza sucia\r\n1 Taza fenol\r\n','2015-03-24 15:17:53','2015-03-24 15:17:53'),(4,1,'Príncipe Azul','50','14/37/654','12/09','85%','suave','Una taza riada\r\nManchas de aceite\r\nPar de granos azules',10.0,10.5,09.5,11.0,09.0,20.0,08.5,01.5,02.8,07.2,NULL,10.0,NULL,NULL,NULL,'','2015-03-26 01:03:59','2015-11-15 11:34:53'),(5,1,'test','','','','mucha','','',10.0,10.5,09.5,11.0,09.0,20.0,08.5,01.5,02.8,07.2,00.0,10.0,NULL,NULL,NULL,'','2015-03-26 01:11:04','2015-05-26 12:46:05'),(8,6,'010/0076/0003','2500','13-99402/00','CA/254','11,3','FINO FINO','6 SEGUN TABLA DE NUEVA YORK EN 300 GRS\r\nFOREIGN MATTERS:0,1%',NULL,NULL,NULL,17.3,02.5,30.1,02.8,20.5,NULL,17.0,NULL,09.8,NULL,NULL,NULL,'ACIDEZ MEDIA ALTA\r\nCUERPOMEDIO ALTO\r\nMUY SUAVE Y LIMPIO\r\nSABOR AFRUTADO UNIFORME','2015-03-27 13:48:25','2015-05-26 13:39:41'),(12,10,'010/0076/0003','250','LB 3456','C/C 15/2345','11,7','FINO','12 DEFECTOS SEGUN TABLA DE NUEVA YORK EN 300 GRS',NULL,NULL,NULL,NULL,NULL,35.7,12.7,20.1,06.7,20.8,01.3,02.7,NULL,NULL,NULL,'ACIDEZ MEDIA ALTA\r\nCUERPO MEDIO ALTO\r\nMUY SUAVES TODAS LAS TAZAS\r\nLEVE SABOR A FRUTADO UNIFORME\r\n1 TAZA SABOR  CITRICO\r\n1 TAZA SABOR A VERDE','2015-04-07 13:46:02','2015-04-07 13:54:22'),(13,10,'010/0076/0004','500','LB 3457','C/C 15/2346','11,7','FINO','3 DEFECTOS SEGUN TABLA DE NUEVA YORK',NULL,NULL,NULL,NULL,15.0,35.5,10.0,35.5,NULL,03.0,NULL,01.0,NULL,NULL,NULL,'ACIDEZ MEDIA ALTA\r\nCUERPO MEDIO ALTO\r\nSUAVES Y LIMPIAS TODAS\r\nLAS TAZAS\r\nAFRUTADO\r\nPERFUMADO','2015-04-07 15:30:00','2015-04-07 15:30:00'),(14,10,'010/0076/0005','750','LB 3458','C/C 15/2347','11,8','FINO','6 DEFECTOS SEGUN TABLADE NUEVA YORK\r\nFOREIGN MATTERS:0,2%\r\nSIN DEFECTOS CAPITALES',NULL,NULL,NULL,NULL,NULL,40.3,01.1,40.2,02.2,10.0,NULL,06.2,NULL,NULL,NULL,'ACIDEZ MEDIA ALTA\r\nCUERPO ALTO\r\nMUY SUAVE,PERFUMADO\r\nSABOR AFRUTADO\r\n\r\n','2015-04-07 15:34:15','2015-04-07 16:28:30'),(15,10,'010/0076/0006','750','LB 3459','C/C 15/2348','11,3','FINO','3 SEGUN TABLE DE N.Y. EN 300 GRS\r\nFOREIGN MATTERS:3%\r\nPIEDRAS:2,0%\r\nGREEN BEANS:8%\r\n',NULL,NULL,NULL,NULL,NULL,35.5,11.0,35.5,11.0,07.0,NULL,NULL,NULL,NULL,NULL,'ACIDEZ MEDIA ALTA\r\nCUERPO MEDIO\r\nSUAVES TODAS LAS TAZS\r\nAFRUTADO\r\n1 TAZA SABOR VERDE\r\n1 TAZA SUCIA\r\n1 TAZA FRUITY','2015-04-07 16:38:42','2015-04-07 16:38:42'),(16,27,'B','B','B','B','B','B','HH',50.0,45.0,NULL,05.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'HH','2015-10-29 16:29:06','2015-10-29 16:29:06'),(17,27,'OO2/1848/234','320','IC-345','C/C 15/2345','12','FINO','N.Y.3/4, 15 DEFECDTOS EN 30\'0 GRS SEGUN N.Y.',45.5,45.4,NULL,09.1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'10 TAZAS SUAVES Y LIMPIAS','2015-10-29 16:34:08','2015-10-29 16:34:08');
+INSERT INTO `linea_muestras` VALUES (1,1,'5576/15','85%','suave','ninguno',10.0,20.0,05.0,05.0,15.0,05.0,05.0,05.0,05.0,05.0,05.0,05.0,NULL,NULL,NULL,'Sabor a café','2015-03-19 00:19:01','2015-03-19 00:19:01',0),(3,1,'345','12,3%','ffffffffffff','black and broken beans: 4,5%',NULL,NULL,04.0,25.0,02.0,26.0,03.0,30.0,NULL,10.0,NULL,NULL,NULL,NULL,NULL,'Acidez media alta\r\ncuerpo medio bajo\r\nleve suavidad todas las tazas\r\n1 Taza fermentada\r\n1 Taza sucia\r\n1 Taza fenol\r\n','2015-03-24 15:17:53','2015-03-24 15:17:53',0),(4,1,'14/37/654','85%','suave','Una taza riada\r\nManchas de aceite\r\nPar de granos azules',10.0,10.5,09.5,11.0,09.0,20.0,08.5,01.5,02.8,07.2,NULL,10.0,NULL,NULL,NULL,'','2015-03-26 01:03:59','2015-11-15 11:34:53',0),(5,1,'','mucha','','',10.0,10.5,09.5,11.0,09.0,20.0,08.5,01.5,02.8,07.2,00.0,10.0,NULL,NULL,NULL,'','2015-03-26 01:11:04','2015-05-26 12:46:05',0),(8,6,'13-99402/00','11,3','FINO FINO','6 SEGUN TABLA DE NUEVA YORK EN 300 GRS\r\nFOREIGN MATTERS:0,1%',NULL,NULL,NULL,17.3,02.5,30.1,02.8,20.5,NULL,17.0,NULL,09.8,NULL,NULL,NULL,'ACIDEZ MEDIA ALTA\r\nCUERPOMEDIO ALTO\r\nMUY SUAVE Y LIMPIO\r\nSABOR AFRUTADO UNIFORME','2015-03-27 13:48:25','2015-05-26 13:39:41',0),(16,27,'B','B','B','HH',50.0,45.0,NULL,05.0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'HH','2015-10-29 16:29:06','2015-10-29 16:29:06',0),(17,27,'IC-345','12','FINO','N.Y.3/4, 15 DEFECDTOS EN 30\'0 GRS SEGUN N.Y.',45.5,45.4,NULL,09.1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'10 TAZAS SUAVES Y LIMPIAS','2015-10-29 16:34:08','2015-10-29 16:34:08',0),(19,32,'IC-2345','12,1','BUENO','N.Y.2, 6 DEFECTOS EN 300 GRS',45.3,45.3,NULL,09.4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'10 TAZAS DURO REPOSADO','2015-11-27 10:18:11','2015-11-27 10:18:11',0),(20,33,'','','','',23.1,10.5,NULL,17.3,NULL,11.5,05.1,18.0,01.5,13.0,NULL,NULL,NULL,NULL,NULL,'','2015-11-27 12:46:56','2015-11-27 12:46:56',0),(21,22,'CO-333','13,1','REGULAR','N.Y.5/6, 90 DEFECTOSA EN 300 GRS',NULL,NULL,NULL,NULL,NULL,21.1,NULL,22.2,NULL,23.3,NULL,24.4,NULL,09.0,NULL,'1O TAZAS ROBUSTA FUERTE\r\nLIMPIAS TODAS LAS TAZAS\r\nEXCEPTO UNA QUE ES UNA PUTA M','2015-11-27 13:57:42','2015-11-27 13:57:42',0),(22,22,'CO-444','13,1','REGULAR','N.Y.5/6, 91 FECTOS EN 300 GRAMMES',15.1,12.3,NULL,10.0,02.3,13.4,02.5,10.0,03.3,17.0,05.5,08.6,NULL,NULL,NULL,'10 TAZAS MEGA DURAS\r\nMUY SUCIAS','2015-11-27 14:00:15','2015-11-27 14:00:15',0);
 /*!40000 ALTER TABLE `linea_muestras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -763,7 +795,7 @@ DROP TABLE IF EXISTS `marca_almacenes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `marca_almacenes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `almacenes_transporte_id` int(11) NOT NULL,
+  `almacen_transporte_id` int(11) NOT NULL,
   `muestra_id` int(11) DEFAULT NULL,
   `nombre` varchar(45) DEFAULT NULL,
   `cantidad_marca` decimal(5,2) DEFAULT NULL,
@@ -771,8 +803,7 @@ CREATE TABLE `marca_almacenes` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_marca_almacenes_muestras1_idx` (`muestra_id`),
-  KEY `fk_marca_almacenes_almacenes_transportes1_idx` (`almacenes_transporte_id`),
-  CONSTRAINT `fk_marca_almacenes_almacenes_transportes1` FOREIGN KEY (`almacenes_transporte_id`) REFERENCES `almacenes_transportes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `fk_marca_almacenes_almacenes_transportes1_idx` (`almacen_transporte_id`),
   CONSTRAINT `fk_marca_almacenes_muestras1` FOREIGN KEY (`muestra_id`) REFERENCES `muestras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -802,7 +833,6 @@ CREATE TABLE `muestras` (
   `fecha` datetime DEFAULT NULL,
   `aprobado` tinyint(1) unsigned zerofill DEFAULT NULL,
   `incidencia` text,
-  `almacen_id` int(11) DEFAULT NULL,
   `tipo` int(1) unsigned NOT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
@@ -810,13 +840,11 @@ CREATE TABLE `muestras` (
   KEY `fk_muestras_calidades1_idx` (`calidad_id`),
   KEY `fk_muestras_proveedores1_idx` (`proveedor_id`),
   KEY `referencia` (`referencia`),
-  KEY `fk_muestras_almacenes1_idx` (`almacen_id`),
   KEY `fk_muestras_operaciones1_idx` (`operacion_id`),
-  CONSTRAINT `fk_muestras_almacenes1` FOREIGN KEY (`almacen_id`) REFERENCES `almacenes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_muestras_calidades1` FOREIGN KEY (`calidad_id`) REFERENCES `calidades` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_muestras_operaciones1` FOREIGN KEY (`operacion_id`) REFERENCES `operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_muestras_proveedores1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -825,7 +853,7 @@ CREATE TABLE `muestras` (
 
 LOCK TABLES `muestras` WRITE;
 /*!40000 ALTER TABLE `muestras` DISABLE KEYS */;
-INSERT INTO `muestras` VALUES (1,38,5,NULL,'104/17','2015-03-13 18:37:00',1,'',NULL,1,'2015-03-14 01:23:07','2015-03-14 01:23:07'),(4,39,9,NULL,'15/027','2015-03-26 00:00:00',1,'El café ha llegado a puerto',NULL,1,'2015-03-26 12:48:01','2015-03-26 12:48:01'),(6,40,24,NULL,'15/031','2015-03-27 00:00:00',0,'Muestra de embarque llegada antes del embarque',NULL,1,'2015-03-27 13:43:17','2015-04-14 00:42:02'),(10,41,24,NULL,'15/003','2014-04-07 00:00:00',1,'MUESTRA APROBADA RECIBIDA DESDE ALMACEN EN ALMENIA\r\nEL CAFE LLEGARA AL ALACEN DEL SOCIO\r\nCAFE MU BUENO + INTRO\r\nCAFE MEJOR\r\n',60,1,'2015-04-07 13:40:59','2015-09-15 15:28:59'),(14,43,10,NULL,'007/007','2015-04-26 00:00:00',0,'',NULL,1,'2015-04-26 19:04:48','2015-04-26 19:04:48'),(15,48,6,NULL,'008/008','2015-04-26 00:00:00',0,'Pues no me gusta',50,1,'2015-04-26 19:39:44','2015-09-09 12:44:25'),(16,46,25,NULL,'123/456','2015-04-26 00:00:00',0,'',NULL,1,'2015-04-26 23:43:14','2015-04-26 23:46:00'),(17,36,9,NULL,'000/111','2015-05-08 00:00:00',1,'',59,2,'2015-05-08 16:48:02','2015-07-01 16:34:53'),(19,41,5,NULL,'69/69','2014-05-08 00:00:00',1,'',61,2,'2015-05-08 17:25:34','2015-07-01 16:35:30'),(20,39,28,NULL,'OF12234','2015-10-15 00:00:00',0,'',50,1,'2015-10-15 13:24:16','2015-10-15 13:24:16'),(21,115,77,NULL,'15/199','2015-10-20 00:00:00',0,'nada',50,3,'2015-10-20 11:59:19','2015-10-20 11:59:19'),(22,43,82,NULL,'EN-333','2015-10-20 00:00:00',0,'NADA',50,3,'2015-10-20 12:16:23','2015-10-20 12:17:02'),(23,38,54,NULL,'OF-235','2015-10-20 00:00:00',0,'PARA BAQUE',50,1,'2015-10-20 15:29:10','2015-10-20 15:29:10'),(24,38,54,NULL,'15/199','2015-10-22 00:00:00',0,'aprobada',50,3,'2015-10-22 15:44:03','2015-10-22 15:44:03'),(25,36,54,NULL,'OF-234','2015-10-23 00:00:00',0,'mm',50,1,'2015-10-23 09:27:30','2015-10-23 09:27:30'),(26,45,28,NULL,'24/15023','2015-10-23 00:00:00',0,'LLEGADO',50,3,'2015-10-23 14:13:29','2015-10-23 14:13:29'),(27,36,54,NULL,'15/234','2015-10-29 00:00:00',1,'Por analizar',50,3,'2015-10-29 16:22:27','2015-10-29 16:22:27'),(28,45,57,NULL,'31/234','2015-10-29 00:00:00',0,'POR PROBAR',50,1,'2015-10-29 16:35:23','2015-10-29 16:35:23'),(30,40,8,NULL,'LD 456','2015-10-29 00:00:00',1,'TYPE SAMPLE',NULL,1,'2015-10-29 17:18:15','2015-10-29 17:18:15'),(31,116,39,NULL,'BR 656','2015-10-29 00:00:00',0,'VARIOS LOTES',61,1,'2015-10-29 17:36:17','2015-10-29 17:36:17');
+INSERT INTO `muestras` VALUES (1,38,5,NULL,'104/17','2015-03-13 18:37:00',1,'',1,'2015-03-14 01:23:07','2015-03-14 01:23:07'),(4,39,9,NULL,'15/027','2015-03-26 00:00:00',1,'El café ha llegado a puerto',1,'2015-03-26 12:48:01','2015-03-26 12:48:01'),(6,40,24,NULL,'15/031','2015-03-27 00:00:00',0,'Muestra de embarque llegada antes del embarque',1,'2015-03-27 13:43:17','2015-04-14 00:42:02'),(14,43,10,NULL,'007/007','2015-04-26 00:00:00',0,'',1,'2015-04-26 19:04:48','2015-04-26 19:04:48'),(15,48,6,NULL,'008/008','2015-04-26 00:00:00',0,'Pues no me gusta',1,'2015-04-26 19:39:44','2015-09-09 12:44:25'),(16,46,25,NULL,'123/456','2015-04-26 00:00:00',0,'',1,'2015-04-26 23:43:14','2015-04-26 23:46:00'),(17,36,9,NULL,'000/111','2015-05-08 00:00:00',1,'',2,'2015-05-08 16:48:02','2015-07-01 16:34:53'),(19,41,5,NULL,'69/69','2014-05-08 00:00:00',1,'',2,'2015-05-08 17:25:34','2015-07-01 16:35:30'),(20,39,28,NULL,'OF12234','2015-10-15 00:00:00',0,'',1,'2015-10-15 13:24:16','2015-10-15 13:24:16'),(21,115,77,NULL,'15/199','2015-10-20 00:00:00',0,'nada',3,'2015-10-20 11:59:19','2015-10-20 11:59:19'),(22,43,82,NULL,'EN-333','2015-10-20 00:00:00',0,'NADA\r\nAlgo\r\nAlgo más',3,'2015-10-20 12:16:23','2015-12-07 15:37:25'),(23,38,54,NULL,'OF-235','2015-10-20 00:00:00',0,'PARA BAQUE',1,'2015-10-20 15:29:10','2015-10-20 15:29:10'),(24,38,54,NULL,'15/199','2015-10-22 00:00:00',0,'aprobada',3,'2015-10-22 15:44:03','2015-10-22 15:44:03'),(25,36,54,NULL,'OF-234','2015-10-23 00:00:00',0,'mm',1,'2015-10-23 09:27:30','2015-10-23 09:27:30'),(26,45,28,NULL,'24/15023','2015-10-23 00:00:00',0,'LLEGADO',3,'2015-10-23 14:13:29','2015-10-23 14:13:29'),(27,36,54,NULL,'15/234','2015-10-29 00:00:00',1,'Por analizar',3,'2015-10-29 16:22:27','2015-10-29 16:22:27'),(28,45,57,NULL,'31/234','2015-10-29 00:00:00',0,'POR PROBAR',1,'2015-10-29 16:35:23','2015-10-29 16:35:23'),(30,40,8,NULL,'LD 456','2015-10-29 00:00:00',1,'TYPE SAMPLE',1,'2015-10-29 17:18:15','2015-10-29 17:18:15'),(31,116,39,NULL,'BR 656','2015-10-29 00:00:00',0,'VARIOS LOTES',1,'2015-10-29 17:36:17','2015-10-29 17:36:17'),(32,36,54,NULL,'IC-2345','2015-11-27 00:00:00',1,'MUSTRA APROBADA DE OFERTA',3,'2015-11-27 10:16:50','2015-11-27 10:16:50'),(33,39,9,NULL,'KE-234','2015-11-27 00:00:00',1,'LLEGADA',3,'2015-11-27 12:45:40','2015-11-27 12:45:40'),(34,37,43,NULL,'15/093','2015-12-01 00:00:00',1,'',1,'2015-12-01 10:54:58','2015-12-01 10:54:58'),(35,39,46,NULL,'15/092','2015-12-01 00:00:00',1,'jj',1,'2015-12-01 11:05:34','2015-12-01 11:05:34'),(36,36,54,NULL,'DDD','2015-12-17 00:00:00',1,'',3,'2015-12-17 12:22:04','2015-12-17 12:22:04');
 /*!40000 ALTER TABLE `muestras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -918,10 +946,11 @@ CREATE TABLE `paises` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `iso3166` varchar(2) DEFAULT NULL,
-  `prefijo_tfno` varchar(10) DEFAULT NULL,
+  `prefijo_tfno` tinyint(4) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`),
   KEY `index2` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -932,7 +961,7 @@ CREATE TABLE `paises` (
 
 LOCK TABLES `paises` WRITE;
 /*!40000 ALTER TABLE `paises` DISABLE KEYS */;
-INSERT INTO `paises` VALUES (1,'Brasil','br','55','2015-02-06 22:47:29','2015-03-10 12:10:41'),(2,'Colombia','co','','2015-02-06 22:47:41','2015-02-06 22:47:41'),(3,'España','es','34','2015-02-07 01:05:18','2015-02-24 23:58:34'),(4,'Tanzania','tz','','2015-02-07 01:05:31','2015-02-07 01:05:31'),(5,'Francia','fr','33','2015-02-10 14:24:25','2015-02-24 23:58:23'),(6,'Bélgica','be','32','2015-03-10 11:15:17','2015-03-10 12:09:41'),(7,'Perú','pe','','2015-03-10 11:30:38','2015-03-10 11:30:38'),(8,'Kenia','ke','','2015-03-10 11:42:13','2015-03-10 11:42:13'),(9,'Alemania','de','49','2015-03-10 11:48:52','2015-03-10 12:10:18'),(10,'Suiza','ch','','2015-03-10 11:53:43','2015-03-10 11:53:43'),(11,'Estados Unidos','us','','2015-03-10 11:56:32','2015-03-10 11:56:32'),(12,'Nicaragua','ni','','2015-03-10 12:02:39','2015-03-10 12:02:39'),(14,'Vietnam','vn','','2015-03-16 16:31:16','2015-03-16 16:31:16'),(19,'Indonesia','','','2015-03-16 22:56:37','2015-03-16 22:56:37'),(20,'Etiopía','et','','2015-03-16 23:06:40','2015-08-18 14:51:16'),(21,'Italia','it','','2015-03-23 22:58:05','2015-03-23 22:58:05'),(22,'Rusia','','','2015-03-24 12:57:30','2015-03-24 12:57:30'),(23,'Costa Rica','cr','','2015-08-18 14:45:09','2015-08-18 14:45:09'),(24,'Guatemala','gt','','2015-08-18 14:46:10','2015-08-18 14:46:10'),(25,'Honduras','hn','','2015-08-18 14:47:42','2015-08-18 14:47:42'),(26,'India','in','','2015-08-20 18:05:21','2015-08-20 18:05:21'),(27,'Congo','','','2015-10-15 13:41:12','2015-10-15 13:41:12'),(28,'Senegal','','','2015-10-15 13:43:52','2015-10-15 13:43:52'),(29,'Mongolia','','','2015-10-15 16:13:48','2015-10-15 16:13:48'),(30,'Noruega','','','2015-10-15 16:14:39','2015-10-15 16:14:39'),(32,'Suecia','','','2015-10-15 16:31:45','2015-10-15 16:31:45'),(33,'Tanzania','','','2015-10-16 10:58:38','2015-10-16 10:58:38'),(34,'Jamaica','','','2015-10-19 12:36:35','2015-10-19 12:36:35'),(36,'Uganda','','','2015-10-19 13:00:18','2015-10-19 13:00:18'),(37,'Papúa Nueva Guinea','','','2015-10-19 13:12:22','2015-10-19 13:12:22'),(38,'Méjico','','','2015-10-19 13:18:54','2015-10-19 13:18:54'),(39,'Panamá','','','2015-10-19 13:19:10','2015-10-19 13:19:10'),(40,'Zimbabwe','','','2015-10-19 13:19:30','2015-10-19 13:19:30'),(41,'Europa','','','2015-10-29 16:57:22','2015-10-29 16:57:22'),(42,'Ruanda','11','','2015-11-17 12:02:53','2015-11-17 12:02:53');
+INSERT INTO `paises` VALUES (1,'Brasil','br',55,'2015-02-06 22:47:29','2015-03-10 12:10:41'),(2,'Colombia','co',NULL,'2015-02-06 22:47:41','2015-02-06 22:47:41'),(3,'España','es',34,'2015-02-07 01:05:18','2015-02-24 23:58:34'),(4,'Tanzania','tz',NULL,'2015-02-07 01:05:31','2015-02-07 01:05:31'),(5,'Francia','fr',33,'2015-02-10 14:24:25','2015-02-24 23:58:23'),(6,'Bélgica','be',32,'2015-03-10 11:15:17','2015-03-10 12:09:41'),(7,'Perú','pe',NULL,'2015-03-10 11:30:38','2015-03-10 11:30:38'),(8,'Kenia','ke',NULL,'2015-03-10 11:42:13','2015-03-10 11:42:13'),(9,'Alemania','de',49,'2015-03-10 11:48:52','2015-03-10 12:10:18'),(10,'Suiza','ch',NULL,'2015-03-10 11:53:43','2015-03-10 11:53:43'),(11,'Estados Unidos','us',NULL,'2015-03-10 11:56:32','2015-03-10 11:56:32'),(12,'Nicaragua','ni',NULL,'2015-03-10 12:02:39','2015-03-10 12:02:39'),(14,'Vietnam','vn',NULL,'2015-03-16 16:31:16','2015-03-16 16:31:16'),(19,'Indonesia','',NULL,'2015-03-16 22:56:37','2015-03-16 22:56:37'),(20,'Etiopía','et',NULL,'2015-03-16 23:06:40','2015-08-18 14:51:16'),(21,'Italia','it',NULL,'2015-03-23 22:58:05','2015-03-23 22:58:05'),(22,'Rusia','',NULL,'2015-03-24 12:57:30','2015-03-24 12:57:30'),(23,'Costa Rica','cr',NULL,'2015-08-18 14:45:09','2015-08-18 14:45:09'),(24,'Guatemala','gt',NULL,'2015-08-18 14:46:10','2015-08-18 14:46:10'),(25,'Honduras','hn',NULL,'2015-08-18 14:47:42','2015-08-18 14:47:42'),(26,'India','in',NULL,'2015-08-20 18:05:21','2015-08-20 18:05:21'),(27,'Congo','',NULL,'2015-10-15 13:41:12','2015-10-15 13:41:12'),(28,'Senegal','',NULL,'2015-10-15 13:43:52','2015-10-15 13:43:52'),(30,'Noruega','',NULL,'2015-10-15 16:14:39','2015-10-15 16:14:39'),(32,'Suecia','',NULL,'2015-10-15 16:31:45','2015-10-15 16:31:45'),(34,'Jamaica','',NULL,'2015-10-19 12:36:35','2015-10-19 12:36:35'),(36,'Uganda','',NULL,'2015-10-19 13:00:18','2015-10-19 13:00:18'),(37,'Papúa Nueva Guinea','',NULL,'2015-10-19 13:12:22','2015-10-19 13:12:22'),(38,'Méjico','',NULL,'2015-10-19 13:18:54','2015-10-19 13:18:54'),(39,'Panamá','',NULL,'2015-10-19 13:19:10','2015-10-19 13:19:10'),(40,'Zimbabwe','',NULL,'2015-10-19 13:19:30','2015-10-19 13:19:30'),(41,'Europa','',NULL,'2015-10-29 16:57:22','2015-10-29 16:57:22'),(42,'Ruanda','11',NULL,'2015-11-17 12:02:53','2015-11-17 12:02:53');
 /*!40000 ALTER TABLE `paises` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -989,6 +1018,43 @@ SET character_set_client = utf8;
   `fecha_fin` tinyint NOT NULL,
   `coste_contenedor_dolar` tinyint NOT NULL,
   `precio_dolar` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `precio_flete_contratos`
+--
+
+DROP TABLE IF EXISTS `precio_flete_contratos`;
+/*!50001 DROP VIEW IF EXISTS `precio_flete_contratos`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `precio_flete_contratos` (
+  `contrato_id` tinyint NOT NULL,
+  `puerto_carga_id` tinyint NOT NULL,
+  `puerto_destino_id` tinyint NOT NULL,
+  `flete_id` tinyint NOT NULL,
+  `embalaje_id` tinyint NOT NULL,
+  `precio_flete` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `precio_flete_operaciones`
+--
+
+DROP TABLE IF EXISTS `precio_flete_operaciones`;
+/*!50001 DROP VIEW IF EXISTS `precio_flete_operaciones`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `precio_flete_operaciones` (
+  `id` tinyint NOT NULL,
+  `contrato_id` tinyint NOT NULL,
+  `puerto_carga_id` tinyint NOT NULL,
+  `puerto_destino_id` tinyint NOT NULL,
+  `flete_id` tinyint NOT NULL,
+  `embalaje_id` tinyint NOT NULL,
+  `precio_flete` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -1115,6 +1181,7 @@ CREATE TABLE `puertos` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`),
   KEY `fk_puertos_paises1_idx` (`pais_id`),
   CONSTRAINT `fk_puertos_paises1` FOREIGN KEY (`pais_id`) REFERENCES `paises` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
@@ -1146,7 +1213,8 @@ SET character_set_client = utf8;
   `precio_asociado` tinyint NOT NULL,
   `iva` tinyint NOT NULL,
   `comision` tinyint NOT NULL,
-  `iva_comision` tinyint NOT NULL
+  `iva_comision` tinyint NOT NULL,
+  `total_anticipo` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
 
@@ -1193,6 +1261,37 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Table structure for table `retiradas`
+--
+
+DROP TABLE IF EXISTS `retiradas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `retiradas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cantidad_retirada` int(11) DEFAULT NULL,
+  `asociado_id` int(11) NOT NULL,
+  `almacen_transporte_id` int(11) NOT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_retiradas_asociados1_idx` (`asociado_id`),
+  KEY `fk_retiradas_almacen_transportes1_idx` (`almacen_transporte_id`),
+  CONSTRAINT `fk_retiradas_almacen_transportes1` FOREIGN KEY (`almacen_transporte_id`) REFERENCES `almacen_transportes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_retiradas_asociados1` FOREIGN KEY (`asociado_id`) REFERENCES `asociados` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `retiradas`
+--
+
+LOCK TABLES `retiradas` WRITE;
+/*!40000 ALTER TABLE `retiradas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `retiradas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `seguros`
 --
 
@@ -1202,12 +1301,9 @@ DROP TABLE IF EXISTS `seguros`;
 CREATE TABLE `seguros` (
   `id` int(11) NOT NULL,
   `fecha_seguro` datetime DEFAULT NULL,
-  `aseguradora_id` int(11) NOT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_seguros_aseguradoras1_idx` (`aseguradora_id`),
-  CONSTRAINT `fk_seguros_aseguradoras1` FOREIGN KEY (`aseguradora_id`) REFERENCES `aseguradoras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1217,7 +1313,7 @@ CREATE TABLE `seguros` (
 
 LOCK TABLES `seguros` WRITE;
 /*!40000 ALTER TABLE `seguros` DISABLE KEYS */;
-INSERT INTO `seguros` VALUES (1,'2015-01-01 00:00:00',90,NULL,NULL);
+INSERT INTO `seguros` VALUES (1,'2015-01-01 00:00:00',NULL,NULL);
 /*!40000 ALTER TABLE `seguros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1256,12 +1352,13 @@ DROP TABLE IF EXISTS `transportes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `transportes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `naviera_id` int(11) NOT NULL,
-  `puerto_id` int(11) DEFAULT NULL,
+  `naviera_id` int(11) DEFAULT NULL,
   `agente_id` int(11) DEFAULT NULL,
   `operacion_id` int(11) NOT NULL,
+  `puerto_destino_id` int(11) DEFAULT NULL,
+  `puerto_carga_id` int(11) DEFAULT NULL,
   `aseguradora_id` int(11) DEFAULT NULL,
-  `cantidad` int(11) DEFAULT NULL,
+  `cantidad_embalaje` int(11) DEFAULT NULL,
   `fecha_entradamerc` date DEFAULT NULL,
   `fecha_carga` date DEFAULT NULL,
   `fecha_llegada` date DEFAULT NULL,
@@ -1276,21 +1373,25 @@ CREATE TABLE `transportes` (
   `matricula` varchar(45) NOT NULL,
   `observaciones` text,
   `fecha_seguro` date DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
   `coste_seguro` decimal(8,2) DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
+  `suplemento_seguro` decimal(8,2) DEFAULT NULL,
+  `peso_factura` decimal(8,2) DEFAULT NULL,
+  `peso_neto` decimal(8,2) DEFAULT NULL,
+  `averia` decimal(8,2) DEFAULT NULL,
+  `modified` datetime DEFAULT NULL COMMENT '\n',
+  `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_transportes_navieras1_idx` (`naviera_id`),
-  KEY `fk_transportes_puertos1_idx` (`puerto_id`),
   KEY `fk_transportes_agentes1_idx` (`agente_id`),
   KEY `fk_transportes_operaciones1_idx` (`operacion_id`),
   KEY `fk_transportes_aseguradoras1_idx` (`aseguradora_id`),
+  KEY `fk_transportes_puertos1_idx` (`puerto_destino_id`),
+  KEY `fk_transportes_puertos2_idx` (`puerto_carga_id`),
   CONSTRAINT `fk_transportes_agentes1` FOREIGN KEY (`agente_id`) REFERENCES `agentes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_transportes_aseguradoras1` FOREIGN KEY (`aseguradora_id`) REFERENCES `aseguradoras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_navieras1` FOREIGN KEY (`naviera_id`) REFERENCES `navieras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_transportes_operaciones1` FOREIGN KEY (`operacion_id`) REFERENCES `operaciones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_transportes_puertos1` FOREIGN KEY (`puerto_id`) REFERENCES `puertos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_transportes_puertos1` FOREIGN KEY (`puerto_destino_id`) REFERENCES `puertos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1299,7 +1400,7 @@ CREATE TABLE `transportes` (
 
 LOCK TABLES `transportes` WRITE;
 /*!40000 ALTER TABLE `transportes` DISABLE KEYS */;
-INSERT INTO `transportes` VALUES (45,96,1,NULL,27,NULL,NULL,NULL,NULL,NULL,'2015-01-02',NULL,NULL,NULL,NULL,NULL,NULL,'Titanicq','MRC4569872423','Lorem ipsum dolor sit amet, eum ea numquam delicata consetetur, eam prima dicam persequeris et. Pri labore sententiae te. Eu torquatos repudiandae vix, labores eleifend consetetur vim no, sea et corrumpit gloriatur. Suavitate percipitur instructior ad sea, etiam eloquentiam eu cum.\r\n\r\nDetraxit inimicus ex mea, lorem dicit salutandi ut sea. Ad prima honestatis vim. Placerat repudiare ex pri. Ne autem dissentiunt qui, tale tantas cetero et eos.\r\n\r\nAlii corpora eu vis, eos noster vituperatoribus ei. Id qui melius philosophia, quo consequat pertinacia honestatis ad, everti mandamus qui at. Zril quando copiosae usu ei, te vis veri primis, usu ei doctus sensibus neglegentur. Quas dolorum nostrum te mei, has quaeque tacimates ei.\r\n\r\nCu aeque malorum discere cum. Mollis diceret comprehensam sit ne, an habeo veniam docendi duo, no vim accusam probatus voluptatibus. Ex cum lucilius eleifend maiestatis, te eos aliquam habemus accommodare. At eum noluisse referrentur, eos ei mutat dicit efficiantur.\r\n\r\nIn cum ubique altera corrumpit, ne sit feugiat qualisque democritum, mucius percipitur duo in. Populo nemore nam et, id legimus corpora est. Nec eu percipit intellegam, vix labitur dissentiet no, mea modo meliore sententiae ea. His cetero dissentiet id. Sumo solet legendos duo id, ut has natum melius.',NULL,'2015-08-21 10:22:44',NULL,'2015-11-17 13:01:31'),(47,99,21,NULL,24,93,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Barquito C','ESX123456','','2017-03-18','2015-08-21 10:44:07',456000.00,'2015-08-21 10:44:07'),(50,97,1,60,19,NULL,55,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Titanic','M354342','',NULL,'2015-09-23 09:21:50',NULL,'2015-09-23 09:21:50'),(51,103,7,64,19,89,98,NULL,'2016-05-03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Periquito','HJA987654','',NULL,'2015-09-23 09:22:27',5000.00,'2015-09-23 09:22:27'),(52,98,6,60,19,90,9,NULL,'2015-02-03',NULL,NULL,'2016-02-03',NULL,NULL,NULL,NULL,NULL,'La Casa','POI984834872','',NULL,'2015-09-23 09:28:08',85000.00,'2015-09-23 11:00:43'),(53,95,1,60,31,NULL,50,NULL,'2014-01-01','2014-02-02','2014-03-03',NULL,NULL,NULL,NULL,NULL,NULL,'MMM Barquito Jorgito','ERE22332423','Lorem ipsum dolor sit amet, id debitis legendos ocurreret mel. Usu an autem scaevola. Omnis erant vis eu, option maiorum abhorreant id mel. Volumus insolens deserunt ei vim.\r\n\r\nOmnis soleat impetus cu vis, cu modo timeam has, mea te salutatus eloquentiam. Ea impetus imperdiet sed. Id vim consequat moderatius, no pri petentium laboramus urbanitas, ut eos partem dignissim. Ne case accommodare ius, tollit labitur sed ut. Facer nihil everti sit id. Porro feugiat accusam mea ex.\r\n\r\nQui esse detracto sadipscing in. Te sumo homero recusabo eum. Iudicabit evertitur persecuti et eos. Recteque intellegebat at duo, pro ut augue graeci dissentiunt. Cu vel utinam partiendo prodesset, usu nibh lucilius facilisi ne, no nominati liberavisse pri. Laudem eligendi et has, sea dico iudicabit in.\r\n\r\nAmet evertitur mei no, cu exerci graeci dictas sed, est eu facer impetus. Has ne discere tibique eloquentiam, ius utinam euripidis id. Ei vel nihil tantas iuvaret. Ea elit delectus petentium sea, id copiosae probatus constituto quo, ne amet laboramus vim. In aliquam feugait referrentur sit, ad neglegentur liberavisse vel, sed ex brute idque.\r\n\r\nQuo mundi definitionem et. Propriae repudiandae quo an. Essent adipiscing ei cum, audiam quaeque an mei, id eripuit alienum vituperatoribus mei. Et nec iuvaret adipiscing contentiones, vidit labores ea usu, no per meis facilis. Cu tractatos euripidis his, ut congue nostrum mel, tempor verterem urbanitas ne has.\r\n\r\nTantas labitur consectetuer ad mei, scaevola scripserit consequuntur ne ius. Pro ut noluisse moderatius, minimum corrumpit qui an, ludus vitae at vis. Ea cum autem graecis posidonium. Pro cu tota nostrud ponderum, ad ceteros explicari pertinacia eum, mel molestie signiferumque no. Eum melius audire eu, urbanitas intellegat omittantur nec ad, mucius aliquam liberavisse te mea. Sit et sententiae concludaturque, ex omnis posse graece mel.\r\n\r\nImpetus eloquentiam eu duo, nec cu mucius accumsan, omnium tincidunt ea nam. Mea an reque aperiri, in ius graeci electram, an maiorum quaestio iudicabit mel. Et duo melius iudicabit, vix an vitae iuvaret eloquentiam. Purto mucius propriae te cum. Nam quis autem ea, mazim decore inciderint eos ad.\r\n\r\nPer et lorem mazim, ne mea mollis senserit, mei eu eirmod mentitum invidunt. Id labores eleifend eam, case nostrum voluptatibus nam ex. Has cu dolores recusabo volutpat, te porro vocent adipiscing cum, id legere eloquentiam usu. Homero nominati definitionem duo eu, ex qui falli possim sapientem. Eam an liber saepe, et veniam delectus insolens mel, in rebum moderatius percipitur qui.\r\n\r\nPrimis accommodare necessitatibus sed ea. Fuisset vulputate vim an, eum in primis utroque ponderum. Eu doming scripta cum, vel in mollis mentitum. Populo primis ne vix, ius ne interesset temporibus, ut mel simul voluptua comprehensam.\r\n\r\nTempor feugait adipisci an duo, cum ea solum appellantur instructior. Vim ea ornatus singulis invenire. An unum pertinacia vis, ex sit fuisset voluptatibus. Eam case debitis no. Sed ne iuvaret numquam accusamus.',NULL,'2015-11-17 13:08:47',NULL,'2015-11-17 13:08:47');
+INSERT INTO `transportes` VALUES (45,96,NULL,27,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2015-01-02',NULL,NULL,NULL,NULL,NULL,NULL,'Titanicq','MRC4569872423','Lorem ipsum dolor sit amet, eum ea numquam delicata consetetur, eam prima dicam persequeris et. Pri labore sententiae te. Eu torquatos repudiandae vix, labores eleifend consetetur vim no, sea et corrumpit gloriatur. Suavitate percipitur instructior ad sea, etiam eloquentiam eu cum.\r\n\r\nDetraxit inimicus ex mea, lorem dicit salutandi ut sea. Ad prima honestatis vim. Placerat repudiare ex pri. Ne autem dissentiunt qui, tale tantas cetero et eos.\r\n\r\nAlii corpora eu vis, eos noster vituperatoribus ei. Id qui melius philosophia, quo consequat pertinacia honestatis ad, everti mandamus qui at. Zril quando copiosae usu ei, te vis veri primis, usu ei doctus sensibus neglegentur. Quas dolorum nostrum te mei, has quaeque tacimates ei.\r\n\r\nCu aeque malorum discere cum. Mollis diceret comprehensam sit ne, an habeo veniam docendi duo, no vim accusam probatus voluptatibus. Ex cum lucilius eleifend maiestatis, te eos aliquam habemus accommodare. At eum noluisse referrentur, eos ei mutat dicit efficiantur.\r\n\r\nIn cum ubique altera corrumpit, ne sit feugiat qualisque democritum, mucius percipitur duo in. Populo nemore nam et, id legimus corpora est. Nec eu percipit intellegam, vix labitur dissentiet no, mea modo meliore sententiae ea. His cetero dissentiet id. Sumo solet legendos duo id, ut has natum melius.',NULL,NULL,NULL,NULL,NULL,NULL,'2015-11-17 13:01:31','2015-08-21 10:22:44'),(47,99,NULL,24,NULL,NULL,93,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Barquito C','ESX123456','','2017-03-18',456000.00,NULL,NULL,NULL,NULL,'2015-12-17 14:01:01','2015-08-21 10:44:07'),(50,97,60,19,NULL,NULL,NULL,55,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Titanic','M354342','',NULL,NULL,NULL,NULL,NULL,NULL,'2015-09-23 09:21:50','2015-09-23 09:21:50'),(51,103,64,19,NULL,NULL,89,98,NULL,'2016-05-03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Periquito','HJA987654','',NULL,5000.00,NULL,NULL,NULL,NULL,'2015-09-23 09:22:27','2015-09-23 09:22:27'),(52,98,60,19,NULL,NULL,90,9,NULL,'2015-02-03',NULL,NULL,'2016-02-03',NULL,NULL,NULL,NULL,NULL,'La Casa','POI984834872','','2015-03-04',85000.00,NULL,NULL,NULL,NULL,'2015-12-01 14:12:41','2015-09-23 09:28:08'),(53,95,60,31,NULL,NULL,NULL,50,NULL,'2014-01-01','2014-02-02','2014-03-03',NULL,NULL,NULL,NULL,NULL,NULL,'MMM Barquito Jorgito','ERE22332423','Lorem ipsum dolor sit amet, id debitis legendos ocurreret mel. Usu an autem scaevola. Omnis erant vis eu, option maiorum abhorreant id mel. Volumus insolens deserunt ei vim.\r\n\r\nOmnis soleat impetus cu vis, cu modo timeam has, mea te salutatus eloquentiam. Ea impetus imperdiet sed. Id vim consequat moderatius, no pri petentium laboramus urbanitas, ut eos partem dignissim. Ne case accommodare ius, tollit labitur sed ut. Facer nihil everti sit id. Porro feugiat accusam mea ex.\r\n\r\nQui esse detracto sadipscing in. Te sumo homero recusabo eum. Iudicabit evertitur persecuti et eos. Recteque intellegebat at duo, pro ut augue graeci dissentiunt. Cu vel utinam partiendo prodesset, usu nibh lucilius facilisi ne, no nominati liberavisse pri. Laudem eligendi et has, sea dico iudicabit in.\r\n\r\nAmet evertitur mei no, cu exerci graeci dictas sed, est eu facer impetus. Has ne discere tibique eloquentiam, ius utinam euripidis id. Ei vel nihil tantas iuvaret. Ea elit delectus petentium sea, id copiosae probatus constituto quo, ne amet laboramus vim. In aliquam feugait referrentur sit, ad neglegentur liberavisse vel, sed ex brute idque.\r\n\r\nQuo mundi definitionem et. Propriae repudiandae quo an. Essent adipiscing ei cum, audiam quaeque an mei, id eripuit alienum vituperatoribus mei. Et nec iuvaret adipiscing contentiones, vidit labores ea usu, no per meis facilis. Cu tractatos euripidis his, ut congue nostrum mel, tempor verterem urbanitas ne has.\r\n\r\nTantas labitur consectetuer ad mei, scaevola scripserit consequuntur ne ius. Pro ut noluisse moderatius, minimum corrumpit qui an, ludus vitae at vis. Ea cum autem graecis posidonium. Pro cu tota nostrud ponderum, ad ceteros explicari pertinacia eum, mel molestie signiferumque no. Eum melius audire eu, urbanitas intellegat omittantur nec ad, mucius aliquam liberavisse te mea. Sit et sententiae concludaturque, ex omnis posse graece mel.\r\n\r\nImpetus eloquentiam eu duo, nec cu mucius accumsan, omnium tincidunt ea nam. Mea an reque aperiri, in ius graeci electram, an maiorum quaestio iudicabit mel. Et duo melius iudicabit, vix an vitae iuvaret eloquentiam. Purto mucius propriae te cum. Nam quis autem ea, mazim decore inciderint eos ad.\r\n\r\nPer et lorem mazim, ne mea mollis senserit, mei eu eirmod mentitum invidunt. Id labores eleifend eam, case nostrum voluptatibus nam ex. Has cu dolores recusabo volutpat, te porro vocent adipiscing cum, id legere eloquentiam usu. Homero nominati definitionem duo eu, ex qui falli possim sapientem. Eam an liber saepe, et veniam delectus insolens mel, in rebum moderatius percipitur qui.\r\n\r\nPrimis accommodare necessitatibus sed ea. Fuisset vulputate vim an, eum in primis utroque ponderum. Eu doming scripta cum, vel in mollis mentitum. Populo primis ne vix, ius ne interesset temporibus, ut mel simul voluptua comprehensam.\r\n\r\nTempor feugait adipisci an duo, cum ea solum appellantur instructior. Vim ea ornatus singulis invenire. An unum pertinacia vis, ex sit fuisset voluptatibus. Eam case debitis no. Sed ne iuvaret numquam accusamus.',NULL,NULL,NULL,NULL,NULL,NULL,'2015-11-17 13:08:47','2015-11-17 13:08:47'),(58,NULL,NULL,24,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'###1','@@@1','',NULL,NULL,NULL,NULL,NULL,NULL,'2015-12-17 11:40:45','2015-12-17 11:40:45'),(59,NULL,NULL,24,NULL,NULL,NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'###º','a','',NULL,NULL,NULL,NULL,NULL,NULL,'2015-12-17 11:45:59','2015-12-17 11:45:59'),(66,NULL,NULL,24,NULL,NULL,NULL,16,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'###ºe','@@@0f','',NULL,NULL,NULL,NULL,NULL,NULL,'2015-12-22 14:08:22','2015-12-22 14:08:22');
 /*!40000 ALTER TABLE `transportes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1462,6 +1563,44 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `precio_flete_contratos`
+--
+
+/*!50001 DROP TABLE IF EXISTS `precio_flete_contratos`*/;
+/*!50001 DROP VIEW IF EXISTS `precio_flete_contratos`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`cmpsa`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `precio_flete_contratos` AS select `c`.`id` AS `contrato_id`,`c`.`puerto_carga_id` AS `puerto_carga_id`,`c`.`puerto_destino_id` AS `puerto_destino_id`,`f`.`id` AS `flete_id`,`f`.`embalaje_id` AS `embalaje_id`,`precioFleteDolarTonelada`(`f`.`id`,`c`.`fecha_transporte`) AS `precio_flete` from (`contratos` `c` join `fletes` `f`) where (((`c`.`puerto_carga_id` is not null) and (`c`.`puerto_destino_id` is not null) and (`c`.`puerto_carga_id` = `f`.`puerto_carga_id`) and (`c`.`puerto_destino_id` = `f`.`puerto_destino_id`)) or (isnull(`c`.`puerto_carga_id`) and (`c`.`puerto_destino_id` = `f`.`puerto_destino_id`)) or (isnull(`c`.`puerto_destino_id`) and (`c`.`puerto_carga_id` = `f`.`puerto_carga_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `precio_flete_operaciones`
+--
+
+/*!50001 DROP TABLE IF EXISTS `precio_flete_operaciones`*/;
+/*!50001 DROP VIEW IF EXISTS `precio_flete_operaciones`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`cmpsa`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `precio_flete_operaciones` AS select `o`.`id` AS `id`,`p`.`contrato_id` AS `contrato_id`,`p`.`puerto_carga_id` AS `puerto_carga_id`,`p`.`puerto_destino_id` AS `puerto_destino_id`,`p`.`flete_id` AS `flete_id`,`p`.`embalaje_id` AS `embalaje_id`,`p`.`precio_flete` AS `precio_flete` from (`operaciones` `o` left join `precio_flete_contratos` `p` on(((`o`.`contrato_id` = `p`.`contrato_id`) and (`o`.`embalaje_id` = `p`.`embalaje_id`)))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `precio_flete_toneladas`
 --
 
@@ -1532,7 +1671,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`cmpsa`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `reparto_operacion_asociados` AS select `o`.`id` AS `id`,`ao`.`asociado_id` AS `asociado_id`,round(((`ao`.`cantidad_embalaje_asociado` / (select ifnull(sum(`ao`.`cantidad_embalaje_asociado`),0) from `asociado_operaciones` `ao` where (`ao`.`operacion_id` = `o`.`id`))) * 100),4) AS `porcentaje_embalaje_asociado`,(`ao`.`cantidad_embalaje_asociado` * (select `ce`.`peso_embalaje_real` from `contrato_embalajes` `ce` where ((`ce`.`contrato_id` = `o`.`contrato_id`) and (`ce`.`embalaje_id` = `o`.`embalaje_id`)))) AS `peso_asociado`,round(((`ao`.`cantidad_embalaje_asociado` * (select `ce`.`peso_embalaje_real` from `contrato_embalajes` `ce` where ((`ce`.`contrato_id` = `o`.`contrato_id`) and (`ce`.`embalaje_id` = `o`.`embalaje_id`)))) * (select `f`.`precio_euro_kilo` from `financiaciones` `f` where (`f`.`id` = `o`.`id`))),4) AS `precio_asociado`,round(((((`ao`.`cantidad_embalaje_asociado` * (select `ce`.`peso_embalaje_real` from `contrato_embalajes` `ce` where ((`ce`.`contrato_id` = `o`.`contrato_id`) and (`ce`.`embalaje_id` = `o`.`embalaje_id`)))) * (select `f`.`precio_euro_kilo` from `financiaciones` `f` where (`f`.`id` = `o`.`id`))) * (select `v`.`valor` from `valor_iva_financiaciones` `v` where (`v`.`financiacion_id` = `f`.`id`))) / 100),4) AS `iva`,round(((`ao`.`cantidad_embalaje_asociado` * (select `ce`.`peso_embalaje_real` from `contrato_embalajes` `ce` where ((`ce`.`contrato_id` = `o`.`contrato_id`) and (`ce`.`embalaje_id` = `o`.`embalaje_id`)))) * `VALOR_COMISION_ASOCIADO`(`ao`.`asociado_id`,`f`.`fecha_vencimiento`)),4) AS `comision`,round(((((`ao`.`cantidad_embalaje_asociado` * (select `ce`.`peso_embalaje_real` from `contrato_embalajes` `ce` where ((`ce`.`contrato_id` = `o`.`contrato_id`) and (`ce`.`embalaje_id` = `o`.`embalaje_id`)))) * `VALOR_COMISION_ASOCIADO`(`ao`.`asociado_id`,`f`.`fecha_vencimiento`)) * `valor_iva_comision`(`f`.`tipo_iva_comision_id`,`f`.`fecha_vencimiento`)) / 100),4) AS `iva_comision` from ((`operaciones` `o` join `asociado_operaciones` `ao`) join `financiaciones` `f`) where ((`ao`.`operacion_id` = `o`.`id`) and (`o`.`id` = `f`.`id`)) order by `o`.`id` */;
+/*!50001 VIEW `reparto_operacion_asociados` AS select `o`.`id` AS `id`,`ao`.`asociado_id` AS `asociado_id`,round(((`ao`.`cantidad_embalaje_asociado` / (select ifnull(sum(`ao`.`cantidad_embalaje_asociado`),0) from `asociado_operaciones` `ao` where (`ao`.`operacion_id` = `o`.`id`))) * 100),2) AS `porcentaje_embalaje_asociado`,(`ao`.`cantidad_embalaje_asociado` * (select `ce`.`peso_embalaje_real` from `contrato_embalajes` `ce` where ((`ce`.`contrato_id` = `o`.`contrato_id`) and (`ce`.`embalaje_id` = `o`.`embalaje_id`)))) AS `peso_asociado`,round(((`ao`.`cantidad_embalaje_asociado` * (select `ce`.`peso_embalaje_real` from `contrato_embalajes` `ce` where ((`ce`.`contrato_id` = `o`.`contrato_id`) and (`ce`.`embalaje_id` = `o`.`embalaje_id`)))) * (select `f`.`precio_euro_kilo` from `financiaciones` `f` where (`f`.`id` = `o`.`id`))),2) AS `precio_asociado`,round(((((`ao`.`cantidad_embalaje_asociado` * (select `ce`.`peso_embalaje_real` from `contrato_embalajes` `ce` where ((`ce`.`contrato_id` = `o`.`contrato_id`) and (`ce`.`embalaje_id` = `o`.`embalaje_id`)))) * (select `f`.`precio_euro_kilo` from `financiaciones` `f` where (`f`.`id` = `o`.`id`))) * (select `v`.`valor` from `valor_iva_financiaciones` `v` where (`v`.`financiacion_id` = `f`.`id`))) / 100),2) AS `iva`,round(((`ao`.`cantidad_embalaje_asociado` * (select `ce`.`peso_embalaje_real` from `contrato_embalajes` `ce` where ((`ce`.`contrato_id` = `o`.`contrato_id`) and (`ce`.`embalaje_id` = `o`.`embalaje_id`)))) * `VALOR_COMISION_ASOCIADO`(`ao`.`asociado_id`,`f`.`fecha_vencimiento`)),2) AS `comision`,round(((((`ao`.`cantidad_embalaje_asociado` * (select `ce`.`peso_embalaje_real` from `contrato_embalajes` `ce` where ((`ce`.`contrato_id` = `o`.`contrato_id`) and (`ce`.`embalaje_id` = `o`.`embalaje_id`)))) * `VALOR_COMISION_ASOCIADO`(`ao`.`asociado_id`,`f`.`fecha_vencimiento`)) * `valor_iva_comision`(`f`.`tipo_iva_comision_id`,`f`.`fecha_vencimiento`)) / 100),2) AS `iva_comision`,`total_asociado_financiacion`(`f`.`id`,`ao`.`asociado_id`) AS `total_anticipo` from ((`operaciones` `o` join `asociado_operaciones` `ao`) join `financiaciones` `f`) where ((`ao`.`operacion_id` = `o`.`id`) and (`o`.`id` = `f`.`id`)) order by `o`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1641,4 +1780,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-26  0:45:31
+-- Dump completed on 2016-01-05 14:03:20
