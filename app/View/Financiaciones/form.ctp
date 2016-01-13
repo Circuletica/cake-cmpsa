@@ -26,10 +26,12 @@ echo "  <dt>Condición</dt>\n";
 echo "<dd>".$condicion.'&nbsp;'."</dd>";
 echo "</dl>";
 echo $this->Form->create('Financiacion');
-echo $this->Form->hidden('id', array(
-    'value' => $operacion['Operacion']['id']
-)
-    );
+echo $this->Form->hidden(
+    'id',
+    array(
+	'value' => $operacion['Operacion']['id']
+    )
+);
 echo "<div class='linea'>\n";
 echo $this->Form->input(
     'fecha_vencimiento',

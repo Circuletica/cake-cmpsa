@@ -3,7 +3,7 @@ class Financiacion extends AppModel {
 	public $recursive = 2;
 	public $belongsTo = array(
 		'Banco' => array(
-			'className' => 'Banco',
+			'className' => 'Empresa',
 			'foreignKey' => 'banco_id'),
 		'TipoIva' => array(
 			'className' => 'TipoIva',

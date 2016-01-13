@@ -12,7 +12,7 @@ $this->start('main');
 <table>
   <tr>
     <th><?php echo $this->Paginator->sort('Operacion.referencia','Operación')?></th>
-    <th><?php echo $this->Paginator->sort('Empresa.nombre_corto','Banco')?></th>
+    <th><?php echo $this->Paginator->sort('Banco.nombre_corto','Banco')?></th>
     <th><?php echo $this->Paginator->sort('Financiacion.fecha_vencimiento','F. Vencimiento')?></th>
   </tr>
 <?php
@@ -27,7 +27,7 @@ $this->start('main');
 ?>
   <tr>
     <td> <?php echo $financiacion['Operacion']['referencia']?> </td>
-    <td> <?php echo $financiacion['Empresa']['nombre_corto']?> </td>
+    <td> <?php echo $financiacion['Banco']['nombre_corto']?> </td>
     <td> <?php echo $fecha_vencimiento?> </td>
     <td>
 <?php

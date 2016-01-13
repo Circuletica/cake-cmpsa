@@ -176,7 +176,6 @@ class MuestrasController extends AppController {
     }
 
     public function add() {
-	//$this->form($this->params['named']['from_id']);
 	$this->form();
 	$this->render('form');
     }
@@ -218,7 +217,8 @@ class MuestrasController extends AppController {
 	    $this->Muestra->id = $id;
 	    $muestra = $this->Muestra->findById($id);
 	    //$this->set('muestra',$muestra);
-	    $tipo = $tipos[$muestra['Muestra']['tipo']];
+	    $tipo_nombre = $tipos[$muestra['Muestra']['tipo']];
+	    $tipo = $muestra['Muestra']['tipo'];
 	    //$this->request->data['Muestra']['tipo'] = $muestra['Muestra']['tipo'];
 	} else { //es un add()	
 	    //Si no esta el tipo de muestra en la URL, volvemos
@@ -232,11 +232,13 @@ class MuestrasController extends AppController {
 		    )
 		);
 	    } else {
-		$tipo = $tipos[$this->passedArgs['tipo_id']];
-		$this->request->data['Muestra']['tipo'] = $this->passedArgs['tipo_id'];
+		$tipo = $this->passedArgs['tipo_id'];
+		$tipo_nombre = $tipos[$this->passedArgs['tipo_id']];
+		//$this->request->data['Muestra']['tipo'] = $this->passedArgs['tipo_id'];
 	    }
 	}
 	$this->set('tipo',$tipo);
+	$this->set(compact('tipo_nombre'));
 
 	//el titulado completo de la Calidad sale de una vista
 	//de MySQL que concatena descafeinado, pais y descripcion
@@ -253,9 +255,9 @@ class MuestrasController extends AppController {
 		CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
 		" ",
 		SUBSTR(Contrato.fecha_transporte,6,2),
-	"/",
-	SUBSTR(Contrato.fecha_transporte,1,4)
-    )'
+		"/",
+		SUBSTR(Contrato.fecha_transporte,1,4)
+		)'
 	);
 	//el array que se pasa al javascript para cambiar
 	//calidad y proveedor automaticamente
@@ -340,15 +342,13 @@ class MuestrasController extends AppController {
 	$muestrasEmbarque = Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}');
 	$this->set(compact('muestrasEmbarque'));
 
-	//if($this->request->is('post')) {
 	if (!empty($this->request->data)){  //es un POST
 	    //rellenamos los campos del registro que vienen de otras tablas,
 	    //por ejemplo si la muestra tiene muestra de embarque, hay que sacar el
 	    //contrato_id, proveedor_id y calidad_id para meterlos en el registro de
 	    //la propia tabla de muestras si no queremos problemas con el paginador luego
-	    debug('postttt');
 	    if (!isset($this->request->data['Muestra']['proveedor_id'])) {
-		if ($this->request->data['Muestra']['muestra_embarque_id'] == '') {
+		if (empty($this->request->data['Muestra']['muestra_embarque_id'])) {
 		    $this->request->data['Muestra']['proveedor_id'] =
 			$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['Proveedor']['id'];
 		    $this->request->data['Muestra']['calidad_id'] =
@@ -362,12 +362,18 @@ class MuestrasController extends AppController {
 			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['id'];
 		}
 	    }
+	    if (!isset($this->request->data['Muestra']['contrato_id'])) {
+		//no sabemos si es null o ''
+		$this->request->data['Muestra']['contrato_id'] = null;
+		//$this->request->data['Muestra']['contrato_id'] = '';
+	    }
+	    debug($this->request->data);
 	    if($this->Muestra->save($this->request->data)) {
 		$this->Session->setFlash('Muestra guardada');
 		$this->redirect(
 		    array(
 			'action' => 'index',
-			'Search.tipo_id' => $this->request->data['Muestra']['tipo']
+			'Search.tipo_id' => $tipo
 		    )
 		);
 	    } else {
@@ -378,61 +384,5 @@ class MuestrasController extends AppController {
 	}
 	$this->render('form');
     }
-
-//    public function edit( $id = null) {
-//	if (!$id) {
-//	    $this->Session->setFlash('URL mal formada');
-//	    $this->redirect(array('action'=>'index'));
-//	}
-//	$this->loadModel('Proveedor');
-//	$this->set(
-//	    'proveedores',
-//	    $this->Proveedor->find(
-//		'list',
-//		array(
-//		    'fields' => array(
-//			'Proveedor.id',
-//			'Empresa.nombre_corto'
-//		    ),
-//		    'recursive' => 1,
-//		    'order' => array(
-//			'Empresa.nombre_corto' => 'ASC'
-//		    )
-//		)
-//	    )
-//	);
-//	$this->Muestra->id = $id;
-//	$muestra = $this->Muestra->findById($id);
-//	$this->set('muestra',$muestra);
-//	$tipos = $this->tipoMuestras;
-//	$this->set('tipos', $tipos);
-//	$tipo = $tipos[$muestra['Muestra']['tipo']];
-//	$this->set('tipo',$tipo);
-//	//el titulado completo de la Calidad sale de una vista
-//	//de MySQL que concatena descafeinado, pais y descripcion
-//	$calidades = $this->Muestra->CalidadNombre->find('list');
-//	$this->set('calidades',$calidades);
-//	//$this->set('almacenes', $this->Muestra->Almacen->find('list', array(
-//	//    'fields' => array('Almacen.id','Empresa.nombre'),
-//	//    'recursive' => 1))
-//	//);
-//
-//	if($this->request->is('get')) {
-//	    $this->request->data = $this->Muestra->read();
-//	} else {
-//	    if ($this->Muestra->save($this->request->data)) {
-//		$this->Session->setFlash('Muestra '.
-//		$this->request->data['Muestra']['registro'].
-//		' modificada con éxito');
-//	$this->redirect(array(
-//	    'action' => 'view',
-//	    $id
-//	)
-//    );
-//	    } else {
-//		$this->Session->setFlash('Muestra NO guardada');
-//	    }
-//	}
-//    }
 }
 ?>

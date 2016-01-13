@@ -148,9 +148,12 @@ function contratosMuestra(){
 
 function muestraOferta() {
     var aprobado = document.getElementById('MuestraAprobado').checked;
-    console.log(7);
+    contrato = document.getElementById('MuestraContratoId');
+    contrato.disabled = !aprobado;
     document.getElementById('MuestraContratoId').disabled = !aprobado;
-    //document.getElementById('MuestraContratoId').readonly = !aprobado;
+    if (!aprobado) {
+	contrato.options[0].selected = true;
+    }
     document.getElementById('combobox').disabled = aprobado;
     document.getElementById('proveedor').disabled = aprobado;
 }
