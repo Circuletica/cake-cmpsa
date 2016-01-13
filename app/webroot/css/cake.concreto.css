@@ -784,3 +784,7 @@ color: #fff;
     margin: 2% 2.5%;
 }
 /* Cuadrando las cajas de texto*/
+.pruebatabla{
+	text-align: right;
+	font-weight: bold;
+}

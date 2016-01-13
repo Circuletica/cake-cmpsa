@@ -93,7 +93,7 @@ class RetiradasController extends AppController {
 	//nos sirven  en la vista para detallar campos
 	$operacion = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find('first',array(
 			'conditions' => array('Operacion.id' => $id),
-			'recursive' => 5,
+			'recursive' => 4,
 			'fields' => array(
 			'Operacion.id')
 			));

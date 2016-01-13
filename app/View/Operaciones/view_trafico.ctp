@@ -115,37 +115,41 @@
 		<?php
 		//Se calcula la cantidad total de bultos retirados
 
-		echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado', 'Sacos retirados','Peso retirado','Detalle'));
+		echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)','Detalle'));
+	
 		foreach ($lineas_retirada as $linea_retirada):
 			echo $this->Html->tableCells(array(
 				$linea_retirada['Nombre'],
-				$linea_retirada['Cantidad'],
-				$linea_retirada['Peso'],
-				$linea_retirada['Cantidad_retirado'],
-				$linea_retirada['Peso_retirado'],
+				array(
+					$linea_retirada['Cantidad'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+				array(
+					$linea_retirada['Peso'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+				array(
+					$linea_retirada['Cantidad_retirado'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+				array(
+					$linea_retirada['Peso_retirado'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
 				$this->Button->viewLine('retiradas',$operacion['Operacion']['id'],'retiradas',$operacion['Operacion']['id'])
 				)
 			);
 		endforeach;
-		foreach ($lineas_retirada as $linea_retirada):
-			echo $this->Html->tableCells(array(
-				$linea_retirada['Nombre'],
-				$linea_retirada['Cantidad'],
-				$linea_retirada['Peso'],
-				$linea_retirada['Cantidad_retirado'],
-				$linea_retirada['Peso_retirado'],
-				$this->Button->viewLine('retiradas',$linea_retirada['AlmacenTransporte']['Retirada']['id'],'retiradas',$operacion['Operacion']['id'])
-				)
-			);
-		endforeach;
-
-
-	
 		?>
 		</table>
-		<?php
-		echo "<h4>Bultos restantes: ".$restante."</h4>";
-		?>
 <table>
 <?php 
 /*
