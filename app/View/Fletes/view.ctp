@@ -15,7 +15,7 @@ $this->end();
 $this->start('main');
 echo "<dl>";
 echo "  <dt>Naviera:</dt>\n";
-echo "  <dd>".$flete['Naviera']['Empresa']['nombre_corto']."&nbsp;</dd>";
+echo "  <dd>".$flete['Naviera']['nombre_corto']."&nbsp;</dd>";
 echo "  <dt>Puerto de Carga:</dt>\n";
 echo "  <dd>".$flete['PuertoCarga']['nombre']
     .' ('.$flete['PuertoCarga']['Pais']['nombre'].')'
@@ -48,5 +48,4 @@ foreach ($costes as $coste):
 endforeach;
 echo "</table>";
 $this->end();
-
 ?>
