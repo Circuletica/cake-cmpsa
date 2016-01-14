@@ -148,44 +148,52 @@
 				)
 			);
 		endforeach;
-		?>
-		</table>
-<table>
-<?php 
-/*
 echo $this->html->tablecells(array(
-    'TOTALES',
-    array(
-	$this->Number->round($totales['total_sacos']),
 	array(
-	    'style' => 'text-align:right',
-	    'bgcolor' => '#00FF00'
-	)
-    ),
     array(
-	$this->Number->round($totales['total_peso_solicitado']),
-	array(
-	    'style' => 'text-align:right',
-	    'bgcolor' => '#00FF00'
-	)
-    ),
-    array(
-	$this->Number->round($totales['total_sacos_retirado']),
-	array(
-	    'style' => 'text-align:right',
-	    'bgcolor' => '#00FF00'
-	)
-    ),
-    array(
-	$this->Number->round($totales['total_peso_retirado']),
-	array(
-	    'style' => 'text-align:right',
-	    'bgcolor' => '#00FF00'
-	)
-    ),
+    	'TOTALES',
+ 	array(
+		'style' => 'font-weight: bold; text-align:center'
+		)
+	),
 
-)
-	);*/
+	array(
+	$total_sacos,
+	array(
+		'style' => 'font-weight: bold; text-align:right',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    $total_peso,
+	array(
+		'style' => 'font-weight: bold; text-align:right',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    $total_sacos_retirados,
+	array(
+		'style' => 'font-weight: bold; text-align:right',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    $total_peso_retirado,
+	array(
+		'style' => 'font-weight: bold; text-align:right',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    '<i class="fa fa-arrow-left fa-lg"></i>',
+	array(
+		'style' => 'text-align:center',
+		'escape' => false
+		)
+	)
+	))
+	);
 ?></table>
 		<div class="btabla">
 		<?php

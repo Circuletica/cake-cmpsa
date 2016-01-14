@@ -514,20 +514,23 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 			);	
 	//Líneas de reparto
 	//		debug($operacion_retiradas);
-	$total_retirado = 0;
-	$total_solicitado= 0;
+	$total_sacos = 0;
+	$total_peso = 0;
+	$total_sacos_retirados = 0;
+	$total_peso_retirado = 0;
 
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 		
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
+
 	foreach ($operacion_retiradas as $clave => $operacion_retirada){
 		//	debug($operacion_retirada);
 		$retirada = $operacion_retirada['Retirada'];
 		if($retirada['asociado_id'] == $linea['Asociado']['id']){
-			$cantidad_retirado = $cantidad_retirado + $retirada['embalaje_retirado'];
-			$peso_retirado = $peso_retirado + $retirada['peso_retirado'];
+			$cantidad_retirado += $retirada['embalaje_retirado'];
+			$peso_retirado += $retirada['peso_retirado'];
 		}
 	}
 	$lineas_retirada[] = array(
@@ -537,39 +540,28 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
  	   'Cantidad_retirado' => $cantidad_retirado,
  	   'Peso_retirado' => $peso_retirado
 		);
-	$total_solicitado = $total_solicitado + $peso;
-	$total_retirado = $total_retirado + $peso_retirado;
+	$total_sacos += $linea['cantidad_embalaje_asociado'];
+	$total_peso += $peso;
+	$total_sacos_retirados += $cantidad_retirado; 
+	$total_peso_retirado += $peso_retirado;
 
 	endforeach;
-	//$this->set('restante', $total_solicitado - $total_retirado);
-	$lineas_retirada[] = array(
-		'Nombre'=> 'total',
-		'Cantidad' => '',
-		'Peso' => $total_solicitado,
-		'Cantidad_retirado' => '',
-		'Peso_retirado' => $total_retirado
-		);
 
-	//$columnas_retirada = array_keys($lineas_retirada[0]);
-	//indexamos el array por el codigo de asociado
-	//se ordena por codigo ascendente
+	/*$lineas_retirada[] = array(
+		'Nombre'=> 'TOTAL',
+		'Cantidad' => '',
+		'Peso' => $total_peso,
+		'Cantidad_retirado' => '',
+		'Peso_retirado' => $total_peso_retirado
+		);*/
+
 	ksort($lineas_retirada);
 	$this->set('lineas_retirada',$lineas_retirada);
-	//Calculo la cantidad de bultos retirados
-	/*if($operacion['Operacion']['id']!= NULL){
-				foreach ($operacion['Transporte'] as $transporte_almacen){
-				foreach ($transporte_almacen['AlmacenTransporte'] as $retiradatotal){
-					if ($retiradatotal[])
-				}
-			if ($transporte['operacion_id']=$operacion['Operacion']['id']){
-			$restante = $restante + $suma[Retirada]['embalaje_retirado'];
-			}
-		}
-	}
-	$this->set('restante',$restante);
+	$this->set('total_sacos',$total_sacos);
+	$this->set('total_peso',$total_peso);	
+	$this->set('total_sacos_retirados',$total_sacos_retirados);
+	$this->set('total_peso_retirado',$total_peso_retirado);
 
-
-*/
     }
 
     public function delete($id = null) {

@@ -97,49 +97,49 @@ echo $this->html->tablecells(array(
 	$this->Number->round($totales['total_porcentaje_embalaje']),
 	array(
 	    'style' => 'text-align:right',
-	    'bgcolor' => '#00FF00'
+	    'bgcolor' => '#5FCF80'
 	)
     ),
     array(
 	$this->Number->round($totales['total_peso']),
 	array(
 	    'style' => 'text-align:right',
-	    'bgcolor' => '#00FF00'
+	    'bgcolor' => '#5FCF80'
 	)
     ),
     array(
 	$this->Number->round($totales['total_precio']),
 	array(
 	    'style' => 'text-align:right',
-	    'bgcolor' => '#00FF00'
+	    'bgcolor' => '#5FCF80'
 	)
     ),
     array(
 	$this->Number->round($totales['total_iva']),
 	array(
 	    'style' => 'text-align:right',
-	    'bgcolor' => '#00FF00'
+	    'bgcolor' => '#5FCF80'
 	)
     ),
     array(
 	$this->Number->round($totales['total_comision']),
 	array(
 	    'style' => 'text-align:right',
-	    'bgcolor' => '#00FF00'
+	    'bgcolor' => '#5FCF80'
 	)
     ),
     array(
 	$this->Number->round($totales['total_iva_comision']),
 	array(
 	    'style' => 'text-align:right',
-	    'bgcolor' => '#00FF00'
+	    'bgcolor' => '#5FCF80'
 	)
     ),
     array(
 	$this->Number->round($totales['total_general']),
 	array(
 	    'style' => 'text-align:right; font-weight:bold',
-	    'bgcolor' => '#00FF00'
+	    'bgcolor' => '#5FCF80'
 	)
     )
 )
