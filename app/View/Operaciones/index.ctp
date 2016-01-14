@@ -24,7 +24,7 @@
 	echo $this->Html->tableHeaders(array(
 		$this->Paginator->sort('Operacion.referencia','Referencia'),
 		$this->Paginator->sort('Contrato.referencia','Contrato'),
-		$this->Paginator->sort('Empresa.nombre_corto','Proveedor'),
+		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
 		$this->Paginator->sort('PesoOperacion.peso','Peso'),
 		$this->Paginator->sort('Operacion.lotes_operacion','Lotes'),
@@ -35,7 +35,7 @@
 		echo $this->Html->tableCells(array(
 			$operacion['Operacion']['referencia'],
 			$operacion['Contrato']['referencia'],
-			$operacion['Empresa']['nombre_corto'],
+			$operacion['Proveedor']['nombre_corto'],
 			$operacion['CalidadNombre']['nombre'],
 			$operacion['PesoOperacion']['peso'].'kg',
 			$operacion['Operacion']['lotes_operacion'],

@@ -36,7 +36,11 @@ class TransportesController extends AppController {
 	$this->form($this->params['named']['from_id']);
 	$this->render('form');
     }
+<<<<<<< HEAD
     public function edit($id = null) {
+=======
+  /*  public function edit($id = null) {
+>>>>>>> refs/remotes/origin/test
 	if (!$id && empty($this->request->data)) {
 	    $this->Session->setFlash('error en URL');
 	    $this->redirect(array(
@@ -44,10 +48,13 @@ class TransportesController extends AppController {
 		'controller' => $this->params['named']['from_controller'],
 		$this->params['from_id']
 	    ));
-	}
 	$this->form($id);
 	$this->render('form');
+<<<<<<< HEAD
 	}
+=======
+  }*/
+>>>>>>> refs/remotes/origin/test
 
     public function form($id) { //esta acción vale tanto para edit como add
 	if (!$id) {
@@ -62,6 +69,7 @@ class TransportesController extends AppController {
 	    array(
 		'fields' => array(
 		    'Naviera.id',
+<<<<<<< HEAD
 		    'Empresa.nombre_corto'),
 	    'order' => array('Empresa.nombre_corto' => 'asc'),
 		'recursive' => 1)
@@ -69,28 +77,57 @@ class TransportesController extends AppController {
 	$this->set(compact('navieras'));
 
 	//Listamos agentes de aduanas
+=======
+		    'Empresa.nombre_corto'
+		),
+		'recursive' => 1
+	    )
+	);
+	$this->set(compact('navieras'));
+
+>>>>>>> refs/remotes/origin/test
 	$this->loadModel('Agente');
 	$agentes = $this->Agente->find('list',array(
 	    'fields' => array(
 		'Agente.id',
 		'Empresa.nombre_corto'),
+<<<<<<< HEAD
 	    'order' => array('Empresa.nombre_corto' => 'asc'),
+=======
+>>>>>>> refs/remotes/origin/test
 	    'recursive' => 1)
 	);
 	$this->set(compact('agentes'));
 
+<<<<<<< HEAD
 	//Listamos aseguradoras
+=======
+>>>>>>> refs/remotes/origin/test
 	$this->loadModel('Aseguradora');
 	$aseguradoras = $this->Aseguradora->find('list',array(
 	    'fields' => array(
 		'Aseguradora.id',
 		'Empresa.nombre_corto'),
+<<<<<<< HEAD
 		'order' => array('Empresa.nombre_corto' => 'asc'),
+=======
+>>>>>>> refs/remotes/origin/test
 	    'recursive' => 1)
 	);
 	$this->set(compact('aseguradoras'));
 
+<<<<<<< HEAD
 	
+=======
+	$this->loadModel('Almacen');
+	$almacenes = $this->Almacen->find('list',array(
+	    'fields' => array(
+		'Almacen.id',
+		'Empresa.nombre_corto'),
+	    'recursive' => 1)
+	);
+	$this->set(compact('almacenes'));
+>>>>>>> refs/remotes/origin/test
 
 	//sacamos los datos de la operacion  al que pertenece la linea
 	//nos sirven en la vista para detallar campos
@@ -113,10 +150,15 @@ class TransportesController extends AppController {
 	//	$transportes = $this->Transporte->find('all');
 	//	$contrato_embalajes = $transportes['Operacion']['Contrato']['ContratoEmbalaje'];
 
+<<<<<<< HEAD
+=======
+	$this->set('action', $this->action);
+>>>>>>> refs/remotes/origin/test
 
 	$embalaje = $operacion['Embalaje']['nombre'];		
 	$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
 
+<<<<<<< HEAD
 	$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
 	    'list',
 	    array(
@@ -153,6 +195,47 @@ class TransportesController extends AppController {
 	$this->set('transportado',$transportado);
 
 
+=======
+
+
+	$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
+	    'list',
+	    array(
+		'order' => array(
+		    'PuertoCarga.nombre' => 'ASC'
+		)
+	    )
+	));
+	//Puertos de destino españoles
+	$this->set('puertoDestinos', $this->Transporte->PuertoDestino->find(
+	    'list',
+	    array(
+		'contain' => array('Pais'),
+		'conditions' => array( 'Pais.nombre' => 'España')
+	    )));		
+	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
+
+	//$this->set('almacenes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
+	//$this->set('almacen_transportes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
+	//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
+
+	$this->set('operacion',$operacion);
+	$transporte = $this->Transporte->find('all');	
+	$this->set('transporte',$transporte);
+	//Calculo la cantidad de bultos transportados
+	if($operacion['Operacion']['id']!= NULL) {
+	    $suma = 0;
+	    $transportado=0;
+	    foreach ($operacion['Transporte'] as $suma){
+		if ($transporte['operacion_id']=$operacion['Operacion']['id']) {
+		    $transportado = $transportado + $suma['cantidad_embalaje'];
+		}
+	    }
+	}
+	$this->set('transportado',$transportado);
+
+
+>>>>>>> refs/remotes/origin/test
 	//NO NECESARIO SE PASA A INDEX LINEA TRANSPORTE
 	$almacenaje = $this->Transporte->AlmacenTransporte->find('first', array(
 	    'conditions' => array('Transporte.id' => $id),
@@ -162,12 +245,21 @@ class TransportesController extends AppController {
 		'AlmacenTransporte.cuenta_almacen')
 	    ));
 	$this->set('almacenajes',$almacenaje);		
+<<<<<<< HEAD
 
 	$this->set('action', $this->action);
 		if($this->request->is('post')){
 	    //al guardar la linea, se incluye a qué operacion pertenece
 	    //debug($this->params['named']['from_id']);
 	    $this->request->data['Transporte']['operacion_id'] = $id;
+=======
+
+	if($this->request->is('post')){
+	    //al guardar la linea, se incluye a qué operacion pertenece
+	    //debug($this->params['named']['from_id']);
+	    $this->request->data['Transporte']['operacion_id'] = $id;
+
+>>>>>>> refs/remotes/origin/test
 	    if($this->request->data['Transporte']['cantidad_embalaje'] <= ($operacion['PesoOperacion']['cantidad_embalaje'] - $transportado)){
 		if($this->Transporte->save($this->request->data)){
 		    $this->Session->setFlash('Línea de transporte guardada');
@@ -182,6 +274,7 @@ class TransportesController extends AppController {
 	    }else{
 		$this->Session->setFlash('La cantidad de bultos debe ser inferior');
 	    }
+<<<<<<< HEAD
 	} else {
 		$this->request->data = $this ->Transporte->read(null, $id);
 	}
@@ -197,6 +290,21 @@ class TransportesController extends AppController {
 		'action' => 'view_trafico',
 		$this->params['named']['from_id']));
 	}
+=======
+	}
+    }
+
+    //PENDIENTE DE CAMBIAR POR EL FORM
+
+    public function edit( $id = null) {
+	if (!$id) {
+	    $this->Session->setFlash('URL mal formada');
+	    $this->redirect(array(
+		'controller' => 'operaciones',
+		'action' => 'view_trafico',
+		$this->params['named']['from_id']));
+	}
+>>>>>>> refs/remotes/origin/test
 	$this->Transporte->id = $id;
 	//$transporte = $this->Transporte->find('all');	
 
@@ -264,7 +372,11 @@ class TransportesController extends AppController {
 		$this->Session->setFlash('Operacion NO guardada');
 endif;
 endif;
+<<<<<<< HEAD
     }*/
+=======
+    }
+>>>>>>> refs/remotes/origin/test
 
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) :

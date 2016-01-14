@@ -1,6 +1,5 @@
 <?php
 $this->Html->addCrumb('Operaciones','/operaciones');
-//$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 
 if ($action == 'add') {
     echo "<h2>Añadir Financiación a Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
@@ -27,15 +26,21 @@ echo "  <dt>Condición</dt>\n";
 echo "<dd>".$condicion.'&nbsp;'."</dd>";
 echo "</dl>";
 echo $this->Form->create('Financiacion');
-echo $this->Form->hidden('id', array(
-    'value' => $operacion['Operacion']['id']
-)
-    );
+echo $this->Form->hidden(
+    'id',
+    array(
+	'value' => $operacion['Operacion']['id']
+    )
+);
 echo "<div class='linea'>\n";
-echo $this->Form->input('fecha_vencimiento', array(
-    'label' => 'Fecha de vencimiento',
-    'dateFormat' => 'DMY'
-)
+echo $this->Form->input(
+    'fecha_vencimiento',
+    array(
+	'label' => 'Fecha de vencimiento',
+	//'type' => 'text'
+	'dateFormat' => 'DMY',
+	'autofocus' => 'autofocus'
+    )
 );
 echo "</div>\n";
 //solo si es una financiacion nueva, asignamos valores por defecto

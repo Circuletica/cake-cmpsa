@@ -27,7 +27,8 @@ class Contrato extends AppModel {
 	    'className' => 'ContratoEmbalaje',
 	    'foreignKey' => 'contrato_id'
 	),
-	'PrecioFleteContrato'
+	'PrecioFleteContrato',
+	'Muestra'
     );
     public $belongsTo = array(
 	'PuertoCarga' => array(
@@ -42,7 +43,7 @@ class Contrato extends AppModel {
 	    'className' => 'CanalCompra',
 	    'foreignKey' => 'canal_compra_id'),
 	'Proveedor' => array(
-	    'className' => 'Proveedor',
+	    'className' => 'Empresa',
 	    'foreignKey' => 'proveedor_id'),
 	'Incoterm' => array(
 	    'className' => 'Incoterm',

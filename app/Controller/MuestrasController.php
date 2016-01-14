@@ -3,8 +3,16 @@ class MuestrasController extends AppController {
 
     public function index() {
 	$this->paginate['contain'] = array(
-	    'Empresa',
-	    'CalidadNombre'
+	    'Proveedor',
+	    'CalidadNombre',
+	    'Contrato' => array(
+		'CalidadNombre',
+		'Proveedor'
+	    ),
+	    'MuestraEmbarque' => array(
+		'CalidadNombre',
+		'Proveedor'
+	    )
 	);
 	$this->paginate['order'] =  array(
 	    'Muestra.fecha' => 'ASC'
@@ -12,20 +20,22 @@ class MuestrasController extends AppController {
 	$this->paginate['recursive'] = 1;
 
 	$this->set('tipos', $this->tipoMuestras);
+
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
-	$proveedores = $this->Muestra->Proveedor->find('list', array(
+	$this->loadModel('Proveedor');
+	$proveedores = $this->Proveedor->find('list', array(
 	    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
 	    'order' => array('Empresa.nombre_corto' => 'asc'),
 	    'recursive' => 1
 	)
     );
 	$this->set('proveedores',$proveedores);
+
 	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
 	//por ej.
 	//$passedArgs['Search.palabras'] = mipalabra
 	//$passedArgs['Search.id'] = 3
-
 	//Si queremos un titulo con los criterios de busqueda
 	$titulo = array();
 
@@ -52,7 +62,7 @@ class MuestrasController extends AppController {
 	//filtramos por proveedor
 	if(isset($this->passedArgs['Search.proveedor_id'])) {
 	    $proveedor_id = $this->passedArgs['Search.proveedor_id'];
-	    $this->paginate['conditions']['Empresa.id LIKE'] = "$proveedor_id";
+	    $this->paginate['conditions']['Proveedor.id LIKE'] = "$proveedor_id";
 	    //guardamos el criterio para el formulario de vuelta
 	    $this->request->data['Search']['proveedor_id'] = $proveedor_id;
 	    //completamos el titulo
@@ -87,23 +97,9 @@ class MuestrasController extends AppController {
 	    //completamos el titulo
 	    $title[] ='Calidad: '.$calidad;
 	}
-	//filtramos por aprobado
-	//		if(isset($this->passedArgs['Search.aprobado'])) {
-	//			$this->paginate['conditions'][]['Muestra.aprobado'] = $this->passedArgs['Search.aprobado']?1:0;
-	//			$this->data['Search']['aprobado'] = $this->passedArgs['Search.aprobado'];
-	//			$titulo[] = ($this->passedArgs['Search.aprobado']) ?
-	//				'Muestras aprobadas' : 'Muestras rechazadas';
-	//		}
 
-	$this->Muestra->bindModel(array(
-	    'belongsTo' => array(
-		'Empresa' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Empresa.id = Muestra.proveedor_id')
-		)
-	    )
-	));
 	$muestras =  $this->paginate();
+
 	//generamos el título
 	if (isset($tipo)) { //en caso de que se quiera mostrar todos los tipos de muestra
 	    if (isset($title)) { //si hay criterios de filtro, excluyendo el tipo
@@ -124,13 +120,11 @@ class MuestrasController extends AppController {
 	    $this->Session->setFlash('URL mal formada Muestra/view');
 	    $this->redirect(array('action'=>'index'));
 	}
-	$this->set('tipos', $this->tipoMuestras);
 	$this->Muestra->bindModel(array(
 	    'belongsTo' => array(
 		'CalidadNombre' => array(
 		    'foreignKey' => false,
 		    'conditions' => array('CalidadNombre.id = Muestra.calidad_id'),
-		    //'recursive' => 1
 		)
 	    )
 	));
@@ -140,9 +134,7 @@ class MuestrasController extends AppController {
 		'Muestra.*',
 		'CalidadNombre.*'
 	    ),
-	    'recursive' => 1));
-	$tipo = $this->tipoMuestras[$muestra['Muestra']['tipo']];
-	$this->set('tipo',$tipo);
+	    'recursive' => 3));
 	$this->set('muestra',$muestra);
 
 	//Exportar PDF
@@ -157,106 +149,216 @@ class MuestrasController extends AppController {
 	    'download'=>true,
 	    'filename'=>'INFORME-'.$id.'pdf'
 	);
-
-	$this->set('muestra', $this->Muestra->read(null, $id));
+	//hay una view distinta para cada
+	//tipo de muestra, ya que los campos
+	//no son iguales
+	switch ($muestra['Muestra']['tipo']) {
+	case 1:
+	    $this->render('view_oferta');
+	    break;
+	case 2:
+	    $this->render('view_embarque');
+	    break;
+	case 3:
+	    $this->render('view_entrega');
+	    break;
+	}
     }
 
     public function delete( $id = null) {
-	if (!$id or $this->request->is('get')) :
+	if (!$id or $this->request->is('get')){
 	    throw new MethodNotAllowedException();
-endif;
-if ($this->Muestra->delete($id)):
-    $this->Session->setFlash('Muestra borrada');
-$this->redirect(array('action'=>'index'));
-endif;
+	}
+	if ($this->Muestra->delete($id)) {
+	    $this->Session->setFlash('Muestra borrada');
+	    $this->redirect(array('action'=>'index'));
+	}
     }
 
     public function add() {
-	$this->set('tipos', $this->tipoMuestras);
-	//Sacamos el tipo de muestra de la URL
-	//y lo metemos ya en el formulario
-	if(isset($this->passedArgs['tipo_id'])) { //por si la URL no incluye el tipo de muestra
-	    $this->request->data['Muestras']['tipo'] = $this->passedArgs['tipo_id'];
-	} else {
-	    $this->request->data['Muestras']['tipo'] = '';
+	$this->form();
+	$this->render('form');
+    }
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL');
+	    $this->redirect(array(
+		'action' => 'index',
+		'controller' => 'financiaciones'
+	    ));
 	}
-	//el titulado completo de la Calidad sale de una vista
-	//de MySQL que concatena descafeinado, pais y descripcion
-	$calidades = $this->Muestra->CalidadNombre->find('list');
-	$this->set('calidades',$calidades);
-	$this->set('proveedores', $this->Muestra->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre'),
-	    'recursive' => 1
-	))
-    );
-	$this->Muestra->Operacion->virtualFields = array(
-	    'ref_op_cont' => 'CONCAT(Operacion.referencia,"(",Contrato.referencia,")")'
-	);
-	$this->set('operaciones', $this->Muestra->Operacion->find('list', array(
-	    'fields' => array(
-		'Operacion.id',
-		'ref_op_cont'
-	    ),
-//	    'conditions' => array(
-//		'Operacion.referencia <> ""'
-//	    ),
-	    'recursive' => 1))
-	);
-	$this->set(compact('operaciones'));
-
-	if($this->request->is('post')):
-	    if($this->Muestra->save($this->request->data)):
-		$this->Session->setFlash('Muestra guardada');
-	$this->redirect(array(
-	    'action' => 'index',
-	    'Search.tipo_id' => $this->request->data['Muestra']['tipo']
-	));
-endif;
-endif;
+	$this->form($id);
+	$this->render('form');
     }
 
-    public function edit( $id = null) {
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
-	    $this->redirect(array('action'=>'index'));
-	}
-	$this->Muestra->id = $id;
-	$muestra = $this->Muestra->findById($id);
-	$this->set('muestra',$muestra);
+    public function form($id = null) {
+	$this->set('action', $this->action);
 	$tipos = $this->tipoMuestras;
 	$this->set('tipos', $tipos);
-	$tipo = $tipos[$muestra['Muestra']['tipo']];
+	$this->loadModel('Proveedor');
+	$this->set(
+	    'proveedores',
+	    $this->Proveedor->find(
+		'list',
+		array(
+		    'fields' => array(
+			'Proveedor.id',
+			'Empresa.nombre_corto'
+		    ),
+		    'recursive' => 1
+		)
+	    )
+	);
+
+	//si es un edit, hay que rellenar el id, ya que
+	//si no se hace, al guardar el edit, se va a crear
+	//un _nuevo_ registro, como si fuera un add
+	if (!empty($id)) {
+	    $this->Muestra->id = $id;
+	    $muestra = $this->Muestra->findById($id);
+	    //$this->set('muestra',$muestra);
+	    $tipo_nombre = $tipos[$muestra['Muestra']['tipo']];
+	    $tipo = $muestra['Muestra']['tipo'];
+	} else { //es un add()	
+	    //Si no esta el tipo de muestra en la URL, volvemos
+	    //a muestras de oferta
+	    if(!isset($this->passedArgs['tipo_id'])) {
+		$this->Session->setFlash('Error en URL, falta tipo muestra');
+		$this->redirect(
+		    array(
+			'action' => 'index',
+			'Search.tipo_id' => 1
+		    )
+		);
+	    } else {
+		$tipo = $this->passedArgs['tipo_id'];
+		$tipo_nombre = $tipos[$this->passedArgs['tipo_id']];
+	    }
+	}
 	$this->set('tipo',$tipo);
+	$this->set(compact('tipo_nombre'));
+
 	//el titulado completo de la Calidad sale de una vista
 	//de MySQL que concatena descafeinado, pais y descripcion
 	$calidades = $this->Muestra->CalidadNombre->find('list');
 	$this->set('calidades',$calidades);
-	$this->set('proveedores', $this->Muestra->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre'),
-	    'recursive' => 1
-	))
-    );
-	//$this->set('almacenes', $this->Muestra->Almacen->find('list', array(
-	//    'fields' => array('Almacen.id','Empresa.nombre'),
-	//    'recursive' => 1))
-	//);
+	$this->set(
+	    'contratos',
+	    $this->Muestra->Contrato->find('list')
+	);
+	//para el javascript de la view
+	//queremos el transporte como 'embarque 03/2016' o 'entrega 01/2015'
+	$this->Muestra->Contrato->virtualFields = array(
+	    'transporte' => 'CONCAT(
+		CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
+		" ",
+		SUBSTR(Contrato.fecha_transporte,6,2),
+	"/",
+	SUBSTR(Contrato.fecha_transporte,1,4)
+    )'
+	);
+	//el array que se pasa al javascript para cambiar
+	//calidad y proveedor automaticamente
+	//cuando se cambia el contrato
+	//Se 'cortocircuita' el modelo de datos Contrato->Proveedor->Empresa
+	//y nos quedamos con Contrato->Proveedor, ahorrando muchas queries SQL
+	$contratosMuestra = $this->Muestra->Contrato->find(
+	    'all',
+	    array(
+		'contain' => array(
+		    'Proveedor' => array(
+			    'fields' =>array(
+				'nombre_corto'
+			    )
+		    ),
+		    'CalidadNombre'
+		),
+		'fields' => array(
+		    'Contrato.id',
+		    'CalidadNombre.nombre',
+		    'Contrato.transporte'
+		)
+	    )
+	);
+	//queremos el id del contrato como index del array
+	$contratosMuestra = Hash::combine($contratosMuestra, '{n}.Contrato.id','{n}');
+	$this->set(compact('contratosMuestra'));
 
-	if($this->request->is('get')):
-	    $this->request->data = $this->Muestra->read();
-	else:
-	    if ($this->Muestra->save($this->request->data)):
-		$this->Session->setFlash('Muestra '.
-		$this->request->data['Muestra']['referencia'].
-		' modificada con éxito');
-	$this->redirect(array(
-	    'action' => 'view',
-	    $id
-	)
-    );
-	    else:
+	//el array que se pasa al javascript para cambiar
+	//contrato, calidad y proveedor automaticamente
+	//cuando se cambia la muestra de embarque en
+	//muestras de entrega
+	$muestrasEmbarque = $this->Muestra->find(
+	    'all',
+	    array(
+		'contain' => array(
+		    'Contrato' => array(
+		    )
+		),
+		'fields' => array(
+		    'Muestra.id',
+		    'Muestra.registro',
+		    'Contrato.id',
+		    'Contrato.proveedor_id',
+		    'Contrato.calidad_id'
+		),
+		'conditions' => array(
+		    'tipo' =>2 // solo las muestras de embarque
+		)
+	    )
+	);
+	//queremos el id de la muestra como index del array
+	//por una parte, un array para el js que permite rellenar
+	//los demás campos cuando se selecciona una muestra de embarque
+	$this->set (
+	    'muestraEmbarques',
+	    Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.registro')
+	);
+	//por otra parte la lista del desplegable de muestras de embarque
+	//para el formulario
+	$muestrasEmbarque = Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}');
+	$this->set(compact('muestrasEmbarque'));
+
+	if (!empty($this->request->data)){  //es un POST
+	    //rellenamos los campos del registro que vienen de otras tablas,
+	    //por ejemplo si la muestra tiene muestra de embarque, hay que sacar el
+	    //contrato_id, proveedor_id y calidad_id para meterlos en el registro de
+	    //la propia tabla de muestras si no queremos problemas con el paginador luego
+	    if (!isset($this->request->data['Muestra']['proveedor_id'])) {
+		if (empty($this->request->data['Muestra']['muestra_embarque_id'])) {
+		    $this->request->data['Muestra']['proveedor_id'] =
+			$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['Proveedor']['id'];
+		    $this->request->data['Muestra']['calidad_id'] =
+			$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['CalidadNombre']['id'];
+		} else {
+		    $this->request->data['Muestra']['proveedor_id'] =
+			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['proveedor_id'];
+		    $this->request->data['Muestra']['calidad_id'] =
+			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['calidad_id'];
+		    $this->request->data['Muestra']['contrato_id'] =
+			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['id'];
+		}
+	    }
+//	    if (!isset($this->request->data['Muestra']['contrato_id'])) {
+//		//no sabemos si es null o ''
+//		$this->request->data['Muestra']['contrato_id'] = null;
+//		//$this->request->data['Muestra']['contrato_id'] = '';
+//	    }
+	    if($this->Muestra->save($this->request->data)) {
+		$this->Session->setFlash('Muestra guardada');
+		$this->redirect(
+		    array(
+			'action' => 'index',
+			'Search.tipo_id' => $tipo
+		    )
+		);
+	    } else {
 		$this->Session->setFlash('Muestra NO guardada');
-endif;
-endif;
+	    }
+	} else { //es un GET
+	    $this->request->data= $this->Muestra->read(null, $id);
+	}
+	$this->render('form');
     }
 }
 ?>

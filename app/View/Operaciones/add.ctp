@@ -86,10 +86,12 @@ echo $this->Form->input('puerto_destino_id', array(
 <fieldset>
 			<div class="col4">
 <?php
-echo $this->Form->input('precio_fijacion', array(
-    'between' => '('.$divisa.')'
-)
-					);
+echo $this->Form->input(
+    'precio_fijacion',
+    array(
+	'between' => '('.$divisa.')'
+    )
+);
 echo $this->Form->input('precio_compra', array(
     'between' => '('.$divisa.')',
     'label' => 'Precio factura'
@@ -101,14 +103,16 @@ echo $this->Form->input('opciones', array(
 )
 					);
 if ($contrato['Incoterm']['si_flete']) {
-    echo $this->Form->input('flete', array(
-	'type' => 'select',
-	'options' => $fletes,
-	'empty' => true,
-	'between' => '($/Tm)',
-	'label' => 'Flete'
-    )
-);
+    echo $this->Form->input(
+	'flete',
+	array(
+	    'type' => 'select',
+	    'options' => $fletes,
+	    'empty' => true,
+	    'between' => '($/Tm)',
+	    'label' => 'Flete'
+	)
+    );
 ?>
 			</div>
 	<div class="col3">

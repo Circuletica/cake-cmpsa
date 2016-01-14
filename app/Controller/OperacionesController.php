@@ -4,21 +4,26 @@ class OperacionesController extends AppController {
     public function index() {
 
 	$this->paginate['order'] = array('Operacion.referencia' => 'asc');
+	$this->paginate['recursive'] = 2;
 	$this->paginate['contain'] = array(
 	    'Contrato',
 	    'PesoOperacion',
-	    'Empresa',
+	    'Proveedor',
 	    'CalidadNombre'
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
-	$proveedores = $this->Operacion->Contrato->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
-	    'recursive' => 1
-	)
-    );
+	$this->loadModel('Proveedor');
+	$proveedores = $this->Proveedor->find(
+	    'list',
+	    array(
+		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
+	    )
+	);
 	$this->set('proveedores',$proveedores);
+
 	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
 	//por ej.
 	//$passedArgs['Search.palabras'] = mipalabra
@@ -60,25 +65,28 @@ class OperacionesController extends AppController {
 	//filtramos por proveedor
 	if(isset($this->passedArgs['Search.proveedor_id'])) {
 	    $criterio = $this->passedArgs['Search.proveedor_id'];
-	    $this->paginate['conditions']['Empresa.id LIKE'] = "$criterio";
+	    $this->paginate['conditions']['Proveedor.id LIKE'] = "$criterio";
 	    //guardamos el criterio para el formulario de vuelta
 	    $this->request->data['Search']['proveedor_id'] = $criterio;
 	    //completamos el titulo
 	    $title[] ='Proveedor: '.$proveedores[$criterio];
 	}
 
-	$this->Operacion->bindModel(array(
-	    'belongsTo' => array(
-		'Empresa' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Empresa.id = Contrato.proveedor_id')
-		),
-		'CalidadNombre' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+	$this->Operacion->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'CalidadNombre' => array(
+			'foreignKey' => false,
+			'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+		    ),
+		    'Proveedor' => array(
+			'className' => 'Empresa',
+			'foreignKey' => false,
+			'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+		    )
 		)
 	    )
-	));
+	);
 	$operaciones = $this->paginate();
 	//pasamos los datos a la vista
 	$this->set(compact('operaciones','title'));
@@ -94,6 +102,20 @@ class OperacionesController extends AppController {
 	    );
 	}
 	$contrato_id = $this->params['named']['from_id'];
+
+	//necesitamos la lista de proveedor_id/nombre para rellenar el select
+	//del formulario de busqueda
+	$this->loadModel('Proveedor');
+	$proveedores = $this->Proveedor->find(
+	    'list',
+	    array(
+		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
+	    )
+	);
+	$this->set('proveedores',$proveedores);
+
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
 	$contrato = $this->Operacion->Contrato->find('first', array(
@@ -160,16 +182,16 @@ class OperacionesController extends AppController {
 	$embalajes_completo = array_replace_recursive($embalajes_nombre,$embalajes_peso);
 	$this->set('embalajes_completo', $embalajes_completo);
 	//solo para mostrar el proveedor a nivel informativo
-	$this->set('proveedor',$contrato['Proveedor']['Empresa']['nombre']);
+	$this->set('proveedor',$contrato['Proveedor']['nombre']);
 	//a quienes van asociadas las lineas de contrato
 	$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
-	    'fields' => array('Asociado.id','Empresa.codigo_contable','Empresa.nombre_corto'),
-	    'order' => array('Empresa.codigo_contable' => 'ASC'),
+	    'fields' => array('Asociado.id','Asociado.codigo_contable','Asociado.nombre_corto'),
+	    'order' => array('Asociado.codigo_contable' => 'ASC'),
 	    'recursive' => 1
 	)
     );
 	//reindexamos los asociados por codigo contable
-	$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
+	$asociados = Hash::combine($asociados, '{n}.Asociado.codigo_contable', '{n}');
 	ksort($asociados);
 	$this->set('asociados', $asociados);
 	//para los puertos de carga y destino
@@ -208,10 +230,8 @@ class OperacionesController extends AppController {
 			)
 		    ),
 		    'Naviera' => array(
-			'Empresa' => array(
-			    'fields' => array(
-				'nombre_corto'
-			    )
+			'fields' => array(
+			    'nombre_corto'
 			)
 		    ),
 		    'Embalaje' => array(
@@ -233,14 +253,14 @@ class OperacionesController extends AppController {
 	//Con un array simple no funciona, no se puede usar la misma clave
 	//varias veces. 
 	foreach($precio_fletes as $precio_flete) {
-		$fletes[] = array( 
-		    'name' => $precio_flete['Flete']['Naviera']['Empresa']['nombre_corto'].'('
-		    .$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
-		    .$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
-		    .(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
-		    .($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
-		    'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
-		);
+	    $fletes[] = array( 
+		'name' => $precio_flete['Flete']['Naviera']['nombre_corto'].'('
+		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
+		.$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
+		.(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
+		.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
+		'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
+	    );
 	}
 	$this->set(compact('fletes'));
 
@@ -281,18 +301,27 @@ class OperacionesController extends AppController {
 	    $this->redirect(array('action'=>'index'));
 	}
 	$this->Operacion->id = $id;
-	$operacion = $this->Operacion->find('first', array(
-	    'conditions' => array('Operacion.id' => $id),
-	    'recursive' => 3
-	)
-    );
+	$this->loadModel('Asociado');
+	$asociados = $this->Asociado->find(
+	    'all',
+	    array(
+		'fields' => array(
+		    'Asociado.id',
+		    'Empresa.codigo_contable',
+		    'Empresa.nombre_corto'
+		),
+		'order' => array('Empresa.codigo_contable' => 'asc'),
+		'recursive' => 1
+	    )
+	);
+	$operacion = $this->Operacion->find(
+	    'first',
+	    array(
+		'conditions' => array('Operacion.id' => $id),
+		'recursive' => 3
+	    )
+	);
 	$this->set('operacion', $operacion);
-	$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
-	    'fields' => array('Asociado.id','Empresa.codigo_contable','Empresa.nombre_corto'),
-	    'order' => array('Empresa.codigo_contable' => 'ASC'),
-	    'recursive' => 1
-	)
-    );
 	//reindexamos los asociados por codigo contable
 	$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
 	ksort($asociados);
@@ -311,6 +340,7 @@ class OperacionesController extends AppController {
 	    )
 	));
 	$this->set('embalaje', $embalaje);
+	//para el js de la view
 	$this->set('pesoEmbalaje', $embalaje['ContratoEmbalaje']['peso_embalaje_real']);
 	//para los puertos de carga y destino
 	$this->set('puertoCargas',$this->Operacion->PuertoCarga->find('list', array(
@@ -388,61 +418,42 @@ endif;
 	    )
 	);
 	$this->set('embalaje', $embalaje);
+
 	$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
-	foreach ($operacion['AsociadoOperacion'] as $linea):
+	$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
+	$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);	
+	//$this->set('fecha_carga', $transporte['Transporte']['fecha_carga']);
+
+	//Líneas de reparto
+	foreach ($operacion['AsociadoOperacion'] as $linea) {
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-	$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
-	$lineas_reparto[] = array(
-	    'Código' => $codigo,
-	    'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
-	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
-	    'Peso' => $peso
-	);	
-endforeach;
-$columnas_reparto = array_keys($lineas_reparto[0]);
-//indexamos el array por el codigo de asociado
-$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
-//se ordena por codigo ascendente
-ksort($lineas_reparto);
-$this->set('columnas_reparto',$columnas_reparto);
-$this->set('lineas_reparto',$lineas_reparto);
-$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
-//comprobamos si ya existe una financiacion para esta operación
-if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
-    $this->set('existe_financiacion', 1);
-}
+	    $codigo = substr($linea['Asociado']['codigo_contable'],-2);
+	    $lineas_reparto[] = array(
+		'Código' => $codigo,
+		'Nombre' => $linea['Asociado']['nombre_corto'],
+		'Cantidad' => $linea['cantidad_embalaje_asociado'],
+		'Peso' => $peso
+	    );	
+	}
+	$columnas_reparto = array_keys($lineas_reparto[0]);
+	//indexamos el array por el codigo de asociado
+	$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
+	//se ordena por codigo ascendente
+	ksort($lineas_reparto);
+	$this->set('columnas_reparto',$columnas_reparto);
+	$this->set('lineas_reparto',$lineas_reparto);
+	$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
+	//comprobamos si ya existe una financiacion para esta operación
+	if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
+	    $this->set('existe_financiacion', 1);
+	}
     }
 
     public function index_trafico() {
-	$this->paginate=array(
-	    'contain' => array(
-		'Contrato',
-		'CalidadNombre',
-		'Empresa',
-		'PesoOperacion'
-	    ),
-	    'recursive' => 1
-	);
-	$this->Operacion->unbindModel(array(
-	    'hasMany' => array(
-		'AsociadoOperacion',
-		'Transporte'
-	    )
-	));
-	$this->Operacion->bindModel(array(
-	    'belongsTo' => array(
-		'CalidadNombre' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
-		),
-		'Empresa' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Empresa.id = Contrato.proveedor_id')
-		)
-	    )
-	));
-	$this->set('operaciones', $this->paginate());
+	$this->index();
+	$this->render('index_trafico');
     }
+
     public function view_trafico($id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formada Operación/view_trafico ');
@@ -561,7 +572,6 @@ if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 	$this->set('total_peso',$total_peso);	
 	$this->set('total_sacos_retirados',$total_sacos_retirados);
 	$this->set('total_peso_retirado',$total_peso_retirado);
-
     }
 
     public function delete($id = null) {

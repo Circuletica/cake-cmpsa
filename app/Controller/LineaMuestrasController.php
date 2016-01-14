@@ -1,121 +1,11 @@
 <?php
 class LineaMuestrasController extends AppController {
-    public $scaffold = 'admin';
     public $paginate = array(
 	'order' => array('marca' => 'asc')
     );
 
     public function index() {
 	$this->set('lineas', $this->paginate());
-    }
-
-    public function add() {
-	//el id y la clase de la entidad de origen vienen en la URL
-	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado lineaMuestra/add '.$this->params['named']['from']);
-	    $this->redirect(array(
-		'controller' => $this->params['named']['from'],
-		'action' => 'index')
-	    );
-	}
-	//sacamos los datos de la muestra a la que pertenece la linea
-	//nos sirven en la vista para detallar campos
-	$muestra = $this->LineaMuestra->Muestra->find(
-	    'first',
-	    array(
-		'conditions' => array(
-		    'Muestra.id' => $this->params['named']['from_id']
-		),
-		'recursive' => 2,
-		'contain' => array(
-		    'CalidadNombre',
-		    'Operacion' => array(
-			'fields' => array(
-			    'id',
-			    'referencia',
-			    'embalaje_id'
-			),
-			'Transporte' => array(
-			    'fields' => array(
-				'id'
-			    ),
-			    'AlmacenTransporte'
-			)
-		    )
-		)
-	    )
-	);
-	$this->set('muestra',$muestra);
-
-	//necesitamos un array de tipo 'list' de cakephp
-	//primero se sacan todos los almacen_transportes
-	//de todos los transportes de la operacion relativa
-	//de la muestra
-	if (array_key_exists('Transporte',$muestra['Operacion'])) {
-	    $transportes = $muestra['Operacion']['Transporte'];
-	    $almacen_transportes = array();
-	    foreach ($transportes as $transporte) {
-		$almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
-	    }
-	    //Recombinamos para pasar de:
-	    //array(
-	    //	(int) 0 => array(
-	    //		'id' => '8',
-	    //		'almacen_id' => '59',
-	    //		'transporte_id' => '45',
-	    //		'cuenta_almacen' => '54131',
-	    //		'cantidad_cuenta' => '20.00'
-	    //	),
-	    //	(int) 1 => array(
-	    //		'id' => '9',
-	    //		'almacen_id' => '50',
-	    //		'transporte_id' => '53',
-	    //		'cuenta_almacen' => '251478/5451',
-	    //		'cantidad_cuenta' => '33.00'
-	    //
-	    //A
-	    //
-	    //array(
-	    //	(int) 8 => '54131',
-	    //	(int) 9 => '251478/5451',
-	    //)
-	    $almacen_transportes = Hash::combine($almacen_transportes,'{n}.id','{n}.cuenta_almacen');
-	    $this->set('almacenTransportes', $almacen_transportes);
-	}
-
-	if($this->request->is('post')){
-	    //al guardar la linea, se incluye a qué muestra pertenece
-	    $this->request->data['LineaMuestra']['muestra_id'] = $this->params['named']['from_id'];
-	    //comprobamos que el total de criba es de 100%
-	    $suma_criba = $this->request->data['LineaMuestra']['criba20']+
-		$this->request->data['LineaMuestra']['criba19']+
-		$this->request->data['LineaMuestra']['criba13p']+
-		$this->request->data['LineaMuestra']['criba18']+
-		$this->request->data['LineaMuestra']['criba12p']+
-		$this->request->data['LineaMuestra']['criba17']+
-		$this->request->data['LineaMuestra']['criba11p']+
-		$this->request->data['LineaMuestra']['criba16']+
-		$this->request->data['LineaMuestra']['criba10p']+
-		$this->request->data['LineaMuestra']['criba15']+
-		$this->request->data['LineaMuestra']['criba9p']+
-		$this->request->data['LineaMuestra']['criba14']+
-		$this->request->data['LineaMuestra']['criba8p']+
-		$this->request->data['LineaMuestra']['criba13']+
-		$this->request->data['LineaMuestra']['criba12'];
-	    if(number_format($suma_criba,2) != 100){
-		//debug($suma_criba);
-		$this->Session->setFlash('Linea de Muestra no guardada, la suma de criba no es 100%');
-	    } else {
-		if($this->LineaMuestra->save($this->request->data)){
-		    $this->Session->setFlash('Linea de Muestra guardada');
-		    //volvemos a la muestra a la que pertenece la linea creada
-		    $this->redirect(array(
-			'controller' => $this->params['named']['from_controller'],
-			'action' => 'view',
-			$this->params['named']['from_id']));
-		}
-	    }
-	}
     }
 
     public function view($id = null) {
@@ -126,9 +16,6 @@ class LineaMuestrasController extends AppController {
 	$linea = $this->LineaMuestra->findById($id);
 	$this->set('tipos', $this->tipoMuestras);
 	$this->set('linea',$linea);
-	//Sacamos la criba ponderada correspondiente
-	//$this->loadModel('CribaPonderada');
-	//$this->CribaPonderada->findById($id);
 	$suma_linea = $linea['LineaMuestra']['criba20'] +
 	    $linea['LineaMuestra']['criba19'] +
 	    $linea['LineaMuestra']['criba13p'] +
@@ -153,65 +40,237 @@ class LineaMuestrasController extends AppController {
 	    $linea['CribaPonderada']['criba14'] +
 	    $linea['CribaPonderada']['criba13'] +
 	    $linea['CribaPonderada']['criba12'];
-	//debug($linea);
 	$this->set('suma_linea',$suma_linea);
 	$this->set('suma_ponderada',$suma_ponderada);
-	//debug($suma_linea);
+    }
+
+    public function add() {
+	//el id y la clase de la entidad de origen vienen en la URL
+	if (!$this->params['named']['from_id']) {
+	    $this->Session->setFlash('URL mal formado lineaMuestra/add '.$this->params['named']['from_controller']);
+	    $this->redirect(array(
+		'controller' => $this->params['named']['from_controller'],
+		'action' => 'index')
+	    );
+	}
+	$this->form();
+	$this->render('form');
+    }
+
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL');
+	    $this->redirect(array(
+		'action' => 'view',
+		'controller' => $this->params['named']['from_controller'],
+		$this->params['from_id']
+	    ));
+	}
+	$this->form($id);
+	$this->render('form');
+    }
+
+    public function form ($id = null) {
+	//si es un edit(), hay que rellenar el id, ya que
+	//si no se hace, al guardar el edit, se va a crear
+	//un _nuevo_ registro, como si fuera un add
+	if (!empty($id)) {
+	    $this->LineaMuestra->id = $id;
+	    //sacamos los datos de la muestra a la que pertenece la linea
+	    //nos sirven en la vista para detallar campos
+	    $linea_muestra = $this->LineaMuestra->find(
+		'first',
+		array(
+		    'conditions' => array(
+			'LineaMuestra.id' => $id
+		    ),
+		    'recursive' => 4,
+		    'contain' => array(
+			'Muestra' => array(
+			    'CalidadNombre',
+			    'Contrato'
+			),
+			'Operacion' => array(
+			    'fields' => array(
+				'id',
+				'referencia',
+				'embalaje_id'
+			    ),
+			    'Transporte' => array(
+				'fields' => array(
+				    'id'
+				),
+				'AlmacenTransporte'
+			    )
+			)
+		    )
+		)
+	    );
+	    $muestra = $linea_muestra['Muestra'];
+	    $muestra_id=$muestra['id'];
+	} else { //un add()
+	    $muestra_id = $this->params['named']['from_id'];
+	    //sacamos los datos de la muestra a la que pertenece la linea
+	    //nos sirven en la vista para detallar campos
+	    $muestra = $this->LineaMuestra->Muestra->find(
+		'first',
+		array(
+		    'conditions' => array(
+			'Muestra.id' => $muestra_id
+		    ),
+		    'recursive' => 3,
+		    'contain' => array(
+			'CalidadNombre',
+			'Proveedor',
+			'Contrato' => array(
+			    'Operacion' => array(
+				'fields' => array(
+				    'id',
+				    'referencia',
+				    'embalaje_id'
+				),
+				'Transporte' => array(
+				    'fields' => array(
+					'id'
+				    ),
+				    'AlmacenTransporte'
+				)
+			    )
+			)
+		    )
+		)
+	    );
+	    //necesitamos 'subir' el array $muestra['Muestra']
+	    //de 1 nivel para que sea igual al que devuelve el
+	    //find anterior
+	    //los dos find no devuelven la misma estructura
+	    //pasamos de:
+	    //array(
+	    //	'Muestra' => array(
+	    //		'id' => '22',
+	    //		'calidad_id' => '28',
+	    //		'contrato_id' => '27',
+	    //	),
+	    //	'CalidadNombre' => array(),
+	    //	'Contrato' => array()
+	    //)
+	    //a
+	    //array(
+	    //	'id' => '22',
+	    //	'calidad_id' => '28',
+	    //	'contrato_id' => '27',
+	    //	'CalidadNombre' => array(),
+	    //	'Contrato' => array()
+	    //)
+	    $muestra += $muestra['Muestra'];
+	    unset($muestra['Muestra']);
+	}
+	//legado a este punto, vengamos de add o edit
+	//$muestra tiene el mismo valor
+	$this->set('muestra',$muestra);
+
+	//necesitamos un array de tipo 'list' de cakephp
+	//primero se sacan todos los almacen_transportes
+	//de todos los transportes de la operacion relativa
+	//de la muestra
+	//	if (array_key_exists('Transporte',$muestra['Operacion'])) {
+	//	    $transportes = $muestra['Operacion']['Transporte'];
+	//	    $almacen_transportes = array();
+	//	    foreach ($transportes as $transporte) {
+	//		$almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
+	//	    }
+	if (isset($muestra['Contrato']['Operacion'])) {
+	    $operaciones = $muestra['Contrato']['Operacion'];
+	    $almacen_transportes = array();
+	    foreach ($operaciones as $operacion) {
+		$transportes = $operacion['Transporte'];
+		foreach ($transportes as $transporte) {
+		    $almacen_transportes = array_merge(
+			$almacen_transportes,
+			$transporte['AlmacenTransporte']
+		    );
+		}
+	    }
+	}
+	//Recombinamos para pasar de:
+	//array(
+	//	(int) 0 => array(
+	//		'id' => '8',
+	//		'almacen_id' => '59',
+	//		'transporte_id' => '45',
+	//		'cuenta_almacen' => '54131',
+	//		'cantidad_cuenta' => '20.00'
+	//	),
+	//	(int) 1 => array(
+	//		'id' => '9',
+	//		'almacen_id' => '50',
+	//		'transporte_id' => '53',
+	//		'cuenta_almacen' => '251478/5451',
+	//		'cantidad_cuenta' => '33.00'
+	//
+	//A
+	//
+	//array(
+	//	(int) 8 => '54131',
+	//	(int) 9 => '251478/5451',
+	//)
+	$almacen_transportes = Hash::combine($almacen_transportes,'{n}.id','{n}.cuenta_almacen');
+	$this->set('almacenTransportes', $almacen_transportes);
+
+	$operaciones = Hash::combine($operaciones,'{n}.id','{n}.referencia');
+	$this->set(compact('operaciones'));
+
+	$this->set('action', $this->action);
+
+	if (!empty($this->request->data)){  //es un POST
+	    //al guardar la linea, se incluye a qué muestra pertenece
+	    $this->request->data['LineaMuestra']['muestra_id'] = $muestra_id;
+	    //comprobamos que el total de criba es de 100%
+	    $suma_criba = $this->request->data['LineaMuestra']['criba20']+
+		$this->request->data['LineaMuestra']['criba19']+
+		$this->request->data['LineaMuestra']['criba13p']+
+		$this->request->data['LineaMuestra']['criba18']+
+		$this->request->data['LineaMuestra']['criba12p']+
+		$this->request->data['LineaMuestra']['criba17']+
+		$this->request->data['LineaMuestra']['criba11p']+
+		$this->request->data['LineaMuestra']['criba16']+
+		$this->request->data['LineaMuestra']['criba10p']+
+		$this->request->data['LineaMuestra']['criba15']+
+		$this->request->data['LineaMuestra']['criba9p']+
+		$this->request->data['LineaMuestra']['criba14']+
+		$this->request->data['LineaMuestra']['criba8p']+
+		$this->request->data['LineaMuestra']['criba13']+
+		$this->request->data['LineaMuestra']['criba12'];
+	    if(number_format($suma_criba,2) != 100){
+		$this->Session->setFlash('Linea de Muestra no guardada, la suma de criba no es 100%');
+	    } else {
+		if ($this->LineaMuestra->save($this->request->data)) {
+		    $this->Session->setFlash('Línea de muestra guardada');
+		    $this->redirect(array(
+			'action' => 'view',
+			'controller' => 'linea_muestras',
+			$this->LineaMuestra->id
+		    ));
+		} else {
+		    $this->Session->setFlash('Línea de muestra NO guardada');
+		}
+	    }
+	} else { //es un GET
+	    $this->request->data = $this->LineaMuestra->read(null, $id);
+	}
     }
 
     public function delete( $id = null) {
-	if (!$id or $this->request->is('get')) :
+	if (!$id or $this->request->is('get')) 
 	    throw new MethodNotAllowedException();
-endif;
-debug ($this->params['named']);
-if ($this->LineaMuestra->delete($id)):
-    $this->Session->setFlash('Línea de muestra borrada');
-$this->redirect(array(
-    'controller' => $this->params['named']['from_controller'],
-    'action'=>'view',
-    $this->params['named']['from_id']
-));
-endif;
-    }
 
-    public function edit( $id = null) {
-	//DRY, guardamos la página de donde venimos,
-	//para volver después de editar
-	//		$anterior = array(
-	//			'controller' => $this->params['named']['from_controller'],
-	//			'action'=>'view',
-	//			$this->params['named']['from_id']
-	//		);
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
+	if ($this->LineaMuestra->delete($id)) {
+	    $this->Session->setFlash('Línea de muestra borrada');
 	    $this->redirect(array(
-		'controller' => 'muestras',
-		'action'=>'index'
-	    )
-	);
-	}
-	$this->LineaMuestra->id = $id;
-	//sacamos los datos de la muestra a la que pertenece la linea
-	//nos sirven en la vista para detallar campos
-	$linea_muestra = $this->LineaMuestra->find('first', array(
-	    'conditions' => array('LineaMuestra.id' => $id),
-	    'recursive' => 3
-	)
-    );
-	$this->set('linea_muestra',$linea_muestra);
-	$this->set('proveedor',$linea_muestra['Muestra']['Proveedor']['Empresa']['nombre']);
-	$this->set('almacen',$linea_muestra['Muestra']['Almacen']['Empresa']['nombre']);
-	if($this->request->is('get')) {
-	    $this->request->data = $this->LineaMuestra->read();
-	} else {
-	    if ($this->LineaMuestra->save($this->request->data)) {
-		$this->Session->setFlash('Línea '.
-		    $this->request->data['LineaMuestra']['marca'].
-		    ' modificada con éxito');
-		$this->redirect($anterior);
-	    } else {
-		$this->Session->setFlash('Línea NO guardada');
-	    }
+		'controller' => $this->params['named']['from_controller'],
+		'action'=>'view',
+		$this->params['named']['from_id']
+	    ));
 	}
     }
 }

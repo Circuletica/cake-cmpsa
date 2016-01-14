@@ -8,6 +8,8 @@ $this->assign('controller','financiaciones');
 $this->assign('line_controller','reparto_operacion_asociados');
 $this->assign('line2_object', 'anticipo');
 $this->assign('line2_controller','anticipos');
+$this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'
+$this->assign('line2_add', '1'); //si se muestra el botón de añadir 'line2'
 
 $this->start('filter');
 //echo $this->element('filtrofinanciacion');
@@ -53,10 +55,12 @@ setlocale(LC_ALL, "es_ES.UTF-8");
 echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA ('.$iva_comision.'%)','Total anticipo','Pendiente'));
 foreach($distribuciones as $linea):
     echo $this->Html->tableCells(array(
-	$linea['Empresa']['nombre'],
+	$linea['Asociado']['nombre'],
 	array(
 	    $this->Number->round($linea['RepartoOperacionAsociado']['porcentaje_embalaje_asociado']),
-	    array('style' => 'text-align:right')
+	    array(
+		'style' => 'text-align:right'
+	    )
 	),
 	array(
 	    $this->Number->round($linea['RepartoOperacionAsociado']['peso_asociado']),
@@ -154,10 +158,10 @@ echo $this->Html->tableHeaders(array(
     'Asociado','fecha','importe','Banco',''));
 foreach ($anticipos as $anticipo):
     echo $this->Html->tableCells(array(
-	$anticipo['AsociadoOperacion']['Asociado']['Empresa']['nombre'],
+	$anticipo['AsociadoOperacion']['Asociado']['nombre'],
 	$this->Date->format($anticipo['Anticipo']['fecha_conta']),
 	$anticipo['Anticipo']['importe'],
-	$anticipo['Banco']['Empresa']['nombre_corto'],
+	$anticipo['Banco']['nombre_corto'],
 	$this->Button->editLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'])
 	.' '.$this->Button->deleteLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'],'el anticipo de '.$anticipo['Anticipo']['importe'].'€')
     ));
@@ -165,4 +169,3 @@ endforeach;
 echo"</table>\n";
 $this->end();
 ?>
-

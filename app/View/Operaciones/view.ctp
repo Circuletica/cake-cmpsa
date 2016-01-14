@@ -6,6 +6,7 @@ $this->assign('id',$operacion['Operacion']['id']);
 $this->assign('class','Operacion');
 $this->assign('controller','operaciones');
 $this->assign('line_controller','asociado_operaciones');
+$this->assign('line_add','1');
 $this->start('filter');
 //echo $this->element('filtrooperacion');
 //solo se puede generar una financiacion si aun no existe
@@ -36,7 +37,7 @@ echo $this->html->link($operacion['Contrato']['referencia'], array(
 echo "  </dd>";
 echo "  <dt>Proveedor:</dt>\n";
 echo "<dd>";
-echo $this->html->link($operacion['Contrato']['Proveedor']['Empresa']['nombre_corto'], array(
+echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], array(
     'controller' => 'proveedores',
     'action' => 'view',
     $operacion['Contrato']['Proveedor']['id'])
