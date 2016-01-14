@@ -141,8 +141,10 @@ function contratosMuestra(){
 	}
     } else { // si se deja el contrato vacío, borramos calidad y proveedor
 	//console.log(combobox.options);
-	combobox.options[0].selected = true;
-	proveedor.options[0].selected = true;
+	//lo siguiente no vale: cuando editamos muestra de oferta que ya
+	//tiene calidad_id y proveedor_id, se borran del formulario
+	//combobox.options[0].selected = true;
+	//proveedor.options[0].selected = true;
     }
 }
 
@@ -153,6 +155,11 @@ function muestraOferta() {
     document.getElementById('MuestraContratoId').disabled = !aprobado;
     if (!aprobado) {
 	contrato.options[0].selected = true;
+    }
+    console.log(contrato.selectedIndex);
+    if (aprobado && contrato.selectedIndex == 0) {
+	combobox.options[0].selected = true;
+	proveedor.options[0].selected = true;
     }
     document.getElementById('combobox').disabled = aprobado;
     document.getElementById('proveedor').disabled = aprobado;
@@ -171,6 +178,8 @@ function muestraEntrega() {
     console.log(selectedOption);
     if (selectedOption != '') {
 	contrato.disabled = 1;
+	combobox.disabled = 1;
+	proveedor.disabled = 1;
 	var opts = contrato.options.length;
 	for (var i=0; i<opts; i++){
 	    if (contrato.options[i].value == muestrasEmbarque[selectedOption].Contrato.id){

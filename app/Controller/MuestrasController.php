@@ -219,7 +219,6 @@ class MuestrasController extends AppController {
 	    //$this->set('muestra',$muestra);
 	    $tipo_nombre = $tipos[$muestra['Muestra']['tipo']];
 	    $tipo = $muestra['Muestra']['tipo'];
-	    //$this->request->data['Muestra']['tipo'] = $muestra['Muestra']['tipo'];
 	} else { //es un add()	
 	    //Si no esta el tipo de muestra en la URL, volvemos
 	    //a muestras de oferta
@@ -234,7 +233,6 @@ class MuestrasController extends AppController {
 	    } else {
 		$tipo = $this->passedArgs['tipo_id'];
 		$tipo_nombre = $tipos[$this->passedArgs['tipo_id']];
-		//$this->request->data['Muestra']['tipo'] = $this->passedArgs['tipo_id'];
 	    }
 	}
 	$this->set('tipo',$tipo);
@@ -255,35 +253,15 @@ class MuestrasController extends AppController {
 		CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
 		" ",
 		SUBSTR(Contrato.fecha_transporte,6,2),
-		"/",
-		SUBSTR(Contrato.fecha_transporte,1,4)
-		)'
+	"/",
+	SUBSTR(Contrato.fecha_transporte,1,4)
+    )'
 	);
 	//el array que se pasa al javascript para cambiar
 	//calidad y proveedor automaticamente
 	//cuando se cambia el contrato
 	//Se 'cortocircuita' el modelo de datos Contrato->Proveedor->Empresa
 	//y nos quedamos con Contrato->Proveedor, ahorrando muchas queries SQL
-	$this->Muestra->Contrato->unbindModel(
-	    array(
-		'belongsTo' => array(
-		    'Proveedor'
-		)
-	    )
-	);
-	$this->Muestra->Contrato->bindModel(
-	    array(
-		'belongsTo' => array(
-		    'Proveedor' => array(
-			'className' => 'Empresa',
-			'foreignKey' => false,
-			'conditions' => array(
-			    'Proveedor.id = Contrato.proveedor_id'
-			)
-		    )
-		)
-	    )
-	);
 	$contratosMuestra = $this->Muestra->Contrato->find(
 	    'all',
 	    array(
@@ -334,9 +312,8 @@ class MuestrasController extends AppController {
 	//los demás campos cuando se selecciona una muestra de embarque
 	$this->set (
 	    'muestraEmbarques',
-	    Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.registro'
-	)
-    );
+	    Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.registro')
+	);
 	//por otra parte la lista del desplegable de muestras de embarque
 	//para el formulario
 	$muestrasEmbarque = Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}');
@@ -362,12 +339,11 @@ class MuestrasController extends AppController {
 			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['id'];
 		}
 	    }
-	    if (!isset($this->request->data['Muestra']['contrato_id'])) {
-		//no sabemos si es null o ''
-		$this->request->data['Muestra']['contrato_id'] = null;
-		//$this->request->data['Muestra']['contrato_id'] = '';
-	    }
-	    debug($this->request->data);
+//	    if (!isset($this->request->data['Muestra']['contrato_id'])) {
+//		//no sabemos si es null o ''
+//		$this->request->data['Muestra']['contrato_id'] = null;
+//		//$this->request->data['Muestra']['contrato_id'] = '';
+//	    }
 	    if($this->Muestra->save($this->request->data)) {
 		$this->Session->setFlash('Muestra guardada');
 		$this->redirect(
