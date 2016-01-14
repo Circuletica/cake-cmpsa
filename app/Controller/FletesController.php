@@ -7,16 +7,16 @@ class FletesController extends AppController {
 		    'foreignKey' => false,
 		    'conditions' => array('Pais.id = PuertoCarga.pais_id')
 		),
-		'Empresa' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Empresa.id = Flete.naviera_id')
-		)
+//		'Empresa' => array(
+//		    'foreignKey' => false,
+//		    'conditions' => array('Empresa.id = Flete.naviera_id')
+//		)
 	    )
 	));
 	$this->paginate = array(
 	    'contain' => array(
 		'Naviera',
-		'Empresa',
+		//'Empresa',
 		'PuertoCarga',
 		'Pais',
 		'PuertoDestino.nombre',
@@ -34,7 +34,11 @@ class FletesController extends AppController {
 	$this->set(compact('fletes'));
     }
 
-    function add() {
+function add(){
+$this->form();
+$this->render('form');
+}
+    function form($id = null) {
 	$navieras = $this->Flete->Naviera->find('list', array(
 	    'fields' => array('Naviera.id','Empresa.nombre_corto'),
 	    'order' => array('Empresa.nombre_corto' => 'ASC'),
