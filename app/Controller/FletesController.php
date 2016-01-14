@@ -1,22 +1,19 @@
 <?php
 class FletesController extends AppController {
     function index() {
-	$this->Flete->bindModel(array(
-	    'belongsTo' => array(
-		'Pais' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Pais.id = PuertoCarga.pais_id')
-		),
-//		'Empresa' => array(
-//		    'foreignKey' => false,
-//		    'conditions' => array('Empresa.id = Flete.naviera_id')
-//		)
+	$this->Flete->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Pais' => array(
+			'foreignKey' => false,
+			'conditions' => array('Pais.id = PuertoCarga.pais_id')
+		    )
+		)
 	    )
-	));
+	);
 	$this->paginate = array(
 	    'contain' => array(
 		'Naviera',
-		//'Empresa',
 		'PuertoCarga',
 		'Pais',
 		'PuertoDestino.nombre',
@@ -34,18 +31,43 @@ class FletesController extends AppController {
 	$this->set(compact('fletes'));
     }
 
-function add(){
-$this->form();
-$this->render('form');
-}
+    function add(){
+	$this->form();
+	$this->render('form');
+    }
+
+    public function edit($id = null) {
+	if (!$id) {
+	    $this->Session->setFlash('error en URL/No id de flete para edit');
+	    $this->redirect(
+		array(
+		    'action' => 'index',
+		    'controller' => 'fletes'
+		)
+	    );
+	}
+	$this->form($id);
+	$this->render('form');
+    }
+
     function form($id = null) {
-	$navieras = $this->Flete->Naviera->find('list', array(
-	    'fields' => array('Naviera.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'ASC'),
-	    'recursive' => 1
-	)
-    );
-	$this->set(compact('navieras'));
+	$this->set('action', $this->action);
+	$this->loadModel('Naviera');
+	$this->set(
+	    'navieras',
+	    $this->Naviera->find(
+		'list',
+		array(
+		    'fields' => array(
+			'Naviera.id',
+			'Empresa.nombre_corto'
+		    ),
+		    'recursive' => 1,
+		    'order' => array('Empresa.nombre_corto' => 'ASC')
+		)
+	    )
+	);
+
 	$puerto_cargas = $this->Flete->PuertoCarga->find(
 	    'list', array(
 		'order' => array('PuertoCarga.nombre' => 'ASC')
@@ -67,68 +89,27 @@ $this->render('form');
 	    )
 	);
 	$this->set('embalajes', $embalajes);
-	if($this->request->is('post')):
-	    if($this->Flete->save($this->request->data)):
-		$this->Session->setFlash('Flete guardado');
-	$this->redirect(array(
-	    //'controller' => $this->params['named']['from_controller'],
-	    'controller' => 'fletes',
-	    //'action' => $this->params['named']['from_action']));
-	    'action' => 'index'));
-endif;
-endif;
-    }
 
-    public function edit($id = null) {
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
-	    $this->redirect(array('action'=>'index'));
+	if (!empty($id)) { //es un edit
+	    $this->Flete->id = $id;
+	    $flete = $this->Flete->findById($id);
+	    $this->set(compact('flete'));
+	    $this->set('referencia', $flete['PuertoCarga']['Pais']['nombre'].'-'.$flete['PuertoDestino']['nombre']);
 	}
-	$this->Flete->id = $id;
-	$flete = $this->Flete->find('first', array(
-	    'conditions' => array('Flete.id' => $id),
-	    'recursive' => 2
-	)
-    );
-	$this->set('flete', $flete);
-	$this->set('referencia', $flete['PuertoCarga']['Pais']['nombre'].'-'.$flete['PuertoDestino']['nombre']);
-	$navieras = $this->Flete->Naviera->find('list', array(
-	    'fields' => array('Naviera.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'ASC'),
-	    'recursive' => 1
-	)
-    );
-	$this->set('navieras', $navieras);
-	$puerto_cargas = $this->Flete->PuertoCarga->find(
-	    'list', array(
-		'order' => array('PuertoCarga.nombre' => 'ASC')
-	    )
-	);
-	$this->set('puerto_cargas', $puerto_cargas);
-	$puerto_destinos = $this->Flete->PuertoDestino->find(
-	    'list', array(
-		'order' => array('PuertoDestino.nombre' => 'ASC')
-	    )
-	);
-	$this->set('puerto_destinos', $puerto_destinos);
-	$embalajes = $this->Flete->Embalaje->find(
-	    'list', array(
-		'order' => array('Embalaje.nombre' => 'ASC')
-	    )
-	);
-	$this->set('embalajes', $embalajes);
-	if($this->request->is('get')): //al abrir el edit metemos los datos existentes
-	    $this->request->data = $this->Flete->read();
-	else:
-	    if($this->Flete->save($this->request->data)):
+	if (!empty($this->request->data)){  //es un POST
+	    if($this->Flete->save($this->request->data)) {
 		$this->Session->setFlash('Flete guardado');
-	$this->redirect(array(
-	    //'controller' => $this->params['named']['from_controller'],
-	    'controller' => 'fletes',
-	    //'action' => $this->params['named']['from_action']));
-	    'action' => 'view'));
-endif;
-endif;
+		$this->redirect(
+		    array(
+			'action' => 'index',
+		    )
+		);
+	    } else {
+		$this->Session->setFlash('Flete NO guardado');
+	    }
+	} else { //es un GET
+	    $this->request->data= $this->Flete->read(null, $id);
+	}
     }
 
     public function view($id = null) {

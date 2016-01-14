@@ -205,7 +205,8 @@ class MuestrasController extends AppController {
 			'Proveedor.id',
 			'Empresa.nombre_corto'
 		    ),
-		    'recursive' => 1
+		    'recursive' => 1,
+		    'order' => array('Empresa.nombre_corto' => 'ASC')
 		)
 	    )
 	);
