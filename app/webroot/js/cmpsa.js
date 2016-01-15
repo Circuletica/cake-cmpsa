@@ -151,8 +151,11 @@ function contratosMuestra(){
 function muestraOferta() {
     var aprobado = document.getElementById('MuestraAprobado').checked;
     contrato = document.getElementById('MuestraContratoId');
+    calidad = document.getElementById('combobox');
+    proveedor = document.getElementById('proveedor');
     contrato.disabled = !aprobado;
-    document.getElementById('MuestraContratoId').disabled = !aprobado;
+    calidad.disabled = aprobado;
+    proveedor.disabled = aprobado;
     if (!aprobado) {
 	contrato.options[0].selected = true;
     }
@@ -161,8 +164,6 @@ function muestraOferta() {
 	combobox.options[0].selected = true;
 	proveedor.options[0].selected = true;
     }
-    document.getElementById('combobox').disabled = aprobado;
-    document.getElementById('proveedor').disabled = aprobado;
 }
 
 function muestraEntrega() {

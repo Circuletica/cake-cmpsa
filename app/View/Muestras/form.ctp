@@ -67,15 +67,6 @@ echo $this->Form->input(
 	'onchange' => ($tipo == 1 ? 'muestraOferta()':'')
     )
 );
-if ($tipo == 3) {
-    echo $this->Form->input(
-	'muestra_embarque_id',
-	array(
-	    'empty' => true,
-	    'onchange' => 'muestraEntrega()'
-	)
-    );
-}
 echo $this->Form->input('contrato_id',
     array(
 	'empty' => true,
@@ -83,6 +74,16 @@ echo $this->Form->input('contrato_id',
 	'onchange' => 'contratosMuestra()'
     )
 );
+if ($tipo == 3) {
+    echo $this->Form->input(
+	'muestra_embarque_id',
+	array(
+	    'empty' => true,
+	    'onchange' => 'muestraEntrega()',
+	    'disabled' => 1
+	)
+    );
+}
 echo $this->Form->input(
     'calidad_id',
     array(
