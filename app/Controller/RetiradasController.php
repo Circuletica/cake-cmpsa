@@ -6,19 +6,25 @@ class RetiradasController extends AppController {
 	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'asc');
 	$this->paginate['contain'] = array(
 			'Asociado',
-			'AlmacenTransporte'
+			'AlmacenTransporte' => array (
+				'Almacen' => array (
+					'fields' => ('nombre_corto')
+					)
+				)
 	);
 
-	$this->set('retiradas', $this->paginate());
+	$retiradas = $this->paginate();
+	$this->set(compact('retiradas'));	
+
 	}
 
 	public function view($id = null) {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado Muestra/view');
+			$this->Session->setFlash('URL mal formado Retirada/view');
 			$this->redirect(array('action'=>'index'));
 		}
-		$operacion = $this->Operacion->find(
+		/*$operacion = $this->Operacion->find(
 			'first',
 			array(
 				'conditions' => array('Operacion.id' => $id),
@@ -55,7 +61,7 @@ class RetiradasController extends AppController {
 		//se ordena por codigo ascendente
 		ksort($lineas_reparto);
 		$this->set('columnas_reparto',$columnas_reparto);
-		$this->set('lineas_reparto',$lineas_reparto);
+		$this->set('lineas_reparto',$lineas_reparto);*/
 	}
 
     public function add() {

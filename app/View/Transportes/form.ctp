@@ -1,5 +1,5 @@
 <?php
-$this->Html->addCrumb('Opereaciones','/operaciones/index_trafico');
+$this->Html->addCrumb('Operaciones','/operaciones/index_trafico');
 /*$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
 'controller'=>'operaciones',
 'action'=>'view_trafico',

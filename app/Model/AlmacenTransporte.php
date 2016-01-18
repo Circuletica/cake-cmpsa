@@ -7,9 +7,11 @@ class AlmacenTransporte extends AppModel {
       )
     );
 	public $belongsTo = array(
-			'Almacen',
-			'Transporte' => array(
+			'Almacen' => array(
 			'className' => 'Empresa',
+			'foreignKey' => 'almacen_id'),
+			'Transporte' => array(
+			'className' => 'Transporte',
 			'foreignKey' => 'transporte_id')
 		);
 }

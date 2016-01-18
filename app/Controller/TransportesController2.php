@@ -22,14 +22,15 @@ class TransportesController extends AppController {
 		);*/
 	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
 	$this->set('embalaje',$embalaje);
-	//	$almacenes = $this->Transporte->AlmacenTransporte->Almacen->find('list');
-	//	$this->set('almacenes',$almacenes);
+	$almacenes = $this->Transporte->AlmacenTransporte->Almacen->find('list');
+	$this->set('almacenes',$almacenes);
     }
     public function add() {
 	$this->form($this->params['named']['from_id']);
 	$this->render('form');
     }
-  /*  public function edit($id = null) {
+
+    public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
 	    $this->Session->setFlash('error en URL');
 	    $this->redirect(array(
@@ -39,7 +40,9 @@ class TransportesController extends AppController {
 	    ));
 	$this->form($id);
 	$this->render('form');
-  }*/
+	}
+}
+
     public function form($id) { //esta acción vale tanto para edit como add
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado controller/add '.$id);
@@ -47,42 +50,41 @@ class TransportesController extends AppController {
 		'controller' => $this->params['named']['from_controller'],
 		'action' => 'view'));
 	}
+
 	//Listamos navieras
 	$this->loadModel('Naviera');	
 	$navieras = $this->Naviera->find('list',
 	    array(
 		'fields' => array(
 		    'Naviera.id',
-		    'Empresa.nombre_corto'
-		),
-		'recursive' => 1
-	    )
-	);
+		    'Empresa.nombre_corto'),
+	    'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1)
+	    );
 	$this->set(compact('navieras'));
+	//Listamos agentes de aduanas
 	$this->loadModel('Agente');
 	$agentes = $this->Agente->find('list',array(
 	    'fields' => array(
 		'Agente.id',
 		'Empresa.nombre_corto'),
+
+	    'order' => array('Empresa.nombre_corto' => 'asc'),
 	    'recursive' => 1)
 	);
 	$this->set(compact('agentes'));
+
+	//Listamos aseguradoras
 	$this->loadModel('Aseguradora');
 	$aseguradoras = $this->Aseguradora->find('list',array(
 	    'fields' => array(
 		'Aseguradora.id',
 		'Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
 	    'recursive' => 1)
 	);
 	$this->set(compact('aseguradoras'));
-	$this->loadModel('Almacen');
-	$almacenes = $this->Almacen->find('list',array(
-	    'fields' => array(
-		'Almacen.id',
-		'Empresa.nombre_corto'),
-	    'recursive' => 1)
-	);
-	$this->set(compact('almacenes'));
+
 	//sacamos los datos de la operacion  al que pertenece la linea
 	//nos sirven en la vista para detallar campos
 	$operacion = $this->Transporte->Operacion->find('first', array(
@@ -99,8 +101,7 @@ class TransportesController extends AppController {
 	//	$contrato_embalajes = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find('all');
 	//opcion 2 = 1 query
 	//	$transportes = $this->Transporte->find('all');
-	//	$contrato_embalajes = $transportes['Operacion']['Contrato']['ContratoEmbalaje'];
-	$this->set('action', $this->action);
+
 	$embalaje = $operacion['Embalaje']['nombre'];		
 	$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
 	$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
@@ -115,13 +116,12 @@ class TransportesController extends AppController {
 	$this->set('puertoDestinos', $this->Transporte->PuertoDestino->find(
 	    'list',
 	    array(
+	    'order' => array(
+		    'PuertoDestino.nombre' => 'ASC'
+		),	
 		'contain' => array('Pais'),
 		'conditions' => array( 'Pais.nombre' => 'España')
 	    )));		
-	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
-	//$this->set('almacenes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
-	//$this->set('almacen_transportes', $this->Transporte->AlmacenTransporte->Almacen->find('list'));
-	//$this->set('marca_almacenes', $this->Transporte->AlmacenesTransporte->MarcaAlmacen->find('list'));
 	$this->set('operacion',$operacion);
 	$transporte = $this->Transporte->find('all');	
 	$this->set('transporte',$transporte);
@@ -136,6 +136,7 @@ class TransportesController extends AppController {
 	    }
 	}
 	$this->set('transportado',$transportado);
+
 	//NO NECESARIO SE PASA A INDEX LINEA TRANSPORTE
 	$almacenaje = $this->Transporte->AlmacenTransporte->find('first', array(
 	    'conditions' => array('Transporte.id' => $id),
@@ -145,10 +146,13 @@ class TransportesController extends AppController {
 		'AlmacenTransporte.cuenta_almacen')
 	    ));
 	$this->set('almacenajes',$almacenaje);		
-	if($this->request->is('post')){
+
+	$this->set('action', $this->action);
+		if($this->request->is('post')){
 	    //al guardar la linea, se incluye a qué operacion pertenece
 	    //debug($this->params['named']['from_id']);
 	    $this->request->data['Transporte']['operacion_id'] = $id;
+
 	    if($this->request->data['Transporte']['cantidad_embalaje'] <= ($operacion['PesoOperacion']['cantidad_embalaje'] - $transportado)){
 		if($this->Transporte->save($this->request->data)){
 		    $this->Session->setFlash('Línea de transporte guardada');
@@ -163,9 +167,12 @@ class TransportesController extends AppController {
 	    }else{
 		$this->Session->setFlash('La cantidad de bultos debe ser inferior');
 	    }
+	} else {
+		$this->request->data = $this ->Transporte->read(null, $id);
 	}
     }
     //PENDIENTE DE CAMBIAR POR EL FORM
+/*
     public function edit( $id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formada');
@@ -174,6 +181,7 @@ class TransportesController extends AppController {
 		'action' => 'view_trafico',
 		$this->params['named']['from_id']));
 	}
+
 	$this->Transporte->id = $id;
 	//$transporte = $this->Transporte->find('all');	
 	//$this->set('transporte',$transporte);
@@ -235,7 +243,8 @@ class TransportesController extends AppController {
 		$this->Session->setFlash('Operacion NO guardada');
 endif;
 endif;
-    }
+    }*/
+
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) :
 	    throw new MethodNotAllowedException();

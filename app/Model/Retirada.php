@@ -1,6 +1,6 @@
 <?php
 class Retirada extends AppModel {
-	public $recursive = 2;
+	public $recursive = 3;
 	public $belongsTo = array(
 		'Asociado' => array(
 			'className' => 'Empresa',
