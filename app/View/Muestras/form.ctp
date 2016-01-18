@@ -4,7 +4,7 @@ $this->Html->addCrumb('Muestras', '/muestras');
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 //Pasamos la lista de 'contratosMuestra' del contrato al javascript de la vista
 $this->Js->set('contratosMuestra', $contratosMuestra);
-$this->Js->set('muestrasEmbarque', $muestrasEmbarque);
+$this->Js->set('contratosEmbarque', $contratosEmbarque);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 ?>
 
@@ -80,7 +80,8 @@ if ($tipo == 3) {
 	array(
 	    'empty' => true,
 	    'onchange' => 'muestraEntrega()',
-	    'disabled' => 1
+	    //'disabled' => 1,
+	    'id' => 'embarque'
 	)
     );
 }

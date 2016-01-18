@@ -301,17 +301,18 @@ class MuestrasController extends AppController {
 	foreach($contratosEmbarque as $key => $contrato) {
 	    //el contenido del contrato no interesa, solo el id
 	    unset($contratosEmbarque[$key]['Contrato']);
-	    //para Muestra de cada contrato solo queremos id => registro:
+	    //para Muestra de cada contrato solo queremos id => registro: o no ?!
 	    //'Muestra' => array(
 	    //	(int) 59 => 'lsd',
 	    //	(int) 77 => 'EB001'
 	    //	)
-	    $contratosEmbarque[$key]['Muestra'] = Hash::combine($contrato['Muestra'], '{n}.id', '{n}.registro');
+	    //$contratosEmbarque[$key]['Muestra'] = Hash::combine($contrato['Muestra'], '{n}.id', '{n}.registro');
 	    //solo guardamos los contratos que sí tienen
 	    //muestra de embarque
 	    if (empty($contratosEmbarque[$key]['Muestra']))
 		unset ($contratosEmbarque[$key]);
 	}
+	debug($contratosEmbarque);
 	$this->set(compact('contratosEmbarque'));
 
 	//el array que se pasa al javascript para cambiar
