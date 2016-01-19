@@ -213,3 +213,41 @@ function muestraEntrega() {
 	contrato.disabled = 0;
     }
 }
+
+function operacionesRetirada(){
+    var contratos = window.app.contratosMuestra;
+    var embarques = window.app.contratosEmbarque;
+    //el contrato que seleccionamos
+    var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
+    //el id del contrato
+    var selectedOption = document.getElementById('MuestraContratoId').options[selectedIndex].value;
+    var combobox = document.getElementById('combobox');;
+    var embarque = document.getElementById('embarque');
+
+    if (selectedOption != '') {
+		//modificamos _todo_ el select de embarque
+	if (selectedOption in embarques) {
+	    var muestras = embarques[selectedOption].Muestra; //las muestras de embarque del contrato seleccionado
+	    var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
+	    embarque.options.length = opts;
+	    
+	    //console.log(embarque.options.length);
+	    for (var i=0; i<opts; i++){
+		embarque.options[i].value = muestras[i].id;
+		embarque.options[i].text = muestras[i].registro;
+	    }
+	    //console.log(embarque.options);
+	} else {
+	    embarque.options.length = 1;
+	    embarque.options[0].value = '';
+	    embarque.options[0].text = '';
+	    embarque.options[0].selected = true;
+	}
+    } else { // si se deja el contrato vacío, borramos calidad y proveedor
+	//console.log(combobox.options);
+	//lo siguiente no vale: cuando editamos muestra de oferta que ya
+	//tiene calidad_id y proveedor_id, se borran del formulario
+	//combobox.options[0].selected = true;
+	//proveedor.options[0].selected = true;
+    }
+}

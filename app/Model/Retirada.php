@@ -7,6 +7,9 @@ class Retirada extends AppModel {
 			'foreignKey' => 'asociado_id'),
 		'AlmacenTransporte' => array(
 			'className' => 'AlmacenTransporte',
-			'foreignKey' => 'almacen_transporte_id')
+			'foreignKey' => 'almacen_transporte_id'),
+		'OperacionRetirada' => array(
+			'className' => 'OperacionRetirada',
+			'foreignKey' => 'id'),
 	);
 }
