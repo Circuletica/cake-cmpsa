@@ -312,7 +312,7 @@ class MuestrasController extends AppController {
 	    if (empty($contratosEmbarque[$key]['Muestra']))
 		unset ($contratosEmbarque[$key]);
 	}
-	debug($contratosEmbarque);
+	//debug($contratosEmbarque);
 	$this->set(compact('contratosEmbarque'));
 
 	//el array que se pasa al javascript para cambiar

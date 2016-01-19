@@ -115,30 +115,32 @@ function totalCriba(){
 function contratosMuestra(){
     var contratos = window.app.contratosMuestra;
     var embarques = window.app.contratosEmbarque;
-    //el contrato que seleccionamos
-    var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
-    //el id del contrato
-    var selectedOption = document.getElementById('MuestraContratoId').options[selectedIndex].value;
-    var combobox = document.getElementById('combobox');
-    var proveedor = document.getElementById('proveedor');
+    var contratoId  = document.getElementById('MuestraContratoId');
+    var calidadId = document.getElementById('MuestraCalidadId');
+    var proveedorId = document.getElementById('MuestraProveedorId');
+    var muestraEmbarqueId = document.getElementById('MuestraMuestraEmbarqueId');
     var transporte = document.getElementById('transporte_contrato');
-    var embarque = document.getElementById('embarque');
+    //el contrato que seleccionamos
+    var selectedIndex = contratoId.selectedIndex;
+    //el id del contrato
+    var selectedOption = contratoId.options[selectedIndex].value;
+
     if (selectedOption != '') {
 	//cambiamos el transporte
 	transporte.innerHTML = contratos[selectedOption].Contrato.transporte;
 	//cambiamos el 'selected' del combobox
-	var opts = combobox.options.length;
+	var opts = calidadId.options.length;
 	for (var i=0; i<opts; i++){
-	    if (combobox.options[i].value == contratos[selectedOption].CalidadNombre.id){
-		combobox.options[i].selected = true;
+	    if (calidadId.options[i].value == contratos[selectedOption].CalidadNombre.id){
+		calidadId.options[i].selected = true;
 		break;
 	    }
 	}
 	//cambiamos el 'selected' del proveedor
-	var opts = proveedor.options.length;
+	var opts = proveedorId.options.length;
 	for (var i=0; i<opts; i++){
-	    if (proveedor.options[i].value == contratos[selectedOption].Proveedor.id){
-		proveedor.options[i].selected = true;
+	    if (proveedorId.options[i].value == contratos[selectedOption].Proveedor.id){
+		proveedorId.options[i].selected = true;
 		break;
 	    }
 	}
@@ -146,25 +148,25 @@ function contratosMuestra(){
 	if (selectedOption in embarques) {
 	    var muestras = embarques[selectedOption].Muestra; //las muestras de embarque del contrato seleccionado
 	    var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
-	    embarque.options.length = opts;
+	    muestraEmbarqueId.options.length = opts;
 	    //console.log(embarque.options.length);
 	    for (var i=0; i<opts; i++){
-		embarque.options[i].value = muestras[i].id;
-		embarque.options[i].text = muestras[i].registro;
+		muestraEmbarqueId.options[i].value = muestras[i].id;
+		muestraEmbarqueId.options[i].text = muestras[i].registro;
 	    }
 	    //console.log(embarque.options);
 	} else {
-	    embarque.options.length = 1;
-	    embarque.options[0].value = '';
-	    embarque.options[0].text = '';
-	    embarque.options[0].selected = true;
+	    muestraEmbarqueId.options.length = 1;
+	    muestraEmbarqueId.options[0].value = '';
+	    muestraEmbarqueId.options[0].text = '';
+	    muestraEmbarqueId.options[0].selected = true;
 	}
     } else { // si se deja el contrato vacío, borramos calidad y proveedor
 	//console.log(combobox.options);
 	//lo siguiente no vale: cuando editamos muestra de oferta que ya
 	//tiene calidad_id y proveedor_id, se borran del formulario
-	//combobox.options[0].selected = true;
-	//proveedor.options[0].selected = true;
+	//calidadId.options[0].selected = true;
+	//proveedorId.options[0].selected = true;
     }
 }
 
