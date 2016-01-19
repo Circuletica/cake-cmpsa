@@ -288,7 +288,7 @@
 	foreach($transporte['AlmacenTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['cuenta_almacen'],
-			$linea['almacen_id'],
+			$linea['Almacen']['nombre_corto'],
 			$linea['cantidad_cuenta'],
 			$linea['marca_almacen'],
 			$this->Button->editLine('almacentransportes',
