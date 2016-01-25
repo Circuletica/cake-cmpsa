@@ -10,11 +10,29 @@ class RetiradasController extends AppController {
 				'Almacen' => array (
 					'fields' => ('nombre_corto')
 					)
-				)
+				),
+			'OperacionRetirada' => array (
+				'Operacion' => array (
+					'fields' => 'id', 'referencia')
+				)				
 	);
 
 	$retiradas = $this->paginate();
-	$this->set(compact('retiradas'));	
+	$this->set(compact('retiradas'));
+
+/*	$this->loadModel('Operacion');
+	$operacion_retiradas = $this->OperacionRetirada->Operacion->find(
+			'list',
+			array(
+	    		'conditions' => array(
+	    			'OperacionRetirada.id' => 'Operacion.id'
+	    		),
+	    		'contain' => array(
+	    			'Retirada')
+	    	)
+		);
+	$this->set('operacion_retiradas',$operacion_retiradas);*/
+
 
 	}
 
