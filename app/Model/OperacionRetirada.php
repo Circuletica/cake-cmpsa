@@ -6,9 +6,11 @@ class OperacionRetirada extends AppModel{
       	'foreignKey'=> 'retirada_id'
       	)
   );
+  public $hasMany = array(
+		'Operacion' => array(
+			'className' => 'Operacion',
+			'foreignKey' => 'id'
+		)
+	);
 
- /* public $hasMany =array(
-  	'Operacion'=> array(
-		'className' => 'Operacion',
-		'foreignKey' => 'id');*/
 }

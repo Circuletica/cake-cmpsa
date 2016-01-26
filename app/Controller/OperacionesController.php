@@ -558,14 +558,6 @@ endif;
 
 	endforeach;
 
-	/*$lineas_retirada[] = array(
-		'Nombre'=> 'TOTAL',
-		'Cantidad' => '',
-		'Peso' => $total_peso,
-		'Cantidad_retirado' => '',
-		'Peso_retirado' => $total_peso_retirado
-		);*/
-
 	ksort($lineas_retirada);
 	$this->set('lineas_retirada',$lineas_retirada);
 	$this->set('total_sacos',$total_sacos);

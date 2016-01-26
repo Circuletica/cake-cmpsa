@@ -14,12 +14,11 @@ $this->start('main');
 echo "<dl>";
 	echo "  <dt>Operación:</dt>\n";
 	echo "<dd>";
-		echo $retirada['Retirada']['id'];
-		/*echo $this->html->link($retirada['OperacionRetirada']['retirada_id'], array(
-		'controller' => 'operacion',
-		'action' => 'view',
-		$retirada['Retirada']['OperacionRetirada']['retirada_id'])
-	);*/
+	echo $this->html->link($retirada['OperacionRetirada']['Operacion']['referencia'], array(
+	    'controller' => 'operacion',
+	    'action' => 'view',
+	    $retirada['OperacionRetirada']['Operacion']['id'])
+	);
 	echo "  </dd>";
 	echo "  <dt>Asociado:</dt>\n";
 	echo "<dd>";
@@ -30,10 +29,9 @@ echo "<dl>";
 	    );
 	echo "  </dd>";
 	echo "  <dt>Sacos solicitados:</dt>\n";
-	echo "  <dd>".$retirada['PesoOperacion']['peso'].' kg&nbsp;'."</dd>";
+	echo "  <dd>".$retirada['Asociado']['AsociadoOperacion']['peso'].' kg&nbsp;'."</dd>";
 	echo "  <dt>Peso solicitado:</dt>\n";
-	echo "  <dd>".
-	    $retirada['PesoOperacion']['cantidad_embalaje'].'&nbsp;'."</dd>";
+	echo "  <dd>".$retirada['Asociado']['AsociadoOperacion']['cantidad_embalaje']."</dd>";
 	echo "  <dt>Almacen:</dt>\n";
 	echo "  <dd>".$retirada['AlmacenTransporte']['Almacen']['nombre_corto'].'&nbsp;'."</dd>";
 	echo "  <dt>Cuenta Almacén:</dt>\n";

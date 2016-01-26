@@ -15,6 +15,7 @@ if (empty($retiradas)){
 <table>
   <tr>
     <th><?php echo $this->Paginator->sort('Retirada.fecha_retirada','Fecha retirada')?></th>
+    <th><?php echo $this->Paginator->sort('Operacion.referecia','Ref.Operación')?></th>
     <th><?php echo $this->Paginator->sort('AlmacenTransporte.cuenta_almacen','Cuenta Almacén')?></th>
     <th><?php echo $this->Paginator->sort('AlmacenTransporte.Almacen.nombre_corto','Almacén')?></th>
     <th><?php echo $this->Paginator->sort('Asociado.nombre_corto','Asociado')?></th>  
@@ -23,10 +24,12 @@ if (empty($retiradas)){
     <th><?php echo 'Detalle'?></th> 
   </tr>
 <?php
+
 	foreach($retiradas as $retirada):
 ?>
   <tr>
 	    <td> <?php echo $retirada['Retirada']['fecha_retirada']?> </td>
+      <td> <?php echo $retirada['OperacionRetirada']['id']?> </td>
       <td> <?php echo $retirada['AlmacenTransporte']['cuenta_almacen']?> </td>
       <td> <?php echo $retirada['AlmacenTransporte']['Almacen']['nombre_corto']?> </td>
 	    <td> <?php echo $retirada['Asociado']['nombre_corto']?> </td>

@@ -1,6 +1,8 @@
 <?php
 $this->Html->addCrumb('Operaciones','/operaciones');
 //$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
+$this->Js->set('operacionesRetirada', $operacionesRetirada);
+echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 if ($action == 'add') {
     echo "<h2>Añadir retirada de almacén <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
