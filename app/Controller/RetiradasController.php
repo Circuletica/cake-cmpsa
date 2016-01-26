@@ -27,8 +27,21 @@ class RetiradasController extends AppController {
 		
 	$retirada = $this->Retirada->find('first',array(
 	    'conditions' => array('Retirada.id' => $id),
-	    'recursive' => 2));
+	    'recursive' => 3));
 	$this->set('retirada',$retirada);
+
+	//Sacamos la referencia de operaciones ligada a retiradas
+	$this->loadModel('OperacionRetirada');
+
+	$operacion = $this->Retirada->OperacionRetirada->find(
+				'first',
+				array(
+		    		'conditions' => array(
+		    			'OperacionRetirada.retirada_id' => $retirada['Retirada']['id']
+		    		)
+		    	)
+			);	
+	$this->set('operacion',$operacion);
 	}
 
     public function add() {

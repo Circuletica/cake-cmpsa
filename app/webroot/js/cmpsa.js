@@ -215,8 +215,8 @@ function muestraEntrega() {
 }
 
 function operacionesRetirada(){
-    var contratos = window.app.contratosMuestra;
-    var embarques = window.app.contratosEmbarque;
+    var operaciones = window.app.operacionesRetirada;
+    var embarques = window.app.operacionesEmbarque;
     //el contrato que seleccionamos
     var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
     //el id del contrato

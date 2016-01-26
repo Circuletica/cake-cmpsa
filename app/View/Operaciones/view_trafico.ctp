@@ -144,7 +144,7 @@
 						'style' => 'text-align:right'
 					)
 				),
-				$this->Button->viewLine('retiradas',$operacion['Operacion']['id'],'retiradas',$operacion['Operacion']['id'])
+				$this->Button->viewLine('retiradas',$operacion['Operacion']['id'],'operaciones',$operacion['Operacion']['id'])
 				)
 			);
 		endforeach;
