@@ -85,7 +85,7 @@ class RetiradasController extends AppController {
 	$this->render('form');
     }
 
-     public function form($id) { //esta acción vale tanto para edit como add
+     public function form($id = null) { //esta acción vale tanto para edit como add
 
 	//Listamos el nombre de asociados
 	$this->loadModel('Asociado');	
@@ -99,10 +99,29 @@ class RetiradasController extends AppController {
 	);
 	$this->set(compact('asociados'));
 
+	$operacionretirada = $this->Retirada->OperacionRetirada->find(
+				'first',
+				array(
+		    		'conditions' => array(
+		    			'OperacionRetirada.id' => $id)
+		    		)
+		    	);
+	$almacentransporte = $this->Retirada->AlmacenTransporte->find('list',
+		array(
+			'conditions' => array('AlmacenTransporte.id' => $id),
+			'recursive' => 3,
+			'fields' => array(
+				'AlmacenTransporte.id')
+			)
+		);
+
+
+
 	//Saco datos de la operación al que pertenece la linea
 	//nos sirven  en la vista para detallar campos
-	$operacionesRetirada = $this->Retirada->OperacionRetirada->find(
-				'all',
+	/*$this->loadModel('Operacion');	
+	$operacionretirada = $this->Retirada->OperacionRetirada->Operacion->find(
+				'all');/*,
 				array(
 		    		'conditions' => array(
 		    			'OperacionRetirada.id' => $id
@@ -113,20 +132,11 @@ class RetiradasController extends AppController {
 		    				'OperacionRetirada.id',
 		    		)
 		    	)
-			);	
-	$operacionesRetirada = Hash::combine($operacionesRetirada, '{n}.OperacionRetirada.id','{n}');
-	$this->set(compact('operacionesRetirada'));
-
-	//Listamos cuenta de los almacenes
-    $almacen_transportes = array();
-   // foreach ($operacion as $operaciones) {
-		$transportes = $operaciones['Transporte'];
-			foreach ($transportes as $transporte) {
-			    $almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
-			}
-	//  }
-	$this->set('almacentransportes', $almacen_transportes);
-	$this->set(compact('operaciones'));
+			);	*/
+	//$operacionesRetirada = Hash::combine($operacionesRetirada, '{n}.OperacionRetirada.id','{n}');
+	$this->set(compact('operacionretirada'));
+	$this->set(compact('almacentransporte'));
+	$this->set(compact('operacion'));
 
 
 	$this->set('action', $this->action);

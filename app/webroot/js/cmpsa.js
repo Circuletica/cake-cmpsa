@@ -216,7 +216,7 @@ function muestraEntrega() {
 
 function operacionesRetirada(){
     var operaciones = window.app.operacionesRetirada;
-    var embarques = window.app.operacionesEmbarque;
+    var operaciones = window.app.operacionesEmbarque;
     //el contrato que seleccionamos
     var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
     //el id del contrato
@@ -225,23 +225,23 @@ function operacionesRetirada(){
     var embarque = document.getElementById('embarque');
 
     if (selectedOption != '') {
-		//modificamos _todo_ el select de embarque
-	if (selectedOption in embarques) {
-	    var muestras = embarques[selectedOption].Muestra; //las muestras de embarque del contrato seleccionado
+		//modificamos _todo_ el select de operaciones
+	if (selectedOption in operaciones) {
+	    var muestras = operaciones[selectedOption].Muestra; //las muestras de embarque del contrato seleccionado
 	    var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
-	    embarque.options.length = opts;
+	    operacion.options.length = opts;
 	    
-	    //console.log(embarque.options.length);
+	    //console.log(operacion.options.length);
 	    for (var i=0; i<opts; i++){
-		embarque.options[i].value = muestras[i].id;
-		embarque.options[i].text = muestras[i].registro;
+		operacion.options[i].value = muestras[i].id;
+		operacion.options[i].text = muestras[i].registro;
 	    }
-	    //console.log(embarque.options);
+	    //console.log(operacion.options);
 	} else {
-	    embarque.options.length = 1;
-	    embarque.options[0].value = '';
-	    embarque.options[0].text = '';
-	    embarque.options[0].selected = true;
+	    operacion.options.length = 1;
+	    operacion.options[0].value = '';
+	    operacion.options[0].text = '';
+	    operacion.options[0].selected = true;
 	}
     } else { // si se deja el contrato vacío, borramos calidad y proveedor
 	//console.log(combobox.options);

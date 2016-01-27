@@ -1,11 +1,13 @@
 <?php
 $this->Html->addCrumb('Operaciones','/operaciones');
+echo $this->Html->script('jquery')."\n"; // Include jQuery library
+//Pasamos la lista de 'contratosMuestra' del contrato al javascript de la vista
 //$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
-$this->Js->set('operacionesRetirada', $operacionesRetirada);
+//$this->Js->set('operacionesRetirada', $operacionesRetirada);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 if ($action == 'add') {
-    echo "<h2>Añadir retirada de almacén <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+   // echo "<h2>Añadir retirada de almacén <em>".$operacion['OperacionRetirada']['Operacion']['referencia']."</em></h2>\n";
 }
 
 if ($action == 'edit') {
@@ -15,13 +17,24 @@ if ($action == 'edit') {
 
 <fieldset>
 <?php
+  echo $operacionretirada;
     echo $this->Form->create('Retirada');
+    echo $this->Form->input('OperacionRetirada.id',
+        array(
+          'label'=>'Operación',
+          'empty' =>true,
+          'autofocus' => 'autofocus',
+          'onchange' => 'operacionesRetirada()'
+        )
+      );
+
     echo $this->Form->input('asociado_id',
          array(
-              'label'=>'Nombre asociado',
-              'empty' =>array('' => 'Selecciona'),
-              'autofocus' => 'autofocus'
-               ));  
+              'label'=>'Asociado',
+              'empty' =>array('' => 'Selecciona')
+               )
+         );  
+
     echo $this->Form->input('almacen_id');
        ?>
     
@@ -36,6 +49,7 @@ if ($action == 'edit') {
         'label' => 'Fecha retirada',
         'empty' => ' ')
         );
+    
         ?>
     </div>
 
@@ -46,3 +60,6 @@ if ($action == 'edit') {
    echo $this->Form->end('Guardar Retirada');
 ?>
 </fieldset>
+<script type="text/javascript">
+window.onload = operacionesRetirada();
+</script>
