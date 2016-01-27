@@ -17,6 +17,12 @@ if ($action == 'edit') {
     echo "<h2>Modificar Muestra de ".$tipo_nombre."</h2>\n";
 }
 
+$siglas_tipos = array(
+    1 => 'OF',
+    2 => 'EB',
+    3 => 'EN'
+);
+
 //si no esta la calidad en el listado, dejamos un enlace para
 //agragarla
 $enlace_anyadir_calidad = $this->Html->link (
@@ -29,7 +35,7 @@ $enlace_anyadir_calidad = $this->Html->link (
     )
 );
 //si no esta el proveedor en el listado, dejamos un enlace para
-//agragarlo
+//agregarlo
 $enlace_anyadir_proveedor = $this->Html->link (
     'Añadir Proveedor',
     array(
@@ -49,12 +55,24 @@ echo $this->Form->hidden(
 	'value' => $tipo
     )
 );
-echo $this->Form->input(
-    'registro',
-    array(
-	'autofocus' => 'autofocus'
-    )
-);
+if ($action == 'add') {
+    echo $this->Form->input(
+	'registro',
+	array(
+	    'autofocus' => 'autofocus',
+	    'between' => $siglas_tipos[$tipo].'-',
+	    'value' => $nuevo_registro
+	)
+    );
+} else {
+    echo $this->Form->input(
+	'registro',
+	array(
+	    'autofocus' => 'autofocus',
+	    'between' => $siglas_tipos[$tipo].'-',
+	)
+    );
+}
 echo $this->Form->input(
     'aprobado',
     array(
@@ -133,6 +151,6 @@ echo $this->Form->end('Guardar Muestra');
 window.onload = contratosMuestra();
 <?php 
 if ($tipo == 1) 
-echo 'window.onload = muestraOferta();';
+    echo 'window.onload = muestraOferta();';
 ?>
 </script>

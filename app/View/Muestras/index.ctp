@@ -10,6 +10,12 @@
   } else {
     $this->Html->addCrumb($title, '/muestras/index');
   }
+$siglas_tipos = array(
+    1 => 'OF',
+    2 => 'EB',
+    3 => 'EN'
+);
+
 ?>
 
 <div class="actions">
@@ -26,11 +32,8 @@
   </tr>
   <?php foreach($muestras as $muestra):?>
   <tr>
-    <!--<td>
-      <?php //echo $muestra['Muestra']['tipo']?>
-    </td>-->
     <td>
-      <?php echo $muestra['Muestra']['registro']?>
+      <?php echo $siglas_tipos[$muestra['Muestra']['tipo']].'-'.$muestra['Muestra']['registro']?>
     </td>
     <td>
       <?php

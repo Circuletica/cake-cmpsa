@@ -234,6 +234,22 @@ class MuestrasController extends AppController {
 	    } else {
 		$tipo = $this->passedArgs['tipo_id'];
 		$tipo_nombre = $tipos[$this->passedArgs['tipo_id']];
+		$this->Muestra->virtualFields = array(
+		    'ultimoRegistro' => 'MAX(Muestra.registro)'
+		);
+		$ultimo_registro = $this->Muestra->find(
+		    'first',
+		    array(
+			'conditions' => array(
+			    'Muestra.tipo' => $tipo
+			),
+			'fields' => array(
+			    'ultimoRegistro'
+			)
+		    )
+		);
+		$nuevo_registro = $ultimo_registro['Muestra']['ultimoRegistro'] + 1;
+		$this->set(compact('nuevo_registro'));
 	    }
 	}
 	$this->set('tipo',$tipo);
@@ -282,7 +298,7 @@ class MuestrasController extends AppController {
 	//queremos el id del contrato como index del array
 	$contratosMuestra = Hash::combine($contratosMuestra, '{n}.Contrato.id','{n}');
 	$this->set(compact('contratosMuestra'));
-	
+
 	//el array que se pasa al javascript para cambiar
 	//embarque automaticamente cuando se cambia el contrato
 	//Solo queremos los contratos que tienen muestra de embarque

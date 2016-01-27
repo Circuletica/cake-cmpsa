@@ -27,7 +27,7 @@ $this->start('main');
 echo "<dl>";
 echo "  <dt>Registro</dt>\n";
 echo "<dd>";
-echo $muestra['Muestra']['registro'].'&nbsp;';
+echo 'EN-'.$muestra['Muestra']['registro'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Contrato</dt>\n";
 echo "<dd>";
