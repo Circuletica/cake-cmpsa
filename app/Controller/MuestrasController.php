@@ -179,6 +179,7 @@ class MuestrasController extends AppController {
 	$this->form();
 	$this->render('form');
     }
+
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
 	    $this->Session->setFlash('error en URL');
@@ -217,7 +218,6 @@ class MuestrasController extends AppController {
 	if (!empty($id)) {
 	    $this->Muestra->id = $id;
 	    $muestra = $this->Muestra->findById($id);
-	    //$this->set('muestra',$muestra);
 	    $tipo_nombre = $tipos[$muestra['Muestra']['tipo']];
 	    $tipo = $muestra['Muestra']['tipo'];
 	} else { //es un add()	
@@ -301,12 +301,6 @@ class MuestrasController extends AppController {
 	foreach($contratosEmbarque as $key => $contrato) {
 	    //el contenido del contrato no interesa, solo el id
 	    unset($contratosEmbarque[$key]['Contrato']);
-	    //para Muestra de cada contrato solo queremos id => registro: o no ?!
-	    //'Muestra' => array(
-	    //	(int) 59 => 'lsd',
-	    //	(int) 77 => 'EB001'
-	    //	)
-	    //$contratosEmbarque[$key]['Muestra'] = Hash::combine($contrato['Muestra'], '{n}.id', '{n}.registro');
 	    //solo guardamos los contratos que sí tienen
 	    //muestra de embarque
 	    if (empty($contratosEmbarque[$key]['Muestra']))
@@ -370,11 +364,6 @@ class MuestrasController extends AppController {
 			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['id'];
 		}
 	    }
-//	    if (!isset($this->request->data['Muestra']['contrato_id'])) {
-//		//no sabemos si es null o ''
-//		$this->request->data['Muestra']['contrato_id'] = null;
-//		//$this->request->data['Muestra']['contrato_id'] = '';
-//	    }
 	    if($this->Muestra->save($this->request->data)) {
 		$this->Session->setFlash('Muestra guardada');
 		$this->redirect(

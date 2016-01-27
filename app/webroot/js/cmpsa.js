@@ -120,18 +120,22 @@ function contratosMuestra(){
     var proveedorId = document.getElementById('MuestraProveedorId');
     var muestraEmbarqueId = document.getElementById('MuestraMuestraEmbarqueId');
     var transporte = document.getElementById('transporte_contrato');
+    //la muestra de embarque que seleccionamos
+    var muestraIndex = muestraEmbarqueId.selectedIndex;
+    //el id de la muestra
+    var muestraSelOpt = muestraEmbarqueId.options[muestraIndex].value;
     //el contrato que seleccionamos
-    var selectedIndex = contratoId.selectedIndex;
+    var contratoIndex = contratoId.selectedIndex;
     //el id del contrato
-    var selectedOption = contratoId.options[selectedIndex].value;
+    var contratoSelOpt = contratoId.options[contratoIndex].value;
 
-    if (selectedOption != '') {
+    if (contratoSelOpt != '') {
 	//cambiamos el transporte
-	transporte.innerHTML = contratos[selectedOption].Contrato.transporte;
+	transporte.innerHTML = contratos[contratoSelOpt].Contrato.transporte;
 	//cambiamos el 'selected' del combobox
 	var opts = calidadId.options.length;
 	for (var i=0; i<opts; i++){
-	    if (calidadId.options[i].value == contratos[selectedOption].CalidadNombre.id){
+	    if (calidadId.options[i].value == contratos[contratoSelOpt].CalidadNombre.id){
 		calidadId.options[i].selected = true;
 		break;
 	    }
@@ -139,34 +143,30 @@ function contratosMuestra(){
 	//cambiamos el 'selected' del proveedor
 	var opts = proveedorId.options.length;
 	for (var i=0; i<opts; i++){
-	    if (proveedorId.options[i].value == contratos[selectedOption].Proveedor.id){
+	    if (proveedorId.options[i].value == contratos[contratoSelOpt].Proveedor.id){
 		proveedorId.options[i].selected = true;
 		break;
 	    }
 	}
 	//modificamos _todo_ el select de embarque
-	if (selectedOption in embarques) {
-	    var muestras = embarques[selectedOption].Muestra; //las muestras de embarque del contrato seleccionado
+	if (contratoSelOpt in embarques) {
+	    var muestras = embarques[contratoSelOpt].Muestra; //las muestras de embarque del contrato seleccionado
 	    var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
 	    muestraEmbarqueId.options.length = opts;
-	    //console.log(embarque.options.length);
 	    for (var i=0; i<opts; i++){
 		muestraEmbarqueId.options[i].value = muestras[i].id;
 		muestraEmbarqueId.options[i].text = muestras[i].registro;
+		//volver a seleccionar la mues. de emb. si existía
+ 		if (muestraEmbarqueId.options[i].value == muestraSelOpt) {
+		    muestraEmbarqueId.options[i].selected = true;
+		}
 	    }
-	    //console.log(embarque.options);
 	} else {
 	    muestraEmbarqueId.options.length = 1;
 	    muestraEmbarqueId.options[0].value = '';
 	    muestraEmbarqueId.options[0].text = '';
 	    muestraEmbarqueId.options[0].selected = true;
 	}
-    } else { // si se deja el contrato vacío, borramos calidad y proveedor
-	//console.log(combobox.options);
-	//lo siguiente no vale: cuando editamos muestra de oferta que ya
-	//tiene calidad_id y proveedor_id, se borran del formulario
-	//calidadId.options[0].selected = true;
-	//proveedorId.options[0].selected = true;
     }
 }
 
