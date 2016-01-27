@@ -1,15 +1,16 @@
 <?php
 class Transporte extends AppModel {
-    public $recursive = 3;
-    public $validate = array(
-	'nombre_vehiculo' => array(
-	    'rule' => 'notEmpty',
-	    'message' => 'El nombre del vehículo no puede estar vacío'
-	),
-	'matricula' => array(
-	    'rule' => 'notEmpty',
-	    'message' => 'El BL/matrícula no puede estar vacío'
-	)
+
+	public $recursive = 3;
+ 	public $validate = array(
+    	'nombre_vehiculo' => array(
+      	'rule' => 'notEmpty',
+     	'message' => 'El nombre del vehículo no puede estar vacío'
+      ),
+  	/*  'matricula' => array(
+      'rule' => 'notEmpty',
+      'message' => 'El BL/matrícula no puede estar vacío'
+      )*/
     );
 
     public $belongsTo = array(

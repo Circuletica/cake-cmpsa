@@ -459,8 +459,111 @@ endif;
 	    $this->Session->setFlash('URL mal formada Operación/view_trafico ');
 	    $this->redirect(array('action'=>'index_trafico'));
 	}
-	$this->view($id);
-	$this->render('view_trafico');
+	$operacion = $this->Operacion->find('first',array(
+	    'conditions' => array('Operacion.id' => $id),
+	    'recursive' => 3));
+	$this ->set('operacion',$operacion);
+	//$transporte = $this->Operacion->Transporte->find('list',array(
+	//	'conditions' => array('Transporte.id'),
+	//	'recursive' => 1));
+	//$this->set('transporte',$transporte);
+	//el nombre de calidad concatenado esta en una view de MSQL
+	$this->loadModel('ContratoEmbalaje');
+	$embalaje = $this->ContratoEmbalaje->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
+		    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+		),
+		'fields' => array('Embalaje.nombre','ContratoEmbalaje.peso_embalaje_real')
+	    )
+	);
+
+	//Calculo la cantidad de bultos transportados
+	if($operacion['Operacion']['id']!= NULL){
+		$suma = 0;
+		$transportado=0;
+		foreach ($operacion['Transporte'] as $suma){
+			if ($transporte['operacion_id']=$operacion['Operacion']['id']){
+			$transportado = $transportado + $suma['cantidad_embalaje'];
+			}
+		}
+	}
+	$this->set('transportado',$transportado);
+
+
+
+	$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
+	//mysql almacena la fecha en formato ymd
+	//	$this->Date->format($operacion['Contrato']['fecha_transporte']);
+	$fecha = $operacion['Contrato']['fecha_transporte'];
+	$dia = substr($fecha,8,2);
+	$mes = substr($fecha,5,2);
+	$anyo = substr($fecha,0,4);
+	$this->set('fecha_transporte', $dia.'-'.$mes.'-'.$anyo);		
+	$this->set('embalaje', $embalaje);
+	$this->loadModel('CalidadNombre');
+	//Línea de transporte
+	//	$this->set('tipo_fecha_carga', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
+	//mysql almacena la fecha en formato ymd
+	//$fecha = $transporte['Transporte']['fecha_carga'];
+	$dia = substr($fecha,8,2);
+	$mes = substr($fecha,5,2);
+	$anyo = substr($fecha,0,4);
+	$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
+
+	$operacion_retiradas = $this->Operacion->OperacionRetirada->find(
+				'all',
+				array(
+		    		'conditions' => array(
+		    			'OperacionRetirada.id' => $id
+		    		),
+		    		'contain' => array(
+		    			'Retirada')
+		    	)
+			);	
+	//Líneas de reparto
+	//		debug($operacion_retiradas);
+	$total_sacos = 0;
+	$total_peso = 0;
+	$total_sacos_retirados = 0;
+	$total_peso_retirado = 0;
+
+	foreach ($operacion['AsociadoOperacion'] as $linea):
+	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+		
+	$cantidad_retirado = 0;
+	$peso_retirado = 0;
+
+	foreach ($operacion_retiradas as $clave => $operacion_retirada){
+		//	debug($operacion_retirada);
+		$retirada = $operacion_retirada['Retirada'];
+		if($retirada['asociado_id'] == $linea['Asociado']['id']){
+			$cantidad_retirado += $retirada['embalaje_retirado'];
+			$peso_retirado += $retirada['peso_retirado'];
+		}
+	}
+	$lineas_retirada[] = array(
+ 	   'Nombre' => $linea['Asociado']['nombre_corto'],
+ 	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
+ 	   'Peso' => $peso,
+ 	   'Cantidad_retirado' => $cantidad_retirado,
+ 	   'Peso_retirado' => $peso_retirado
+		);
+	$total_sacos += $linea['cantidad_embalaje_asociado'];
+	$total_peso += $peso;
+	$total_sacos_retirados += $cantidad_retirado; 
+	$total_peso_retirado += $peso_retirado;
+
+	endforeach;
+
+	ksort($lineas_retirada);
+	$this->set('lineas_retirada',$lineas_retirada);
+	$this->set('total_sacos',$total_sacos);
+	$this->set('total_peso',$total_peso);	
+	$this->set('total_sacos_retirados',$total_sacos_retirados);
+	$this->set('total_peso_retirado',$total_peso_retirado);
     }
 
     public function delete($id = null) {
