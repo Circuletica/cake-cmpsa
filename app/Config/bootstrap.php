@@ -81,10 +81,15 @@ CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
 //	'routes'=> true
 //));
 
-//CakePlugin::load('CakePdf',array(
-//	'bootstrap'=>true,
-//	'routes'=> true
-//));
+
+//Generar PDFs en CakePHP con el plugin CakePDF  http://www.edsonmm.com/generar-pdf-en-cakephp-con-el-plugin-cakepdf/#cakephp2
+CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
+Configure::write('CakePdf', array(
+    'engine' => 'CakePdf.DomPdf',
+    'pageSize' => 'A4',
+    'orientation' => 'portrait'
+));
+
 
 //Configure::write('CakePdf', array(
 //	'engine' => 'CakePdf.WkHtmlToPdf',
@@ -93,6 +98,11 @@ CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
 //	'pageSize'=> 'A4',
 //	'orientation'=> 'landscape'
 //));
+/*if (WINDOWS) {
+	Configure::write('CakePdf.binary', APP . 'files\wkhtmltopdf\wkhtmltopdf.exe');
+} else {
+	Configure::write('CakePdf.binary', APP . 'files/wkhtmltopdf/bin/wkhtmltopdf');
+}*/
 
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:
