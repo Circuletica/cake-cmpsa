@@ -97,6 +97,7 @@ if ($tipo == 3) {
 	'muestra_embarque_id',
 	array(
 	    'empty' => true,
+	    'between' => 'EB-'
 	    //'onchange' => 'muestraEntrega()',
 	    //'disabled' => 1,
 	    //'id' => 'embarque'
@@ -148,9 +149,9 @@ echo $this->Form->end('Guardar Muestra');
 </fieldset>
 
 <script type="text/javascript">
-window.onload = contratosMuestra();
 <?php 
 if ($tipo == 1) 
     echo 'window.onload = muestraOferta();';
 ?>
+window.onload = contratosMuestra();
 </script>

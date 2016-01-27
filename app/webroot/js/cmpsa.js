@@ -173,8 +173,8 @@ function contratosMuestra(){
 function muestraOferta() {
     var aprobado = document.getElementById('MuestraAprobado').checked;
     contrato = document.getElementById('MuestraContratoId');
-    calidad = document.getElementById('combobox');
-    proveedor = document.getElementById('proveedor');
+    calidad = document.getElementById('MuestraCalidadId');
+    proveedor = document.getElementById('MuestraProveedorId');
     contrato.disabled = !aprobado;
     calidad.disabled = aprobado;
     proveedor.disabled = aprobado;

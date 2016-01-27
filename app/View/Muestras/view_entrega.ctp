@@ -67,7 +67,7 @@ echo "</dd>";
 echo "  <dt>Muestra embarque</dt>\n";
 echo "<dd>";
 echo (isset($muestra['MuestraEmbarque']['registro']) ?
-    $muestra['MuestraEmbarque']['registro'] : '--')
+    'EB-'.$muestra['MuestraEmbarque']['registro'] : '--')
     .'&nbsp;';
 echo "</dd>";
 echo "  <dt>Incidencia</dt>\n";

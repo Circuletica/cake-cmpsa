@@ -308,7 +308,21 @@ class MuestrasController extends AppController {
 	$contratosEmbarque = $this->Muestra->Contrato->find(
 	    'all',
 	    array(
-		'contain' => 'Muestra.tipo = 2'
+		'contain' => array(
+		    'Muestra' => array(
+			'conditions' => array(
+			    'Muestra.tipo' => 2
+			),
+			'fields' => array(
+			    'id',
+			    'registro',
+			    'tipo'
+			)
+		    )
+		),
+		'fields' => array(
+		    'Contrato.id'
+		)
 	    )
 	);
 	//queremos el id del contrato como index del array
