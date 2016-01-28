@@ -179,16 +179,6 @@
 		$fecha_despacho_op= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_despacho_op.'&nbsp;';
 		echo "</dd>";
-		echo "  <dt>Fecha de reclamación</dt>\n";
-		echo "<dd>";
-		//mysql almacena la fecha en formato ymd
-		$fecha = $transporte['Transporte']['fecha_reclamacion'];
-		$dia = substr($fecha,8,2);
-		$mes = substr($fecha,5,2);
-		$anyo = substr($fecha,0,4);
-		$fecha_reclamacion= $dia.'-'.$mes.'-'.$anyo;
-		echo $fecha_reclamacion.'&nbsp;';
-		echo "</dd>";
 		echo "  <dt>Límite de retirada</dt>\n";
 		echo "<dd>";
 		//mysql almacena la fecha en formato ymd
@@ -240,7 +230,7 @@
 			echo "</dd>";
 			echo "  <dt>Vencimiento del seguro</dt>\n";
 			echo "<dd>";
-			$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha +1 month"));
+			$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha_llegada +1 month"));
 			$transporte['Transporte']['fecha_vencimiento_seg'] = $fecha_vencimiento_seg; //Asigno una fecha + 1 mes
 			echo $fecha_vencimiento_seg.'&nbsp;' ;
 			echo "</dd>";
@@ -276,6 +266,16 @@
 			else:
 			echo "Sin asegurar";
 		endif;
+		echo "  <dt>Fecha de reclamación</dt>\n";
+		echo "<dd>";
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_reclamacion'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_reclamacion= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_reclamacion.'&nbsp;';
+		echo "</dd>";
 	?>		
 </dl>
 	<div class="detallado">
@@ -288,38 +288,25 @@
 	foreach($transporte['AlmacenTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['cuenta_almacen'],
-			$linea['almacen_id'],
+			$linea['Almacen']['nombre_corto'],
 			$linea['cantidad_cuenta'],
-			$linea['MarcaAlmacen']['marca'],			//$linea['referencia_almacen'],
-			$this->Html->link('<i class="fa fa-pencil-square-o"></i>', array(
-				'controller'=>'almacen_transportes',
-				'action' => 'edit',
+			$linea['marca_almacen'],
+			$this->Button->editLine('almacentransportes',
+				$linea['id'],'transportes',
+				$transporte['Transporte']['id'])
+			.' '.$this->Button->deleteLine('almacen_transportes',
 				$linea['id'],
-              			'from_controller'=>'almacentransportes',
-              			'from_id'=>$transporte['Transporte']['id']),array(
-              			'class'=>'botond','escape' => false,'title'=>'Modificar Cuenta Corriente'))
-			.' '.$this->Form->postLink('<i class="fa fa-trash"></i>',
-				array(
-					'controller'=>'operaciones',
-					'action' => 'delete',
-					$linea['id'],
-					'from_controller' => 'operaciones',
-					'from_id'=>$transporte['Transporte']['id']),
-					array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-						'confirm' => '¿Seguro que quieres borrar la cuenta corriente'.$linea['cuenta_almacen'].'?')
-				)
+				'transportes',
+				$transporte['Transporte']['id'],
+				'la cuenta almacén: '.$linea['cuenta_almacen'])
+
+
 			));
 	endforeach;?>
 	</table>
 	<div class="btabla">
 		<?php
-		echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Cuenta Corriente',array(
-		'controller' => 'almacen_transportes',
-		'action' => 'add',
-		'from_controller' => 'transportes',
-		'from_id' => $transporte['Transporte']['id']),
-		 array('escape' => false,'title'=>'Añadir cuenta corriente almacén')
-		 );
+		echo $this->Button->addLine('almacen_transportes','transportes',$transporte['Transporte']['id'],'cuenta almacén');
 		?>
 	</div>
 	</div>

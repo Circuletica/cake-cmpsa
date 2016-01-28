@@ -3,79 +3,73 @@ class RetiradasController extends AppController {
 	public $scaffold = 'admin';
 
 	public function index() {
-		$this->set('retiradas', $this->paginate());
+	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'asc');
+	$this->paginate['contain'] = array(
+			'Asociado',
+			'AlmacenTransporte' => array (
+				'Almacen' => array (
+					'fields' => ('nombre_corto')
+					)
+				),
+			'OperacionRetirada' => array (
+				'Operacion' => array (
+					'fields' => 'id', 'referencia')
+				)				
+	);
 
-		$this->paginate = array(
-			'contain' => array(
-				'Operacion',
-				'Almacen',
-				'Empresa',
-				'AlmacenTransporte'
-			),
+	$retiradas = $this->paginate();
+	$this->set(compact('retiradas'));
+
+/*	$this->loadModel('Operacion');
+	$operacion_retiradas = $this->OperacionRetirada->Operacion->find(
+			'list',
+			array(
+	    		'conditions' => array(
+	    			'OperacionRetirada.id' => 'Operacion.id'
+	    		),
+	    		'contain' => array(
+	    			'Retirada')
+	    	)
 		);
-/*		$this->Operacion->bindModel(array(
-//			'belongsTo' => array(
-//				'Empresa' => array(
-//					'foreignKey' => false,
-//					'conditions' => array('Empresa.id = Contrato.proveedor_id')
-//				),
-//				'CalidadNombre' => array(
-//					'foreignKey' => false,
-//					'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
-//				)
-//			)
-//		));
-		$this->set('operaciones', $this->paginate());*/
+	$this->set('operacion_retiradas',$operacion_retiradas);*/
+
+
 	}
 
 	public function view($id = null) {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado Muestra/view');
+			$this->Session->setFlash('URL mal formado Retirada/view');
 			$this->redirect(array('action'=>'index'));
 		}
-		$operacion = $this->Operacion->find(
-			'first',
-			array(
-				'conditions' => array('Operacion.id' => $id),
-				'recursive' => 3
-			)
-		);
-		$this->set('operacion', $operacion);
-		$this->loadModel('ContratoEmbalaje');
-		$embalaje = $this->ContratoEmbalaje->find(
-			'first',
-			array(
-				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
-				),
-				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
-			)
-		);
-		$this->set('embalaje', $embalaje);
-		$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
-		foreach ($operacion['AsociadoOperacion'] as $linea):
-			$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-			$codigo = substr($linea['Asociado']['Empresa']['codigo_contable'],-2);
-			$lineas_reparto[] = array(
-				'Código' => $codigo,
-				'Nombre' => $linea['Asociado']['Empresa']['nombre_corto'],
-				'Cantidad' => $linea['cantidad_embalaje_asociado'],
-				'Peso' => $peso
+		
+	$retirada = $this->Retirada->find('first',array(
+	    'conditions' => array('Retirada.id' => $id),
+	    'recursive' => 3));
+	$this->set('retirada',$retirada);
+
+	//Sacamos la referencia de operaciones ligada a retiradas
+	$this->loadModel('OperacionRetirada');
+
+	$operacion = $this->Retirada->OperacionRetirada->find(
+				'first',
+				array(
+		    		'conditions' => array(
+		    			'OperacionRetirada.retirada_id' => $retirada['Retirada']['id']
+		    		)
+		    	)
 			);	
-		endforeach;
-		$columnas_reparto = array_keys($lineas_reparto[0]);
-		//indexamos el array por el codigo de asociado
-		$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
-		//se ordena por codigo ascendente
-		ksort($lineas_reparto);
-		$this->set('columnas_reparto',$columnas_reparto);
-		$this->set('lineas_reparto',$lineas_reparto);
+	$this->set('operacion',$operacion);
 	}
 
     public function add() {
-	$this->form($this->params['named']['from_id']);
+    echo $this->form($this->params['named']['from_id']); 
+
+	if($this->form($this->params['named']['from_id']) != NULL){
+		echo "SI FROM_ID ES NULL SE VE EL DESPLEGABLE DE OPERACIONES.
+		SI FROM_ID TIENE UN VALOR SE OCULTA POR TENER YA ASIGNADA LA OPERACION";
+	}
+	
 	$this->render('form');
     }
 
@@ -91,44 +85,60 @@ class RetiradasController extends AppController {
 	$this->render('form');
     }
 
-     public function form($id) { //esta acción vale tanto para edit como add
-	$operacion = $this->Retirada->Operacion->find(
-	    'first',
-	    array(
-		'conditions' => array('Operacion.id' => $id),
-		'recursive' => 4,
-		'contain' => array(
-		    'Contrato' => array(
-			'Proveedor' => array(
-			    'Empresa'
-			),
-			'CalidadNombre',
-			'Incoterm'
-		    ),
-		    'PrecioTotalOperacion'
-		)
-	    )
+     public function form($id = null) { //esta acción vale tanto para edit como add
+
+	//Listamos el nombre de asociados
+	$this->loadModel('Asociado');	
+	$asociados = $this->Asociado->find('list',
+		array(
+		'fields' => array(
+			'Asociado.id',
+			'Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1)
 	);
+	$this->set(compact('asociados'));
+
+	$operacionretirada = $this->Retirada->OperacionRetirada->find(
+				'first',
+				array(
+		    		'conditions' => array(
+		    			'OperacionRetirada.id' => $id)
+		    		)
+		    	);
+	$almacentransporte = $this->Retirada->AlmacenTransporte->find('list',
+		array(
+			'conditions' => array('AlmacenTransporte.id' => $id),
+			'recursive' => 3,
+			'fields' => array(
+				'AlmacenTransporte.id')
+			)
+		);
+
+
+
+	//Saco datos de la operación al que pertenece la linea
+	//nos sirven  en la vista para detallar campos
+	/*$this->loadModel('Operacion');	
+	$operacionretirada = $this->Retirada->OperacionRetirada->Operacion->find(
+				'all');/*,
+				array(
+		    		'conditions' => array(
+		    			'OperacionRetirada.id' => $id
+		    		),
+		    		'contain' => array(
+		    			'Retirada'),
+		    		'fields' => array(
+		    				'OperacionRetirada.id',
+		    		)
+		    	)
+			);	*/
+	//$operacionesRetirada = Hash::combine($operacionesRetirada, '{n}.OperacionRetirada.id','{n}');
+	$this->set(compact('operacionretirada'));
+	$this->set(compact('almacentransporte'));
 	$this->set(compact('operacion'));
-	$bancos = $this->Retirada->Banco->find('list', array(
-	    'fields' => array('Banco.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
-	    'recursive' => 1
-	));
-	$this->set(compact('bancos'));
-	$tipoIvas = $this->Retirada->TipoIva->find('list');
-	$this->set(compact('tipoIvas'));
-	$this->set('tipoIvaComisiones', $tipoIvas);
-	$this->set('referencia', $operacion['Operacion']['referencia']);
-	$this->set('proveedor', $operacion['Contrato']['Proveedor']['Empresa']['nombre_corto']);
-	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
-	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
-	$condicion = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
-	//solo el año de embarque/entrega
-	$condicion .= ' '.substr($operacion['Contrato']['fecha_transporte'],0,4);
-	$condicion .= ' ('.$operacion['Contrato']['Incoterm']['nombre'].')';
-	$this->set(compact('condicion'));
-	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
+
+
 	$this->set('action', $this->action);
 
 	//si es un edit, hay que rellenar el id, ya que

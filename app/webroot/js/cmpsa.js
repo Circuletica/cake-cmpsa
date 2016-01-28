@@ -236,3 +236,41 @@ function muestraEntrega() {
 	contrato.disabled = 0;
     }
 }
+
+function operacionesRetirada(){
+    var operaciones = window.app.operacionesRetirada;
+    var operaciones = window.app.operacionesEmbarque;
+    //el contrato que seleccionamos
+    var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
+    //el id del contrato
+    var selectedOption = document.getElementById('MuestraContratoId').options[selectedIndex].value;
+    var combobox = document.getElementById('combobox');;
+    var embarque = document.getElementById('embarque');
+
+    if (selectedOption != '') {
+		//modificamos _todo_ el select de operaciones
+	if (selectedOption in operaciones) {
+	    var muestras = operaciones[selectedOption].Muestra; //las muestras de embarque del contrato seleccionado
+	    var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
+	    operacion.options.length = opts;
+	    
+	    //console.log(operacion.options.length);
+	    for (var i=0; i<opts; i++){
+		operacion.options[i].value = muestras[i].id;
+		operacion.options[i].text = muestras[i].registro;
+	    }
+	    //console.log(operacion.options);
+	} else {
+	    operacion.options.length = 1;
+	    operacion.options[0].value = '';
+	    operacion.options[0].text = '';
+	    operacion.options[0].selected = true;
+	}
+    } else { // si se deja el contrato vacío, borramos calidad y proveedor
+	//console.log(combobox.options);
+	//lo siguiente no vale: cuando editamos muestra de oferta que ya
+	//tiene calidad_id y proveedor_id, se borran del formulario
+	//combobox.options[0].selected = true;
+	//proveedor.options[0].selected = true;
+    }
+}
