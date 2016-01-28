@@ -7,24 +7,24 @@ echo $this->Html->script('jquery')."\n"; // Include jQuery library
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 if ($action == 'add') {
-   // echo "<h2>Añadir retirada de almacén <em>".$operacion['OperacionRetirada']['Operacion']['referencia']."</em></h2>\n";
+    echo "<h2>Añadir retirada de almacén</h2>\n";
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar retirada de almacnén <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+    echo "<h2>Modificar retirada de almacén</h2>\n";
 }
 ?>
 
 <fieldset>
 <?php
-  echo $operacionretirada;
+
     echo $this->Form->create('Retirada');
-    echo $this->Form->input('OperacionRetirada.id',
+    echo $this->Form->input('operacion_id',
         array(
-          'label'=>'Operación',
-          'empty' =>true,
+          'label'=>'Ref. Operación',
           'autofocus' => 'autofocus',
-          'onchange' => 'operacionesRetirada()'
+          'onchange' => 'operacionesRetirada()',
+          'value' => $operacion_id
         )
       );
 

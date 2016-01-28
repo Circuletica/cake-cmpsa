@@ -83,12 +83,12 @@ CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
 
 
 //Generar PDFs en CakePHP con el plugin CakePDF  http://www.edsonmm.com/generar-pdf-en-cakephp-con-el-plugin-cakepdf/#cakephp2
-CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
+/*CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
 Configure::write('CakePdf', array(
     'engine' => 'CakePdf.DomPdf',
     'pageSize' => 'A4',
     'orientation' => 'portrait'
-));
+));*/
 
 
 //Configure::write('CakePdf', array(

@@ -65,11 +65,11 @@ class RetiradasController extends AppController {
     public function add() {
     echo $this->form($this->params['named']['from_id']); 
 
-	if($this->form($this->params['named']['from_id']) != NULL){
+	/*if($this->form($this->params['named']['from_id']) != NULL){
 		echo "SI FROM_ID ES NULL SE VE EL DESPLEGABLE DE OPERACIONES.
 		SI FROM_ID TIENE UN VALOR SE OCULTA POR TENER YA ASIGNADA LA OPERACION";
 	}
-	
+	*/
 	$this->render('form');
     }
 
@@ -99,13 +99,12 @@ class RetiradasController extends AppController {
 	);
 	$this->set(compact('asociados'));
 
-	$operacionretirada = $this->Retirada->OperacionRetirada->find(
-				'first',
-				array(
-		    		'conditions' => array(
-		    			'OperacionRetirada.id' => $id)
-		    		)
+
+	$operaciones = $this->Retirada->OperacionRetirada->Operacion->find(
+				'list'
 		    	);
+	$this->set('operacion_id',$this->passedArgs['from_id']);
+
 	$almacentransporte = $this->Retirada->AlmacenTransporte->find('list',
 		array(
 			'conditions' => array('AlmacenTransporte.id' => $id),
@@ -134,10 +133,8 @@ class RetiradasController extends AppController {
 		    	)
 			);	*/
 	//$operacionesRetirada = Hash::combine($operacionesRetirada, '{n}.OperacionRetirada.id','{n}');
-	$this->set(compact('operacionretirada'));
+	$this->set(compact('operaciones'));
 	$this->set(compact('almacentransporte'));
-	$this->set(compact('operacion'));
-
 
 	$this->set('action', $this->action);
 
