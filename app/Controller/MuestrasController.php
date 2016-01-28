@@ -197,7 +197,7 @@ class MuestrasController extends AppController {
     public function form($id = null) {
 	$this->set('action', $this->action);
 	$tipos = $this->tipoMuestras;
-	$this->set('tipos', $tipos);
+	//$this->set('tipos', $tipos);
 	$this->loadModel('Proveedor');
 	$this->set(
 	    'proveedores',
@@ -220,8 +220,9 @@ class MuestrasController extends AppController {
 	if (!empty($id)) {
 	    $this->Muestra->id = $id;
 	    $muestra = $this->Muestra->findById($id);
-	    $tipo_nombre = $tipos[$muestra['Muestra']['tipo']];
 	    $tipo = $muestra['Muestra']['tipo'];
+	    $tipo_nombre = $tipos[$tipo];
+	    $this->set('referencia',$muestra['Muestra']['tipo_registro']);
 	} else { //es un add()	
 	    //Si no esta el tipo de muestra en la URL, volvemos
 	    //a muestras de oferta
@@ -235,8 +236,8 @@ class MuestrasController extends AppController {
 		);
 	    } else {
 		$tipo = $this->passedArgs['tipo_id'];
-		$tipo_nombre = $tipos[$this->passedArgs['tipo_id']];
-		$this->Muestra->virtualFields = array(
+		$tipo_nombre = $tipos[$tipo];
+		$this->Muestra->virtualFields += array(
 		    'ultimoRegistro' => 'MAX(Muestra.registro)'
 		);
 		$ultimo_registro = $this->Muestra->find(

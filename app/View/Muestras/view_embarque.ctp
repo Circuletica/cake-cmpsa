@@ -27,7 +27,7 @@ $this->start('main');
 echo "<dl>";
 echo "  <dt>Registro</dt>\n";
 echo "<dd>";
-echo 'EB-'.$muestra['Muestra']['tipo_registro'].'&nbsp;';
+echo $muestra['Muestra']['tipo_registro'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";

@@ -14,7 +14,7 @@ if ($action == 'add') {
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Muestra de ".$tipo_nombre."</h2>\n";
+    echo "<h2>Modificar Muestra ".$referencia."</h2>\n";
 }
 
 $siglas_tipos = array(
