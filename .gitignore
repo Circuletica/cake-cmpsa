@@ -2,12 +2,8 @@
 #################################################
 /app/Config/database.php
 /app/tmp
-<<<<<<< HEAD
 /app/Plugin/CakePdf/*
 /app/Plugin/Highcharts/*
-=======
-/app/Plugin/CakePdf
->>>>>>> master
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
 /vendors

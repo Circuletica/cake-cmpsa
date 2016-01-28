@@ -24,12 +24,14 @@ class MuestrasController extends AppController {
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
 	$this->loadModel('Proveedor');
-	$proveedores = $this->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
-	    'recursive' => 1
-	)
-    );
+	$proveedores = $this->Proveedor->find(
+	    'list',
+	    array(
+		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
+	    )
+	);
 	$this->set('proveedores',$proveedores);
 
 	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
