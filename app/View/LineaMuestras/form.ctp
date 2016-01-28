@@ -17,15 +17,15 @@ function totalCriba(){
 
 <?php
 if ($action == 'add') {
-    echo "<h2>Añadir Línea a Muestra <em>".$muestra['referencia']."</em></h2>\n";
+    echo "<h2>Añadir Línea a Muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Línea de Muestra <em>".$muestra['referencia']."</em></h2>\n";
+    echo "<h2>Modificar Línea de Muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
 
 $this->Html->addCrumb('Muestras','/muestras');
-$this->Html->addCrumb('Muestra '.$muestra['referencia'],'/muestras/view/'.$muestra['id']);
+$this->Html->addCrumb('Muestra '.$muestra['registro'],'/muestras/view/'.$muestra['id']);
 
 ?>
 <?php

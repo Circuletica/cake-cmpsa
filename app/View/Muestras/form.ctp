@@ -97,7 +97,7 @@ if ($tipo == 3) {
 	'muestra_embarque_id',
 	array(
 	    'empty' => true,
-	    'between' => 'EB-'
+	    //'between' => 'EB-'
 	    //'onchange' => 'muestraEntrega()',
 	    //'disabled' => 1,
 	    //'id' => 'embarque'

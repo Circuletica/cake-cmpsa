@@ -155,7 +155,7 @@ function contratosMuestra(){
 	    muestraEmbarqueId.options.length = opts;
 	    for (var i=0; i<opts; i++){
 		muestraEmbarqueId.options[i].value = muestras[i].id;
-		muestraEmbarqueId.options[i].text = muestras[i].registro;
+		muestraEmbarqueId.options[i].text = muestras[i].tipo_registro;
 		//volver a seleccionar la mues. de emb. si existía
  		if (muestraEmbarqueId.options[i].value == muestraSelOpt) {
 		    muestraEmbarqueId.options[i].selected = true;

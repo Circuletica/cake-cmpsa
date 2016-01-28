@@ -482,13 +482,13 @@ endif;
 
 	//Calculo la cantidad de bultos transportados
 	if($operacion['Operacion']['id']!= NULL){
-		$suma = 0;
-		$transportado=0;
-		foreach ($operacion['Transporte'] as $suma){
-			if ($transporte['operacion_id']=$operacion['Operacion']['id']){
-			$transportado = $transportado + $suma['cantidad_embalaje'];
-			}
+	    $suma = 0;
+	    $transportado=0;
+	    foreach ($operacion['Transporte'] as $suma){
+		if ($transporte['operacion_id']=$operacion['Operacion']['id']){
+		    $transportado = $transportado + $suma['cantidad_embalaje'];
 		}
+	    }
 	}
 	$this->set('transportado',$transportado);
 
@@ -514,15 +514,15 @@ endif;
 	$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
 
 	$operacion_retiradas = $this->Operacion->OperacionRetirada->find(
-				'all',
-				array(
-		    		'conditions' => array(
-		    			'OperacionRetirada.id' => $id
-		    		),
-		    		'contain' => array(
-		    			'Retirada')
-		    	)
-			);	
+	    'all',
+	    array(
+		'conditions' => array(
+		    'OperacionRetirada.id' => $id
+		),
+		'contain' => array(
+		    'Retirada')
+		)
+	    );	
 	//Líneas de reparto
 	//		debug($operacion_retiradas);
 	$total_sacos = 0;
@@ -532,52 +532,54 @@ endif;
 
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-		
+
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
 
 	foreach ($operacion_retiradas as $clave => $operacion_retirada){
-		//	debug($operacion_retirada);
-		$retirada = $operacion_retirada['Retirada'];
-		if($retirada['asociado_id'] == $linea['Asociado']['id']){
-			$cantidad_retirado += $retirada['embalaje_retirado'];
-			$peso_retirado += $retirada['peso_retirado'];
-		}
+	    //	debug($operacion_retirada);
+	    $retirada = $operacion_retirada['Retirada'];
+	    if($retirada['asociado_id'] == $linea['Asociado']['id']){
+		$cantidad_retirado += $retirada['embalaje_retirado'];
+		$peso_retirado += $retirada['peso_retirado'];
+	    }
 	}
 	$lineas_retirada[] = array(
- 	   'Nombre' => $linea['Asociado']['nombre_corto'],
- 	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
- 	   'Peso' => $peso,
- 	   'Cantidad_retirado' => $cantidad_retirado,
- 	   'Peso_retirado' => $peso_retirado
-		);
+	    'Nombre' => $linea['Asociado']['nombre_corto'],
+	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
+	    'Peso' => $peso,
+	    'Cantidad_retirado' => $cantidad_retirado,
+	    'Peso_retirado' => $peso_retirado
+	);
 	$total_sacos += $linea['cantidad_embalaje_asociado'];
 	$total_peso += $peso;
 	$total_sacos_retirados += $cantidad_retirado; 
 	$total_peso_retirado += $peso_retirado;
 
-	endforeach;
+endforeach;
 
-	ksort($lineas_retirada);
-	$this->set('lineas_retirada',$lineas_retirada);
-	$this->set('total_sacos',$total_sacos);
-	$this->set('total_peso',$total_peso);	
-	$this->set('total_sacos_retirados',$total_sacos_retirados);
-	$this->set('total_peso_retirado',$total_peso_retirado);
+ksort($lineas_retirada);
+$this->set('lineas_retirada',$lineas_retirada);
+$this->set('total_sacos',$total_sacos);
+$this->set('total_peso',$total_peso);	
+$this->set('total_sacos_retirados',$total_sacos_retirados);
+$this->set('total_peso_retirado',$total_peso_retirado);
     }
 
     public function delete($id = null) {
-	if (!$id or $this->request->is('get')) :
+	if (!$id or $this->request->is('get')) {
 	    throw new MethodNotAllowedException();
-endif;
-if ($this->Operacion->delete($id)):
-    $this->Session->setFlash('Línea de contrato borrada');
-$this->redirect(array(
-    'controller' => $this->params['named']['from_controller'],
-    'action'=>'view',
-    $this->params['named']['from_id']
-));
-endif;
+	}
+	if ($this->Operacion->delete($id)) {
+	    $this->Session->setFlash('Línea de contrato borrada');
+	    $this->redirect(array(
+		//'controller' => $this->params['named']['from_controller'],
+		'controller' => 'operaciones',
+		//'action'=>'view',
+		'action'=>'index',
+		//$this->params['named']['from_id']
+	    ));
+	}
     }
 
     public function generarFinanciacion($id = null) {

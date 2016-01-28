@@ -317,8 +317,7 @@ class MuestrasController extends AppController {
 			),
 			'fields' => array(
 			    'id',
-			    'registro',
-			    'tipo'
+			    'tipo_registro'
 			)
 		    )
 		),
@@ -354,7 +353,7 @@ class MuestrasController extends AppController {
 		),
 		'fields' => array(
 		    'Muestra.id',
-		    'Muestra.registro',
+		    'Muestra.tipo_registro',
 		    'Contrato.id',
 		    'Contrato.proveedor_id',
 		    'Contrato.calidad_id'
@@ -369,7 +368,7 @@ class MuestrasController extends AppController {
 	//los demás campos cuando se selecciona una muestra de embarque
 	$this->set (
 	    'muestraEmbarques',
-	    Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.registro')
+	    Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.tipo_registro')
 	);
 	//por otra parte la lista del desplegable de muestras de embarque
 	//para el formulario
