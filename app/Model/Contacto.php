@@ -1,6 +1,9 @@
 <?php
 class Contacto extends AppModel {
-    public $belongsTo = 'Empresa';
+    public $belongsTo = array(
+	'Empresa',
+	'Departamento'
+    );
     public $displayField = 'nombre';
     public $validate = array(
 	'nombre' => array(

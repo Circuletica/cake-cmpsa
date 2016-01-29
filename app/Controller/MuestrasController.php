@@ -178,6 +178,15 @@ class MuestrasController extends AppController {
     }
 
     public function add() {
+	if(!isset($this->passedArgs['tipo_id'])) {
+	    $this->Session->setFlash('Error en URL, falta tipo muestra');
+	    $this->redirect(
+		array(
+		    'action' => 'index',
+		    'Search.tipo_id' => 1
+		)
+	    );
+	}
 	$this->form();
 	$this->render('form');
     }
@@ -226,15 +235,6 @@ class MuestrasController extends AppController {
 	} else { //es un add()	
 	    //Si no esta el tipo de muestra en la URL, volvemos
 	    //a muestras de oferta
-	    if(!isset($this->passedArgs['tipo_id'])) {
-		$this->Session->setFlash('Error en URL, falta tipo muestra');
-		$this->redirect(
-		    array(
-			'action' => 'index',
-			'Search.tipo_id' => 1
-		    )
-		);
-	    } else {
 		$tipo = $this->passedArgs['tipo_id'];
 		$tipo_nombre = $tipos[$tipo];
 		$this->Muestra->virtualFields += array(
@@ -253,7 +253,6 @@ class MuestrasController extends AppController {
 		);
 		$nuevo_registro = $ultimo_registro['Muestra']['ultimoRegistro'] + 1;
 		$this->set(compact('nuevo_registro'));
-	    }
 	}
 	$this->set('tipo',$tipo);
 	$this->set(compact('tipo_nombre'));

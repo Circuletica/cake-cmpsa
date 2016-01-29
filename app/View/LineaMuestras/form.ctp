@@ -17,11 +17,11 @@ function totalCriba(){
 
 <?php
 if ($action == 'add') {
-    echo "<h2>Añadir Línea a Muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
+    echo "<h2>Añadir Línea a la muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Línea de Muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
+    echo "<h2>Modificar Línea de la muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
 
 $this->Html->addCrumb('Muestras','/muestras');
@@ -35,31 +35,32 @@ echo $this->Form->create();
 <?php
 echo $this->Html->tableCells(array(
     $this->Form->input('humedad'),
-    $this->Form->input('tueste')
-));
-echo $this->Html->tableCells(
-    array(
-	$this->Form->input(
-	    'referencia_proveedor',
-	    array(
-		'label' => 'Referencia Proveedor'
-	    )
-	),
-	$this->Form->input(
-	    'operacion_id',
-	    array(
-		'empty' => true,
-		'label' => 'Operación'
-	    )
-	),
-	$this->Form->input(
-	    'almacen_transporte_id',
-	    array(
-		'empty' => true,
-		'label' => 'Referencia Almacén' 
-	    )
+    $this->Form->input('tueste'),
+    $this->Form->input(
+	'referencia_proveedor',
+	array(
+	    'label' => 'Referencia Proveedor'
+	)
+    ),
+    isset($operaciones) ?
+    $this->Form->input(
+	'operacion_id',
+	array(
+	    'empty' => true,
+	    'label' => 'Operación'
 	)
     )
+    : '',
+    isset($almacenTransportes) ?
+    $this->Form->input(
+	'almacen_transporte_id',
+	array(
+	    'empty' => true,
+	    'label' => 'Referencia Almacén' 
+	)
+    )
+    : ''
+)
 );
 ?>
 	</div>
