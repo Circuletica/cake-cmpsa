@@ -78,18 +78,24 @@ class LineaMuestrasController extends AppController {
 	    $this->LineaMuestra->id = $id;
 	    //sacamos los datos de la muestra a la que pertenece la linea
 	    //nos sirven en la vista para detallar campos
-	    $linea_muestra = $this->LineaMuestra->find(
-		'first',
-		array(
-		    'conditions' => array(
-			'LineaMuestra.id' => $id
-		    ),
-		    'recursive' => 4,
-		    'contain' => array(
-			'Muestra' => array(
-			    'CalidadNombre',
-			    'Contrato'
-			),
+	    $linea_muestra = $this->LineaMuestra->findById($id);
+	    $muestra_id=$linea_muestra['Muestra']['id'];
+	} else { //un add()
+	    $muestra_id = $this->params['named']['from_id'];
+	}
+	//sacamos los datos de la muestra a la que pertenece la linea
+	//nos sirven en la vista para detallar campos
+	$muestra = $this->LineaMuestra->Muestra->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Muestra.id' => $muestra_id
+		),
+		'recursive' => 3,
+		'contain' => array(
+		    'CalidadNombre',
+		    'Proveedor',
+		    'Contrato' => array(
 			'Operacion' => array(
 			    'fields' => array(
 				'id',
@@ -105,66 +111,32 @@ class LineaMuestrasController extends AppController {
 			)
 		    )
 		)
-	    );
-	    $muestra = $linea_muestra['Muestra'];
-	    $muestra_id=$muestra['id'];
-	} else { //un add()
-	    $muestra_id = $this->params['named']['from_id'];
-	    //sacamos los datos de la muestra a la que pertenece la linea
-	    //nos sirven en la vista para detallar campos
-	    $muestra = $this->LineaMuestra->Muestra->find(
-		'first',
-		array(
-		    'conditions' => array(
-			'Muestra.id' => $muestra_id
-		    ),
-		    'recursive' => 3,
-		    'contain' => array(
-			'CalidadNombre',
-			'Proveedor',
-			'Contrato' => array(
-			    'Operacion' => array(
-				'fields' => array(
-				    'id',
-				    'referencia',
-				    'embalaje_id'
-				),
-				'Transporte' => array(
-				    'fields' => array(
-					'id'
-				    ),
-				    'AlmacenTransporte'
-				)
-			    )
-			)
-		    )
-		)
-	    );
-	    //necesitamos 'subir' el array $muestra['Muestra']
-	    //de 1 nivel para que sea igual al que devuelve el
-	    //find anterior
-	    //los dos find no devuelven la misma estructura
-	    //pasamos de:
-	    //array(
-	    //	'Muestra' => array(
-	    //		'id' => '22',
-	    //		'calidad_id' => '28',
-	    //		'contrato_id' => '27',
-	    //	),
-	    //	'CalidadNombre' => array(),
-	    //	'Contrato' => array()
-	    //)
-	    //a
-	    //array(
-	    //	'id' => '22',
-	    //	'calidad_id' => '28',
-	    //	'contrato_id' => '27',
-	    //	'CalidadNombre' => array(),
-	    //	'Contrato' => array()
-	    //)
-	    $muestra += $muestra['Muestra'];
-	    unset($muestra['Muestra']);
-	}
+	    )
+	);
+	//necesitamos 'subir' el array $muestra['Muestra']
+	//de 1 nivel para que sea igual al que devuelve el
+	//find anterior
+	//los dos find no devuelven la misma estructura
+	//pasamos de:
+	//array(
+	//	'Muestra' => array(
+	//		'id' => '22',
+	//		'calidad_id' => '28',
+	//		'contrato_id' => '27',
+	//	),
+	//	'CalidadNombre' => array(),
+	//	'Contrato' => array()
+	//)
+	//a
+	//array(
+	//	'id' => '22',
+	//	'calidad_id' => '28',
+	//	'contrato_id' => '27',
+	//	'CalidadNombre' => array(),
+	//	'Contrato' => array()
+	//)
+	$muestra += $muestra['Muestra'];
+	unset($muestra['Muestra']);
 	//legado a este punto, vengamos de add o edit
 	//$muestra tiene el mismo valor
 	$this->set('muestra',$muestra);
@@ -177,14 +149,14 @@ class LineaMuestrasController extends AppController {
 	    $operaciones = $muestra['Contrato']['Operacion'];
 	    //$almacen_transportes = array();
 	    foreach ($operaciones as $index => $operacion) {
-	    $operaciones[$index]['AlmacenTransporte'] = array();
+		$operaciones[$index]['AlmacenTransporte'] = array();
 		foreach ($operacion['Transporte'] as $transporte) {
 		    $operaciones[$index]['AlmacenTransporte'] = array_merge(
 			$operaciones[$index]['AlmacenTransporte'],
 			$transporte['AlmacenTransporte']
 		    );
 		}
-	    unset($operaciones[$index]['Transporte']);
+		unset($operaciones[$index]['Transporte']);
 	    }
 	    //Recombinamos para pasar de:
 	    //array(

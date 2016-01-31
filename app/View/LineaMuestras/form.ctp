@@ -198,4 +198,5 @@ echo $this->Form->end('Guardar Linea de muestra');
 ?>
 <script type="text/javascript">
 window.onload = totalCriba();
+window.onload = operacionAlmacen();
 </script>
