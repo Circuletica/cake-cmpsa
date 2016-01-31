@@ -29,6 +29,13 @@ $this->Html->addCrumb('Muestra '.$muestra['registro'],'/muestras/view/'.$muestra
 
 ?>
 <?php
+//Pasamos la lista de 'operacion_almacenes' al javascript de la vista
+echo $this->Html->script('jquery')."\n"; // Include jQuery library
+if (isset($operacion_almacenes)) {
+    $this->Js->set('operacion_almacenes', $operacion_almacenes);
+    echo $this->Js->writeBuffer(array('onDomReady' => false));
+}
+
 echo $this->Form->create();
 ?>
 	<div class="col3">
@@ -51,7 +58,7 @@ echo $this->Html->tableCells(array(
 	)
     )
     : '',
-    isset($almacenTransportes) ?
+    isset($operacion_almacenes) ?
     $this->Form->input(
 	'almacen_transporte_id',
 	array(
@@ -188,3 +195,6 @@ echo $this->Html->tableCells(array(
 <?php
 echo $this->Form->end('Guardar Linea de muestra');
 ?>
+<script type="text/javascript">
+window.onload = totalCriba();
+</script>

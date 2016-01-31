@@ -173,23 +173,18 @@ class LineaMuestrasController extends AppController {
 	//primero se sacan todos los almacen_transportes
 	//de todos los transportes de la operacion relativa
 	//de la muestra
-	//	if (array_key_exists('Transporte',$muestra['Operacion'])) {
-	//	    $transportes = $muestra['Operacion']['Transporte'];
-	//	    $almacen_transportes = array();
-	//	    foreach ($transportes as $transporte) {
-	//		$almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
-	//	    }
 	if (isset($muestra['Contrato']['Operacion'])) {
 	    $operaciones = $muestra['Contrato']['Operacion'];
-	    $almacen_transportes = array();
-	    foreach ($operaciones as $operacion) {
-		$transportes = $operacion['Transporte'];
-		foreach ($transportes as $transporte) {
-		    $almacen_transportes = array_merge(
-			$almacen_transportes,
+	    //$almacen_transportes = array();
+	    foreach ($operaciones as $index => $operacion) {
+	    $operaciones[$index]['AlmacenTransporte'] = array();
+		foreach ($operacion['Transporte'] as $transporte) {
+		    $operaciones[$index]['AlmacenTransporte'] = array_merge(
+			$operaciones[$index]['AlmacenTransporte'],
 			$transporte['AlmacenTransporte']
 		    );
 		}
+	    unset($operaciones[$index]['Transporte']);
 	    }
 	    //Recombinamos para pasar de:
 	    //array(
@@ -213,9 +208,12 @@ class LineaMuestrasController extends AppController {
 	    //	(int) 8 => '54131',
 	    //	(int) 9 => '251478/5451',
 	    //)
-	    $almacen_transportes = Hash::combine($almacen_transportes,'{n}.id','{n}.cuenta_almacen');
-	    $this->set('almacenTransportes', $almacen_transportes);
+	    //el array que va al js para rellenar el desplegable de cuenta_almacen_id
+	    //según la operacion elegida
+	    $operacion_almacenes = Hash::combine($operaciones,'{n}.id','{n}');
+	    //la lista para el desplegable de operacion_id
 	    $operaciones = Hash::combine($operaciones,'{n}.id','{n}.referencia');
+	    $this->set(compact('operacion_almacenes'));
 	    $this->set(compact('operaciones'));
 	}
 
