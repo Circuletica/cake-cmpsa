@@ -194,11 +194,11 @@ function muestraEntrega() {
     var contrato = document.getElementById('MuestraContratoId');
     var combobox = document.getElementById('combobox');
     var proveedor = document.getElementById('proveedor');
+    var muestra = document.getElementById('MuestraMuestraEmbarqueId');
     //la muestra de embarque que seleccionamos
-    var selectedIndex = document.getElementById('MuestraMuestraEmbarqueId').selectedIndex;
+    var selectedIndex = muestra.selectedIndex;
     //el id de la muestra
-    var selectedOption = document.getElementById('MuestraMuestraEmbarqueId').options[selectedIndex].value;
-    console.log(selectedOption);
+    var selectedOption = muestra.options[selectedIndex].value;
     if (selectedOption != '') {
 	contrato.disabled = 1;
 	combobox.disabled = 1;
@@ -272,5 +272,38 @@ function operacionesRetirada(){
 	//tiene calidad_id y proveedor_id, se borran del formulario
 	//combobox.options[0].selected = true;
 	//proveedor.options[0].selected = true;
+    }
+}
+
+function operacionAlmacen() {
+    var operacionAlmacenes = window.app.operacionAlmacenes;
+    var operacionId = document.getElementById('LineaMuestraOperacionId');
+    var almacenId = document.getElementById('LineaMuestraAlmacenTransporteId');
+
+    //el almacen seleccionado (si edit)
+    var almacenIndex = almacenId.selectedIndex;
+    var almacenSelOpt = almacenId.options[almacenIndex].value;
+    //la operacion seleccionada
+    var operacionIndex = operacionId.selectedIndex;
+    var operacionSelOpt = operacionId.options[operacionIndex].value;
+    console.log(operacionSelOpt);
+    if (operacionSelOpt != '') {
+	var almacenes = operacionAlmacenes[operacionSelOpt].AlmacenTransporte;
+	console.log(almacenes);
+	var opts = almacenes.length;
+	almacenId.options.length = opts;
+	    for (var i=0; i<opts; i++){
+		almacenId.options[i].value = almacenes[i].id;
+		almacenId.options[i].text = almacenes[i].cuenta_almacen;
+		//volver a seleccionar la mues. de emb. si es un edit
+ 		if (almacenId.options[i].value == almacenSelOpt) {
+		    almacenId.options[i].selected = true;
+		}
+	    }
+    } else {
+	almacenId.options.length = 1;
+	almacenId.options[0].value = '';
+	almacenId.options[0].text = '';
+	almacenId.options[0].selected = true;
     }
 }

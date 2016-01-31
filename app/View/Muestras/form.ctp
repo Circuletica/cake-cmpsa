@@ -88,7 +88,8 @@ echo $this->Form->input(
 echo $this->Form->input('contrato_id',
     array(
 	'empty' => true,
-	'disabled' => ($tipo == 1),
+	'disabled' => ($tipo == 1), //si es oferta, no metemos contrato
+	//mas adelante, si la muestra es aprobada, se activa este campo
 	'onchange' => 'contratosMuestra()'
     )
 );

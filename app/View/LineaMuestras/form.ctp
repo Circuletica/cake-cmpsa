@@ -32,7 +32,7 @@ $this->Html->addCrumb('Muestra '.$muestra['registro'],'/muestras/view/'.$muestra
 //Pasamos la lista de 'operacion_almacenes' al javascript de la vista
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 if (isset($operacion_almacenes)) {
-    $this->Js->set('operacion_almacenes', $operacion_almacenes);
+    $this->Js->set('operacionAlmacenes', $operacion_almacenes);
     echo $this->Js->writeBuffer(array('onDomReady' => false));
 }
 
@@ -54,7 +54,8 @@ echo $this->Html->tableCells(array(
 	'operacion_id',
 	array(
 	    'empty' => true,
-	    'label' => 'Operación'
+	    'label' => 'Operación',
+	    'onchange' => 'operacionAlmacen()'
 	)
     )
     : '',
