@@ -35,7 +35,13 @@ if ($action == 'edit') {
                )
          );  
 
-    echo $this->Form->input('almacen_id');
+    echo $this->Form->input('almacen_transporte_id',
+       array(
+              'label'=>'Cuenta Almacén',
+              'empty' =>array('' => 'Selecciona')
+               )
+         );
+
        ?>
     
     <div class="linea">
