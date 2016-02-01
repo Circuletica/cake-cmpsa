@@ -3,6 +3,18 @@ class RetiradasController extends AppController {
 	public $scaffold = 'admin';
 
 	public function index() {
+	/*$this->Retirada->bindModel(
+		array(
+			'belongsTo' => array(
+				'Operacion'=> array(
+					'foreignKey' => false,
+					'conditions' => array('OperacionRetirada.id = Operacion.id')
+					)
+				)
+			)
+		);*/
+
+
 	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'asc');
 	$this->paginate['contain'] = array(
 			'Asociado',
@@ -13,26 +25,16 @@ class RetiradasController extends AppController {
 				),
 			'OperacionRetirada' => array (
 				'Operacion' => array (
-					'fields' => 'id', 'referencia')
-				)				
+					'fields' => array(
+						'id',
+						'referencia')
+				)
+			),
+			//'Operacion',
 	);
 
 	$retiradas = $this->paginate();
 	$this->set(compact('retiradas'));
-
-/*	$this->loadModel('Operacion');
-	$operacion_retiradas = $this->OperacionRetirada->Operacion->find(
-			'list',
-			array(
-	    		'conditions' => array(
-	    			'OperacionRetirada.id' => 'Operacion.id'
-	    		),
-	    		'contain' => array(
-	    			'Retirada')
-	    	)
-		);
-	$this->set('operacion_retiradas',$operacion_retiradas);*/
-
 
 	}
 
@@ -101,7 +103,8 @@ class RetiradasController extends AppController {
 
 	//Listamos el nombre de asociados
 	$this->loadModel('Asociado');	
-	$asociados = $this->Asociado->find('list',
+	$asociados = $this->Asociado->find(
+		'list',
 		array(
 		'fields' => array(
 			'Asociado.id',
@@ -113,18 +116,18 @@ class RetiradasController extends AppController {
 
 	//Listamos las cuentas corrientes de los almacenes
 	//$this->loadModel('AlmacenTransporte');
-	$almacentransporte = $this->Retirada->AlmacenTransporte->find(
+	$almacenTransportes = $this->Retirada->AlmacenTransporte->find(
 		'list',
 		array(
 			//'conditions' => array('AlmacenTransporte.id' => $id)
 			'fields' => array(
 				'AlmacenTransporte.id',
-				'AlmacenTransporte.cuenta_almacen')
+				'AlmacenTransporte.cuenta_almacen'),
+			'order' => array('AlmacenTransporte.cuenta_almacen' => 'asc')
 			)
 		);
 
-
-	$this->set(compact('almacentransporte'));
+	$this->set(compact('almacenTransportes'));
 
 	$this->set('action', $this->action);
 
