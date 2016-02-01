@@ -19,10 +19,28 @@ if ($action == 'edit') {
 <?php
 
     echo $this->Form->create('Retirada');
+       ?>
+        <div class="linea">
+    <?php
+    echo $this->Form->input('fecha_retirada',array(
+       'dateFormat' => 'DMY',
+        'minYear' => date('Y')-1,
+        'maxYear' => date('Y')+1,
+        'orderYear' => 'asc',
+        'timeFormat' => null ,
+        'label' => 'Fecha retirada',
+        'empty' => '',
+        'autofocus' => 'autofocus'
+        )
+    );
+    
+        ?>
+    </div>
+<?php
+
     echo $this->Form->input('operacion_id',
         array(
           'label'=>'Ref. Operación',
-          'autofocus' => 'autofocus',
           'onchange' => 'operacionesRetirada()',
           'value' => $operacion_id
         )
@@ -42,25 +60,7 @@ if ($action == 'edit') {
                )
          );
 
-       ?>
-    
-    <div class="linea">
-    <?php
-    echo $this->Form->input('fecha_retirada',array(
-       'dateFormat' => 'DMY',
-        'minYear' => date('Y')-1,
-        'maxYear' => date('Y')+2,
-        'orderYear' => 'asc',
-        'timeFormat' => null ,
-        'label' => 'Fecha retirada',
-        'empty' => ' ')
-        );
-    
-        ?>
-    </div>
 
-
-<?php
    echo $this->Form->input('embalaje_retirado');
    echo $this->Form->input('peso_retirado');
    echo $this->Form->end('Guardar Retirada');
