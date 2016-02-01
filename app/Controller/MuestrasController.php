@@ -40,13 +40,13 @@ class MuestrasController extends AppController {
 	$titulo = array();
 
 	//filtramos por referencia
-	if(isset($this->passedArgs['Search.referencia'])) {
-	    $referencia = $this->passedArgs['Search.referencia'];
-	    $this->paginate['conditions']['Muestra.referencia LIKE'] = "%$referencia%";
+	if(isset($this->passedArgs['Search.registro'])) {
+	    $registro = $this->passedArgs['Search.registro'];
+	    $this->paginate['conditions']['Muestra.registro LIKE'] = "%$registro%";
 	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['referencia'] = $referencia;
+	    $this->request->data['Search']['registro'] = $registro;
 	    //completamos el titulo
-	    $title[] = 'Referencia: '.$referencia;
+	    $title[] = 'Registro: '.$registro;
 	}
 	//filtramos por tipo
 	if(isset($this->passedArgs['Search.tipo_id'])) {
@@ -205,7 +205,8 @@ class MuestrasController extends AppController {
 			'Proveedor.id',
 			'Empresa.nombre_corto'
 		    ),
-		    'recursive' => 1
+		    'recursive' => 1,
+		    'order' => array('Empresa.nombre_corto' => 'ASC')
 		)
 	    )
 	);
@@ -260,8 +261,6 @@ class MuestrasController extends AppController {
 	//el array que se pasa al javascript para cambiar
 	//calidad y proveedor automaticamente
 	//cuando se cambia el contrato
-	//Se 'cortocircuita' el modelo de datos Contrato->Proveedor->Empresa
-	//y nos quedamos con Contrato->Proveedor, ahorrando muchas queries SQL
 	$contratosMuestra = $this->Muestra->Contrato->find(
 	    'all',
 	    array(
@@ -283,6 +282,38 @@ class MuestrasController extends AppController {
 	//queremos el id del contrato como index del array
 	$contratosMuestra = Hash::combine($contratosMuestra, '{n}.Contrato.id','{n}');
 	$this->set(compact('contratosMuestra'));
+	
+	//el array que se pasa al javascript para cambiar
+	//embarque automaticamente cuando se cambia el contrato
+	//Solo queremos los contratos que tienen muestra de embarque
+	//También saldran los contratos que no tienen muestra de embarque,
+	//pero no saldran las muestras que no son de embarque :|
+	//http://book.cakephp.org/2.0/en/core-libraries/behaviors/containable.html#containing-deeper-associations
+	$contratosEmbarque = $this->Muestra->Contrato->find(
+	    'all',
+	    array(
+		'contain' => 'Muestra.tipo = 2'
+	    )
+	);
+	//queremos el id del contrato como index del array
+	$contratosEmbarque = Hash::combine($contratosEmbarque, '{n}.Contrato.id','{n}');
+	//repasamos cada contrato para poner bien las muestras de embarque
+	foreach($contratosEmbarque as $key => $contrato) {
+	    //el contenido del contrato no interesa, solo el id
+	    unset($contratosEmbarque[$key]['Contrato']);
+	    //para Muestra de cada contrato solo queremos id => registro: o no ?!
+	    //'Muestra' => array(
+	    //	(int) 59 => 'lsd',
+	    //	(int) 77 => 'EB001'
+	    //	)
+	    //$contratosEmbarque[$key]['Muestra'] = Hash::combine($contrato['Muestra'], '{n}.id', '{n}.registro');
+	    //solo guardamos los contratos que sí tienen
+	    //muestra de embarque
+	    if (empty($contratosEmbarque[$key]['Muestra']))
+		unset ($contratosEmbarque[$key]);
+	}
+	debug($contratosEmbarque);
+	$this->set(compact('contratosEmbarque'));
 
 	//el array que se pasa al javascript para cambiar
 	//contrato, calidad y proveedor automaticamente

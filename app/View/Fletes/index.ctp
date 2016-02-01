@@ -16,7 +16,7 @@
 	echo "<table>\n";
 	echo $this->Html->tableHeaders(array(
 		$this->Paginator->sort('Pais.nombre','País de origen'),
-		$this->Paginator->sort('Empresa.nombre_corto','Naviera'),
+		$this->Paginator->sort('Naviera.nombre_corto','Naviera'),
 		$this->Paginator->sort('PuertoCarga.nombre','Puerto de carga'),
 		$this->Paginator->sort('PuertoDestino.nombre','Puerto de destino'),
 		$this->Paginator->sort('Embalaje.nombre','Tipo embalaje'),
@@ -29,7 +29,7 @@
 		echo $this->Html->tableCells(
 			array(
 				$flete['Pais']['nombre'],
-				$flete['Empresa']['nombre_corto'],
+				$flete['Naviera']['nombre_corto'],
 				$flete['PuertoCarga']['nombre'],
 				$flete['PuertoDestino']['nombre'],
 				$flete['Embalaje']['nombre'],

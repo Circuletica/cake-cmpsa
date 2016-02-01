@@ -29,7 +29,7 @@ if (empty($retiradas)){
 ?>
   <tr>
 	    <td> <?php echo $retirada['Retirada']['fecha_retirada']?> </td>
-      <td> <?php echo $retirada['OperacionRetirada']['id']?> </td>
+      <td> <?php echo $retirada['OperacionRetirada']['Operacion']['referencia']?> </td>
       <td> <?php echo $retirada['AlmacenTransporte']['cuenta_almacen']?> </td>
       <td> <?php echo $retirada['AlmacenTransporte']['Almacen']['nombre_corto']?> </td>
 	    <td> <?php echo $retirada['Asociado']['nombre_corto']?> </td>

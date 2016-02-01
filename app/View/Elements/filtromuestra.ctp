@@ -1,11 +1,8 @@
   <?php echo $this->Form->create('Muestra', array('action'=>'filtroListado'));?>
   <div class="radiomuestra">
-  <?php
-    //echo $this->Form->radio('Search.tipo_id', $tipos, array( 'legend' => ''));
-  ?>
   </div>
   <?php
-    echo $this->Form->input('Search.referencia');
+    echo $this->Form->input('Search.registro');
     echo $this->Form->input('Search.fecha', array('after'=>'aaaa o mm-aaaa'));
     echo $this->Form->input('Search.calidad');
     echo $this->Form->input('Search.proveedor_id', array(

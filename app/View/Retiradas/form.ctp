@@ -7,24 +7,42 @@ echo $this->Html->script('jquery')."\n"; // Include jQuery library
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 if ($action == 'add') {
-   // echo "<h2>Añadir retirada de almacén <em>".$operacion['OperacionRetirada']['Operacion']['referencia']."</em></h2>\n";
+    echo "<h2>Añadir retirada de almacén</h2>\n";
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar retirada de almacnén <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+    echo "<h2>Modificar retirada de almacén</h2>\n";
 }
 ?>
 
 <fieldset>
 <?php
-  echo $operacionretirada;
+
     echo $this->Form->create('Retirada');
-    echo $this->Form->input('OperacionRetirada.id',
+       ?>
+        <div class="linea">
+    <?php
+    echo $this->Form->input('fecha_retirada',array(
+       'dateFormat' => 'DMY',
+        'minYear' => date('Y')-1,
+        'maxYear' => date('Y')+1,
+        'orderYear' => 'asc',
+        'timeFormat' => null ,
+        'label' => 'Fecha retirada',
+        'empty' => '',
+        'autofocus' => 'autofocus'
+        )
+    );
+    
+        ?>
+    </div>
+<?php
+
+    echo $this->Form->input('operacion_id',
         array(
-          'label'=>'Operación',
-          'empty' =>true,
-          'autofocus' => 'autofocus',
-          'onchange' => 'operacionesRetirada()'
+          'label'=>'Ref. Operación',
+          'onchange' => 'operacionesRetirada()',
+          'value' => $operacion_id
         )
       );
 
@@ -35,26 +53,14 @@ if ($action == 'edit') {
                )
          );  
 
-    echo $this->Form->input('almacen_id');
-       ?>
-    
-    <div class="linea">
-    <?php
-    echo $this->Form->input('fecha_retirada',array(
-       'dateFormat' => 'DMY',
-        'minYear' => date('Y')-1,
-        'maxYear' => date('Y')+2,
-        'orderYear' => 'asc',
-        'timeFormat' => null ,
-        'label' => 'Fecha retirada',
-        'empty' => ' ')
-        );
-    
-        ?>
-    </div>
+    echo $this->Form->input('almacen_transporte_id',
+       array(
+              'label'=>'Cuenta Almacén',
+              'empty' =>array('' => 'Selecciona')
+               )
+         );
 
 
-<?php
    echo $this->Form->input('embalaje_retirado');
    echo $this->Form->input('peso_retirado');
    echo $this->Form->end('Guardar Retirada');
