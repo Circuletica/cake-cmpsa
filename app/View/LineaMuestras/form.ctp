@@ -64,7 +64,7 @@ echo $this->Html->tableCells(array(
 	'almacen_transporte_id',
 	array(
 	    'empty' => true,
-	    'label' => 'Referencia Almacén' 
+	    'label' => 'Cuenta Almacén' 
 	)
     )
     : ''

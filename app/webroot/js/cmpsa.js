@@ -294,7 +294,7 @@ function operacionAlmacen() {
 	almacenId.options.length = opts;
 	    for (var i=0; i<opts; i++){
 		almacenId.options[i].value = almacenes[i].id;
-		almacenId.options[i].text = almacenes[i].cuenta_almacen;
+		almacenId.options[i].text = almacenes[i].cuenta_marca;
 		//volver a seleccionar la mues. de emb. si es un edit
  		if (almacenId.options[i].value == almacenSelOpt) {
 		    almacenId.options[i].selected = true;

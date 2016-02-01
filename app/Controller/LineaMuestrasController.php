@@ -85,6 +85,9 @@ class LineaMuestrasController extends AppController {
 	}
 	//sacamos los datos de la muestra a la que pertenece la linea
 	//nos sirven en la vista para detallar campos
+	$this->LineaMuestra->Muestra->Contrato->Operacion->Transporte->AlmacenTransporte->virtualFields = array(
+	    'cuenta_marca' => 'CONCAT(cuenta_almacen," (",marca_almacen,")")'
+	    );
 	$muestra = $this->LineaMuestra->Muestra->find(
 	    'first',
 	    array(
