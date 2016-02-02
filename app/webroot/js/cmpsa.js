@@ -7,8 +7,6 @@ function totalDesglose(){
 	if(parseFloat(cantidades[i].value) && parseFloat(pesos[i].value)) {
 	    var cantidad = parseFloat(cantidades[i].value);
 	    var peso = parseFloat(pesos[i].value);
-	    console.log(cantidad);
-	    console.log(peso);
 	    total += cantidad * peso;
 	}
     }
@@ -105,7 +103,6 @@ function totalCriba(){
 	    tot += parseFloat(arr[i].value);
     }
     document.getElementById('total').value = tot.toFixed(1);
-    console.log(tot);
     if(tot == 100)
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
@@ -121,9 +118,11 @@ function contratosMuestra(){
     var muestraEmbarqueId = document.getElementById('MuestraMuestraEmbarqueId');
     var transporte = document.getElementById('transporte_contrato');
     //la muestra de embarque que seleccionamos
-    var muestraIndex = muestraEmbarqueId.selectedIndex;
-    //el id de la muestra
-    var muestraSelOpt = muestraEmbarqueId.options[muestraIndex].value;
+    if (muestraEmbarqueId != null) {
+	var muestraIndex = muestraEmbarqueId.selectedIndex;
+	//el id de la muestra
+	var muestraSelOpt = muestraEmbarqueId.options[muestraIndex].value;
+    }
     //el contrato que seleccionamos
     var contratoIndex = contratoId.selectedIndex;
     //el id del contrato
@@ -149,23 +148,25 @@ function contratosMuestra(){
 	    }
 	}
 	//modificamos _todo_ el select de embarque
-	if (contratoSelOpt in embarques) {
-	    var muestras = embarques[contratoSelOpt].Muestra; //las muestras de embarque del contrato seleccionado
-	    var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
-	    muestraEmbarqueId.options.length = opts;
-	    for (var i=0; i<opts; i++){
-		muestraEmbarqueId.options[i].value = muestras[i].id;
-		muestraEmbarqueId.options[i].text = muestras[i].tipo_registro;
-		//volver a seleccionar la mues. de emb. si existía
- 		if (muestraEmbarqueId.options[i].value == muestraSelOpt) {
-		    muestraEmbarqueId.options[i].selected = true;
+	if (muestraEmbarqueId != null) {
+	    if ((contratoSelOpt in embarques) && (muestraEmbarqueId != null)) {
+		var muestras = embarques[contratoSelOpt].Muestra; //las muestras de embarque del contrato seleccionado
+		var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
+		muestraEmbarqueId.options.length = opts;
+		for (var i=0; i<opts; i++){
+		    muestraEmbarqueId.options[i].value = muestras[i].id;
+		    muestraEmbarqueId.options[i].text = muestras[i].tipo_registro;
+		    //volver a seleccionar la mues. de emb. si existía
+		    if (muestraEmbarqueId.options[i].value == muestraSelOpt) {
+			muestraEmbarqueId.options[i].selected = true;
+		    }
 		}
+	    } else {
+		muestraEmbarqueId.options.length = 1;
+		muestraEmbarqueId.options[0].value = '';
+		muestraEmbarqueId.options[0].text = '';
+		muestraEmbarqueId.options[0].selected = true;
 	    }
-	} else {
-	    muestraEmbarqueId.options.length = 1;
-	    muestraEmbarqueId.options[0].value = '';
-	    muestraEmbarqueId.options[0].text = '';
-	    muestraEmbarqueId.options[0].selected = true;
 	}
     }
 }
@@ -248,12 +249,12 @@ function operacionesRetirada(){
     var embarque = document.getElementById('embarque');
 
     if (selectedOption != '') {
-		//modificamos _todo_ el select de operaciones
+	//modificamos _todo_ el select de operaciones
 	if (selectedOption in operaciones) {
 	    var muestras = operaciones[selectedOption].Muestra; //las muestras de embarque del contrato seleccionado
 	    var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
 	    operacion.options.length = opts;
-	    
+
 	    //console.log(operacion.options.length);
 	    for (var i=0; i<opts; i++){
 		operacion.options[i].value = muestras[i].id;
@@ -292,14 +293,14 @@ function operacionAlmacen() {
 	console.log(almacenes);
 	var opts = almacenes.length;
 	almacenId.options.length = opts;
-	    for (var i=0; i<opts; i++){
-		almacenId.options[i].value = almacenes[i].id;
-		almacenId.options[i].text = almacenes[i].cuenta_marca;
-		//volver a seleccionar la mues. de emb. si es un edit
- 		if (almacenId.options[i].value == almacenSelOpt) {
-		    almacenId.options[i].selected = true;
-		}
+	for (var i=0; i<opts; i++){
+	    almacenId.options[i].value = almacenes[i].id;
+	    almacenId.options[i].text = almacenes[i].cuenta_marca;
+	    //volver a seleccionar la mues. de emb. si es un edit
+	    if (almacenId.options[i].value == almacenSelOpt) {
+		almacenId.options[i].selected = true;
 	    }
+	}
     } else {
 	almacenId.options.length = 1;
 	almacenId.options[0].value = '';
