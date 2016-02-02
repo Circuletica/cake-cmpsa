@@ -7,11 +7,7 @@ public $recursive = 3;
 			'foreignKey' => 'asociado_id'),
 		'AlmacenTransporte' => array(
 			'className' => 'AlmacenTransporte',
-			'foreignKey' => 'almacen_transporte_id'),	
+			'foreignKey' => 'almacen_transporte_id'),
+		'Operacion'
 	);
-	public $hasOne = array(
-		'OperacionRetirada' => array(
-			'className' => 'OperacionRetirada',
-			'foreignKey' => 'retirada_id')
-	);
-}
+
