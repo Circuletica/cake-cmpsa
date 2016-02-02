@@ -76,7 +76,7 @@ echo $this->Html->tableHeaders(array('Nº', 'Número de Sacos',
 $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
-	$i,
+	$muestra['Muestra']['tipo_registro'].'/'.$i,
 	$linea['numero_sacos'],
 	//(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['cantidad_cuenta'] : '',
 	$linea['referencia_proveedor'],

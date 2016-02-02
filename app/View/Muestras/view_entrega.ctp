@@ -85,7 +85,7 @@ echo $this->Html->tableHeaders(array('Nº','Marca', 'Cuenta almacén', 'Número 
 $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
-	$i,
+	$muestra['Muestra']['tipo_registro'].'/'.$i,
 	$linea['AlmacenTransporte']['marca_almacen'],
 	$linea['AlmacenTransporte']['cantidad_cuenta'],
 	$linea['referencia_proveedor'],

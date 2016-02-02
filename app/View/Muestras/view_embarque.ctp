@@ -75,7 +75,7 @@ echo $this->Html->tableHeaders(array('Nº', 'Operación', 'No sacos', 'Detalle')
 $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
-	$i,
+	$muestra['Muestra']['tipo_registro'].'/'.$i,
 	'ref. operacion',
 	'cantidad_sacos',
 	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
