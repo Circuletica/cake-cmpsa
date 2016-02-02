@@ -139,8 +139,8 @@ class RetiradasController extends AppController {
 	    if($this->Retirada->save($this->request->data)){
 		$this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
-		    'action' => 'view',
-		    'controller' => 'retiradas',
+		    'action' => 'view_trafico',
+		    'controller' => 'operaciones',
 		    $id
 		));
 	    } else {
