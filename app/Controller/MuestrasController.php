@@ -267,15 +267,15 @@ class MuestrasController extends AppController {
 	);
 	//para el javascript de la view
 	//queremos el transporte como 'embarque 03/2016' o 'entrega 01/2015'
-	$this->Muestra->Contrato->virtualFields = array(
-	    'transporte' => 'CONCAT(
-		CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
-		" ",
-		SUBSTR(Contrato.fecha_transporte,6,2),
-	"/",
-	SUBSTR(Contrato.fecha_transporte,1,4)
-    )'
-	);
+	//$this->Muestra->Contrato->virtualFields = array(
+	//    'transporte' => 'CONCAT(
+	//	CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
+	//	" ",
+	//	SUBSTR(Contrato.fecha_transporte,6,2),
+	//"/",
+	//SUBSTR(Contrato.fecha_transporte,1,4)
+	//)'
+	//);
 	//el array que se pasa al javascript para cambiar
 	//calidad y proveedor automaticamente
 	//cuando se cambia el contrato
