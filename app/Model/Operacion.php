@@ -52,6 +52,6 @@ class Operacion extends AppModel {
 			'className' => 'Transporte',
 			'foreignKey' => 'operacion_id'),
 		'LineaMuestra',
-		'Retiradas'
+		'Retirada'
 	);
 }
