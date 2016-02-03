@@ -20,27 +20,11 @@ echo "<dl>";
 	    $retirada['OperacionRetirada']['Operacion']['id'])
 	);
 	echo "  </dd>";
-	echo "  <dt>Asociado:</dt>\n";
-	echo "<dd>";
-	echo $this->html->link($retirada['Asociado']['nombre_corto'], array(
-	    'controller' => 'asociados',
-	    'action' => 'view',
-	    $retirada['Asociado']['id'])
-	    );
-	echo "  </dd>";
 	echo "  <dt>Sacos solicitados:</dt>\n";
 	echo "  <dd>".$retirada['Asociado']['AsociadoOperacion']['peso'].' kg&nbsp;'."</dd>";
 	echo "  <dt>Peso solicitado:</dt>\n";
 	echo "  <dd>".$retirada['Asociado']['AsociadoOperacion']['cantidad_embalaje']."</dd>";
-	echo "  <dt>Almacen:</dt>\n";
-	echo "  <dd>".$retirada['AlmacenTransporte']['Almacen']['nombre_corto'].'&nbsp;'."</dd>";
-	echo "  <dt>Cuenta Almacén:</dt>\n";
-	echo "  <dd>".$retirada['AlmacenTransporte']['cuenta_almacen'].'&nbsp;'."</dd>";
-	echo "  <dt>Sacos retirado:</dt>\n";
-	echo "  <dd>".$retirada['Retirada']['embalaje_retirado'].'&nbsp;'."</dd>";
-	echo "  <dt>Peso retirado:</dt>\n";
-	echo "  <dd>".$retirada['Retirada']['peso_retirado'].'&nbsp;'."</dd>";
-	echo "  <dt>Fecha Retirada:</dt>\n";
+
 		echo "<dd>";
 		//mysql almacena la fecha en formato ymd
 		$fecha = $retirada['Retirada']['fecha_retirada'];
@@ -51,6 +35,14 @@ echo "<dl>";
 		echo $fecha_retirada.'&nbsp;';
 		echo "</dd>";
 echo "</dl>";
+
+$this->end();
+$this->start('lines');
+echo "<table>\n";
+echo $this->Html->tableHeaders(array(
+    'Cuenta Almacén','Almacén','Sacos retirados','Peso retirado'));
+
+echo"</table>\n";
 $this->end();
 ?>
 		</div>

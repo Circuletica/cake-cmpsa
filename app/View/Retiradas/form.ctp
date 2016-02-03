@@ -7,11 +7,11 @@ echo $this->Html->script('jquery')."\n"; // Include jQuery library
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 if ($action == 'add') {
-    echo "<h2>Añadir retirada de almacén</h2>\n";
+    echo "<h2>Añadir retirada de asociado</h2>\n";
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar retirada de almacén</h2>\n";
+    echo "<h2>Modificar retirada de asociado</h2>\n";
 }
 ?>
 
@@ -25,17 +25,17 @@ if ($action == 'edit') {
     echo $this->Form->input('fecha_retirada',array(
        'dateFormat' => 'DMY',
         'minYear' => date('Y')-1,
-        'maxYear' => date('Y')+1,
+        'maxYear' => date('Y'),
         'orderYear' => 'asc',
         'timeFormat' => null ,
         'label' => 'Fecha retirada',
-        'empty' => '',
         'autofocus' => 'autofocus'
         )
     );
     
         ?>
     </div>
+    <div class="col3">
 <?php
 
     echo $this->Form->input('operacion_id',
@@ -59,12 +59,22 @@ if ($action == 'edit') {
               'empty' =>array('' => 'Selecciona')
                )
          );
-
-
-   echo $this->Form->input('embalaje_retirado');
+?>
+      </div>
+   <div class="col2">
+<?php
+   echo $this->Form->input('embalaje_retirado',
+         array(
+              'label'=>'Sacos retirados'
+              )
+         );
    echo $this->Form->input('peso_retirado');
+?>
+    </div>
+<?php
    echo $this->Form->end('Guardar Retirada');
 ?>
+
 </fieldset>
 <script type="text/javascript">
 window.onload = operacionesRetirada();
