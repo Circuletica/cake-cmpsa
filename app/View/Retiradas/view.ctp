@@ -31,7 +31,7 @@ $this->start('lines');
 echo "<table>\n";
 echo $this->Html->tableHeaders(array('Fecha retirada','Cuenta almacén','Almacén','Marca','Sacos retirados','Peso retirado', 'Detalle'));
 
-foreach($retirada as $retiradas){
+foreach($retirada as $retiradas):
 		echo $this->Html->tableCells(
 			array(
 				$this->Date->format($retiradas['fecha_retirada']),
@@ -51,9 +51,11 @@ foreach($retirada as $retiradas){
 					)
 				)
 			)
-			);
-}
-echo"</table>\n";
+		);
+	
+endforeach;?>
+</table>;
+<?php
 $this->end();
 ?>
 		</div>

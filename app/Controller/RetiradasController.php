@@ -38,7 +38,7 @@ class RetiradasController extends AppController {
 	   			'Retirada.id' => $id
 	   			),
 	   		'recursive' => 3,			
-			/*'contain' => array(
+			'contain' => array(
 				'Asociado' => array(
 					'fields' => array(
 						'id',
@@ -62,22 +62,53 @@ class RetiradasController extends AppController {
 						'referencia'
 					)
 				)
-			)*/
+			)
 		)
 	);
-	$this->set('retirada',$retirada);
-	}
+	$this->set(compact('retirada'));
 
-    public function add() {
-    echo $this->form($this->params['named']['from_id']); 
+	$total_sacos_retirados = 0;
+	$total_peso_retirado = 0;
 
-	/*if($this->form($this->params['named']['from_id']) != NULL){
-		echo "SI FROM_ID ES NULL SE VE EL DESPLEGABLE DE OPERACIONES.
-		SI FROM_ID TIENE UN VALOR SE OCULTA POR TENER YA ASIGNADA LA OPERACION";
-	}
-	*/
-	$this->render('form');
-    }
+/*	foreach ($retirada['Retirada'] as $linea):
+	    $peso = $linea['cantidad_embalaje_asociado'];
+		
+	$cantidad_retirado = 0;
+	$peso_retirado = 0;
+	
+			$retirada = $operacion_retirada['Retirada'];
+			if($retirada['asociado_id'] == $linea['Asociado']['id']){
+				$cantidad_retirado += $retirada['embalaje_retirado'];
+				$peso_retirado += $retirada['peso_retirado'];
+			}
+		}
+	$laretirada[] = array(
+ 	   'Nombre' => $linea['Asociado']['nombre_corto'],
+ 	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
+ 	   'Peso' => $peso,
+ 	   'Cantidad_retirado' => $cantidad_retirado,
+ 	   'Peso_retirado' => $peso_retirado
+		);
+	$total_sacos_retirados += $cantidad_retirado; 
+	$total_peso_retirado += $peso_retirado;
+
+	endforeach;
+
+	ksort($lineas_retirada);
+	$this->set('lineas_retirada',$lineas_retirada);
+	$this->set('total_sacos_retirados',$total_sacos_retirados);
+	$this->set('total_peso_retirado',$total_peso_retirado);*/
+
+}
+   public function add() {
+
+   	if(empty($this->params['named']['from_id'])){
+   		$this->form();
+   	}else{
+ 		$this->form($this->params['named']['from_id']); 
+ 	}
+    $this->render('form');		
+}
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
@@ -104,12 +135,17 @@ class RetiradasController extends AppController {
 		'order' => array('Empresa.nombre_corto' => 'asc'),
 		'recursive' => 1)
 	);
+
 	$this->set(compact('asociados'));
 	//Sacamos id de operaciones para listarla
 	$operaciones = $this->Retirada->Operacion->find(
 				'list'
 		    	);
-	$this->set('operacion_id',$this->passedArgs['from_id']);
+	if(empty($this->params['named']['from_id'])){
+		$this->set('operacion_id',$operacion_id = NULL);
+	}else{
+		$this->set('operacion_id',$this->passedArgs['from_id']);
+	}
 	$this->set(compact('operaciones'));
 	$operaciones_asociados = $this->Retirada->Operacion->find(
 				'all',

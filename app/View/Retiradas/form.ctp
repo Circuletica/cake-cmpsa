@@ -42,14 +42,18 @@ if ($action == 'edit') {
         array(
           'label'=>'Ref. Operación',
           'onchange' => 'operacionesRetirada()',
-          'value' => $operacion_id
+          'value' => $operacion_id,
+          //si se sabe la operacion, se deshabilita
+          'disabled' => $operacion_id != NULL
         )
       );
 
     echo $this->Form->input('asociado_id',
          array(
               'label'=>'Asociado',
-              'empty' =>array('' => 'Selecciona')
+              'empty' =>array('' => 'Selecciona'),
+              'class' => 'ui-widget',
+              'id' => 'combobox',              
                )
          );  
 
