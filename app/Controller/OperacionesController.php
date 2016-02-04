@@ -513,14 +513,12 @@ endif;
 	$anyo = substr($fecha,0,4);
 	$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
 
-	$operacion_retiradas = $this->Operacion->OperacionRetirada->find(
+	$operacion_retiradas = $this->Operacion->Retirada->find(
 				'all',
 				array(
 		    		'conditions' => array(
-		    			'OperacionRetirada.id' => $id
-		    		),
-		    		'contain' => array(
-		    			'Retirada')
+		    			'operacion_id' => $id
+		    		)
 		    	)
 			);	
 	//Líneas de reparto
@@ -535,15 +533,14 @@ endif;
 		
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
-
-	foreach ($operacion_retiradas as $clave => $operacion_retirada){
-		//	debug($operacion_retirada);
-		$retirada = $operacion_retirada['Retirada'];
-		if($retirada['asociado_id'] == $linea['Asociado']['id']){
-			$cantidad_retirado += $retirada['embalaje_retirado'];
-			$peso_retirado += $retirada['peso_retirado'];
+		foreach ($operacion_retiradas as $clave => $operacion_retirada){
+			//	debug($operacion_retirada);
+			$retirada = $operacion_retirada['Retirada'];
+			if($retirada['asociado_id'] == $linea['Asociado']['id']){
+				$cantidad_retirado += $retirada['embalaje_retirado'];
+				$peso_retirado += $retirada['peso_retirado'];
+			}
 		}
-	}
 	$lineas_retirada[] = array(
  	   'Nombre' => $linea['Asociado']['nombre_corto'],
  	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
