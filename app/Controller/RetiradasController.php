@@ -31,9 +31,40 @@ class RetiradasController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		
-	$retirada = $this->Retirada->find('first',array(
-	    'conditions' => array('Retirada.id' => $id),
-	    'recursive' => 3));
+	$retirada = $this->Retirada->find(
+		'first',
+		array(
+	   		'conditions' => array(
+	   			'Retirada.id' => $id
+	   			),
+	   		'recursive' => 3,			
+			/*'contain' => array(
+				'Asociado' => array(
+					'fields' => array(
+						'id',
+						'nombre_corto'
+						)
+					),
+				'AlmacenTransporte' => array(
+					'fields' => array(
+						'almacen_id',
+						'cantidad_cuenta',
+						'marca_almacen'),
+					'Almacen' => array(
+						'fields' => (
+							'nombre_corto'
+						)
+					)
+				),
+				'Operacion' => array(
+					'fields' => array(
+						'id',
+						'referencia'
+					)
+				)
+			)*/
+		)
+	);
 	$this->set('retirada',$retirada);
 	}
 
@@ -145,14 +176,18 @@ foreach($operaciones_asociados as $clave => $operacion){
     }
 
     public function delete($id = null) {
-	if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
-	if ($this->Retirada->delete($id)){
+	if (!$id or $this->request->is('get')) :
+	    throw new MethodNotAllowedException();
+	endif;
+		if ($this->Retirada->delete($id)){
 	    $this->Session->setFlash('Retirada borrada');
-	    $this->redirect(array(
-		'controller' => 'retiradas',
-		'action'=>'index',
-	    ));
-	}
+		$this->redirect(array(
+		    'controller' => $this->params['named']['from_controller'],
+		    'action'=>'view',
+	    $this->params['named']['from_id']
+			)
+		);
+		}
     }
 
 }
