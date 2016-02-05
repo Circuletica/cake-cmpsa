@@ -202,6 +202,8 @@
 
 ?>	</dl>
 	<br>
+	<?php
+	//if ()?>
 	<h3>Seguro</h3>
 	<dl><?php
 		echo "  <dt>Aseguradora</dt>\n";

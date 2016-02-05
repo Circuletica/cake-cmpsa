@@ -92,20 +92,24 @@
 			$linea['cantidad_embalaje'],
 			$this->Date->format($linea['fecha_seguro']),
 			//$linea['referencia_almacen'],
-			$this->Button->viewLine('transportes',$linea['id'],'transportes',$linea['operacion_id'])
+			$this->Button->viewLine('transportes',$linea['id'],'operaciones',$linea['operacion_id'])
 			));
 		//numero de la línea siguiente
 		$i++;
 	endforeach;
 ?>	</table>
 <?php
-	echo "<h4>Bultos transportados: ".$transportado."</h4>";
+	echo "<h4>Bultos transportados: ".$transportado;
+
+			if ($transportado != $operacion['PesoOperacion']['cantidad_embalaje']){
+			echo '<div class="btabla">';
+			echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
+			echo '</div>';
+			}else{
+				echo " - Todos los bultos han sido transportado</h4>";
+			}
+
 ?>
-		<div class="btabla">
-		<?php
-		echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
-		?>
-		</div>
 	</div>
 	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
 
