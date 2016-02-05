@@ -21,10 +21,8 @@ if ($action == 'add') {
             endif;
         endforeach;
    endif;
-  
-    echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].'</h4>';
-    $almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
-    echo '<h4>Bultos por almacenar: '.$almacenado.'</h4>';
+    $almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;  
+    echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].' / Bultos por almacenar: '.$almacenado.'</h4>';
    }
 
 if ($action == 'edit') {
@@ -53,9 +51,22 @@ if ($action == 'edit') {
 	    		'empty' => array('' => 'Selecciona'),					
 				)
 			);
-		echo $this->Form->input('cuenta_almacen',array('label'=>'Cuenta / Referencia almacén'));
-		echo $this->Form->input('cantidad_cuenta',array('label'=>'Cantidad bultos en cuenta'));
-		echo $this->Form->input('marca_almacen',array('label'=>'Marca almacenada'));
+		echo $this->Form->input('cuenta_almacen',array(
+      'label'=>'Referencia almacén')
+    );
+    ?>
+    </div>
+    <div class="col3">
+    <?php
+    echo $this->Form->input('cantidad_cuenta',array(
+      'label'=>'Cantidad de sacos')
+    );
+    echo $this->Form->input('peso_bruto',array(
+      'label'=>'Peso bruto (Kg)')
+    );
+		echo $this->Form->input('marca_almacen',array(
+      'label'=>'Marca almacenada')
+    );
 			?> 
 	</div>
 	<?php

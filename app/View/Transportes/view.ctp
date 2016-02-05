@@ -108,7 +108,7 @@
 		echo "<dd>";
 			echo $embalaje.'&nbsp;';
 		echo "</dd>";				
-		echo "  <dt>Cantidad/Bultos línea</dt>\n";
+		echo "  <dt>CBultos línea</dt>\n";
 		echo "<dd>";
 			echo $transporte['Transporte']['cantidad_embalaje'].'&nbsp;';
 		echo "</dd>";
@@ -202,8 +202,6 @@
 
 ?>	</dl>
 	<br>
-	<?php
-	//if ()?>
 	<h3>Seguro</h3>
 	<dl><?php
 		echo "  <dt>Aseguradora</dt>\n";
@@ -286,30 +284,49 @@
 
 	<table>
 <?php
-	echo $this->Html->tableHeaders(array('Cuenta Corriente','Nombre', 'Cantidad', 'Marca','Detalle'));
+	echo $this->Html->tableHeaders(array('Cuenta Corriente','Nombre', 'Cantidad', 'Peso bruto', 'Marca','Detalle'));
 	foreach($transporte['AlmacenTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['cuenta_almacen'],
 			$linea['Almacen']['nombre_corto'],
-			$linea['cantidad_cuenta'],
+			array(
+				$linea['cantidad_cuenta'],
+				array('style' => 'text-align:right'
+					)
+				),
+			array(
+				$linea['peso_bruto'],
+				array('style' => 'text-align:right'
+					)
+				),
 			$linea['marca_almacen'],
-			$this->Button->editLine('almacentransportes',
+			$this->Button->editLine(
+				'almacentransportes',
 				$linea['id'],'transportes',
-				$transporte['Transporte']['id'])
-			.' '.$this->Button->deleteLine('almacen_transportes',
+				$transporte['Transporte']['id']
+				)
+			.' '.$this->Button->deleteLine(
+				'almacen_transportes',
 				$linea['id'],
 				'transportes',
 				$transporte['Transporte']['id'],
-				'la cuenta almacén: '.$linea['cuenta_almacen'])
-
-
-			));
+				'la ref. almacén '.$linea['cuenta_almacen']
+				)
+			)
+		);
 	endforeach;?>
 	</table>
-	<div class="btabla">
-		<?php
-		echo $this->Button->addLine('almacen_transportes','transportes',$transporte['Transporte']['id'],'cuenta almacén');
-		?>
+
+	<?php
+	echo "<h4>Bultos almacenados: ".$almacenado;
+			if ($almacenado != $transporte['Transporte']['cantidad_embalaje']){
+			echo '<div class="btabla">';
+				echo $this->Button->addLine('almacen_transportes','transportes',$transporte['Transporte']['id'],'ref. almacén');
+			echo '</div>';
+			}else{
+				echo " - Todos los bultos han sido almacenados</h4>";
+			}
+?>
 	</div>
 	</div>
 	

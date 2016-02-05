@@ -31,53 +31,48 @@ class AlmacenTransportesController extends AppController {
  public function form ($id = null) { //esta accion vale tanto para edit como add
  		$this->loadModel('Almacen');		
 		$almacenes = $this->Almacen->find('list', array(
-		'fields' => array('Almacen.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
-		'recursive' => 1)
+			'fields' => array(
+				'Almacen.id',
+				'Empresa.nombre_corto'
+				),
+			'order' => array(
+				'Empresa.nombre_corto' => 'asc'
+				),
+			'recursive' => 1
+			)
 		);	
 		$this->set(compact('almacenes'));
 
-
-
-		$transporte = $this->AlmacenTransporte->Transporte->find('first', array(
-			'conditions' => array('Transporte.id' => $id),
-			'recursive' => 3,
+		$transporte = $this->AlmacenTransporte->Transporte->find(
+			'first', array(
+			'conditions' => array(
+				'Transporte.id' => $id
+				),
+			'recursive' => 1,
 			'fields' => array(
-				'Transporte.id',
-				'Transporte.cantidad_embalaje')
-		));
-		$this->set('transporte',$transporte);
-
-	//sacamos los datos de la operacion  al que pertenece la linea
-		//nos sirven en la vista para detallar campos
-	/*$transporte = $this->AlmacenTransporte->Transporte->find('all');
-	
-*/
-		$this->AlmacenTransporte->id = $id;
-	/*	$embalaje = $this->AlmacenTransporte->Transporte->Operacion->Contrato->ContratoEmbalaje->find(
-			'first',
-			array(
-				'recursive' => 4,
-				'fields' => array('Embalaje.nombre')
+				'id',
+				'cantidad_embalaje'
+				)
 			)
-		);	*/
-		//$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
-			//sacamos los datos de transportes  al que pertenece el almacen transporte
+			);
+		$this->set('transporte',$transporte);
+//Calculamos la cantidad de sacos almacenados en la línea
+	if($transporte['Transporte']['id']!= NULL){
+	    $suma = 0;
+	    $almacenado=0;
+	    foreach ($transporte['AlmacenTransporte'] as $suma):
+	        if ($almacenTransporte['transporte_id'] = $transporte['Transporte']['id']):
+	            $almacenado = $almacenado + $suma['cantidad_cuenta'];
+	            endif;
+	    endforeach;
+	}
+	$this->set('almacenado',$almacenado);
+
+	$this->AlmacenTransporte->id = $id;
+	$this->set('action', $this->action);
 
 
-		//opcion 1 = 2 queries
-	//	$transportes = $this->Transporte->find('all');
-	//	$contrato_embalajes = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find('all');
-
-		//opcion 2 = 1 query
-	//	$transportes = $this->Transporte->find('all');
-	//	$contrato_embalajes = $transportes['Operacion']['Contrato']['ContratoEmbalaje'];
-
-		$this->set('action', $this->action);
-
-
-
-	if($this->request->is('post')):
+	if($this->request->is('post')){
 		$this->request->data['AlmacenTransporte']['transporte_id'] = $id;
 		if($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje']):
 			if($this->AlmacenTransporte->save($this->request->data) ):
@@ -93,7 +88,7 @@ class AlmacenTransportesController extends AppController {
 			else:
 				$this->Session->setFlash('La cantidad de bultos debe ser inferior');
 			endif;
-		endif;
+	}
 
 /*EDIT EDIT EDIT EDIT EDIT EDIT EDIT*/
 	//si es un edit, hay que rellenar el id, ya que
@@ -130,64 +125,3 @@ class AlmacenTransportesController extends AppController {
 		endif;
 		    }
 }
-
-/*
-
-
-	public function add() {
-
-	if($this->request->is('post')):
-		$this->request->data['AlmacenTransporte']['transporte_id'] = $this->params['named']['from_id'];
-			if($this->AlmacenTransporte->save($this->request->data) ):
-				$this->Session->setFlash('Cuenta corriente almacén guardada guardada');
-				$this->redirect(array(
-					'controller' => 'transportes',
-					'action' => 'view',
-					$this->params['named']['from_id']));
-	endif;
-		endif;
-
-	$this->set('almacenes', $this->AlmacenTransporte->Almacen->find('list', array(
-	'fields' => array('Almacen.id','Empresa.nombre_corto'),
-	'recursive' => 1))
-	);	
-
-	}
-
-	public function edit($id = null) {
-		echo $id;	
-		if (!$id) {
-			//throw new MethodNotAllowedException();
-			$this->Session->setFlash('URL mal formado controller/edit '.$this->params['named']['from_controller'].' '.$this->params['named']['from_id']);
-			$this->redirect(array(
-				'controller' => $this->params['named']['from_controller'],
-				'action'=>'transportes'));
-		}
-		$this->AlmacenTransporte->id = $id;
-		if($this->request->is('get')):
-			$this->request->data = $this->AlmacenTransporte->read();
-		else:
-			if($this->AlmacenTransporte->save($this->request->data)):
-				$this->Session->setFlash('Cuenta corriente '.$this->request->data['AlmacenTransporte']['cuenta_almacen'].' modificada con éxito');
-				$this->redirect(array(
-	//			'controller' => 'transportes',
-					'action' => 'view',
-					'controller' => 'transportes',
-							    $this->params['named']['from_id']
-					));
-
-
-
-
-			else:
-				$this->Session->setFlash('¡No se ha podido guardar!');
-			endif;
-		endif;
-
-	$this->set('almacenes', $this->AlmacenTransporte->Almacen->find('list', array(
-	'fields' => array('Almacen.id','Empresa.nombre_corto'),
-	'recursive' => 1))
-	);	
-
-	}
-*/

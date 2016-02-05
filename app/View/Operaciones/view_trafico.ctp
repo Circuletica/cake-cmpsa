@@ -106,7 +106,7 @@
 			echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
 			echo '</div>';
 			}else{
-				echo " - Todos los bultos han sido transportado</h4>";
+				echo " - Todos los bultos han sido transportados</h4>";
 			}
 
 ?>

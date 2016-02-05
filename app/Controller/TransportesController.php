@@ -68,6 +68,7 @@ class TransportesController extends AppController {
 						'cuenta_almacen',
 						'almacen_id',
 						'cantidad_cuenta',
+						'peso_bruto',
 						'marca_almacen'),
 					'Almacen' => array(
 						'fields' => (
@@ -79,6 +80,18 @@ class TransportesController extends AppController {
 		)
 	);
 	$this->set('transporte',$transporte);
+	//Calculamos la cantidad de sacos almacenados en la línea
+	if($transporte['Transporte']['id']!= NULL){
+	    $suma = 0;
+	    $almacenado=0;
+	    foreach ($transporte['AlmacenTransporte'] as $suma):
+	        if ($almacenTransporte['transporte_id'] = $transporte['Transporte']['id']):
+	            $almacenado = $almacenado + $suma['cantidad_cuenta'];
+	            endif;
+	    endforeach;
+	}
+	$this->set('almacenado',$almacenado);
+	
 	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
 	$this->set('embalaje',$embalaje);
     }
@@ -119,20 +132,25 @@ class TransportesController extends AppController {
 	    )
 	);
 	$this->set(compact('navieras'));
+
 	$this->loadModel('Agente');
-	$agentes = $this->Agente->find('list',array(
-	    'fields' => array(
-		'Agente.id',
-		'Empresa.nombre_corto'),
-	    'recursive' => 1)
+	$agentes = $this->Agente->find('list',
+		array(
+		    'fields' => array(
+				'Agente.id',
+				'Empresa.nombre_corto'),
+		    'recursive' => 1)
 	);
 	$this->set(compact('agentes'));
 	$this->loadModel('Aseguradora');
-	$aseguradoras = $this->Aseguradora->find('list',array(
+	$aseguradoras = $this->Aseguradora->find('list',
+		array(
 	    'fields' => array(
-		'Aseguradora.id',
-		'Empresa.nombre_corto'),
-	    'recursive' => 1)
+			'Aseguradora.id',
+			'Empresa.nombre_corto'
+			),
+	    'recursive' => 1
+	    )
 	);
 	$this->set(compact('aseguradoras'));
 	$this->loadModel('Almacen');
@@ -170,12 +188,7 @@ class TransportesController extends AppController {
 	   		)
 	   	)
 	);
-	//opcion 1 = 2 queries
-	//	$transportes = $this->Transporte->find('all');
-	//	$contrato_embalajes = $this->Transporte->Operacion->Contrato->ContratoEmbalaje->find('all');
-	//opcion 2 = 1 query
-	//	$transportes = $this->Transporte->find('all');
-	//	$contrato_embalajes = $transportes['Operacion']['Contrato']['ContratoEmbalaje'];
+
 	$this->set('action', $this->action);
 	$embalaje = $operacion['Embalaje']['nombre'];		
 	$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
@@ -196,10 +209,6 @@ class TransportesController extends AppController {
 	    )));		
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
 	$this->set('operacion',$operacion);
-	/*$transporte = $this->Transporte->find(
-		'all'
-		);	*/
-	//$this->set('transporte',$transporte);
 	//Calculo la cantidad de bultos transportados
 	if($operacion['Operacion']['id']!= NULL) {
 	    $suma = 0;
