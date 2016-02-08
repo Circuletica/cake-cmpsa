@@ -87,7 +87,7 @@ class TransportesController extends AppController {
 	    foreach ($transporte['AlmacenTransporte'] as $suma):
 	        if ($almacenTransporte['transporte_id'] = $transporte['Transporte']['id']):
 	            $almacenado = $almacenado + $suma['cantidad_cuenta'];
-	            endif;
+	        endif;
 	    endforeach;
 	}
 	$this->set('almacenado',$almacenado);
@@ -237,7 +237,6 @@ class TransportesController extends AppController {
 	$this->set('almacenajes',$almacenaje);		
 	if($this->request->is('post')){
 	    //al guardar la linea, se incluye a qué operacion pertenece
-	    //debug($this->params['named']['from_id']);
 	    $this->request->data['Transporte']['operacion_id'] = $id;
 	    if($this->request->data['Transporte']['cantidad_embalaje'] <= ($operacion['PesoOperacion']['cantidad_embalaje'] - $transportado)){
 		if($this->Transporte->save($this->request->data)){

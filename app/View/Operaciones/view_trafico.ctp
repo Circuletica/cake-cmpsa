@@ -36,8 +36,8 @@
 		$operacion['Operacion']['contrato_id'])
 	);
 	echo "</dd>";
-	echo "  <dt>$tipo_fecha_transporte</dt>\n";
-	echo "  <dd>".$this->Date->format($fecha_transporte)."</dd>";
+	echo "  <dt>".$tipo_fecha_transporte."</dt>\n";
+	echo "  <dd>".$fecha_transporte."</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
 	echo $operacion['Contrato']['CalidadNombre']['nombre'].'&nbsp;';
@@ -101,7 +101,7 @@
 <?php
 	echo "<h4>Bultos transportados: ".$transportado;
 
-			if ($transportado != $operacion['PesoOperacion']['cantidad_embalaje']){
+			if ($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
 			echo '<div class="btabla">';
 			echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
 			echo '</div>';

@@ -131,7 +131,7 @@ if ($action == 'edit') {
             'label' => 'Despacho operación',
             'empty' => ' ')
             );
-
+        if ($operacion['Contrato']['Incoterm']['nombre'] !='FOB'){
             echo $this->Form->input('fecha_limite_retirada', array(
             'dateFormat' => 'DMY',
             'minYear' => date('Y')-1,
@@ -150,6 +150,7 @@ if ($action == 'edit') {
             'label' => 'Reclamación factura',
             'empty' => ' ')
             );
+        }
             ?>
             
         </div>
@@ -158,12 +159,13 @@ if ($action == 'edit') {
         echo $this->Form->input('observaciones', array('label'=>'Observaciones'));
         ?>  
 </fieldset>
+<fieldset>
 <?php
 if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
     ?>
         <!-- Seguro de la línea transporte -->
-        <fieldset>
-        <legend>Seguro</legend>
+    <legend>Seguro</legend>
+    <div class="col2">
             <?php
                         echo $this->Form->input('aseguradora_id',
                             array(
@@ -186,18 +188,13 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
                 );
             ?>
             </div>
-            <div class='col3'>
             <?php
                     echo $this->Form->input('coste_seguro',array('label'=>'Coste del seguro'));
                     echo $this->Form->input('suplemento_seguro',array('label'=>'Suplemento'));
-                    echo $this->Form->input('peso_factura',array('label'=>'Peso facturado'));
-            ?>
-            </div>
-            <?php
                     echo $this->Form->input('peso_neto',array('label'=>'Peso neto'));
-
                     echo $this->Form->input('averia',array('label'=>'Avería'));
                     ?>
+    </div>
                     <div class="linea">
                     <?php
                     echo $this->Form->input('fecha_reclamacion', array(
@@ -211,8 +208,10 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
                     );
                     ?>
                     </div>
+
         <?php
-}
+}    
+        echo $this->Form->input('peso_factura',array('label'=>'Peso facturado'));
         echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
         echo $this->Form->end('Guardar Línea Transporte', array('escape'=>false));
         ?>

@@ -463,10 +463,6 @@ endif;
 	    'conditions' => array('Operacion.id' => $id),
 	    'recursive' => 3));
 	$this ->set('operacion',$operacion);
-	//$transporte = $this->Operacion->Transporte->find('list',array(
-	//	'conditions' => array('Transporte.id'),
-	//	'recursive' => 1));
-	//$this->set('transporte',$transporte);
 	//el nombre de calidad concatenado esta en una view de MSQL
 	$this->loadModel('ContratoEmbalaje');
 	$embalaje = $this->ContratoEmbalaje->find(
@@ -491,8 +487,6 @@ endif;
 		}
 	}
 	$this->set('transportado',$transportado);
-
-
 
 	$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 	//mysql almacena la fecha en formato ymd
