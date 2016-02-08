@@ -2,9 +2,13 @@
 class AlmacenTransporte extends AppModel {
 	public $validate = array(
     	'almacen_id' => array(
-      	'rule' => 'notEmpty',
-     	'message' => 'El nombre del almacén no puede estar vacío'
-      )
+	      	'rule' => 'notEmpty',
+	     	'message' => 'El nombre del almacén no puede estar vacío'
+      	),
+	    'cuenta_almacen' => array(
+      		'rule' => 'notEmpty',
+     		'message' => 'La referencia no puede estar vacía'
+      		)
     );
 	public $belongsTo = array(
 			'Almacen' => array(
