@@ -459,10 +459,67 @@ endif;
 	    $this->Session->setFlash('URL mal formada Operación/view_trafico ');
 	    $this->redirect(array('action'=>'index_trafico'));
 	}
-	$operacion = $this->Operacion->find('first',array(
-	    'conditions' => array('Operacion.id' => $id),
-	    'recursive' => 3));
-	$this ->set('operacion',$operacion);
+	$operacion = $this->Operacion->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Operacion.id' => $id
+				),
+	    'recursive' => 2,
+	    'contain' => array(
+	    	'Transporte'=> array(
+	    		'fields' => array(
+	    			'id',
+	    			'nombre_vehiculo',
+	    			'matricula',
+	    			'fecha_carga',
+	    			'fecha_seguro',
+	    			'cantidad_embalaje'
+	    			)
+	    		),
+	    	'Contrato'=>array(
+	    		'fields'=> array(
+	    			'id',
+	    			'referencia',
+	    			'si_entrega',
+	    			'fecha_transporte'
+	    			),
+	    		'Proveedor'=>array(
+	    			'id',
+	    			'nombre_corto'
+	    			),
+	    		'Incoterm' => array(
+	    			'fields'=> array(
+						'nombre',
+						'si_flete'
+				   	)
+				),
+	    		'CalidadNombre' => array(
+	    			'fields' =>(
+	    				'nombre'
+	    				)
+	    			)
+	    		),
+	    	'PesoOperacion'=> array(
+	    		'fields' =>array(
+	    			'peso',
+	    			'cantidad_embalaje'
+	    			)
+	    		),
+	    	'PrecioTotalOperacion'=> array(
+	    		'fields'=>array(
+	    			'precio_dolar_tonelada'
+	    			)
+	    		),
+	    	'AsociadoOperacion'=>array(
+	    		'Asociado'
+	    		)
+	    	)
+	    )
+	);
+
+	$this ->set(compact('operacion'));
+
 	//el nombre de calidad concatenado esta en una view de MSQL
 	$this->loadModel('ContratoEmbalaje');
 	$embalaje = $this->ContratoEmbalaje->find(
@@ -507,6 +564,7 @@ endif;
 	$anyo = substr($fecha,0,4);
 	$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
 
+//*****AQUI HACE EXCESO DE QUERIES, HAY QUE DEPURARLO*****
 	$operacion_retiradas = $this->Operacion->Retirada->find(
 				'all',
 				array(
@@ -528,13 +586,13 @@ endif;
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
 		foreach ($operacion_retiradas as $clave => $operacion_retirada){
-			//	debug($operacion_retirada);
 			$retirada = $operacion_retirada['Retirada'];
 			if($retirada['asociado_id'] == $linea['Asociado']['id']){
 				$cantidad_retirado += $retirada['embalaje_retirado'];
 				$peso_retirado += $retirada['peso_retirado'];
 			}
 		}
+
 	$lineas_retirada[] = array(
  	   'Nombre' => $linea['Asociado']['nombre_corto'],
  	   'Cantidad' => $linea['cantidad_embalaje_asociado'],

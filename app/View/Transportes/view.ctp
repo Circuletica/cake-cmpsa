@@ -4,9 +4,11 @@
 	'action'=>'view_trafico',
 	$transporte['Operacion']['id']
 	));
-	$this->Html->addCrumb('Línea Transporte ', array(
+	$this->Html->addCrumb('Línea de Transporte', array(
 	'controller' => 'transportes',
-	'action' => 'add')
+	'action' => 'view',
+	$transporte['Transporte']['id']
+	)
 	);
 ?><div class="acciones">
 	<div class="printdet">

@@ -8,7 +8,9 @@ class RetiradasController extends AppController {
 			'Asociado',
 			'AlmacenTransporte' => array (
 				'Almacen' => array (
-					'fields' => ('nombre_corto')
+					'fields' => array(
+						'nombre_corto'
+						)
 					)
 				),
 			'Operacion' => array (
@@ -39,30 +41,31 @@ class RetiradasController extends AppController {
 	   			),
 	   		'recursive' => 3,			
 			'contain' => array(
+				'AlmacenTransporte' => array(
+					'fields' => array(
+						'almacen_id',
+						'cantidad_cuenta',
+						'marca_almacen'
+						),
+					'Almacen' => array(
+						'fields' => array(
+							'nombre_corto'
+						)
+					)
+				),
 				'Asociado' => array(
 					'fields' => array(
 						'id',
 						'nombre_corto'
 						)
-					),
-				'AlmacenTransporte' => array(
-					'fields' => array(
-						'almacen_id',
-						'cantidad_cuenta',
-						'marca_almacen'),
-					'Almacen' => array(
-						'fields' => (
-							'nombre_corto'
-						)
-					)
-				),
+					),				
 				'Operacion' => array(
 					'fields' => array(
 						'id',
 						'referencia'
 					)
 				)
-			)
+			)//Cierre CONTAIN
 		)
 	);
 	$this->set(compact('retirada'));

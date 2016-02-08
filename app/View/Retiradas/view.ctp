@@ -16,7 +16,7 @@ echo "<dl>";
 	echo "<dd>";
 	echo $this->html->link($retirada['Operacion']['referencia'], array(
 	    'controller' => 'operaciones',
-	    'action' => 'view',
+	    'action'  => 'view',
 	    $retirada['Operacion']['id'])
 	);
 	echo "</dd>";
@@ -54,7 +54,7 @@ foreach($retirada as $retiradas):
 		);
 	
 endforeach;?>
-</table>;
+</table>
 <?php
 $this->end();
 ?>
