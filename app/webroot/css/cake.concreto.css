@@ -172,6 +172,7 @@ input[type=submit]:active,
 
 /*Columnas dentro del index y form */
 /* IDs */
+/*2 COLUMNAS*/
 .col2{
  -webkit-columns: 2 50px;
     -moz-columns: 2 50px;
@@ -183,48 +184,38 @@ input[type=submit]:active,
 	 -moz-column-rule: 1px dotted #ddd;
    		 column-rule: 1px dotted #ddd;
 }
-.columna2{
- -webkit-columns: 2 50px;
-    -moz-columns: 2 50px;
-         columns: 2 50px;
- -webkit-column-gap: 40px;/* Chrome, Safari, Opera */
-    -moz-column-gap: 40px; /* Firefox */
-		 column-gap: 40px;
- -webkit-column-rule: 1px dotted #ddd;
-	 -moz-column-rule: 1px dotted #ddd;
-   		 column-rule: 1px dotted #ddd;
-   		/* width:740px;*/
-}
-.col3{
+
+/*3 COLUMNAS*/
+.col3{ 
 	-webkit-column-count: 3; /* Chrome, Safari, Opera */	
 	-moz-column-count: 3; /* Firefox */
 	column-count: 3;
 	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
 	-moz-column-gap: 40px; /* Firefox */
 	column-gap: 40px;
-  -webkit-column-rule: 1px dotted #ddd;
-     -moz-column-rule: 1px dotted #ddd;
-          column-rule: 1px dotted #ddd;
-         /* width: 740px*/
-}
+  	-webkit-column-rule: 1px dotted #ddd;
+    -moz-column-rule: 1px dotted #ddd;
+    column-rule: 1px dotted #ddd;
+    }
 
-.col3{
-	-webkit-column-count: 3; /* Chrome, Safari, Opera */	
-	-moz-column-count: 3; /* Firefox */
-	column-count: 3;
-	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
-	-moz-column-gap: 40px; /* Firefox */
-	column-gap: 40px;
-  -webkit-column-rule: 1px dotted #ddd;
-     -moz-column-rule: 1px dotted #ddd;
-          column-rule: 1px dotted #ddd;
-         /* width: 740px*/
-}
-
+/*4 COLUMNAS*/
 .col4{
 	-webkit-column-count: 4; /* Chrome, Safari, Opera */	
 	-moz-column-count: 4; /* Firefox */
 	column-count: 4;
+	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+	-moz-column-gap: 40px; /* Firefox */
+	column-gap: 40px;
+ 	-webkit-column-rule: 1px dotted #ddd;
+    -moz-column-rule: 1px dotted #ddd;
+          column-rule: 1px dotted #ddd;
+    }
+
+/*5 COLUMNAS*/
+.col5{
+	-webkit-column-count: 5; /* Chrome, Safari, Opera */	
+	-moz-column-count: 5; /* Firefox */
+	column-count: 5;
 	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
 	-moz-column-gap: 40px; /* Firefox */
 	column-gap: 40px;
