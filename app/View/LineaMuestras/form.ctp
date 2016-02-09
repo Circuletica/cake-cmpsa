@@ -40,35 +40,37 @@ echo $this->Form->create();
 ?>
 	<div class="col5">
 <?php
-echo $this->Html->tableCells(array(
-    $this->Form->input('humedad'),
-    $this->Form->input('tueste'),
-    $this->Form->input(
-	'referencia_proveedor',
-	array(
-	    'label' => 'Referencia Proveedor'
+echo $this->Html->tableCells(
+    array(
+	$this->Form->input('humedad'),
+	$this->Form->input('tueste'),
+	$this->Form->input(
+	    'referencia_proveedor',
+	    array(
+		'label' => 'Referencia Proveedor'
+	    )
+	),
+	isset($operaciones) && $muestra['tipo']!='1' ?
+	$this->Form->input(
+	    'operacion_id',
+	    array(
+		'empty' => true,
+		'label' => 'Operación',
+		'onchange' => 'operacionAlmacen()'
+	    )
 	)
-    ),
-    isset($operaciones) && $muestra['tipo']!='1' ?
-    $this->Form->input(
-	'operacion_id',
-	array(
-	    'empty' => true,
-	    'label' => 'Operación',
-	    'onchange' => 'operacionAlmacen()'
+	: '',
+	isset($operacion_almacenes) && $muestra['tipo']!='1' ?
+	$this->Form->input(
+	    'almacen_transporte_id',
+	    array(
+		'empty' => true,
+		'label' => 'Cuenta almacén' 
+	    )
 	)
+	: '',
+	$this->Form->input('sacos')
     )
-    : '',
-    isset($operacion_almacenes) && $muestra['tipo']!='1' ?
-    $this->Form->input(
-	'almacen_transporte_id',
-	array(
-	    'empty' => true,
-	    'label' => 'Cuenta almacén' 
-	)
-    )
-    : ''
-)
 );
 ?>
 	</div>
