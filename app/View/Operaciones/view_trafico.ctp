@@ -148,8 +148,22 @@
 						'style' => 'text-align:right'
 					)
 				),
-				$this->Button->viewLine('retiradas',$operacion['Operacion']['id'],'retiradas',$operacion['Operacion']['id'])
-				)
+					$this->Html->link(
+						'<i class="fa fa-info-circle"></i> ',array(
+							'controller' => 'retiradas',
+							'action' => 'view_asociado',
+							'asociado_id'=>$linea_retirada['asociado_id'],
+							'from_controller' => 'operaciones',
+							'from_id' => $operacion['Operacion']['id']
+							),
+						array(
+							'class' => 'boton',
+							'title' => 'Detalle línea',
+							'escape' => false
+							)
+						)
+					)
+				
 			);
 		endforeach;
 echo $this->html->tablecells(array(

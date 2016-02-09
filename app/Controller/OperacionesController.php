@@ -594,6 +594,7 @@ endif;
 		}
 
 	$lineas_retirada[] = array(
+		'asociado_id' => $linea['Asociado']['id'],
  	   'Nombre' => $linea['Asociado']['nombre_corto'],
  	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
  	   'Peso' => $peso,

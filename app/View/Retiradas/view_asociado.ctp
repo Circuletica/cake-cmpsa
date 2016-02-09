@@ -1,6 +1,6 @@
 <?php
 $this->extend('/Common/view');
-$this->assign('object', 'Retirada del asociado '.$retirada['Asociado']['nombre_corto']);
+$this->assign('object', 'Retirada del asociado '.$asociado_nombre);
 //$this->assign('line_object', 'precio');
 //$this->assign('id',$flete['Retirada']['id']);
 $this->assign('class','Retirada');
@@ -14,10 +14,10 @@ $this->start('main');
 echo "<dl>";
 	echo "  <dt>Operación:</dt>\n";
 	echo "<dd>";
-	echo $this->html->link($retirada['Operacion']['referencia'], array(
+	echo $this->html->link($operacion_ref, array(
 	    'controller' => 'operaciones',
 	    'action'  => 'view',
-	    $retirada['Operacion']['id'])
+	    $operacion_id)
 	);
 	echo "</dd>";
 	echo "<dt>Sacos solicitados:</dt>\n";
@@ -31,23 +31,23 @@ $this->start('lines');
 echo "<table>\n";
 echo $this->Html->tableHeaders(array('Fecha retirada','Cuenta almacén','Almacén','Marca','Sacos retirados','Peso retirado', 'Detalle'));
 
-foreach($retirada as $retiradas):
+foreach($retiradas as $retirada):
 		echo $this->Html->tableCells(
 			array(
-				$this->Date->format($retiradas['fecha_retirada']),
-				$retiradas['cuenta_almacen'],
-				$retiradas['AlmacenTransporte']['Almacen']['nombre_corto'],
-				$retiradas['AlmacenTransporte']['marca_almacen'],
-				$retiradas['embalaje_retirado'],
-				$retiradas['peso_retirado'],
+				$this->Date->format($retirada['Retirada']['fecha_retirada']),
+				$retirada['AlmacenTransporte']['cuenta_almacen'],
+				$retirada['AlmacenTransporte']['Almacen']['nombre_corto'],
+				$retirada['AlmacenTransporte']['marca_almacen'],
+				$retirada['Retirada']['embalaje_retirado'],
+				$retirada['Retirada']['peso_retirado'],
 				$this->Button->editLine('retiradas',
-				$retiradas['id'],'retiradas',
-				$retiradas['Retirada']['id'])
+				$retirada['Retirada']['id'],'retiradas',
+				$retirada['Retirada']['id'])
 			.' '.$this->Button->deleteLine('retiradas',
-					$retiradas['id'],
+					$retirada['Retirada']['id'],
 					'retiradas',
-					$retiradas['Retirada']['id'],
-					'la retirada del día: '.$this->Date->format($retiradas['fecha_retirada']
+					$retirada['Retirada']['id'],
+					'la retirada del día: '.$this->Date->format($retirada['Retirada']['fecha_retirada']
 					)
 				)
 			)
