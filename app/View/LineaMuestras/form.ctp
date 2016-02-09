@@ -38,7 +38,7 @@ if (isset($operacion_almacenes)) {
 
 echo $this->Form->create();
 ?>
-	<div class="col3">
+	<div class="col5">
 <?php
 echo $this->Html->tableCells(array(
     $this->Form->input('humedad'),
@@ -64,7 +64,7 @@ echo $this->Html->tableCells(array(
 	'almacen_transporte_id',
 	array(
 	    'empty' => true,
-	    'label' => 'Cuenta Almacén' 
+	    'label' => 'Cuenta almacén' 
 	)
     )
     : ''
@@ -72,18 +72,16 @@ echo $this->Html->tableCells(array(
 );
 ?>
 	</div>
-	<div class="col2">
+	<div class="col3">
 <?php
 echo $this->Form->input('apreciacion_bebida', array(
     'label' => 'Bebida')
 );
 
 echo $this->Form->input('defecto');
-?>
-	</div>
-<?php
 echo $this->Form->input('observaciones');
 ?>
+	</div>
 	<div class="col4">
 <?php
 
