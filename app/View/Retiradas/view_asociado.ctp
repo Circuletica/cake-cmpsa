@@ -1,6 +1,6 @@
 <?php
 $this->extend('/Common/view');
-$this->assign('object', 'Retirada del asociado '.$asociado_nombre);
+$this->assign('object', 'Retirada del asociado '.$asociado_nombre['Asociado']['nombre_corto']);
 //$this->assign('line_object', 'precio');
 //$this->assign('id',$flete['Retirada']['id']);
 $this->assign('class','Retirada');
@@ -14,7 +14,7 @@ $this->start('main');
 echo "<dl>";
 	echo "  <dt>Operación:</dt>\n";
 	echo "<dd>";
-	echo $this->html->link($operacion_ref, array(
+	echo $this->html->link($operacion['Operacion']['referencia'], array(
 	    'controller' => 'operaciones',
 	    'action'  => 'view',
 	    $operacion_id)

@@ -158,7 +158,7 @@
 							),
 						array(
 							'class' => 'boton',
-							'title' => 'Detalle línea',
+							'title' => 'Detalle asociado',
 							'escape' => false
 							)
 						)
