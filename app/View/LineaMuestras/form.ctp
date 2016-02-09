@@ -7,7 +7,7 @@ function totalCriba(){
 	    tot += parseFloat(arr[i].value);
     }
     document.getElementById('total').value = tot.toFixed(1);
-    console.log(tot);
+    //console.log(tot);
     if(tot == 100)
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
