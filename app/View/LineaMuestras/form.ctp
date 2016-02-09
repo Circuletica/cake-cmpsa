@@ -65,7 +65,8 @@ echo $this->Html->tableCells(
 	    'almacen_transporte_id',
 	    array(
 		'empty' => true,
-		'label' => 'Cuenta almacén' 
+		'label' => 'Cuenta almacén',
+		'onchange' => 'operacionAlmacen()'
 	    )
 	)
 	: '',
