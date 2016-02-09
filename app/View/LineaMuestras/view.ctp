@@ -1,18 +1,19 @@
 <?php
 // Usamos plantilla clásica de vistas View/Common/view.ctp
 $this->extend('/Common/view');
-$this->assign('titulo', 'Línea '.$linea['Muestra']['referencia'].' de la muestra '.$linea['Muestra']['referencia']);
+$this->assign('object', 'Línea de la muestra '.$linea['Muestra']['tipo_registro']);
 $this->assign('id',$linea['LineaMuestra']['id']);
-$this->assign('clase','LineaMuestra');
+$this->assign('class','LineaMuestra');
 $this->assign('controller','linea_muestras');
 $this->assign('from_controller','muestras');
 $this->assign('from_id',$linea['Muestra']['id']);
 
-$this->Html->addCrumb('Muestras', array(
+$this->Html->addCrumb('Muestras de '.$linea['Muestra']['tipo_nombre'], array(
     'controller'=>'muestras',
-    'action'=>'index'
+    'action'=>'index',
+    'Search.tipo_id' => $linea['Muestra']['tipo']
 ));
-$this->Html->addCrumb('Muestra '.$linea['Muestra']['referencia'], array(
+$this->Html->addCrumb('Muestra '.$linea['Muestra']['tipo_registro'], array(
     'controller'=>'muestras',
     'action'=>'view',
     $linea['Muestra']['id']
@@ -23,12 +24,15 @@ $this->end();
 
 $this->start('main');
 echo "<dl>\n";
-echo "  <dt>Operación</dt><dd>".$linea['Operacion']['referencia']."&nbsp;</dd>\n";
+if ($linea['Muestra']['tipo'] != 1) {
+    echo "  <dt>Operación</dt><dd>".$linea['Operacion']['referencia']."&nbsp;</dd>\n";
+    echo "  <dt>Cuenta Almacen</dt><dd>".$linea['AlmacenTransporte']['cuenta_almacen']."&nbsp;</dd>\n";
+    echo "  <dt>Marca</dt><dd>".$linea['AlmacenTransporte']['marca_almacen']."&nbsp;</dd>\n";
+}
 echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."&nbsp;</dd>\n";
-echo "  <dt>Cuenta Almacen</dt><dd>".$linea['AlmacenTransporte']['cuenta_almacen']."&nbsp;</dd>\n";
-echo "  <dt>Marca</dt><dd>".$linea['AlmacenTransporte']['marca_almacen']."&nbsp;</dd>\n";
-echo "  <dt>Sacos</dt><dd>".$linea['AlmacenTransporte']['cantidad_cuenta'].
-    " ".$linea['Operacion']['Embalaje']['nombre']."&nbsp;</dd>\n";
+echo "  <dt>Sacos</dt><dd>".$linea['LineaMuestra']['sacos'].
+    " ".(isset($linea['Operacion']['Embalaje'])?
+    $linea['Operacion']['Embalaje']['nombre']:'')."&nbsp;</dd>\n";
 echo "  <dt>Humedad</dt><dd>".$linea['LineaMuestra']['humedad']."&nbsp;</dd>\n";
 echo "  <dt>Defectos</dt><dd>".nl2br(h($linea['LineaMuestra']['defecto']))."&nbsp;</dd>\n";
 echo "  <dt>Tueste</dt><dd>".$linea['LineaMuestra']['tueste']."&nbsp;</dd>\n";

@@ -76,7 +76,7 @@ $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
 	$muestra['Muestra']['tipo_registro'].'/'.$i,
-	$linea['numero_sacos'],
+	$linea['sacos'],
 	//(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['cantidad_cuenta'] : '',
 	$linea['referencia_proveedor'],
 	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])

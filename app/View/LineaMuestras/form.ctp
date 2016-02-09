@@ -24,8 +24,8 @@ if ($action == 'edit') {
     echo "<h2>Modificar Línea de la muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
 
-$this->Html->addCrumb('Muestras','/muestras');
-$this->Html->addCrumb('Muestra '.$muestra['registro'],'/muestras/view/'.$muestra['id']);
+$this->Html->addCrumb('Muestras de '.$muestra['tipo_nombre'],'/muestras/index/Search.tipo_id:'.$muestra['tipo']);
+$this->Html->addCrumb('Muestra '.$muestra['tipo_registro'],'/muestras/view/'.$muestra['id']);
 
 ?>
 <?php

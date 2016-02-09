@@ -26,6 +26,15 @@ class Muestra extends AppModel {
 	    )',
 	    $this->alias, $this->alias
 	);
+	$this->virtualFields['tipo_nombre'] = sprintf(
+	    'CASE %s.tipo
+		    WHEN 1 THEN "oferta"
+		    WHEN 2 THEN "embarque"
+		    WHEN 3 THEN "entrega"
+		END
+	    ',
+	    $this->alias, $this->alias
+	);
     }
     public $displayField = 'tipo_registro';
     public $belongsTo = array(
