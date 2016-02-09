@@ -33,6 +33,7 @@ echo "  <dt>Humedad</dt><dd>".$linea['LineaMuestra']['humedad']."&nbsp;</dd>\n";
 echo "  <dt>Defectos</dt><dd>".nl2br(h($linea['LineaMuestra']['defecto']))."&nbsp;</dd>\n";
 echo "  <dt>Tueste</dt><dd>".$linea['LineaMuestra']['tueste']."&nbsp;</dd>\n";
 echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida']))."&nbsp;</dd>\n";
+echo "  <dt>Observaciones</dt><dd>".nl2br(h($linea['LineaMuestra']['observaciones']))."&nbsp;</dd>\n";
 //Tabla de criba medida y ponderada (con los caracoles)
 //Antes de todo, necesitamos saber que criba corresponde al fondo.
 for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){

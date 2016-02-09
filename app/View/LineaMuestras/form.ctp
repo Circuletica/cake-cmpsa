@@ -81,6 +81,9 @@ echo $this->Form->input('apreciacion_bebida', array(
 echo $this->Form->input('defecto');
 ?>
 	</div>
+<?php
+echo $this->Form->input('observaciones');
+?>
 	<div class="col4">
 <?php
 
