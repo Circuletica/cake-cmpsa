@@ -49,7 +49,7 @@ echo $this->Html->tableCells(array(
 	    'label' => 'Referencia Proveedor'
 	)
     ),
-    isset($operaciones) ?
+    isset($operaciones) && $muestra['tipo']!='1' ?
     $this->Form->input(
 	'operacion_id',
 	array(
@@ -59,7 +59,7 @@ echo $this->Html->tableCells(array(
 	)
     )
     : '',
-    isset($operacion_almacenes) ?
+    isset($operacion_almacenes) && $muestra['tipo']!='1' ?
     $this->Form->input(
 	'almacen_transporte_id',
 	array(

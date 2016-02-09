@@ -69,7 +69,7 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
-echo $this->Html->tableHeaders(array('Nº', 'Operación', 'No sacos', 'Detalle'));
+echo $this->Html->tableHeaders(array('', 'Operación', 'Sacos', 'Detalle'));
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas
 $i = 1;

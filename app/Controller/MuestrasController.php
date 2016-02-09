@@ -15,7 +15,7 @@ class MuestrasController extends AppController {
 	    )
 	);
 	$this->paginate['order'] =  array(
-	    'Muestra.fecha' => 'ASC'
+	    'Muestra.registro' => 'DESC'
 	);
 	$this->paginate['recursive'] = 1;
 

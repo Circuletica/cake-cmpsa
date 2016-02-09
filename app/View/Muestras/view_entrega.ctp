@@ -42,7 +42,7 @@ if (isset($muestra['Contrato']['referencia'])) {
 echo "</dd>";
 echo "  <dt>Transporte</dt>\n";
 echo "<dd>";
-echo 'emb/entr + fecha'.'&nbsp;';
+echo $muestra['Contrato']['transporte'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
@@ -60,10 +60,6 @@ echo "  <dt>Fecha</dt>\n";
 echo "<dd>";
 echo $this->Date->format($muestra['Muestra']['fecha']);
 echo "</dd>";
-//echo "  <dt>Resultado</dt>\n";
-//echo "<dd>";
-//echo $muestra['Muestra']['aprobado'] ? 'Aprobado' : 'Rechazado'.'&nbsp;';
-//echo "</dd>";
 echo "  <dt>Muestra embarque</dt>\n";
 echo "<dd>";
 echo (isset($muestra['MuestraEmbarque']['tipo_registro']) ?
@@ -79,7 +75,7 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
-echo $this->Html->tableHeaders(array('Nº','Marca', 'Cuenta almacén', 'Número de Sacos', 'ref. operación', 'Detalle'));
+echo $this->Html->tableHeaders(array('','Marca', 'Cuenta almacén', 'Sacos', 'Operación', 'Detalle'));
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas
 $i = 1;
@@ -87,8 +83,9 @@ foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
 	$muestra['Muestra']['tipo_registro'].'/'.$i,
 	$linea['AlmacenTransporte']['marca_almacen'],
+	$linea['AlmacenTransporte']['cuenta_almacen'],
 	$linea['AlmacenTransporte']['cantidad_cuenta'],
-	$linea['referencia_proveedor'],
+	$linea['Operacion']['referencia'],
 	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
     )
 );

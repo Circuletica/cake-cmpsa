@@ -28,12 +28,13 @@ $siglas_tipos = array(
     <th><?php echo $this->Paginator->sort('fecha')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('Proveedor.nombre_corto', 'Proveedor')?></th>
+    <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Contrato')?></th>
     <th><?php echo 'Detalle'?></th>
   </tr>
   <?php foreach($muestras as $muestra):?>
   <tr>
     <td>
-      <?php echo $siglas_tipos[$muestra['Muestra']['tipo']].'-'.$muestra['Muestra']['registro']?>
+      <?php echo $muestra['Muestra']['tipo_registro']?>
     </td>
     <td>
       <?php
@@ -45,6 +46,9 @@ $siglas_tipos = array(
     </td>
     <td>
       <?php echo $muestra['Proveedor']['nombre_corto']; ?>
+    </td>
+    <td>
+      <?php echo $muestra['Contrato']['referencia']; ?>
     </td>
     <td>
       <?php echo $this->Button->view('muestras',$muestra['Muestra']['id']);
