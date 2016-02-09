@@ -33,18 +33,78 @@ class RetiradasController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		
-	$retirada = $this->Retirada->find(
+	$retiradas = $this->Retirada->find(
 		'first',
 		array(
 	   		'conditions' => array(
 	   			'Retirada.id' => $id
 	   			),
-	   		'recursive' => 3,			
+	   		'recursive' => 4,			
 			'contain' => array(
 				'AlmacenTransporte' => array(
 					'fields' => array(
 						'almacen_id',
 						'cantidad_cuenta',
+						'cuenta_almacen',
+						'marca_almacen'
+						),
+					'Almacen' => array(
+						'fields' => array(
+							'nombre_corto'
+						)
+					)
+				),
+				'Asociado' => array(
+					'fields' => array(
+						'id',
+						'nombre_corto'
+						)
+					),				
+				'Operacion' => array(
+					'fields' => array(
+						'id',
+						'referencia'
+					),
+					'AsociadoOperacion'=>array(
+						'fields'=>array(
+							'cantidad_embalaje_asociado',
+							'asociado_id'
+							)
+						)
+				)
+			)//Cierre CONTAIN
+		)
+	);
+	$this->set(compact('retiradas'));
+
+	$total_sacos_retirados = 0;
+	$total_peso_retirado = 0;
+
+}
+
+	public function view_asociado($id = null) {
+		//el id y la clase de la entidad de origen vienen en la URL
+/*		if (!$id) {
+			$this->Session->setFlash('URL mal formado Retirada/view');
+			$this->redirect(array('action'=>'index'));
+		}*/
+	$operacion_id = $this->params['named']['from_id'];
+	$this->set(compact('operacion_id'));
+		
+	$retiradas = $this->Retirada->find(
+		'all',
+		array(
+			'conditions' =>array(
+				'Retirada.asociado_id' => $this->params['named']['asociado_id'],
+				'Retirada.operacion_id'=> $operacion_id
+	   			),
+	   		'recursive' => 2,			
+			'contain' => array(
+				'AlmacenTransporte' => array(
+					'fields' => array(
+						'almacen_id',
+						'cantidad_cuenta',
+						'cuenta_almacen',
 						'marca_almacen'
 						),
 					'Almacen' => array(
@@ -68,39 +128,37 @@ class RetiradasController extends AppController {
 			)//Cierre CONTAIN
 		)
 	);
-	$this->set(compact('retirada'));
+
+	$operacion = $this->Retirada->Operacion->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Operacion.id'=>$operacion_id
+				),
+			'recursive'=>-1,
+			'fields' => array(
+				'id',
+				'referencia')
+			));
+	$this->set('operacion',$operacion);
+
+	$asociado_nombre = $this->Retirada->Asociado->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Asociado.id'=>$this->params['named']['asociado_id']
+				),
+			'recursive'=>-1,
+			'fields' => array(
+				'id',
+				'nombre_corto')
+			));
+	$this->set(compact('asociado_nombre'));	
+
+	$this->set(compact('retiradas'));
 
 	$total_sacos_retirados = 0;
 	$total_peso_retirado = 0;
-
-/*	foreach ($retirada['Retirada'] as $linea):
-	    $peso = $linea['cantidad_embalaje_asociado'];
-		
-	$cantidad_retirado = 0;
-	$peso_retirado = 0;
-	
-			$retirada = $operacion_retirada['Retirada'];
-			if($retirada['asociado_id'] == $linea['Asociado']['id']){
-				$cantidad_retirado += $retirada['embalaje_retirado'];
-				$peso_retirado += $retirada['peso_retirado'];
-			}
-		}
-	$laretirada[] = array(
- 	   'Nombre' => $linea['Asociado']['nombre_corto'],
- 	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
- 	   'Peso' => $peso,
- 	   'Cantidad_retirado' => $cantidad_retirado,
- 	   'Peso_retirado' => $peso_retirado
-		);
-	$total_sacos_retirados += $cantidad_retirado; 
-	$total_peso_retirado += $peso_retirado;
-
-	endforeach;
-
-	ksort($lineas_retirada);
-	$this->set('lineas_retirada',$lineas_retirada);
-	$this->set('total_sacos_retirados',$total_sacos_retirados);
-	$this->set('total_peso_retirado',$total_peso_retirado);*/
 
 }
    public function add() {
