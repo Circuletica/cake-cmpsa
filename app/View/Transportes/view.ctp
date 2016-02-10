@@ -172,12 +172,21 @@ if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 		echo "  <dt>Entrada mercancía</dt>\n";
 		echo "<dd>";
 		//mysql almacena la fecha en formato ymd
-		$fecha = $transporte['Transporte']['fecha_entradamerc'];
+		/*$fecha = $transporte['Transporte']['fecha_entradamerc'];
 		$dia = substr($fecha,8,2);
 		$mes = substr($fecha,5,2);
 		$anyo = substr($fecha,0,4);
 		$fecha_entradamerc= $dia.'-'.$mes.'-'.$anyo;
-		echo $fecha_entradamerc.'&nbsp;';
+		echo $fecha_entradamerc.'&nbsp;';*/
+		if ($transporte['Transporte']['fecha_llegada'] !=NULL && $transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='CIF'){
+			$fecha_entrada_mercancia = date("d-m-Y", strtotime("$fecha_llegada +15 days"));
+			$transporte['Transporte']['fecha_entradamerc'] = $fecha_entrada_mercancia; //Asigno una fecha + 1 mes
+			echo "<span style=color:red;>$fecha_entrada_mercancia</span>";
+		}elseif($transporte['Operacion']['Contrato']['Incoterm']['nombre']=='CIF'){
+			echo "La fecha de llegada sin asignar";
+		}else{
+			echo $this->Date->format($transporte['Transporte']['fecha_entradamerc']).'&nbsp;';
+		}
 		echo "</dd>";
 		echo "  <dt>Despacho operación</dt>\n";
 		echo "<dd>";
@@ -254,9 +263,9 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 			}else{
 				echo "La fecha de llegada sin asignar";
 			}
-	if ($transporte['Transporte']['aseguradora_id']!=NULL){
+	if (!empty($transporte['Transporte']['fecha_llegada'])){
 			echo "</dd>";
-			echo "  <dt>Coste del seguro</dt>\n";
+			echo "  <dt>Coste del seguro </dt>\n";
 			echo "<dd>";
 			echo $transporte['Transporte']['coste_seguro'].' €&nbsp;';
 			echo "</dd>";

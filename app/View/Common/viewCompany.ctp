@@ -70,11 +70,9 @@ foreach($empresa['Empresa']['Contacto'] as $contacto):
 	$contacto['funcion'],
 	$contacto['telefono1'],
 	$contacto['telefono2'],
-	$contacto['email'],
-	$this->Html->link('<i class="fa fa-envelope-o"></i>', 'mailto:'.$contacto['email'],array(
-	    'class'=>'botond', 'escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'))
-	    .' '.$this->Button->editLine('contactos',$contacto['id'],$this->fetch('controller'),$contacto['empresa_id'])
-	    .' '.$this->Button->deleteLine('contactos',$contacto['id'],$this->fetch('controller'),$contacto['empresa_id'],$contacto['nombre'])
+	$this->Text->autoLinkEmails($contacto['email']),
+    $this->Button->editLine('contactos',$contacto['id'],$this->fetch('controller'),$contacto['empresa_id'])
+	.' '.$this->Button->deleteLine('contactos',$contacto['id'],$this->fetch('controller'),$contacto['empresa_id'],$contacto['nombre'])
 	)
     );
 endforeach;
