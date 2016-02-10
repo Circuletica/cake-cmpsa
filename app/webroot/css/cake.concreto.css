@@ -219,10 +219,9 @@ input[type=submit]:active,
 	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
 	-moz-column-gap: 40px; /* Firefox */
 	column-gap: 40px;
-  -webkit-column-rule: 1px dotted #ddd;
-     -moz-column-rule: 1px dotted #ddd;
-          column-rule: 1px dotted #ddd;
-         /* width: 740px*/
+ 	-webkit-column-rule: 1px dotted #ddd;
+    -moz-column-rule: 1px dotted #ddd;
+    column-rule: 1px dotted #ddd;
 }
 
 /*Botones genéricos y en tabla de detalle*/

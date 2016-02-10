@@ -37,9 +37,12 @@ if (isset($operacion_almacenes)) {
 }
 
 echo $this->Form->create();
-?>
-	<div class="col5">
-<?php
+ if($muestra['tipo']!='1'){
+ 	echo "<div class='col3'>";
+ }else{
+ 	echo "<div class='col4'>";
+ }
+
 echo $this->Html->tableCells(
     array(
 	$this->Form->input('humedad'),
