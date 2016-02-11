@@ -67,7 +67,7 @@ echo $this->Html->tableHeaders(array('Nombre', 'Departamento', 'Función',
 foreach($empresa['Empresa']['Contacto'] as $contacto):
     echo $this->Html->tableCells(array(
 	$contacto['nombre'],
-	$contacto['Departamento']['nombre'],
+	isset($contacto['Departamento']['nombre']) ? $contacto['Departamento']['nombre'] : '',
 	$contacto['funcion'],
 	$contacto['telefono1'],
 	$contacto['telefono2'],
