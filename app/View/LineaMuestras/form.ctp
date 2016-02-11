@@ -7,7 +7,7 @@ function totalCriba(){
 	    tot += parseFloat(arr[i].value);
     }
     document.getElementById('total').value = tot.toFixed(1);
-    console.log(tot);
+    //console.log(tot);
     if(tot == 100)
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
@@ -37,48 +37,55 @@ if (isset($operacion_almacenes)) {
 }
 
 echo $this->Form->create();
-?>
-	<div class="col3">
-<?php
-echo $this->Html->tableCells(array(
-    $this->Form->input('humedad'),
-    $this->Form->input('tueste'),
-    $this->Form->input(
-	'referencia_proveedor',
-	array(
-	    'label' => 'Referencia Proveedor'
+ if($muestra['tipo']!='1'){
+ 	echo "<div class='col3'>";
+ }else{
+ 	echo "<div class='col4'>";
+ }
+
+echo $this->Html->tableCells(
+    array(
+	$this->Form->input('humedad'),
+	$this->Form->input('tueste'),
+	$this->Form->input(
+	    'referencia_proveedor',
+	    array(
+		'label' => 'Referencia Proveedor'
+	    )
+	),
+	isset($operaciones) && $muestra['tipo']!='1' ?
+	$this->Form->input(
+	    'operacion_id',
+	    array(
+		'empty' => true,
+		'label' => 'Operación',
+		'onchange' => 'operacionAlmacen()'
+	    )
 	)
-    ),
-    isset($operaciones) ?
-    $this->Form->input(
-	'operacion_id',
-	array(
-	    'empty' => true,
-	    'label' => 'Operación',
-	    'onchange' => 'operacionAlmacen()'
+	: '',
+	isset($operacion_almacenes) && $muestra['tipo']!='1' ?
+	$this->Form->input(
+	    'almacen_transporte_id',
+	    array(
+		'empty' => true,
+		'label' => 'Cuenta almacén',
+		'onchange' => 'operacionAlmacen()'
+	    )
 	)
+	: '',
+	$this->Form->input('sacos')
     )
-    : '',
-    isset($operacion_almacenes) ?
-    $this->Form->input(
-	'almacen_transporte_id',
-	array(
-	    'empty' => true,
-	    'label' => 'Cuenta Almacén' 
-	)
-    )
-    : ''
-)
 );
 ?>
 	</div>
-	<div class="col2">
+	<div class="col3">
 <?php
 echo $this->Form->input('apreciacion_bebida', array(
     'label' => 'Bebida')
 );
 
 echo $this->Form->input('defecto');
+echo $this->Form->input('observaciones');
 ?>
 	</div>
 	<div class="col4">

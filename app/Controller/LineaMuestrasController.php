@@ -85,9 +85,9 @@ class LineaMuestrasController extends AppController {
 	}
 	//sacamos los datos de la muestra a la que pertenece la linea
 	//nos sirven en la vista para detallar campos
-	$this->LineaMuestra->Muestra->Contrato->Operacion->Transporte->AlmacenTransporte->virtualFields = array(
-	    'cuenta_marca' => 'CONCAT(cuenta_almacen," (",marca_almacen,")")'
-	    );
+	//$this->LineaMuestra->Muestra->Contrato->Operacion->Transporte->AlmacenTransporte->virtualFields = array(
+	//    'cuenta_marca' => 'CONCAT(cuenta_almacen," (",marca_almacen,")")'
+	//    );
 	$muestra = $this->LineaMuestra->Muestra->find(
 	    'first',
 	    array(
@@ -150,16 +150,19 @@ class LineaMuestrasController extends AppController {
 	//de la muestra
 	if (isset($muestra['Contrato']['Operacion'])) {
 	    $operaciones = $muestra['Contrato']['Operacion'];
-	    //$almacen_transportes = array();
-	    foreach ($operaciones as $index => $operacion) {
-		$operaciones[$index]['AlmacenTransporte'] = array();
+	    //tenemos que usar $operacion por referencia si
+	    //queremos que se modifique $operaciones a la vez
+	    foreach ($operaciones as &$operacion) {
+		$operacion['AlmacenTransporte'] = array();
 		foreach ($operacion['Transporte'] as $transporte) {
-		    $operaciones[$index]['AlmacenTransporte'] = array_merge(
-			$operaciones[$index]['AlmacenTransporte'],
+		    $operacion['AlmacenTransporte'] = array_merge(
+			$operacion['AlmacenTransporte'],
 			$transporte['AlmacenTransporte']
 		    );
 		}
-		unset($operaciones[$index]['Transporte']);
+		unset($operacion['Transporte']);
+		//nunca olvidar dereferenciar la referencia
+		unset($operacion);
 	    }
 	    //Recombinamos para pasar de:
 	    //array(

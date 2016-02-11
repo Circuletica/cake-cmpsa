@@ -280,6 +280,8 @@ function operacionAlmacen() {
     var operacionAlmacenes = window.app.operacionAlmacenes;
     var operacionId = document.getElementById('LineaMuestraOperacionId');
     var almacenId = document.getElementById('LineaMuestraAlmacenTransporteId');
+    var sacos = document.getElementById('LineaMuestraSacos');
+    console.log(sacos);
 
     //el almacen seleccionado (si edit)
     var almacenIndex = almacenId.selectedIndex;
@@ -290,7 +292,6 @@ function operacionAlmacen() {
     console.log(operacionSelOpt);
     if (operacionSelOpt != '') {
 	var almacenes = operacionAlmacenes[operacionSelOpt].AlmacenTransporte;
-	console.log(almacenes);
 	var opts = almacenes.length;
 	almacenId.options.length = opts;
 	for (var i=0; i<opts; i++){
@@ -298,7 +299,9 @@ function operacionAlmacen() {
 	    almacenId.options[i].text = almacenes[i].cuenta_marca;
 	    //volver a seleccionar la mues. de emb. si es un edit
 	    if (almacenId.options[i].value == almacenSelOpt) {
+		console.log(almacenes[i]);
 		almacenId.options[i].selected = true;
+		sacos.value = almacenes[i].cantidad_cuenta;
 	    }
 	}
     } else {
@@ -308,3 +311,12 @@ function operacionAlmacen() {
 	almacenId.options[0].selected = true;
     }
 }
+
+//function sacosCuenta() {
+//    var operacionAlmacenes = window.app.operacionAlmacenes;
+//    var almacenId = document.getElementById('LineaMuestraAlmacenTransporteId');
+//    //el almacen seleccionado (si edit)
+//    var almacenIndex = almacenId.selectedIndex;
+//    var almacenSelOpt = almacenId.options[almacenIndex].value;
+//
+//}

@@ -69,14 +69,13 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
-echo $this->Html->tableHeaders(array('Nº', 'Número de Sacos',
-    'Ref. Proveedor', 'Detalle'));
+echo $this->Html->tableHeaders(array('', 'Sacos','Ref. Proveedor', 'Detalle'));
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas
 $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
-	$i,
+	$muestra['Muestra']['tipo_registro'].'/'.$i,
 	$linea['numero_sacos'],
 	//(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['cantidad_cuenta'] : '',
 	$linea['referencia_proveedor'],
