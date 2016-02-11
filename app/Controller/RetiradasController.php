@@ -3,34 +3,22 @@ class RetiradasController extends AppController {
 	public $scaffold = 'admin';
 
 	public function index() {
-	/*$this->Retirada->bindModel(
-		array(
-			'belongsTo' => array(
-				'Operacion'=> array(
-					'foreignKey' => false,
-					'conditions' => array('OperacionRetirada.id = Operacion.id')
-					)
-				)
-			)
-		);*/
-
-
 	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'asc');
 	$this->paginate['contain'] = array(
 			'Asociado',
 			'AlmacenTransporte' => array (
 				'Almacen' => array (
-					'fields' => ('nombre_corto')
+					'fields' => array(
+						'nombre_corto'
+						)
 					)
 				),
-			'OperacionRetirada' => array (
-				'Operacion' => array (
+			'Operacion' => array (
 					'fields' => array(
 						'id',
-						'referencia')
-				)
-			),
-			//'Operacion',
+						'referencia'
+					)
+			)
 	);
 
 	$retiradas = $this->paginate();
@@ -45,35 +33,143 @@ class RetiradasController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		
-	$retirada = $this->Retirada->find('first',array(
-	    'conditions' => array('Retirada.id' => $id),
-	    'recursive' => 3));
-	$this->set('retirada',$retirada);
+	$retiradas = $this->Retirada->find(
+		'first',
+		array(
+	   		'conditions' => array(
+	   			'Retirada.id' => $id
+	   			),
+	   		'recursive' => 4,			
+			'contain' => array(
+				'AlmacenTransporte' => array(
+					'fields' => array(
+						'almacen_id',
+						'cantidad_cuenta',
+						'cuenta_almacen',
+						'marca_almacen'
+						),
+					'Almacen' => array(
+						'fields' => array(
+							'nombre_corto'
+						)
+					)
+				),
+				'Asociado' => array(
+					'fields' => array(
+						'id',
+						'nombre_corto'
+						)
+					),				
+				'Operacion' => array(
+					'fields' => array(
+						'id',
+						'referencia'
+					),
+					'AsociadoOperacion'=>array(
+						'fields'=>array(
+							'cantidad_embalaje_asociado',
+							'asociado_id'
+							)
+						)
+				)
+			)//Cierre CONTAIN
+		)
+	);
+	$this->set(compact('retiradas'));
 
-	//Sacamos la referencia de operaciones ligada a retiradas
-	$this->loadModel('OperacionRetirada');
+	$total_sacos_retirados = 0;
+	$total_peso_retirado = 0;
 
-	$operacion = $this->Retirada->OperacionRetirada->find(
-				'first',
-				array(
-		    		'conditions' => array(
-		    			'OperacionRetirada.retirada_id' => $retirada['Retirada']['id']
-		    		)
-		    	)
-			);	
+}
+
+	public function view_asociado($id = null) {
+		//el id y la clase de la entidad de origen vienen en la URL
+/*		if (!$id) {
+			$this->Session->setFlash('URL mal formado Retirada/view');
+			$this->redirect(array('action'=>'index'));
+		}*/
+	$operacion_id = $this->params['named']['from_id'];
+	$this->set(compact('operacion_id'));
+		
+	$retiradas = $this->Retirada->find(
+		'all',
+		array(
+			'conditions' =>array(
+				'Retirada.asociado_id' => $this->params['named']['asociado_id'],
+				'Retirada.operacion_id'=> $operacion_id
+	   			),
+	   		'recursive' => 2,			
+			'contain' => array(
+				'AlmacenTransporte' => array(
+					'fields' => array(
+						'almacen_id',
+						'cantidad_cuenta',
+						'cuenta_almacen',
+						'marca_almacen'
+						),
+					'Almacen' => array(
+						'fields' => array(
+							'nombre_corto'
+						)
+					)
+				),
+				'Asociado' => array(
+					'fields' => array(
+						'id',
+						'nombre_corto'
+						)
+					),				
+				'Operacion' => array(
+					'fields' => array(
+						'id',
+						'referencia'
+					)
+				)
+			)//Cierre CONTAIN
+		)
+	);
+
+	$operacion = $this->Retirada->Operacion->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Operacion.id'=>$operacion_id
+				),
+			'recursive'=>-1,
+			'fields' => array(
+				'id',
+				'referencia')
+			));
 	$this->set('operacion',$operacion);
-	}
 
-    public function add() {
-    echo $this->form($this->params['named']['from_id']); 
+	$asociado_nombre = $this->Retirada->Asociado->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Asociado.id'=>$this->params['named']['asociado_id']
+				),
+			'recursive'=>-1,
+			'fields' => array(
+				'id',
+				'nombre_corto')
+			));
+	$this->set(compact('asociado_nombre'));	
 
-	/*if($this->form($this->params['named']['from_id']) != NULL){
-		echo "SI FROM_ID ES NULL SE VE EL DESPLEGABLE DE OPERACIONES.
-		SI FROM_ID TIENE UN VALOR SE OCULTA POR TENER YA ASIGNADA LA OPERACION";
-	}
-	*/
-	$this->render('form');
-    }
+	$this->set(compact('retiradas'));
+
+	$total_sacos_retirados = 0;
+	$total_peso_retirado = 0;
+
+}
+   public function add() {
+
+   	if(empty($this->params['named']['from_id'])){
+   		$this->form();
+   	}else{
+ 		$this->form($this->params['named']['from_id']); 
+ 	}
+    $this->render('form');		
+}
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
@@ -89,18 +185,6 @@ class RetiradasController extends AppController {
 
      public function form($id = null) { //esta acción vale tanto para edit como add
 
-
-
-
-	//Sacamos id de operaciones para listarla
-	$operaciones = $this->Retirada->OperacionRetirada->Operacion->find(
-				'list'
-		    	);
-	$this->set('operacion_id',$this->passedArgs['from_id']);
-	$this->set(compact('operaciones'));
-
-
-
 	//Listamos el nombre de asociados
 	$this->loadModel('Asociado');	
 	$asociados = $this->Asociado->find(
@@ -112,7 +196,44 @@ class RetiradasController extends AppController {
 		'order' => array('Empresa.nombre_corto' => 'asc'),
 		'recursive' => 1)
 	);
+
 	$this->set(compact('asociados'));
+	//Sacamos id de operaciones para listarla
+	$operaciones = $this->Retirada->Operacion->find(
+				'list'
+		    	);
+	if(empty($this->params['named']['from_id'])){
+		$this->set('operacion_id',$operacion_id = NULL);
+	}else{
+		$this->set('operacion_id',$this->passedArgs['from_id']);
+	}
+	$this->set(compact('operaciones'));
+	$operaciones_asociados = $this->Retirada->Operacion->find(
+				'all',
+				array(
+					'contain' => array(
+						'AsociadoOperacion' => array(
+						'Asociado' => array(
+							'fields' => array(
+								'id',
+								'nombre_corto'
+							)
+						)
+						)
+					)
+				)
+	);
+
+foreach($operaciones_asociados as $clave => $operacion){
+	//$operacion['Asociado'][] = array();
+	foreach($operacion['AsociadoOperacion'] as $asociado_operacion){
+		$operacion['Asociado'][] = $asociado_operacion['Asociado'];
+	}
+	$operaciones_asociados[$clave] = $operacion;
+	unset($operaciones_asociados[$clave]['AsociadoOperacion']);
+}
+	$operaciones_asociados = Hash::combine($operaciones_asociados, '{n}.Operacion.id','{n}');
+	$this->set(compact('operaciones_asociados'));
 
 	//Listamos las cuentas corrientes de los almacenes
 	//$this->loadModel('AlmacenTransporte');
@@ -139,8 +260,8 @@ class RetiradasController extends AppController {
 	    if($this->Retirada->save($this->request->data)){
 		$this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
-		    'action' => 'view',
-		    'controller' => 'retiradas',
+		    'action' => 'view_trafico',
+		    'controller' => 'operaciones',
 		    $id
 		));
 	    } else {
@@ -152,14 +273,18 @@ class RetiradasController extends AppController {
     }
 
     public function delete($id = null) {
-	if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
-	if ($this->Retirada->delete($id)){
+	if (!$id or $this->request->is('get')) :
+	    throw new MethodNotAllowedException();
+	endif;
+		if ($this->Retirada->delete($id)){
 	    $this->Session->setFlash('Retirada borrada');
-	    $this->redirect(array(
-		'controller' => 'retiradas',
-		'action'=>'index',
-	    ));
-	}
+		$this->redirect(array(
+		    'controller' => $this->params['named']['from_controller'],
+		    'action'=>'view',
+	    $this->params['named']['from_id']
+			)
+		);
+		}
     }
 
 }
