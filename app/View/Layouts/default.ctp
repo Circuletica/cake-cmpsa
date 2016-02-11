@@ -55,6 +55,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 				<ul>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> RETIRADAS','/retiradas',array('escape' => false));?></li>
+				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> FLETES','/fletes',array('escape' => false));?></li>
 				</ul>
 			</li>
 
