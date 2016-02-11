@@ -36,7 +36,6 @@ class AppController extends Controller {
     );
 
     public $helpers = array(
-	//'Js' => array('cmpsa'),
 	'Html',
 	'Form',
 	'Date',
@@ -76,6 +75,7 @@ class AppController extends Controller {
     }
 
     public function viewCompany($class,$id) {
+	$this->{$this->class}->recursive = 3;
 	$empresa = $this->{$this->class}->findById($id);
 	$this->set('empresa',$empresa);
 	$this->set('referencia', $empresa['Empresa']['nombre_corto']);

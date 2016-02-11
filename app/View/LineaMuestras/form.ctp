@@ -17,49 +17,58 @@ function totalCriba(){
 
 <?php
 if ($action == 'add') {
-    echo "<h2>Añadir Línea a Muestra <em>".$muestra['referencia']."</em></h2>\n";
+    echo "<h2>Añadir Línea a la muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Línea de Muestra <em>".$muestra['referencia']."</em></h2>\n";
+    echo "<h2>Modificar Línea de la muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
 
 $this->Html->addCrumb('Muestras','/muestras');
-$this->Html->addCrumb('Muestra '.$muestra['referencia'],'/muestras/view/'.$muestra['id']);
+$this->Html->addCrumb('Muestra '.$muestra['registro'],'/muestras/view/'.$muestra['id']);
 
 ?>
 <?php
+//Pasamos la lista de 'operacion_almacenes' al javascript de la vista
+echo $this->Html->script('jquery')."\n"; // Include jQuery library
+if (isset($operacion_almacenes)) {
+    $this->Js->set('operacionAlmacenes', $operacion_almacenes);
+    echo $this->Js->writeBuffer(array('onDomReady' => false));
+}
+
 echo $this->Form->create();
 ?>
 	<div class="col3">
 <?php
 echo $this->Html->tableCells(array(
     $this->Form->input('humedad'),
-    $this->Form->input('tueste')
-));
-echo $this->Html->tableCells(
-    array(
-	$this->Form->input(
-	    'referencia_proveedor',
-	    array(
-		'label' => 'Referencia Proveedor'
-	    )
-	),
-	$this->Form->input(
-	    'operacion_id',
-	    array(
-		'empty' => true,
-		'label' => 'Operación'
-	    )
-	),
-	$this->Form->input(
-	    'almacen_transporte_id',
-	    array(
-		'empty' => true,
-		'label' => 'Referencia Almacén' 
-	    )
+    $this->Form->input('tueste'),
+    $this->Form->input(
+	'referencia_proveedor',
+	array(
+	    'label' => 'Referencia Proveedor'
+	)
+    ),
+    isset($operaciones) ?
+    $this->Form->input(
+	'operacion_id',
+	array(
+	    'empty' => true,
+	    'label' => 'Operación',
+	    'onchange' => 'operacionAlmacen()'
 	)
     )
+    : '',
+    isset($operacion_almacenes) ?
+    $this->Form->input(
+	'almacen_transporte_id',
+	array(
+	    'empty' => true,
+	    'label' => 'Cuenta Almacén' 
+	)
+    )
+    : ''
+)
 );
 ?>
 	</div>
@@ -187,3 +196,7 @@ echo $this->Html->tableCells(array(
 <?php
 echo $this->Form->end('Guardar Linea de muestra');
 ?>
+<script type="text/javascript">
+window.onload = totalCriba();
+window.onload = operacionAlmacen();
+</script>

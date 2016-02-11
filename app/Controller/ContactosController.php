@@ -1,77 +1,81 @@
 <?php
 class ContactosController extends AppController {
-	var $name = 'Contactos';
-	function index() {
-		$this->set('contactos', $this->Contacto->find('all'));
-		$this->set('empresas', $this->Contacto->Empresa->find('list'));
-	}
-	public function add() {
-		//el id y la clase de la entidad de origen vienen en la URL
-		if (!$this->params['named']['from_id']) {
-			$this->Session->setFlash('URL mal formado controller/add '.$this->params['named']['from_controller']);
-			$this->redirect(array(
-				'controller' => $this->params['named']['from_controller'],
-				'action' => 'index'));
-		}
-		//necesitamos el nombre de la empresa para el breadcrumb y el título de la vista
-		$empresa = $this->Contacto->Empresa->find('first',
-			array(
-				'conditions' => array('Empresa.id' => $this->params['named']['from_id']),
-				'recursive' => -1,
-				'fields' => array('Empresa.id','Empresa.nombre')
-		));
-		$this->set('empresa',$empresa);
-		if($this->request->is('post')):
-			$this->request->data['Contacto']['empresa_id'] = $this->params['named']['from_id'];
-			if($this->Contacto->save($this->request->data) ):
-				$this->Session->setFlash('Contacto guardado');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => 'view',
-					$this->params['named']['from_id']
-				));
-			endif;
-		endif;
-	}
+    var $name = 'Contactos';
+    function index() {
+	$this->set('contactos', $this->Contacto->find('all'));
+	$this->set('empresas', $this->Contacto->Empresa->find('list'));
+    }
 
+    public function add() {
+	//el id y la clase de la entidad de origen vienen en la URL
+	if (!$this->params['named']['from_id']) {
+	    $this->Session->setFlash('URL mal formado Contactos/add '.$this->params['named']['from_controller']);
+	    $this->redirect(array(
+		'controller' => $this->params['named']['from_controller'],
+		'action' => 'index'));
+	}
+	$this->form();
+	$this->render('form');
+    }
+
+    public function edit($id = null) {
+	if (!$id && empty($this->request->data)) {
+	    $this->Session->setFlash('error en URL Contactos/edit');
+	    $this->redirect(array(
+		'action' => 'index',
+		'controller' => $this->params['named']['from_controller'],
+	    ));
+	}
+	$this->form($id);
+	$this->render('form');
+    }
+
+    public function form($id = null) {
+	$this->set('action', $this->action);
+	//necesitamos el nombre de la empresa para el breadcrumb y el título de la vista
+	$this->set(
+	    'empresa',
+	    $this->Contacto->Empresa->findById($this->params['named']['from_id'])
+	);
+	$this->set('departamentos',$this->Contacto->Departamento->find('list'));
+
+	if (!empty($id)) {
+	    $this->Contacto->id = $id;
+	    $contacto = $this->Contacto->findById($id);
+	    $this->set('referencia', $contacto['Contacto']['nombre']);
+	}
+	if (!empty($this->request->data)){  //es un POST
+	    if($this->Contacto->save($this->request->data)) {
+		$this->Session->setFlash('Contacto guardado');
+		$this->redirect(
+		    array(
+			'action' => 'view',
+			'controller' => $this->params['named']['from_controller'],
+			$this->params['named']['from_id'],
+		    )
+		);
+	    } else {
+		$this->Session->setFlash('Contacto NO guardado');
+	    }
+	} else { //es un GET
+	    $this->request->data= $this->Contacto->read(null, $id);
+	}
+    }
+
+    public function delete($id) {
 	//el $id es del contacto, sacamos el id y la clase de empresa de la URL
-	public function delete($id) {
-		if($this->request->is('post')):
-			if($this->Contacto->delete($id)):
-				$this->Session->setFlash('Contacto borrado');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => 'view',
-					$this->params['named']['from_id']
-				));
-			endif;
-		else:
-			throw new MethodNotAllowedException();
-		endif;
+	if($this->request->is('post')){
+	    if($this->Contacto->delete($id)) {
+		$this->Session->setFlash('Contacto borrado');
+		$this->redirect(array(
+		    'controller' => $this->params['named']['from_controller'],
+		    'action' => 'view',
+		    $this->params['named']['from_id']
+		));
+	    } else {
+		throw new MethodNotAllowedException();
+	    }
 	}
-
-	public function edit($id = null) {
-		if (!$id) {
-			//throw new MethodNotAllowedException();
-			$this->Session->setFlash('URL mal formado controller/edit '.$this->params['named']['from_controller'].' '.$this->params['named']['from_id']);
-			$this->redirect(array(
-				'controller' => $this->params['named']['from_controller'],
-				'action'=>'index'));
-		}
-		$this->Contacto->id = $id;
-		if($this->request->is('get')):
-			$this->request->data = $this->Contacto->read();
-		else:
-			if($this->Contacto->save($this->request->data)):
-				$this->Session->setFlash('Contacto modificado');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => 'view',
-					$this->params['named']['from_id']));
-			else:
-				$this->Session->setFlash('¡No se ha podido guardar!');
-			endif;
-		endif;
-	}
+    }
 }
 ?>

@@ -78,18 +78,27 @@ class LineaMuestrasController extends AppController {
 	    $this->LineaMuestra->id = $id;
 	    //sacamos los datos de la muestra a la que pertenece la linea
 	    //nos sirven en la vista para detallar campos
-	    $linea_muestra = $this->LineaMuestra->find(
-		'first',
-		array(
-		    'conditions' => array(
-			'LineaMuestra.id' => $id
-		    ),
-		    'recursive' => 4,
-		    'contain' => array(
-			'Muestra' => array(
-			    'CalidadNombre',
-			    'Contrato'
-			),
+	    $linea_muestra = $this->LineaMuestra->findById($id);
+	    $muestra_id=$linea_muestra['Muestra']['id'];
+	} else { //un add()
+	    $muestra_id = $this->params['named']['from_id'];
+	}
+	//sacamos los datos de la muestra a la que pertenece la linea
+	//nos sirven en la vista para detallar campos
+	$this->LineaMuestra->Muestra->Contrato->Operacion->Transporte->AlmacenTransporte->virtualFields = array(
+	    'cuenta_marca' => 'CONCAT(cuenta_almacen," (",marca_almacen,")")'
+	    );
+	$muestra = $this->LineaMuestra->Muestra->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Muestra.id' => $muestra_id
+		),
+		'recursive' => 3,
+		'contain' => array(
+		    'CalidadNombre',
+		    'Proveedor',
+		    'Contrato' => array(
 			'Operacion' => array(
 			    'fields' => array(
 				'id',
@@ -105,66 +114,32 @@ class LineaMuestrasController extends AppController {
 			)
 		    )
 		)
-	    );
-	    $muestra = $linea_muestra['Muestra'];
-	    $muestra_id=$muestra['id'];
-	} else { //un add()
-	    $muestra_id = $this->params['named']['from_id'];
-	    //sacamos los datos de la muestra a la que pertenece la linea
-	    //nos sirven en la vista para detallar campos
-	    $muestra = $this->LineaMuestra->Muestra->find(
-		'first',
-		array(
-		    'conditions' => array(
-			'Muestra.id' => $muestra_id
-		    ),
-		    'recursive' => 3,
-		    'contain' => array(
-			'CalidadNombre',
-			'Proveedor',
-			'Contrato' => array(
-			    'Operacion' => array(
-				'fields' => array(
-				    'id',
-				    'referencia',
-				    'embalaje_id'
-				),
-				'Transporte' => array(
-				    'fields' => array(
-					'id'
-				    ),
-				    'AlmacenTransporte'
-				)
-			    )
-			)
-		    )
-		)
-	    );
-	    //necesitamos 'subir' el array $muestra['Muestra']
-	    //de 1 nivel para que sea igual al que devuelve el
-	    //find anterior
-	    //los dos find no devuelven la misma estructura
-	    //pasamos de:
-	    //array(
-	    //	'Muestra' => array(
-	    //		'id' => '22',
-	    //		'calidad_id' => '28',
-	    //		'contrato_id' => '27',
-	    //	),
-	    //	'CalidadNombre' => array(),
-	    //	'Contrato' => array()
-	    //)
-	    //a
-	    //array(
-	    //	'id' => '22',
-	    //	'calidad_id' => '28',
-	    //	'contrato_id' => '27',
-	    //	'CalidadNombre' => array(),
-	    //	'Contrato' => array()
-	    //)
-	    $muestra += $muestra['Muestra'];
-	    unset($muestra['Muestra']);
-	}
+	    )
+	);
+	//necesitamos 'subir' el array $muestra['Muestra']
+	//de 1 nivel para que sea igual al que devuelve el
+	//find anterior
+	//los dos find no devuelven la misma estructura
+	//pasamos de:
+	//array(
+	//	'Muestra' => array(
+	//		'id' => '22',
+	//		'calidad_id' => '28',
+	//		'contrato_id' => '27',
+	//	),
+	//	'CalidadNombre' => array(),
+	//	'Contrato' => array()
+	//)
+	//a
+	//array(
+	//	'id' => '22',
+	//	'calidad_id' => '28',
+	//	'contrato_id' => '27',
+	//	'CalidadNombre' => array(),
+	//	'Contrato' => array()
+	//)
+	$muestra += $muestra['Muestra'];
+	unset($muestra['Muestra']);
 	//legado a este punto, vengamos de add o edit
 	//$muestra tiene el mismo valor
 	$this->set('muestra',$muestra);
@@ -173,52 +148,49 @@ class LineaMuestrasController extends AppController {
 	//primero se sacan todos los almacen_transportes
 	//de todos los transportes de la operacion relativa
 	//de la muestra
-	//	if (array_key_exists('Transporte',$muestra['Operacion'])) {
-	//	    $transportes = $muestra['Operacion']['Transporte'];
-	//	    $almacen_transportes = array();
-	//	    foreach ($transportes as $transporte) {
-	//		$almacen_transportes = array_merge($almacen_transportes, $transporte['AlmacenTransporte']);
-	//	    }
 	if (isset($muestra['Contrato']['Operacion'])) {
 	    $operaciones = $muestra['Contrato']['Operacion'];
-	    $almacen_transportes = array();
-	    foreach ($operaciones as $operacion) {
-		$transportes = $operacion['Transporte'];
-		foreach ($transportes as $transporte) {
-		    $almacen_transportes = array_merge(
-			$almacen_transportes,
+	    //$almacen_transportes = array();
+	    foreach ($operaciones as $index => $operacion) {
+		$operaciones[$index]['AlmacenTransporte'] = array();
+		foreach ($operacion['Transporte'] as $transporte) {
+		    $operaciones[$index]['AlmacenTransporte'] = array_merge(
+			$operaciones[$index]['AlmacenTransporte'],
 			$transporte['AlmacenTransporte']
 		    );
 		}
+		unset($operaciones[$index]['Transporte']);
 	    }
+	    //Recombinamos para pasar de:
+	    //array(
+	    //	(int) 0 => array(
+	    //		'id' => '8',
+	    //		'almacen_id' => '59',
+	    //		'transporte_id' => '45',
+	    //		'cuenta_almacen' => '54131',
+	    //		'cantidad_cuenta' => '20.00'
+	    //	),
+	    //	(int) 1 => array(
+	    //		'id' => '9',
+	    //		'almacen_id' => '50',
+	    //		'transporte_id' => '53',
+	    //		'cuenta_almacen' => '251478/5451',
+	    //		'cantidad_cuenta' => '33.00'
+	    //
+	    //A
+	    //
+	    //array(
+	    //	(int) 8 => '54131',
+	    //	(int) 9 => '251478/5451',
+	    //)
+	    //el array que va al js para rellenar el desplegable de cuenta_almacen_id
+	    //según la operacion elegida
+	    $operacion_almacenes = Hash::combine($operaciones,'{n}.id','{n}');
+	    //la lista para el desplegable de operacion_id
+	    $operaciones = Hash::combine($operaciones,'{n}.id','{n}.referencia');
+	    $this->set(compact('operacion_almacenes'));
+	    $this->set(compact('operaciones'));
 	}
-	//Recombinamos para pasar de:
-	//array(
-	//	(int) 0 => array(
-	//		'id' => '8',
-	//		'almacen_id' => '59',
-	//		'transporte_id' => '45',
-	//		'cuenta_almacen' => '54131',
-	//		'cantidad_cuenta' => '20.00'
-	//	),
-	//	(int) 1 => array(
-	//		'id' => '9',
-	//		'almacen_id' => '50',
-	//		'transporte_id' => '53',
-	//		'cuenta_almacen' => '251478/5451',
-	//		'cantidad_cuenta' => '33.00'
-	//
-	//A
-	//
-	//array(
-	//	(int) 8 => '54131',
-	//	(int) 9 => '251478/5451',
-	//)
-	$almacen_transportes = Hash::combine($almacen_transportes,'{n}.id','{n}.cuenta_almacen');
-	$this->set('almacenTransportes', $almacen_transportes);
-
-	$operaciones = Hash::combine($operaciones,'{n}.id','{n}.referencia');
-	$this->set(compact('operaciones'));
 
 	$this->set('action', $this->action);
 

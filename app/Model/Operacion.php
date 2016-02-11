@@ -51,6 +51,7 @@ class Operacion extends AppModel {
 		'Transporte' => array(
 			'className' => 'Transporte',
 			'foreignKey' => 'operacion_id'),
-		'LineaMuestra'
+		'LineaMuestra',
+		'Retirada'
 	);
 }

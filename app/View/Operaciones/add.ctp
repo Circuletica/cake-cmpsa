@@ -67,19 +67,22 @@ echo $this->Form->input('fecha_pos_fijacion', array(
 		<div class="col2">
 <?php
 //necesitamos un array con la cantidad asignada a cada socio
-echo $this->Form->input('puerto_carga_id', array(
-    'label' => 'Puerto de embarque',
-    'default' => $puerto_carga_contrato_id,
-    'empty' => array('' => '')
-)
-					);
-echo $this->Form->input('puerto_destino_id', array(
-
-    'label' => 'Puerto de destino',
-    'default' => $puerto_destino_contrato_id,
-    'empty' => array('' => '')
-)
-					);
+echo $this->Form->input(
+    'puerto_carga_id',
+    array(
+	'label' => 'Puerto de embarque',
+	'default' => $puerto_carga_contrato_id,
+	'empty' => array('' => '')
+    )
+);
+echo $this->Form->input(
+    'puerto_destino_id',
+    array(
+	'label' => 'Puerto de destino',
+	'default' => $puerto_destino_contrato_id,
+	'empty' => array('' => '')
+    )
+);
 ?>
 		</div>
 </fieldset>

@@ -2,6 +2,15 @@
 class Contrato extends AppModel {
     public $recursive = 4;
     public $displayField = 'referencia';
+    public $virtualFields = array(
+	'transporte' => 'CONCAT(
+	    CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
+	    " ",
+	    SUBSTR(Contrato.fecha_transporte,6,2),
+	    "/",
+	    SUBSTR(Contrato.fecha_transporte,1,4)
+	)'
+    );
     public $validate = array(
 	'incoterm_id' => array('rule' => 'notEmpty'),
 	'proveedor_id' => array('rule' => 'notEmpty'),

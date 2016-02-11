@@ -1,6 +1,8 @@
 <?php
 class BancosController extends AppController {
 
+public $components = array('RequestHandler');
+
 public $class = 'Banco';
 
     public function index() {
@@ -30,6 +32,11 @@ public $class = 'Banco';
 	    $this->redirect(array('action'=>'index'));
 	}
 	$this->viewCompany($this->class, $id);
+
+	$this->pdfConfig = array(
+	'download' => true,
+	'filename' => $id.'.pdf'
+);
 
 	//Exportar PDF
 	//$this->pdfConfig = array(

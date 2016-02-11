@@ -36,8 +36,8 @@
 		$operacion['Operacion']['contrato_id'])
 	);
 	echo "</dd>";
-	echo "  <dt>$tipo_fecha_transporte</dt>\n";
-	echo "  <dd>".$this->Date->format($fecha_transporte)."</dd>";
+	echo "  <dt>".$tipo_fecha_transporte."</dt>\n";
+	echo "  <dd>".$fecha_transporte."</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
 	echo $operacion['Contrato']['CalidadNombre']['nombre'].'&nbsp;';
@@ -92,54 +92,132 @@
 			$linea['cantidad_embalaje'],
 			$this->Date->format($linea['fecha_seguro']),
 			//$linea['referencia_almacen'],
-			$this->Button->viewLine('transportes',$linea['id'],'transportes',$linea['operacion_id'])
+			$this->Button->viewLine('transportes',$linea['id'],'operaciones',$linea['operacion_id'])
 			));
 		//numero de la línea siguiente
 		$i++;
 	endforeach;
 ?>	</table>
 <?php
-	if($operacion['Operacion']['id']!= NULL):
-	$suma = 0;
-	$transportado=0;
-		foreach ($operacion['Transporte'] as $suma):
-			if ($transporte['operacion_id']=$operacion['Operacion']['id']):
-			$transportado = $transportado + $suma['cantidad_embalaje'];
-			endif;
-		endforeach;
-	
-		echo "<h4>Bultos transportados: ".$transportado."</h4>";
-	endif;
+	echo "<h4>Bultos transportados: ".$transportado;
+
+			if ($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
+			echo '<div class="btabla">';
+			echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
+			echo '</div>';
+			}else{
+				echo " - Todos los bultos han sido transportados</h4>";
+			}
+
 ?>
-		<div class="btabla">
-		<?php
-		echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
-		?>
-		</div>
 	</div>
 	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
 
 	<div class="detallado">
-	<h3>Retiradas</h3>
+	<h3>Resumen retiradas</h3>
 	<table>
 		<?php
 		//Se calcula la cantidad total de bultos retirados
 
-
-		echo $this->Html->tableHeaders(array('Código Contable','Asociado', 'Sacos','Peso total', 'Sacos retirados'/*,'Detalle'*/));
-		foreach ($lineas_reparto as $codigo => $linea_reparto):
+		echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)','Detalle'));
+	
+		foreach ($lineas_retirada as $linea_retirada):
 			echo $this->Html->tableCells(array(
-				$codigo,
-				$linea_reparto['Nombre'],
-				$linea_reparto['Cantidad'],
-				$linea_reparto['Peso'],
-				$retirado,
-				//$this->Button->viewLine('retiradas',$retiradas['id'],'retiradas',$linea['operacion_id'])
-				)
+				$linea_retirada['Nombre'],
+				array(
+					$linea_retirada['Cantidad'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+				array(
+					$linea_retirada['Peso'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+				array(
+					$linea_retirada['Cantidad_retirado'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+				array(
+					$linea_retirada['Peso_retirado'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+					$this->Html->link(
+						'<i class="fa fa-info-circle"></i> ',array(
+							'controller' => 'retiradas',
+							'action' => 'view_asociado',
+							'asociado_id'=>$linea_retirada['asociado_id'],
+							'from_controller' => 'operaciones',
+							'from_id' => $operacion['Operacion']['id']
+							),
+						array(
+							'class' => 'boton',
+							'title' => 'Detalle asociado',
+							'escape' => false
+							)
+						)
+					)
+				
 			);
 		endforeach;
+echo $this->html->tablecells(array(
+	array(
+    array(
+    	'TOTALES',
+ 	array(
+		'style' => 'font-weight: bold; text-align:center'
+		)
+	),
+
+	array(
+	$total_sacos,
+	array(
+		'style' => 'font-weight: bold; text-align:right',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    $total_peso,
+	array(
+		'style' => 'font-weight: bold; text-align:right',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    $total_sacos_retirados,
+	array(
+		'style' => 'font-weight: bold; text-align:right',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    $total_peso_retirado,
+	array(
+		'style' => 'font-weight: bold; text-align:right',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    '<i class="fa fa-arrow-left fa-lg"></i>',
+	array(
+		'style' => 'text-align:center',
+		'escape' => false
+		)
+	)
+	))
+	);
+?></table>
+		<div class="btabla">
+		<?php
+		echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
 		?>
-		</table>		
+		</div>
 	</div>
 	</div>
 </div>

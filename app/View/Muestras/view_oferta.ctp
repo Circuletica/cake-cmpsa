@@ -5,7 +5,7 @@ $this->assign('id',$muestra['Muestra']['id']);
 $this->assign('class','Muestra');
 $this->assign('controller','muestras');
 $this->assign('line_controller','linea_muestras');
-$this->assign('object', 'Muestra de oferta '.$muestra['Muestra']['registro']);
+$this->assign('object', 'Muestra de oferta '.$muestra['Muestra']['tipo_registro']);
 $this->assign('line_object', 'Línea');
 $this->assign('line_add', '1');
 
@@ -27,7 +27,7 @@ $this->start('main');
 echo "<dl>";
 echo "  <dt>Registro</dt>\n";
 echo "<dd>";
-echo $muestra['Muestra']['registro'].'&nbsp;';
+echo $muestra['Muestra']['tipo_registro'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Comprado</dt>\n";
 echo "<dd>";
