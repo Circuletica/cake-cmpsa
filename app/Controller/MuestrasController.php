@@ -42,24 +42,13 @@ class MuestrasController extends AppController {
 	$titulo = array();
 
 	//filtramos por referencia
-	if(isset($this->passedArgs['Search.registro'])) {
-	    $registro = $this->passedArgs['Search.registro'];
-	    $this->paginate['conditions']['Muestra.registro LIKE'] = "%$registro%";
+	if(isset($this->passedArgs['Search.tipo_registro'])) {
+	    $tipo_registro = $this->passedArgs['Search.tipo_registro'];
+	    $this->paginate['conditions']['Muestra.tipo_registro LIKE'] = "%$tipo_registro%";
 	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['registro'] = $registro;
+	    $this->request->data['Search']['tipo_registro'] = $tipo_registro;
 	    //completamos el titulo
-	    $title[] = 'Registro: '.$registro;
-	}
-	//filtramos por tipo
-	if(isset($this->passedArgs['Search.tipo_id'])) {
-	    $tipo_id = $this->passedArgs['Search.tipo_id'];
-	    $this->paginate['conditions']['Muestra.tipo LIKE'] = "$tipo_id";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['tipo_id'] = $tipo_id;
-	    //Sacamos el nombre del tipo
-	    $tipo = $this->tipoMuestras[$tipo_id];	
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['tipo_id'] = $tipo_id;
+	    $title[] = 'Registro: '.$tipo_registro;
 	}
 	//filtramos por proveedor
 	if(isset($this->passedArgs['Search.proveedor_id'])) {

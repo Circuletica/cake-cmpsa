@@ -10,11 +10,11 @@
   } else {
     $this->Html->addCrumb($title, '/muestras/index');
   }
-$siglas_tipos = array(
-    1 => 'OF',
-    2 => 'EB',
-    3 => 'EN'
-);
+//$siglas_tipos = array(
+//    1 => 'OF',
+//    2 => 'EB',
+//    3 => 'EN'
+//);
 
 ?>
 

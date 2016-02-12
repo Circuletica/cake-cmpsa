@@ -2,7 +2,12 @@
   <div class="radiomuestra">
   </div>
   <?php
-    echo $this->Form->input('Search.registro');
+  echo $this->Form->input(
+      'Search.tipo_registro',
+      array(
+	  'label' => 'Registro'
+      )
+  );
     echo $this->Form->input('Search.fecha', array('after'=>'aaaa o mm-aaaa'));
     echo $this->Form->input('Search.calidad');
     echo $this->Form->input('Search.proveedor_id', array(
