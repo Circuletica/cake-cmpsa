@@ -459,14 +459,67 @@ endif;
 	    $this->Session->setFlash('URL mal formada Operación/view_trafico ');
 	    $this->redirect(array('action'=>'index_trafico'));
 	}
-	$operacion = $this->Operacion->find('first',array(
-	    'conditions' => array('Operacion.id' => $id),
-	    'recursive' => 3));
-	$this ->set('operacion',$operacion);
-	//$transporte = $this->Operacion->Transporte->find('list',array(
-	//	'conditions' => array('Transporte.id'),
-	//	'recursive' => 1));
-	//$this->set('transporte',$transporte);
+	$operacion = $this->Operacion->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Operacion.id' => $id
+				),
+	    'recursive' => 2,
+	    'contain' => array(
+	    	'Transporte'=> array(
+	    		'fields' => array(
+	    			'id',
+	    			'nombre_vehiculo',
+	    			'matricula',
+	    			'fecha_carga',
+	    			'fecha_seguro',
+	    			'cantidad_embalaje'
+	    			)
+	    		),
+	    	'Contrato'=>array(
+	    		'fields'=> array(
+	    			'id',
+	    			'referencia',
+	    			'si_entrega',
+	    			'fecha_transporte'
+	    			),
+	    		'Proveedor'=>array(
+	    			'id',
+	    			'nombre_corto'
+	    			),
+	    		'Incoterm' => array(
+	    			'fields'=> array(
+						'nombre',
+						'si_flete'
+				   	)
+				),
+	    		'CalidadNombre' => array(
+	    			'fields' =>(
+	    				'nombre'
+	    				)
+	    			)
+	    		),
+	    	'PesoOperacion'=> array(
+	    		'fields' =>array(
+	    			'peso',
+	    			'cantidad_embalaje'
+	    			)
+	    		),
+	    	'PrecioTotalOperacion'=> array(
+	    		'fields'=>array(
+	    			'precio_dolar_tonelada'
+	    			)
+	    		),
+	    	'AsociadoOperacion'=>array(
+	    		'Asociado'
+	    		)
+	    	)
+	    )
+	);
+
+	$this ->set(compact('operacion'));
+
 	//el nombre de calidad concatenado esta en una view de MSQL
 	$this->loadModel('ContratoEmbalaje');
 	$embalaje = $this->ContratoEmbalaje->find(
@@ -492,8 +545,6 @@ endif;
 	}
 	$this->set('transportado',$transportado);
 
-
-
 	$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 	//mysql almacena la fecha en formato ymd
 	//	$this->Date->format($operacion['Contrato']['fecha_transporte']);
@@ -513,16 +564,15 @@ endif;
 	$anyo = substr($fecha,0,4);
 	$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
 
-	$operacion_retiradas = $this->Operacion->OperacionRetirada->find(
-	    'all',
-	    array(
-		'conditions' => array(
-		    'OperacionRetirada.id' => $id
-		),
-		'contain' => array(
-		    'Retirada')
-		)
-	    );	
+//*****AQUI HACE EXCESO DE QUERIES, HAY QUE DEPURARLO*****
+	$operacion_retiradas = $this->Operacion->Retirada->find(
+				'all',
+				array(
+		    		'conditions' => array(
+		    			'operacion_id' => $id
+		    		)
+		    	)
+			);	
 	//Líneas de reparto
 	//		debug($operacion_retiradas);
 	$total_sacos = 0;
@@ -536,21 +586,23 @@ endif;
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
 
-	foreach ($operacion_retiradas as $clave => $operacion_retirada){
-	    //	debug($operacion_retirada);
-	    $retirada = $operacion_retirada['Retirada'];
-	    if($retirada['asociado_id'] == $linea['Asociado']['id']){
-		$cantidad_retirado += $retirada['embalaje_retirado'];
-		$peso_retirado += $retirada['peso_retirado'];
-	    }
-	}
+		foreach ($operacion_retiradas as $clave => $operacion_retirada){
+			$retirada = $operacion_retirada['Retirada'];
+			if($retirada['asociado_id'] == $linea['Asociado']['id']){
+				$cantidad_retirado += $retirada['embalaje_retirado'];
+				$peso_retirado += $retirada['peso_retirado'];
+			}
+		}
+
 	$lineas_retirada[] = array(
-	    'Nombre' => $linea['Asociado']['nombre_corto'],
-	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
-	    'Peso' => $peso,
-	    'Cantidad_retirado' => $cantidad_retirado,
-	    'Peso_retirado' => $peso_retirado
-	);
+	   'asociado_id' => $linea['Asociado']['id'],
+ 	   'Nombre' => $linea['Asociado']['nombre_corto'],
+ 	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
+ 	   'Peso' => $peso,
+ 	   'Cantidad_retirado' => $cantidad_retirado,
+ 	   'Peso_retirado' => $peso_retirado
+		);
+
 	$total_sacos += $linea['cantidad_embalaje_asociado'];
 	$total_peso += $peso;
 	$total_sacos_retirados += $cantidad_retirado; 
