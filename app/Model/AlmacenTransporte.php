@@ -10,6 +10,7 @@ class AlmacenTransporte extends AppModel {
 	);
     public $virtualFields = array(
 	'cuenta_marca' => 'CONCAT(cuenta_almacen," (",COALESCE(marca_almacen,""),")")'
+);
 	public $validate = array(
     	'almacen_id' => array(
 	      	'rule' => 'notEmpty',

@@ -27,7 +27,7 @@ No hay contactos en esta lista
   <th>Teléfono2</th>
   <th>Email</th>
   <th>Empresa</th>
-  <th>Detalle</th>
+  <th>&nbspDetalle&nbsp</th>
 </tr>
 <?php foreach ($contactos as $contacto): ?>
 <tr>
@@ -44,7 +44,7 @@ No hay contactos en esta lista
   <?php echo $contacto['Contacto']['telefono2'] ?>
   </td>
   <td>
-  <?php echo $contacto['Contacto']['email'] ?>
+  <?php echo $this->Text->autoLinkEmails($contacto['Contacto']['email'])?>
   </td>
   <td>
   <?php echo $contacto['Empresa']['nombre'] ?>
