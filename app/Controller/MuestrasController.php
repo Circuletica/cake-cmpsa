@@ -235,24 +235,24 @@ class MuestrasController extends AppController {
 	} else { //es un add()	
 	    //Si no esta el tipo de muestra en la URL, volvemos
 	    //a muestras de oferta
-		$tipo = $this->passedArgs['tipo_id'];
-		$tipo_nombre = $tipos[$tipo];
-		$this->Muestra->virtualFields += array(
-		    'ultimoRegistro' => 'MAX(Muestra.registro)'
-		);
-		$ultimo_registro = $this->Muestra->find(
-		    'first',
-		    array(
-			'conditions' => array(
-			    'Muestra.tipo' => $tipo
-			),
-			'fields' => array(
-			    'ultimoRegistro'
-			)
+	    $tipo = $this->passedArgs['tipo_id'];
+	    $tipo_nombre = $tipos[$tipo];
+	    $this->Muestra->virtualFields += array(
+		'ultimoRegistro' => 'MAX(Muestra.registro)'
+	    );
+	    $ultimo_registro = $this->Muestra->find(
+		'first',
+		array(
+		    'conditions' => array(
+			'Muestra.tipo' => $tipo
+		    ),
+		    'fields' => array(
+			'ultimoRegistro'
 		    )
-		);
-		$nuevo_registro = $ultimo_registro['Muestra']['ultimoRegistro'] + 1;
-		$this->set(compact('nuevo_registro'));
+		)
+	    );
+	    $nuevo_registro = $ultimo_registro['Muestra']['ultimoRegistro'] + 1;
+	    $this->set(compact('nuevo_registro'));
 	}
 	$this->set('tipo',$tipo);
 	$this->set(compact('tipo_nombre'));
@@ -265,17 +265,6 @@ class MuestrasController extends AppController {
 	    'contratos',
 	    $this->Muestra->Contrato->find('list')
 	);
-	//para el javascript de la view
-	//queremos el transporte como 'embarque 03/2016' o 'entrega 01/2015'
-	//$this->Muestra->Contrato->virtualFields = array(
-	//    'transporte' => 'CONCAT(
-	//	CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
-	//	" ",
-	//	SUBSTR(Contrato.fecha_transporte,6,2),
-	//"/",
-	//SUBSTR(Contrato.fecha_transporte,1,4)
-	//)'
-	//);
 	//el array que se pasa al javascript para cambiar
 	//calidad y proveedor automaticamente
 	//cuando se cambia el contrato
@@ -284,9 +273,9 @@ class MuestrasController extends AppController {
 	    array(
 		'contain' => array(
 		    'Proveedor' => array(
-			    'fields' =>array(
-				'nombre_corto'
-			    )
+			'fields' =>array(
+			    'nombre_corto'
+			)
 		    ),
 		    'CalidadNombre'
 		),
@@ -337,7 +326,6 @@ class MuestrasController extends AppController {
 	    if (empty($contratosEmbarque[$key]['Muestra']))
 		unset ($contratosEmbarque[$key]);
 	}
-	//debug($contratosEmbarque);
 	$this->set(compact('contratosEmbarque'));
 
 	//el array que se pasa al javascript para cambiar
@@ -399,8 +387,10 @@ class MuestrasController extends AppController {
 		$this->Session->setFlash('Muestra guardada');
 		$this->redirect(
 		    array(
-			'action' => 'index',
-			'Search.tipo_id' => $tipo
+//			'action' => 'index',
+//			'Search.tipo_id' => $tipo
+			'action' => 'view',
+			$this->Muestra->id
 		    )
 		);
 	    } else {
