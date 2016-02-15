@@ -188,7 +188,7 @@ class RetiradasController extends AppController {
 	//Listamos el nombre de asociados
 	$this->loadModel('Asociado');	
 	$asociados = $this->Asociado->find(
-		'list',
+		'list',		
 		array(
 		'fields' => array(
 			'Asociado.id',
@@ -208,6 +208,7 @@ class RetiradasController extends AppController {
 		$this->set('operacion_id',$this->passedArgs['from_id']);
 	}
 	$this->set(compact('operaciones'));
+
 	$operaciones_asociados = $this->Retirada->Operacion->find(
 				'all',
 				array(
@@ -257,14 +258,21 @@ foreach($operaciones_asociados as $clave => $operacion){
 	//un _nuevo_ registro, como si fuera un add
 	if (!empty($id)) $this->Retirada->id = $id; 
 	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
-	    if($this->Retirada->save($this->request->data)){
+
+	    if($id != NULL && $this->Retirada->save($this->request->data)){
 		$this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
 		    'action' => 'view_trafico',
 		    'controller' => 'operaciones',
 		    $id
 		));
-	    } else {
+	    }elseif($id == NULL && $this->Retirada->save($this->request->data)) {
+	    $this->Session->setFlash('Retirada guardada');
+		$this->redirect(array(
+		    'action' => 'index',
+		    'controller' => 'retiradas'
+		));
+	    }else{
 		$this->Session->setFlash('Retirada NO guardada');
 	    }
 	} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
@@ -273,19 +281,13 @@ foreach($operaciones_asociados as $clave => $operacion){
     }
 
     public function delete($id = null) {
-	if (!$id or $this->request->is('get')) :
+	if (!$id or $this->request->is('get')){
 	    throw new MethodNotAllowedException();
-	endif;
-		if ($this->Retirada->delete($id)){
+	}
+	if ($this->Retirada->delete($id)){
 	    $this->Session->setFlash('Retirada borrada');
-		$this->redirect(array(
-		    'controller' => $this->params['named']['from_controller'],
-		    'action'=>'view',
-	    $this->params['named']['from_id']
-			)
-		);
-		}
+		$this->redirect(array('action'=>'index'));
     }
 
 }
-?>
+}

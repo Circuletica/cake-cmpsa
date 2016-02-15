@@ -28,7 +28,7 @@ if (empty($retiradas)){
 	foreach($retiradas as $retirada):
 ?>
   <tr>
-	    <td> <?php echo $retirada['Retirada']['fecha_retirada']?> </td>
+	    <td> <?php echo $this->Date->format($retirada['Retirada']['fecha_retirada'])?> </td>
       <td> <?php echo $retirada['Operacion']['referencia']?> </td>
       <td> <?php echo $retirada['AlmacenTransporte']['cuenta_almacen']?> </td>
       <td> <?php echo $retirada['AlmacenTransporte']['Almacen']['nombre_corto']?> </td>

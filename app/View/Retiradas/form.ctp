@@ -1,5 +1,5 @@
 <?php
-$this->Html->addCrumb('Operaciones','/operaciones');
+$this->Html->addCrumb('Operaciones','/operaciones/index_trafico');
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 //Pasamos la lista de 'contratosMuestra' del contrato al javascript de la vista
 //$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
@@ -44,7 +44,7 @@ if ($action == 'edit') {
           'onchange' => 'operacionesRetirada()',
           'value' => $operacion_id,
           //si se sabe la operacion, se deshabilita
-          'disabled' => $operacion_id != NULL
+          //'disabled' => $operacion_id != NULL
         )
       );
 
@@ -72,7 +72,12 @@ if ($action == 'edit') {
               'label'=>'Sacos retirados'
               )
          );
-   echo $this->Form->input('peso_retirado');
+   echo $this->Form->input('peso_retirado',
+         array(
+              'label'=>'Peso retirado
+               (Kg)'
+              )
+          );
 ?>
     </div>
 <?php
