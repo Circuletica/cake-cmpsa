@@ -237,19 +237,19 @@ function muestraEntrega() {
 
 function operacionesRetirada(){
     var operaciones = window.app.operacionesRetirada;
-    var operaciones = window.app.operacionesEmbarque;
-    //el contrato que seleccionamos
-    var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
-    //el id del contrato
-    var selectedOption = document.getElementById('MuestraContratoId').options[selectedIndex].value;
+  //  var operaciones = window.app.operacionesEmbarque;
+    //la operación que seleccionamos
+    var selectedIndex = document.getElementById('RetiradaOperacionId').selectedIndex;
+    //el id de la operación
+    var selectedOption = document.getElementById('RetiradaOperacionId').options[selectedIndex].value;
     var combobox = document.getElementById('combobox');;
-    var embarque = document.getElementById('embarque');
+   // var embarque = document.getElementById('embarque');
 
     if (selectedOption != '') {
 		//modificamos _todo_ el select de operaciones
 	if (selectedOption in operaciones) {
-	    var muestras = operaciones[selectedOption].Muestra; //las muestras de embarque del contrato seleccionado
-	    var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
+	    var retiradas = operaciones[selectedOption].Retirada; //las retiradas la operacion seleccionada
+	    var opts = retiradas.length; //cuantas retiradas tiene la operación
 	    operacion.options.length = opts;
 	    
 	    //console.log(operacion.options.length);

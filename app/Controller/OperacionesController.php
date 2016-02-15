@@ -595,11 +595,11 @@ endif;
 
 	$lineas_retirada[] = array(
 		'asociado_id' => $linea['Asociado']['id'],
- 	   'Nombre' => $linea['Asociado']['nombre_corto'],
- 	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
- 	   'Peso' => $peso,
- 	   'Cantidad_retirado' => $cantidad_retirado,
- 	   'Peso_retirado' => $peso_retirado
+ 		'Nombre' => $linea['Asociado']['nombre_corto'],
+ 		'Cantidad' => $linea['cantidad_embalaje_asociado'],
+ 		'Peso' => $peso,
+ 		'Cantidad_retirado' => $cantidad_retirado,
+ 		'Peso_retirado' => $peso_retirado
 		);
 	$total_sacos += $linea['cantidad_embalaje_asociado'];
 	$total_peso += $peso;
