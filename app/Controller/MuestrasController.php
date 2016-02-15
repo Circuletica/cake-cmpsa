@@ -39,6 +39,7 @@ class MuestrasController extends AppController {
 	//$passedArgs['Search.palabras'] = mipalabra
 	//$passedArgs['Search.id'] = 3
 	//Si queremos un titulo con los criterios de busqueda
+	//para qué sirve esta variable ???
 	$titulo = array();
 
 	//filtramos por referencia

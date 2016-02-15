@@ -14,13 +14,6 @@
       'label' => 'Proveedor',
       'empty' => true
     ));
-    //  echo $this->Form->input('Search.aprobado', array(
-    //    'empty'=>__('Cualquiera', true),
-    //    'options'=>array(
-    //      0=>__('Rechazado',true),
-    //      1=>__('Aprobado',true)
-    //      )
-    //    ));
   ?>
   <div class="formuboton">
     <ul>
