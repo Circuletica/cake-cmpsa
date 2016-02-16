@@ -102,6 +102,25 @@ class OperacionesController extends AppController {
 	    );
 	}
 	$contrato_id = $this->params['named']['from_id'];
+	$this->loadModel('Asociado');
+	$asociados = $this->Asociado->find(
+	    'all',
+	    array(
+			'fields' => array(
+				'Asociado.id',
+		    	'Empresa.codigo_contable',
+				'Empresa.nombre_corto'
+				),
+		'order' => array(
+	    	'Empresa.codigo_contable' => 'ASC'
+	    	),
+		'recursive' => 1
+	    )
+	);	
+	//reindexamos los asociados por codigo contable
+	$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
+	ksort($asociados);
+	$this->set('asociados', $asociados);
 
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
@@ -109,8 +128,11 @@ class OperacionesController extends AppController {
 	$proveedores = $this->Proveedor->find(
 	    'list',
 	    array(
-		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'fields' => array(
+			'Proveedor.id',
+			'Empresa.nombre_corto'),
+		'order' => array(
+			'Empresa.nombre_corto' => 'asc'),
 		'recursive' => 1
 	    )
 	);
@@ -184,16 +206,10 @@ class OperacionesController extends AppController {
 	//solo para mostrar el proveedor a nivel informativo
 	$this->set('proveedor',$contrato['Proveedor']['nombre']);
 	//a quienes van asociadas las lineas de contrato
-	$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
-	    'fields' => array('Asociado.id','Asociado.codigo_contable','Asociado.nombre_corto'),
-	    'order' => array('Asociado.codigo_contable' => 'ASC'),
-	    'recursive' => 1
-	)
-    );
-	//reindexamos los asociados por codigo contable
-	$asociados = Hash::combine($asociados, '{n}.Asociado.codigo_contable', '{n}');
-	ksort($asociados);
-	$this->set('asociados', $asociados);
+
+
+
+
 	//para los puertos de carga y destino
 	$this->set('puertoCargas',$this->Operacion->PuertoCarga->find('list', array(
 	    'order' => array('PuertoCarga.nombre' =>'ASC')

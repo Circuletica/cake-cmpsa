@@ -12,8 +12,8 @@ echo $this->Js->writeBuffer(array('onDomReady' => false));
 echo $this->Form->create('Operacion');
 //Info de la operación
 ?>
-	<fieldset>
-	<legend>Info</legend>
+<fieldset>
+<legend>Info</legend>
 <?php
 echo 'Proveedor: '.$proveedor."\n";
 echo "<p>\n";
@@ -26,45 +26,41 @@ echo 'Peso total: '.$contrato['Contrato']['peso_comprado']."\n";
 echo "<p>\n";
 echo 'Peso sin fijar: '.$contrato['RestoContrato']['peso_restante']."\n";
 ?>
-		<div class="col2">
+<div class="col3">
 <?php
 echo $this->Form->input('referencia', array(
     'autofocus' => 'autofocus'
-)
+	)
 );
 echo $this->Form->input('embalaje_id', array(
     //'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
     'after' => '(quedan ????? sin fijar)',
     //'onchange' => 'pesoAsociado(this)'
     'onchange' => 'pesoAsociado()'
-)
-			);
-?>
-		</div>
-		<div class="col2">
-<?php
+		)
+);
+
 echo $this->Form->input('lotes_operacion',
     array(
 	'label' => 'Lotes <em>(Quedan por fijar '.$contrato['RestoLotesContrato']['lotes_restantes'].' lotes)</em>'
     )
 );
 ?>
-			<div class='linea'>
-<?php
-echo $this->Form->input('fecha_pos_fijacion', array(
-    'label' => 'Fecha de fijación',
-    'dateFormat' => 'DMY',
-    'minYear' => date('Y'),
-    'maxYear' => date('Y')+5,
-    'orderYear' => 'asc',
-    'selected' => date('Y-m-1')
-)
-										);
-
-?>
-			</div>
+</div>
+<div class="col2">
+		<div class='linea'>
+		<?php
+		echo $this->Form->input('fecha_pos_fijacion', array(
+		    'label' => 'Fecha de fijación',
+		    'dateFormat' => 'DMY',
+		    'minYear' => date('Y'),
+		    'maxYear' => date('Y')+5,
+		    'orderYear' => 'asc',
+		    'selected' => date('Y-m-1')
+			)
+		);
+		?>
 		</div>
-		<div class="col2">
 <?php
 //necesitamos un array con la cantidad asignada a cada socio
 echo $this->Form->input(
@@ -75,6 +71,10 @@ echo $this->Form->input(
 	'empty' => array('' => '')
     )
 );
+?>
+</div>
+<div class="col4">
+<?php
 echo $this->Form->input(
     'puerto_destino_id',
     array(
@@ -83,28 +83,27 @@ echo $this->Form->input(
 	'empty' => array('' => '')
     )
 );
-?>
-		</div>
-</fieldset>
-<fieldset>
-			<div class="col4">
-<?php
 echo $this->Form->input(
     'precio_fijacion',
     array(
+    'label' => 'Precio fijación',	
 	'between' => '('.$divisa.')'
     )
 );
 echo $this->Form->input('precio_compra', array(
     'between' => '('.$divisa.')',
     'label' => 'Precio factura'
-)
-					);
+			)
+);
+
 echo $this->Form->input('opciones', array(
     'between' => '('.$divisa.')',
     'label' => 'Opciones'
-)
-					);
+	)
+);
+?>
+</div>
+<?php
 if ($contrato['Incoterm']['si_flete']) {
     echo $this->Form->input(
 	'flete',
@@ -116,11 +115,10 @@ if ($contrato['Incoterm']['si_flete']) {
 	    'label' => 'Flete'
 	)
     );
-?>
-			</div>
-	<div class="col3">
-<?php
 }
+?>
+<div class="col3">
+<?php
 if ($contrato['Incoterm']['si_seguro']) {
     echo $this->Form->input('seguro', array(
 	'between' => '(%)',
@@ -134,15 +132,14 @@ echo $this->Form->input('forfait', array(
     'label' => 'Forfait'
 )
 					);
+
+		echo $this->Form->input('cambio_dolar_euro', array(
+		    'label' => 'Cambio dolar/euro',
+		    'between' => '($=>€)'
+			)
+		);
 ?>
-					<br>
-<?php
-echo $this->Form->input('cambio_dolar_euro', array(
-    'label' => 'Cambio dolar/euro'
-)
-					);
-?>
-		</div>
+</div>
 <?php
 echo $this->Form->input('comentario');
 ?>
