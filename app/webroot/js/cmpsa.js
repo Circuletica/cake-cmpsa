@@ -237,7 +237,9 @@ function muestraEntrega() {
 
 function operacionesRetirada(){
     var operaciones = window.app.operacionesRetirada;
-  //  var operaciones = window.app.operacionesEmbarque;
+    var operacionBox = document.getElementById('RetiradaOperacionId');
+    var asociadoBox = document.getElementById('asociado');
+    var cuentaBox = document.getElementById('RetiradaCuentaId');
     //la operación que seleccionamos
     var selectedIndex = document.getElementById('RetiradaOperacionId').selectedIndex;
     //el id de la operación
