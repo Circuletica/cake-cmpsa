@@ -42,6 +42,17 @@ class MuestrasController extends AppController {
 	//para qué sirve esta variable ???
 	$titulo = array();
 
+	//filtramos por tipo
+	if(isset($this->passedArgs['Search.tipo_id'])) {
+	    $tipo_id = $this->passedArgs['Search.tipo_id'];
+	    $this->paginate['conditions']['Muestra.tipo LIKE'] = "$tipo_id";
+	    //guardamos el criterio para el formulario de vuelta
+	    $this->request->data['Search']['tipo_id'] = $tipo_id;
+	    //Sacamos el nombre del tipo
+	    $tipo = $this->tipoMuestras[$tipo_id];
+	    //guardamos el criterio para el formulario de vuelta
+	    $this->request->data['Search']['tipo_id'] = $tipo_id;		
+	}
 	//filtramos por referencia
 	if(isset($this->passedArgs['Search.tipo_registro'])) {
 	    $tipo_registro = $this->passedArgs['Search.tipo_registro'];
@@ -377,8 +388,8 @@ class MuestrasController extends AppController {
 		$this->Session->setFlash('Muestra guardada');
 		$this->redirect(
 		    array(
-//			'action' => 'index',
-//			'Search.tipo_id' => $tipo
+			//			'action' => 'index',
+			//			'Search.tipo_id' => $tipo
 			'action' => 'view',
 			$this->Muestra->id
 		    )
