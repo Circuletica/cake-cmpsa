@@ -45,6 +45,7 @@ class MuestrasController extends AppController {
 	//filtramos por tipo
 	if(isset($this->passedArgs['Search.tipo_id'])) {
 	    $tipo_id = $this->passedArgs['Search.tipo_id'];
+	    debug($tipo_id);
 	    $this->paginate['conditions']['Muestra.tipo LIKE'] = "$tipo_id";
 	    //guardamos el criterio para el formulario de vuelta
 	    $this->request->data['Search']['tipo_id'] = $tipo_id;
