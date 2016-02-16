@@ -236,39 +236,33 @@ function muestraEntrega() {
 }
 
 function operacionesRetirada(){
-    var operaciones = window.app.operacionesRetirada;
-  //  var operaciones = window.app.operacionesEmbarque;
-    //la operación que seleccionamos
-    var selectedIndex = document.getElementById('RetiradaOperacionId').selectedIndex;
-    //el id de la operación
-    var selectedOption = document.getElementById('RetiradaOperacionId').options[selectedIndex].value;
-    var combobox = document.getElementById('combobox');;
-   // var embarque = document.getElementById('embarque');
+    var operaciones = window.app.operaciones_asociados;
+    //Se declaran als variables según el desplegable que queremos controlar
+    //La variable es todo el elemento
+    var operacionBox = document.getElementById('RetiradaOperacionId');
+    var asociadoBox = document.getElementById('asociado');
+    var cuentaBox = document.getElementById('almacen');
 
-    if (selectedOption != '') {
+    //la operación que seleccionamos. Es el índice de la lista de operaciones
+    var operacionIndex = operacionBox.selectedIndex;
+    var asociadoIndex = asociadoBox.selectedIndex;
+    var cuentaIndex = cuentaBox.selectedIndex;
+
+    //el id de la operación, asociado y cuenta almacén
+    var operacionId = operacionBox.options[operacionIndex].value;
+    var asociadoId = asociadoBox.options[asociadoIndex].value;
+    var cuentaId = cuentaBox.options[cuentaIndex].value;
+
 		//modificamos _todo_ el select de operaciones
-	if (selectedOption in operaciones) {
-	    var retiradas = operaciones[selectedOption].Retirada; //las retiradas la operacion seleccionada
-	    var opts = retiradas.length; //cuantas retiradas tiene la operación
-	    operacion.options.length = opts;
-	    
-	    //console.log(operacion.options.length);
+	if (operacionId in operaciones) {
+		var asociadosOperacion = operaciones[operacionId].Asociado;
+		console.log(asociadosOperacion);
+		var opts = asociadosOperacion.length; //cuantos asociados tiene la operación
+	    asociadoBox.options.length = opts;
+
 	    for (var i=0; i<opts; i++){
-		operacion.options[i].value = muestras[i].id;
-		operacion.options[i].text = muestras[i].registro;
-	    }
-	    //console.log(operacion.options);
-	} else {
-	    operacion.options.length = 1;
-	    operacion.options[0].value = '';
-	    operacion.options[0].text = '';
-	    operacion.options[0].selected = true;
+		asociadoBox.options[i].value = asociadosOperacion[i].id;
+		asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
 	}
-    } else { // si se deja el contrato vacío, borramos calidad y proveedor
-	//console.log(combobox.options);
-	//lo siguiente no vale: cuando editamos muestra de oferta que ya
-	//tiene calidad_id y proveedor_id, se borran del formulario
-	//combobox.options[0].selected = true;
-	//proveedor.options[0].selected = true;
-    }
+}
 }

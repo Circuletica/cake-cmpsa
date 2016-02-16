@@ -236,39 +236,29 @@ foreach($operaciones_asociados as $clave => $operacion){
 	$operaciones_asociados = Hash::combine($operaciones_asociados, '{n}.Operacion.id','{n}');
 	$this->set(compact('operaciones_asociados'));
 
-//DE ERIC
-/*$operacionesRetirada = $this->Retirada->find(
-	'all',
-	array(
-		'contain'=> array(
-			'Operacion' => array(
-				'fields' => array(
-					'id'
-					)
-				),
-			'AlmacenTransporte' => array(
-					'fields' => array(
-						'almacen_id',
-						'cuenta_almacen'
+
+
+	$operaciones_almacen = $this->Retirada->find(
+		'all',
+		array(
+			//'conditions' => array('Retirada.operacion_id' =>  ),
+			'contain' => array(
+				'Almacen' => array(
+					'fields'=> array(
+						'id',
+						'nombre_corto'
 						)
 					)
-			),
-		'fields' => array(
-			'Retirada.id',
-			'Retirada.asociado_id',
-			'Retirada.almacen_transporte_id'
+				)
 			)
-		)
-	);
-$this->set('operacionRetiradas', Hash::combine($operacionesRetirada, '{n}.Retirada.id','{n}'));
-$this->set(compact('operacionesRetirada'));*/
+		);
+	$this->set(compact('operaciones_almacen'));
 
 	//Listamos las cuentas corrientes de los almacenes
 	//$this->loadModel('AlmacenTransporte');
 	$almacenTransportes = $this->Retirada->AlmacenTransporte->find(
 		'list',
 		array(
-			//'conditions' => array('AlmacenTransporte.id' => $id)
 			'fields' => array(
 				'AlmacenTransporte.id',
 				'AlmacenTransporte.cuenta_almacen'),

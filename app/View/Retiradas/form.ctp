@@ -3,8 +3,7 @@ $this->Html->addCrumb('Operaciones','/operaciones/index_trafico');
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 //Pasamos la lista de 'contratosMuestra' del contrato al javascript de la vista
 //$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
-//$this->Js->set('operacionesRetirada', $operacionesRetirada);
-
+$this->Js->set('operaciones_asociados', $operaciones_asociados);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 if ($action == 'add') {
@@ -38,15 +37,12 @@ if ($action == 'edit') {
     </div>
     <div class="col3">
 <?php
-
     echo $this->Form->input('operacion_id',
         array(
           'label'=>'Ref. Operación',
-          'empty' => true,
+          'empty' => array('' => 'Selecciona'),
           'onchange' => 'operacionesRetirada()',
-          'value' => $operacion_id,
-          //si se sabe la operacion, se deshabilita
-          //'disabled' => $operacion_id != NULL
+          'value' => $operacion_id
         )
       );
 
@@ -55,7 +51,7 @@ if ($action == 'edit') {
               'label'=>'Asociado',
               'empty' =>array('' => 'Selecciona'),
               'class' => 'ui-widget',
-              'id' => 'combobox',              
+              'id' => 'asociado',              
                )
          );  
 
