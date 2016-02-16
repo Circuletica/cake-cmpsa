@@ -203,9 +203,9 @@ input[type=submit]:active,
 	-webkit-column-count: 4; /* Chrome, Safari, Opera */	
 	-moz-column-count: 4; /* Firefox */
 	column-count: 4;
-	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
-	-moz-column-gap: 40px; /* Firefox */
-	column-gap: 40px;
+	-webkit-column-gap: 35px; /* Chrome, Safari, Opera */
+	-moz-column-gap: 35px; /* Firefox */
+	column-gap: 35px;
  	-webkit-column-rule: 1px dotted #ddd;
     -moz-column-rule: 1px dotted #ddd;
           column-rule: 1px dotted #ddd;
