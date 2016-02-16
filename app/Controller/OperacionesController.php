@@ -102,6 +102,25 @@ class OperacionesController extends AppController {
 	    );
 	}
 	$contrato_id = $this->params['named']['from_id'];
+	$this->loadModel('Asociado');
+	$asociados = $this->Asociado->find(
+	    'all',
+	    array(
+			'fields' => array(
+				'Asociado.id',
+		    	'Empresa.codigo_contable',
+				'Empresa.nombre_corto'
+				),
+		'order' => array(
+	    	'Empresa.codigo_contable' => 'ASC'
+	    	),
+		'recursive' => 1
+	    )
+	);	
+	//reindexamos los asociados por codigo contable
+	$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
+	ksort($asociados);
+	$this->set('asociados', $asociados);
 
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
@@ -109,8 +128,11 @@ class OperacionesController extends AppController {
 	$proveedores = $this->Proveedor->find(
 	    'list',
 	    array(
-		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'fields' => array(
+			'Proveedor.id',
+			'Empresa.nombre_corto'),
+		'order' => array(
+			'Empresa.nombre_corto' => 'asc'),
 		'recursive' => 1
 	    )
 	);
@@ -184,16 +206,10 @@ class OperacionesController extends AppController {
 	//solo para mostrar el proveedor a nivel informativo
 	$this->set('proveedor',$contrato['Proveedor']['nombre']);
 	//a quienes van asociadas las lineas de contrato
-	$asociados = $this->Operacion->AsociadoOperacion->Asociado->find('all', array(
-	    'fields' => array('Asociado.id','Asociado.codigo_contable','Asociado.nombre_corto'),
-	    'order' => array('Asociado.codigo_contable' => 'ASC'),
-	    'recursive' => 1
-	)
-    );
-	//reindexamos los asociados por codigo contable
-	$asociados = Hash::combine($asociados, '{n}.Asociado.codigo_contable', '{n}');
-	ksort($asociados);
-	$this->set('asociados', $asociados);
+
+
+
+
 	//para los puertos de carga y destino
 	$this->set('puertoCargas',$this->Operacion->PuertoCarga->find('list', array(
 	    'order' => array('PuertoCarga.nombre' =>'ASC')
@@ -535,13 +551,13 @@ endif;
 
 	//Calculo la cantidad de bultos transportados
 	if($operacion['Operacion']['id']!= NULL){
-		$suma = 0;
-		$transportado=0;
-		foreach ($operacion['Transporte'] as $suma){
-			if ($transporte['operacion_id']=$operacion['Operacion']['id']){
-			$transportado = $transportado + $suma['cantidad_embalaje'];
-			}
+	    $suma = 0;
+	    $transportado=0;
+	    foreach ($operacion['Transporte'] as $suma){
+		if ($transporte['operacion_id']=$operacion['Operacion']['id']){
+		    $transportado = $transportado + $suma['cantidad_embalaje'];
 		}
+	    }
 	}
 	$this->set('transportado',$transportado);
 
@@ -582,9 +598,10 @@ endif;
 
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-		
+
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
+
 		foreach ($operacion_retiradas as $clave => $operacion_retirada){
 			$retirada = $operacion_retirada['Retirada'];
 			if($retirada['asociado_id'] == $linea['Asociado']['id']){
@@ -594,40 +611,43 @@ endif;
 		}
 
 	$lineas_retirada[] = array(
-		'asociado_id' => $linea['Asociado']['id'],
- 		'Nombre' => $linea['Asociado']['nombre_corto'],
- 		'Cantidad' => $linea['cantidad_embalaje_asociado'],
- 		'Peso' => $peso,
- 		'Cantidad_retirado' => $cantidad_retirado,
- 		'Peso_retirado' => $peso_retirado
+	   'asociado_id' => $linea['Asociado']['id'],
+ 	   'Nombre' => $linea['Asociado']['nombre_corto'],
+ 	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
+ 	   'Peso' => $peso,
+ 	   'Cantidad_retirado' => $cantidad_retirado,
+ 	   'Peso_retirado' => $peso_retirado
 		);
+
 	$total_sacos += $linea['cantidad_embalaje_asociado'];
 	$total_peso += $peso;
 	$total_sacos_retirados += $cantidad_retirado; 
 	$total_peso_retirado += $peso_retirado;
 
-	endforeach;
+endforeach;
 
-	ksort($lineas_retirada);
-	$this->set('lineas_retirada',$lineas_retirada);
-	$this->set('total_sacos',$total_sacos);
-	$this->set('total_peso',$total_peso);	
-	$this->set('total_sacos_retirados',$total_sacos_retirados);
-	$this->set('total_peso_retirado',$total_peso_retirado);
+ksort($lineas_retirada);
+$this->set('lineas_retirada',$lineas_retirada);
+$this->set('total_sacos',$total_sacos);
+$this->set('total_peso',$total_peso);	
+$this->set('total_sacos_retirados',$total_sacos_retirados);
+$this->set('total_peso_retirado',$total_peso_retirado);
     }
 
     public function delete($id = null) {
-	if (!$id or $this->request->is('get')) :
+	if (!$id or $this->request->is('get')) {
 	    throw new MethodNotAllowedException();
-endif;
-if ($this->Operacion->delete($id)):
-    $this->Session->setFlash('Línea de contrato borrada');
-$this->redirect(array(
-    'controller' => $this->params['named']['from_controller'],
-    'action'=>'view',
-    $this->params['named']['from_id']
-));
-endif;
+	}
+	if ($this->Operacion->delete($id)) {
+	    $this->Session->setFlash('Línea de contrato borrada');
+	    $this->redirect(array(
+		//'controller' => $this->params['named']['from_controller'],
+		'controller' => 'operaciones',
+		//'action'=>'view',
+		'action'=>'index',
+		//$this->params['named']['from_id']
+	    ));
+	}
     }
 
     public function generarFinanciacion($id = null) {

@@ -15,7 +15,7 @@ class MuestrasController extends AppController {
 	    )
 	);
 	$this->paginate['order'] =  array(
-	    'Muestra.fecha' => 'ASC'
+	    'Muestra.registro' => 'DESC'
 	);
 	$this->paginate['recursive'] = 1;
 
@@ -24,12 +24,14 @@ class MuestrasController extends AppController {
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
 	$this->loadModel('Proveedor');
-	$proveedores = $this->Proveedor->find('list', array(
-	    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-	    'order' => array('Empresa.nombre_corto' => 'asc'),
-	    'recursive' => 1
-	)
-    );
+	$proveedores = $this->Proveedor->find(
+	    'list',
+	    array(
+		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
+	    )
+	);
 	$this->set('proveedores',$proveedores);
 
 	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
@@ -37,17 +39,9 @@ class MuestrasController extends AppController {
 	//$passedArgs['Search.palabras'] = mipalabra
 	//$passedArgs['Search.id'] = 3
 	//Si queremos un titulo con los criterios de busqueda
+	//para qué sirve esta variable ???
 	$titulo = array();
 
-	//filtramos por referencia
-	if(isset($this->passedArgs['Search.registro'])) {
-	    $registro = $this->passedArgs['Search.registro'];
-	    $this->paginate['conditions']['Muestra.registro LIKE'] = "%$registro%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['registro'] = $registro;
-	    //completamos el titulo
-	    $title[] = 'Registro: '.$registro;
-	}
 	//filtramos por tipo
 	if(isset($this->passedArgs['Search.tipo_id'])) {
 	    $tipo_id = $this->passedArgs['Search.tipo_id'];
@@ -55,9 +49,18 @@ class MuestrasController extends AppController {
 	    //guardamos el criterio para el formulario de vuelta
 	    $this->request->data['Search']['tipo_id'] = $tipo_id;
 	    //Sacamos el nombre del tipo
-	    $tipo = $this->tipoMuestras[$tipo_id];	
+	    $tipo = $this->tipoMuestras[$tipo_id];
 	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['tipo_id'] = $tipo_id;
+	    $this->request->data['Search']['tipo_id'] = $tipo_id;		
+	}
+	//filtramos por referencia
+	if(isset($this->passedArgs['Search.tipo_registro'])) {
+	    $tipo_registro = $this->passedArgs['Search.tipo_registro'];
+	    $this->paginate['conditions']['Muestra.tipo_registro LIKE'] = "%$tipo_registro%";
+	    //guardamos el criterio para el formulario de vuelta
+	    $this->request->data['Search']['tipo_registro'] = $tipo_registro;
+	    //completamos el titulo
+	    $title[] = 'Registro: '.$tipo_registro;
 	}
 	//filtramos por proveedor
 	if(isset($this->passedArgs['Search.proveedor_id'])) {
@@ -176,9 +179,19 @@ class MuestrasController extends AppController {
     }
 
     public function add() {
+	if(!isset($this->passedArgs['tipo_id'])) {
+	    $this->Session->setFlash('Error en URL, falta tipo muestra');
+	    $this->redirect(
+		array(
+		    'action' => 'index',
+		    'Search.tipo_id' => 1
+		)
+	    );
+	}
 	$this->form();
 	$this->render('form');
     }
+
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
 	    $this->Session->setFlash('error en URL');
@@ -194,7 +207,7 @@ class MuestrasController extends AppController {
     public function form($id = null) {
 	$this->set('action', $this->action);
 	$tipos = $this->tipoMuestras;
-	$this->set('tipos', $tipos);
+	//$this->set('tipos', $tipos);
 	$this->loadModel('Proveedor');
 	$this->set(
 	    'proveedores',
@@ -217,24 +230,30 @@ class MuestrasController extends AppController {
 	if (!empty($id)) {
 	    $this->Muestra->id = $id;
 	    $muestra = $this->Muestra->findById($id);
-	    //$this->set('muestra',$muestra);
-	    $tipo_nombre = $tipos[$muestra['Muestra']['tipo']];
 	    $tipo = $muestra['Muestra']['tipo'];
+	    $tipo_nombre = $tipos[$tipo];
+	    $this->set('referencia',$muestra['Muestra']['tipo_registro']);
 	} else { //es un add()	
 	    //Si no esta el tipo de muestra en la URL, volvemos
 	    //a muestras de oferta
-	    if(!isset($this->passedArgs['tipo_id'])) {
-		$this->Session->setFlash('Error en URL, falta tipo muestra');
-		$this->redirect(
-		    array(
-			'action' => 'index',
-			'Search.tipo_id' => 1
+	    $tipo = $this->passedArgs['tipo_id'];
+	    $tipo_nombre = $tipos[$tipo];
+	    $this->Muestra->virtualFields += array(
+		'ultimoRegistro' => 'MAX(Muestra.registro)'
+	    );
+	    $ultimo_registro = $this->Muestra->find(
+		'first',
+		array(
+		    'conditions' => array(
+			'Muestra.tipo' => $tipo
+		    ),
+		    'fields' => array(
+			'ultimoRegistro'
 		    )
-		);
-	    } else {
-		$tipo = $this->passedArgs['tipo_id'];
-		$tipo_nombre = $tipos[$this->passedArgs['tipo_id']];
-	    }
+		)
+	    );
+	    $nuevo_registro = $ultimo_registro['Muestra']['ultimoRegistro'] + 1;
+	    $this->set(compact('nuevo_registro'));
 	}
 	$this->set('tipo',$tipo);
 	$this->set(compact('tipo_nombre'));
@@ -247,17 +266,6 @@ class MuestrasController extends AppController {
 	    'contratos',
 	    $this->Muestra->Contrato->find('list')
 	);
-	//para el javascript de la view
-	//queremos el transporte como 'embarque 03/2016' o 'entrega 01/2015'
-	$this->Muestra->Contrato->virtualFields = array(
-	    'transporte' => 'CONCAT(
-		CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
-		" ",
-		SUBSTR(Contrato.fecha_transporte,6,2),
-	"/",
-	SUBSTR(Contrato.fecha_transporte,1,4)
-    )'
-	);
 	//el array que se pasa al javascript para cambiar
 	//calidad y proveedor automaticamente
 	//cuando se cambia el contrato
@@ -266,9 +274,9 @@ class MuestrasController extends AppController {
 	    array(
 		'contain' => array(
 		    'Proveedor' => array(
-			    'fields' =>array(
-				'nombre_corto'
-			    )
+			'fields' =>array(
+			    'nombre_corto'
+			)
 		    ),
 		    'CalidadNombre'
 		),
@@ -282,7 +290,7 @@ class MuestrasController extends AppController {
 	//queremos el id del contrato como index del array
 	$contratosMuestra = Hash::combine($contratosMuestra, '{n}.Contrato.id','{n}');
 	$this->set(compact('contratosMuestra'));
-	
+
 	//el array que se pasa al javascript para cambiar
 	//embarque automaticamente cuando se cambia el contrato
 	//Solo queremos los contratos que tienen muestra de embarque
@@ -292,7 +300,20 @@ class MuestrasController extends AppController {
 	$contratosEmbarque = $this->Muestra->Contrato->find(
 	    'all',
 	    array(
-		'contain' => 'Muestra.tipo = 2'
+		'contain' => array(
+		    'Muestra' => array(
+			'conditions' => array(
+			    'Muestra.tipo' => 2
+			),
+			'fields' => array(
+			    'id',
+			    'tipo_registro'
+			)
+		    )
+		),
+		'fields' => array(
+		    'Contrato.id'
+		)
 	    )
 	);
 	//queremos el id del contrato como index del array
@@ -301,18 +322,11 @@ class MuestrasController extends AppController {
 	foreach($contratosEmbarque as $key => $contrato) {
 	    //el contenido del contrato no interesa, solo el id
 	    unset($contratosEmbarque[$key]['Contrato']);
-	    //para Muestra de cada contrato solo queremos id => registro: o no ?!
-	    //'Muestra' => array(
-	    //	(int) 59 => 'lsd',
-	    //	(int) 77 => 'EB001'
-	    //	)
-	    //$contratosEmbarque[$key]['Muestra'] = Hash::combine($contrato['Muestra'], '{n}.id', '{n}.registro');
 	    //solo guardamos los contratos que sí tienen
 	    //muestra de embarque
 	    if (empty($contratosEmbarque[$key]['Muestra']))
 		unset ($contratosEmbarque[$key]);
 	}
-	debug($contratosEmbarque);
 	$this->set(compact('contratosEmbarque'));
 
 	//el array que se pasa al javascript para cambiar
@@ -328,7 +342,7 @@ class MuestrasController extends AppController {
 		),
 		'fields' => array(
 		    'Muestra.id',
-		    'Muestra.registro',
+		    'Muestra.tipo_registro',
 		    'Contrato.id',
 		    'Contrato.proveedor_id',
 		    'Contrato.calidad_id'
@@ -343,7 +357,7 @@ class MuestrasController extends AppController {
 	//los demás campos cuando se selecciona una muestra de embarque
 	$this->set (
 	    'muestraEmbarques',
-	    Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.registro')
+	    Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.tipo_registro')
 	);
 	//por otra parte la lista del desplegable de muestras de embarque
 	//para el formulario
@@ -370,17 +384,14 @@ class MuestrasController extends AppController {
 			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['id'];
 		}
 	    }
-//	    if (!isset($this->request->data['Muestra']['contrato_id'])) {
-//		//no sabemos si es null o ''
-//		$this->request->data['Muestra']['contrato_id'] = null;
-//		//$this->request->data['Muestra']['contrato_id'] = '';
-//	    }
 	    if($this->Muestra->save($this->request->data)) {
 		$this->Session->setFlash('Muestra guardada');
 		$this->redirect(
 		    array(
-			'action' => 'index',
-			'Search.tipo_id' => $tipo
+			//			'action' => 'index',
+			//			'Search.tipo_id' => $tipo
+			'action' => 'view',
+			$this->Muestra->id
 		    )
 		);
 	    } else {

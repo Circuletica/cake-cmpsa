@@ -3,9 +3,9 @@
 		'controller' => 'fletes',
 		'action' => 'index')
 	); ?>
-	<h2>Fletes</h2>
+<h2>Fletes <?php echo $titulo;?></h2>
 	<div class="actions">
-		<?php	echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
+		<?php	echo $this->element('filtroflete'); //Elemento del Desplegable Datos
 		?>
 	</div>
 <div class='index'>

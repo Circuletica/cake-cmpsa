@@ -2,20 +2,18 @@
   <div class="radiomuestra">
   </div>
   <?php
-    echo $this->Form->input('Search.registro');
+  echo $this->Form->input(
+      'Search.tipo_registro',
+      array(
+	  'label' => 'Registro'
+      )
+  );
     echo $this->Form->input('Search.fecha', array('after'=>'aaaa o mm-aaaa'));
     echo $this->Form->input('Search.calidad');
     echo $this->Form->input('Search.proveedor_id', array(
       'label' => 'Proveedor',
       'empty' => true
     ));
-    //  echo $this->Form->input('Search.aprobado', array(
-    //    'empty'=>__('Cualquiera', true),
-    //    'options'=>array(
-    //      0=>__('Rechazado',true),
-    //      1=>__('Aprobado',true)
-    //      )
-    //    ));
   ?>
   <div class="formuboton">
     <ul>

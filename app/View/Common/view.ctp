@@ -13,15 +13,13 @@ $from_controller = $this->fetch('from_controller');
 $from_id = $this->fetch('from_id');
 
 if (!empty($this->fetch('breadcrumb'))) {
-//    $this->fetch('breadcrumb');
-//} else {
-$this->Html->addCrumb(
-    ucfirst($controller),
-    array(
-	'controller'=>$controller,
-	'action'=>'index'
-    )
-);
+    $this->Html->addCrumb(
+	ucfirst($controller),
+	array(
+	    'controller'=>$controller,
+	    'action'=>'index'
+	)
+    );
 }
 ?>
 <h2><?php echo $object; ?></h2>

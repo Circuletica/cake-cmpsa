@@ -14,8 +14,14 @@ if ($action == 'add') {
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Muestra de ".$tipo_nombre."</h2>\n";
+    echo "<h2>Modificar Muestra ".$referencia."</h2>\n";
 }
+
+$siglas_tipos = array(
+    1 => 'OF',
+    2 => 'EB',
+    3 => 'EN'
+);
 
 //si no esta la calidad en el listado, dejamos un enlace para
 //agragarla
@@ -29,7 +35,7 @@ $enlace_anyadir_calidad = $this->Html->link (
     )
 );
 //si no esta el proveedor en el listado, dejamos un enlace para
-//agragarlo
+//agregarlo
 $enlace_anyadir_proveedor = $this->Html->link (
     'Añadir Proveedor',
     array(
@@ -49,12 +55,24 @@ echo $this->Form->hidden(
 	'value' => $tipo
     )
 );
-echo $this->Form->input(
-    'registro',
-    array(
-	'autofocus' => 'autofocus'
-    )
-);
+if ($action == 'add') {
+    echo $this->Form->input(
+	'registro',
+	array(
+	    'autofocus' => 'autofocus',
+	    'between' => $siglas_tipos[$tipo].'-',
+	    'value' => $nuevo_registro
+	)
+    );
+} else {
+    echo $this->Form->input(
+	'registro',
+	array(
+	    'autofocus' => 'autofocus',
+	    'between' => $siglas_tipos[$tipo].'-',
+	)
+    );
+}
 echo $this->Form->input(
     'aprobado',
     array(
@@ -70,7 +88,8 @@ echo $this->Form->input(
 echo $this->Form->input('contrato_id',
     array(
 	'empty' => true,
-	'disabled' => ($tipo == 1),
+	'disabled' => ($tipo == 1), //si es oferta, no metemos contrato
+	//mas adelante, si la muestra es aprobada, se activa este campo
 	'onchange' => 'contratosMuestra()'
     )
 );
@@ -79,9 +98,10 @@ if ($tipo == 3) {
 	'muestra_embarque_id',
 	array(
 	    'empty' => true,
-	    'onchange' => 'muestraEntrega()',
+	    //'between' => 'EB-'
+	    //'onchange' => 'muestraEntrega()',
 	    //'disabled' => 1,
-	    'id' => 'embarque'
+	    //'id' => 'embarque'
 	)
     );
 }
@@ -91,7 +111,7 @@ echo $this->Form->input(
 	'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 	'empty' => array('' => 'Selecciona'),
 	'class' => 'ui-widget',
-	'id' => 'combobox',
+	//'id' => 'combobox',
 	//si no es oferta, solo se introduce la referencia de contrato
 	'disabled' => $tipo != 1
     )
@@ -102,7 +122,7 @@ echo $this->Form->input(
 	'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
 	'empty' => array('' => 'Selecciona'),
 	'class' => 'ui-widget',
-	'id' => 'proveedor',
+	//'id' => 'proveedor',
 	//si no es oferta, solo se introduce la referencia de contrato
 	'disabled' => $tipo != 1
     )
@@ -130,9 +150,9 @@ echo $this->Form->end('Guardar Muestra');
 </fieldset>
 
 <script type="text/javascript">
-window.onload = contratosMuestra();
 <?php 
 if ($tipo == 1) 
-echo 'window.onload = muestraOferta();';
+    echo 'window.onload = muestraOferta();';
 ?>
+window.onload = contratosMuestra();
 </script>

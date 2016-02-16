@@ -36,7 +36,6 @@ class AppController extends Controller {
     );
 
     public $helpers = array(
-	//'Js' => array('cmpsa'),
 	'Html',
 	'Form',
 	'Date',
@@ -76,6 +75,7 @@ class AppController extends Controller {
     }
 
     public function viewCompany($class,$id) {
+	$this->{$this->class}->recursive = 3;
 	$empresa = $this->{$this->class}->findById($id);
 	$this->set('empresa',$empresa);
 	$this->set('referencia', $empresa['Empresa']['nombre_corto']);
@@ -171,6 +171,7 @@ class AppController extends Controller {
 	2 => 'Embarque',
 	3 => 'Entrega'
     );	
+
     public function filtroListado() { //FILTRO-BUSCADOR
 	//la página a la que redirigimos después de mandar  el formulario de filtro
 	$url['action'] = 'index';
@@ -183,5 +184,25 @@ class AppController extends Controller {
 	    } 
 	}
 	$this->redirect($url,null,true);
+    }
+
+    public function filtroPaginador($criterios) {
+	//$criterios es un array como
+	//("Registro" => "registro",
+	//"Proveedor" => "proveedor_id",
+	//"Marca" => "marca_almacen"
+	//)
+	foreach ($criterios as $nombre => $campo) {
+	    if (isset($this->passedArgs['Search.'.$campo])) {
+		$valor = $this->passedArgs['Search.'.$campo];
+		$this->paginate['conditions'][$campo.' LIKE'] = $valor;
+		$this->request->data['Search'][$campo] = $valor;
+		$titulo[] = $nombre.': '.$valor;
+	    }
+	}
+	if (isset($titulo)) {
+	$titulo = implode(' | ', $titulo);
+	return $titulo;
+	}
     }
 }
