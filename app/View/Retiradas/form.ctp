@@ -4,6 +4,7 @@ echo $this->Html->script('jquery')."\n"; // Include jQuery library
 //Pasamos la lista de 'contratosMuestra' del contrato al javascript de la vista
 //$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 $this->Js->set('operaciones_asociados', $operaciones_asociados);
+$this->Js->set('operaciones_almacen', $operaciones_almacen);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 if ($action == 'add') {

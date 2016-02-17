@@ -240,6 +240,7 @@ function muestraEntrega() {
 
 function operacionesRetirada(){
     var operaciones = window.app.operaciones_asociados;
+    var cuentas = window.app.operaciones_almacen;
     //Se declaran als variables según el desplegable que queremos controlar
     //La variable es todo el elemento
     var operacionBox = document.getElementById('RetiradaOperacionId');
@@ -259,14 +260,24 @@ function operacionesRetirada(){
 		//modificamos _todo_ el select de operaciones
 	if (operacionId in operaciones) {
 		var asociadosOperacion = operaciones[operacionId].Asociado;
-		console.log(asociadosOperacion);
-		var opts = asociadosOperacion.length; //cuantos asociados tiene la operación
-	    asociadoBox.options.length = opts;
+		var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
+	    asociadoBox.options.length = opt1;
 
-	    for (var i=0; i<opts; i++){
+	    for (var i=0; i<opt1; i++){
 		asociadoBox.options[i].value = asociadosOperacion[i].id;
 		asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
-	}
+		}
+
+		//CUENTA ALMACEN		
+			var almacenesOperacion = cuentas[cuentaId].AlmacenTransporte;
+			var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
+			cuentaBox.options.length = opt2;
+	
+			for (var i=0; i<opt2; i++){
+			cuentaBox.options[i].value = almacenesOperacion[i].id;
+			cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
+			}
+		
 	}
 }
 

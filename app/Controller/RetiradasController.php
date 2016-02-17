@@ -226,7 +226,7 @@ class RetiradasController extends AppController {
 	);
 
 foreach($operaciones_asociados as $clave => $operacion){
-	//$operacion['Asociado'][] = array();
+	
 	foreach($operacion['AsociadoOperacion'] as $asociado_operacion){
 		$operacion['Asociado'][] = $asociado_operacion['Asociado'];
 	}
@@ -238,20 +238,34 @@ foreach($operaciones_asociados as $clave => $operacion){
 
 
 
-	$operaciones_almacen = $this->Retirada->find(
+	$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
 		'all',
 		array(
-			//'conditions' => array('Retirada.operacion_id' =>  ),
-			'contain' => array(
-				'Almacen' => array(
-					'fields'=> array(
-						'id',
-						'nombre_corto'
+
+			'contain' => array(		
+					'Transporte' => array(
+						'fields'=> array(
+							'operacion_id'
+							),
+						'AlmacenTransporte' => array(
+							'fields'=> array(
+								'id',
+								'cuenta_almacen'
+								)
+							)
 						)
 					)
-				)
 			)
 		);
+	foreach($operaciones_almacen as $clave => $cuenta){
+	
+	foreach($cuenta['Transporte'] as $transporte){
+		$cuenta['AlmacenTransporte'][] = $transporte['AlmacenTransporte'];
+	}
+	$operaciones_almacen[$clave] = $cuenta;
+	unset($operaciones_almacen[$clave]['AlmacenTransporte']);
+}
+	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
 	$this->set(compact('operaciones_almacen'));
 
 	//Listamos las cuentas corrientes de los almacenes
