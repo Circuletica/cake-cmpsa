@@ -45,4 +45,3 @@ echo $this->Form->input('email');
 <?php
 echo $this->Form->end('Guardar contacto');
 ?>
-

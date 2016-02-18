@@ -32,10 +32,11 @@ class ContactosController extends AppController {
 
     public function form($id = null) {
 	$this->set('action', $this->action);
+	$empresa_id = $this->params['named']['from_id'];
 	//necesitamos el nombre de la empresa para el breadcrumb y el título de la vista
 	$this->set(
 	    'empresa',
-	    $this->Contacto->Empresa->findById($this->params['named']['from_id'])
+	    $this->Contacto->Empresa->findById($empresa_id)
 	);
 	$this->set('departamentos',$this->Contacto->Departamento->find('list'));
 
@@ -45,13 +46,14 @@ class ContactosController extends AppController {
 	    $this->set('referencia', $contacto['Contacto']['nombre']);
 	}
 	if (!empty($this->request->data)){  //es un POST
+	    $this->request->data['Contacto']['empresa_id'] = $empresa_id;
 	    if($this->Contacto->save($this->request->data)) {
 		$this->Session->setFlash('Contacto guardado');
 		$this->redirect(
 		    array(
 			'action' => 'view',
 			'controller' => $this->params['named']['from_controller'],
-			$this->params['named']['from_id'],
+			$empresa_id,
 		    )
 		);
 	    } else {
