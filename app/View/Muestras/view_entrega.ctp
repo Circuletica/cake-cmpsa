@@ -82,10 +82,18 @@ $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
 	$muestra['Muestra']['tipo_registro'].'/'.$i,
-	$linea['AlmacenTransporte']['marca_almacen'],
-	$linea['AlmacenTransporte']['cuenta_almacen'],
-	$linea['AlmacenTransporte']['cantidad_cuenta'],
-	$linea['Operacion']['referencia'],
+	(isset($linea['AlmacenTransporte']['marca_almacen']) ?
+		$linea['AlmacenTransporte']['marca_almacen'] : ''
+	),
+	(isset($linea['AlmacenTransporte']['cuenta_almacen']) ?
+		$linea['AlmacenTransporte']['cuenta_almacen'] : ''
+	),
+	(isset($linea['AlmacenTransporte']['cantidad_cuenta']) ?
+		$linea['AlmacenTransporte']['cantidad_cuenta'] : ''
+	),
+	(isset($linea['Operacion']['referencia']) ?
+		$linea['Operacion']['referencia'] : ''
+	),
 	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
     )
 );
