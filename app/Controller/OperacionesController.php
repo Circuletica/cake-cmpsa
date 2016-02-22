@@ -545,7 +545,10 @@ endif;
 		    'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
 		    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
 		),
-		'fields' => array('Embalaje.nombre','ContratoEmbalaje.peso_embalaje_real')
+		'fields' => array(
+			'Embalaje.nombre',
+			'ContratoEmbalaje.peso_embalaje_real'
+			)
 	    )
 	);
 

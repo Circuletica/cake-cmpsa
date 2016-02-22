@@ -113,6 +113,7 @@ class TransportesController extends AppController {
 	}
 
     public function form($id = null) { //esta acción vale tanto para edit como add
+    $this->set('action', $this->action);
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado controller/add '.$id);
 	    $this->redirect(array(
@@ -189,7 +190,7 @@ class TransportesController extends AppController {
 	   	)
 	);
 
-	$this->set('action', $this->action);
+
 	$embalaje = $operacion['Embalaje']['nombre'];		
 	$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
 	$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(

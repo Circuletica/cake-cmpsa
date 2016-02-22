@@ -1,14 +1,11 @@
 <?php
-$this->extend('/Common/view');
+$this->extend('/Common/view_withoutbuttons');
 $this->assign('object', 'Retirada del asociado '.$asociado_nombre['Asociado']['nombre_corto']);
 //$this->assign('line_object', 'precio');
 //$this->assign('id',$flete['Retirada']['id']);
 $this->assign('class','Retirada');
 $this->assign('controller','retiradas');
 $this->assign('line_controller','retiradas');
-
-$this->start('filter');
-$this->end();
 
 $this->start('main');
 echo "<dl>";
@@ -21,9 +18,11 @@ echo "<dl>";
 	);
 	echo "</dd>";
 	echo "<dt>Sacos solicitados:</dt>\n";
-	//echo "<dd>".$retirada['Operacion']['AsociadoOperacion']['cantidad_embalaje_asociado'].'&nbsp;'."</dd>";
+	echo "<dd>".$asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' x '.$embalaje['Embalaje']['nombre'].'&nbsp';
+		"</dd>";
 	echo "<dt>Peso solicitado:</dt>\n";
-//	echo "<dd>".$retirada['Operacion']['AsociadoOperacion']['cantidad_embalaje_asociado'].'&nbsp;'."</dd>";
+	 $peso = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+	echo "<dd>".$peso.' Kg &nbsp;'."</dd>";
 echo "</dl>";
 
 $this->end();
@@ -56,7 +55,13 @@ foreach($retiradas as $retirada):
 endforeach;?>
 </table>
 <?php
-$this->end();
+    echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Volver', 
+    	$this->request->referer(''), array('class' => 'botond',
+    	'escape'=>false
+    	)
+    );
+	$this->end();
+
 ?>
 		</div>
 </div>

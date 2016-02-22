@@ -138,8 +138,12 @@ class RetiradasController extends AppController {
 			'recursive'=>-1,
 			'fields' => array(
 				'id',
-				'referencia')
-			));
+				'referencia',
+				'contrato_id',
+				'embalaje_id'
+				)
+			)
+		);
 	$this->set('operacion',$operacion);
 
 	$asociado_nombre = $this->Retirada->Asociado->find(
@@ -152,9 +156,44 @@ class RetiradasController extends AppController {
 			'fields' => array(
 				'id',
 				'nombre_corto')
-			));
+			)
+		);
+
 	$this->set(compact('asociado_nombre'));	
 
+	//el nombre de calidad concatenado esta en una view de MSQL
+	$this->loadModel('ContratoEmbalaje');
+	$embalaje = $this->ContratoEmbalaje->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
+		    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+		),
+		'fields' => array(
+			'Embalaje.nombre',
+			'ContratoEmbalaje.peso_embalaje_real'
+			)
+	    )
+	);
+	$this->set('embalaje', $embalaje);
+
+	$asociado_op = $this->Retirada->Operacion->AsociadoOperacion->find(
+		'first',
+		array(
+			'conditions' => array(
+				'AsociadoOperacion.operacion_id' => $operacion_id,
+				'AsociadoOperacion.asociado_id' => $this->params['named']['asociado_id']
+				),
+			'recursive'=>-1,
+			'fields' => array(
+				'id',
+				'cantidad_embalaje_asociado'
+				)
+			)
+		);
+
+	$this->set(compact('asociado_op'));
 	$this->set(compact('retiradas'));
 
 	$total_sacos_retirados = 0;

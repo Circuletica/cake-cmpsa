@@ -29,6 +29,12 @@ class AlmacenTransportesController extends AppController {
     }
 
  public function form ($id = null) { //esta accion vale tanto para edit como add
+	$this->set('action', $this->action);
+ 	
+ 	//si es un edit(), hay que rellenar el id, ya que
+	//si no se hace, al guardar el edit, se va a crear
+	//un _nuevo_ registro, como si fuera un add
+
  		$this->loadModel('Almacen');		
 		$almacenes = $this->Almacen->find('list', array(
 			'fields' => array(
@@ -41,12 +47,24 @@ class AlmacenTransportesController extends AppController {
 			'recursive' => 1
 			)
 		);	
+	if (!empty($id)) {
+	    $this->AlmacenTransporte->id = $id;
+	    //sacamos los datos de la muestra a la que pertenece la linea
+	    //nos sirven en la vista para detallar campos
+	    $almacen_transporte = $this->AlmacenTransporte->findById($id);
+	    $transporte_id=$almacen_transporte['Transporte']['id'];
+	} else { //un add()
+	    $transporte_id = $this->params['named']['from_id'];
+	}
+
+
 		$this->set(compact('almacenes'));
 
 		$transporte = $this->AlmacenTransporte->Transporte->find(
-			'first', array(
+			'first',
+			array(
 			'conditions' => array(
-				'Transporte.id' => $id
+				'Transporte.id' => $transporte_id
 				),
 			'recursive' => 1,
 			'fields' => array(
@@ -55,9 +73,14 @@ class AlmacenTransportesController extends AppController {
 				)
 			)
 			);
-		$this->set('transporte',$transporte);
-//Calculamos la cantidad de sacos almacenados en la línea
-	if($transporte['Transporte']['id']!= NULL){
+	//	$transporte += $transporte['Transporte'];
+	//	unset($transporte['Transporte']);
+	//llegado a este punto, vengamos de add o edit
+	//$transporte tiene el mismo valor
+	$this->set(compact('transporte'));
+
+	//Calculamos la cantidad de sacos almacenados en la línea
+	if(!empty($transporte['Transporte']['id'])){
 	    $suma = 0;
 	    $almacenado=0;
 	    foreach ($transporte['AlmacenTransporte'] as $suma):
@@ -66,6 +89,7 @@ class AlmacenTransportesController extends AppController {
 	            endif;
 	    endforeach;
 	}
+	$almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;  
 	$this->set('almacenado',$almacenado);
 
 	$this->AlmacenTransporte->id = $id;
