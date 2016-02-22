@@ -32,6 +32,7 @@ $enlace_anyadir_calidad = $this->Html->link (
 	'action' => 'add',
 	'from_controller' => 'muestras',
 	'from_action' => 'add',
+	'from_type' => $tipo
     )
 );
 //si no esta el proveedor en el listado, dejamos un enlace para
@@ -43,6 +44,7 @@ $enlace_anyadir_proveedor = $this->Html->link (
 	'action' => 'add',
 	'from_controller' => 'muestras',
 	'from_action' => 'add',
+	'from_type' => $tipo
     )
 );
 echo $this->Form->create('Muestra');
@@ -98,10 +100,6 @@ if ($tipo == 3) {
 	'muestra_embarque_id',
 	array(
 	    'empty' => true,
-	    //'between' => 'EB-'
-	    //'onchange' => 'muestraEntrega()',
-	    //'disabled' => 1,
-	    //'id' => 'embarque'
 	)
     );
 }
@@ -111,7 +109,6 @@ echo $this->Form->input(
 	'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 	'empty' => array('' => 'Selecciona'),
 	'class' => 'ui-widget',
-	//'id' => 'combobox',
 	//si no es oferta, solo se introduce la referencia de contrato
 	'disabled' => $tipo != 1
     )
@@ -122,7 +119,6 @@ echo $this->Form->input(
 	'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
 	'empty' => array('' => 'Selecciona'),
 	'class' => 'ui-widget',
-	//'id' => 'proveedor',
 	//si no es oferta, solo se introduce la referencia de contrato
 	'disabled' => $tipo != 1
     )
