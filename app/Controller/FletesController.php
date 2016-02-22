@@ -69,23 +69,35 @@ class FletesController extends AppController {
 	//a la vez que definimos las condiciones del 
 	//paginador AppController.php,
 	//sacamos un titulo con los criterios de filtro
+	//	$titulo = $this->filtroPaginador(
+	//	    array(
+	//		'Flete' => array( 
+	//			'Naviera' => 'naviera_id',
+	//			'Puerto de Carga' => 'puerto_carga_id',
+	//			'Puerto de Destino' => 'puerto_destino_id'
+	//		),
+	//		'Proveedor' => array(
+	//			...
+	//		)
+	//	    )
+	//	);
 	$titulo = $this->filtroPaginador(
 	    array(
-		'Naviera' => 'naviera_id',
-		'Puerto de Carga' => 'puerto_carga_id',
-		'Puerto de Destino' => 'puerto_destino_id'
+		'Flete' => array(
+		    'Naviera' => 'naviera_id',
+		    'Puerto de Carga' => 'puerto_carga_id',
+		    'Puerto de Destino' => 'puerto_destino_id'
+		),
+		'PuertoCarga' => array(
+		    'País de origen' => 'pais_id'
+		)
 	    )
 	);
-	//como el filtrado de pais es sobre PuertoCarga.pais_id
-	//no vale la función anterior
-	if(isset($this->passedArgs['Search.pais_id'])) {
-	    $pais_id = $this->passedArgs['Search.pais_id'];
-	    $this->paginate['conditions']['PuertoCarga.pais_id LIKE'] = "$pais_id";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['pais_id'] = $pais_id;
-	    //completamos el titulo
-	    $titulo .= '| País de origen: '.$paises[$pais_id];
-	}
+//	    //guardamos el criterio para el formulario de vuelta
+//	    $this->request->data['Search']['pais_id'] = $pais_id;
+//	    //completamos el titulo
+//	    $titulo .= '| País de origen: '.$paises[$pais_id];
+//	}
 	$fletes = $this->paginate();
 	$this->set(compact('fletes','titulo'));
     }

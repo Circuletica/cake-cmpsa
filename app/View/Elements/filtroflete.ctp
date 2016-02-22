@@ -5,7 +5,8 @@
   echo $this->Form->input(
       'Search.pais_id',
       array(
-	  'empty' => true
+	  'empty' => true,
+	  'label' => 'País de origen'
       )
   );
   echo $this->Form->input(

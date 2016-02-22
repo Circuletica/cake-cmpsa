@@ -188,21 +188,27 @@ class AppController extends Controller {
 
     public function filtroPaginador($criterios) {
 	//$criterios es un array como
-	//("Registro" => "registro",
-	//"Proveedor" => "proveedor_id",
-	//"Marca" => "marca_almacen"
+	//'Naviera' => array(
+	//	"Registro" => "registro",
+	//	"Proveedor" => "proveedor_id",
+	//	"Marca" => "marca_almacen"
+	//	),
+	//'Proveedor' => array(
+	//	'Nombre' => 'nombre_corto',
 	//)
-	foreach ($criterios as $nombre => $campo) {
-	    if (isset($this->passedArgs['Search.'.$campo])) {
-		$valor = $this->passedArgs['Search.'.$campo];
-		$this->paginate['conditions'][$campo.' LIKE'] = $valor;
-		$this->request->data['Search'][$campo] = $valor;
-		$titulo[] = $nombre.': '.$valor;
+	foreach ($criterios as $tabla => $campos) {
+	    foreach ($campos as $nombre => $campo) {
+		if (isset($this->passedArgs['Search.'.$campo])) {
+		    $valor = $this->passedArgs['Search.'.$campo];
+		    $this->paginate['conditions'][$tabla.'.'.$campo.' LIKE'] = $valor;
+		    $this->request->data['Search'][$campo] = $valor;
+		    $titulo[] = $nombre.': '.$valor;
+		}
 	    }
 	}
 	if (isset($titulo)) {
-	$titulo = implode(' | ', $titulo);
-	return $titulo;
+	    $titulo = implode(' | ', $titulo);
+	    return $titulo;
 	}
     }
 }
