@@ -222,8 +222,8 @@ class RetiradasController extends AppController {
 	$this->render('form');
     }
 
-     public function form($id = null) { //esta acción vale tanto para edit como add
-
+    public function form($id = null) { //esta acción vale tanto para edit como add
+	$this->set('action', $this->action);
 	//Listamos el nombre de asociados
 	$this->loadModel('Asociado');	
 	$asociados = $this->Asociado->find(
@@ -237,6 +237,20 @@ class RetiradasController extends AppController {
 	);
 
 	$this->set(compact('asociados'));
+
+	//Listamos las cuentas corrientes de los almacenes
+	//$this->loadModel('AlmacenTransporte');
+	$almacenTransportes = $this->Retirada->AlmacenTransporte->find(
+		'list',
+		array(
+			'fields' => array(
+				'AlmacenTransporte.id',
+				'AlmacenTransporte.cuenta_almacen'),
+			'order' => array('AlmacenTransporte.cuenta_almacen' => 'asc')
+			)
+		);
+
+	$this->set(compact('almacenTransportes'));
 	//Sacamos id de operaciones para listarla
 	$operaciones = $this->Retirada->Operacion->find(
 				'list'
@@ -276,52 +290,29 @@ foreach($operaciones_asociados as $clave => $operacion){
 	$this->set(compact('operaciones_asociados'));
 
 
-
-	$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
+	$operaciones_almacen = $this->Retirada->AlmacenTransporte->find(
 		'all',
 		array(
-
-			'contain' => array(		
-					'Transporte' => array(
-						'fields'=> array(
-							'operacion_id'
-							),
-						'AlmacenTransporte' => array(
-							'fields'=> array(
-								'id',
-								'cuenta_almacen'
-								)
-							)
+			'contain' => array(
+				'Transporte' => array(
+					'fields' => array(
+						'operacion_id'
 						)
 					)
+				)
 			)
 		);
-	foreach($operaciones_almacen as $clave => $cuenta){
+		
+/*	foreach($operaciones_almacen as $clave => $cuenta){
 	
 	foreach($cuenta['Transporte'] as $transporte){
-		$cuenta['AlmacenTransporte'][] = $transporte['AlmacenTransporte'];
+		//$cuenta['AlmacenTransporte'][] = $transporte['AlmacenTransporte'];
 	}
 	$operaciones_almacen[$clave] = $cuenta;
 	unset($operaciones_almacen[$clave]['AlmacenTransporte']);
-}
-	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
+	}*/
+	//$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}Transporte.operacion_id','{n}');
 	$this->set(compact('operaciones_almacen'));
-
-	//Listamos las cuentas corrientes de los almacenes
-	//$this->loadModel('AlmacenTransporte');
-	$almacenTransportes = $this->Retirada->AlmacenTransporte->find(
-		'list',
-		array(
-			'fields' => array(
-				'AlmacenTransporte.id',
-				'AlmacenTransporte.cuenta_almacen'),
-			'order' => array('AlmacenTransporte.cuenta_almacen' => 'asc')
-			)
-		);
-
-	$this->set(compact('almacenTransportes'));
-
-	$this->set('action', $this->action);
 
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear

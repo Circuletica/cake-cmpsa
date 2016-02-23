@@ -5,29 +5,23 @@ $this->Html->addCrumb('Operaciones ', array(
 'controller'=>'operaciones',
 'action'=>'index_trafico'
 ));
-/*$this->Html->addCrumb('Transporte', array(
+$this->Html->addCrumb('Transporte', array(
 'controller'=>'transportes',
-'action'=>'view'
+'action'=>'view',
+$this->params['named']['from_id']
 ));
-$this->Html->addCrumb('Añadir Cuenta Corriente');*/
-if ($action == 'add') {
-	echo "<h2>Agregar Cuenta Corriente almacén</h2>\n";
 
-    $almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;  
-    echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].' / Bultos por almacenar: '.$almacenado.'</h4>';
+if ($action == 'add') {
+	echo "<h2>Agregar Cuenta corriente almacén</h2>\n";
+  $almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;  
+  echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].' / Bultos por almacenar: '.$almacenado.'</h4>';
    }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Cuenta Corriente almacén FORM</h2>\n";
-    $suma = 0;
-    $almacenado=0;
-  
-  echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].'</h4>';
-  echo '<h4>Bultos almacenados (premodificación): '.$almacenado.'</h4>';  
-
+  echo "<h2>Modificar Cuenta corriente almacén</h2>\n";
+  echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].' / Bultos almacenados previamente: '.$almacenado.'</h4>';
 }
-       //FORMULARIO PARA RELLENAR ALMACEN TRANSPORTE
-
+  //FORMULARIO PARA RELLENAR ALMACEN TRANSPORTE
 	echo $this->Form->create('AlmacenTransporte');
 	?>
 <fieldset>	
@@ -35,30 +29,42 @@ if ($action == 'edit') {
 		<?php
 		echo $this->Form->input('almacen_id',array(
 				'label'=>'Nombre almacén',
-	    		'empty' => array('' => 'Selecciona'),					
+	    		'empty' => array(
+            '' => 'Selecciona'
+            ),					
 				)
 			);
 		echo $this->Form->input('cuenta_almacen',array(
-      'label'=>'Referencia almacén')
+      'label'=>'Referencia almacén'
+      )
     );
     ?>
     </div>
     <div class="col3">
     <?php
     echo $this->Form->input('cantidad_cuenta',array(
-      'label'=>'Cantidad de sacos')
+      'label'=>'Cantidad de sacos'
+      )
     );
     echo $this->Form->input('peso_bruto',array(
-      'label'=>'Peso bruto (Kg)')
+      'label'=>'Peso bruto (Kg)'
+      )
     );
 		echo $this->Form->input('marca_almacen',array(
-      'label'=>'Marca almacenada')
+      'label'=>'Marca almacenada'
+      )
     );
 			?> 
 	</div>
 	<?php
-   echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
-		echo $this->Form->end('Guardar Cuenta Almacén');
+   echo $this->Html->Link(
+    '<i class="fa fa-times"></i> Cancelar',
+    $this->request->referer(''), array(
+    'class' => 'botond',
+    'escape'=>false
+    )
+   );
+	echo $this->Form->end('Guardar Cuenta Almacén');
 	?> 
 	</div>
 </fieldset>

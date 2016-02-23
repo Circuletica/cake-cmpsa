@@ -22,6 +22,7 @@ if ($action == 'edit') {
 
     //Formulario para rellenar transporte
     echo $this->Form->create('Transporte');
+    debug($id);
     ?>
     <br>
     <div class="col3">
