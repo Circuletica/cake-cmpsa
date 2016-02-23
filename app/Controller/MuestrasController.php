@@ -40,7 +40,7 @@ class MuestrasController extends AppController {
 	//$passedArgs['Search.id'] = 3
 	//Si queremos un titulo con los criterios de busqueda
 	//para qué sirve esta variable ???
-	$titulo = array();
+	//$titulo = array();
 
 	//filtramos por tipo
 	if(isset($this->passedArgs['Search.tipo_id'])) {
