@@ -32,7 +32,7 @@ $enlace_anyadir_calidad = $this->Html->link (
 	'action' => 'add',
 	'from_controller' => 'muestras',
 	'from_action' => 'add',
-	'from_type' => $tipo
+	'from_type' => $tipo_id
     )
 );
 //si no esta el proveedor en el listado, dejamos un enlace para
@@ -44,7 +44,7 @@ $enlace_anyadir_proveedor = $this->Html->link (
 	'action' => 'add',
 	'from_controller' => 'muestras',
 	'from_action' => 'add',
-	'from_type' => $tipo
+	'from_type' => $tipo_id
     )
 );
 echo $this->Form->create('Muestra');
@@ -52,9 +52,9 @@ echo $this->Form->create('Muestra');
 <fieldset>
 <?php
 echo $this->Form->hidden(
-    'tipo',
+    'tipo_id',
     array(
-	'value' => $tipo
+	'value' => $tipo_id
     )
 );
 if ($action == 'add') {
@@ -62,7 +62,7 @@ if ($action == 'add') {
 	'registro',
 	array(
 	    'autofocus' => 'autofocus',
-	    'between' => $siglas_tipos[$tipo].'-',
+	    'between' => $siglas_tipos[$tipo_id].'-',
 	    'value' => $nuevo_registro
 	)
     );
@@ -71,7 +71,7 @@ if ($action == 'add') {
 	'registro',
 	array(
 	    'autofocus' => 'autofocus',
-	    'between' => $siglas_tipos[$tipo].'-',
+	    'between' => $siglas_tipos[$tipo_id].'-',
 	)
     );
 }
@@ -79,23 +79,23 @@ echo $this->Form->input(
     'aprobado',
     array(
 	'label' => (
-	    $tipo == 1 ?
+	    $tipo_id == 1 ?
 	    'Comprado' : 'Aprobado'
 	),
 	//si es una muestra de oferta y esta comprado, podemos indicar el contrato
 	//correspondiente
-	'onchange' => ($tipo == 1 ? 'muestraOferta()':'')
+	'onchange' => ($tipo_id == 1 ? 'muestraOferta()':'')
     )
 );
 echo $this->Form->input('contrato_id',
     array(
 	'empty' => true,
-	'disabled' => ($tipo == 1), //si es oferta, no metemos contrato
+	'disabled' => ($tipo_id == 1), //si es oferta, no metemos contrato
 	//mas adelante, si la muestra es aprobada, se activa este campo
 	'onchange' => 'contratosMuestra()'
     )
 );
-if ($tipo == 3) {
+if ($tipo_id == 3) {
     echo $this->Form->input(
 	'muestra_embarque_id',
 	array(
@@ -110,7 +110,7 @@ echo $this->Form->input(
 	'empty' => array('' => 'Selecciona'),
 	'class' => 'ui-widget',
 	//si no es oferta, solo se introduce la referencia de contrato
-	'disabled' => $tipo != 1
+	'disabled' => $tipo_id != 1
     )
 );
 echo $this->Form->input(
@@ -120,7 +120,7 @@ echo $this->Form->input(
 	'empty' => array('' => 'Selecciona'),
 	'class' => 'ui-widget',
 	//si no es oferta, solo se introduce la referencia de contrato
-	'disabled' => $tipo != 1
+	'disabled' => $tipo_id != 1
     )
 );
 echo 'Transporte : <var id="transporte_contrato"></var>';

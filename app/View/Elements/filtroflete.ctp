@@ -31,16 +31,7 @@
   <div class="formuboton">
     <ul>
     <li><?php
-  if(isset($this->request->data['Search']['tipo_id'])){
-      echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array(
-	  'action'=>'index',
-	  'Search.tipo_id'=>$this->request->data['Search']['tipo_id']),
-      array(
-	  'escape'=>false)
-      );
-  } else {
-      echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>'index'), array('escape'=>false));
-  }
+  echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>'index'), array('escape'=>false));
 ?>
       </li>
       <li style="margin: 0">

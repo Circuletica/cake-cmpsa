@@ -19,7 +19,12 @@
 	  'type' => 'hidden'
       )
   );
-  echo $this->Form->input('Search.calidad');
+  echo $this->Form->input(
+      'Search.nombre',
+      array(
+	  'label' => 'Calidad'
+      )
+  );
   echo $this->Form->input('Search.proveedor_id', array(
       'label' => 'Proveedor',
       'empty' => true

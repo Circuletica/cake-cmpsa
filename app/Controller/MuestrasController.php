@@ -20,6 +20,7 @@ class MuestrasController extends AppController {
 	$this->paginate['recursive'] = 1;
 
 	$this->set('tipos', $this->tipoMuestras);
+	$tipo = $this->tipoMuestras[$this->passedArgs['Search.tipo_id']];
 
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
@@ -34,41 +35,35 @@ class MuestrasController extends AppController {
 	);
 	$this->set('proveedores',$proveedores);
 
-	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
-	//por ej.
-	//$passedArgs['Search.palabras'] = mipalabra
-	//$passedArgs['Search.id'] = 3
-	//Si queremos un titulo con los criterios de busqueda
-	//para qué sirve esta variable ???
-	//$titulo = array();
+	$title = $this->filtroPaginador(
+	    array(
+		'Muestra' => array(
+		    'Tipo' => array(
+			'columna' =>'tipo_id',
+			'exacto' => true,
+			'lista' => $this->tipoMuestras
+		    ),
+		    'Registro' => array(
+			'columna' => 'tipo_registro',
+			'exacto' => false,
+			'lista' => ''
+		    ),
+		    'Proveedor' => array(
+			'columna' => 'proveedor_id',
+			'exacto' => true,
+			'lista' => $proveedores
+		    )
+		),
+		'CalidadNombre' => array(
+		    'Calidad' => array(
+			'columna' => 'nombre',
+			'exacto' => false,
+			'lista' => ''
+		    )
+		)
+	    )
+	);
 
-	//filtramos por tipo
-	if(isset($this->passedArgs['Search.tipo_id'])) {
-	    $tipo_id = $this->passedArgs['Search.tipo_id'];
-	    $this->paginate['conditions']['Muestra.tipo LIKE'] = "$tipo_id";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['tipo_id'] = $tipo_id;
-	    //Sacamos el nombre del tipo
-	    $tipo = $this->tipoMuestras[$tipo_id];
-	}
-	//filtramos por referencia
-	if(isset($this->passedArgs['Search.tipo_registro'])) {
-	    $tipo_registro = $this->passedArgs['Search.tipo_registro'];
-	    $this->paginate['conditions']['Muestra.tipo_registro LIKE'] = "%$tipo_registro%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['tipo_registro'] = $tipo_registro;
-	    //completamos el titulo
-	    $title[] = 'Registro: '.$tipo_registro;
-	}
-	//filtramos por proveedor
-	if(isset($this->passedArgs['Search.proveedor_id'])) {
-	    $proveedor_id = $this->passedArgs['Search.proveedor_id'];
-	    $this->paginate['conditions']['Proveedor.id LIKE'] = "$proveedor_id";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['proveedor_id'] = $proveedor_id;
-	    //completamos el titulo
-	    $title[] ='Proveedor: '.$proveedores[$proveedor_id];
-	}
 	//filtramos por fecha
 	if(isset($this->passedArgs['Search.fecha'])) {
 	    $fecha = $this->passedArgs['Search.fecha'];
@@ -87,31 +82,12 @@ class MuestrasController extends AppController {
 	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
 	    $this->request->data['Search']['fecha'] = $fecha;
 	    //completamos el titulo
-	    $title[] = 'Fecha: '.$fecha;
-	}
-	//filtramos por calidad
-	if(isset($this->passedArgs['Search.calidad'])) {
-	    $calidad = $this->passedArgs['Search.calidad'];
-	    $this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$calidad%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['calidad'] = $calidad;
-	    //completamos el titulo
-	    $title[] ='Calidad: '.$calidad;
+	    $title .= '|Fecha: '.$fecha;
 	}
 
 	$muestras =  $this->paginate();
+	$title = 'Muestras | '.$title;
 
-	//generamos el título
-	if (isset($tipo)) { //en caso de que se quiera mostrar todos los tipos de muestra
-	    if (isset($title)) { //si hay criterios de filtro, excluyendo el tipo
-		$title = implode(' | ', $title);
-		$title = 'Muestras de '.$tipo.' | '.$title;
-	    } else { // Solo se filtra sobre el tipo de muestra
-		$title = 'Muestras de '.$tipo;
-	    }
-	} else {
-	    $title = 'Todas las muestras';
-	}
 	//pasamos los datos a la vista
 	$this->set(compact('muestras','title'));
     }
@@ -153,7 +129,7 @@ class MuestrasController extends AppController {
 	//hay una view distinta para cada
 	//tipo de muestra, ya que los campos
 	//no son iguales
-	switch ($muestra['Muestra']['tipo']) {
+	switch ($muestra['Muestra']['tipo_id']) {
 	case 1:
 	    $this->render('view_oferta');
 	    break;
@@ -228,14 +204,14 @@ class MuestrasController extends AppController {
 	if (!empty($id)) {
 	    $this->Muestra->id = $id;
 	    $muestra = $this->Muestra->findById($id);
-	    $tipo = $muestra['Muestra']['tipo'];
-	    $tipo_nombre = $tipos[$tipo];
+	    $tipo_id = $muestra['Muestra']['tipo_id'];
+	    $tipo_nombre = $tipos[$tipo_id];
 	    $this->set('referencia',$muestra['Muestra']['tipo_registro']);
 	} else { //es un add()	
 	    //Si no esta el tipo de muestra en la URL, volvemos
 	    //a muestras de oferta
-	    $tipo = $this->passedArgs['tipo_id'];
-	    $tipo_nombre = $tipos[$tipo];
+	    $tipo_id = $this->passedArgs['tipo_id'];
+	    $tipo_nombre = $tipos[$tipo_id];
 	    $this->Muestra->virtualFields += array(
 		'ultimoRegistro' => 'MAX(Muestra.registro)'
 	    );
@@ -243,7 +219,7 @@ class MuestrasController extends AppController {
 		'first',
 		array(
 		    'conditions' => array(
-			'Muestra.tipo' => $tipo
+			'Muestra.tipo_id' => $tipo_id
 		    ),
 		    'fields' => array(
 			'ultimoRegistro'
@@ -253,7 +229,7 @@ class MuestrasController extends AppController {
 	    $nuevo_registro = $ultimo_registro['Muestra']['ultimoRegistro'] + 1;
 	    $this->set(compact('nuevo_registro'));
 	}
-	$this->set('tipo',$tipo);
+	$this->set('tipo_id',$tipo_id);
 	$this->set(compact('tipo_nombre'));
 
 	//el titulado completo de la Calidad sale de una vista
@@ -301,7 +277,7 @@ class MuestrasController extends AppController {
 		'contain' => array(
 		    'Muestra' => array(
 			'conditions' => array(
-			    'Muestra.tipo' => 2
+			    'Muestra.tipo_id' => 2
 			),
 			'fields' => array(
 			    'id',
@@ -346,7 +322,7 @@ class MuestrasController extends AppController {
 		    'Contrato.calidad_id'
 		),
 		'conditions' => array(
-		    'tipo' =>2 // solo las muestras de embarque
+		    'tipo_id' =>2 // solo las muestras de embarque
 		)
 	    )
 	);

@@ -16,39 +16,34 @@ class FletesController extends AppController {
 	$this->set(compact('paises'));
 	//las navieras para el filtro
 	$this->loadModel('Naviera');
-	$this->set(
-	    'navieras',
-	    $this->Naviera->find(
-		'list',
-		array(
-		    'fields' => array(
-			'Naviera.id',
-			'Empresa.nombre_corto'
-		    ),
-		    'recursive' => 1,
-		    'order' => array('Empresa.nombre_corto' => 'ASC')
-		)
+	$navieras = $this->Naviera->find(
+	    'list',
+	    array(
+		'fields' => array(
+		    'Naviera.id',
+		    'Empresa.nombre_corto'
+		),
+		'recursive' => 1,
+		'order' => array('Empresa.nombre_corto' => 'ASC')
 	    )
 	);
+	$this->set(compact('navieras'));
+
 	//los puertos de carga para el filtro
-	$this->set(
-	    'puertoCargas',
-	    $this->Flete->PuertoCarga->find('list')
-	);
+	$puertoCargas = $this->Flete->PuertoCarga->find('list');
+	$this->set(compact('puertoCargas'));
 
 	//los puertos de destino para el filtro
-	$this->set(
-	    'puertoDestinos',
-	    $this->Flete->PuertoDestino->find(
-		'list',
-		array(
-		    'conditions' => array(
-			//solo los puertos españoles
-			'PuertoDestino.pais_id' => 3
-		    )
+	$puertoDestinos = $this->Flete->PuertoDestino->find(
+	    'list',
+	    array(
+		'conditions' => array(
+		    //solo los puertos españoles
+		    'PuertoDestino.pais_id' => 3
 		)
 	    )
 	);
+	$this->set(compact('puertoDestinos'));
 
 	$this->paginate = array(
 	    'contain' => array(
@@ -84,20 +79,31 @@ class FletesController extends AppController {
 	$titulo = $this->filtroPaginador(
 	    array(
 		'Flete' => array(
-		    'Naviera' => 'naviera_id',
-		    'Puerto de Carga' => 'puerto_carga_id',
-		    'Puerto de Destino' => 'puerto_destino_id'
+		    'Naviera' => array(
+			'columna' => 'naviera_id',
+			'exacto' => true,
+			'lista' => $navieras
+		    ),
+		    'Puerto de Carga' => array(
+			'columna' => 'puerto_carga_id',
+			'exacto' => true,
+			'lista' => $puertoCargas
+		    ),
+		    'Puerto de Destino' => array(
+			'columna' => 'puerto_destino_id',
+			'exacto' => true,
+			'lista' => $puertoDestinos
+		    )
 		),
 		'PuertoCarga' => array(
-		    'País de origen' => 'pais_id'
+		    'País de origen' => array(
+			'columna' => 'pais_id',
+			'exacto' => true,
+			'lista' => $paises
+		    )
 		)
 	    )
 	);
-//	    //guardamos el criterio para el formulario de vuelta
-//	    $this->request->data['Search']['pais_id'] = $pais_id;
-//	    //completamos el titulo
-//	    $titulo .= '| País de origen: '.$paises[$pais_id];
-//	}
 	$fletes = $this->paginate();
 	$this->set(compact('fletes','titulo'));
     }

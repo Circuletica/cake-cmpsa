@@ -196,13 +196,27 @@ class AppController extends Controller {
 	//'Proveedor' => array(
 	//	'Nombre' => 'nombre_corto',
 	//)
+	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
+	//por ej.
+	//$passedArgs['Search.palabras'] = mipalabra
+	//$passedArgs['Search.id'] = 3
 	foreach ($criterios as $tabla => $campos) {
-	    foreach ($campos as $nombre => $campo) {
-		if (isset($this->passedArgs['Search.'.$campo])) {
-		    $valor = $this->passedArgs['Search.'.$campo];
-		    $this->paginate['conditions'][$tabla.'.'.$campo.' LIKE'] = $valor;
-		    $this->request->data['Search'][$campo] = $valor;
-		    $titulo[] = $nombre.': '.$valor;
+	    foreach ($campos as $nombre => $elementos) {
+		$columna = $elementos['columna'];
+		if (isset($this->passedArgs['Search.'.$columna])) {
+		    $valor = $this->passedArgs['Search.'.$columna];
+		    //if (isset($elementos['exacto'])) {
+		    if ($elementos['exacto']) {
+			$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = $valor;
+		    } else {
+			$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = "%".$valor."%";
+		    }
+		    $this->request->data['Search'][$columna] = $valor;
+		    if (!empty($elementos['lista'])) {
+			$titulo[] = $nombre.': '.$elementos['lista'][$valor];
+		    } else {
+			$titulo[] = $nombre.': '.$valor;
+		    }
 		}
 	    }
 	}
