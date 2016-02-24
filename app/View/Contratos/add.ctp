@@ -157,7 +157,7 @@ $(function() {
 $enlace_anyadir_calidad = $this->Html->link ('Añadir Calidad', array(
     'controller' => 'calidades',
     'action' => 'add',
-    'from_controller' => 'muestras',
+    'from_controller' => 'contratos',
     'from_action' => 'add',
 )
 	   );
@@ -168,7 +168,7 @@ $enlace_anyadir_proveedor = $this->Html->link (
     array(
 	'controller' => 'proveedores',
 	'action' => 'add',
-	'from_controller' => 'muestras',
+	'from_controller' => 'contratos',
 	'from_action' => 'add',
     )
 );

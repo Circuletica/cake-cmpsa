@@ -188,21 +188,41 @@ class AppController extends Controller {
 
     public function filtroPaginador($criterios) {
 	//$criterios es un array como
-	//("Registro" => "registro",
-	//"Proveedor" => "proveedor_id",
-	//"Marca" => "marca_almacen"
+	//'Naviera' => array(
+	//	"Registro" => "registro",
+	//	"Proveedor" => "proveedor_id",
+	//	"Marca" => "marca_almacen"
+	//	),
+	//'Proveedor' => array(
+	//	'Nombre' => 'nombre_corto',
 	//)
-	foreach ($criterios as $nombre => $campo) {
-	    if (isset($this->passedArgs['Search.'.$campo])) {
-		$valor = $this->passedArgs['Search.'.$campo];
-		$this->paginate['conditions'][$campo.' LIKE'] = $valor;
-		$this->request->data['Search'][$campo] = $valor;
-		$titulo[] = $nombre.': '.$valor;
+	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
+	//por ej.
+	//$passedArgs['Search.palabras'] = mipalabra
+	//$passedArgs['Search.id'] = 3
+	foreach ($criterios as $tabla => $campos) {
+	    foreach ($campos as $nombre => $elementos) {
+		$columna = $elementos['columna'];
+		if (isset($this->passedArgs['Search.'.$columna])) {
+		    $valor = $this->passedArgs['Search.'.$columna];
+		    //if (isset($elementos['exacto'])) {
+		    if ($elementos['exacto']) {
+			$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = $valor;
+		    } else {
+			$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = "%".$valor."%";
+		    }
+		    $this->request->data['Search'][$columna] = $valor;
+		    if (!empty($elementos['lista'])) {
+			$titulo[] = $nombre.': '.$elementos['lista'][$valor];
+		    } else {
+			$titulo[] = $nombre.': '.$valor;
+		    }
+		}
 	    }
 	}
 	if (isset($titulo)) {
-	$titulo = implode(' | ', $titulo);
-	return $titulo;
+	    $titulo = implode(' | ', $titulo);
+	    return $titulo;
 	}
     }
 }

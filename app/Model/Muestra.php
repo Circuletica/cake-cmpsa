@@ -17,7 +17,7 @@ class Muestra extends AppModel {
 	parent::__construct($id, $table, $ds);
 	$this->virtualFields['tipo_registro'] = sprintf(
 	    'CONCAT(
-		CASE %s.tipo
+		CASE %s.tipo_id
 		    WHEN 1 THEN "OF"
 		    WHEN 2 THEN "EB"
 		    WHEN 3 THEN "EN"
@@ -27,7 +27,7 @@ class Muestra extends AppModel {
 	    $this->alias, $this->alias
 	);
 	$this->virtualFields['tipo_nombre'] = sprintf(
-	    'CASE %s.tipo
+	    'CASE %s.tipo_id
 		    WHEN 1 THEN "oferta"
 		    WHEN 2 THEN "embarque"
 		    WHEN 3 THEN "entrega"
@@ -44,14 +44,6 @@ class Muestra extends AppModel {
 	'Proveedor' => array(
 	    'className' => 'Empresa',
 	    'foreignKey' => 'proveedor_id'),
-	//Quitamos esta hasta que se solucione
-	//en la BDD
-	//'MarcaAlmacen' => array(
-	//	'className' => 'MarcaAlmacen',
-	//	'foreignKey' => 'marca_almacen_id'),
-	//'Operacion' => array(
-	//	'className' => 'Operacion',
-	//	'foreignKey' => 'operacion_id')
 	'Contrato',
 	//las muestras de entrega 'pertenecen' a muestras
 	//de embarque
