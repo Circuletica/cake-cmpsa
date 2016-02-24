@@ -410,7 +410,7 @@ endif;
     public function view($id = null) {
 	//el id y la clase de la entidad de origen vienen en la URL
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Muestra/view');
+	    $this->Session->setFlash('URL mal formado Operacion/view');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$operacion = $this->Operacion->find(

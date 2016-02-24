@@ -270,8 +270,7 @@ function operacionesRetirada(){
 		}
  	  
 		//CUENTA ALMACEN
-		//if (operacionId == cuentas){
-			var almacenesOperacion = cuentas[cuentaId].AlmacenTransporte;
+			var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
 			var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
 			cuentaBox.options.length = opt2;
 	
@@ -279,8 +278,6 @@ function operacionesRetirada(){
 			cuentaBox.options[i].value = almacenesOperacion[i].id;
 			cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
 			}
-		//}
-		
 	}
 }
 

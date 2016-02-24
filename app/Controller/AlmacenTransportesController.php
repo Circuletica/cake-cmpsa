@@ -103,6 +103,7 @@ class AlmacenTransportesController extends AppController {
 
 	if (!empty($this->request->data)) {//ES UN POST
 		$this->request->data['AlmacenTransporte']['id'] = $id;
+		$this->request->data['AlmacenTransporte']['transporte_id'] = $this->params['named']['from_id'];
 		      debug($this->request->data);
 			if($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= ($transporte['Transporte']['cantidad_embalaje'] - $almacenado)){
 				if($this->AlmacenTransporte->save($this->request->data)){

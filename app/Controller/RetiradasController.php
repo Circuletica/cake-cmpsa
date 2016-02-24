@@ -290,28 +290,34 @@ foreach($operaciones_asociados as $clave => $operacion){
 	$this->set(compact('operaciones_asociados'));
 
 
-	$operaciones_almacen = $this->Retirada->AlmacenTransporte->find(
+	$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
 		'all',
 		array(
 			'contain' => array(
-				'Transporte' => array(
-					'fields' => array(
-						'operacion_id'
-						)
+				'Transporte' =>array(
+					'AlmacenTransporte'
 					)
 				)
 			)
 		);
+
+
+	foreach($operaciones_almacen as $clave => $operacion){
+			$operaciones_almacen[$clave]['AlmacenTransporte'] = array();
+		foreach($operacion['Transporte'] as $transporte){
 		
-/*	foreach($operaciones_almacen as $clave => $cuenta){
-	
-	foreach($cuenta['Transporte'] as $transporte){
-		//$cuenta['AlmacenTransporte'][] = $transporte['AlmacenTransporte'];
+			if(!empty($transporte['AlmacenTransporte'])){
+				foreach($transporte['AlmacenTransporte'] as $cuenta){
+			$operaciones_almacen[$clave]['AlmacenTransporte'][] = $cuenta;
+			//array_push($operaciones_almacen[$clave]['AlmacenTransporte'], $transporte['AlmacenTransporte']);
+				}
+			}
+		}
+	unset($operaciones_almacen[$clave]['Transporte']);
 	}
-	$operaciones_almacen[$clave] = $cuenta;
-	unset($operaciones_almacen[$clave]['AlmacenTransporte']);
-	}*/
-	//$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}Transporte.operacion_id','{n}');
+	//debug($operaciones_almacen);
+
+	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
 	$this->set(compact('operaciones_almacen'));
 
 	//si es un edit, hay que rellenar el id, ya que
