@@ -11,7 +11,7 @@ $this->assign('from_id',$linea['Muestra']['id']);
 $this->Html->addCrumb('Muestras de '.$linea['Muestra']['tipo_nombre'], array(
     'controller'=>'muestras',
     'action'=>'index',
-    'Search.tipo_id' => $linea['Muestra']['tipo']
+    'Search.tipo_id' => $linea['Muestra']['tipo_id']
 ));
 $this->Html->addCrumb('Muestra '.$linea['Muestra']['tipo_registro'], array(
     'controller'=>'muestras',
@@ -24,7 +24,7 @@ $this->end();
 
 $this->start('main');
 echo "<dl>\n";
-if ($linea['Muestra']['tipo'] != 1) {
+if ($linea['Muestra']['tipo_id'] != 1) {
     echo "  <dt>Operación</dt><dd>".$linea['Operacion']['referencia']."&nbsp;</dd>\n";
     echo "  <dt>Cuenta Almacen</dt><dd>".$linea['AlmacenTransporte']['cuenta_almacen']."&nbsp;</dd>\n";
     echo "  <dt>Marca</dt><dd>".$linea['AlmacenTransporte']['marca_almacen']."&nbsp;</dd>\n";
