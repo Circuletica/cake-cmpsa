@@ -1,13 +1,12 @@
 <?php
 $this->extend('/Common/view');
+$this->assign('id',$retiradas['Retirada']['id']);
 $this->assign('object', 'Retirada del asociado '.$retiradas['Asociado']['nombre_corto']);
-//$this->assign('line_object', 'precio');
-//$this->assign('id',$flete['Retirada']['id']);
 $this->assign('class','Retirada');
 $this->assign('controller','retiradas');
-$this->assign('line_controller','retiradas');
-
 $this->start('filter');
+
+echo "Filtro de búsqueda de las retiradas";
 
 $this->end();
 

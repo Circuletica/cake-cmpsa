@@ -410,7 +410,7 @@ endif;
     public function view($id = null) {
 	//el id y la clase de la entidad de origen vienen en la URL
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Muestra/view');
+	    $this->Session->setFlash('URL mal formado Operacion/view');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$operacion = $this->Operacion->find(
@@ -545,7 +545,10 @@ endif;
 		    'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
 		    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
 		),
-		'fields' => array('Embalaje.nombre','ContratoEmbalaje.peso_embalaje_real')
+		'fields' => array(
+			'Embalaje.nombre',
+			'ContratoEmbalaje.peso_embalaje_real'
+			)
 	    )
 	);
 

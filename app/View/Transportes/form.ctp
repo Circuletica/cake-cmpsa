@@ -14,7 +14,7 @@ if ($action == 'add') {
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Transporte de Operación <em>";
+    echo "<h2>Modificar Transporte de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
     echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].'</h4>';
     //.$operacion['Operacion']['referencia']."</em></h2>\n";
    // echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en'.$embalaje.'</h4>';
@@ -22,6 +22,7 @@ if ($action == 'edit') {
 
     //Formulario para rellenar transporte
     echo $this->Form->create('Transporte');
+    debug($id);
     ?>
     <br>
     <div class="col3">

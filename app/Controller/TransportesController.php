@@ -81,7 +81,7 @@ class TransportesController extends AppController {
 	);
 	$this->set('transporte',$transporte);
 	//Calculamos la cantidad de sacos almacenados en la línea
-	if($transporte['Transporte']['id']!= NULL){
+	if(!empty($transporte['Transporte']['id'])){
 	    $suma = 0;
 	    $almacenado=0;
 	    foreach ($transporte['AlmacenTransporte'] as $suma):
@@ -96,7 +96,7 @@ class TransportesController extends AppController {
 	$this->set('embalaje',$embalaje);
     }
     public function add() {
-	$this->form($this->params['named']['from_id']);
+	$this->form();
 	$this->render('form');
     }
     public function edit($id = null) {
@@ -113,6 +113,7 @@ class TransportesController extends AppController {
 	}
 
     public function form($id = null) { //esta acción vale tanto para edit como add
+    $this->set('action', $this->action);
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado controller/add '.$id);
 	    $this->redirect(array(
@@ -189,9 +190,9 @@ class TransportesController extends AppController {
 	   	)
 	);
 
-	$this->set('action', $this->action);
-	$embalaje = $operacion['Embalaje']['nombre'];		
-	$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
+
+//	$embalaje = $operacion['Embalaje']['nombre'];		
+//	$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
 	$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
 	    'list',
 	    array(
@@ -208,9 +209,9 @@ class TransportesController extends AppController {
 		'conditions' => array( 'Pais.nombre' => 'España')
 	    )));		
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
-	$this->set('operacion',$operacion);
+
 	//Calculo la cantidad de bultos transportados
-	if($operacion['Operacion']['id']!= NULL) {
+	if(!empty($operacion['Operacion']['id'])) {
 	    $suma = 0;
 	    $transportado=0;
 	    foreach ($operacion['Transporte'] as $suma){
@@ -219,7 +220,8 @@ class TransportesController extends AppController {
 		}
 	    }
 	}
-	$this->set('transportado',$transportado);
+	$this->set(compact('operacion'));
+	$this->set(compact('transportado'));
 	//NO NECESARIO SE PASA A INDEX LINEA TRANSPORTE
 	$almacenaje = $this->Transporte->AlmacenTransporte->find(
 		'first', 
@@ -234,26 +236,46 @@ class TransportesController extends AppController {
 			)
 	    )
 	);
-	$this->set('almacenajes',$almacenaje);		
-	if($this->request->is('post')){
-	    //al guardar la linea, se incluye a qué operacion pertenece
-	    $this->request->data['Transporte']['operacion_id'] = $id;
-	    if($this->request->data['Transporte']['cantidad_embalaje'] <= ($operacion['PesoOperacion']['cantidad_embalaje'] - $transportado)){
+	$this->set('almacenajes',$almacenaje);	
+
+
+	if (!empty($id))$this->Transporte->id = $id;
+	
+	if (!empty($this->request->data)) {//ES UN POST
 		if($this->Transporte->save($this->request->data)){
-		    $this->Session->setFlash('Línea de transporte guardada');
-		    $this->redirect(array(
-			'controller' => $this->params['named']['from_controller'],
-			'action' => 'view_trafico',
-			$id
-		    ));
-		}else{
-		    $this->Session->setFlash('Línea de transporte NO guardada');
-		}
-	    }else{
-		$this->Session->setFlash('La cantidad de bultos debe ser inferior');
+				    $this->Session->setFlash('Línea de transporte guardada');
+				    $this->redirect(array(
+						'controller' => 'operaciones',
+						'action' => 'view_trafico',
+						$id
+						)
+					);
+	    }else {
+ 			$this->Session->setFlash('Línea de transporte NO guardada');
 	    }
-	}
-    }
+	 }else{
+	     $this->request->data = $this->Transporte->read(null, $id);
+}
+
+		//al guardar la linea, se incluye a qué operacion pertenece
+	    //$this->request->data['Transporte']['operacion_id'] = $id;
+/*	    if($this->request->data['Transporte']['cantidad_embalaje'] <= ($operacion['PesoOperacion']['cantidad_embalaje'] - $transportado)){
+			if($this->Transporte->save($this->request->data)){
+			    $this->Session->setFlash('Línea de transporte guardada');
+			    $this->redirect(array(
+				'controller' => 'operaciones',
+				'action' => 'view_trafico',
+				$id
+			    ));
+			}else{
+			    $this->Session->setFlash('Línea de transporte NO guardada');
+			}
+		    }else{
+			$this->Session->setFlash('La cantidad de bultos debe ser inferior');
+		    }
+	}else{ //es un GET
+	}*/
+}
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) :
 	    throw new MethodNotAllowedException();
