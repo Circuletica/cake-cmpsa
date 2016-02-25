@@ -99,14 +99,14 @@
 	endforeach;
 ?>	</table>
 <?php
-	echo "<h4>Bultos transportados: ".$transportado;
+	echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
 
 			if ($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
 			echo '<div class="btabla">';
 			echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
 			echo '</div>';
 			}else{
-				echo " - Todos los bultos han sido transportados</h4>";
+				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido transportados</span></h4>";
 			}
 
 ?>

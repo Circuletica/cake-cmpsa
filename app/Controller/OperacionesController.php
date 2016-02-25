@@ -562,7 +562,9 @@ endif;
 		}
 	    }
 	}
-	$this->set('transportado',$transportado);
+	$restan = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
+	$this->set(compact('transportado'));
+	$this->set(compact('restan'));
 
 	$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 	//mysql almacena la fecha en formato ymd
