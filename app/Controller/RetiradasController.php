@@ -98,8 +98,8 @@ class RetiradasController extends AppController {
 				'Retirada.asociado_id' => $this->params['named']['asociado_id'],
 				'Retirada.operacion_id'=> $operacion_id
 	   			),
-	   		'recursive' => 2,			
-			'contain' => array(
+	   		'recursive' => 2,
+	 		'contain' => array(
 				'AlmacenTransporte' => array(
 					'fields' => array(
 						'almacen_id',
@@ -198,17 +198,39 @@ class RetiradasController extends AppController {
 
 	$total_sacos_retirados = 0;
 	$total_peso_retirado = 0;
+	//Calculamos la cantidad de retiradas se han hecho por asociado
+	if(!empty($this->params['named']['asociado_id'])){
+	    $suma = 0;
+	    $retirado=0;
+	    foreach ($retiradas['Retirada'] as $suma):
+	        if ($this->params['named']['asociado_id'] = $$retiradas['Retirada']['asociado_id']):
+	            $retirado = $retirado + $suma['embalaje_retirado'];
+	        endif;
+	    endforeach;
+	}
+	$restan = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] - $retirado; 
+	$this->set(compact('restan'));
+	$this->set('retirado',$retirado);
+	
+	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
+	$this->set('embalaje',$embalaje);
+
+	$this->set(compact('retirado'));
+	$this->set(compact('restan'));
 
 }
    public function add() {
 
-   	if(empty($this->params['named']['from_id'])){
-   		$this->form();
-   	}else{
- 		$this->form($this->params['named']['from_id']); 
- 	}
-    $this->render('form');		
-}
+	if (!$this->params['named']['from_id']) {
+	    $this->Session->setFlash('URL mal formado retiradas/add '.$this->params['named']['from_controller']);
+	    $this->redirect(array(
+		'controller' => $this->params['named']['from_controller'],
+		'action' => 'index')
+	  );
+	}
+	$this->form();
+	$this->render('form');
+    }
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
@@ -325,27 +347,27 @@ foreach($operaciones_asociados as $clave => $operacion){
 	//un _nuevo_ registro, como si fuera un add
 	if (!empty($id)) $this->Retirada->id = $id; 
 	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
-
 	    if($id != NULL && $this->Retirada->save($this->request->data)){
-		$this->Session->setFlash('Retirada guardada');
+		$this->Session->setFlash('Retirada modificada');
 		$this->redirect(array(
 		    'action' => 'view_trafico',
 		    'controller' => 'operaciones',
-		    $id
+		  	 $this->params['named']['from_id']
 		));
-	    }elseif($id == NULL && $this->Retirada->save($this->request->data)) {
+	    }elseif($id == NULL && $this->Retirada->save($this->request->data)){
 	    $this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
-		    'action' => 'index',
-		    'controller' => 'retiradas'
+		    'action' => 'view_trafico',
+		    'controller' => 'operaciones',
+		  	 $this->params['named']['from_id']
 		));
 	    }else{
 		$this->Session->setFlash('Retirada NO guardada');
 	    }
-	} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
+	}else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
 	    $this->request->data = $this->Retirada->read(null, $id);
 	}
-    }
+}
 
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')){
