@@ -600,12 +600,14 @@ endif;
 	$total_peso = 0;
 	$total_sacos_retirados = 0;
 	$total_peso_retirado = 0;
+	$total_pendiente = 0;
 
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
+	$pendiente = 0;
 
 		foreach ($operacion_retiradas as $clave => $operacion_retirada){
 			$retirada = $operacion_retirada['Retirada'];
@@ -613,6 +615,7 @@ endif;
 				$cantidad_retirado += $retirada['embalaje_retirado'];
 				$peso_retirado += $retirada['peso_retirado'];
 			}
+		$pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
 		}
 
 	$lineas_retirada[] = array(
@@ -621,13 +624,15 @@ endif;
  	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
  	   'Peso' => $peso,
  	   'Cantidad_retirado' => $cantidad_retirado,
- 	   'Peso_retirado' => $peso_retirado
+ 	   'Peso_retirado' => $peso_retirado,
+ 	   'Pendiente' => $pendiente
 		);
 
 	$total_sacos += $linea['cantidad_embalaje_asociado'];
 	$total_peso += $peso;
 	$total_sacos_retirados += $cantidad_retirado; 
 	$total_peso_retirado += $peso_retirado;
+	$total_pendiente += $pendiente;
 
 endforeach;
 
@@ -637,6 +642,7 @@ $this->set('total_sacos',$total_sacos);
 $this->set('total_peso',$total_peso);	
 $this->set('total_sacos_retirados',$total_sacos_retirados);
 $this->set('total_peso_retirado',$total_peso_retirado);
+$this->set('total_pendiente',$total_pendiente);
     }
 
     public function delete($id = null) {

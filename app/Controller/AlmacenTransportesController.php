@@ -50,36 +50,8 @@ class AlmacenTransportesController extends AppController {
 		)
 	);	
 	$this->set(compact('almacenes'));
-	
-	if($id != NULL){
-	$cantidadcuenta = $this->AlmacenTransporte->find(
-		'first',
-		array(
-			'conditions' =>array(
-				'AlmacenTransporte.id' => $id	
-				),
-			'fields' => array(
-				'cantidad_cuenta'
-				)
-		)
-	);
-	$cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
-	}else{
-		$cantidadcuenta = $this->AlmacenTransporte->find(
-		'first',
-		array(
-			'conditions' =>array(
-				'AlmacenTransporte.transporte_id' => $this->params['named']['from_id']	
-				),
-			'fields' => array(
-				'cantidad_cuenta',
-				'transporte_id'
-				)
-		)
-	);
-	$cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
-	}
-	$this->set('cantidadcuenta',$cantidadcuenta);
+
+	//$this->set('cantidadcuenta',$cantidadcuenta);
 	//Calculamos la cantidad de sacos almacenados en la línea	
 	$transporte = $this->AlmacenTransporte->Transporte->find(
 			'first', array(
@@ -107,6 +79,37 @@ class AlmacenTransportesController extends AppController {
 	    }
 	}
 	$this->set('almacenado',$almacenado);
+
+//Control de cantidad en la cuenta para edit y add
+		if($id != NULL){
+	$cantidadcuenta = $this->AlmacenTransporte->find(
+		'first',
+		array(
+			'conditions' =>array(
+				'AlmacenTransporte.id' => $id	
+				),
+			'fields' => array(
+				'cantidad_cuenta'
+				)
+		)
+	);
+	$cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
+	}elseif( $id == NULL && $almacenado != 0){
+		$cantidadcuenta = $this->AlmacenTransporte->find(
+		'first',
+		array(
+			'conditions' =>array(
+				'AlmacenTransporte.transporte_id' => $this->params['named']['from_id']	
+				),
+			'fields' => array(
+				'AlmacenTransporte.cantidad_cuenta',
+				'AlmacenTransporte.transporte_id'
+				)
+		)
+		);
+		$cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
+	}
+
 	
 	//si es un edit, hay que rellenar el id, ya que si no se hace, al guardar el edit,
 	// se va a crear un _nuevo_ registro, como si fuera un add
@@ -127,7 +130,8 @@ class AlmacenTransportesController extends AppController {
 						$this->Session->setFlash('Cuenta de almacén NO guardada');
 					}
 			}elseif (($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta) xor (
-					 $this->request->data['AlmacenTransporte']['cantidad_cuenta'] > $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] - $cantidadcuenta <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado)){
+					 $this->request->data['AlmacenTransporte']['cantidad_cuenta'] > $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] - $cantidadcuenta <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado) xor
+					($transporte['Transporte']['cantidad_embalaje'] == NULL)){
 					if($this->AlmacenTransporte->save($this->request->data)){
 							$this->Session->setFlash('Cuenta almacén modificada');
 							$this->redirect(array(

@@ -266,7 +266,8 @@ class TransportesController extends AppController {
 			    }
 			}elseif (($this->request->data['Transporte']['cantidad_embalaje'] <= $transporte['Transporte']['cantidad_embalaje']) xor (
 					 $this->request->data['Transporte']['cantidad_embalaje'] > $transporte['Transporte']['cantidad_embalaje'] &&
-					 $this->request->data['Transporte']['cantidad_embalaje'] - $transporte['Transporte']['cantidad_embalaje'] <= $transporte['Transporte']['cantidad_embalaje'] - $transportado)){
+					 $this->request->data['Transporte']['cantidad_embalaje'] - $transporte['Transporte']['cantidad_embalaje'] <= $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado) xor
+					 ($transporte['Transporte']['cantidad_embalaje'] == NULL)){
 				if($this->Transporte->save($this->request->data)){
 						$this->Session->setFlash('Línea de transporte modificada');
 						$this->redirect(array(
