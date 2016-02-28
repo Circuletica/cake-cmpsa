@@ -1,6 +1,5 @@
 <?php
 class RetiradasController extends AppController {
-	public $scaffold = 'admin';
 
 	public function index() {
 	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'asc');
