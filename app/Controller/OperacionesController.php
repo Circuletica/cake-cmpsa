@@ -410,7 +410,7 @@ endif;
     public function view($id = null) {
 	//el id y la clase de la entidad de origen vienen en la URL
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Muestra/view');
+	    $this->Session->setFlash('URL mal formado Operacion/view');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$operacion = $this->Operacion->find(
@@ -535,6 +535,20 @@ endif;
 	);
 
 	$this ->set(compact('operacion'));
+	//Controlo la posibilidad de agregar retirdas unicamente si hay cuentas de almacen.
+
+	/*$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
+		'first',
+		array(
+		 	'condition'=>array(
+		 		transpo
+		 		)
+			'fields'=> array(
+				'cuenta_almacen'
+				)
+			)
+		);
+	$this->set(compact('cuenta_almacen'));*/
 
 	//el nombre de calidad concatenado esta en una view de MSQL
 	$this->loadModel('ContratoEmbalaje');
@@ -545,7 +559,10 @@ endif;
 		    'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
 		    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
 		),
-		'fields' => array('Embalaje.nombre','ContratoEmbalaje.peso_embalaje_real')
+		'fields' => array(
+			'Embalaje.nombre',
+			'ContratoEmbalaje.peso_embalaje_real'
+			)
 	    )
 	);
 
@@ -559,7 +576,9 @@ endif;
 		}
 	    }
 	}
-	$this->set('transportado',$transportado);
+	$restan = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
+	$this->set(compact('transportado'));
+	$this->set(compact('restan'));
 
 	$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 	//mysql almacena la fecha en formato ymd
@@ -595,12 +614,14 @@ endif;
 	$total_peso = 0;
 	$total_sacos_retirados = 0;
 	$total_peso_retirado = 0;
+	$total_pendiente = 0;
 
 	foreach ($operacion['AsociadoOperacion'] as $linea):
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
+	$pendiente = 0;
 
 		foreach ($operacion_retiradas as $clave => $operacion_retirada){
 			$retirada = $operacion_retirada['Retirada'];
@@ -608,6 +629,7 @@ endif;
 				$cantidad_retirado += $retirada['embalaje_retirado'];
 				$peso_retirado += $retirada['peso_retirado'];
 			}
+		$pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
 		}
 
 	$lineas_retirada[] = array(
@@ -616,13 +638,15 @@ endif;
  	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
  	   'Peso' => $peso,
  	   'Cantidad_retirado' => $cantidad_retirado,
- 	   'Peso_retirado' => $peso_retirado
+ 	   'Peso_retirado' => $peso_retirado,
+ 	   'Pendiente' => $pendiente
 		);
 
 	$total_sacos += $linea['cantidad_embalaje_asociado'];
 	$total_peso += $peso;
 	$total_sacos_retirados += $cantidad_retirado; 
 	$total_peso_retirado += $peso_retirado;
+	$total_pendiente += $pendiente;
 
 endforeach;
 
@@ -632,6 +656,7 @@ $this->set('total_sacos',$total_sacos);
 $this->set('total_peso',$total_peso);	
 $this->set('total_sacos_retirados',$total_sacos_retirados);
 $this->set('total_peso_retirado',$total_peso_retirado);
+$this->set('total_pendiente',$total_pendiente);
     }
 
     public function delete($id = null) {

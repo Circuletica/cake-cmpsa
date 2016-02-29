@@ -1,5 +1,5 @@
 <?php
-$this->extend('/Common/view');
+$this->extend('/Common/view_withoutbuttons');
 $this->assign('object', 'Retirada del asociado '.$asociado_nombre['Asociado']['nombre_corto']);
 //$this->assign('line_object', 'precio');
 //$this->assign('id',$flete['Retirada']['id']);
@@ -7,23 +7,22 @@ $this->assign('class','Retirada');
 $this->assign('controller','retiradas');
 $this->assign('line_controller','retiradas');
 
-$this->start('filter');
-$this->end();
-
 $this->start('main');
 echo "<dl>";
 	echo "  <dt>Operación:</dt>\n";
 	echo "<dd>";
 	echo $this->html->link($operacion['Operacion']['referencia'], array(
 	    'controller' => 'operaciones',
-	    'action'  => 'view',
+	    'action'  => 'view_trafico',
 	    $operacion_id)
 	);
 	echo "</dd>";
 	echo "<dt>Sacos solicitados:</dt>\n";
-	//echo "<dd>".$retirada['Operacion']['AsociadoOperacion']['cantidad_embalaje_asociado'].'&nbsp;'."</dd>";
+	echo "<dd>".$asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' x '.$embalaje['Embalaje']['nombre'].'&nbsp';
+		"</dd>";
 	echo "<dt>Peso solicitado:</dt>\n";
-//	echo "<dd>".$retirada['Operacion']['AsociadoOperacion']['cantidad_embalaje_asociado'].'&nbsp;'."</dd>";
+	 $peso = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+	echo "<dd>".$peso.' Kg &nbsp;'."</dd>";
 echo "</dl>";
 
 $this->end();
@@ -40,9 +39,7 @@ foreach($retiradas as $retirada):
 				$retirada['AlmacenTransporte']['marca_almacen'],
 				$retirada['Retirada']['embalaje_retirado'],
 				$retirada['Retirada']['peso_retirado'],
-				$this->Button->editLine('retiradas',
-				$retirada['Retirada']['id'],'retiradas',
-				$retirada['Retirada']['id'])
+				$this->Button->editLine('retiradas',$retirada['Retirada']['id'],'operaciones',$retirada['Retirada']['operacion_id'])
 			.' '.$this->Button->deleteLine('retiradas',
 					$retirada['Retirada']['id'],
 					'retiradas',
@@ -56,7 +53,25 @@ foreach($retiradas as $retirada):
 endforeach;?>
 </table>
 <?php
-$this->end();
+
+echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
+			if ($retirado < $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado']){
+			echo '<div class="btabla">';
+				echo $this->Button->addLine('retiradas','operaciones',$retirada['Retirada']['operacion_id'],'retirada de '.$asociado_nombre['Asociado']['nombre_corto']);
+			echo '</div>';
+			}else{
+				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido almacenados</span></h4>";
+			}
+?>
+<br><br>
+<?php
+    echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Volver', 
+    	$this->request->referer(''), array('class' => 'botond',
+    	'escape'=>false
+    	)
+    );
+	$this->end();
+
 ?>
 		</div>
 </div>
