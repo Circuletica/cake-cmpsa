@@ -536,19 +536,24 @@ endif;
 
 	$this ->set(compact('operacion'));
 	//Controlo la posibilidad de agregar retirdas unicamente si hay cuentas de almacen.
-
-	/*$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
+	$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
 		'first',
 		array(
-		 	'condition'=>array(
-		 		transpo
-		 		)
-			'fields'=> array(
-				'cuenta_almacen'
-				)
-			)
-		);
-	$this->set(compact('cuenta_almacen'));*/
+			'conditions' => array(
+				'Transporte.operacion_id' => $id
+				),
+	    'recursive' => 2,
+	    'fields' => array(
+  	  			'cuenta_almacen'
+	    			)
+	    )
+	);
+		if(empty($cuenta_almacen['AlmacenTransporte'])){
+			$cuenta_almacen = NULL;
+		}else{
+			$cuenta_almacen = $cuenta_almacen['AlmacenTransporte'];
+		}
+	$this->set(compact('cuenta_almacen'));
 
 	//el nombre de calidad concatenado esta en una view de MSQL
 	$this->loadModel('ContratoEmbalaje');
