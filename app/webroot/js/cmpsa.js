@@ -316,12 +316,3 @@ function operacionAlmacen() {
 	almacenId.options[0].selected = true;
     }
 }
-
-//function sacosCuenta() {
-//    var operacionAlmacenes = window.app.operacionAlmacenes;
-//    var almacenId = document.getElementById('LineaMuestraAlmacenTransporteId');
-//    //el almacen seleccionado (si edit)
-//    var almacenIndex = almacenId.selectedIndex;
-//    var almacenSelOpt = almacenId.options[almacenIndex].value;
-//
-//}
