@@ -695,6 +695,23 @@ $this->set('total_pendiente',$total_pendiente);
 	    'action' => 'add'
 	)
     );
+
+    }
+    public function generarFacturacion($id = null) {
+	//el id y la clase de la entidad de origen vienen en la URL
+	if (!$id) {
+	    $this->Session->setFlash('URL mal formado Operacion/generarFacturacion');
+	    $this->redirect(array('action'=>'index'));
+	}
+	//vamos al add de la nueva financiacion
+	$this->request->data['algo'] = 'algo';
+	$this->redirect(array(
+	    'controller' => 'facturaciones',
+	    'from_controller' => 'operaciones',
+	    'from_id' => $id,
+	    'action' => 'add'
+	)
+    );
     }
 }
 ?>
