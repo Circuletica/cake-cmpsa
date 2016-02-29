@@ -535,6 +535,20 @@ endif;
 	);
 
 	$this ->set(compact('operacion'));
+	//Controlo la posibilidad de agregar retirdas unicamente si hay cuentas de almacen.
+
+	/*$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
+		'first',
+		array(
+		 	'condition'=>array(
+		 		transpo
+		 		)
+			'fields'=> array(
+				'cuenta_almacen'
+				)
+			)
+		);
+	$this->set(compact('cuenta_almacen'));*/
 
 	//el nombre de calidad concatenado esta en una view de MSQL
 	$this->loadModel('ContratoEmbalaje');

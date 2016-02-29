@@ -13,7 +13,7 @@ echo "<dl>";
 	echo "<dd>";
 	echo $this->html->link($operacion['Operacion']['referencia'], array(
 	    'controller' => 'operaciones',
-	    'action'  => 'view',
+	    'action'  => 'view_trafico',
 	    $operacion_id)
 	);
 	echo "</dd>";
