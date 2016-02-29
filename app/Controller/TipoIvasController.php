@@ -2,7 +2,6 @@
 class TipoIvasController extends AppController {
     public $paginate = array(
 	'limit' => 20,
-	//'order' => array('ValorTipoIva.valor' => 'asc')
     );
 
     public function index() {

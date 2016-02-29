@@ -1,6 +1,5 @@
 <?php
 class RetiradasController extends AppController {
-	public $scaffold = 'admin';
 
     public function index() {
 	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'asc');
@@ -273,16 +272,12 @@ class RetiradasController extends AppController {
 	);
 
 	$this->set(compact('almacenTransportes'));
-	//Sacamos id de operaciones para listarla
-	$operaciones = $this->Retirada->Operacion->find(
-	    'list'
-	);
+
 	if(empty($this->params['named']['from_id'])){
 	    $this->set('operacion_id',$operacion_id = NULL);
 	}else{
 	    $this->set('operacion_id',$this->passedArgs['from_id']);
 	}
-	$this->set(compact('operaciones'));
 
 	$operaciones_asociados = $this->Retirada->Operacion->find(
 	    'all',
@@ -322,7 +317,6 @@ class RetiradasController extends AppController {
 		)
 	    )
 	);
-
 	foreach($operaciones_almacen as $clave => $operacion){
 	    $operaciones_almacen[$clave]['AlmacenTransporte'] = array();
 	    foreach($operacion['Transporte'] as $transporte){
@@ -334,14 +328,37 @@ class RetiradasController extends AppController {
 		}
 	    }
 	    unset($operaciones_almacen[$clave]['Transporte']);
+	    //quitamos operaciones sin cuenta de almacén
 	    if (empty($operaciones_almacen[$clave]['AlmacenTransporte'])) {
 		unset($operaciones_almacen[$clave]);
 	    }
 	}
-	debug($operaciones_almacen);
+//	foreach($operaciones_almacen as &$operacion){
+//	    $operacion['AlmacenTransporte'] = array();
+//	    foreach($operacion['Transporte'] as $transporte){
+//
+//		if(!empty($transporte['AlmacenTransporte'])){
+//		    foreach($transporte['AlmacenTransporte'] as $cuenta){
+//			$operacion['AlmacenTransporte'][] = $cuenta;
+//		    }
+//		}
+//	    }
+//	    unset($operacion['Transporte']);
+//	    if (empty($operacion['AlmacenTransporte'])) {
+//		unset($operacion);
+//	    }
+//	}
+//	debug($operaciones_almacen);
 
 	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
 	$this->set(compact('operaciones_almacen'));
+
+	//construimos la lista de operaciones para el desplegable,
+	//pero solo las que tengan cuentas de almacén.
+	foreach ($operaciones_almacen as $id => $operacion) {
+	    $operaciones[$id] = $operacion['Operacion']['referencia'];
+	}
+	$this->set(compact('operaciones'));
 
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
