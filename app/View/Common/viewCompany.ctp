@@ -62,11 +62,12 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
-echo $this->Html->tableHeaders(array('Nombre', 'Función',
+echo $this->Html->tableHeaders(array('Nombre', 'Departamento', 'Función',
     'Teléfono 1', 'Teléfono 2', 'Email','Detalle'));
 foreach($empresa['Empresa']['Contacto'] as $contacto):
     echo $this->Html->tableCells(array(
 	$contacto['nombre'],
+	isset($contacto['Departamento']['nombre']) ? $contacto['Departamento']['nombre'] : '',
 	$contacto['funcion'],
 	$contacto['telefono1'],
 	$contacto['telefono2'],

@@ -2,11 +2,12 @@
 
 $this->extend('/Common/view');
 $this->assign('object', 'Flete '.$referencia);
-$this->assign('line_object', 'precio');
 $this->assign('id',$flete['Flete']['id']);
 $this->assign('class','Flete');
 $this->assign('controller','fletes');
 $this->assign('line_controller','precio_fletes');
+$this->assign('line_object', 'precio');
+$this->assign('line_add', 'si');
 
 $this->start('filter');
 //echo $this->element('filtroflete');

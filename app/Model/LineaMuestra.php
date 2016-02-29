@@ -1,7 +1,7 @@
 <?php
 class LineaMuestra extends AppModel {
 	public $recursive = 2;
-	public $displayField = 'marca';
+	public $displayField = 'cuenta_almacen';
 	//public $actsAs = array('Containable');
 	public $belongsTo = array(
 		'Muestra' => array(

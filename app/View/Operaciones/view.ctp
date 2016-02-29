@@ -43,6 +43,8 @@ echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], arra
     $operacion['Contrato']['Proveedor']['id'])
 );
 echo "  </dd>";
+echo "  <dt>Transporte:</dt>\n";
+echo "  <dd>".$operacion['Contrato']['transporte']."&nbsp;</dd>";
 echo "  <dt>Peso:</dt>\n";
 echo "  <dd>".$operacion['PesoOperacion']['peso'].' kg&nbsp;'."</dd>";
 echo "  <dt>Embalaje:</dt>\n";
@@ -51,7 +53,7 @@ echo "  <dd>".
     $embalaje['Embalaje']['nombre'].
     ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
 echo "  <dt>Lotes:</dt>\n";
-echo "  <dd>".$operacion['Operacion']['lotes_operacion'].'&nbsp;'."</dd>";
+echo "  <dd>".$operacion['Operacion']['lotes_operacion']."&nbsp;</dd>";
 echo "  <dt>Puerto de Embarque:</dt>\n";
 echo "  <dd>".$operacion['PuertoCarga']['nombre'].'&nbsp;'."</dd>";
 echo "  <dt>Puerto de Destino:</dt>\n";

@@ -10,6 +10,12 @@
   } else {
     $this->Html->addCrumb($title, '/muestras/index');
   }
+//$siglas_tipos = array(
+//    1 => 'OF',
+//    2 => 'EB',
+//    3 => 'EN'
+//);
+
 ?>
 
 <div class="actions">
@@ -22,15 +28,13 @@
     <th><?php echo $this->Paginator->sort('fecha')?></th>
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('Proveedor.nombre_corto', 'Proveedor')?></th>
+    <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Contrato')?></th>
     <th><?php echo 'Detalle'?></th>
   </tr>
   <?php foreach($muestras as $muestra):?>
   <tr>
-    <!--<td>
-      <?php //echo $muestra['Muestra']['tipo']?>
-    </td>-->
     <td>
-      <?php echo $muestra['Muestra']['registro']?>
+      <?php echo $muestra['Muestra']['tipo_registro']?>
     </td>
     <td>
       <?php
@@ -42,6 +46,9 @@
     </td>
     <td>
       <?php echo $muestra['Proveedor']['nombre_corto']; ?>
+    </td>
+    <td>
+      <?php echo $muestra['Contrato']['referencia']; ?>
     </td>
     <td>
       <?php echo $this->Button->view('muestras',$muestra['Muestra']['id']);

@@ -1,11 +1,12 @@
 <?php
-$this->Html->addCrumb('Operaciones','/operaciones/index_trafico');
-/*$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-'controller'=>'operaciones',
-'action'=>'view_trafico',
-$operacion['Operacion']['id']
-));
-$this->Html->addCrumb('Añadir Transporte');*/
+$this->Html->addCrumb('Operaciones','/operaciones/view_trafico/');
+$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
+    'controller'=>'operaciones',
+    'action'=>'view_trafico',
+    $operacion['Operacion']['id']
+    )
+);
+//$this->Html->addCrumb('Transporte','/transporte/view/');
 
 if ($action == 'add') {
     $transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
@@ -14,10 +15,8 @@ if ($action == 'add') {
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Transporte de Operación <em>";
-    echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].'</h4>';
-    //.$operacion['Operacion']['referencia']."</em></h2>\n";
-   // echo '<h4>Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en'.$embalaje.'</h4>';
+    echo "<h2>Modificar Transporte de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+    echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].' / Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.' / Transportados previamente: '.$transportado.'</h4>';
 }
 
     //Formulario para rellenar transporte
