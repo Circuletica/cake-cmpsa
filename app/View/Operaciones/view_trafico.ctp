@@ -226,9 +226,15 @@ echo $this->html->tablecells(array(
 	))
 	);
 ?></table>
-		<div class="btabla">
 		<?php
-		echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
+			if ($cuenta_almacen['cuenta_almacen'] != NULL ){
+			echo '<div class="btabla">';
+			echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
+			echo '</div>';
+			}else{
+				echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
+			}
+
 		?>
 		</div>
 	</div>

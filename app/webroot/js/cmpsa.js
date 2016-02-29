@@ -259,7 +259,6 @@ function operacionesRetirada(){
 
 		//modificamos _todo_ el select de operaciones
 	if (operacionId in operaciones) {
-		console.log(operacionId); 
 		var asociadosOperacion = operaciones[operacionId].Asociado;
 		var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
 	    asociadoBox.options.length = opt1;
