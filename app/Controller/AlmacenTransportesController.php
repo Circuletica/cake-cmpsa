@@ -80,8 +80,8 @@ class AlmacenTransportesController extends AppController {
 	}
 	$this->set('almacenado',$almacenado);
 
-//Control de cantidad en la cuenta para edit y add
-		if($id != NULL){
+	//Control de cantidad en la cuenta para edit y add
+	if($id != NULL){
 	$cantidadcuenta = $this->AlmacenTransporte->find(
 		'first',
 		array(

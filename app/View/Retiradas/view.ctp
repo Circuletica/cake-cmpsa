@@ -4,6 +4,24 @@ $this->assign('id',$retiradas['Retirada']['id']);
 $this->assign('object', 'Retirada del asociado '.$retiradas['Asociado']['nombre_corto']);
 $this->assign('class','Retirada');
 $this->assign('controller','retiradas');
+
+$this->Html->addCrumb('Operación'.$retiradas['Operacion']['referencia'],
+	array(
+		'controller' => 'operaciones',
+		'action'=>'view_trafico',
+		 $retiradas['Operacion']['id']
+		 )
+	);
+$this->Html->addCrumb('Retiradas','/retiradas');
+$this->Html->addCrumb($retiradas['Asociado']['nombre_corto'],
+		array(
+		'controller' => 'retiradas',
+		'action'=>'view',
+		 $retiradas['Retirada']['id']
+		 )
+	);
+
+
 $this->start('filter');
 
 echo "Filtro de búsqueda de las retiradas";
