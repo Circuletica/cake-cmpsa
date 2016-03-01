@@ -359,21 +359,24 @@ class RetiradasController extends AppController {
 	    $operaciones[$id] = $operacion['Operacion']['referencia'];
 	}
 	$this->set(compact('operaciones'));
-
+	$operacion_ref = $operaciones[$this->params['named']['from_id']];
+	$this->set(compact('operacion_ref'));
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
 	//un _nuevo_ registro, como si fuera un add
 	if (!empty($id)) $this->Retirada->id = $id; 
-	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
+
+	if(!empty($this->request->data)) { //ES UN POST
+			debug($id);
 	    if($id != NULL && $this->Retirada->save($this->request->data)){
-		$this->Session->setFlash('Retirada modificada');
+		$this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
 		    'action' => 'view_trafico',
 		    'controller' => 'operaciones',
 		    $this->params['named']['from_id']
 		));
 	    }elseif($id == NULL && $this->Retirada->save($this->request->data)){
-		$this->Session->setFlash('Retirada guardada');
+		$this->Session->setFlash('Retirada modificada');
 		$this->redirect(array(
 		    'action' => 'view_trafico',
 		    'controller' => 'operaciones',
