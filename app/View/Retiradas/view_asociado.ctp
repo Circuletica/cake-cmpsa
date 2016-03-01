@@ -42,8 +42,8 @@ foreach($retiradas as $retirada):
 				$this->Button->editLine('retiradas',$retirada['Retirada']['id'],'operaciones',$retirada['Retirada']['operacion_id'])
 			.' '.$this->Button->deleteLine('retiradas',
 					$retirada['Retirada']['id'],
-					'operaciones/view_trafico',
-					$operacion['Operacion']['id'],
+					'operaciones',
+					$retirada['Retirada']['operacion_id'],
 					'la retirada del día: '.$this->Date->format($retirada['Retirada']['fecha_retirada']
 					)
 				)

@@ -253,7 +253,8 @@ class TransportesController extends AppController {
 		$this->request->data['Transporte']['operacion_id'] = $operacion_id;
 		
 
-		if($this->request->data['Transporte']['cantidad_embalaje'] <= $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado && $id == NULL){
+		//if($this->request->data['Transporte']['cantidad_embalaje'] <= $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado && $id == NULL){
+		if($id == NULL){
 				if($this->Transporte->save($this->request->data)){
 						$this->Session->setFlash('Línea de transporte guardada');
 						$this->redirect(array(
@@ -264,21 +265,23 @@ class TransportesController extends AppController {
 				}else{
 		 			$this->Session->setFlash('Línea de transporte NO guardada');
 			    }
-			}elseif (($this->request->data['Transporte']['cantidad_embalaje'] <= $transporte['Transporte']['cantidad_embalaje']) xor (
-					 $this->request->data['Transporte']['cantidad_embalaje'] > $transporte['Transporte']['cantidad_embalaje'] &&
-					 $this->request->data['Transporte']['cantidad_embalaje'] - $transporte['Transporte']['cantidad_embalaje'] <= $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado) xor
-					 ($transporte['Transporte']['cantidad_embalaje'] == NULL)){
-				if($this->Transporte->save($this->request->data)){
-						$this->Session->setFlash('Línea de transporte modificada');
-						$this->redirect(array(
-							'controller' => 'transportes',
-							'action' => 'view',
-							$id
-						));
+		}else{
+			//	if(($this->request->data['Transporte']['cantidad_embalaje'] <= $transporte['Transporte']['cantidad_embalaje']) xor
+			//		($this->request->data['Transporte']['cantidad_embalaje'] > $transporte['Transporte']['cantidad_embalaje'] &&
+			//		 $this->request->data['Transporte']['cantidad_embalaje'] - $transporte['Transporte']['cantidad_embalaje'] <= $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado) xor
+			//		 ($transporte['Transporte']['cantidad_embalaje'] == NULL)){
+						if($this->Transporte->save($this->request->data)){
+								$this->Session->setFlash('Línea de transporte modificada');
+								$this->redirect(array(
+									'controller' => 'transportes',
+									'action' => 'view',
+									$id
+								));
+							}
 				}		
-			}else{
-			$this->Session->setFlash('La cantidad de bultos debe ser inferior');
-		    }
+	//	}else{
+	//		$this->Session->setFlash('La cantidad de bultos debe ser inferior');
+	//	    }
 	}else{//es un GET
 	     $this->request->data = $this->Transporte->read(null, $id);
 	}
