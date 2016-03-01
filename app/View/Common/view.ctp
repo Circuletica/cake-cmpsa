@@ -39,6 +39,10 @@ echo $this->element('imprimirV');
 	</li>
 	<li>
 <?php
+//si esta definido el $from_controller, ponemos un botón
+//que devuelve al controller mencionado,
+//si no es el caso, volvemos al index del controller del
+//borrado
 echo $this->Button->edit($controller,$id)
     .' '.
     //si esta definido el $from_controller, ponemos un botón
@@ -46,8 +50,8 @@ echo $this->Button->edit($controller,$id)
     //si no es el caso, volvemos al index del controller del
     //borrado
     (empty($from_controller) ? 
-    $this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object):
-    $this->Button->delete($controller,$id,$object)
+    $this->Button->delete($controller,$id,$object):
+    $this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object)
 );
 ?>
 	</li>

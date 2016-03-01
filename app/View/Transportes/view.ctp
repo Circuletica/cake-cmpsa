@@ -181,7 +181,7 @@ if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 		if ($transporte['Transporte']['fecha_llegada'] !=NULL && $transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='CIF'){
 			$fecha_entrada_mercancia = date("d-m-Y", strtotime("$fecha_llegada +15 days"));
 			$transporte['Transporte']['fecha_entradamerc'] = $fecha_entrada_mercancia; //Asigno una fecha + 1 mes
-			echo "<span style=color:red;>$fecha_entrada_mercancia</span>";
+			echo "<span style=color:#43c35;>$fecha_entrada_mercancia</span>";
 		}elseif($transporte['Operacion']['Contrato']['Incoterm']['nombre']=='CIF'){
 			echo "La fecha de llegada sin asignar";
 		}else{
@@ -349,13 +349,13 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 	</table>
 
 	<?php
-	echo "<h4>Bultos almacenados: ".$almacenado;
+	echo "<h4>Almacenados: ".$almacenado.' / Restan: '.$restan;
 			if ($almacenado < $transporte['Transporte']['cantidad_embalaje']){
 			echo '<div class="btabla">';
 				echo $this->Button->addLine('almacen_transportes','transportes',$transporte['Transporte']['id'],'ref. almacén');
 			echo '</div>';
 			}else{
-				echo " - Todos los bultos han sido almacenados</h4>";
+				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido almacenados</span></h4>";
 			}
 ?>
 	</div>

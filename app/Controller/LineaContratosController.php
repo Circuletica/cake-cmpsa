@@ -1,6 +1,5 @@
 <?php
 class LineaContratosController extends AppController {
-	public $scaffold = 'admin';
 	public $paginate = array(
 		'order' => array('referencia' => 'asc')
 	);

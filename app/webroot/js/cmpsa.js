@@ -259,7 +259,6 @@ function operacionesRetirada(){
 
 		//modificamos _todo_ el select de operaciones
 	if (operacionId in operaciones) {
-		console.log(operacionId); 
 		var asociadosOperacion = operaciones[operacionId].Asociado;
 		var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
 	    asociadoBox.options.length = opt1;
@@ -316,12 +315,3 @@ function operacionAlmacen() {
 	almacenId.options[0].selected = true;
     }
 }
-
-//function sacosCuenta() {
-//    var operacionAlmacenes = window.app.operacionAlmacenes;
-//    var almacenId = document.getElementById('LineaMuestraAlmacenTransporteId');
-//    //el almacen seleccionado (si edit)
-//    var almacenIndex = almacenId.selectedIndex;
-//    var almacenSelOpt = almacenId.options[almacenIndex].value;
-//
-//}

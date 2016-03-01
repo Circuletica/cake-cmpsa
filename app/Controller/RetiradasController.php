@@ -1,163 +1,162 @@
 <?php
 class RetiradasController extends AppController {
-	public $scaffold = 'admin';
 
-	public function index() {
+    public function index() {
 	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'asc');
 	$this->paginate['contain'] = array(
-			'Asociado',
-			'AlmacenTransporte' => array (
-				'Almacen' => array (
-					'fields' => array(
-						'nombre_corto'
-						)
-					)
-				),
-			'Operacion' => array (
-					'fields' => array(
-						'id',
-						'referencia'
-					)
-			)
+	    'Asociado',
+	    'AlmacenTransporte' => array (
+		'Almacen' => array (
+		    'fields' => array(
+			'nombre_corto'
+		    )
+		)
+	    ),
+	    'Operacion' => array (
+		'fields' => array(
+		    'id',
+		    'referencia'
+		)
+	    )
 	);
 
 	$retiradas = $this->paginate();
 	$this->set(compact('retiradas'));
 
+    }
+
+    public function view($id = null) {
+	//el id y la clase de la entidad de origen vienen en la URL
+	if (!$id) {
+	    $this->Session->setFlash('URL mal formado Retirada/view');
+	    $this->redirect(array('action'=>'index'));
 	}
 
-	public function view($id = null) {
-		//el id y la clase de la entidad de origen vienen en la URL
-		if (!$id) {
-			$this->Session->setFlash('URL mal formado Retirada/view');
-			$this->redirect(array('action'=>'index'));
-		}
-		
 	$retiradas = $this->Retirada->find(
-		'first',
-		array(
-	   		'conditions' => array(
-	   			'Retirada.id' => $id
-	   			),
-	   		'recursive' => 4,			
-			'contain' => array(
-				'AlmacenTransporte' => array(
-					'fields' => array(
-						'almacen_id',
-						'cantidad_cuenta',
-						'cuenta_almacen',
-						'marca_almacen'
-						),
-					'Almacen' => array(
-						'fields' => array(
-							'nombre_corto'
-						)
-					)
-				),
-				'Asociado' => array(
-					'fields' => array(
-						'id',
-						'nombre_corto'
-						)
-					),				
-				'Operacion' => array(
-					'fields' => array(
-						'id',
-						'referencia'
-					),
-					'AsociadoOperacion'=>array(
-						'fields'=>array(
-							'cantidad_embalaje_asociado',
-							'asociado_id'
-							)
-						)
-				)
-			)//Cierre CONTAIN
-		)
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Retirada.id' => $id
+		),
+		'recursive' => 4,			
+		'contain' => array(
+		    'AlmacenTransporte' => array(
+			'fields' => array(
+			    'almacen_id',
+			    'cantidad_cuenta',
+			    'cuenta_almacen',
+			    'marca_almacen'
+			),
+			'Almacen' => array(
+			    'fields' => array(
+				'nombre_corto'
+			    )
+			)
+		    ),
+		    'Asociado' => array(
+			'fields' => array(
+			    'id',
+			    'nombre_corto'
+			)
+		    ),				
+		    'Operacion' => array(
+			'fields' => array(
+			    'id',
+			    'referencia'
+			),
+			'AsociadoOperacion'=>array(
+			    'fields'=>array(
+				'cantidad_embalaje_asociado',
+				'asociado_id'
+			    )
+			)
+		    )
+		)//Cierre CONTAIN
+	    )
 	);
 	$this->set(compact('retiradas'));
 
 	$total_sacos_retirados = 0;
 	$total_peso_retirado = 0;
 
-}
+    }
 
-	public function view_asociado($id = null) {
-		//el id y la clase de la entidad de origen vienen en la URL
+    public function view_asociado($id = null) {
+	//el id y la clase de la entidad de origen vienen en la URL
 /*		if (!$id) {
 			$this->Session->setFlash('URL mal formado Retirada/view');
 			$this->redirect(array('action'=>'index'));
-		}*/
+}*/
 	$operacion_id = $this->params['named']['from_id'];
 	$this->set(compact('operacion_id'));
-		
+
 	$retiradas = $this->Retirada->find(
-		'all',
-		array(
-			'conditions' =>array(
-				'Retirada.asociado_id' => $this->params['named']['asociado_id'],
-				'Retirada.operacion_id'=> $operacion_id
-	   			),
-	   		'recursive' => 2,			
-			'contain' => array(
-				'AlmacenTransporte' => array(
-					'fields' => array(
-						'almacen_id',
-						'cantidad_cuenta',
-						'cuenta_almacen',
-						'marca_almacen'
-						),
-					'Almacen' => array(
-						'fields' => array(
-							'nombre_corto'
-						)
-					)
-				),
-				'Asociado' => array(
-					'fields' => array(
-						'id',
-						'nombre_corto'
-						)
-					),				
-				'Operacion' => array(
-					'fields' => array(
-						'id',
-						'referencia'
-					)
-				)
-			)//Cierre CONTAIN
-		)
+	    'all',
+	    array(
+		'conditions' =>array(
+		    'Retirada.asociado_id' => $this->params['named']['asociado_id'],
+		    'Retirada.operacion_id'=> $operacion_id
+		),
+		'recursive' => 2,
+		'contain' => array(
+		    'AlmacenTransporte' => array(
+			'fields' => array(
+			    'almacen_id',
+			    'cantidad_cuenta',
+			    'cuenta_almacen',
+			    'marca_almacen'
+			),
+			'Almacen' => array(
+			    'fields' => array(
+				'nombre_corto'
+			    )
+			)
+		    ),
+		    'Asociado' => array(
+			'fields' => array(
+			    'id',
+			    'nombre_corto'
+			)
+		    ),				
+		    'Operacion' => array(
+			'fields' => array(
+			    'id',
+			    'referencia'
+			)
+		    )
+		)//Cierre CONTAIN
+	    )
 	);
 
 	$operacion = $this->Retirada->Operacion->find(
-		'first',
-		array(
-			'conditions' => array(
-				'Operacion.id'=>$operacion_id
-				),
-			'recursive'=>-1,
-			'fields' => array(
-				'id',
-				'referencia',
-				'contrato_id',
-				'embalaje_id'
-				)
-			)
-		);
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Operacion.id'=>$operacion_id
+		),
+		'recursive'=>-1,
+		'fields' => array(
+		    'id',
+		    'referencia',
+		    'contrato_id',
+		    'embalaje_id'
+		)
+	    )
+	);
 	$this->set('operacion',$operacion);
 
 	$asociado_nombre = $this->Retirada->Asociado->find(
-		'first',
-		array(
-			'conditions' => array(
-				'Asociado.id'=>$this->params['named']['asociado_id']
-				),
-			'recursive'=>-1,
-			'fields' => array(
-				'id',
-				'nombre_corto')
-			)
-		);
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Asociado.id'=>$this->params['named']['asociado_id']
+		),
+		'recursive'=>-1,
+		'fields' => array(
+		    'id',
+		    'nombre_corto')
+		)
+	    );
 
 	$this->set(compact('asociado_nombre'));	
 
@@ -171,44 +170,66 @@ class RetiradasController extends AppController {
 		    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
 		),
 		'fields' => array(
-			'Embalaje.nombre',
-			'ContratoEmbalaje.peso_embalaje_real'
-			)
+		    'Embalaje.nombre',
+		    'ContratoEmbalaje.peso_embalaje_real'
+		)
 	    )
 	);
 	$this->set('embalaje', $embalaje);
 
 	$asociado_op = $this->Retirada->Operacion->AsociadoOperacion->find(
-		'first',
-		array(
-			'conditions' => array(
-				'AsociadoOperacion.operacion_id' => $operacion_id,
-				'AsociadoOperacion.asociado_id' => $this->params['named']['asociado_id']
-				),
-			'recursive'=>-1,
-			'fields' => array(
-				'id',
-				'cantidad_embalaje_asociado'
-				)
-			)
-		);
+	    'first',
+	    array(
+		'conditions' => array(
+		    'AsociadoOperacion.operacion_id' => $operacion_id,
+		    'AsociadoOperacion.asociado_id' => $this->params['named']['asociado_id']
+		),
+		'recursive'=>-1,
+		'fields' => array(
+		    'id',
+		    'cantidad_embalaje_asociado'
+		)
+	    )
+	);
 
 	$this->set(compact('asociado_op'));
 	$this->set(compact('retiradas'));
 
 	$total_sacos_retirados = 0;
 	$total_peso_retirado = 0;
+	//Calculamos la cantidad de retiradas se han hecho por asociado
+	if(!empty($this->params['named']['asociado_id'])){
+	    $suma = 0;
+	    $retirado=0;
+	    foreach ($retiradas['Retirada'] as $suma) {
+		if ($this->params['named']['asociado_id'] = $$retiradas['Retirada']['asociado_id']) {
+		    $retirado = $retirado + $suma['embalaje_retirado'];
+		}
+	    }
+	}
+	$restan = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] - $retirado; 
+	$this->set(compact('restan'));
+	$this->set('retirado',$retirado);
 
-}
-   public function add() {
+	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
+	$this->set('embalaje',$embalaje);
 
-   	if(empty($this->params['named']['from_id'])){
-   		$this->form();
-   	}else{
- 		$this->form($this->params['named']['from_id']); 
- 	}
-    $this->render('form');		
-}
+	$this->set(compact('retirado'));
+	$this->set(compact('restan'));
+
+    }
+    public function add() {
+
+	if (!$this->params['named']['from_id']) {
+	    $this->Session->setFlash('URL mal formado retiradas/add '.$this->params['named']['from_controller']);
+	    $this->redirect(array(
+		'controller' => $this->params['named']['from_controller'],
+		'action' => 'index')
+	    );
+	}
+	$this->form();
+	$this->render('form');
+    }
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
@@ -227,122 +248,141 @@ class RetiradasController extends AppController {
 	//Listamos el nombre de asociados
 	$this->loadModel('Asociado');	
 	$asociados = $this->Asociado->find(
-		'list',		
-		array(
+	    'list',		
+	    array(
 		'fields' => array(
-			'Asociado.id',
-			'Empresa.nombre_corto'),
+		    'Asociado.id',
+		    'Empresa.nombre_corto'),
 		'order' => array('Empresa.nombre_corto' => 'asc'),
 		'recursive' => 1)
-	);
+	    );
 
 	$this->set(compact('asociados'));
 
 	//Listamos las cuentas corrientes de los almacenes
 	//$this->loadModel('AlmacenTransporte');
 	$almacenTransportes = $this->Retirada->AlmacenTransporte->find(
-		'list',
-		array(
-			'fields' => array(
-				'AlmacenTransporte.id',
-				'AlmacenTransporte.cuenta_almacen'),
-			'order' => array('AlmacenTransporte.cuenta_almacen' => 'asc')
-			)
-		);
-
-	$this->set(compact('almacenTransportes'));
-	//Sacamos id de operaciones para listarla
-	$operaciones = $this->Retirada->Operacion->find(
-				'list'
-		    	);
-	if(empty($this->params['named']['from_id'])){
-		$this->set('operacion_id',$operacion_id = NULL);
-	}else{
-		$this->set('operacion_id',$this->passedArgs['from_id']);
-	}
-	$this->set(compact('operaciones'));
-
-	$operaciones_asociados = $this->Retirada->Operacion->find(
-				'all',
-				array(
-					'contain' => array(
-						'AsociadoOperacion' => array(
-						'Asociado' => array(
-							'fields' => array(
-								'id',
-								'nombre_corto'
-							)
-						)
-						)
-					)
-				)
+	    'list',
+	    array(
+		'fields' => array(
+		    'AlmacenTransporte.id',
+		    'AlmacenTransporte.cuenta_almacen'),
+		'order' => array('AlmacenTransporte.cuenta_almacen' => 'asc')
+	    )
 	);
 
-foreach($operaciones_asociados as $clave => $operacion){
-	
-	foreach($operacion['AsociadoOperacion'] as $asociado_operacion){
-		$operacion['Asociado'][] = $asociado_operacion['Asociado'];
+	$this->set(compact('almacenTransportes'));
+
+	if(empty($this->params['named']['from_id'])){
+	    $this->set('operacion_id',$operacion_id = NULL);
+	}else{
+	    $this->set('operacion_id',$this->passedArgs['from_id']);
 	}
-	$operaciones_asociados[$clave] = $operacion;
-	unset($operaciones_asociados[$clave]['AsociadoOperacion']);
-}
+
+	$operaciones_asociados = $this->Retirada->Operacion->find(
+	    'all',
+	    array(
+		'contain' => array(
+		    'AsociadoOperacion' => array(
+			'Asociado' => array(
+			    'fields' => array(
+				'id',
+				'nombre_corto'
+			    )
+			)
+		    )
+		)
+	    )
+	);
+
+	foreach($operaciones_asociados as $clave => $operacion){
+
+	    foreach($operacion['AsociadoOperacion'] as $asociado_operacion){
+		$operacion['Asociado'][] = $asociado_operacion['Asociado'];
+	    }
+	    $operaciones_asociados[$clave] = $operacion;
+	    unset($operaciones_asociados[$clave]['AsociadoOperacion']);
+	}
 	$operaciones_asociados = Hash::combine($operaciones_asociados, '{n}.Operacion.id','{n}');
 	$this->set(compact('operaciones_asociados'));
 
 
 	$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
-		'all',
-		array(
-			'contain' => array(
-				'Transporte' =>array(
-					'AlmacenTransporte'
-					)
-				)
-			)
-		);
-
-
+	    'all',
+	    array(
+		'contain' => array(
+		    'Transporte' =>array(
+			'AlmacenTransporte'
+		    )
+		)
+	    )
+	);
 	foreach($operaciones_almacen as $clave => $operacion){
-			$operaciones_almacen[$clave]['AlmacenTransporte'] = array();
-		foreach($operacion['Transporte'] as $transporte){
-		
-			if(!empty($transporte['AlmacenTransporte'])){
-				foreach($transporte['AlmacenTransporte'] as $cuenta){
+	    $operaciones_almacen[$clave]['AlmacenTransporte'] = array();
+	    foreach($operacion['Transporte'] as $transporte){
+
+		if(!empty($transporte['AlmacenTransporte'])){
+		    foreach($transporte['AlmacenTransporte'] as $cuenta){
 			$operaciones_almacen[$clave]['AlmacenTransporte'][] = $cuenta;
-			//array_push($operaciones_almacen[$clave]['AlmacenTransporte'], $transporte['AlmacenTransporte']);
-				}
-			}
+		    }
 		}
-	unset($operaciones_almacen[$clave]['Transporte']);
+	    }
+	    unset($operaciones_almacen[$clave]['Transporte']);
+	    //quitamos operaciones sin cuenta de almacén
+	    if (empty($operaciones_almacen[$clave]['AlmacenTransporte'])) {
+		unset($operaciones_almacen[$clave]);
+	    }
 	}
-	//debug($operaciones_almacen);
+//	foreach($operaciones_almacen as &$operacion){
+//	    $operacion['AlmacenTransporte'] = array();
+//	    foreach($operacion['Transporte'] as $transporte){
+//
+//		if(!empty($transporte['AlmacenTransporte'])){
+//		    foreach($transporte['AlmacenTransporte'] as $cuenta){
+//			$operacion['AlmacenTransporte'][] = $cuenta;
+//		    }
+//		}
+//	    }
+//	    unset($operacion['Transporte']);
+//	    if (empty($operacion['AlmacenTransporte'])) {
+//		unset($operacion);
+//	    }
+//	}
+//	debug($operaciones_almacen);
 
 	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
 	$this->set(compact('operaciones_almacen'));
+
+	//construimos la lista de operaciones para el desplegable,
+	//pero solo las que tengan cuentas de almacén.
+	foreach ($operaciones_almacen as $id => $operacion) {
+	    $operaciones[$id] = $operacion['Operacion']['referencia'];
+	}
+	$this->set(compact('operaciones'));
 
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
 	//un _nuevo_ registro, como si fuera un add
 	if (!empty($id)) $this->Retirada->id = $id; 
 	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
-
 	    if($id != NULL && $this->Retirada->save($this->request->data)){
+		$this->Session->setFlash('Retirada modificada');
+		$this->redirect(array(
+		    'action' => 'view_trafico',
+		    'controller' => 'operaciones',
+		    $this->params['named']['from_id']
+		));
+	    }elseif($id == NULL && $this->Retirada->save($this->request->data)){
 		$this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
 		    'action' => 'view_trafico',
 		    'controller' => 'operaciones',
-		    $id
-		));
-	    }elseif($id == NULL && $this->Retirada->save($this->request->data)) {
-	    $this->Session->setFlash('Retirada guardada');
-		$this->redirect(array(
-		    'action' => 'index',
-		    'controller' => 'retiradas'
+		    $this->params['named']['from_id']
 		));
 	    }else{
 		$this->Session->setFlash('Retirada NO guardada');
 	    }
-	} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
+	}else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
 	    $this->request->data = $this->Retirada->read(null, $id);
 	}
     }
@@ -353,8 +393,8 @@ foreach($operaciones_asociados as $clave => $operacion){
 	}
 	if ($this->Retirada->delete($id)){
 	    $this->Session->setFlash('Retirada borrada');
-		$this->redirect(array('action'=>'index'));
-    }
+	    $this->redirect(array('action'=>'index'));
+	}
 
-}
+    }
 }

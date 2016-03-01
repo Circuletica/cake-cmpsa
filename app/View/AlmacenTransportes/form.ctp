@@ -12,14 +12,15 @@ $this->params['named']['from_id']
 ));
 
 if ($action == 'add') {
+  $almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
 	echo "<h2>Agregar Cuenta corriente almacén</h2>\n";
-  $almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;  
-  echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].' / Bultos por almacenar: '.$almacenado.'</h4>';
+  echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].' / Por almacenar: '.$almacenado.'</h4>';
    }
 
 if ($action == 'edit') {
+  //  $almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
   echo "<h2>Modificar Cuenta corriente almacén</h2>\n";
-  echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].' / Bultos almacenados previamente: '.$almacenado.'</h4>';
+  echo '<h4>Bultos línea: '.$transporte['Transporte']['cantidad_embalaje'].' / Almacenados previamente: '.$almacenado.'</h4>';
 }
   //FORMULARIO PARA RELLENAR ALMACEN TRANSPORTE
 	echo $this->Form->create('AlmacenTransporte');

@@ -42,6 +42,10 @@ class Operacion extends AppModel {
 		'Financiacion' => array(
 			'className' => 'Financiacion',
 			'foreignKey' => 'id'
+		),
+		'Facturacion' => array(
+			'className' => 'Facturacion',
+			'foreignKey' => 'id'
 		)
 	);
 	public $hasMany = array(
