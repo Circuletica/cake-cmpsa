@@ -27,6 +27,8 @@ echo "  <dt>Tipo embalajes:</dt>\n";
 echo "  <dd>".$flete['Embalaje']['nombre']."&nbsp;</dd>";
 echo "  <dt>Peso contenedor:</dt>\n";
 echo "  <dd>".$flete['Flete']['peso_contenedor_tm']."Tm&nbsp;</dd>";
+echo "  <dt>Contrato naviera:</dt>\n";
+echo "  <dd>".$flete['Flete']['contrato']."&nbsp;</dd>";
 echo "</dl>";
 $this->end();
 $this->start('lines');
