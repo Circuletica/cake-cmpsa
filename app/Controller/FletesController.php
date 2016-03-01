@@ -172,7 +172,8 @@ class FletesController extends AppController {
 		$this->Session->setFlash('Flete guardado');
 		$this->redirect(
 		    array(
-			'action' => 'index',
+			'action' => 'view',
+			$this->Flete->id
 		    )
 		);
 	    } else {
