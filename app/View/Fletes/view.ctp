@@ -8,6 +8,17 @@ $this->assign('controller','fletes');
 $this->assign('line_controller','precio_fletes');
 $this->assign('line_object', 'precio');
 $this->assign('line_add', 'si');
+//$this->assign('breadcrumb', 'si');
+
+$this->start('breadcrumb');
+$this->Html->addCrumb(
+    'Fletes',
+    array(
+	'controller' => 'fletes',
+	'action' => 'index',
+    )
+);
+$this->end();
 
 $this->start('filter');
 //echo $this->element('filtroflete');
