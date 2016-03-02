@@ -11,7 +11,7 @@ if ($action == 'add') {
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar retirada del asociado X de la operación ".$operacion_ref."</h2>\n";  
+    echo "<h2>Modificar retirada de asociado la operación ".$operacion_ref."</h2>\n";  
     /*echo "<h2>Modificar retirada del asociado".$asociado_nombre['Asociado']['nombre_corto']."</h2>\n";
     echo '<h4>Sacos solicitados: ' $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' en '.$embalaje.' / Pendientes: '.$retirados'</h4>';*/
 }
@@ -34,8 +34,8 @@ if ($action == 'edit') {
     
       ?>
       </div>
+      <div class="col2">
       <?php
-      if ($action == 'add'){
         echo $this->Form->input('operacion_id',
           array(
                     'label'=>'Ref. Operación',
@@ -51,27 +51,9 @@ if ($action == 'edit') {
                     'class' => 'ui-widget',
                     'id' => 'asociado',              
                      )
-               );    
-
-      }else{
-            echo $this->Form->hidden('operacion_id',
-                  array(
-                    'label'=>'Ref. Operación',
-                    'empty' => array('' => 'Selecciona'),
-                    'onchange' => 'operacionesRetirada()',
-                    'value' => $operacion_id
-                  )
-                );
-        echo $this->Form->hidden('asociado_id',
-             array(
-                  'label'=>'Asociado',
-                  'empty' =>array('' => 'Selecciona'),
-                  'class' => 'ui-widget',
-                  'id' => 'asociado',              
-                   )
-             );
-      }
+               );  
 ?>
+  </div>
    </fieldset>
    <fieldset>
 <?php

@@ -90,6 +90,42 @@ class RetiradasController extends AppController {
 	$operacion_id = $this->params['named']['from_id'];
 	$this->set(compact('operacion_id'));
 
+	$operacion = $this->Retirada->Operacion->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Operacion.id'=>$operacion_id
+		),
+		'recursive'=>-1,
+		'fields' => array(
+		    'id',
+		    'referencia',
+		    'contrato_id',
+		    'embalaje_id'
+		)
+	    )
+	);
+	$this->set('operacion',$operacion);
+debug($operacion['Operacion']['contrato_id']);
+debug($operacion['Operacion']['embalaje_id']);
+	//Sacamos info embalaje y cantidad operacion
+	$this->loadModel('ContratoEmbalaje');
+	$embalaje = $this->ContratoEmbalaje->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
+		    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+		),
+		'fields' => array(
+		    //'Embalaje.nombre',
+		    'ContratoEmbalaje.peso_embalaje_real'
+		)
+	    )
+	);
+	debug($embalaje);
+	$this->set(compact('embalaje'));
+
 	$retiradas = $this->Retirada->find(
 	    'all',
 	    array(
@@ -128,22 +164,6 @@ class RetiradasController extends AppController {
 	    )
 	);
 
-	$operacion = $this->Retirada->Operacion->find(
-	    'first',
-	    array(
-		'conditions' => array(
-		    'Operacion.id'=>$operacion_id
-		),
-		'recursive'=>-1,
-		'fields' => array(
-		    'id',
-		    'referencia',
-		    'contrato_id',
-		    'embalaje_id'
-		)
-	    )
-	);
-	$this->set('operacion',$operacion);
 
 	$asociado_nombre = $this->Retirada->Asociado->find(
 	    'first',
@@ -160,22 +180,6 @@ class RetiradasController extends AppController {
 
 	$this->set(compact('asociado_nombre'));	
 
-	//el nombre de calidad concatenado esta en una view de MSQL
-	$this->loadModel('ContratoEmbalaje');
-	$embalaje = $this->ContratoEmbalaje->find(
-	    'first',
-	    array(
-		'conditions' => array(
-		    'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-		    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
-		),
-		'fields' => array(
-		    'Embalaje.nombre',
-		    'ContratoEmbalaje.peso_embalaje_real'
-		)
-	    )
-	);
-	$this->set('embalaje', $embalaje);
 
 	$asociado_op = $this->Retirada->Operacion->AsociadoOperacion->find(
 	    'first',
@@ -219,14 +223,6 @@ class RetiradasController extends AppController {
 
     }
     public function add() {
-
-	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado retiradas/add '.$this->params['named']['from_controller']);
-	    $this->redirect(array(
-		'controller' => $this->params['named']['from_controller'],
-		'action' => 'index')
-	    );
-	}
 	$this->form();
 	$this->render('form');
     }
@@ -333,22 +329,6 @@ class RetiradasController extends AppController {
 		unset($operaciones_almacen[$clave]);
 	    }
 	}
-//	foreach($operaciones_almacen as &$operacion){
-//	    $operacion['AlmacenTransporte'] = array();
-//	    foreach($operacion['Transporte'] as $transporte){
-//
-//		if(!empty($transporte['AlmacenTransporte'])){
-//		    foreach($transporte['AlmacenTransporte'] as $cuenta){
-//			$operacion['AlmacenTransporte'][] = $cuenta;
-//		    }
-//		}
-//	    }
-//	    unset($operacion['Transporte']);
-//	    if (empty($operacion['AlmacenTransporte'])) {
-//		unset($operacion);
-//	    }
-//	}
-//	debug($operaciones_almacen);
 
 	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
 	$this->set(compact('operaciones_almacen'));
@@ -359,8 +339,10 @@ class RetiradasController extends AppController {
 	    $operaciones[$id] = $operacion['Operacion']['referencia'];
 	}
 	$this->set(compact('operaciones'));
-	$operacion_ref = $operaciones[$this->params['named']['from_id']];
-	$this->set(compact('operacion_ref'));
+	if(!empty($this->params['named']['from_id']))	{
+		$operacion_ref = $operaciones[$this->params['named']['from_id']];
+		$this->set(compact('operacion_ref'));
+	}
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
 	//un _nuevo_ registro, como si fuera un add
@@ -368,27 +350,37 @@ class RetiradasController extends AppController {
 
 	if(!empty($this->request->data)) { //ES UN POST
 			debug($id);
-	    if($id != NULL && $this->Retirada->save($this->request->data)){
-		$this->Session->setFlash('Retirada guardada');
-		$this->redirect(array(
-		    'action' => 'view_trafico',
-		    'controller' => 'operaciones',
-		    $this->params['named']['from_id']
-		));
-	    }elseif($id == NULL && $this->Retirada->save($this->request->data)){
+	    if($id != NULL && !empty($this->params['named']['from_id']) && $this->Retirada->save($this->request->data)){
+			$this->Session->setFlash('Retirada guardada');
+			$this->redirect(array(
+			    'action' => 'view_trafico',
+			    'controller' => 'operaciones',
+		    	$this->params['named']['from_id']
+		    	)
+			);
+	    }elseif($id != NULL && $this->Retirada->save($this->request->data)){
+			$this->Session->setFlash('Retirada guardada');
+			$this->redirect(array(
+			    'action' => 'index',
+			    'controller' => 'retiradas'
+			    )
+			);
+		}elseif($id == NULL && $this->Retirada->save($this->request->data)){
 		$this->Session->setFlash('Retirada modificada');
 		$this->redirect(array(
 		    'action' => 'view_trafico',
 		    'controller' => 'operaciones',
 		    $this->params['named']['from_id']
-		));
+		    )
+		);
 	    }else{
 		$this->Session->setFlash('Retirada NO guardada');
 	    }
 	}else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
 	    $this->request->data = $this->Retirada->read(null, $id);
 	}
-    }
+}
+
 
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')){
