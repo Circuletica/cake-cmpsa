@@ -2,7 +2,7 @@
 class RetiradasController extends AppController {
 
     public function index() {
-	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'asc');
+	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'desc');
 	$this->paginate['contain'] = array(
 	    'Asociado',
 	    'AlmacenTransporte' => array (
@@ -102,15 +102,20 @@ class RetiradasController extends AppController {
 		    'referencia',
 		    'contrato_id',
 		    'embalaje_id'
-		)
+		),
+		'contain' => array(
+			'Embalaje' => array(
+				'fields' => array(
+					'nombre'
+					)
+				)
+			)
 	    )
 	);
 	$this->set('operacion',$operacion);
-debug($operacion['Operacion']['contrato_id']);
-debug($operacion['Operacion']['embalaje_id']);
 	//Sacamos info embalaje y cantidad operacion
 	$this->loadModel('ContratoEmbalaje');
-	$embalaje = $this->ContratoEmbalaje->find(
+	$solicitado = $this->ContratoEmbalaje->find(
 	    'first',
 	    array(
 		'conditions' => array(
@@ -123,8 +128,8 @@ debug($operacion['Operacion']['embalaje_id']);
 		)
 	    )
 	);
-	debug($embalaje);
-	$this->set(compact('embalaje'));
+	
+	$this->set(compact('solicitado'));
 
 	$retiradas = $this->Retirada->find(
 	    'all',
@@ -133,7 +138,7 @@ debug($operacion['Operacion']['embalaje_id']);
 		    'Retirada.asociado_id' => $this->params['named']['asociado_id'],
 		    'Retirada.operacion_id'=> $operacion_id
 		),
-		'recursive' => 2,
+		'recursive' => 3,
 		'contain' => array(
 		    'AlmacenTransporte' => array(
 			'fields' => array(
@@ -157,14 +162,15 @@ debug($operacion['Operacion']['embalaje_id']);
 		    'Operacion' => array(
 			'fields' => array(
 			    'id',
-			    'referencia'
-			)
+			    'referencia',
+			    'embalaje_id'
+			),
+				'Embalaje' => array(
+					'nombre')
 		    )
 		)//Cierre CONTAIN
 	    )
 	);
-
-
 	$asociado_nombre = $this->Retirada->Asociado->find(
 	    'first',
 	    array(
@@ -203,24 +209,27 @@ debug($operacion['Operacion']['embalaje_id']);
 	$total_peso_retirado = 0;
 	//Calculamos la cantidad de retiradas se han hecho por asociado
 	if(!empty($this->params['named']['asociado_id'])){
-	    $suma = 0;
+		$suma = 0;
 	    $retirado=0;
-	    foreach ($retiradas['Retirada'] as $suma) {
-		if ($this->params['named']['asociado_id'] = $$retiradas['Retirada']['asociado_id']) {
-		    $retirado = $retirado + $suma['embalaje_retirado'];
-		}
+	    foreach ($retiradas as $clave=> $suma) {
+			if ($this->params['named']['asociado_id'] == $suma['Retirada']['asociado_id']) {
+			    $retirado = $retirado + $suma['Retirada']['embalaje_retirado'];
+			}
 	    }
 	}
 	$restan = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] - $retirado; 
 	$this->set(compact('restan'));
 	$this->set('retirado',$retirado);
 
-	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
-	$this->set('embalaje',$embalaje);
+	//Saco el tipo de embalaje que tiene la operacíón
+	$embalaje = $operacion['Embalaje'];
+	$this->set(compact('embalaje'));
 
 	$this->set(compact('retirado'));
 	$this->set(compact('restan'));
 
+	$peso = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] * $solicitado['ContratoEmbalaje']['peso_embalaje_real'];
+	$this->set(compact('peso'));
     }
     public function add() {
 	$this->form();
@@ -349,7 +358,6 @@ debug($operacion['Operacion']['embalaje_id']);
 	if (!empty($id)) $this->Retirada->id = $id; 
 
 	if(!empty($this->request->data)) { //ES UN POST
-			debug($id);
 	    if($id != NULL && !empty($this->params['named']['from_id']) && $this->Retirada->save($this->request->data)){
 			$this->Session->setFlash('Retirada guardada');
 			$this->redirect(array(

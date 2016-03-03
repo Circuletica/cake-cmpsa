@@ -18,10 +18,9 @@ echo "<dl>";
 	);
 	echo "</dd>";
 	echo "<dt>Sacos solicitados:</dt>\n";
-	echo "<dd>".$asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' x '.$embalaje['Embalaje']['nombre'].'&nbsp';
+	echo "<dd>".$asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' x '.$embalaje['nombre'].'&nbsp';
 		"</dd>";
 	echo "<dt>Peso solicitado:</dt>\n";
-	 $peso = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 	echo "<dd>".$peso.' Kg &nbsp;'."</dd>";
 echo "</dl>";
 
@@ -57,7 +56,7 @@ endforeach;?>
 echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
 			if ($retirado < $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado']){
 			echo '<div class="btabla">';
-				echo $this->Button->addLine('retiradas','operaciones',$retirada['Retirada']['operacion_id'],'retirada de '.$asociado_nombre['Asociado']['nombre_corto']);
+				echo $this->Button->addLine('retiradas','operaciones',$operacion_id,'retirada de '.$asociado_nombre['Asociado']['nombre_corto']);
 			echo '</div>';
 			}else{
 				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido almacenados</span></h4>";
