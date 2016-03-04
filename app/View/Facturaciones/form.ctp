@@ -15,18 +15,28 @@ echo "  <dd>".$referencia.'&nbsp;'."</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "  <dd>".$calidad.'&nbsp;'."</dd>";
 echo "  <dt>Proveedor</dt>\n";
-echo "<dd>";
+echo "  <dd>";
 echo $this->html->link($proveedor, array(
     'controller' => 'proveedores',
     'action' => 'view',
     $proveedor_id)
 );
-echo "</dd>";
+echo "  </dd>";
 echo "  <dt>Condición</dt>\n";
-echo "<dd>".$condicion.'&nbsp;'."</dd>";
+echo "  <dd>".$condicion.'&nbsp;'."</dd>";
 echo "  <dt>Coste teórico</dt>\n";
-echo "<dd>".$coste_teorico.'&nbsp;'."</dd>";
+echo "  <dd>".$coste_teorico.'&nbsp;'."</dd>";
 echo "  <dt>Cambio teórico</dt>\n";
-echo "<dd>".$cambio_teorico.'&nbsp;'."</dd>";
+echo "  <dd>".$cambio_teorico.'&nbsp;'."</dd>";
+echo "  <dt>Transportes</dt>\n";
+echo "  <dd>";
+foreach($transportes as $transporte) {
+    echo $transporte.'&nbsp;'."<br>\n";
+}
+echo "  </dd>";
+echo "  <dt>Último despacho</dt>\n";
+echo "  <dd>".$this->Date->format($ultimo_despacho).'&nbsp;'."</dd>";
+echo "  <dt>Bultos despachos</dt>\n";
+echo "  <dd>".$bultos_despachados.'&nbsp;'."</dd>";
 echo "</dl>";
-
+?>

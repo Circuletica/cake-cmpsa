@@ -61,6 +61,7 @@ class FacturacionesController extends AppController {
 
     public function form($id) {
 	$this->set('action', $this->action);
+	//$this->Facturacion->Operacion->Transporte->virtualFields['ultimo_despacho'] = 'max(fecha_despacho_op)';
 	$operacion = $this->Facturacion->Operacion->find(
 	    'first',
 	    array(
@@ -74,11 +75,44 @@ class FacturacionesController extends AppController {
 			'Naviera',
 			'Agente'
 		    ),
-		    'PrecioTotalOperacion'
+		    'PrecioTotalOperacion',
+		    'PesoOperacion',
+		    'Embalaje'
 		)
 	    )
 	);
 	$this->set(compact('operacion'));
+	$ultimo_despacho = $this->Facturacion->Operacion->Transporte->find(
+	    'first',
+	    array(
+		'conditions' => array('Transporte.operacion_id' => $id),
+		'fields' => array(
+		    'max(fecha_despacho_op) AS ultimo'
+		),
+		'recursive' => -1
+	    )
+	);
+	$bultos_despachados = $this->Facturacion->Operacion->Transporte->AlmacenTransporte->find(
+	    'first',
+	    array(
+		'conditions' => array('Transporte.operacion_id' => $id),
+		'fields' => array(
+		    'sum(cantidad_cuenta) AS cantidad_cuenta'
+		),
+		'joins' => array(
+		    array(
+			'table' => 'transportes',
+			'alias' => 'Transporte',
+			'type' => 'LEFT',
+			'conditions' => array(
+			    'AlmacenTransporte.transporte_id = Transporte.id'
+			)
+		    )
+		),
+		'recursive' => -1
+	    )
+	);
+	$this->set('ultimo_despacho',$ultimo_despacho[0]['ultimo']);
 	$this->set('referencia', $operacion['Operacion']['referencia']);
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['nombre_corto']);
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
@@ -86,6 +120,12 @@ class FacturacionesController extends AppController {
 	$this->set('condicion', $operacion['Contrato']['condicion']);
 	$this->set('coste_teorico', $operacion['PrecioTotalOperacion']['precio_dolar_tonelada']."$/Tm");
 	$this->set('cambio_teorico', $operacion['Operacion']['cambio_dolar_euro']."$/€");
+	foreach($operacion['Transporte'] as $transporte) {
+	    $transportes[] = (empty($transporte['Naviera'])?'pendiente':$transporte['Naviera']['nombre_corto'])
+	    .'/'.(empty($transporte['Agente'])?'pendiente':$transporte['Agente']['nombre_corto']);
+	}
+	$this->set(compact('transportes'));
+	$this->set('bultos_despachados',$bultos_despachados[0]['cantidad_cuenta'].'/'.$operacion['PesoOperacion']['cantidad_embalaje']);
     }
 }
 ?>
