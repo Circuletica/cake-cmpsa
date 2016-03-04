@@ -3,6 +3,14 @@ class Contrato extends AppModel {
     public $recursive = 4;
     public $displayField = 'referencia';
     public $virtualFields = array(
+	'condicion' => 'CONCAT(
+	    CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
+	    " ",
+	    SUBSTR(Contrato.fecha_transporte,1,4),
+	    "(",
+	    (SELECT nombre FROM incoterms WHERE id = Contrato.incoterm_id),
+	    ")"
+	   )',
 	'transporte' => 'CONCAT(
 	    CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
 	    " ",

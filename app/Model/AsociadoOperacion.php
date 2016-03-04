@@ -9,8 +9,7 @@ class AsociadoOperacion extends AppModel {
 		)
 	);
 	public $hasMany = array(
-	    'Anticipo',
-	    'Factura'
+	    'Anticipo'
 	);
 }
 ?>

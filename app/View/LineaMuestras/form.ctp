@@ -24,7 +24,7 @@ if ($action == 'edit') {
     echo "<h2>Modificar Línea de la muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
 
-$this->Html->addCrumb('Muestras de '.$muestra['tipo_nombre'],'/muestras/index/Search.tipo_id:'.$muestra['tipo']);
+$this->Html->addCrumb('Muestras de '.$muestra['tipo_nombre'],'/muestras/index/Search.tipo_id:'.$muestra['tipo_id']);
 $this->Html->addCrumb('Muestra '.$muestra['tipo_registro'],'/muestras/view/'.$muestra['id']);
 
 ?>
@@ -37,7 +37,7 @@ if (isset($operacion_almacenes)) {
 }
 
 echo $this->Form->create();
- if($muestra['tipo']!='1'){
+ if($muestra['tipo_id']!='1'){
  	echo "<div class='col3'>";
  }else{
  	echo "<div class='col4'>";
@@ -53,7 +53,7 @@ echo $this->Html->tableCells(
 		'label' => 'Referencia Proveedor'
 	    )
 	),
-	isset($operaciones) && $muestra['tipo']!='1' ?
+	isset($operaciones) && $muestra['tipo_id']!='1' ?
 	$this->Form->input(
 	    'operacion_id',
 	    array(
@@ -63,7 +63,7 @@ echo $this->Html->tableCells(
 	    )
 	)
 	: '',
-	isset($operacion_almacenes) && $muestra['tipo']!='1' ?
+	isset($operacion_almacenes) && $muestra['tipo_id']!='1' ?
 	$this->Form->input(
 	    'almacen_transporte_id',
 	    array(
