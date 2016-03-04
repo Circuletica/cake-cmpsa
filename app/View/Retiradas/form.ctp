@@ -8,13 +8,13 @@ echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 if ($action == 'add') {
     echo "<h2>Añadir retirada de asociado</h2>\n";
+}elseif($action == 'edit') {
+    echo "<h2>Modificar retirada de asociado en la operación ".$operacion_ref."</h2>\n";  
+    //echo '<h4>Sacos solicitados: ' $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' en '.$embalaje.' / Pendientes: '.$retirados'</h4>';*/
 }
-
-if ($action == 'edit') {
-    echo "<h2>Modificar retirada de asociado la operación ".$operacion_ref."</h2>\n";  
-    /*echo "<h2>Modificar retirada del asociado".$asociado_nombre['Asociado']['nombre_corto']."</h2>\n";
-    echo '<h4>Sacos solicitados: ' $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' en '.$embalaje.' / Pendientes: '.$retirados'</h4>';*/
-}
+/*}else{
+   echo "<h2>Añadir retirada de asociado en Operación ".$operacion_ref."</h2>\n";
+}*/
 
     echo $this->Form->create('Retirada');
     ?><fieldset>

@@ -83,10 +83,7 @@ class RetiradasController extends AppController {
 
     public function view_asociado($id = null) {
 	//el id y la clase de la entidad de origen vienen en la URL
-/*		if (!$id) {
-			$this->Session->setFlash('URL mal formado Retirada/view');
-			$this->redirect(array('action'=>'index'));
-}*/
+
 	$operacion_id = $this->params['named']['from_id'];
 	$this->set(compact('operacion_id'));
 
@@ -348,10 +345,11 @@ class RetiradasController extends AppController {
 	    $operaciones[$id] = $operacion['Operacion']['referencia'];
 	}
 	$this->set(compact('operaciones'));
-	if(!empty($this->params['named']['from_id']))	{
-		$operacion_ref = $operaciones[$this->params['named']['from_id']];
-		$this->set(compact('operacion_ref'));
+
+	if(!empty($this->params['named']['from_id'])){
+		$operacion_ref = $operacion['Operacion']['referencia'];
 	}
+	$this->set(compact('operacion_ref'));
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
 	//un _nuevo_ registro, como si fuera un add
