@@ -106,14 +106,14 @@ class OperacionesController extends AppController {
 	$asociados = $this->Asociado->find(
 	    'all',
 	    array(
-			'fields' => array(
-				'Asociado.id',
-		    	'Empresa.codigo_contable',
-				'Empresa.nombre_corto'
-				),
+		'fields' => array(
+		    'Asociado.id',
+		    'Empresa.codigo_contable',
+		    'Empresa.nombre_corto'
+		),
 		'order' => array(
-	    	'Empresa.codigo_contable' => 'ASC'
-	    	),
+		    'Empresa.codigo_contable' => 'ASC'
+		),
 		'recursive' => 1
 	    )
 	);	
@@ -129,10 +129,10 @@ class OperacionesController extends AppController {
 	    'list',
 	    array(
 		'fields' => array(
-			'Proveedor.id',
-			'Empresa.nombre_corto'),
+		    'Proveedor.id',
+		    'Empresa.nombre_corto'),
 		'order' => array(
-			'Empresa.nombre_corto' => 'asc'),
+		    'Empresa.nombre_corto' => 'asc'),
 		'recursive' => 1
 	    )
 	);
@@ -417,7 +417,21 @@ endif;
 	    'first',
 	    array(
 		'conditions' => array('Operacion.id' => $id),
-		'recursive' => 3
+		'recursive' => 3,
+		'contain' => array(
+		    'PuertoCarga',
+		    'PuertoDestino',
+		    'Contrato' => array(
+			'Proveedor',
+			'Incoterm',
+			'CanalCompra'
+		    ),
+		    'AsociadoOperacion' => array(
+			'Asociado'
+		    ),
+		    'PesoOperacion',
+		    'PrecioTotalOperacion'
+		)
 	    )
 	);
 	$this->set('operacion', $operacion);
@@ -438,7 +452,6 @@ endif;
 	$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
 	$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 	$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);	
-	//$this->set('fecha_carga', $transporte['Transporte']['fecha_carga']);
 
 	//Líneas de reparto
 	foreach ($operacion['AsociadoOperacion'] as $linea) {
@@ -476,83 +489,83 @@ endif;
 	    $this->redirect(array('action'=>'index_trafico'));
 	}
 	$operacion = $this->Operacion->find(
-		'first',
-		array(
-			'conditions' => array(
-				'Operacion.id' => $id
-				),
-	    'recursive' => 2,
-	    'contain' => array(
-	    	'Transporte'=> array(
-	    		'fields' => array(
-	    			'id',
-	    			'nombre_vehiculo',
-	    			'matricula',
-	    			'fecha_carga',
-	    			'fecha_seguro',
-	    			'cantidad_embalaje'
-	    			)
-	    		),
-	    	'Contrato'=>array(
-	    		'fields'=> array(
-	    			'id',
-	    			'referencia',
-	    			'si_entrega',
-	    			'fecha_transporte'
-	    			),
-	    		'Proveedor'=>array(
-	    			'id',
-	    			'nombre_corto'
-	    			),
-	    		'Incoterm' => array(
-	    			'fields'=> array(
-						'nombre',
-						'si_flete'
-				   	)
-				),
-	    		'CalidadNombre' => array(
-	    			'fields' =>(
-	    				'nombre'
-	    				)
-	    			)
-	    		),
-	    	'PesoOperacion'=> array(
-	    		'fields' =>array(
-	    			'peso',
-	    			'cantidad_embalaje'
-	    			)
-	    		),
-	    	'PrecioTotalOperacion'=> array(
-	    		'fields'=>array(
-	    			'precio_dolar_tonelada'
-	    			)
-	    		),
-	    	'AsociadoOperacion'=>array(
-	    		'Asociado'
-	    		)
-	    	)
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Operacion.id' => $id
+		),
+		'recursive' => 2,
+		'contain' => array(
+		    'Transporte'=> array(
+			'fields' => array(
+			    'id',
+			    'nombre_vehiculo',
+			    'matricula',
+			    'fecha_carga',
+			    'fecha_seguro',
+			    'cantidad_embalaje'
+			)
+		    ),
+		    'Contrato'=>array(
+			'fields'=> array(
+			    'id',
+			    'referencia',
+			    'si_entrega',
+			    'fecha_transporte'
+			),
+			'Proveedor'=>array(
+			    'id',
+			    'nombre_corto'
+			),
+			'Incoterm' => array(
+			    'fields'=> array(
+				'nombre',
+				'si_flete'
+			    )
+			),
+			'CalidadNombre' => array(
+			    'fields' =>(
+				'nombre'
+			    )
+			)
+		    ),
+		    'PesoOperacion'=> array(
+			'fields' =>array(
+			    'peso',
+			    'cantidad_embalaje'
+			)
+		    ),
+		    'PrecioTotalOperacion'=> array(
+			'fields'=>array(
+			    'precio_dolar_tonelada'
+			)
+		    ),
+		    'AsociadoOperacion'=>array(
+			'Asociado'
+		    )
+		)
 	    )
 	);
 
 	$this ->set(compact('operacion'));
 	//Controlo la posibilidad de agregar retirdas unicamente si hay cuentas de almacen.
 	$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
-		'first',
-		array(
-			'conditions' => array(
-				'Transporte.operacion_id' => $id
-				),
-	    'recursive' => 2,
-	    'fields' => array(
-  	  			'cuenta_almacen'
-	    			)
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Transporte.operacion_id' => $id
+		),
+		'recursive' => 2,
+		'fields' => array(
+		    'cuenta_almacen'
+		)
 	    )
 	);
-		if(empty($cuenta_almacen['AlmacenTransporte'])){
-			$cuenta_almacen = NULL;
-		}else{
-			$cuenta_almacen = $cuenta_almacen['AlmacenTransporte'];
-		}
+	if(empty($cuenta_almacen['AlmacenTransporte'])){
+	    $cuenta_almacen = NULL;
+	}else{
+	    $cuenta_almacen = $cuenta_almacen['AlmacenTransporte'];
+	}
 	$this->set(compact('cuenta_almacen'));
 
 	//el nombre de calidad concatenado esta en una view de MSQL
@@ -565,9 +578,9 @@ endif;
 		    'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
 		),
 		'fields' => array(
-			'Embalaje.nombre',
-			'ContratoEmbalaje.peso_embalaje_real'
-			)
+		    'Embalaje.nombre',
+		    'ContratoEmbalaje.peso_embalaje_real'
+		)
 	    )
 	);
 
@@ -604,15 +617,15 @@ endif;
 	$anyo = substr($fecha,0,4);
 	$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
 
-//*****AQUI HACE EXCESO DE QUERIES, HAY QUE DEPURARLO*****
+	//*****AQUI HACE EXCESO DE QUERIES, HAY QUE DEPURARLO*****
 	$operacion_retiradas = $this->Operacion->Retirada->find(
-				'all',
-				array(
-		    		'conditions' => array(
-		    			'operacion_id' => $id
-		    		)
-		    	)
-			);	
+	    'all',
+	    array(
+		'conditions' => array(
+		    'operacion_id' => $id
+		)
+	    )
+	);	
 	//Líneas de reparto
 	//		debug($operacion_retiradas);
 	$total_sacos = 0;
@@ -628,24 +641,24 @@ endif;
 	$peso_retirado = 0;
 	$pendiente = 0;
 
-		foreach ($operacion_retiradas as $clave => $operacion_retirada){
-			$retirada = $operacion_retirada['Retirada'];
-			if($retirada['asociado_id'] == $linea['Asociado']['id']){
-				$cantidad_retirado += $retirada['embalaje_retirado'];
-				$peso_retirado += $retirada['peso_retirado'];
-			}
-		$pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
-		}
+	foreach ($operacion_retiradas as $clave => $operacion_retirada){
+	    $retirada = $operacion_retirada['Retirada'];
+	    if($retirada['asociado_id'] == $linea['Asociado']['id']){
+		$cantidad_retirado += $retirada['embalaje_retirado'];
+		$peso_retirado += $retirada['peso_retirado'];
+	    }
+	    $pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
+	}
 
 	$lineas_retirada[] = array(
-	   'asociado_id' => $linea['Asociado']['id'],
- 	   'Nombre' => $linea['Asociado']['nombre_corto'],
- 	   'Cantidad' => $linea['cantidad_embalaje_asociado'],
- 	   'Peso' => $peso,
- 	   'Cantidad_retirado' => $cantidad_retirado,
- 	   'Peso_retirado' => $peso_retirado,
- 	   'Pendiente' => $pendiente
-		);
+	    'asociado_id' => $linea['Asociado']['id'],
+	    'Nombre' => $linea['Asociado']['nombre_corto'],
+	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
+	    'Peso' => $peso,
+	    'Cantidad_retirado' => $cantidad_retirado,
+	    'Peso_retirado' => $peso_retirado,
+	    'Pendiente' => $pendiente
+	);
 
 	$total_sacos += $linea['cantidad_embalaje_asociado'];
 	$total_peso += $peso;
@@ -671,11 +684,8 @@ $this->set('total_pendiente',$total_pendiente);
 	if ($this->Operacion->delete($id)) {
 	    $this->Session->setFlash('Línea de contrato borrada');
 	    $this->redirect(array(
-		//'controller' => $this->params['named']['from_controller'],
 		'controller' => 'operaciones',
-		//'action'=>'view',
 		'action'=>'index',
-		//$this->params['named']['from_id']
 	    ));
 	}
     }
@@ -687,14 +697,33 @@ $this->set('total_pendiente',$total_pendiente);
 	    $this->redirect(array('action'=>'index'));
 	}
 	//vamos al add de la nueva financiacion
-	$this->request->data['algo'] = 'algo';
-	$this->redirect(array(
-	    'controller' => 'financiaciones',
-	    'from_controller' => 'operaciones',
-	    'from_id' => $id,
-	    'action' => 'add'
-	)
-    );
+	//$this->request->data['algo'] = 'algo';
+	$this->redirect(
+	    array(
+		'controller' => 'financiaciones',
+		'from_controller' => 'operaciones',
+		'from_id' => $id,
+		'action' => 'add'
+	    )
+	);
+
+    }
+
+    public function generarFacturacion($id = null) {
+	//el id y la clase de la entidad de origen vienen en la URL
+	if (!$id) {
+	    $this->Session->setFlash('URL mal formado Operacion/generarFacturacion');
+	    $this->redirect(array('action'=>'index'));
+	}
+	//vamos al add de la nueva facturación
+	$this->redirect(
+	    array(
+		'controller' => 'facturaciones',
+		'from_controller' => 'operaciones',
+		'from_id' => $id,
+		'action' => 'add'
+	    )
+	);
     }
 }
 ?>

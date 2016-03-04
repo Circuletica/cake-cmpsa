@@ -63,6 +63,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 				<ul>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones',array('escape' => false));?></li>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> FINANCIACIÓN','/financiaciones',array('escape' => false));?></li>
+				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> FACTURACIÓN','/facturaciones',array('escape' => false));?></li>
 				</ul>
 			</li>
 		</ul>	

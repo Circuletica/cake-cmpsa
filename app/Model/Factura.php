@@ -1,6 +1,11 @@
 <?php
 class Factura extends AppModel {
+    public $displayField = 'numero';
     public $belongsTo = array(
-	'AsociadoOperacion',
+	'Empresa',
+	'Facturacion'
+    );
+    public $hasMany = array(
+	'FacturaLinea'
     );
 }
