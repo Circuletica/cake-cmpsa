@@ -1,6 +1,9 @@
 <?php
 class Facturacion extends AppModel {
 	public $displayField = 'referencia';
+	public $hasMany = array(
+	    'Factura'
+	);
 	public $belongsTo = array(
 	    'CuentaVenta' => array(
 		'className' => 'CuentaContable',
