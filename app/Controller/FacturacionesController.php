@@ -61,7 +61,6 @@ class FacturacionesController extends AppController {
 
     public function form($id) {
 	$this->set('action', $this->action);
-	//$this->Facturacion->Operacion->Transporte->virtualFields['ultimo_despacho'] = 'max(fecha_despacho_op)';
 	$operacion = $this->Facturacion->Operacion->find(
 	    'first',
 	    array(
@@ -118,14 +117,39 @@ class FacturacionesController extends AppController {
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
 	$this->set('condicion', $operacion['Contrato']['condicion']);
-	$this->set('coste_teorico', $operacion['PrecioTotalOperacion']['precio_dolar_tonelada']."$/Tm");
-	$this->set('cambio_teorico', $operacion['Operacion']['cambio_dolar_euro']."$/€");
+	$this->set('coste_teorico', $operacion['PrecioTotalOperacion']['precio_dolar_tonelada']);
+	$this->set('cambio_teorico', $operacion['Operacion']['cambio_dolar_euro']);
 	foreach($operacion['Transporte'] as $transporte) {
 	    $transportes[] = (empty($transporte['Naviera'])?'pendiente':$transporte['Naviera']['nombre_corto'])
 	    .'/'.(empty($transporte['Agente'])?'pendiente':$transporte['Agente']['nombre_corto']);
 	}
 	$this->set(compact('transportes'));
-	$this->set('bultos_despachados',$bultos_despachados[0]['cantidad_cuenta'].'/'.$operacion['PesoOperacion']['cantidad_embalaje']);
+	$this->set(
+	    'bultos_despachados',
+	    $bultos_despachados[0]['cantidad_cuenta'].'/'.$operacion['PesoOperacion']['cantidad_embalaje']
+	);
+	$this->set(
+	    'cuentaVentas',
+	    $this->Facturacion->CuentaVenta->find(
+		'list',
+		array(
+		    'conditions' => array(
+			'CuentaVenta.tipo' => 'venta'
+		    )
+		)
+	    )
+	);
+	$this->set(
+	    'cuentaIvas',
+	    $this->Facturacion->CuentaIva->find(
+		'list',
+		array(
+		    'conditions' => array(
+			'CuentaIva.tipo' => 'iva'
+		    )
+		)
+	    )
+	);
     }
 }
 ?>
