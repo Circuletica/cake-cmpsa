@@ -111,6 +111,18 @@ class FacturacionesController extends AppController {
 		'recursive' => -1
 	    )
 	);
+	$bultos_retirados = $this->Facturacion->Operacion->Retirada->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Retirada.operacion_id' => $id
+		),
+		'fields' => array(
+		    'sum(embalaje_retirado) AS sacos_retirados'
+		)
+	    )
+	);
+	$sacos_retirados = $bultos_retirados[0]['sacos_retirados'];
 	$this->set('ultimo_despacho',$ultimo_despacho[0]['ultimo']);
 	$this->set('referencia', $operacion['Operacion']['referencia']);
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['nombre_corto']);
@@ -151,8 +163,7 @@ class FacturacionesController extends AppController {
 		)
 	    )
 	);
-	$peso_retirado = $operacion['PesoOperacion']['peso_retirado'];
-	$peso_retirado += ($peso_retirado/$sacos_retirado)*$sacos_sin_retirar;
+	$peso_retirado = $operacion['PesoOperacion']['peso_retirado']*$operacion['PesoOperacion']['cantidad_embalaje']/$sacos_retirados;
 	$peso_entrada = $operacion['PesoOperacion']['peso_entrada'];
 	$peso_pagado = $operacion['PesoOperacion']['peso_pagado'];
 	$this->set('peso_facturacion',
