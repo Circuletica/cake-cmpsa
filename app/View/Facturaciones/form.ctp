@@ -40,6 +40,18 @@ echo "  <dt>Bultos despachos</dt>\n";
 echo "  <dd>".$bultos_despachados.'&nbsp;'."</dd>";
 echo "</dl>";
 echo $this->Form->create('Facturacion');
+echo "<div class='radiomuestra'>\n";
+echo $this->Form->radio(
+    'peso_facturacion',
+    $peso_facturacion,
+    array(
+	'legend' => false,
+	'value' => $operacion['PesoOperacion']['peso_retirado'],
+	'separator' => '-- ',
+	'onclick' => 'pesoFacturacion()'
+    )
+);
+echo "</div>\n";
 echo "<div class='linea'>\n";
 echo $this->Form->input(
     'fecha_factura',
@@ -53,28 +65,49 @@ echo $this->Form->input(
     )
 );
 echo "</div>\n";
-if ($action == 'add') {
-    echo $this->Form->input(
-	'precio_dolar_tm',
-	array('value' => $coste_teorico)
-    );
-    echo $this->Form->input(
-	'cambio_dolar_euro',
-	array('value' => $cambio_teorico)
-    );
-} else {
-    echo $this->Form->input(
-	'precio_dolar_tm'
-    );
-    echo $this->Form->input(
-	'cambio_dolar_euro'
-    );
-}
-echo $this->Form->input('flete_pagado');
-echo $this->Form->input('gastos_bancarios_pagados');
-echo $this->Form->input('despacho_pagado');
-echo $this->Form->input('seguro_pagado');
+echo $this->Form->input(
+    'precio_dolar_tm',
+    array(
+	'label' => 'Precio $/Tm',
+	'value' => ($action == 'add')?$coste_teorico:''
+    )
+);
+echo $this->Form->input(
+    'cambio_dolar_euro',
+    array(
+	'label' => 'Cambio $/€',
+	'value' => ($action == 'add')?$cambio_teorico:''
+    )
+);
+echo '<div id=totalCafe>'."Total café: ???€".'</div>';
+echo $this->Form->input(
+    'gastos_bancarios_pagados',
+    array(
+	'label' => 'Gastos bancarios'
+    )
+);
+echo $this->Form->input(
+    'flete_pagado',
+    array(
+	'label' => 'Flete'
+    )
+);
+echo $this->Form->input(
+    'despacho_pagado',
+    array(
+	'label' => 'Despacho'
+    )
+);
+echo $this->Form->input(
+    'seguro_pagado',
+    array(
+	'label' => 'Seguro'
+    )
+);
+echo '<div id=totalGastos>'."Total gastos: ???€".'</div>';
+echo '<div id=totalOperacion>'."Total operacion: ???€/kg".'</div>';
 echo $this->Form->input('cuenta_venta_id');
 echo $this->Form->input('cuenta_iva_id');
+echo $this->Form->input('cuenta_comision_id');
 echo $this->Form->end('Guardar facturación');
 ?>

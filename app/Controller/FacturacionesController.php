@@ -151,6 +151,18 @@ class FacturacionesController extends AppController {
 		)
 	    )
 	);
+	$peso_retirado = $operacion['PesoOperacion']['peso_retirado'];
+	$peso_retirado += ($peso_retirado/$sacos_retirado)*$sacos_sin_retirar;
+	$peso_entrada = $operacion['PesoOperacion']['peso_entrada'];
+	$peso_pagado = $operacion['PesoOperacion']['peso_pagado'];
+	$this->set('peso_facturacion',
+	    array(
+		$peso_retirado => 'Peso retirado ('.$peso_retirado.'kg)',
+		$peso_entrada => 'Peso entrada ('.$peso_entrada.'kg)',
+		$peso_pagado => 'Peso facturado ('.$peso_pagado.'kg)'
+	    )
+	);
+
     }
 }
 ?>
