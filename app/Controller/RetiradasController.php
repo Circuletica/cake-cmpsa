@@ -25,62 +25,6 @@ class RetiradasController extends AppController {
 
     }
 
-/*    public function view($id = null) {
-	//el id y la clase de la entidad de origen vienen en la URL
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Retirada/view');
-	    $this->redirect(array('action'=>'index'));
-	}
-
-	$retiradas = $this->Retirada->find(
-	    'first',
-	    array(
-		'conditions' => array(
-		    'Retirada.id' => $id
-		),
-		'recursive' => 4,			
-		'contain' => array(
-		    'AlmacenTransporte' => array(
-			'fields' => array(
-			    'almacen_id',
-			    'cantidad_cuenta',
-			    'cuenta_almacen',
-			    'marca_almacen'
-			),
-			'Almacen' => array(
-			    'fields' => array(
-				'nombre_corto'
-			    )
-			)
-		    ),
-		    'Asociado' => array(
-			'fields' => array(
-			    'id',
-			    'nombre_corto'
-			)
-		    ),				
-		    'Operacion' => array(
-			'fields' => array(
-			    'id',
-			    'referencia'
-			),
-			'AsociadoOperacion'=>array(
-			    'fields'=>array(
-				'cantidad_embalaje_asociado',
-				'asociado_id'
-			    )
-			)
-		    )
-		)//Cierre CONTAIN
-	    )
-	);
-	$this->set(compact('retiradas'));
-
-	$total_sacos_retirados = 0;
-	$total_peso_retirado = 0;
-
-}*/
-
     public function view_asociado($id = null) {
 	//el id y la clase de la entidad de origen vienen en la URL
 
@@ -228,6 +172,7 @@ class RetiradasController extends AppController {
 	$this->set(compact('peso'));
     }
     public function add() {
+
 	$this->form();
 	$this->render('form');
     }
@@ -245,7 +190,7 @@ class RetiradasController extends AppController {
     }
 
     public function form($id = null) { //esta acción vale tanto para edit como add
-	$this->set('action', $this->action);
+    $this->set('action', $this->action);
 	//Listamos el nombre de asociados
 	$this->loadModel('Asociado');	
 	$asociados = $this->Asociado->find(
@@ -319,6 +264,7 @@ class RetiradasController extends AppController {
 		)
 	    )
 	);
+
 	foreach($operaciones_almacen as $clave => $operacion){
 	    $operaciones_almacen[$clave]['AlmacenTransporte'] = array();
 	    foreach($operacion['Transporte'] as $transporte){
@@ -339,13 +285,15 @@ class RetiradasController extends AppController {
 	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
 	$this->set(compact('operaciones_almacen'));
 
+	$id_edit = $id;
 	//construimos la lista de operaciones para el desplegable,
 	//pero solo las que tengan cuentas de almacén.
 	foreach ($operaciones_almacen as $id => $operacion) {
 	    $operaciones[$id] = $operacion['Operacion']['referencia'];
 	}
 	$this->set(compact('operaciones'));
-
+	//Solucionamos el problema de asignar add o edit que se pierde en el anterior foreach
+	$id = $id_edit;
 	$operacion = $this->Retirada->Operacion->find(
 	    'first',
 	    array(
@@ -367,14 +315,13 @@ class RetiradasController extends AppController {
 	    )
 	);
 	$this->set('operacion',$operacion);
-
-
-	// Saco la referencia de la operación para usar en el form excepto en un add() desde index
+// Saco la referencia de la operación para usar en el form excepto en un add() desde index
 	$operacion_ref = NULL;
 	if(!empty($this->params['named']['from_id'])){
 	    $operacion_ref = $operacion['Operacion']['referencia'];
 
 	}
+
 	$this->set(compact('operacion_ref'));
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
@@ -413,9 +360,10 @@ class RetiradasController extends AppController {
 		$this->Session->setFlash('Retirada NO guardada');
 	    }
 	}else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
-	    $this->request->data = $this->Retirada->read(null, $id);
+		$this->request->data = $this->Retirada->read(null, $id);
 	}
-    }
+}
+
 
 
     public function delete($id = null) {
