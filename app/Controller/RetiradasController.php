@@ -208,7 +208,7 @@ class RetiradasController extends AppController {
 	if(!empty($this->params['named']['asociado_id'])){
 	    $retirado=0;
 	    foreach ($retiradas as $retirada) {
-		if ($this->params['named']['asociado_id'] = $retirada['Retirada']['asociado_id']) {
+		if ($this->params['named']['asociado_id'] == $retirada['Retirada']['asociado_id']) {
 		    $retirado = $retirado + $retirada['Retirada']['embalaje_retirado'];
 		}
 	    }
