@@ -118,6 +118,7 @@ class FacturacionesController extends AppController {
 	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
 	$this->set('condicion', $operacion['Contrato']['condicion']);
 	$this->set('coste_teorico', $operacion['PrecioTotalOperacion']['precio_dolar_tonelada']);
+	$this->set('coste_estimado', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
 	$this->set('cambio_teorico', $operacion['Operacion']['cambio_dolar_euro']);
 	foreach($operacion['Transporte'] as $transporte) {
 	    $transportes[] = (empty($transporte['Naviera'])?'pendiente':$transporte['Naviera']['nombre_corto'])

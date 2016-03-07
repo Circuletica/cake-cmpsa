@@ -24,8 +24,8 @@ echo $this->html->link($proveedor, array(
 echo "  </dd>";
 echo "  <dt>Condición</dt>\n";
 echo "  <dd>".$condicion.'&nbsp;'."</dd>";
-echo "  <dt>Coste teórico</dt>\n";
-echo "  <dd>".$coste_teorico.'$/Tm&nbsp;'."</dd>";
+echo "  <dt>Coste estimado</dt>\n";
+echo "  <dd>".$coste_estimado.'€/kg&nbsp;'."</dd>";
 echo "  <dt>Cambio teórico</dt>\n";
 echo "  <dd>".$cambio_teorico.'$/€&nbsp;'."</dd>";
 echo "  <dt>Transportes</dt>\n";
