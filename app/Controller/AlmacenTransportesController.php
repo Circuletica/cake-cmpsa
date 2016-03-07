@@ -58,13 +58,26 @@ class AlmacenTransportesController extends AppController {
 			'conditions' => array(
 				'Transporte.id' => $this->params['named']['from_id']
 				),
-			'recursive' => 2,
+			'recursive' => 3,
 			'fields' => array(
 				'id',
 				'matricula',
 				'cantidad_embalaje'
-				)
+				),
+			'contain'=> array(
+				'AlmacenTransporte',
+				'Operacion' => array(
+					'fields'=>array(
+						'embalaje_id'
+						),
+					'Embalaje' => array(
+						'fields' => array(
+							'nombre'
+							)
+						)
+					)
 			)
+		)
 	);
 	$this->set('transporte',$transporte);
 	

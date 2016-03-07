@@ -36,6 +36,26 @@ class ButtonHelper extends AppHelper {
 		    )
 		);
     }    
+     //la versión especifica para vistas mixtas de diferentes tablas, se usa
+     //para en concreto desde un index a una vista compleja
+    public function viewCrossed($vista,$controller,$linked_id,$id,$from_controller,$from_id){
+	    return $this->Html->link(
+		 '<i class="fa fa-info-circle"></i> ',
+			array(
+			'controller' => $controller,
+			'action' => 'view_'.$vista,
+			$linked_id=>$id,
+			'from_controller' => $from_controller,
+			'from_id' => $from_id
+		    ),
+		    array(
+			'class' => 'boton',
+			'title' => 'Detalle línea',
+			'escape' => false
+		    )
+		);
+    }    
+
     //dibujar un boton de 'editar', el tipico que aparece
     //en view(). Como variables pasamos:
     //$controller: el contralador de la clase del objeto a modificar
