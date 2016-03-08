@@ -333,7 +333,7 @@ class RetiradasController extends AppController {
 	    $this->request->data['Retirada']['id'] = $id;
 
 	    if($id == NULL && $this->Retirada->save($this->request->data)){
-		$this->Session->setFlash('Retirada modificada');
+		$this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
 		    'action' => 'view_trafico',
 		    'controller' => 'operaciones',
@@ -342,7 +342,7 @@ class RetiradasController extends AppController {
 	    );
 
 	    }elseif($id != NULL && !empty($this->params['named']['from_id']) && $this->Retirada->save($this->request->data)){
-		$this->Session->setFlash('Retirada guardada');
+		$this->Session->setFlash('Retirada modificada');
 		$this->redirect(array(
 		    'action' => 'view_trafico',
 		    'controller' => 'operaciones',
@@ -370,8 +370,18 @@ class RetiradasController extends AppController {
 	if (!$id or $this->request->is('get')){
 	    throw new MethodNotAllowedException();
 	}
-	if ($this->Retirada->delete($id)){
+	/*if ($this->Retirada->delete($id) && (!empty($this->params['named']['from_id']))){
 	    $this->Session->setFlash('Retirada borrada');
+	    $this->redirect(array(
+	    	'controller' => 'operaciones',
+	    	'action'=>'view_trafico',
+	    	'from_controller'.$this->params['named']['from_controller'],
+	    	'from_id'.$this->params['named']['from_id']
+	    	)
+	    );
+	}else{*/
+		if ($this->Retirada->delete($id))	{
+		$this->Session->setFlash('Retirada borrada');
 	    $this->redirect(array('action'=>'index'));
 	}
 

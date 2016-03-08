@@ -332,7 +332,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 				),
 			$linea['marca_almacen'],
 			$this->Button->editLine(
-				'almacentransportes',
+				'almacen_transportes',
 				$linea['id'],'transportes',
 				$transporte['Transporte']['id']
 				)
