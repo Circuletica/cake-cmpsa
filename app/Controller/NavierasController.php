@@ -1,7 +1,7 @@
 <?php
 class NavierasController extends AppController {
 
-    public $class = 'Agente';
+    public $class = 'Naviera';
 
     public function index() {
 	$this->bindCompany($this->class);

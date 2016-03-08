@@ -123,12 +123,7 @@ class FinanciacionesController extends AppController {
 	$this->set('proveedor', $financiacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
 	$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $financiacion['Operacion']['Contrato']['CalidadNombre']['nombre']);
-	$condicion = $financiacion['Operacion']['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
-	//solo el año de embarque/entrega
-	$condicion .= ' '.substr($financiacion['Operacion']['Contrato']['fecha_transporte'],0,4);
-	//y el incoterm del contrato
-	$condicion .= ' ('.$financiacion['Operacion']['Contrato']['Incoterm']['nombre'].')';
-	$this->set(compact('condicion'));
+	$this->set('condicion', $financiacion['Operacion']['Contrato']['condicion']);
 	$this->set('fecha_vencimiento',$financiacion['Financiacion']['fecha_vencimiento']);
 	$cuenta = $financiacion['Banco']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['cuenta_bancaria']);
 	$this->set(compact('cuenta'));
@@ -204,11 +199,7 @@ class FinanciacionesController extends AppController {
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['nombre_corto']);
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
-	$condicion = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
-	//solo el año de embarque/entrega
-	$condicion .= ' '.substr($operacion['Contrato']['fecha_transporte'],0,4);
-	$condicion .= ' ('.$operacion['Contrato']['Incoterm']['nombre'].')';
-	$this->set(compact('condicion'));
+	$this->set('condicion', $operacion['Contrato']['condicion']);
 	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
 	$this->set('action', $this->action);
 

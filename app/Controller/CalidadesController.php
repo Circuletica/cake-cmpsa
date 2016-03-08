@@ -1,64 +1,75 @@
 <?php
 class CalidadesController extends AppController {
-	public $paginate = array(
-	    'order' => array(
-		'Pais.nombre' => 'asc',
-		'Calidad.descripcion' => 'asc'
-	    )
+    public $paginate = array(
+	'order' => array(
+	    'Pais.nombre' => 'asc',
+	    'Calidad.descripcion' => 'asc'
+	)
+    );
+
+    public function index() {
+	$this->paginate['contain'] = array(
+	    'Pais'
 	);
+	$this->set('calidades', $this->paginate());
+    }
 
-	public function index() {
-	    $this->paginate['contain'] = array(
-		//'Calidad',
-		'Pais'
-	    );
-	    $this->set('calidades', $this->paginate());
-	}
+    public function add() {
+	$this->form();
+	$this->render('form');
+    }
 
-	public function add() {
-		$this->set('paises', $this->Calidad->Pais->find('list'));
-		if($this->request->is('post')):
-			if($this->Calidad->save($this->request->data)):
-				$this->Session->setFlash('Calidad guardada');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => $this->params['named']['from_action']));
-			endif;
-		endif;
+    public function edit( $id = null) {
+	if (!$id) {
+	    $this->Session->setFlash('URL mal formado');
+	    $this->redirect(array('action'=>'index'));
 	}
+	$this->form($id);
+	$this->render('form');
+    }
 
-	public function delete($id = null) {
-		if (!$id or $this->request->is('get')) :
-    			throw new MethodNotAllowedException();
-		endif;
-		if ($this->Calidad->delete($id)):
-			$this->Session->setFlash('Calidad borrada');
-			$this->redirect(array('action'=>'index'));
-		endif;
+    public function form($id = null) {
+	$this->set('action', $this->action);
+	$this->set('paises', $this->Calidad->Pais->find('list'));
+	if (!empty($id)) {
+	    $this->Calidad->id = $id;
+	    $this->loadModel('CalidadNombre');
+	    $calidad = $this->CalidadNombre->findById($id);
+	    $this->set('referencia', $calidad['CalidadNombre']['nombre']);
 	}
+	if (!empty($this->request->data)){  //es un POST
+	    if($this->Calidad->save($this->request->data)) {
+		$this->Session->setFlash('Calidad guardada');
+		$this->redirect(
+		    array(
+			'action' =>
+			    isset($this->params['named']['from_action']) ?
+			    $this->params['named']['from_action'] : 'index',
+			'controller' =>
+			    isset($this->params['named']['from_controller']) ? 
+			    $this->params['named']['from_controller'] : 'calidades',
+			//si venimos de Muestras::add()
+			'tipo_id' =>
+			    isset($this->params['named']['from_type']) ?
+			    $this->params['named']['from_type'] : ''
+		    )
+		);
+	    } else {
+		$this->Session->setFlash('Calidad NO guardada');
+	    }
+	} else { //es un GET
+	    $this->request->data= $this->Calidad->read(null, $id);
+	}
+    }
 
-	public function edit( $id = null) {
-		if (!$id) {
-			$this->Session->setFlash('URL mal formado');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->Calidad->id = $id;
-		$calidad = $this->Calidad->find('first',array(
-			'conditions' => array('Calidad.id' => $id)));
-		$this->set('calidad',$calidad);
-		$this->set('paises', $this->Calidad->Pais->find('list'));
-		if($this->request->is('get')):
-			$this->request->data = $this->Calidad->read();
-		else:
-			if ($this->Calidad->save($this->request->data)):
-				$this->Session->setFlash('Calidad '.
-				$this->request->data['Calidad']['nombre'].
-			        ' modificado con éxito');
-				$this->redirect(array('action' => 'index'));
-			else:
-				$this->Session->setFlash('Calidad NO guardada');
-			endif;
-		endif;
+    public function delete($id = null) {
+	if (!$id or $this->request->is('get')) {
+	    throw new MethodNotAllowedException();
 	}
+	if ($this->Calidad->delete($id)) {
+	    $this->Session->setFlash('Calidad borrada');
+	    $this->redirect(array('action'=>'index'));
+	}
+    }
 }
 ?>

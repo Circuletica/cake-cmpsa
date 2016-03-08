@@ -38,6 +38,10 @@
 		'peso_contenedor_tm',
 		array('label' => 'Peso contenedor (Tm)')
 	);
+	echo $this->Form->input(
+		'contrato',
+		array('label' => 'Contrato naviera')
+	);
 	echo $this->Form->end('Guardar Flete');
 ?>
 </fieldset>

@@ -4,9 +4,11 @@
 	'action'=>'view_trafico',
 	$transporte['Operacion']['id']
 	));
-	$this->Html->addCrumb('Línea Transporte ', array(
+	$this->Html->addCrumb('Línea de Transporte', array(
 	'controller' => 'transportes',
-	'action' => 'add')
+	'action' => 'view',
+	$transporte['Transporte']['id']
+	)
 	);
 ?><div class="acciones">
 	<div class="printdet">
@@ -86,29 +88,33 @@
 		echo "</dd>";
 		echo "  <dt>Naviera</dt>\n";
 		echo "<dd>";
+		if ($transporte['Transporte']['naviera_id'] !=NULL){
 			echo $this->Html->link($transporte['Naviera']['nombre'], array(
 				'controller' => 'navieras',
 				'action' => 'view',
 				$transporte['Naviera']['id'])
 			);
+		}else{
+			echo "Sin asignar";
+		}
 		echo "</dd>";
 		echo "  <dt>Agente de aduanas</dt>\n";
 		echo "<dd>";
-		if ($transporte['Transporte']['agente_id'] !=NULL):
+		if ($transporte['Transporte']['agente_id'] !=NULL){
 			echo $this->Html->link($transporte['Agente']['nombre'], array(
 				'controller' => 'agentes',
 				'action' => 'view',
 				$transporte['Agente']['id'])
 			);
-					else:
+		}else{
 			echo "Sin asignar";
-		endif;
+		}
 		echo "</dd>";
 		echo "  <dt>Tipo embalaje</dt>\n";
 		echo "<dd>";
 			echo $embalaje.'&nbsp;';
 		echo "</dd>";				
-		echo "  <dt>Cantidad/Bultos línea</dt>\n";
+		echo "  <dt>Bultos línea</dt>\n";
 		echo "<dd>";
 			echo $transporte['Transporte']['cantidad_embalaje'].'&nbsp;';
 		echo "</dd>";
@@ -131,6 +137,7 @@
 		echo "</dd>";
 		echo "  <dt>Fecha de llegada</dt>\n";
 		echo "<dd>";
+if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 		//mysql almacena la fecha en formato ymd
 		$fecha = $transporte['Transporte']['fecha_llegada'];
 		$dia = substr($fecha,8,2);
@@ -138,6 +145,9 @@
 		$anyo = substr($fecha,0,4);
 		$fecha_llegada= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_llegada.'&nbsp;';
+}else{
+	echo 'Sin asignar';
+}
 		echo "</dd>";
 		echo "  <dt>Pago</dt>\n";
 		echo "<dd>";
@@ -162,12 +172,21 @@
 		echo "  <dt>Entrada mercancía</dt>\n";
 		echo "<dd>";
 		//mysql almacena la fecha en formato ymd
-		$fecha = $transporte['Transporte']['fecha_entradamerc'];
+		/*$fecha = $transporte['Transporte']['fecha_entradamerc'];
 		$dia = substr($fecha,8,2);
 		$mes = substr($fecha,5,2);
 		$anyo = substr($fecha,0,4);
 		$fecha_entradamerc= $dia.'-'.$mes.'-'.$anyo;
-		echo $fecha_entradamerc.'&nbsp;';
+		echo $fecha_entradamerc.'&nbsp;';*/
+		if ($transporte['Transporte']['fecha_llegada'] !=NULL && $transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='CIF'){
+			$fecha_entrada_mercancia = date("d-m-Y", strtotime("$fecha_llegada +15 days"));
+			$transporte['Transporte']['fecha_entradamerc'] = $fecha_entrada_mercancia; //Asigno una fecha + 1 mes
+			echo "<span style=color:#43c35;>$fecha_entrada_mercancia</span>";
+		}elseif($transporte['Operacion']['Contrato']['Incoterm']['nombre']=='CIF'){
+			echo "La fecha de llegada sin asignar";
+		}else{
+			echo $this->Date->format($transporte['Transporte']['fecha_entradamerc']).'&nbsp;';
+		}
 		echo "</dd>";
 		echo "  <dt>Despacho operación</dt>\n";
 		echo "<dd>";
@@ -179,6 +198,7 @@
 		$fecha_despacho_op= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_despacho_op.'&nbsp;';
 		echo "</dd>";
+	if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] !='FOB'){
 		echo "  <dt>Límite de retirada</dt>\n";
 		echo "<dd>";
 		//mysql almacena la fecha en formato ymd
@@ -199,26 +219,30 @@
 		$fecha_reclamacion_factura= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_reclamacion_factura.'&nbsp;';
 		echo "</dd>";
-
-?>	</dl>
+	}
+	?>	
+	</dl>
 	<br>
+	<?php
+if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
+	?>
 	<h3>Seguro</h3>
 	<dl><?php
 		echo "  <dt>Aseguradora</dt>\n";
 		echo "<dd>";
-		if ($transporte['Transporte']['aseguradora_id']!=NULL):
-			echo $this->Html->link($transporte['Aseguradora']['nombre_corto'], array(
-			'controller' => 'aseguradoras',
-			'action' => 'view',
-			$transporte['Aseguradora']['id'])
-		);
-			else:
-				echo "Sin asegurar";
-		endif;
+			if ($transporte['Transporte']['aseguradora_id']!=NULL){
+				echo $this->Html->link($transporte['Aseguradora']['nombre_corto'], array(
+				'controller' => 'aseguradoras',
+				'action' => 'view',
+				$transporte['Aseguradora']['id'])
+			);
+			}else{
+					echo "Sin asegurar";
+			}
 		echo "</dd>";
 		echo "  <dt>Fecha del seguro</dt>\n";
 		echo "<dd>";
-		if ($transporte['Transporte']['fecha_seguro'] !=NULL):
+	if ($transporte['Transporte']['fecha_entradamerc'] !=NULL){
 			$fecha = $transporte['Transporte']['fecha_seguro'];
 				$dia = substr($fecha,8,2);
 				$mes = substr($fecha,5,2);
@@ -226,46 +250,51 @@
 				$fecha_seguro= $dia.'-'.$mes.'-'.$anyo;
 			echo $fecha_seguro.'&nbsp;';
 			echo "</dd>";
-			//echo date("d-m-Y", strtotime("$fecha"));
-			echo "</dd>";
+
+	}else{
+		echo "La fecha de la carga de la mercancía sin asignar";
+	}
 			echo "  <dt>Vencimiento del seguro</dt>\n";
 			echo "<dd>";
-			$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha_llegada +1 month"));
-			$transporte['Transporte']['fecha_vencimiento_seg'] = $fecha_vencimiento_seg; //Asigno una fecha + 1 mes
-			echo $fecha_vencimiento_seg.'&nbsp;' ;
+			if ($transporte['Transporte']['fecha_llegada'] !=NULL){
+					$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha_llegada +1 month"));
+					$transporte['Transporte']['fecha_vencimiento_seg'] = $fecha_vencimiento_seg; //Asigno una fecha + 1 mes
+					echo $fecha_vencimiento_seg.'&nbsp;' ;
+			}else{
+				echo "La fecha de llegada sin asignar";
+			}
+	if (!empty($transporte['Transporte']['fecha_llegada'])){
 			echo "</dd>";
-			echo "  <dt>Coste del seguro</dt>\n";
+			echo "  <dt>Coste del seguro </dt>\n";
 			echo "<dd>";
 			echo $transporte['Transporte']['coste_seguro'].' €&nbsp;';
 			echo "</dd>";
-		if ($transporte['Transporte']['suplemento_seguro'] !=NULL):
+
+		if ($transporte['Transporte']['suplemento_seguro'] !=NULL){
 			echo "  <dt>Suplemento</dt>\n";
 			echo "<dd>";
 			echo $transporte['Transporte']['suplemento_seguro'].' €&nbsp;';
 			echo "</dd>";
-		endif;
-		if ($transporte['Transporte']['peso_factura'] !=NULL):
+		}
+		if ($transporte['Transporte']['peso_factura'] !=NULL){
 			echo "  <dt>Peso facturado</dt>\n";
 			echo "<dd>";
 			echo $transporte['Transporte']['peso_factura'].' Kg&nbsp;';
 			echo "</dd>";
-		endif;
-		if ($transporte['Transporte']['peso_neto'] !=NULL):
+		}
+		if ($transporte['Transporte']['peso_neto'] !=NULL){
 			echo "  <dt>Peso neto</dt>\n";
 			echo "<dd>";
 			echo $transporte['Transporte']['peso_neto'].' Kg&nbsp;';
 			echo "</dd>";
-		endif;
-		if ($transporte['Transporte']['averia'] !=NULL):
+		}
+		if ($transporte['Transporte']['averia'] !=NULL){
 			echo "  <dt>Avería</dt>\n";
 			echo "<dd>";
 			echo $transporte['Transporte']['averia'].' Kg&nbsp;';
 			echo "</dd>";
-		endif;
-
-			else:
-			echo "Sin asegurar";
-		endif;
+		}
+	
 		echo "  <dt>Fecha de reclamación</dt>\n";
 		echo "<dd>";
 		//mysql almacena la fecha en formato ymd
@@ -276,6 +305,8 @@
 		$fecha_reclamacion= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_reclamacion.'&nbsp;';
 		echo "</dd>";
+	} 
+}
 	?>		
 </dl>
 	<div class="detallado">
@@ -284,30 +315,49 @@
 
 	<table>
 <?php
-	echo $this->Html->tableHeaders(array('Cuenta Corriente','Nombre', 'Cantidad', 'Marca','Detalle'));
+	echo $this->Html->tableHeaders(array('Cuenta Corriente','Nombre', 'Cantidad', 'Peso bruto', 'Marca','Detalle'));
 	foreach($transporte['AlmacenTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['cuenta_almacen'],
 			$linea['Almacen']['nombre_corto'],
-			$linea['cantidad_cuenta'],
+			array(
+				$linea['cantidad_cuenta'],
+				array('style' => 'text-align:right'
+					)
+				),
+			array(
+				$linea['peso_bruto'],
+				array('style' => 'text-align:right'
+					)
+				),
 			$linea['marca_almacen'],
-			$this->Button->editLine('almacentransportes',
+			$this->Button->editLine(
+				'almacen_transportes',
 				$linea['id'],'transportes',
-				$transporte['Transporte']['id'])
-			.' '.$this->Button->deleteLine('almacen_transportes',
+				$transporte['Transporte']['id']
+				)
+			.' '.$this->Button->deleteLine(
+				'almacen_transportes',
 				$linea['id'],
 				'transportes',
 				$transporte['Transporte']['id'],
-				'la cuenta almacén: '.$linea['cuenta_almacen'])
-
-
-			));
+				'la ref. almacén '.$linea['cuenta_almacen']
+				)
+			)
+		);
 	endforeach;?>
 	</table>
-	<div class="btabla">
-		<?php
-		echo $this->Button->addLine('almacen_transportes','transportes',$transporte['Transporte']['id'],'cuenta almacén');
-		?>
+
+	<?php
+	echo "<h4>Almacenados: ".$almacenado.' / Restan: '.$restan;
+			if ($almacenado < $transporte['Transporte']['cantidad_embalaje']){
+			echo '<div class="btabla">';
+				echo $this->Button->addLine('almacen_transportes','transportes',$transporte['Transporte']['id'],'ref. almacén');
+			echo '</div>';
+			}else{
+				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido almacenados</span></h4>";
+			}
+?>
 	</div>
 	</div>
 	

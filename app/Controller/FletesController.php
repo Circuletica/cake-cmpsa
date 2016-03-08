@@ -11,6 +11,40 @@ class FletesController extends AppController {
 		)
 	    )
 	);
+	//los paises para el filtro
+	$paises = $this->Flete->Pais->find('list');
+	$this->set(compact('paises'));
+	//las navieras para el filtro
+	$this->loadModel('Naviera');
+	$navieras = $this->Naviera->find(
+	    'list',
+	    array(
+		'fields' => array(
+		    'Naviera.id',
+		    'Empresa.nombre_corto'
+		),
+		'recursive' => 1,
+		'order' => array('Empresa.nombre_corto' => 'ASC')
+	    )
+	);
+	$this->set(compact('navieras'));
+
+	//los puertos de carga para el filtro
+	$puertoCargas = $this->Flete->PuertoCarga->find('list');
+	$this->set(compact('puertoCargas'));
+
+	//los puertos de destino para el filtro
+	$puertoDestinos = $this->Flete->PuertoDestino->find(
+	    'list',
+	    array(
+		'conditions' => array(
+		    //solo los puertos españoles
+		    'PuertoDestino.pais_id' => 3
+		)
+	    )
+	);
+	$this->set(compact('puertoDestinos'));
+
 	$this->paginate = array(
 	    'contain' => array(
 		'Naviera',
@@ -27,8 +61,51 @@ class FletesController extends AppController {
 	    ),
 	    'recursive' => 2
 	);
+	//a la vez que definimos las condiciones del 
+	//paginador AppController.php,
+	//sacamos un titulo con los criterios de filtro
+	//	$titulo = $this->filtroPaginador(
+	//	    array(
+	//		'Flete' => array( 
+	//			'Naviera' => 'naviera_id',
+	//			'Puerto de Carga' => 'puerto_carga_id',
+	//			'Puerto de Destino' => 'puerto_destino_id'
+	//		),
+	//		'Proveedor' => array(
+	//			...
+	//		)
+	//	    )
+	//	);
+	$titulo = $this->filtroPaginador(
+	    array(
+		'Flete' => array(
+		    'Naviera' => array(
+			'columna' => 'naviera_id',
+			'exacto' => true,
+			'lista' => $navieras
+		    ),
+		    'Puerto de Carga' => array(
+			'columna' => 'puerto_carga_id',
+			'exacto' => true,
+			'lista' => $puertoCargas
+		    ),
+		    'Puerto de Destino' => array(
+			'columna' => 'puerto_destino_id',
+			'exacto' => true,
+			'lista' => $puertoDestinos
+		    )
+		),
+		'PuertoCarga' => array(
+		    'País de origen' => array(
+			'columna' => 'pais_id',
+			'exacto' => true,
+			'lista' => $paises
+		    )
+		)
+	    )
+	);
 	$fletes = $this->paginate();
-	$this->set(compact('fletes'));
+	$this->set(compact('fletes','titulo'));
     }
 
     function add(){
@@ -101,7 +178,8 @@ class FletesController extends AppController {
 		$this->Session->setFlash('Flete guardado');
 		$this->redirect(
 		    array(
-			'action' => 'index',
+			'action' => 'view',
+			$this->Flete->id
 		    )
 		);
 	    } else {

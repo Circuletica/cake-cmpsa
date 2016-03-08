@@ -2,11 +2,23 @@
 
 $this->extend('/Common/view');
 $this->assign('object', 'Flete '.$referencia);
-$this->assign('line_object', 'precio');
 $this->assign('id',$flete['Flete']['id']);
 $this->assign('class','Flete');
 $this->assign('controller','fletes');
 $this->assign('line_controller','precio_fletes');
+$this->assign('line_object', 'precio');
+$this->assign('line_add', 'si');
+//$this->assign('breadcrumb', 'si');
+
+$this->start('breadcrumb');
+$this->Html->addCrumb(
+    'Fletes',
+    array(
+	'controller' => 'fletes',
+	'action' => 'index',
+    )
+);
+$this->end();
 
 $this->start('filter');
 //echo $this->element('filtroflete');
@@ -26,6 +38,8 @@ echo "  <dt>Tipo embalajes:</dt>\n";
 echo "  <dd>".$flete['Embalaje']['nombre']."&nbsp;</dd>";
 echo "  <dt>Peso contenedor:</dt>\n";
 echo "  <dd>".$flete['Flete']['peso_contenedor_tm']."Tm&nbsp;</dd>";
+echo "  <dt>Contrato naviera:</dt>\n";
+echo "  <dd>".$flete['Flete']['contrato']."&nbsp;</dd>";
 echo "</dl>";
 $this->end();
 $this->start('lines');

@@ -8,7 +8,6 @@ $this->assign('controller','operaciones');
 $this->assign('line_controller','asociado_operaciones');
 $this->assign('line_add','1');
 $this->start('filter');
-//echo $this->element('filtrooperacion');
 //solo se puede generar una financiacion si aun no existe
 if (empty($existe_financiacion)) {
     echo $this->Html->link('Generar financiación', array(
@@ -19,6 +18,19 @@ if (empty($existe_financiacion)) {
 } else {
     echo $this->Html->link('Ver financiación', array(
 	'controller' => 'financiaciones',
+	'action' => 'view',
+	$operacion['Operacion']['id']
+    )); 
+}
+if (empty($existe_facturacion)) {
+    echo $this->Html->link('Generar facturación', array(
+	'controller' => 'operaciones',
+	'action' => 'generarFacturacion',
+	$operacion['Operacion']['id']
+    )); 
+} else {
+    echo $this->Html->link('Ver facturación', array(
+	'controller' => 'facturaciones',
 	'action' => 'view',
 	$operacion['Operacion']['id']
     )); 
@@ -43,6 +55,8 @@ echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], arra
     $operacion['Contrato']['Proveedor']['id'])
 );
 echo "  </dd>";
+echo "  <dt>Transporte:</dt>\n";
+echo "  <dd>".$operacion['Contrato']['transporte']."&nbsp;</dd>";
 echo "  <dt>Peso:</dt>\n";
 echo "  <dd>".$operacion['PesoOperacion']['peso'].' kg&nbsp;'."</dd>";
 echo "  <dt>Embalaje:</dt>\n";
@@ -51,7 +65,7 @@ echo "  <dd>".
     $embalaje['Embalaje']['nombre'].
     ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
 echo "  <dt>Lotes:</dt>\n";
-echo "  <dd>".$operacion['Operacion']['lotes_operacion'].'&nbsp;'."</dd>";
+echo "  <dd>".$operacion['Operacion']['lotes_operacion']."&nbsp;</dd>";
 echo "  <dt>Puerto de Embarque:</dt>\n";
 echo "  <dd>".$operacion['PuertoCarga']['nombre'].'&nbsp;'."</dd>";
 echo "  <dt>Puerto de Destino:</dt>\n";

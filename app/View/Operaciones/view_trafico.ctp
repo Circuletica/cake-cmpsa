@@ -1,4 +1,4 @@
-<?php $this->Html->addCrumb('Operaciones', array(
+ 	<?php $this->Html->addCrumb('Operaciones', array(
 	'controller'=>'operaciones',
 	'action'=>'index_trafico'
 	));
@@ -36,8 +36,8 @@
 		$operacion['Operacion']['contrato_id'])
 	);
 	echo "</dd>";
-	echo "  <dt>$tipo_fecha_transporte</dt>\n";
-	echo "  <dd>".$this->Date->format($fecha_transporte)."</dd>";
+	echo "  <dt>".$tipo_fecha_transporte."</dt>\n";
+	echo "  <dd>".$fecha_transporte."</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
 	echo $operacion['Contrato']['CalidadNombre']['nombre'].'&nbsp;';
@@ -74,7 +74,7 @@
 	<!--Se hace un index de la Linea de contratos-->
 
 	<!--Se listan los asociados que forman parte de la operación-->
-	<div class="detallado">
+<div class="detallado">
 	<h3>Líneas de transporte</h3>
 	<table>
 	<?php
@@ -92,20 +92,26 @@
 			$linea['cantidad_embalaje'],
 			$this->Date->format($linea['fecha_seguro']),
 			//$linea['referencia_almacen'],
-			$this->Button->viewLine('transportes',$linea['id'],'transportes',$linea['operacion_id'])
+			$this->Button->viewLine('transportes',$linea['id'],'operaciones',$linea['operacion_id'])
 			));
 		//numero de la línea siguiente
 		$i++;
 	endforeach;
 ?>	</table>
-<?php
-	echo "<h4>Bultos transportados: ".$transportado."</h4>";
+<?php		
+	echo '<div class="btabla">';
+	echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
+	echo '</div>';
+			if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
+				echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
+			
+			}elseif($transportado > $operacion['PesoOperacion']['cantidad_embalaje']){
+				echo "<h4>Transportados: ".$transportado.' / <span style=color:#c43c35;>Restan: '.$restan."   ¡ATENCIÓN! La cantidad de Bultos son mayores a los establecidos en contrato</span></h4>";
+			}else{ 
+				echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan." - "."<span style=color:#c43c35;>Todos los bultos han sido transportados</span></h4>";
+			}
+
 ?>
-		<div class="btabla">
-		<?php
-		echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
-		?>
-		</div>
 	</div>
 	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
 
@@ -115,7 +121,7 @@
 		<?php
 		//Se calcula la cantidad total de bultos retirados
 
-		echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)','Detalle'));
+		echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)','Detalle'));
 	
 		foreach ($lineas_retirada as $linea_retirada):
 			echo $this->Html->tableCells(array(
@@ -144,8 +150,28 @@
 						'style' => 'text-align:right'
 					)
 				),
-				$this->Button->viewLine('retiradas',$operacion['Operacion']['id'],'retiradas',$operacion['Operacion']['id'])
-				)
+				array(
+					$linea_retirada['Pendiente'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+					$this->Html->link(
+						'<i class="fa fa-info-circle"></i> ',array(
+							'controller' => 'retiradas',
+							'action' => 'view_asociado',
+							'asociado_id'=>$linea_retirada['asociado_id'],
+							'from_controller' => 'operaciones',
+							'from_id' => $operacion['Operacion']['id']
+							),
+						array(
+							'class' => 'boton',
+							'title' => 'Detalle asociado',
+							'escape' => false
+							)
+						)
+					)
+				
 			);
 		endforeach;
 echo $this->html->tablecells(array(
@@ -186,6 +212,13 @@ echo $this->html->tablecells(array(
 		)
 	),
 	array(
+	$total_pendiente,
+	array(
+		'style' => 'font-weight: bold; text-align:right',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
     '<i class="fa fa-arrow-left fa-lg"></i>',
 	array(
 		'style' => 'text-align:center',
@@ -195,9 +228,15 @@ echo $this->html->tablecells(array(
 	))
 	);
 ?></table>
-		<div class="btabla">
 		<?php
-		echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
+			if ($cuenta_almacen['cuenta_almacen'] != NULL ){
+			echo '<div class="btabla">';
+			echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
+			echo '</div>';
+			}else{
+				echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
+			}
+
 		?>
 		</div>
 	</div>

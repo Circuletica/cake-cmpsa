@@ -42,6 +42,10 @@ class Operacion extends AppModel {
 		'Financiacion' => array(
 			'className' => 'Financiacion',
 			'foreignKey' => 'id'
+		),
+		'Facturacion' => array(
+			'className' => 'Facturacion',
+			'foreignKey' => 'id'
 		)
 	);
 	public $hasMany = array(
@@ -51,9 +55,7 @@ class Operacion extends AppModel {
 		'Transporte' => array(
 			'className' => 'Transporte',
 			'foreignKey' => 'operacion_id'),
-		'OperacionRetirada' => array(
-			'className' => 'OperacionRetirada',
-			'foreignKey' => 'id'),
-		'LineaMuestra'
+		'LineaMuestra',
+		'Retirada'
 	);
 }

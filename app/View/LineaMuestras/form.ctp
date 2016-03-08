@@ -7,7 +7,7 @@ function totalCriba(){
 	    tot += parseFloat(arr[i].value);
     }
     document.getElementById('total').value = tot.toFixed(1);
-    console.log(tot);
+    //console.log(tot);
     if(tot == 100)
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
@@ -17,59 +17,75 @@ function totalCriba(){
 
 <?php
 if ($action == 'add') {
-    echo "<h2>Añadir Línea a Muestra <em>".$muestra['referencia']."</em></h2>\n";
+    echo "<h2>Añadir Línea a la muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Línea de Muestra <em>".$muestra['referencia']."</em></h2>\n";
+    echo "<h2>Modificar Línea de la muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
 
-$this->Html->addCrumb('Muestras','/muestras');
-$this->Html->addCrumb('Muestra '.$muestra['referencia'],'/muestras/view/'.$muestra['id']);
+$this->Html->addCrumb('Muestras de '.$muestra['tipo_nombre'],'/muestras/index/Search.tipo_id:'.$muestra['tipo_id']);
+$this->Html->addCrumb('Muestra '.$muestra['tipo_registro'],'/muestras/view/'.$muestra['id']);
 
 ?>
 <?php
+//Pasamos la lista de 'operacion_almacenes' al javascript de la vista
+echo $this->Html->script('jquery')."\n"; // Include jQuery library
+if (isset($operacion_almacenes)) {
+    $this->Js->set('operacionAlmacenes', $operacion_almacenes);
+    echo $this->Js->writeBuffer(array('onDomReady' => false));
+}
+
 echo $this->Form->create();
-?>
-	<div class="col3">
-<?php
-echo $this->Html->tableCells(array(
-    $this->Form->input('humedad'),
-    $this->Form->input('tueste')
-));
+ if($muestra['tipo_id']!='1'){
+ 	echo "<div class='col3'>";
+ }else{
+ 	echo "<div class='col4'>";
+ }
+
 echo $this->Html->tableCells(
     array(
+	$this->Form->input('humedad'),
+	$this->Form->input('tueste'),
 	$this->Form->input(
 	    'referencia_proveedor',
 	    array(
 		'label' => 'Referencia Proveedor'
 	    )
 	),
+	isset($operaciones) && $muestra['tipo_id']!='1' ?
 	$this->Form->input(
 	    'operacion_id',
 	    array(
 		'empty' => true,
-		'label' => 'Operación'
+		'label' => 'Operación',
+		'onchange' => 'operacionAlmacen()'
 	    )
-	),
+	)
+	: '',
+	isset($operacion_almacenes) && $muestra['tipo_id']!='1' ?
 	$this->Form->input(
 	    'almacen_transporte_id',
 	    array(
 		'empty' => true,
-		'label' => 'Referencia Almacén' 
+		'label' => 'Cuenta almacén',
+		'onchange' => 'operacionAlmacen()'
 	    )
 	)
+	: '',
+	$this->Form->input('sacos')
     )
 );
 ?>
 	</div>
-	<div class="col2">
+	<div class="col3">
 <?php
 echo $this->Form->input('apreciacion_bebida', array(
     'label' => 'Bebida')
 );
 
 echo $this->Form->input('defecto');
+echo $this->Form->input('observaciones');
 ?>
 	</div>
 	<div class="col4">
@@ -187,3 +203,7 @@ echo $this->Html->tableCells(array(
 <?php
 echo $this->Form->end('Guardar Linea de muestra');
 ?>
+<script type="text/javascript">
+window.onload = totalCriba();
+window.onload = operacionAlmacen();
+</script>

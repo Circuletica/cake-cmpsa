@@ -5,7 +5,7 @@ $this->assign('id',$muestra['Muestra']['id']);
 $this->assign('class','Muestra');
 $this->assign('controller','muestras');
 $this->assign('line_controller','linea_muestras');
-$this->assign('object', 'Muestra de oferta '.$muestra['Muestra']['registro']);
+$this->assign('object', 'Muestra de oferta '.$muestra['Muestra']['tipo_registro']);
 $this->assign('line_object', 'Línea');
 $this->assign('line_add', '1');
 
@@ -27,7 +27,7 @@ $this->start('main');
 echo "<dl>";
 echo "  <dt>Registro</dt>\n";
 echo "<dd>";
-echo $muestra['Muestra']['registro'].'&nbsp;';
+echo $muestra['Muestra']['tipo_registro'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Comprado</dt>\n";
 echo "<dd>";
@@ -69,15 +69,14 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
-echo $this->Html->tableHeaders(array('Nº', 'Número de Sacos',
-    'Ref. Proveedor', 'Detalle'));
+echo $this->Html->tableHeaders(array('', 'Sacos','Ref. Proveedor', 'Detalle'));
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas
 $i = 1;
 foreach($muestra['LineaMuestra'] as $linea):
     echo $this->Html->tableCells(array(
-	$i,
-	$linea['numero_sacos'],
+	$muestra['Muestra']['tipo_registro'].'/'.$i,
+	$linea['sacos'],
 	//(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['cantidad_cuenta'] : '',
 	$linea['referencia_proveedor'],
 	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])

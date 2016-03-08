@@ -12,7 +12,15 @@ $line2_add = $this->fetch('line2_add');
 $from_controller = $this->fetch('from_controller');
 $from_id = $this->fetch('from_id');
 
-$this->fetch('breadcrumb');
+if (!empty($this->fetch('breadcrumb'))) {
+    $this->Html->addCrumb(
+	ucfirst($controller),
+	array(
+	    'controller'=>$controller,
+	    'action'=>'index'
+	)
+    );
+}
 ?>
 <h2><?php echo $object; ?></h2>
 
@@ -29,24 +37,7 @@ echo $this->element('imprimirV');
 ?>	
 
 	</li>
-	<li>
-<?php
-//si esta definido el $from_controller, ponemos un botón
-//que devuelve al controller mencionado,
-//si no es el caso, volvemos al index del controller del
-//borrado
-echo $this->Button->edit($controller,$id)
-    .' '.
-    //si esta definido el $from_controller, ponemos un botón
-    //que devuelve al controller mencionado,
-    //si no es el caso, volvemos al index del controller del
-    //borrado
-    (empty($from_controller) ? 
-    $this->Button->delete($controller,$id,$object):
-    $this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object)
-);
-?>
-	</li>
+
 	</ul>
 	</div>
 </div>

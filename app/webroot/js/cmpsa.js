@@ -7,8 +7,6 @@ function totalDesglose(){
 	if(parseFloat(cantidades[i].value) && parseFloat(pesos[i].value)) {
 	    var cantidad = parseFloat(cantidades[i].value);
 	    var peso = parseFloat(pesos[i].value);
-	    console.log(cantidad);
-	    console.log(peso);
 	    total += cantidad * peso;
 	}
     }
@@ -105,7 +103,6 @@ function totalCriba(){
 	    tot += parseFloat(arr[i].value);
     }
     document.getElementById('total').value = tot.toFixed(1);
-    console.log(tot);
     if(tot == 100)
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
@@ -115,64 +112,70 @@ function totalCriba(){
 function contratosMuestra(){
     var contratos = window.app.contratosMuestra;
     var embarques = window.app.contratosEmbarque;
-    //el contrato que seleccionamos
-    var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
-    //el id del contrato
-    var selectedOption = document.getElementById('MuestraContratoId').options[selectedIndex].value;
-    var combobox = document.getElementById('combobox');
-    var proveedor = document.getElementById('proveedor');
+    var contratoId  = document.getElementById('MuestraContratoId');
+    var calidadId = document.getElementById('MuestraCalidadId');
+    var proveedorId = document.getElementById('MuestraProveedorId');
+    var muestraEmbarqueId = document.getElementById('MuestraMuestraEmbarqueId');
     var transporte = document.getElementById('transporte_contrato');
-    var embarque = document.getElementById('embarque');
-    if (selectedOption != '') {
+    //la muestra de embarque que seleccionamos
+    if (muestraEmbarqueId != null) {
+	var muestraIndex = muestraEmbarqueId.selectedIndex;
+	//el id de la muestra
+	var muestraSelOpt = muestraEmbarqueId.options[muestraIndex].value;
+    }
+    //el contrato que seleccionamos
+    var contratoIndex = contratoId.selectedIndex;
+    //el id del contrato
+    var contratoSelOpt = contratoId.options[contratoIndex].value;
+
+    if (contratoSelOpt != '') {
 	//cambiamos el transporte
-	transporte.innerHTML = contratos[selectedOption].Contrato.transporte;
+	transporte.innerHTML = contratos[contratoSelOpt].Contrato.transporte;
 	//cambiamos el 'selected' del combobox
-	var opts = combobox.options.length;
+	var opts = calidadId.options.length;
 	for (var i=0; i<opts; i++){
-	    if (combobox.options[i].value == contratos[selectedOption].CalidadNombre.id){
-		combobox.options[i].selected = true;
+	    if (calidadId.options[i].value == contratos[contratoSelOpt].CalidadNombre.id){
+		calidadId.options[i].selected = true;
 		break;
 	    }
 	}
 	//cambiamos el 'selected' del proveedor
-	var opts = proveedor.options.length;
+	var opts = proveedorId.options.length;
 	for (var i=0; i<opts; i++){
-	    if (proveedor.options[i].value == contratos[selectedOption].Proveedor.id){
-		proveedor.options[i].selected = true;
+	    if (proveedorId.options[i].value == contratos[contratoSelOpt].Proveedor.id){
+		proveedorId.options[i].selected = true;
 		break;
 	    }
 	}
 	//modificamos _todo_ el select de embarque
-	if (selectedOption in embarques) {
-	    var muestras = embarques[selectedOption].Muestra; //las muestras de embarque del contrato seleccionado
-	    var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
-	    embarque.options.length = opts;
-	    //console.log(embarque.options.length);
-	    for (var i=0; i<opts; i++){
-		embarque.options[i].value = muestras[i].id;
-		embarque.options[i].text = muestras[i].registro;
+	if (muestraEmbarqueId != null) {
+	    if ((contratoSelOpt in embarques) && (muestraEmbarqueId != null)) {
+		var muestras = embarques[contratoSelOpt].Muestra; //las muestras de embarque del contrato seleccionado
+		var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
+		muestraEmbarqueId.options.length = opts;
+		for (var i=0; i<opts; i++){
+		    muestraEmbarqueId.options[i].value = muestras[i].id;
+		    muestraEmbarqueId.options[i].text = muestras[i].tipo_registro;
+		    //volver a seleccionar la mues. de emb. si existía
+		    if (muestraEmbarqueId.options[i].value == muestraSelOpt) {
+			muestraEmbarqueId.options[i].selected = true;
+		    }
+		}
+	    } else {
+		muestraEmbarqueId.options.length = 1;
+		muestraEmbarqueId.options[0].value = '';
+		muestraEmbarqueId.options[0].text = '';
+		muestraEmbarqueId.options[0].selected = true;
 	    }
-	    //console.log(embarque.options);
-	} else {
-	    embarque.options.length = 1;
-	    embarque.options[0].value = '';
-	    embarque.options[0].text = '';
-	    embarque.options[0].selected = true;
 	}
-    } else { // si se deja el contrato vacío, borramos calidad y proveedor
-	//console.log(combobox.options);
-	//lo siguiente no vale: cuando editamos muestra de oferta que ya
-	//tiene calidad_id y proveedor_id, se borran del formulario
-	//combobox.options[0].selected = true;
-	//proveedor.options[0].selected = true;
     }
 }
 
 function muestraOferta() {
     var aprobado = document.getElementById('MuestraAprobado').checked;
     contrato = document.getElementById('MuestraContratoId');
-    calidad = document.getElementById('combobox');
-    proveedor = document.getElementById('proveedor');
+    calidad = document.getElementById('MuestraCalidadId');
+    proveedor = document.getElementById('MuestraProveedorId');
     contrato.disabled = !aprobado;
     calidad.disabled = aprobado;
     proveedor.disabled = aprobado;
@@ -192,11 +195,11 @@ function muestraEntrega() {
     var contrato = document.getElementById('MuestraContratoId');
     var combobox = document.getElementById('combobox');
     var proveedor = document.getElementById('proveedor');
+    var muestra = document.getElementById('MuestraMuestraEmbarqueId');
     //la muestra de embarque que seleccionamos
-    var selectedIndex = document.getElementById('MuestraMuestraEmbarqueId').selectedIndex;
+    var selectedIndex = muestra.selectedIndex;
     //el id de la muestra
-    var selectedOption = document.getElementById('MuestraMuestraEmbarqueId').options[selectedIndex].value;
-    console.log(selectedOption);
+    var selectedOption = muestra.options[selectedIndex].value;
     if (selectedOption != '') {
 	contrato.disabled = 1;
 	combobox.disabled = 1;
@@ -236,39 +239,79 @@ function muestraEntrega() {
 }
 
 function operacionesRetirada(){
-    var operaciones = window.app.operacionesRetirada;
-    var operaciones = window.app.operacionesEmbarque;
-    //el contrato que seleccionamos
-    var selectedIndex = document.getElementById('MuestraContratoId').selectedIndex;
-    //el id del contrato
-    var selectedOption = document.getElementById('MuestraContratoId').options[selectedIndex].value;
-    var combobox = document.getElementById('combobox');;
-    var embarque = document.getElementById('embarque');
+    var operaciones = window.app.operaciones_asociados;
+    var cuentas = window.app.operaciones_almacen;
+    //Se declaran als variables según el desplegable que queremos controlar
+    //La variable es todo el elemento
+    var operacionBox = document.getElementById('RetiradaOperacionId');
+    var asociadoBox = document.getElementById('asociado');
+    var cuentaBox = document.getElementById('almacen');
 
-    if (selectedOption != '') {
+    //la operación que seleccionamos. Es el índice de la lista de operaciones
+    var operacionIndex = operacionBox.selectedIndex;
+    var asociadoIndex = asociadoBox.selectedIndex;
+    var cuentaIndex = cuentaBox.selectedIndex;
+
+    //el id de la operación, asociado y cuenta almacén
+    var operacionId = operacionBox.options[operacionIndex].value;
+    var asociadoId = asociadoBox.options[asociadoIndex].value;
+    var cuentaId = cuentaBox.options[cuentaIndex].value;
+
 		//modificamos _todo_ el select de operaciones
-	if (selectedOption in operaciones) {
-	    var muestras = operaciones[selectedOption].Muestra; //las muestras de embarque del contrato seleccionado
-	    var opts = muestras.length; //cuantas muestras de emb. tiene este contrato
-	    operacion.options.length = opts;
-	    
-	    //console.log(operacion.options.length);
-	    for (var i=0; i<opts; i++){
-		operacion.options[i].value = muestras[i].id;
-		operacion.options[i].text = muestras[i].registro;
-	    }
-	    //console.log(operacion.options);
-	} else {
-	    operacion.options.length = 1;
-	    operacion.options[0].value = '';
-	    operacion.options[0].text = '';
-	    operacion.options[0].selected = true;
+	if (operacionId in operaciones) {
+		var asociadosOperacion = operaciones[operacionId].Asociado;
+		var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
+	    asociadoBox.options.length = opt1;
+
+	    for (var i=0; i<opt1; i++){
+		asociadoBox.options[i].value = asociadosOperacion[i].id;
+		asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
+		}
+ 	  
+		//CUENTA ALMACEN
+			var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
+			var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
+			cuentaBox.options.length = opt2;
+	
+			for (var i=0; i<opt2; i++){
+			cuentaBox.options[i].value = almacenesOperacion[i].id;
+			cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
+			}
 	}
-    } else { // si se deja el contrato vacío, borramos calidad y proveedor
-	//console.log(combobox.options);
-	//lo siguiente no vale: cuando editamos muestra de oferta que ya
-	//tiene calidad_id y proveedor_id, se borran del formulario
-	//combobox.options[0].selected = true;
-	//proveedor.options[0].selected = true;
+}
+
+function operacionAlmacen() {
+    var operacionAlmacenes = window.app.operacionAlmacenes;
+    var operacionId = document.getElementById('LineaMuestraOperacionId');
+    var almacenId = document.getElementById('LineaMuestraAlmacenTransporteId');
+    var sacos = document.getElementById('LineaMuestraSacos');
+    console.log(sacos);
+
+    //el almacen seleccionado (si edit)
+    var almacenIndex = almacenId.selectedIndex;
+    var almacenSelOpt = almacenId.options[almacenIndex].value;
+    //la operacion seleccionada
+    var operacionIndex = operacionId.selectedIndex;
+    var operacionSelOpt = operacionId.options[operacionIndex].value;
+    console.log(operacionSelOpt);
+    if (operacionSelOpt != '') {
+	var almacenes = operacionAlmacenes[operacionSelOpt].AlmacenTransporte;
+	var opts = almacenes.length;
+	almacenId.options.length = opts;
+	for (var i=0; i<opts; i++){
+	    almacenId.options[i].value = almacenes[i].id;
+	    almacenId.options[i].text = almacenes[i].cuenta_marca;
+	    //volver a seleccionar la mues. de emb. si es un edit
+	    if (almacenId.options[i].value == almacenSelOpt) {
+		console.log(almacenes[i]);
+		almacenId.options[i].selected = true;
+		sacos.value = almacenes[i].cantidad_cuenta;
+	    }
+	}
+    } else {
+	almacenId.options.length = 1;
+	almacenId.options[0].value = '';
+	almacenId.options[0].text = '';
+	almacenId.options[0].selected = true;
     }
 }
