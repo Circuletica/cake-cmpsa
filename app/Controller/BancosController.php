@@ -32,11 +32,11 @@ public $class = 'Banco';
 	    $this->redirect(array('action'=>'index'));
 	}
 	$this->viewCompany($this->class, $id);
-
-	$this->pdfConfig = array(
-	'download' => true,
-	'filename' => $id.'.pdf'
-);
+ 
+	/*$this->pdfConfig = array(
+	'download' => false,
+	'filename' => '_prueba.pdf'
+		);*/
 
 	//Exportar PDF
 	//$this->pdfConfig = array(
@@ -70,5 +70,16 @@ public $class = 'Banco';
     public function delete( $id = null) {
 	$this->deleteCompany($this->class, $id);
     }
+public function view_pdf($id = null) {
+    $this->Banco->id = $id;
+    if (!$this->Banco->exists()) {
+        throw new NotFoundException(__('Invalid Banco'));
+    }
+    // increase memory limit in PHP 
+    ini_set('memory_limit', '512M');
+    $this->set('banco', $this->Banco->read(null, $id));
+}
+
+
 }
 ?>

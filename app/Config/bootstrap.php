@@ -76,30 +76,42 @@ Configure::write('Config.language', 'spa');
  */
 CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
 //CakePlugin::load('Highcharts'); // Plugin de gráficas
-//CakePlugin::load('CakePdf',array(
-//	'bootstrap'=>true,
-//	'routes'=> true
-//));
+CakePlugin::load('CakePdf',array(
+	'bootstrap'=>true,
+	'routes'=> true
+	)
+);
+define('DOMPDF_ENABLE_REMOTE', true);
 
-
-//Generar PDFs en CakePHP con el plugin CakePDF  http://www.edsonmm.com/generar-pdf-en-cakephp-con-el-plugin-cakepdf/#cakephp2
-/*CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
 Configure::write('CakePdf', array(
-    'engine' => 'CakePdf.DomPdf',
-    'pageSize' => 'A4',
-    'orientation' => 'portrait'
-));*/
-
-
-//Configure::write('CakePdf', array(
-//	'engine' => 'CakePdf.WkHtmlToPdf',
+        'engine' => 'CakePdf.DomPdf',
+        'options' => array(
+            'print-media-type' => false,
+            'outline' => true,
+            'dpi' => 96
+        ),
+        'margin' => array(
+            'bottom' => 15,
+            'left' => 50,
+            'right' => 30,
+            'top' => 45
+        ),
+        //'paperSize' => 'A4',
+        //'orientation' => 'landscape',
+        'download' => false,
+    ));
+//Esta configuráción funciona bajo windows
+/*Configure::write('CakePdf', array(
+	'engine' => 'CakePdf.WkHtmlToPdf',
 //	'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',//Solo con windows, con linux instalar en /usr/bin/wkhtmltopdf y por defecto funciona.
-	//'binary'=>'/usr/local/bin/wkhtmltopdf',
-//	'pageSize'=> 'A4',
-//	'orientation'=> 'landscape'
-//));
+	//'binary'=>'/usr/bin/wkhtmltopdf',
+	'binary'=> (APP . 'Plugin'.DS.'CakePdf' . DS . 'Vendor' .DS. 'wkhtmltopdf'.DS.'bin'.DS.'wkhtmltopdf.exe'),
+	'orientation'=> 'landscape'
+	)
+);
+// Esta funcion necesaria si se usa WKHTMLTOPDF, la aplicación tiene que saber si estamos en linux o windows.
 /*if (WINDOWS) {
-	Configure::write('CakePdf.binary', APP . 'files\wkhtmltopdf\wkhtmltopdf.exe');
+	Configure::write('CakePdf.binary', APP . 'Plugin'.DS.'CakePdf' . DS . 'Vendor' .DS. 'wkhtmltopdf'.DS.'bin'.DS.'wk5htmltopdf.exe');
 } else {
 	Configure::write('CakePdf.binary', APP . 'files/wkhtmltopdf/bin/wkhtmltopdf');
 }*/

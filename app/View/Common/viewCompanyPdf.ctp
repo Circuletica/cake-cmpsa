@@ -8,54 +8,39 @@ $this->assign('controller',$this->fetch('controller'));
 $this->assign('line_controller','contactos');
 $this->assign('line_add', '1');
 
-$this->start('filter');
-//echo $this->element('filtroflete');
-echo $this->Html->link(__('PDF'), array('action' => 'view_pdf', 'ext' => 'pdf', $empresa['Empresa']['id']));
-echo 'Aquí va el filtro';
-$this->end();
-
 $this->start('main');
 echo "<dl>";
-echo "  <dt>Razón social</dt>\n";
-echo "<dd>";
+echo "  <h4>Razón social</h4>\n";
 echo $empresa['Empresa']['nombre'];
 echo "</dd>";
-echo "  <dt>Dirección</dt>\n";
-echo "<dd>";
+echo "  <h4>Dirección</h4>\n";
 echo $empresa['Empresa']['direccion'].' - '.
     $empresa['Empresa']['cp'].' '.
     $empresa['Empresa']['municipio'].' - '.
     $empresa['Empresa']['Pais']['nombre'].'&nbsp;';
 echo "</dd>";
-echo "  <dt>Teléfono</dt>\n";
-echo "<dd>";
+echo "  <h4>Teléfono</h4>\n";
 echo $empresa['Empresa']['telefono'].'&nbsp;';
 echo "</dd>";
-echo "  <dt>CIF</dt>\n";
-echo "<dd>";
+echo "  <h4>CIF</h4>\n";
 echo $empresa['Empresa']['cif'].'&nbsp;';
 echo "</dd>";
-echo "  <dt>Código contable</dt>\n";
-echo "<dd>";
+echo "  <h4>Código contable</h4>\n";
 echo $empresa['Empresa']['codigo_contable'].'&nbsp;';
 echo "</dd>";
-echo "  <dt>BIC</dt>\n";
-echo "<dd>";
+echo "  <h4>BIC</h4>\n";
 echo $empresa['Empresa']['bic'].'&nbsp;';
 echo "</dd>";
-echo "  <dt>Cuenta bancaria</dt>\n";
-echo "<dd>";
+echo "  <h4>Cuenta bancaria</h4>\n";
 echo $iban_bancaria.'&nbsp;';
 echo "</dd>";
-echo "  <dt>Sitio web</dt>\n";
-echo "<dd>";
+echo "  <h4>Sitio web</h4>\n";
 echo '<a href="'.$empresa['Empresa']['website'].'">'.$empresa['Empresa']['website'].'</a>'
     .'&nbsp;';
 echo "</dd>";
 if ($this->fetch('class') == 'Asociado'){
-    echo "  <dt>Comisión actual</dt>\n";
-    echo "<dd>";
-    echo $comision;
+    echo "  <h4>Comisión actual</h4>\n";
+        echo $comision;
     echo "</dd>";
 }
 echo '</dl>';
@@ -72,9 +57,7 @@ foreach($empresa['Empresa']['Contacto'] as $contacto):
 	$contacto['funcion'],
 	$contacto['telefono1'],
 	$contacto['telefono2'],
-	$this->Text->autoLinkEmails($contacto['email']),
-    $this->Button->editLine('contactos',$contacto['id'],$this->fetch('controller'),$contacto['empresa_id'])
-	.' '.$this->Button->deleteLine('contactos',$contacto['id'],$this->fetch('controller'),$contacto['empresa_id'],$contacto['nombre'])
+	$this->Text->autoLinkEmails($contacto['email'])
 	)
     );
 endforeach;
