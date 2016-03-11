@@ -81,38 +81,27 @@ CakePlugin::load('CakePdf',array(
 	'routes'=> true
 	)
 );
-define('DOMPDF_ENABLE_REMOTE', true);
+//Esto lo ponian como altamente recomendado pero a mi me ha estado dando problemas.Es para generar las imágenes y colores
+//define('DOMPDF_ENABLE_REMOTE', false);
 
 Configure::write('CakePdf', array(
-      //  'engine' => 'CakePdf.mpdf',
-        'engine' => 'CakePdf.DomPdf',     //Único que lo lee el Acrobat Reader al descargarlo.   
-      //  'engine' => 'CakePdf.tcpdf',
+    // 'engine' => 'CakePdf.mpdf',
+    // 'engine' => 'CakePdf.DomPdf',     //Único que lo lee el Acrobat Reader al descargarlo.   
+    	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona
+		'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows 
+	// Descargar en servidor Linux	http://wkhtmltopdf.org/downloads.html (también está en repositorios)
+	//Ruta del binario para linux en el propio Cakephp
+	//'binary'=> (APP . 'Plugin'.DS.'CakePdf' . DS . 'Vendor' .DS. 'wkhtmltopdf'.DS.'bin'.DS.'wkhtmltopdf.exe'),
         'margin' => array(
-            'bottom' => 15,
-            'left' => 50,
-            'right' => 30,
-            'top' => 45
+            'bottom' => 10,
+            'left' => 15,
+            'right' => 15,
+            'top' => 10
         ),
         'paperSize' => 'A4',
-        //'orientation' => 'landscape',
-        'download' => false,
+        'orientation' => 'portrait',
     ));
-//Esta configuráción funciona bajo windows
-/*Configure::write('CakePdf', array(
-	'engine' => 'CakePdf.WkHtmlToPdf',
-//	'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',//Solo con windows, con linux instalar en /usr/bin/wkhtmltopdf y por defecto funciona.
-	//'binary'=>'/usr/bin/wkhtmltopdf',
-	'binary'=> (APP . 'Plugin'.DS.'CakePdf' . DS . 'Vendor' .DS. 'wkhtmltopdf'.DS.'bin'.DS.'wkhtmltopdf.exe'),
-	'orientation'=> 'landscape'
-	)
-);
-// Esta funcion necesaria si se usa WKHTMLTOPDF, la aplicación tiene que saber si estamos en linux o windows.
-/*if (WINDOWS) {
-	Configure::write('CakePdf.binary', APP . 'Plugin'.DS.'CakePdf' . DS . 'Vendor' .DS. 'wkhtmltopdf'.DS.'bin'.DS.'wk5htmltopdf.exe');
-} else {
-	Configure::write('CakePdf.binary', APP . 'files/wkhtmltopdf/bin/wkhtmltopdf');
-}*/
-
+	//'binary'=> (APP . 'Plugin'.DS.'CakePdf' . DS . 'Vendor' .DS. 'wkhtmltopdf'.DS.'bin'.DS.'wkhtmltopdf.exe'),
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:
  *

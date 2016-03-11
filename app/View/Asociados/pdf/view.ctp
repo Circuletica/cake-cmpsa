@@ -1,5 +1,5 @@
 <?php
-	$this->extend('/Common/viewCompany');
+	$this->extend('/Common/pdf/viewCompanyPdf');
 	$this->assign('object', 'Asociado '.$referencia);
 	$this->assign('class','Asociado');
 	$this->assign('controller','asociados');

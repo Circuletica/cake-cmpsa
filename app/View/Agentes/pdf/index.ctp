@@ -1,4 +1,4 @@
 <?php
-	$this->extend('/Common/indexCompany');
+	$this->extend('/Common/pdf/indexCompanyPdf');
 	$this->assign('class','Agente');
 ?>

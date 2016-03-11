@@ -1,5 +1,5 @@
 <?php
-$this->extend('/Common/viewPdf');
+$this->extend('/Common/pdf/viewPdf');
 $this->assign('object', $this->fetch('object'));
 $this->assign('line_object', 'contacto');
 $this->assign('id',$empresa['Empresa']['id']);
