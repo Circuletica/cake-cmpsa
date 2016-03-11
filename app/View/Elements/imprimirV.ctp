@@ -3,9 +3,9 @@
  <?php // PARA VIEW
  echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
  	array(
- 		'action' => 'View',
+ 		'action' => 'view',
+ 		$id,
  		'ext' => 'pdf',
- 		3
  		), 
  	array(
  		'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.

@@ -10,7 +10,6 @@ $this->assign('line_add', '1');
 
 $this->start('filter');
 //echo $this->element('filtroflete');
-echo $this->Html->link(__('PDF'), array('action' => 'view_pdf', 'ext' => 'pdf', $empresa['Empresa']['id']));
 echo 'Aquí va el filtro';
 $this->end();
 

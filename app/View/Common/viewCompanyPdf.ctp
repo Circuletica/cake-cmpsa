@@ -1,5 +1,5 @@
 <?php
-$this->extend('/Common/view');
+$this->extend('/Common/viewPdf');
 $this->assign('object', $this->fetch('object'));
 $this->assign('line_object', 'contacto');
 $this->assign('id',$empresa['Empresa']['id']);
@@ -49,7 +49,7 @@ $this->end();
 $this->start('lines');
 echo "<table>";
 echo $this->Html->tableHeaders(array('Nombre', 'Departamento', 'Función',
-    'Teléfono 1', 'Teléfono 2', 'Email','Detalle'));
+    'Teléfono 1', 'Teléfono 2', 'Email'));
 foreach($empresa['Empresa']['Contacto'] as $contacto):
     echo $this->Html->tableCells(array(
 	$contacto['nombre'],
@@ -71,16 +71,14 @@ if ($this->fetch('class') == 'Asociado'):
 //la tabla con el historial de comisiones
     echo "<table>";
     echo $this->Html->tableHeaders(array(
-    'válido desde','válido hasta','comisión',''));
+    'válido desde','válido hasta','comisión'));
     foreach ($comisiones as $comision):
 	$fecha_inicio = $this->Date->format($comision['fecha_inicio']);
 	$fecha_fin = $this->Date->format($comision['fecha_fin']);
 	echo $this->Html->tableCells(array(
 	$fecha_inicio,
 	$fecha_fin,
-	$comision['Comision']['valor'],
-	$this->Button->editLine('asociado_comisiones',$comision['id'],'asociados',$comision['asociado_id'])
-	.' '.$this->Button->deleteLine('asociado_comisiones',$comision['id'],'asociados',$comision['asociado_id'],$comision['Comision']['valor'])
+	$comision['Comision']['valor']
 	));
     endforeach;
     echo "</table>";

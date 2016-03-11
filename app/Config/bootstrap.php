@@ -84,19 +84,16 @@ CakePlugin::load('CakePdf',array(
 define('DOMPDF_ENABLE_REMOTE', true);
 
 Configure::write('CakePdf', array(
-        'engine' => 'CakePdf.DomPdf',
-        'options' => array(
-            'print-media-type' => false,
-            'outline' => true,
-            'dpi' => 96
-        ),
+      //  'engine' => 'CakePdf.mpdf',
+        'engine' => 'CakePdf.DomPdf',     //Único que lo lee el Acrobat Reader al descargarlo.   
+      //  'engine' => 'CakePdf.tcpdf',
         'margin' => array(
             'bottom' => 15,
             'left' => 50,
             'right' => 30,
             'top' => 45
         ),
-        //'paperSize' => 'A4',
+        'paperSize' => 'A4',
         //'orientation' => 'landscape',
         'download' => false,
     ));
