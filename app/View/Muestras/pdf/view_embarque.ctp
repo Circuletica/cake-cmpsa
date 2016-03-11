@@ -1,6 +1,6 @@
 <?php
 // Usamos plantilla clásica de vistas View/Common/view.ctp
-$this->extend('/Common/view');
+$this->extend('/Common/pdf/viewPdf');
 $this->assign('id',$muestra['Muestra']['id']);
 $this->assign('class','Muestra');
 $this->assign('controller','muestras');

@@ -1,20 +1,5 @@
-<?php
-  $this->Html->addCrumb('Operaciones', array(
-    'controller' => 'operaciones',
-    'action' => 'index')
-  );
-?>
 
-<div class="printdet">
-  <?php 
-  echo $this->element('imprimirI');
-  ?>
-</div>
 <h2>Operaciones<?php //echo $title;?></h2>
-<div class="actions">
-  <?php echo $this->element('filtrooperacion');?>
-  <!--h3>Filtro de operacion</h3-->
-</div>
 <div class='index'>
   <table>
   <tr>
@@ -24,7 +9,6 @@
     <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('Proveedor.nombre_corto', 'Proveedor');?></th>
     <th><?php echo $this->Paginator->sort('PesoOperacion.cantidad_embalaje', 'Bultos')?></th>
-    <th><?php echo 'Detalle'?></th>
   </tr>
   <?php
   foreach($operaciones as $operacion):
@@ -38,10 +22,9 @@
       $this->Date->format($operacion['Contrato']['fecha_transporte']).$entrega,
       $operacion['CalidadNombre']['nombre'],
       $operacion['Proveedor']['nombre_corto'],
-      $operacion['PesoOperacion']['cantidad_embalaje'],
-      //No se puede usar el ButtonHelper. Enlace distinto.
-      $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view_trafico',$operacion['Operacion']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalle'))
-      ));
+      $operacion['PesoOperacion']['cantidad_embalaje']
+      )
+    );
   endforeach;
   ?>
   </table>
@@ -52,11 +35,4 @@
   <?php echo $this->Paginator->counter(
     array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
   );?>
-
-  <div class="paging">
-    <?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));?>
-    <?php echo $this->Paginator->numbers(array('separator' => ''));?>
-    <?php echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled'));?>
-  </div>
-
 </div>

@@ -1,26 +1,4 @@
- 	<?php $this->Html->addCrumb('Operaciones', array(
-	'controller'=>'operaciones',
-	'action'=>'index_trafico'
-	));
-	$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-	'controller'=>'operaciones',
-	'action'=>'view_trafico',
-	$operacion['Operacion']['id']
-));
-?><div class="acciones">
-	<div class="printdet">
-		<?php 
-		echo $this->element('imprimirV');
-		?>	
-	</div>
-</div>
-<h2>Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
-<div class="actions">
-	<?php
-	echo $this->element('filtrooperacion');
-	?>
-</div>
-
+<h2>Operación <?php echo $operacion['Operacion']['referencia']?></h2>
 	<div class='view'>
 	<?php
 	echo "<dl>";
@@ -79,7 +57,7 @@
 	<table>
 	<?php
 	echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
-	       'Fecha Carga','Bultos','Asegurado','Detalle'));
+	       'Fecha Carga','Bultos','Asegurado'));
 	//hay que numerar las líneas
 	$i = 1;
 	foreach($operacion['Transporte'] as $linea):
@@ -90,18 +68,13 @@
 			//Nos da el formato DD-MM-YYYY
 			$this->Date->format($linea['fecha_carga']),
 			$linea['cantidad_embalaje'],
-			$this->Date->format($linea['fecha_seguro']),
-			//$linea['referencia_almacen'],
-			$this->Button->viewLine('transportes',$linea['id'],'operaciones',$linea['operacion_id'])
-			));
+			$this->Date->format($linea['fecha_seguro'])
+		));
 		//numero de la línea siguiente
 		$i++;
 	endforeach;
 ?>	</table>
 <?php		
-	echo '<div class="btabla">';
-	echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
-	echo '</div>';
 			if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
 				echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
 			
@@ -121,7 +94,7 @@
 		<?php
 		//Se calcula la cantidad total de bultos retirados
 
-		echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)','Detalle'));
+		echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)'));
 	
 		foreach ($lineas_retirada as $linea_retirada):
 			echo $this->Html->tableCells(array(
@@ -155,22 +128,8 @@
 					array(
 						'style' => 'text-align:right'
 					)
-				),
-					$this->Html->link(
-						'<i class="fa fa-info-circle"></i> ',array(
-							'controller' => 'retiradas',
-							'action' => 'view_asociado',
-							'asociado_id'=>$linea_retirada['asociado_id'],
-							'from_controller' => 'operaciones',
-							'from_id' => $operacion['Operacion']['id']
-							),
-						array(
-							'class' => 'boton',
-							'title' => 'Detalle asociado',
-							'escape' => false
-							)
-						)
-					)
+				)
+				)
 				
 			);
 		endforeach;

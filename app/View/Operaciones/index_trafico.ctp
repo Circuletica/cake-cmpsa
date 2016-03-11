@@ -6,9 +6,11 @@
 ?>
 
 <div class="printdet">
-  <?php 
-  echo $this->element('imprimirI');
-  ?>
+ <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
+ <?php //PARA INDEX
+ echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),array(
+'action' => 'index_trafico', 'ext' => 'pdf'), array('escape'=>false,'target' => '_blank','title'=>'Exportar a PDF'));
+ ?>
 </div>
 <h2>Operaciones<?php //echo $title;?></h2>
 <div class="actions">

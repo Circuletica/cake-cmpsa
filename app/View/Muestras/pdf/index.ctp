@@ -1,12 +1,4 @@
 <h2><?php echo $title;?></h2>
-<?php 
-  if(isset($this->request->data['Search']['tipo_id'])){
-    $this->Html->addCrumb($title, '/muestras/index/Search.tipo_id:'.$this->request->data['Search']['tipo_id']);
-  } else {
-    $this->Html->addCrumb($title, '/muestras/index');
-  }
-
-?>
 <div class='index'>
   <table>
   <tr>

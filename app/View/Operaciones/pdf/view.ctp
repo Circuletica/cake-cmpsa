@@ -7,35 +7,6 @@ $this->assign('class','Operacion');
 $this->assign('controller','operaciones');
 $this->assign('line_controller','asociado_operaciones');
 $this->assign('line_add','1');
-$this->start('filter');
-//solo se puede generar una financiacion si aun no existe
-if (empty($existe_financiacion)) {
-    echo $this->Html->link('Generar financiación', array(
-	'controller' => 'operaciones',
-	'action' => 'generarFinanciacion',
-	$operacion['Operacion']['id']
-    )); 
-} else {
-    echo $this->Html->link('Ver financiación', array(
-	'controller' => 'financiaciones',
-	'action' => 'view',
-	$operacion['Operacion']['id']
-    )); 
-}
-if (empty($existe_facturacion)) {
-    echo $this->Html->link('Generar facturación', array(
-	'controller' => 'operaciones',
-	'action' => 'generarFacturacion',
-	$operacion['Operacion']['id']
-    )); 
-} else {
-    echo $this->Html->link('Ver facturación', array(
-	'controller' => 'facturaciones',
-	'action' => 'view',
-	$operacion['Operacion']['id']
-    )); 
-}
-$this->end();
 
 $this->start('main');
 echo "<dl>";
