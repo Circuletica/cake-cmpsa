@@ -1,13 +1,4 @@
-<?php
-	$this->Html->addCrumb('Fletes', array(
-		'controller' => 'fletes',
-		'action' => 'index')
-	); ?>
 <h2>Fletes <?php echo $titulo;?></h2>
-	<div class="actions">
-		<?php	echo $this->element('filtroflete'); //Elemento del Desplegable Datos
-		?>
-	</div>
 <div class='index'>
 	<?php
 	if (empty($fletes)):
@@ -21,8 +12,8 @@
 		$this->Paginator->sort('PuertoDestino.nombre','Puerto de destino'),
 		$this->Paginator->sort('Embalaje.nombre','Tipo embalaje'),
 		$this->Paginator->sort('Flete.peso_contenedor_tm','Coste ($/Tm)'),
-		$this->Paginator->sort('PrecioActualFlete.fecha_fin','válido hasta'),
-		'')
+		$this->Paginator->sort('PrecioActualFlete.fecha_fin','válido hasta')
+		)
 	);
 
 	foreach($fletes as $flete):
@@ -34,33 +25,14 @@
 				$flete['PuertoDestino']['nombre'],
 				$flete['Embalaje']['nombre'],
 				$flete['PrecioActualFlete']['precio_dolar'],
-				$this->Date->format($flete['PrecioActualFlete']['fecha_fin']),
-				$this->Html->link(
-					'<i class="fa fa-info-circle"></i>',
-					array(
-						'action'=>'view',
-						$flete['Flete']['id']),
-					array(
-						'class'=>'botond',
-						'escape' => false,
-						'title'=>'Detalles')
+				$this->Date->format($flete['PrecioActualFlete']['fecha_fin'])
 				)
-			)
-		);
+			);
 	endforeach;?>
 	</table>
 	<?php
 	echo $this->Paginator->counter(
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));
 	?>
-
-	<div class="paging">
-		<?php echo $this->Paginator->prev('< anterior', array(), null, array('class'=>'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled')); ?>
-	</div>
 	<?php endif; ?>
-	<div class="btabla">
-		<?php echo $this->Html->link('Añadir Flete',array('action'=>'add')); ?>
-	</div>
 </div>

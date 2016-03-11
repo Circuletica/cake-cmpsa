@@ -15,22 +15,6 @@ $this->Html->addCrumb($object, array(
 ));
 ?>
 <h2><?php echo 'Listado de '.$object; ?></h2>
-
-<div class="actions">
-    <h3>Búsqueda</h3>
-    <ul>
-    <?php echo $this->fetch('filter');
-    echo"<hr>\n";
-    ?>
-    </ul>
-</div>
-<div class="acciones">
-	<div class="printdet">
-	<ul>
-	    <li><?php echo $this->element('imprimirI'); ?></li>
-	</ul>
-	</div>
-</div>
 <div class='index'>
 	<?php echo $this->fetch('main'); ?>
     <?php echo $this->element('paginador');?>

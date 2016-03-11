@@ -19,16 +19,16 @@ echo $this->Html->tableHeaders(array(
      $this->Paginator->sort('Empresa.nombre_corto',$class),
     $this->Paginator->sort('Empresa.codigo_contable','Código contable'),
     'País',
-    'Teléfono',
-    'Detalle'));
+    'Teléfono'
+    )
+);
 
 foreach($empresas as $empresa):
     echo $this->Html->tableCells(array(
 	$empresa['Empresa']['nombre_corto'],
 	$empresa['Empresa']['codigo_contable'],
 	$empresa['Pais']['nombre'],
-	$empresa['Empresa']['telefono'],
-	$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$empresa[$class]['id']), array('class' =>'boton','escape' => false,'title'=>'Detalles' ))
+	$empresa['Empresa']['telefono']
     ));
 
 endforeach;?>

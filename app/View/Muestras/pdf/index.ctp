@@ -37,18 +37,6 @@
     <td>
       <?php echo $muestra['Proveedor']['Empresa']['nombre']; ?>
     </td>
-    <td>
-      <?php echo $this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$muestra['Muestra']['id']), array('class'=>'botond','escape' => false,'title'=>'Detalles')).' '.
-      $this->Form->postLink(
-	'<i class="fa fa-trash"></i>',
-	array('action'=>'delete',$muestra['Muestra']['id']),
-	array(
-    'class'=>'botond', 'escape'=>false, 'title'=> 'Borrar',
-	  'confirm'=>'Realmente quiere borrar '.$muestra['Muestra']['referencia'].'?'
-	)
-      )
-      ?>
-    </td>
   </tr>
   <?php endforeach;?>
   </table>
