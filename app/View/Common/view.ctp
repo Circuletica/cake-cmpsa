@@ -62,6 +62,7 @@ echo $this->Button->edit($controller,$id)
 	</div>
 <?php endif;?>
 <?php if($line2_object):?>
+	<br>
 	<div class="detallado">
 	<?php echo "<h3>".ucfirst($line2_object)."</h3>\n";?>
 	<?php echo $this->fetch('lines2'); ?>

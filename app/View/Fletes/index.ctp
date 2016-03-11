@@ -4,6 +4,11 @@
 		'action' => 'index')
 	); ?>
 <h2>Fletes <?php echo $titulo;?></h2>
+<div class="printdet">
+<?php // Botones de impresión
+    echo $this->element('imprimirI');
+?>
+</div>
 	<div class="actions">
 		<?php	echo $this->element('filtroflete'); //Elemento del Desplegable Datos
 		?>
@@ -21,8 +26,8 @@
 		$this->Paginator->sort('PuertoDestino.nombre','Puerto de destino'),
 		$this->Paginator->sort('Embalaje.nombre','Tipo embalaje'),
 		$this->Paginator->sort('Flete.peso_contenedor_tm','Coste ($/Tm)'),
-		$this->Paginator->sort('PrecioActualFlete.fecha_fin','válido hasta'),
-		'')
+		$this->Paginator->sort('PrecioActualFlete.fecha_fin','Válido hasta'),
+		'Detalle')
 	);
 
 	foreach($fletes as $flete):
@@ -41,7 +46,7 @@
 						'action'=>'view',
 						$flete['Flete']['id']),
 					array(
-						'class'=>'botond',
+						'class'=>'boton',
 						'escape' => false,
 						'title'=>'Detalles')
 				)
@@ -49,6 +54,10 @@
 		);
 	endforeach;?>
 	</table>
+		<div class="btabla">
+		<?php  echo $this->Html->link('<i class="fa fa-plus"></i> Añadir Flete', array('action'=>'add'),array('title'=>'Añadir Flete ','escape' => false));
+		?>
+		</div>
 	<?php
 	echo $this->Paginator->counter(
 	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));
@@ -60,7 +69,4 @@
 		echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled')); ?>
 	</div>
 	<?php endif; ?>
-	<div class="btabla">
-		<?php echo $this->Html->link('Añadir Flete',array('action'=>'add')); ?>
-	</div>
 </div>

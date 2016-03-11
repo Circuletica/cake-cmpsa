@@ -20,14 +20,14 @@
 				<ul>
 				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('RETIRADAS','/retiradas',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('FLETES','/fletes',array('escape' => false));?></li>				
 				</ul>
 
 		<li><?php echo $this->Html->link('<i class="fa fa-money fa-3x"></i><br>CONTABILIDAD','#',array('escape' => false));?>
 			<ul>
-				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones',array('escape' => false));?>
-				</li>
-				<li><?php echo $this->Html->link('FINANCIACIÓN','/financiaciones',array('escape' => false));?>
-				</li>
+				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('FINANCIACIÓN','/financiaciones',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('FACTURACIÓN','/facturaciones',array('escape' => false));?></li>
 			</ul>
 		</li>
 </ul>

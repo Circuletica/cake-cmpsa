@@ -170,6 +170,9 @@ class RetiradasController extends AppController {
 
 	$peso = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] * $solicitado['ContratoEmbalaje']['peso_embalaje_real'];
 	$this->set(compact('peso'));
+
+	$this->set(compact('id'));
+
     }
     public function add() {
 

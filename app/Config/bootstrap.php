@@ -76,34 +76,32 @@ Configure::write('Config.language', 'spa');
  */
 CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
 //CakePlugin::load('Highcharts'); // Plugin de gráficas
-//CakePlugin::load('CakePdf',array(
-//	'bootstrap'=>true,
-//	'routes'=> true
-//));
+CakePlugin::load('CakePdf',array(
+	'bootstrap'=>true,
+	'routes'=> true
+	)
+);
+//Esto lo ponian como altamente recomendado pero a mi me ha estado dando problemas.Es para generar las imágenes y colores
+//define('DOMPDF_ENABLE_REMOTE', false);
 
-
-//Generar PDFs en CakePHP con el plugin CakePDF  http://www.edsonmm.com/generar-pdf-en-cakephp-con-el-plugin-cakepdf/#cakephp2
-/*CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
 Configure::write('CakePdf', array(
-    'engine' => 'CakePdf.DomPdf',
-    'pageSize' => 'A4',
-    'orientation' => 'portrait'
-));*/
-
-
-//Configure::write('CakePdf', array(
-//	'engine' => 'CakePdf.WkHtmlToPdf',
-//	'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',//Solo con windows, con linux instalar en /usr/bin/wkhtmltopdf y por defecto funciona.
-	//'binary'=>'/usr/local/bin/wkhtmltopdf',
-//	'pageSize'=> 'A4',
-//	'orientation'=> 'landscape'
-//));
-/*if (WINDOWS) {
-	Configure::write('CakePdf.binary', APP . 'files\wkhtmltopdf\wkhtmltopdf.exe');
-} else {
-	Configure::write('CakePdf.binary', APP . 'files/wkhtmltopdf/bin/wkhtmltopdf');
-}*/
-
+    // 'engine' => 'CakePdf.mpdf',
+    // 'engine' => 'CakePdf.DomPdf',     //Único que lo lee el Acrobat Reader al descargarlo.   
+    	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona
+		'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows 
+	// Descargar en servidor Linux	http://wkhtmltopdf.org/downloads.html (también está en repositorios)
+	//Ruta del binario para linux en el propio Cakephp
+	//'binary'=> (APP . 'Plugin'.DS.'CakePdf' . DS . 'Vendor' .DS. 'wkhtmltopdf'.DS.'bin'.DS.'wkhtmltopdf.exe'),
+        'margin' => array(
+            'bottom' => 10,
+            'left' => 15,
+            'right' => 15,
+            'top' => 10
+        ),
+        'paperSize' => 'A4',
+        'orientation' => 'portrait',
+    ));
+	//'binary'=> (APP . 'Plugin'.DS.'CakePdf' . DS . 'Vendor' .DS. 'wkhtmltopdf'.DS.'bin'.DS.'wkhtmltopdf.exe'),
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:
  *
