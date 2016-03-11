@@ -23,15 +23,8 @@
 
 /** General Style Info **/
 body {
-background: #637A91;
-/*background: -moz-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
-background: -webkit-gradient(left top, left bottom, color-stop(14%, rgba(69,50,23,1)), color-stop(48%, rgba(70,49,16,1)), color-stop(69%, rgba(123,100,64,1)), color-stop(92%, rgba(180,155,116,1)), color-stop(100%, rgba(180,155,116,1)));
-background: -webkit-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
-background: -o-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
-background: -ms-linear-gradient(top, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
-background: linear-gradient(to bottom, rgba(69,50,23,1) 14%, rgba(70,49,16,1) 48%, rgba(123,100,64,1) 69%, rgba(180,155,116,1) 92%, rgba(180,155,116,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#453217', endColorstr='#b49b74', GradientType=0 );
-	*/color: #fff;
+	background: #637A91;
+    color: #fff;
 	font-family:verdana,helvetica,arial,sans-serif;
 	font-size:80%;
 	margin: 0;
@@ -123,6 +116,7 @@ p {
 	/*padding: 0px 20px 40px 20px; Anterior*/
 	padding: 0px 40px 40px 40px;
 	overflow: auto;
+	/*ANCHO PANTALLA*/
 	width: 1280px;
  	margin: 0 auto;
 	/*border: 1px solid; /*Borde pestaña y caja*/
@@ -136,9 +130,37 @@ p {
 #header a, {			/*Se elimina footer a*/
 	color: #fff;
 }
-/*#cake-powered {
-	float: left;
-}*/
+/*Para pantallas menores de 1280px*/
+@media only screen and (min-width: 1280px) {
+	#header{
+		padding: 10px 20px;
+		width: 85%;
+	 	margin: 0 auto;
+	 }
+	#content{
+		background: #fff;
+		clear: both;
+		color: #333;
+		padding: 0px 40px 40px 40px;
+		overflow: auto;
+		/*ANCHO PANTALLA*/
+		width: 85%;
+	 	margin: 0 auto;
+	}
+	#footer {
+		width: 85%;
+	 	margin: 0 auto;
+		clear: both;
+		padding: 0px 20px 0px 10px;
+		}
+}
+
+
+
+
+
+
+
 
 /** containers **/
 div.menuheader{
