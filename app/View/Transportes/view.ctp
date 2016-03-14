@@ -135,15 +135,15 @@
 		$fecha_carga= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_carga.'&nbsp;';
 		echo "</dd>";
-		echo "  <dt>Fecha previsión llegada</dt>\n";
+		echo "  <dt>Fecha prevista llegada</dt>\n";
 		echo "<dd>";
 		//mysql almacena la fecha en formato ymd
-		$fecha = $transporte['Transporte']['fecha_prevision'];
+		$fecha = $transporte['Transporte']['fecha_prevista'];
 		$dia = substr($fecha,8,2);
 		$mes = substr($fecha,5,2);
 		$anyo = substr($fecha,0,4);
-		$fecha_prevision= $dia.'-'.$mes.'-'.$anyo;
-		echo $fecha_prevision.'&nbsp;';
+		$fecha_prevista= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_prevista.'&nbsp;';
 		echo "</dd>";
 		echo "  <dt>Fecha de llegada</dt>\n";
 		echo "<dd>";
@@ -301,6 +301,12 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 			echo "</dd>";
 		}
 echo '<br><h3>Reclamación</h3>';
+		if ($transporte['Transporte']['peritacion'] !=NULL){
+			echo "  <dt>Peritación</dt>\n";
+			echo "<dd>";
+			echo $transporte['Transporte']['peritacion'].' €';
+			echo "</dd>";
+		}
 
 		if ($transporte['Transporte']['averia'] !=NULL){
 			echo "  <dt>Avería</dt>\n";

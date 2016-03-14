@@ -332,13 +332,13 @@ form {
 	width: 95%;
 }
 fieldset {
-	border: none;
+	border: 1px;
 	/*margin-bottom: 1em;*/
 	padding: 10px 0px;
 	float: left;
 	/*display: block;*/
-	/*width: 15%;*/
-	width: 47%;
+	width: 31%;
+	/*width: 47%;
 	/*margin-right: 10px; 
 	margin: 0 30px 10px 0;*/
 	margin: 0 15px 0px 10px;
