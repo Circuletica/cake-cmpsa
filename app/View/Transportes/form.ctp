@@ -46,13 +46,13 @@ if ($action == 'edit') {
             echo $this->Form->input('puerto_carga_id',
                 array('
                     label'=>'Puerto de embarque',
-                    'empty' =>array('' => 'Selecciona')
+                    'empty' =>array('' => 'Sin Asignar')
                     )
                 );
            echo $this->Form->input('puerto_destino_id',
                 array('
                     label'=>'Puerto de destino',
-                    'empty' =>array('' => 'Selecciona')
+                    'empty' =>array('' => 'Sin Asignar')
                     )
                 );
         // id = 3 es el valor de IN STORE
@@ -61,12 +61,12 @@ if ($action == 'edit') {
             echo $this->Form->input('naviera_id',
                 array(
                       'label'=>'Naviera',
-                      'empty' =>array('' => 'Selecciona')
+                      'empty' =>array('' => 'Sin Asignar')
                 ));  
             echo $this->Form->input('agente_id',
                 array(
                     'label'=>'Agente aduanas',
-                    'empty' =>array('' => 'Selecciona')
+                    'empty' =>array('' => 'Sin Asignar')
                 ));
         ?>
     </div>
@@ -169,7 +169,7 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
                         echo $this->Form->input('aseguradora_id',
                             array(
                             'label'=>'Aseguradora',
-                            'empty' =>array('' => 'Selecciona')
+                            'empty' =>array('' => 'Sin Asignar')
                             )
                         );
                
@@ -193,7 +193,8 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
                     echo $this->Form->input('peso_neto',array('label'=>'Peso neto'));
                     echo $this->Form->input('averia',array('label'=>'Avería'));
                     ?>
-    </div>
+    </div>  <legend>Reclamación</legend>
+    <fieldset>
                     <div class="linea">
                     <?php
                     echo $this->Form->input('fecha_reclamacion', array(
@@ -202,8 +203,8 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
                     'maxYear' => date('Y')+2,
                     'orderYear' => 'asc',
                     'timeFormat' => null ,
-                    'label' => 'Fecha reclamación seguro',
-                    'empty' => ' ')
+                    'label' => 'Fecha reclamación seguro'
+                    )
                     );
                     ?>
                     </div>
@@ -211,6 +212,7 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
         <?php
 }    
         echo $this->Form->input('peso_factura',array('label'=>'Peso facturado'));
+        ?></fieldset><?php
         echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
         echo $this->Form->end('Guardar Línea Transporte', array('escape'=>false));
         ?>

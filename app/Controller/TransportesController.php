@@ -96,6 +96,8 @@ class TransportesController extends AppController {
 	
 	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
 	$this->set('embalaje',$embalaje);
+
+	$this->set(compact('id'));
     }
     public function add() {
     if (!$this->params['named']['from_id']) {

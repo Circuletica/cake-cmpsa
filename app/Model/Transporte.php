@@ -6,22 +6,14 @@ class Transporte extends AppModel {
     	'nombre_vehiculo' => array(
       	'rule' => 'notEmpty',
      	'message' => 'El nombre del vehículo no puede estar vacío'
-      ),
-	  	'matricula' => array(
-	    'rule' => 'notEmpty',
-	    'message' => 'El BL/matrícula no puede estar vacío'
-      ),
-	   	'puerto_carga_id' => array(
-      	'rule' => 'notEmpty',
-      	'message' => 'El puerto de carga no puede estar vacío'
-      ),
-	   	'puerto_destino_id' => array(
-      	'rule' => 'notEmpty',
-      	'message' => 'El puerto de destino no puede estar vacío'
-      ),	   	
-	   	'naviera_id' => array(
+      ),  	
+	/*  	'naviera_id' => array(
       	'rule' => 'notEmpty',
       	'message' => 'La naviera no puede estar vacía'
+      )*/
+ 	 	'cantidad_embalaje' => array(
+      	'rule' => 'notEmpty',
+      	'message' => 'La cantidad de bultos no puede estar vacía'
       )
     );
 

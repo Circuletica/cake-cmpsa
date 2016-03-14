@@ -140,7 +140,6 @@ class MuestrasController extends AppController {
 	    $this->render('view_entrega');
 	    break;
 	}
-	$this->set(compact('id'));
     }
 
     public function delete( $id = null) {

@@ -135,8 +135,19 @@
 		$fecha_carga= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_carga.'&nbsp;';
 		echo "</dd>";
+		echo "  <dt>Fecha previsión llegada</dt>\n";
+		echo "<dd>";
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_prevision'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_prevision= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_prevision.'&nbsp;';
+		echo "</dd>";
 		echo "  <dt>Fecha de llegada</dt>\n";
 		echo "<dd>";
+
 if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 		//mysql almacena la fecha en formato ymd
 		$fecha = $transporte['Transporte']['fecha_llegada'];
@@ -198,6 +209,7 @@ if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 		$fecha_despacho_op= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_despacho_op.'&nbsp;';
 		echo "</dd>";
+
 	if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] !='FOB'){
 		echo "  <dt>Límite de retirada</dt>\n";
 		echo "<dd>";
@@ -288,6 +300,8 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 			echo $transporte['Transporte']['peso_neto'].' Kg&nbsp;';
 			echo "</dd>";
 		}
+echo '<br><h3>Reclamación</h3>';
+
 		if ($transporte['Transporte']['averia'] !=NULL){
 			echo "  <dt>Avería</dt>\n";
 			echo "<dd>";
