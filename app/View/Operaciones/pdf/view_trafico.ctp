@@ -40,7 +40,6 @@
 	<!--Se hace un index de la Linea de contratos-->
 
 	<!--Se listan los asociados que forman parte de la operación-->
-<div class="detallado">
 <br><br>
 	<h3>Líneas de transporte</h3>
 	<table>
@@ -74,7 +73,6 @@
 			}
 
 ?>
-	</div>
 	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
 
 	<div class="detallado">

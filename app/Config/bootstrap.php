@@ -85,13 +85,9 @@ CakePlugin::load('CakePdf',array(
 //define('DOMPDF_ENABLE_REMOTE', false);
 
 Configure::write('CakePdf', array(
-    // 'engine' => 'CakePdf.mpdf',
-    // 'engine' => 'CakePdf.DomPdf',     //Único que lo lee el Acrobat Reader al descargarlo.   
-    	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona
-		'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows 
-	// Descargar en servidor Linux	http://wkhtmltopdf.org/downloads.html (también está en repositorios)
-	//Ruta del binario para linux en el propio Cakephp
-	//'binary'=> (APP . 'Plugin'.DS.'CakePdf' . DS . 'Vendor' .DS. 'wkhtmltopdf'.DS.'bin'.DS.'wkhtmltopdf.exe'),
+   	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona
+//	'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows 
+	'binary'=> ('/usr/local/bin/wkhtmltox/bin/wkhtmltopdf'),
         'margin' => array(
             'bottom' => 10,
             'left' => 15,
@@ -101,7 +97,6 @@ Configure::write('CakePdf', array(
         'paperSize' => 'A4',
         'orientation' => 'portrait',
     ));
-	//'binary'=> (APP . 'Plugin'.DS.'CakePdf' . DS . 'Vendor' .DS. 'wkhtmltopdf'.DS.'bin'.DS.'wkhtmltopdf.exe'),
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:
  *

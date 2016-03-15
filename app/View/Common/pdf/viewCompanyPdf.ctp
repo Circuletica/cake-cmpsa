@@ -10,41 +10,50 @@ $this->assign('line_add', '1');
 
 $this->start('main');
 echo "<dl>";
-echo "  <h4>Razón social</h4>\n";
+echo "  <dt>Razón social</dt>\n";
+echo "<dd>";
 echo $empresa['Empresa']['nombre'];
 echo "</dd>";
-echo "  <h4>Dirección</h4>\n";
+echo "  <dt>Dirección</dt>\n";
+echo "<dd>";
 echo $empresa['Empresa']['direccion'].' - '.
     $empresa['Empresa']['cp'].' '.
     $empresa['Empresa']['municipio'].' - '.
     $empresa['Empresa']['Pais']['nombre'].'&nbsp;';
 echo "</dd>";
-echo "  <h4>Teléfono</h4>\n";
+echo "  <dt>Teléfono</dt>\n";
+echo "<dd>";
 echo $empresa['Empresa']['telefono'].'&nbsp;';
 echo "</dd>";
-echo "  <h4>CIF</h4>\n";
+echo "  <dt>CIF</dt>\n";
+echo "<dd>";
 echo $empresa['Empresa']['cif'].'&nbsp;';
 echo "</dd>";
-echo "  <h4>Código contable</h4>\n";
+echo "  <dt>Código contable</dt>\n";
+echo "<dd>";
 echo $empresa['Empresa']['codigo_contable'].'&nbsp;';
 echo "</dd>";
-echo "  <h4>BIC</h4>\n";
+echo "  <dt>BIC</dt>\n";
+echo "<dd>";
 echo $empresa['Empresa']['bic'].'&nbsp;';
 echo "</dd>";
-echo "  <h4>Cuenta bancaria</h4>\n";
+echo "  <dt>Cuenta bancaria</dt>\n";
+echo "<dd>";
 echo $iban_bancaria.'&nbsp;';
 echo "</dd>";
-echo "  <h4>Sitio web</h4>\n";
+echo "  <dt>Sitio web</dt>\n";
+echo "<dd>";
 echo '<a href="'.$empresa['Empresa']['website'].'">'.$empresa['Empresa']['website'].'</a>'
     .'&nbsp;';
 echo "</dd>";
 if ($this->fetch('class') == 'Asociado'){
-    echo "  <h4>Comisión actual</h4>\n";
-        echo $comision;
+    echo "  <dt>Comisión actual</dt>\n";
+    echo "<dd>";
+    echo $comision;
     echo "</dd>";
 }
 echo '</dl>';
-$this->end();
+$this->end();;
 
 $this->start('lines');
 echo "<table>";

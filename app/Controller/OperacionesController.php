@@ -9,7 +9,8 @@ class OperacionesController extends AppController {
 	    'Contrato',
 	    'PesoOperacion',
 	    'Proveedor',
-	    'CalidadNombre'
+	    'CalidadNombre',
+	    'Transporte'
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
@@ -731,6 +732,58 @@ $this->set('total_pendiente',$total_pendiente);
 		'action' => 'add'
 	    )
 	);
+    }
+    public function situacion_trafico() {
+    $this->pdfConfig = array(
+		'filename' => 'situacion',
+		'paperSize' => 'A4',
+        'orientation' => 'landscape',
+	);
+//	$invoice = $this->Invoice->find('first', array('conditions' => array('id' => $id)));
+//	$this->set(compact('invoice');
+	//necesitamos la lista de proveedor_id/nombre para rellenar el select
+	//del formulario de busqueda
+
+	$operaciones = $this->Operacion->find(
+	    'all',
+	    array(
+		'conditions' => array(
+		    'Operacion.id' => 19	
+		),
+		'recursive' => 3,
+		'contain' => array(
+			'Transporte'=> array(
+				'fields' => array(
+				    'id',
+				    'operacion_id',
+				    'nombre_vehiculo',
+				    'fecha_llegada',
+				    'fecha_carga',
+				    'fecha_prevista',
+				    'cantidad_embalaje'
+				)
+			),
+		    'Contrato'=>array(
+				'fields'=> array(
+				    'id',
+				    'si_entrega',
+					    ),
+				'Proveedor'=>array(
+				    'id',
+				    'nombre_corto'
+				)
+			),
+		    'PesoOperacion'=> array(
+				'fields' =>array(
+			 	   'peso',
+				   'cantidad_embalaje'
+					)
+		    )
+	    )
+	)
+	);
+
+	$this ->set(compact('operaciones'));
     }
 }
 ?>

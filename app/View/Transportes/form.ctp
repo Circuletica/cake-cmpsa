@@ -25,25 +25,27 @@ if ($action == 'edit') {
     <br>
     <fieldset>
     <div class="col2"> 
-    <?php
-    echo $this->Form->input('nombre_vehiculo',
-        array(
-            'label' => 'Nombre del transporte',
-            'autofocus' => 'autofocus'
-            )
-        );
-    echo $this->Form->input('matricula',
-        array('label' => 'BL/Matrícula'
-            )
-        );
-     echo $this->Form->input('cantidad_embalaje',
-        array('label' => 'Cantidad de '.$embalaje
-            )
-        );
-     echo '<br>';   
-    ?>
+        <?php
+        echo $this->Form->input('nombre_vehiculo',
+            array(
+                'label' => 'Nombre del transporte',
+                'autofocus' => 'autofocus'
+                )
+            );
+        if ($operacion['Contrato']['Incoterm']['id'] !='3'){ //3 corresponde a IN STORE
+        echo $this->Form->input('matricula',
+            array('label' => 'BL/Matrícula'
+                )
+            );
+        }  
+         echo $this->Form->input('cantidad_embalaje',
+            array('label' => 'Cantidad de '.$embalaje
+                )
+            );
+         echo '<br>';   
+        ?>
     </div>
-     <div class="col2">   
+    <div class="col2">   
        <?php
             echo $this->Form->input('puerto_carga_id',
                 array('
@@ -58,13 +60,13 @@ if ($action == 'edit') {
                     )
                 );
         // id = 3 es el valor de IN STORE
-        //echo $operacion['Contrato']['Incoterm']['nombre']
-        //if ($incoterms['Contrato']['Incoterm']['id'] != 3 ){ 
+        if ($operacion['Contrato']['Incoterm']['id'] !='3'){ //3 corresponde a IN STORE
             echo $this->Form->input('naviera_id',
                 array(
                       'label'=>'Naviera',
                       'empty' =>array('' => 'Sin Asignar')
                 ));  
+        }
             echo $this->Form->input('agente_id',
                 array(
                     'label'=>'Agente aduanas',
@@ -123,6 +125,7 @@ if ($action == 'edit') {
             'label' => 'Envío documentación',
             'empty' => ' ')
             );
+
             echo $this->Form->input('fecha_entradamerc', array(
             'dateFormat' => 'DMY',
             'minYear' => date('Y')-1,
@@ -162,18 +165,17 @@ if ($action == 'edit') {
             'empty' => ' ')
             );
         }
+                   echo '<br><br>';
             ?>
             
         </div>
     </div> 
-        <?php
-        echo $this->Form->input('observaciones', array('label'=>'Observaciones'));
-        ?>  
+</fieldset>
+   <fieldset>    <!-- Seguro de la línea transporte -->
+
 <?php
 if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
     ?>
-</fieldset>    
-   <fieldset>    <!-- Seguro de la línea transporte -->
     <legend>Seguro</legend>
      <div class="col2">    
             <?php
@@ -234,16 +236,17 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
             'label'=>'Avería (€)'
             )
         );
+    ?></div>
+   
+    <?php
 }    
         echo $this->Form->input('peso_factura',array(
             'label'=>'Peso facturado (Kg)'
             )
         );
 
-        ?>
-        </div>
-        <?php
+        echo $this->Form->input('observaciones', array('label'=>'Observaciones'));        
         echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
         echo $this->Form->end('Guardar Línea Transporte', array('escape'=>false));
         ?>
-</fieldset>
+    </fieldset>
