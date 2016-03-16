@@ -197,6 +197,10 @@ div.actions h3 {
 	padding-top:0;
 	color:#777;
 }
+div .ancho_completo{
+	width: auto;
+	padding: 1% 0% 8% 2
+}
 
 /** Tables **/
 table {

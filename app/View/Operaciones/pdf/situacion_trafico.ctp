@@ -1,12 +1,7 @@
 <h2>Operaciones</h2>
 	<div class='index'>
 	<?php
-	if (empty($operaciones)):
-		echo "No hay operaciones en esta lista";
-	else:
-
-	echo "<table>\n";
-	echo $this->Html->tableHeaders(array(
+/*	echo $this->Html->tableHeaders(array(
 		'Calidad',
 		'Operación', 
 		'Proveedor',
@@ -18,7 +13,7 @@
 		'Llegada prevista'
 		)
 	);
-	foreach($operaciones as $operacion):
+	/*foreach($operaciones as $operacion):
 		foreach($operacion['Operacion'] as $transporte]):
 	if (empty($transporte['Transporte']['fecha_despacho_op']) && date("d-m-Y", strtotime("-1 month") <= date("d-m-Y"))){	}
 		endforeach;
@@ -39,9 +34,33 @@
 		  )
 		);
 	
-  	endforeach;
-?>
-	</table>
+  	endforeach;*/
+  	?>
+  <table>
+  <tr>
+    <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Ref. Operación')?></th>
+    <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Ref. Contrato')?></th>
+    <th><?php echo $this->Paginator->sort('Contrato.fecha_transporte','Embarque/Entrega')?></th>
+    <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
+    <th><?php echo $this->Paginator->sort('Proveedor.nombre_corto', 'Proveedor');?></th>
+    <th><?php echo $this->Paginator->sort('PesoOperacion.cantidad_embalaje', 'Bultos')?></th>
+  </tr>
+  <?php
+  foreach($operaciones as $operacion):
+	  if (isset($operacion['Contrato']['si_entrega'])) {
+		  $entrega  = $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
+		  $entrega = ' ('.$entrega.')';
+	  } else { $entrega ='';}
+    echo $this->Html->tableCells(array(
+      $operacion['Operacion']['referencia'],
+      $operacion['Contrato']['referencia'],
+      $this->Date->format($operacion['Contrato']['fecha_transporte']).$entrega,
+      $operacion['CalidadNombre']['nombre'],
+      $operacion['Proveedor']['nombre_corto'],
+      $operacion['PesoOperacion']['cantidad_embalaje']
+      ));
+  endforeach;
+  ?>
+  </table>
 
-	<?php endif; ?>
 </div>
