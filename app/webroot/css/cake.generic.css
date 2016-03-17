@@ -131,7 +131,7 @@ p {
 	color: #fff;
 }
 /*Para pantallas menores de 1280px*/
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width: 1300px) {
 	#header{
 		padding: 10px 20px;
 		width: 85%;
@@ -341,11 +341,11 @@ fieldset {
 	padding: 10px 0px;
 	float: left;
 	/*display: block;*/
-	width: 31%;
+	width: 30%;
 	/*width: 47%;
 	/*margin-right: 10px; 
 	margin: 0 30px 10px 0;*/
-	margin: 0 15px 0px 10px;
+	margin: 0 3% 0px 0px;
 }
 fieldset legend {
 	color: #2c6877;

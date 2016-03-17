@@ -77,7 +77,7 @@ if ($action == 'edit') {
     </fieldset>
     <fieldset>        
     <legend>Fechas</legend>
-    <div class='col2'>
+
         <div class="linea">
             <?php
             echo $this->Form->input('fecha_carga', array(
@@ -169,7 +169,7 @@ if ($action == 'edit') {
             ?>
             
         </div>
-    </div> 
+
 </fieldset>
    <fieldset>    <!-- Seguro de la línea transporte -->
 

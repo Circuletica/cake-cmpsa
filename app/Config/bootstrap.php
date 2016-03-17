@@ -122,7 +122,7 @@ Configure::write('Dispatcher.filters', array(
 /**
  * Configures default file logging options
  */
-App::uses('CakeLog', 'Log');
+App::uses('CakeEmail', 'Network/Email','CakeLog', 'Log');
 CakeLog::config('debug', array(
 	'engine' => 'File',
 	'types' => array('notice', 'info', 'debug'),

@@ -1,7 +1,24 @@
 <?php
 class TransportesController extends AppController {
+  
+/*   public function excel (){
+       $this->layout='excel';
+           $this->Post->recursive = 0;
+       $this->set('posts', $this->paginate());
+         
+   } */
 
     public function view($id = null) {
+ 
+/* $Email = new CakeEmail();
+ $Email->config('smtp')
+ 	->template('default')
+    ->emailFormat('html')
+    ->subject('AVISO PREVISIÓN LLEGADA')
+    ->to('info@circuletica.org')
+    //->from('app@domain.com')
+    ->send();*/
+
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formada Transporte/view ');
 	    $this->redirect(array('action'=>'index_trafico'));
@@ -358,7 +375,94 @@ class TransportesController extends AppController {
 
 	$transportes = $this->paginate();
 	$this->set(compact('transportes'));
-    	
 	}
+
+    public function reclamacion($id = null) {
+
+    $this->pdfConfig = array(
+		'filename' => 'reclamacion',
+		'paperSize' => 'A4',
+        'orientation' => 'portrait',
+        'layout' =>'facturas'
+	);	
+
+	$transporte = $this->Transporte->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Transporte.id' => $id
+				),
+			'recursive' => 3,
+			'contain' => array(
+				'Operacion' => array(
+					'Contrato' => array(
+				   		'fields' => array(
+						    'id',
+						    'referencia'
+						),
+				   		'Incoterm'=>array(
+				   			'fields'=> array(
+				   				'nombre'
+				   			)
+				   		)
+				   	),
+				'Embalaje' => array(
+					'fields' => array(
+				   		'nombre'
+				   		)
+					 )
+				),
+				'Naviera' => array(
+					'fields' => array(
+						'id',
+						'nombre'
+						)
+					),
+				'Agente'=> array(
+					'fields' => array(
+						'id',
+						'nombre'
+						)
+					),
+				'PuertoCarga' => array(
+					'fields' => array(
+						'id',
+						'nombre'
+						)
+					),
+				'PuertoDestino' => array(
+					'fields' => array(
+						'id',
+						'nombre'
+						)
+					),
+				'Aseguradora' => array(
+					'fields' => array(
+						'id',
+						'nombre'
+						)
+					),
+				'AlmacenTransporte' => array(
+					'fields' => array(
+						'id',
+						'cuenta_almacen',
+						'almacen_id',
+						'cantidad_cuenta',
+						'peso_bruto',
+						'marca_almacen'),
+					'Almacen' => array(
+						'fields' => (
+							'nombre_corto'
+						)
+					)
+				)	
+			)
+		)
+	);
+	$this->set('transporte',$transporte);
+	$parte = 'por definir';
+	$this->set(compact('parte'));
+
+	}	
 }
 ?>

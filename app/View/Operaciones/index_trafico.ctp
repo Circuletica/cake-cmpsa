@@ -16,15 +16,13 @@
       'escape'=>false,
       'target' => '_blank',
       'title'=>'Exportar a PDF')).' '.
-  $this->Html->link(('<i class="fa fa-area-chart"></i>'),
+  $this->Html->link(('<i class="fa fa-area-chart fa-lg"></i>'),
   array(
     'action' =>'situacion',
-    'controller' => 'transportes',
-    'situacion'
+    'controller' => 'transportes'
     ),
   array(
     'escape'=>false,
-    'target' => '_blank',
     'title'=>'Informe de situación'
     )
   );

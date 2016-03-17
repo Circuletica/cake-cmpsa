@@ -3,7 +3,7 @@
  <?php //PARA INDEX
  echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
     array(
-      'action' => 'index_trafico',
+      'action' => 'situacion',
       'ext' => 'pdf'),
     array(
       'escape'=>false,
