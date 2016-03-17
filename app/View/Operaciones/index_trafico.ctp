@@ -18,9 +18,10 @@
       'title'=>'Exportar a PDF')).' '.
   $this->Html->link(('<i class="fa fa-area-chart"></i>'),
   array(
-    'action' =>'situacion_trafico',
-    'situacion',
-    'ext' => 'pdf'),
+    'action' =>'situacion',
+    'controller' => 'transportes',
+    'situacion'
+    ),
   array(
     'escape'=>false,
     'target' => '_blank',

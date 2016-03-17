@@ -46,7 +46,7 @@
 		)
 	);
 
-	foreach($situacion_embarques as $situacion_embarque){
+	/*foreach($situacion_embarques as $situacion_embarque){
 		echo $this->Html->tableCells(array(
 				$situacion_embarque['Calidad'],
 				$situacion_embarque['Operacion'],
@@ -55,13 +55,13 @@
 				$situacion_embarque['Embarque'],
 				$situacion_embarque['Pto.Destino'],		
 				$situacion_embarque['Fecha carga'],		
-			/*	$situacion_embarque['Fecha llegada'],
-				$situacion_embarque['Vehiculo'],*/
+				$situacion_embarque['Fecha llegada'],
+				$situacion_embarque['Vehiculo'],
 				$situacion_embarque['Llegada prevista'],
 				'Detalle'	
 			)
 		);
-	}
+	}*/
 
 	/*	foreach ($operaciones as $operacion){
 				if (isset($operacion['Contrato']['si_entrega'])) {

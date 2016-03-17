@@ -303,5 +303,62 @@ class TransportesController extends AppController {
 	endif;
     }
 
+    public function situacion() {
+    $this->pdfConfig = array(
+		'filename' => 'situacion',
+		'paperSize' => 'A4',
+        'orientation' => 'landscape',
+	);
+//	$invoice = $this->Invoice->find('first', array('conditions' => array('id' => $id)));
+//	$this->set(compact('invoice');
+
+
+	$this->paginate['order'] = array('CalidadNombre.nombre' => 'asc');
+	$this->paginate['recursive'] = 2;
+	$this->paginate['condition'] = array(
+	    'Transporte.fecha_despacho_op'=> NULL
+		);		
+	$this->paginate['contain'] = array(
+		    'Operacion' => array(
+		    	'fields'=> array(
+		    		'id',
+		    		'referencia',
+		    		'contrato_id'
+		    		),
+		    	'PesoOperacion'=> array(
+					'fields' =>array(
+				 	   'peso',
+					   'cantidad_embalaje'
+						)
+					),	
+		    	'Contrato'=>array(	
+					'fields'=> array(
+					    'id',
+					    'fecha_transporte',
+					    'si_entrega',
+						    ),
+					'Proveedor'=>array(
+					    'id',
+					    'nombre_corto'
+					),
+					'CalidadNombre' => array(
+				    	'fields' =>(
+						'nombre'
+				    	)
+				    )
+				)
+			),
+			'PuertoDestino' => array(
+				'fields' => array(
+					'id',
+					'nombre'
+					)
+		    )
+	);
+
+	$transportes = $this->paginate();
+	$this->set(compact('transportes'));
+    	
+	}
 }
 ?>
