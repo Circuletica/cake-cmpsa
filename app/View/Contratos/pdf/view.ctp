@@ -31,11 +31,7 @@ echo "  <dt>Referencia</dt>\n";
 echo "  <dd>".$referencia.'&nbsp;'."</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
-echo $this->html->link($contrato['Proveedor']['nombre_corto'], array(
-    'controller' => 'proveedores',
-    'action' => 'view',
-    $contrato['Proveedor']['id'])
-);
+echo $contrato['Proveedor']['nombre_corto'];
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
@@ -49,6 +45,8 @@ echo "  <dt>Peso no distribuido</dt>\n";
 echo "  <dd>".$peso_por_fijar." kg&nbsp;</dd>";
 ?>
 	</dl>
+
+	<br><br>
 <div class="detallado">
 	<table>
 <?php

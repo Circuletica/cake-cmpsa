@@ -42,6 +42,10 @@ class LineaMuestrasController extends AppController {
 	    $linea['CribaPonderada']['criba12'];
 	$this->set('suma_linea',$suma_linea);
 	$this->set('suma_ponderada',$suma_ponderada);
+	
+	//Para crear PDF
+	$this->set(compact('id'));
+
     }
 
     public function add() {

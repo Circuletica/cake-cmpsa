@@ -18,16 +18,7 @@ echo "</dd>";
 echo "  <dt>Comprado</dt>\n";
 echo "<dd>";
 echo ($muestra['Muestra']['aprobado'] ?
-    'Sí ('
-    .$this->Html->link(
-	$muestra['Contrato']['referencia'],
-	array(
-	    'controller'=> 'contratos',
-	    'action' => 'view',
-	    $muestra['Contrato']['id']
-	)
-    )
-    .')'
+    'Sí ('.$muestra['Contrato']['referencia'].')'
     : 'No');
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";

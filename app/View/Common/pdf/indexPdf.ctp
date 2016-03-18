@@ -17,5 +17,5 @@ $this->Html->addCrumb($object, array(
 <h2><?php echo 'Listado de '.$object; ?></h2>
 <div class='index'>
 	<?php echo $this->fetch('main'); ?>
-    <?php echo $this->element('paginador');?>
+    <?php //echo $this->element('paginador');?>
 </div>
