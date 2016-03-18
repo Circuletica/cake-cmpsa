@@ -2,17 +2,9 @@
 	<div class='view'>
 	<?php
 	echo "<dl>";
-	echo "  <dt>Operación</dt>\n";
-	echo "<dd>";
-	echo $operacion['Operacion']['referencia'].'&nbsp;';
-	echo "</dd>";
 	echo "  <dt>Contrato</dt>\n";
 	echo "<dd>";
-	echo $this->html->link($operacion['Contrato']['referencia'], array(
-		'controller' => 'contratos',
-		'action' => 'view',
-		$operacion['Operacion']['contrato_id'])
-	);
+	echo $operacion['Contrato']['referencia'];
 	echo "</dd>";
 	echo "  <dt>".$tipo_fecha_transporte."</dt>\n";
 	echo "  <dd>".$fecha_transporte."</dd>";
@@ -21,11 +13,7 @@
 	echo $operacion['Contrato']['CalidadNombre']['nombre'].'&nbsp;';
 	echo "  <dt>Proveedor</dt>\n";
 	echo "<dd>";
-	echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], array(
-		'controller' => 'proveedores',
-		'action' => 'view',
-		$operacion['Contrato']['Proveedor']['id'])
-	);
+	echo $operacion['Contrato']['Proveedor']['nombre_corto'];
 	echo "</dd>";
 	echo "  <dt>Incoterms</dt>\n";
 	echo "<dd>";
@@ -52,7 +40,7 @@
 	<!--Se hace un index de la Linea de contratos-->
 
 	<!--Se listan los asociados que forman parte de la operación-->
-<div class="detallado">
+<br><br>
 	<h3>Líneas de transporte</h3>
 	<table>
 	<?php
@@ -85,7 +73,6 @@
 			}
 
 ?>
-	</div>
 	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
 
 	<div class="detallado">
@@ -189,9 +176,7 @@ echo $this->html->tablecells(array(
 ?></table>
 		<?php
 			if ($cuenta_almacen['cuenta_almacen'] != NULL ){
-			echo '<div class="btabla">';
-			echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
-			echo '</div>';
+
 			}else{
 				echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
 			}

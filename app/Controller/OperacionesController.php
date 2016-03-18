@@ -732,5 +732,6 @@ $this->set('total_pendiente',$total_pendiente);
 	    )
 	);
     }
+  
 }
 ?>

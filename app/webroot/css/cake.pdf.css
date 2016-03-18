@@ -9,7 +9,7 @@
 body {
 	color: #000000;
 	font-family:verdana,helvetica,arial,sans-serif;
-	font-size:90%;
+	font-size:80%;
 	margin: 0;
 	font-weight: 500;
 }
@@ -20,24 +20,24 @@ h1, h2, h3, h4 {
 h1 {
 	color: #000000;
 	text-align:center;
-	font-size: 180%;
+	font-size: 170%;
 	margin-bottom: 1em;
 }
 h2 {
-	color: #e73827;
+	color:#990033;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 170%;
+	font-size: 160%;
 	font-weight: bold;
 }
 h3 {
 	color:  #2c6877;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 150%;
+	font-size: 130%;
 	font-weight: bold;
 }
 h4 {
-	color: #355383;
-	font-size: 135%;
+	color: #000;
+	font-size: 100%;
 	font-weight: bold;
 }
 ul, li {
@@ -325,4 +325,13 @@ form .error-message {
 	-o-box-shadow: none;
 	box-shadow: none;
 	text-shadow: none;
+}
+
+ul { 
+	list-style: disc;
+	padding:0 5 5 100 ;
+	/*margin:40;*/
+}
+li{
+	padding:5;
 }

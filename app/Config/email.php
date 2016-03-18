@@ -39,28 +39,31 @@
  */
 class EmailConfig {
 
-	public $default = array(
+/*	public $default = array(
 		'transport' => 'Mail',
 		'from' => 'you@localhost',
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
 	);
-
+*/
 	public $smtp = array(
 		'transport' => 'Smtp',
-		'from' => array('site@localhost' => 'My Site'),
-		'host' => 'localhost',
-		'port' => 25,
+		'from' => array('trafico@cmpsa.com' => 'App_CMPSA_Gestión'),
+		'host' => 'smtp.1and1.es',
+		'port' => 587,
 		'timeout' => 30,
-		'username' => 'user',
-		'password' => 'secret',
+		'username' => 'trafico@cmpsa.com',
+		'password' => 'hP3OyGVtO7PVMklfXtFt',
+		'bcc' => 'rodolgl@gmail.com',		
+		//'bcc' => array('yolandaordonez@cmpsa.com','mvillarm@cmpsa.com'),
 		'client' => null,
+		'tls' => true,
 		'log' => false,
-		//'charset' => 'utf-8',
-		//'headerCharset' => 'utf-8',
+		'charset' => 'utf-8',
+		'headerCharset' => 'utf-8',
 	);
 
-	public $fast = array(
+/*	public $fast = array(
 		'from' => 'you@localhost',
 		'sender' => null,
 		'to' => null,
@@ -90,5 +93,5 @@ class EmailConfig {
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
 	);
-
+*/
 }

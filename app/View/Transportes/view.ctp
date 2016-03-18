@@ -13,10 +13,28 @@
 ?><div class="acciones">
 	<div class="printdet">
 	<ul><li>
-		<?php 
-		echo $this->element('imprimirV');
-		?>	
-		
+
+ <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
+ <?php // PARA VIEW
+ echo ' '.$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
+ 	array(
+ 		'action' => 'view',
+ 		$id,
+ 		'ext' => 'pdf',
+ 		), 
+ 	array(
+ 		'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
+ 	$this->Html->link(('<i class="fa fa-exclamation-circle fa-lg"></i>'),
+ 	array(
+ 		'action' => 'reclamacion',
+ 		$id,
+ 		'ext' => 'pdf',
+ 		), 
+ 	array(
+ 		'escape'=>false,'target' => '_blank','title'=>'Reclamación peso')).' '.
+ $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array('escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'));
+ ?>
+ 
 	</li>
 	<li>
 			<?php
@@ -135,8 +153,19 @@
 		$fecha_carga= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_carga.'&nbsp;';
 		echo "</dd>";
+		echo "  <dt>Fecha prevista llegada</dt>\n";
+		echo "<dd>";
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_prevista'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_prevista= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_prevista.'&nbsp;';
+		echo "</dd>";
 		echo "  <dt>Fecha de llegada</dt>\n";
 		echo "<dd>";
+
 if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 		//mysql almacena la fecha en formato ymd
 		$fecha = $transporte['Transporte']['fecha_llegada'];
@@ -198,6 +227,7 @@ if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 		$fecha_despacho_op= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_despacho_op.'&nbsp;';
 		echo "</dd>";
+
 	if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] !='FOB'){
 		echo "  <dt>Límite de retirada</dt>\n";
 		echo "<dd>";
@@ -288,6 +318,14 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 			echo $transporte['Transporte']['peso_neto'].' Kg&nbsp;';
 			echo "</dd>";
 		}
+echo '<br><h3>Reclamación</h3>';
+		if ($transporte['Transporte']['peritacion'] !=NULL){
+			echo "  <dt>Peritación</dt>\n";
+			echo "<dd>";
+			echo $transporte['Transporte']['peritacion'].' €';
+			echo "</dd>";
+		}
+
 		if ($transporte['Transporte']['averia'] !=NULL){
 			echo "  <dt>Avería</dt>\n";
 			echo "<dd>";

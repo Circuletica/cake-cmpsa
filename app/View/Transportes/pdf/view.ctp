@@ -1,74 +1,14 @@
-<?php 
-	$this->Html->addCrumb('Operación '.$transporte['Operacion']['referencia'], array(
-	'controller'=>'operaciones',
-	'action'=>'view_trafico',
-	$transporte['Operacion']['id']
-	));
-	$this->Html->addCrumb('Línea de Transporte', array(
-	'controller' => 'transportes',
-	'action' => 'view',
-	$transporte['Transporte']['id']
-	)
-	);
-?><div class="acciones">
-	<div class="printdet">
-	<ul><li>
-		<?php 
-		echo $this->element('imprimirV');
-		?>	
-		
-	</li>
-	<li>
-			<?php
-		echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',
-			array(
-			'action'=>'edit',
-			$transporte['Transporte']['id']
-			),
-			array('title'=>'Modificar Transporte',
-				'escape'=>false))
-
-		.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',
-			array(
-			'action'=>'delete',
-			$transporte['Transporte']['id'],
-			'from_controller' => 'transportes',
-			'from_id' => $transporte['Operacion']['id']
-			),		
-			array(
-			'escape'=>false, 'title'=> 'Borrar Transporte',
-			'confirm'=>'¿Realmente quiere borrar la línea con BL/Matrícula '.$transporte['Transporte']['matricula'].'?')
-		);
-	?>
-	</li>
-	</ul>
-	</div>
-</div>
 <h2>Línea de Transporte: Operación <?php echo $transporte['Operacion']['referencia'] ?></h2>
 
-<div class="actions">
-	<?php
-	echo $this->element('filtrooperacion');
-	?>
-</div>
-
-	<div class='view'>
+<div class='view'>
 	<dl><?php
 		echo "  <dt>Operación</dt>\n";
 			echo "<dd>";
-			echo $this->Html->link($transporte['Operacion']['referencia'], array(
-			'controller' => 'operaciones',
-			'action' => 'view_trafico',
-			$transporte['Operacion']['id'])
-			);
+			echo $transporte['Operacion']['referencia'];
 			echo "</dd>";
 		echo "  <dt>Contrato</dt>\n";
 			echo "<dd>";
-			echo $this->Html->link($transporte['Operacion']['Contrato']['referencia'], array(
-			'controller' => 'contratos',
-			'action' => 'view',
-			$transporte['Operacion']['Contrato']['id'])
-			);
+			echo $transporte['Operacion']['Contrato']['referencia'];
 			echo "</dd>";
 		echo "  <dt>Nombre del transporte</dt>\n";
 		echo "<dd>";
@@ -89,11 +29,7 @@
 		echo "  <dt>Naviera</dt>\n";
 		echo "<dd>";
 		if ($transporte['Transporte']['naviera_id'] !=NULL){
-			echo $this->Html->link($transporte['Naviera']['nombre'], array(
-				'controller' => 'navieras',
-				'action' => 'view',
-				$transporte['Naviera']['id'])
-			);
+			echo $transporte['Naviera']['nombre'];
 		}else{
 			echo "Sin asignar";
 		}
@@ -101,11 +37,7 @@
 		echo "  <dt>Agente de aduanas</dt>\n";
 		echo "<dd>";
 		if ($transporte['Transporte']['agente_id'] !=NULL){
-			echo $this->Html->link($transporte['Agente']['nombre'], array(
-				'controller' => 'agentes',
-				'action' => 'view',
-				$transporte['Agente']['id'])
-			);
+			echo $transporte['Agente']['nombre'];
 		}else{
 			echo "Sin asignar";
 		}
@@ -231,11 +163,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 		echo "  <dt>Aseguradora</dt>\n";
 		echo "<dd>";
 			if ($transporte['Transporte']['aseguradora_id']!=NULL){
-				echo $this->Html->link($transporte['Aseguradora']['nombre_corto'], array(
-				'controller' => 'aseguradoras',
-				'action' => 'view',
-				$transporte['Aseguradora']['id'])
-			);
+				echo $transporte['Aseguradora']['nombre_corto'];
 			}else{
 					echo "Sin asegurar";
 			}
@@ -310,12 +238,12 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 	?>		
 </dl>
 	<div class="detallado">
-
+	<br>
 	<h3>Almacenes</h3>
 
 	<table>
 <?php
-	echo $this->Html->tableHeaders(array('Cuenta Corriente','Nombre', 'Cantidad', 'Peso bruto', 'Marca','Detalle'));
+	echo $this->Html->tableHeaders(array('Cuenta Corriente','Nombre', 'Cantidad', 'Peso bruto', 'Marca'));
 	foreach($transporte['AlmacenTransporte'] as $linea):
 		echo $this->Html->tableCells(array(
 			$linea['cuenta_almacen'],
@@ -330,19 +258,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 				array('style' => 'text-align:right'
 					)
 				),
-			$linea['marca_almacen'],
-			$this->Button->editLine(
-				'almacen_transportes',
-				$linea['id'],'transportes',
-				$transporte['Transporte']['id']
-				)
-			.' '.$this->Button->deleteLine(
-				'almacen_transportes',
-				$linea['id'],
-				'transportes',
-				$transporte['Transporte']['id'],
-				'la ref. almacén '.$linea['cuenta_almacen']
-				)
+			$linea['marca_almacen']
 			)
 		);
 	endforeach;?>
@@ -351,9 +267,6 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 	<?php
 	echo "<h4>Almacenados: ".$almacenado.' / Restan: '.$restan;
 			if ($almacenado < $transporte['Transporte']['cantidad_embalaje']){
-			echo '<div class="btabla">';
-				echo $this->Button->addLine('almacen_transportes','transportes',$transporte['Transporte']['id'],'ref. almacén');
-			echo '</div>';
 			}else{
 				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido almacenados</span></h4>";
 			}

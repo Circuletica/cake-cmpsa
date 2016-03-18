@@ -16,12 +16,14 @@ $from_id = $this->fetch('from_id');
 <div class='view'>
 	<?php echo $this->fetch('main'); ?>
 	<div class="detallado">
+	 <br><br>
 	<?php echo "<h3>".ucfirst($line_object)."</h3>\n";?>
 	<?php echo $this->fetch('lines'); ?>
 	</div>
 
 <?php if($line2_object):?>
 	<div class="detallado">
+	<br><br>
 	<?php echo "<h3>".ucfirst($line2_object)."</h3>\n";?>
 	<?php echo $this->fetch('lines2'); ?>
 	</div>

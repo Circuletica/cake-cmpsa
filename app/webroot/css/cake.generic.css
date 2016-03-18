@@ -131,7 +131,7 @@ p {
 	color: #fff;
 }
 /*Para pantallas menores de 1280px*/
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width: 1300px) {
 	#header{
 		padding: 10px 20px;
 		width: 85%;
@@ -196,6 +196,10 @@ div.actions {
 div.actions h3 {
 	padding-top:0;
 	color:#777;
+}
+div .ancho_completo{
+	width: auto;
+	padding: 1% 0% 8% 2
 }
 
 /** Tables **/
@@ -332,16 +336,16 @@ form {
 	width: 95%;
 }
 fieldset {
-	border: none;
+	border: 1px;
 	/*margin-bottom: 1em;*/
 	padding: 10px 0px;
 	float: left;
 	/*display: block;*/
-	/*width: 15%;*/
-	width: 47%;
+	width: 30%;
+	/*width: 47%;
 	/*margin-right: 10px; 
 	margin: 0 30px 10px 0;*/
-	margin: 0 15px 0px 10px;
+	margin: 0 3% 0px 0px;
 }
 fieldset legend {
 	color: #2c6877;
