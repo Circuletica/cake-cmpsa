@@ -400,36 +400,14 @@ class TransportesController extends AppController {
 						    'id',
 						    'referencia'
 						),
-				   		'Incoterm'=>array(
+				   		'CalidadNombre'=>array(
 				   			'fields'=> array(
 				   				'nombre'
 				   			)
 				   		)
 				   	),
-				'Embalaje' => array(
-					'fields' => array(
-				   		'nombre'
-				   		)
-					 )
+				'PrecioTotalOperacion'
 				),
-				'Naviera' => array(
-					'fields' => array(
-						'id',
-						'nombre'
-						)
-					),
-				'Agente'=> array(
-					'fields' => array(
-						'id',
-						'nombre'
-						)
-					),
-				'PuertoCarga' => array(
-					'fields' => array(
-						'id',
-						'nombre'
-						)
-					),
 				'PuertoDestino' => array(
 					'fields' => array(
 						'id',
@@ -441,28 +419,65 @@ class TransportesController extends AppController {
 						'id',
 						'nombre'
 						)
-					),
-				'AlmacenTransporte' => array(
-					'fields' => array(
-						'id',
-						'cuenta_almacen',
-						'almacen_id',
-						'cantidad_cuenta',
-						'peso_bruto',
-						'marca_almacen'),
-					'Almacen' => array(
-						'fields' => (
-							'nombre_corto'
-						)
 					)
 				)	
 			)
-		)
 	);
 	$this->set('transporte',$transporte);
-	$parte = 'por definir';
-	$this->set(compact('parte'));
 
+	$dia = date ('d');
+	$mes=date('m');
+	$ano = date('Y');
+
+	if ($mes=="1") $mes="Enero";
+	if ($mes=="2") $mes="Febrero";
+	if ($mes=="3") $mes="Marzo";
+	if ($mes=="4") $mes="Abril";
+	if ($mes=="5") $mes="Mayo";
+	if ($mes=="6") $mes="Junio";
+	if ($mes=="7") $mes="Julio";
+	if ($mes=="8") $mes="Agosto";
+	if ($mes=="9") $mes="Setiembre";
+	if ($mes=="10") $mes="Octubre";
+	if ($mes=="11") $mes="Noviembre";
+	if ($mes=="12") $mes="Diciembre";
+	$this->set(compact('dia'));
+	$this->set(compact('mes'));
+	$this->set(compact('ano'));
+
+
+	$parte = $this->Transporte->Operacion->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Operacion.id' => $transporte['Operacion']['id']
+				),
+			'recursive' => -1,
+			'fields' => array(
+						'id'
+						),	
+			'contain' => array(
+				'Transporte' => array(
+					'fields' => array(
+						    'id',
+						    'operacion_id'
+						    )
+					)
+				)
+			)
+		);
+//Saco el número del array para numerar las líneas de transporte	
+foreach ($parte as $clave => $lineas){
+  $parte = $lineas;
+  unset($parte['Operacion']);
+}
+foreach ($parte as $clave=>$lineas){
+	$i = $clave;
+	if($lineas['id'] == $transporte['Transporte']['id']){
+  	$num = $i+1;
+	}
+}
+$this->set(compact('num'));
 	}	
 }
 ?>

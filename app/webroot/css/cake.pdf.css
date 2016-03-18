@@ -326,3 +326,12 @@ form .error-message {
 	box-shadow: none;
 	text-shadow: none;
 }
+
+ul { 
+	list-style: disc;
+	padding:0 5 5 100 ;
+	/*margin:40;*/
+}
+li{
+	padding:5;
+}

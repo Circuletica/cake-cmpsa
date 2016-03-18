@@ -12,7 +12,7 @@
 	28036 MADRID<br>
 	Teléfonos: 913 59 70 49 / 913 59 23 91<br>
 	Fax: 913 45 23 61<br>
-	<br><br>
+	<br>
 	<?php
 		header("Content-type: application/pdf");
 		echo $content_for_layout;

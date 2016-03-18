@@ -233,7 +233,7 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
             )
         );        
         echo $this->Form->input('averia',array(
-            'label'=>'Avería (€)'
+            'label'=>'Avería (Kg)'
             )
         );
     ?></div>
