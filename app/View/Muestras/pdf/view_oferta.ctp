@@ -1,6 +1,6 @@
 <?php
-// Usamos plantilla clásica de vistas View/Common/view.ctp
-$this->extend('/Common/view');
+// Usamos plantilla clásica de vistas View/Common/pdf/viewPdf.ctp
+$this->extend('/Common/pdf/viewPdf');
 $this->assign('id',$muestra['Muestra']['id']);
 $this->assign('class','Muestra');
 $this->assign('controller','muestras');
@@ -9,20 +9,6 @@ $this->assign('object', 'Muestra de oferta '.$muestra['Muestra']['tipo_registro'
 $this->assign('line_object', 'Línea');
 $this->assign('line_add', '1');
 
-$this->start('breadcrumb');
-$this->Html->addCrumb(
-    'Muestras de oferta',
-    array(
-	'controller' => 'muestras',
-	'action' => 'index',
-	'Search.tipo_id' => '1'
-    )
-);
-$this->end();
-
-$this->start('filtro');
-echo $this->element('filtromuestra');
-$this->end();
 $this->start('main');
 echo "<dl>";
 echo "  <dt>Registro</dt>\n";
@@ -50,11 +36,7 @@ echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
-echo $this->Html->link($muestra['Proveedor']['nombre_corto'], array(
-    'controller' => 'proveedores',
-    'action' => 'view',
-    $muestra['Proveedor']['id'])
-);
+echo $muestra['Proveedor']['nombre_corto'];
 echo "</dd>";
 echo "  <dt>Fecha</dt>\n";
 echo "<dd>";
@@ -69,7 +51,7 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
-echo $this->Html->tableHeaders(array('', 'Sacos','Ref. Proveedor', 'Detalle'));
+echo $this->Html->tableHeaders(array('', 'Sacos','Ref. Proveedor'));
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas
 $i = 1;
@@ -78,8 +60,7 @@ foreach($muestra['LineaMuestra'] as $linea):
 	$muestra['Muestra']['tipo_registro'].'/'.$i,
 	$linea['sacos'],
 	//(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['cantidad_cuenta'] : '',
-	$linea['referencia_proveedor'],
-	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
+	$linea['referencia_proveedor']
     )
 );
 //numero de la línea siguiente
