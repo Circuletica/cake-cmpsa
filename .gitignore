@@ -3,7 +3,7 @@
 /app/Config/database.php
 /app/tmp
 /app/Plugin/Highcharts/*
-/app/Vendor/PHPExcel/*
+/app/Vendor/*
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
 /vendors
