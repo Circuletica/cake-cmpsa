@@ -1,5 +1,5 @@
 <?php
-    $this->layout = 'reclamacion';
+    $this->layout = 'trafico';
     $reclamacion = $transporte['Transporte']['peso_factura'] -$transporte['Transporte']['peso_neto'];
     $suma = $reclamacion + $transporte['Transporte']['averia'];
 if(empty($transporte['Aseguradora']['nombre'] && $transporte['Transporte']['peritacion'])){

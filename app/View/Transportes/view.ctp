@@ -62,11 +62,44 @@
 	</ul>
 	</div>
 </div>
-<h2>Línea de Transporte: Operación <?php echo $transporte['Operacion']['referencia'] ?></h2>
+<h2>Línea de Transporte Nº <?php echo $num ?></h2>
 
 <div class="actions">
 	<?php
 	echo $this->element('filtrooperacion');
+	echo '<br>';
+	echo $this->Html->link('Descargar PDF', array(
+		'action' => 'view',
+		 $id,
+		 'ext' => 'pdf',
+		  '?' => array('download' => 1)
+		  ),
+	array(
+ 		'escape'=>false,
+ 		'target' => '_blank',
+ 		'title'=>'Descargar PDF'
+ 		)
+	);
+	echo $this->Html->link(('<i class="fa fa-exclamation-circle fa-lg"></i> Reclamación seguro'),array(
+		'action' => 'reclamacion',
+ 		$id,
+ 		'ext' => 'pdf',
+ 		), array(
+ 		'escape'=>false,
+ 		'target' => '_blank',
+ 		'title'=>'Reclamación peso'
+ 		)
+ 		);
+	echo $this->Html->link(('<i class="fa fa-lock fa-lg"></i> Asegurar línea'),array(
+		'action' => 'asegurar',
+ 		$id,
+ 		'ext' => 'pdf',
+ 		), array(
+ 		'escape'=>false,
+ 		'target' => '_blank',
+ 		'title'=>'Asegurar línea peso'
+ 		)
+ 		);
 	?>
 </div>
 

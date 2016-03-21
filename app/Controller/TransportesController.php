@@ -9,7 +9,32 @@ class TransportesController extends AppController {
    } */
 
     public function view($id = null) {
- 
+
+
+  $this->pdfConfig = array(
+		'filename' => 'linea'.date('Ymd'),
+		//'output'=> 'files/Report.pdf'  
+		//'download' => (bool)$this->request->query('download')
+	);
+	$linea = $this->Transporte->find('first', array(
+		'conditions' => array(
+		'Transporte.id' => $id
+		)
+		)
+	);
+
+	/*$pdf = $CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
+	$this->set(compact('pdf'));*/
+    //$CakePdf = new CakePdf();
+  //  $CakePdf->template('default');
+    //$CakePdf->viewVars($this->viewVars);
+    // Get the PDF string returned
+    //$pdf = $CakePdf->output();
+    // Or write it to file directly
+ /*   $pdf = $this->write(APP . 'files' . DS . 'newsletter.pdf');
+$this->set(compact('pdf'));
+*/
+
 /* $Email = new CakeEmail();
  $Email->config('smtp')
  	->template('default')
@@ -114,7 +139,48 @@ class TransportesController extends AppController {
 	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
 	$this->set('embalaje',$embalaje);
 
+	//Necesario para exportar en PDf
 	$this->set(compact('id'));
+
+	//Se crea para saber el número de línea de la operación
+		$parte = $this->Transporte->Operacion->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Operacion.id' => $transporte['Operacion']['id']
+				),
+			'recursive' => -1,
+			'fields' => array(
+						'id'
+						),	
+			'contain' => array(
+				'Transporte' => array(
+					'fields' => array(
+						    'id',
+						    'operacion_id'
+						    )
+					)
+				)
+			)
+		);
+//Saco el número del array para numerar las líneas de transporte	
+foreach ($parte as $clave => $lineas){
+  $parte = $lineas;
+  unset($parte['Operacion']);
+}
+foreach ($parte as $clave=>$lineas){
+	$i = $clave;
+	if($lineas['id'] == $transporte['Transporte']['id']){
+  	$num = $i+1;
+	}
+}
+$this->set(compact('num'));
+
+
+
+
+
+
     }
     public function add() {
     if (!$this->params['named']['from_id']) {
@@ -479,5 +545,11 @@ foreach ($parte as $clave=>$lineas){
 }
 $this->set(compact('num'));
 	}	
+
+    public function asegurar($id = null) {
+    $this->reclamacion();
+	$this->render('asegurar');
+    }
+
 }
 ?>
