@@ -44,7 +44,7 @@ if ($action == 'edit') {
     <div class="col3">
     <?php
     echo $this->Form->input('cantidad_cuenta',array(
-      'label'=>'Cantidad de sacos'
+      'label'=>'Sacos en '.$transporte['Operacion']['Embalaje']['nombre']
       )
     );
     echo $this->Form->input('peso_bruto',array(

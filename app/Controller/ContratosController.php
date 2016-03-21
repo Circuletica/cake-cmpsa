@@ -133,6 +133,8 @@ class ContratosController extends AppController {
 		$mes = strftime("%B", strtotime($fecha));
 		$anyo = substr($fecha,0,4);
 		$this->set('posicion_bolsa', $mes.' '.$anyo);
+		//Se declara para acceder al PDF
+		$this->set(compact('id'));
     }
 
     public function add() {

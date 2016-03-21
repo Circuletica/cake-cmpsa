@@ -13,10 +13,28 @@
 ?><div class="acciones">
 	<div class="printdet">
 	<ul><li>
-		<?php 
-		echo $this->element('imprimirV');
-		?>	
-		
+
+ <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
+ <?php // PARA VIEW
+ echo ' '.$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
+ 	array(
+ 		'action' => 'view',
+ 		$id,
+ 		'ext' => 'pdf',
+ 		), 
+ 	array(
+ 		'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
+ 	$this->Html->link(('<i class="fa fa-exclamation-circle fa-lg"></i>'),
+ 	array(
+ 		'action' => 'reclamacion',
+ 		$id,
+ 		'ext' => 'pdf',
+ 		), 
+ 	array(
+ 		'escape'=>false,'target' => '_blank','title'=>'Reclamación peso')).' '.
+ $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array('escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'));
+ ?>
+ 
 	</li>
 	<li>
 			<?php
@@ -44,11 +62,44 @@
 	</ul>
 	</div>
 </div>
-<h2>Línea de Transporte: Operación <?php echo $transporte['Operacion']['referencia'] ?></h2>
+<h2>Línea de Transporte Nº <?php echo $num ?></h2>
 
 <div class="actions">
 	<?php
 	echo $this->element('filtrooperacion');
+	echo '<br>';
+	echo $this->Html->link('Descargar PDF', array(
+		'action' => 'view',
+		 $id,
+		 'ext' => 'pdf',
+		  '?' => array('download' => 1)
+		  ),
+	array(
+ 		'escape'=>false,
+ 		'target' => '_blank',
+ 		'title'=>'Descargar PDF'
+ 		)
+	);
+	echo $this->Html->link(('<i class="fa fa-exclamation-circle fa-lg"></i> Reclamación seguro'),array(
+		'action' => 'reclamacion',
+ 		$id,
+ 		'ext' => 'pdf',
+ 		), array(
+ 		'escape'=>false,
+ 		'target' => '_blank',
+ 		'title'=>'Reclamación peso'
+ 		)
+ 		);
+	echo $this->Html->link(('<i class="fa fa-lock fa-lg"></i> Asegurar línea'),array(
+		'action' => 'asegurar',
+ 		$id,
+ 		'ext' => 'pdf',
+ 		), array(
+ 		'escape'=>false,
+ 		'target' => '_blank',
+ 		'title'=>'Asegurar línea peso'
+ 		)
+ 		);
 	?>
 </div>
 
@@ -135,8 +186,19 @@
 		$fecha_carga= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_carga.'&nbsp;';
 		echo "</dd>";
+		echo "  <dt>Fecha prevista llegada</dt>\n";
+		echo "<dd>";
+		//mysql almacena la fecha en formato ymd
+		$fecha = $transporte['Transporte']['fecha_prevista'];
+		$dia = substr($fecha,8,2);
+		$mes = substr($fecha,5,2);
+		$anyo = substr($fecha,0,4);
+		$fecha_prevista= $dia.'-'.$mes.'-'.$anyo;
+		echo $fecha_prevista.'&nbsp;';
+		echo "</dd>";
 		echo "  <dt>Fecha de llegada</dt>\n";
 		echo "<dd>";
+
 if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 		//mysql almacena la fecha en formato ymd
 		$fecha = $transporte['Transporte']['fecha_llegada'];
@@ -198,6 +260,7 @@ if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 		$fecha_despacho_op= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_despacho_op.'&nbsp;';
 		echo "</dd>";
+
 	if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] !='FOB'){
 		echo "  <dt>Límite de retirada</dt>\n";
 		echo "<dd>";
@@ -242,7 +305,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 		echo "</dd>";
 		echo "  <dt>Fecha del seguro</dt>\n";
 		echo "<dd>";
-	if ($transporte['Transporte']['fecha_entradamerc'] !=NULL){
+	if ($transporte['Transporte']['fecha_carga'] !=NULL){
 			$fecha = $transporte['Transporte']['fecha_seguro'];
 				$dia = substr($fecha,8,2);
 				$mes = substr($fecha,5,2);
@@ -264,16 +327,16 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 				echo "La fecha de llegada sin asignar";
 			}
 	if (!empty($transporte['Transporte']['fecha_llegada'])){
-			echo "</dd>";
-			echo "  <dt>Coste del seguro </dt>\n";
-			echo "<dd>";
-			echo $transporte['Transporte']['coste_seguro'].' €&nbsp;';
-			echo "</dd>";
+		//	echo "</dd>";
+		//	echo "  <dt>Coste del seguro </dt>\n";
+		//	echo "<dd>";
+		//	echo $transporte['Transporte']['coste_seguro'].' €&nbsp;';
+		//	echo "</dd>";
 
 		if ($transporte['Transporte']['suplemento_seguro'] !=NULL){
 			echo "  <dt>Suplemento</dt>\n";
 			echo "<dd>";
-			echo $transporte['Transporte']['suplemento_seguro'].' €&nbsp;';
+			echo $transporte['Transporte']['suplemento_seguro'].'&nbsp;';
 			echo "</dd>";
 		}
 		if ($transporte['Transporte']['peso_factura'] !=NULL){
@@ -288,6 +351,14 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 			echo $transporte['Transporte']['peso_neto'].' Kg&nbsp;';
 			echo "</dd>";
 		}
+echo '<br><h3>Reclamación</h3>';
+		if ($transporte['Transporte']['peritacion'] !=NULL){
+			echo "  <dt>Peritación</dt>\n";
+			echo "<dd>";
+			echo $transporte['Transporte']['peritacion'].' €';
+			echo "</dd>";
+		}
+
 		if ($transporte['Transporte']['averia'] !=NULL){
 			echo "  <dt>Avería</dt>\n";
 			echo "<dd>";
@@ -332,7 +403,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 				),
 			$linea['marca_almacen'],
 			$this->Button->editLine(
-				'almacentransportes',
+				'almacen_transportes',
 				$linea['id'],'transportes',
 				$transporte['Transporte']['id']
 				)

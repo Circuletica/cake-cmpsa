@@ -1,7 +1,49 @@
 <?php
 class TransportesController extends AppController {
+  
+/*   public function excel (){
+       $this->layout='excel';
+           $this->Post->recursive = 0;
+       $this->set('posts', $this->paginate());
+         
+   } */
 
     public function view($id = null) {
+
+
+  $this->pdfConfig = array(
+		'filename' => 'linea'.date('Ymd'),
+		//'output'=> 'files/Report.pdf'  
+		//'download' => (bool)$this->request->query('download')
+	);
+	$linea = $this->Transporte->find('first', array(
+		'conditions' => array(
+		'Transporte.id' => $id
+		)
+		)
+	);
+
+	/*$pdf = $CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
+	$this->set(compact('pdf'));*/
+    //$CakePdf = new CakePdf();
+  //  $CakePdf->template('default');
+    //$CakePdf->viewVars($this->viewVars);
+    // Get the PDF string returned
+    //$pdf = $CakePdf->output();
+    // Or write it to file directly
+ /*   $pdf = $this->write(APP . 'files' . DS . 'newsletter.pdf');
+$this->set(compact('pdf'));
+*/
+
+/* $Email = new CakeEmail();
+ $Email->config('smtp')
+ 	->template('default')
+    ->emailFormat('html')
+    ->subject('AVISO PREVISIÓN LLEGADA')
+    ->to('info@circuletica.org')
+    //->from('app@domain.com')
+    ->send();*/
+
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formada Transporte/view ');
 	    $this->redirect(array('action'=>'index_trafico'));
@@ -96,6 +138,49 @@ class TransportesController extends AppController {
 	
 	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
 	$this->set('embalaje',$embalaje);
+
+	//Necesario para exportar en PDf
+	$this->set(compact('id'));
+
+	//Se crea para saber el número de línea de la operación
+		$parte = $this->Transporte->Operacion->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Operacion.id' => $transporte['Operacion']['id']
+				),
+			'recursive' => -1,
+			'fields' => array(
+						'id'
+						),	
+			'contain' => array(
+				'Transporte' => array(
+					'fields' => array(
+						    'id',
+						    'operacion_id'
+						    )
+					)
+				)
+			)
+		);
+//Saco el número del array para numerar las líneas de transporte	
+foreach ($parte as $clave => $lineas){
+  $parte = $lineas;
+  unset($parte['Operacion']);
+}
+foreach ($parte as $clave=>$lineas){
+	$i = $clave;
+	if($lineas['id'] == $transporte['Transporte']['id']){
+  	$num = $i+1;
+	}
+}
+$this->set(compact('num'));
+
+
+
+
+
+
     }
     public function add() {
     if (!$this->params['named']['from_id']) {
@@ -300,5 +385,171 @@ class TransportesController extends AppController {
 	));
 	endif;
     }
+
+    public function situacion() {
+    $this->pdfConfig = array(
+		'filename' => 'situacion',
+		'paperSize' => 'A4',
+        'orientation' => 'landscape',
+	);
+//	$invoice = $this->Invoice->find('first', array('conditions' => array('id' => $id)));
+//	$this->set(compact('invoice');
+
+
+	$this->paginate['order'] = array('CalidadNombre.nombre' => 'asc');
+	$this->paginate['recursive'] = 2;
+	$this->paginate['condition'] = array(
+	    'Transporte.fecha_despacho_op'=> NULL
+		);		
+	$this->paginate['contain'] = array(
+		    'Operacion' => array(
+		    	'fields'=> array(
+		    		'id',
+		    		'referencia',
+		    		'contrato_id'
+		    		),
+		    	'PesoOperacion'=> array(
+					'fields' =>array(
+				 	   'peso',
+					   'cantidad_embalaje'
+						)
+					),	
+		    	'Contrato'=>array(	
+					'fields'=> array(
+					    'id',
+					    'fecha_transporte',
+					    'si_entrega',
+						    ),
+					'Proveedor'=>array(
+					    'id',
+					    'nombre_corto'
+					),
+					'CalidadNombre' => array(
+				    	'fields' =>(
+						'nombre'
+				    	)
+				    )
+				)
+			),
+			'PuertoDestino' => array(
+				'fields' => array(
+					'id',
+					'nombre'
+					)
+		    )
+	);
+
+	$transportes = $this->paginate();
+	$this->set(compact('transportes'));
+	}
+
+    public function reclamacion($id = null) {
+
+    $this->pdfConfig = array(
+		'filename' => 'reclamacion',
+		'paperSize' => 'A4',
+        'orientation' => 'portrait',
+        'layout' =>'facturas'
+	);	
+
+	$transporte = $this->Transporte->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Transporte.id' => $id
+				),
+			'recursive' => 3,
+			'contain' => array(
+				'Operacion' => array(
+					'Contrato' => array(
+				   		'fields' => array(
+						    'id',
+						    'referencia'
+						),
+				   		'CalidadNombre'=>array(
+				   			'fields'=> array(
+				   				'nombre'
+				   			)
+				   		)
+				   	),
+				'PrecioTotalOperacion'
+				),
+				'PuertoDestino' => array(
+					'fields' => array(
+						'id',
+						'nombre'
+						)
+					),
+				'Aseguradora' => array(
+					'fields' => array(
+						'id',
+						'nombre'
+						)
+					)
+				)	
+			)
+	);
+	$this->set('transporte',$transporte);
+
+	$dia = date ('d');
+	$mes=date('m');
+	$ano = date('Y');
+
+	if ($mes=="1") $mes="Enero";
+	if ($mes=="2") $mes="Febrero";
+	if ($mes=="3") $mes="Marzo";
+	if ($mes=="4") $mes="Abril";
+	if ($mes=="5") $mes="Mayo";
+	if ($mes=="6") $mes="Junio";
+	if ($mes=="7") $mes="Julio";
+	if ($mes=="8") $mes="Agosto";
+	if ($mes=="9") $mes="Setiembre";
+	if ($mes=="10") $mes="Octubre";
+	if ($mes=="11") $mes="Noviembre";
+	if ($mes=="12") $mes="Diciembre";
+	$this->set(compact('dia'));
+	$this->set(compact('mes'));
+	$this->set(compact('ano'));
+
+
+	$parte = $this->Transporte->Operacion->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Operacion.id' => $transporte['Operacion']['id']
+				),
+			'recursive' => -1,
+			'fields' => array(
+						'id'
+						),	
+			'contain' => array(
+				'Transporte' => array(
+					'fields' => array(
+						    'id',
+						    'operacion_id'
+						    )
+					)
+				)
+			)
+		);
+//Saco el número del array para numerar las líneas de transporte	
+foreach ($parte as $clave => $lineas){
+  $parte = $lineas;
+  unset($parte['Operacion']);
+}
+foreach ($parte as $clave=>$lineas){
+	$i = $clave;
+	if($lineas['id'] == $transporte['Transporte']['id']){
+  	$num = $i+1;
+	}
+}
+$this->set(compact('num'));
+	}	
+
+    public function asegurar($id = null) {
+    $this->reclamacion();
+	$this->render('asegurar');
+    }
+
 }
 ?>

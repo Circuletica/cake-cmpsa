@@ -476,6 +476,9 @@ endif;
 	if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 	    $this->set('existe_financiacion', 1);
 	}
+		//Se declara para acceder al PDF
+		$this->set(compact('id'));
+
     }
 
     public function index_trafico() {
@@ -675,6 +678,10 @@ $this->set('total_peso',$total_peso);
 $this->set('total_sacos_retirados',$total_sacos_retirados);
 $this->set('total_peso_retirado',$total_peso_retirado);
 $this->set('total_pendiente',$total_pendiente);
+
+
+	//Se declara para acceder al PDF
+	$this->set(compact('id'));
     }
 
     public function delete($id = null) {
@@ -725,5 +732,6 @@ $this->set('total_pendiente',$total_pendiente);
 	    )
 	);
     }
+  
 }
 ?>
