@@ -272,7 +272,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 		echo "</dd>";
 		echo "  <dt>Fecha del seguro</dt>\n";
 		echo "<dd>";
-	if ($transporte['Transporte']['fecha_entradamerc'] !=NULL){
+	if ($transporte['Transporte']['fecha_carga'] !=NULL){
 			$fecha = $transporte['Transporte']['fecha_seguro'];
 				$dia = substr($fecha,8,2);
 				$mes = substr($fecha,5,2);
@@ -294,16 +294,16 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 				echo "La fecha de llegada sin asignar";
 			}
 	if (!empty($transporte['Transporte']['fecha_llegada'])){
-			echo "</dd>";
-			echo "  <dt>Coste del seguro </dt>\n";
-			echo "<dd>";
-			echo $transporte['Transporte']['coste_seguro'].' €&nbsp;';
-			echo "</dd>";
+		//	echo "</dd>";
+		//	echo "  <dt>Coste del seguro </dt>\n";
+		//	echo "<dd>";
+		//	echo $transporte['Transporte']['coste_seguro'].' €&nbsp;';
+		//	echo "</dd>";
 
 		if ($transporte['Transporte']['suplemento_seguro'] !=NULL){
 			echo "  <dt>Suplemento</dt>\n";
 			echo "<dd>";
-			echo $transporte['Transporte']['suplemento_seguro'].' €&nbsp;';
+			echo $transporte['Transporte']['suplemento_seguro'].'&nbsp;';
 			echo "</dd>";
 		}
 		if ($transporte['Transporte']['peso_factura'] !=NULL){

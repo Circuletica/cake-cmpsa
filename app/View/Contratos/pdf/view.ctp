@@ -8,23 +8,6 @@ $this->assign('controller','contratos');
 $this->assign('line_controller','operaciones');
 $this->assign('line_add','1');
 
-$this->start('filter');
-echo $this->Html->link(
-    'Duplicar contrato',
-    array(
-	'controller' => 'contratos',
-	'action' => 'copy',
-	$contrato['Contrato']['id'],
-    ),
-    array(
-	'class' => 'boton',
-	'title' => 'Duplicar contrato',
-	'escape' => false
-    )
-);
-//echo $this->element('filtrocontrato');
-$this->end();
-
 $this->start('main');
 echo "<dl>";
 echo "  <dt>Referencia</dt>\n";
@@ -90,15 +73,14 @@ $this->start('lines');
 ?>
 	<table>
 <?php
-echo $this->html->tableheaders(array('Referencia','Peso','Fecha de fijación', 'Precio de fijación', 'Precio de factura','Detalle'));
+echo $this->html->tableheaders(array('Referencia','Peso','Fecha de fijación', 'Precio de fijación', 'Precio de factura'));
 foreach($contrato['Operacion'] as $linea):
     echo $this->html->tablecells(array(
 	$linea['referencia'],
 	$linea['PesoOperacion']['peso']." kg",
 	$linea['fecha_pos_fijacion'],
 	$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
-	$linea['precio_compra']." ".$contrato['CanalCompra']['divisa'],
-	$this->Button->view('operaciones',$linea['id'])
+	$linea['precio_compra']." ".$contrato['CanalCompra']['divisa']
     ));
 endforeach;
 ?>

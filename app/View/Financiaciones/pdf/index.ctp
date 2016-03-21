@@ -1,10 +1,8 @@
 <?php
-$this->extend('/Common/index');
+$this->extend('/Common/pdf/indexPdf');
 $this->assign('object', 'Financiación');
 $this->assign('class', 'Financiacion');
 
-$this->start('filter');
-$this->end();
 
 $this->start('main');
 ?>
@@ -28,11 +26,6 @@ $fecha_vencimiento = $mes.' '.$anyo;
     <td> <?php echo $financiacion['Operacion']['referencia']?> </td>
     <td> <?php echo $financiacion['Banco']['nombre_corto']?> </td>
     <td> <?php echo $fecha_vencimiento?> </td>
-    <td>
-<?php
-echo $this->Button->view('financiaciones',$financiacion['Financiacion']['id']);
-?>
-    </td>
   </tr>
 <?php endforeach;
 echo "</table>\n";
