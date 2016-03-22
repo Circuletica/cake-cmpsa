@@ -246,7 +246,9 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
             )
         );
 
-        echo $this->Form->input('observaciones', array('label'=>'Observaciones'));        
+        echo $this->Form->input('observaciones', array('label'=>'Observaciones')); 
+        //Agregamos el número de línea que le corresponde     
+        echo $this->Form->hidden('linea', array('value' =>$num));    
         echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
         echo $this->Form->end('Guardar Línea Transporte', array('escape'=>false));
         ?>

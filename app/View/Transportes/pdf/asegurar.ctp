@@ -11,7 +11,7 @@
 	Madrid, <?php echo $dia.' de '. $mes.' del '.$ano?>
 	</div>
 	<br><br><br>
-<?php echo '<h2>Solicitamos asegurar Ref.: '.$transporte['Operacion']['referencia'].' '.'('.$num.'ª parte)</h2>'?>
+<?php echo '<h2>Solicitamos asegurar Ref.: '.$transporte['Operacion']['referencia'].' '.'('.$transporte['Transporte']['linea'].'ª parte)</h2>'?>
 <br><br>
 Muy Sres. nuestros,<br>
 <br>

@@ -19,6 +19,7 @@
 <table>
   <?php echo $this->Html->tableHeaders(array(
     $this->Paginator->sort('Operacion.referencia','Referencia'),
+    $this->Paginator->sort('Transporte.linea','Nº línea'),
     $this->Paginator->sort('CalidadNombre.nombre', 'Calidad'),
     $this->Paginator->sort('Transporte.cantidad_embalaje', 'Cantidad bultos'),
     $this->Paginator->sort('Transporte.fecha_despacho_op', 'Fecha despacho'),
@@ -28,6 +29,7 @@
  foreach($transportes as $transporte){
   echo $this->Html->tableCells(array(
     $transporte['Operacion']['referencia'],
+    $transporte['Transporte']['linea'],
     $transporte['Operacion']['Contrato']['CalidadNombre']['nombre'],
     $transporte['Transporte']['cantidad_embalaje'],
     $this->Date->format($transporte['Transporte']['fecha_despacho_op']),

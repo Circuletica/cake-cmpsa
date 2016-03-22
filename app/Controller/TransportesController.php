@@ -12,6 +12,9 @@ class TransportesController extends AppController {
 	
 	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
 	$this->paginate['recursive'] = 2;
+	$this->paginate['condition'] = array(
+	    'Transporte.fecha_despacho_op'=> NULL
+	);	
 	$this->paginate['contain'] = array(
 		    'Operacion' => array(
 		    	'fields'=> array(
@@ -52,8 +55,6 @@ class TransportesController extends AppController {
 
 	$transportes = $this->paginate();
 	$this->set(compact('transportes'));
-
-
 
 
   }
@@ -192,7 +193,7 @@ $this->set(compact('pdf'));
 	//Necesario para exportar en PDf
 	$this->set(compact('id'));
 
-	//Se crea para saber el número de línea de la operación
+	/*//Se crea para saber el número de línea de la operación
 		$parte = $this->Transporte->Operacion->find(
 		'first',
 		array(
@@ -224,12 +225,7 @@ foreach ($parte as $clave=>$lineas){
   	$num = $i+1;
 	}
 }
-$this->set(compact('num'));
-
-
-
-
-
+$this->set(compact('num'));*/
 
     }
     public function add() {
@@ -334,6 +330,12 @@ $this->set(compact('num'));
 			'embalaje_id',
 			'contrato_id'
 			),
+	    'Transporte' => array(
+			'fields' => array(
+			    'id',
+			    'operacion_id'
+		 		)
+			),
 	   	'Contrato' => array(
 	   		'fields' => array(
 			    'id'
@@ -381,6 +383,22 @@ $this->set(compact('num'));
 
 	$this->set(compact('operacion'));
 	$this->set(compact('transportado'));
+//CALCULAMOS EL NÚMERO DE LÍNEA DE TRANSPORTE
+	//Saco el número del array para numerar las líneas de transporte	
+foreach ($operacion['Transporte'] as $clave=>$transporte){
+  $num = $clave;
+  //unset($parte['Operacion']);
+}
+//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva línea.
+if (!empty($id)){
+	$num = $num+2;
+}else{
+	$num = $num+1;
+}
+
+$this->set(compact('num'));
+
+
 	if (!empty($id))$this->Transporte->id = $id;
 	
 	if (!empty($this->request->data)) {//ES UN POST
@@ -583,7 +601,7 @@ $this->set(compact('num'));
 			)
 		);
 //Saco el número del array para numerar las líneas de transporte	
-foreach ($parte as $clave => $lineas){
+/*foreach ($parte as $clave => $lineas){
   $parte = $lineas;
   unset($parte['Operacion']);
 }
@@ -593,7 +611,7 @@ foreach ($parte as $clave=>$lineas){
   	$num = $i+1;
 	}
 }
-$this->set(compact('num'));
+$this->set(compact('num'));*/
 	}	
 
     public function asegurar($id = null) {
@@ -709,7 +727,7 @@ $this->set(compact('num'));
 			)
 		);
 //Saco el número del array para numerar las líneas de transporte	
-foreach ($parte as $clave => $lineas){
+/*foreach ($parte as $clave => $lineas){
   $parte = $lineas;
   unset($parte['Operacion']);
 }
@@ -719,15 +737,7 @@ foreach ($parte as $clave=>$lineas){
   	$num = $i+1;
 	}
 }
-$this->set(compact('num'));
-
-
-
-
-
-
-
-
+$this->set(compact('num'));*/
 
     }
 
