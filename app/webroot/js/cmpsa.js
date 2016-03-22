@@ -315,3 +315,14 @@ function operacionAlmacen() {
 	almacenId.options[0].selected = true;
     }
 }
+//FUNCIÓN PARA IMPRIMIR SÓLO UNA PARTE DE LO VISUALIZADO EN LA PANTALLA
+/*function imprSelec(viewprint){
+	var ficha=document.getElementById(viewprint);
+	var ventimp=window.open(' ','popimpr');
+	ventimp.document.write(ficha.innerHTML);
+	ventimp.document.close();
+	ventimp.print();
+	ventimp.close();
+}*/
+
+
