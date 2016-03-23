@@ -18,12 +18,12 @@
       'title'=>'Exportar a PDF')).' '.
   $this->Html->link(('<i class="fa fa-area-chart fa-lg"></i>'),
   array(
-    'action' =>'situacion',
+    'action' =>'info_embarques',
     'controller' => 'transportes'
     ),
   array(
     'escape'=>false,
-    'title'=>'Informe de situación'
+    'title'=>'Informe de situación embarques'
     )
   );
  ?>
@@ -33,9 +33,9 @@
   <?php 
   echo $this->element('filtrooperacion');
   echo '<br>';
-  echo  $this->Html->link(('<i class="fa fa-area-chart fa-lg"></i> Informe de situación'),
+  echo  $this->Html->link(('<i class="fa fa-area-chart fa-lg"></i> Info embarques'),
     array(
-    'action' =>'situacion',
+    'action' =>'info_embarque',
     'controller' => 'transportes'
     ),
     array(
@@ -45,7 +45,7 @@
   );
   echo  $this->Html->link(('<i class="fa fa-area-chart fa-lg"></i> Informe de despachos'),
     array(
-    'action' =>'situacion',
+    'action' =>'info_despacho',
     'controller' => 'transportes'
     ),
     array(

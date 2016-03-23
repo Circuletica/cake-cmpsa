@@ -454,9 +454,9 @@ $this->set(compact('num'));
 	endif;
     }
 
-    public function situacion() {
+    public function info_embarque() {
     $this->pdfConfig = array(
-		'filename' => 'situacion',
+		'filename' => 'info_embarque',
 		'paperSize' => 'A4',
         'orientation' => 'landscape',
 	);
@@ -507,10 +507,15 @@ $this->set(compact('num'));
 		    )
 	);
 
+
 	$transportes = $this->paginate();
 	$this->set(compact('transportes'));
 	}
+	public function info_despacho() {
+		$this ->info_embarque();
+		$this ->render('info_despacho');
 
+	}
     public function reclamacion($id = null) {
 
     $this->pdfConfig = array(
@@ -600,18 +605,6 @@ $this->set(compact('num'));
 				)
 			)
 		);
-//Saco el número del array para numerar las líneas de transporte	
-/*foreach ($parte as $clave => $lineas){
-  $parte = $lineas;
-  unset($parte['Operacion']);
-}
-foreach ($parte as $clave=>$lineas){
-	$i = $clave;
-	if($lineas['id'] == $transporte['Transporte']['id']){
-  	$num = $i+1;
-	}
-}
-$this->set(compact('num'));*/
 	}	
 
     public function asegurar($id = null) {
