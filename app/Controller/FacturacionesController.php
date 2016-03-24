@@ -163,8 +163,11 @@ class FacturacionesController extends AppController {
 		)
 	    )
 	);
-	$peso_retirado = $operacion['PesoOperacion']['peso_retirado']*$operacion['PesoOperacion']['cantidad_embalaje']/$sacos_retirados;
-	$peso_entrada = $operacion['PesoOperacion']['peso_entrada'];
+	//el peso real de la operacion, basado en el peso ya retirado
+	$peso_retirado = round($operacion['PesoOperacion']['peso_retirado']*$operacion['PesoOperacion']['cantidad_embalaje']/$sacos_retirados);
+	//el peso real de la operacion, basado en el peso medido a la entrada de almacén
+	$peso_entrada = round($operacion['PesoOperacion']['peso_entrada']);
+	//el peso real de la operacion, basado en el peso que aparece en la factura del proveedor
 	$peso_pagado = $operacion['PesoOperacion']['peso_pagado'];
 	$this->set('peso_facturacion',
 	    array(

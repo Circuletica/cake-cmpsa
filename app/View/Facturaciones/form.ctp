@@ -24,7 +24,7 @@ echo $this->html->link($proveedor, array(
 echo "  </dd>";
 echo "  <dt>Condición</dt>\n";
 echo "  <dd>".$condicion.'&nbsp;'."</dd>";
-echo "  <dt>Coste estimado</dt>\n";
+echo "  <dt>Precio estimado</dt>\n";
 echo "  <dd>".$coste_estimado.'€/kg&nbsp;'."</dd>";
 echo "  <dt>Cambio teórico</dt>\n";
 echo "  <dd>".$cambio_teorico.'$/€&nbsp;'."</dd>";
@@ -46,7 +46,8 @@ echo $this->Form->radio(
     $peso_facturacion,
     array(
 	'legend' => false,
-	'value' => $operacion['PesoOperacion']['peso_retirado'],
+	//por defecto, usar peso_retirado, 1a clave del array
+	'value' => current(array_keys($peso_facturacion)),
 	'separator' => '-- ',
 	'onclick' => 'pesoFacturacion()'
     )
@@ -69,39 +70,49 @@ echo $this->Form->input(
     'precio_dolar_tm',
     array(
 	'label' => 'Precio $/Tm',
-	'value' => ($action == 'add')?$coste_teorico:''
+	'value' => ($action == 'add')?$coste_teorico:'',
+	'oninput' => 'pesoFacturacion()'
     )
 );
 echo $this->Form->input(
     'cambio_dolar_euro',
     array(
 	'label' => 'Cambio $/€',
-	'value' => ($action == 'add')?$cambio_teorico:''
+	'value' => ($action == 'add')?$cambio_teorico:'',
+	'oninput' => 'pesoFacturacion()'
     )
 );
 echo '<div id=totalCafe>'."Total café: ???€".'</div>';
 echo $this->Form->input(
     'gastos_bancarios_pagados',
     array(
-	'label' => 'Gastos bancarios'
+	'label' => 'Gastos bancarios',
+	'value' => 0,
+	'oninput' => 'pesoFacturacion()'
     )
 );
 echo $this->Form->input(
     'flete_pagado',
     array(
-	'label' => 'Flete'
+	'label' => 'Flete',
+	'value' => 0,
+	'oninput' => 'pesoFacturacion()'
     )
 );
 echo $this->Form->input(
     'despacho_pagado',
     array(
-	'label' => 'Despacho'
+	'label' => 'Despacho',
+	'value' => 0,
+	'oninput' => 'pesoFacturacion()'
     )
 );
 echo $this->Form->input(
     'seguro_pagado',
     array(
-	'label' => 'Seguro'
+	'label' => 'Seguro',
+	'value' => 0,
+	'oninput' => 'pesoFacturacion()'
     )
 );
 echo '<div id=totalGastos>'."Total gastos: ???€".'</div>';
@@ -111,3 +122,6 @@ echo $this->Form->input('cuenta_iva_id');
 echo $this->Form->input('cuenta_comision_id');
 echo $this->Form->end('Guardar facturación');
 ?>
+<script type="text/javascript">
+window.onload = pesoFacturacion();
+</script>
