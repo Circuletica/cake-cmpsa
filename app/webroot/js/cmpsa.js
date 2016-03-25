@@ -338,5 +338,5 @@ function pesoFacturacion() {
     var totalGastos = gastosBancarios + fletePagado + despachoPagado + seguroPagado;
     totalGastosField.innerHTML = 'Total gastos: '+totalGastos+'€';
     var totalOperacion = (totalCafe + totalGastos) / pesoFacturacion;
-    totalOperacionField.innerHTML = 'Total operacion: '+totalOperacion.toFixed(6)+'€/kg';
+    totalOperacionField.innerHTML = 'Precio real operación: '+totalOperacion.toFixed(6)+'€/kg';
 }

@@ -476,8 +476,12 @@ endif;
 	if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 	    $this->set('existe_financiacion', 1);
 	}
-		//Se declara para acceder al PDF
-		$this->set(compact('id'));
+	//comprobamos si ya existe una facturación para esta operación
+	if ($this->Operacion->Facturacion->hasAny(array('Facturacion.id' => $id))) {
+	    $this->set('existe_facturacion', 1);
+	}
+	//Se declara para acceder al PDF
+	$this->set(compact('id'));
 
     }
 
@@ -680,8 +684,8 @@ $this->set('total_peso_retirado',$total_peso_retirado);
 $this->set('total_pendiente',$total_pendiente);
 
 
-	//Se declara para acceder al PDF
-	$this->set(compact('id'));
+//Se declara para acceder al PDF
+$this->set(compact('id'));
     }
 
     public function delete($id = null) {
@@ -732,6 +736,6 @@ $this->set('total_pendiente',$total_pendiente);
 	    )
 	);
     }
-  
+
 }
 ?>

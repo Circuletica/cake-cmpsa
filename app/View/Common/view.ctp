@@ -1,7 +1,7 @@
 <?php
 $id = $this->fetch('id');
 $class = $this->fetch('class');
-$controller = $this->fetch('controller');
+$controller = ($this->fetch('controller')?:Inflector::tableize($class));
 $line_controller = $this->fetch('line_controller');
 $line2_controller = $this->fetch('line2_controller');
 $object = $this->fetch('object');

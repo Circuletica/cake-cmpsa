@@ -22,6 +22,10 @@ class Facturacion extends AppModel {
 	'Facturacion.flete_pagado
 	+ Facturacion.gastos_bancarios_pagados
 	+ Facturacion.despacho_pagado
-	+ Facturacion.seguro_pagado'
+	+ Facturacion.seguro_pagado',
+	'total_cafe' =>
+	'(Facturacion.peso_facturacion/1000)
+	* Facturacion.precio_dolar_tm
+	/ Facturacion.cambio_dolar_euro'
     );
 }
