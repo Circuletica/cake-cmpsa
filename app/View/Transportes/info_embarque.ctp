@@ -21,6 +21,10 @@
 <?php
 	echo '<h2>Situación de embarques a día '.date("d-m-Y").' sin despachar</h2>';
 ?>
+<!--<div class="actions">
+  <?php echo $this->element('filtrooperacion');?>
+  <!--h3>Filtro de transporte</h3-->
+<!--</div>-->
 <div class='ancho_completo'>
     <table>
 <?php    
@@ -30,8 +34,8 @@
 		$this->Paginator->sort('Operacion.referencia','Operación'),
 		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 		$this->Paginator->sort('PesoOperacion.cantidad_embalaje','Cantidad'),
-		$this->Paginator->sort('Embarque/Entrega'),
-		$this->Paginator->sort('Pto.Destino'),		
+		$this->Paginator->sort('Embarque / Entrega'),
+		$this->Paginator->sort('PuertoDestino.nombre','Pto. Destino'),		
 		$this->Paginator->sort('Transporte.fecha_carga','Fecha carga'),		
 		$this->Paginator->sort('Transporte.fecha_llegada','Fecha llegada'),
 		$this->Paginator->sort('Transporte.nombre_vehiculo','Nombre vehículo'),
@@ -41,12 +45,13 @@
 	);
 
 		foreach ($transportes as $clave=>$transporte){
-				if (isset($transporte['Operacion']['Contrato']['si_entrega'])) {
-				  $entrega  = $transporte['Operacion']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
-				  $entrega = ' ('.$entrega.')';
-				}else{ 
-				  	$entrega ='';
-				}
+			if (isset($transporte['Operacion']['Contrato']['si_entrega'])) {
+			  $entrega  = $transporte['Operacion']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
+			  $entrega = ' ('.$entrega.')';
+			}else{ 
+			  	$entrega ='';
+			}
+
 		echo $this->Html->tableCells(array(
 			$transporte['Operacion']['Contrato']['CalidadNombre']['nombre'],			
 			$transporte['Operacion']['referencia'],

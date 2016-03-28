@@ -18,7 +18,11 @@
  		), 
  	array(
  		'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
- $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array('escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'));
+ $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array(
+ 	'escape'=>false,
+ 	'target' => '_blank',
+ 	'title'=>'Enviar e-mail')
+ );
  ?>
  
 	</div>

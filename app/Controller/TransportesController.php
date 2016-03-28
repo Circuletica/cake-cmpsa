@@ -336,6 +336,11 @@ $this->set(compact('num'));*/
 			    'operacion_id'
 		 		)
 			),
+	    'PrecioTotalOperacion'=> array(
+	    	'fields' => array(
+	    		'precio_euro_kilo_total'
+	    		)
+	    	),
 	   	'Contrato' => array(
 	   		'fields' => array(
 			    'id'
@@ -453,7 +458,7 @@ $this->set(compact('num'));
 	));
 	endif;
     }
-
+    
     public function info_embarque() {
     $this->pdfConfig = array(
 		'filename' => 'info_embarque',

@@ -15,17 +15,9 @@
     array(
       'escape'=>false,
       'target' => '_blank',
-      'title'=>'Exportar a PDF')).' '.
-  $this->Html->link(('<i class="fa fa-area-chart fa-lg"></i>'),
-  array(
-    'action' =>'info_embarques',
-    'controller' => 'transportes'
-    ),
-  array(
-    'escape'=>false,
-    'title'=>'Informe de situación embarques'
-    )
-  );
+      'title'=>'Exportar a PDF'
+      )
+    );
  ?>
 </div>
 <h2>Operaciones<?php //echo $title;?></h2>

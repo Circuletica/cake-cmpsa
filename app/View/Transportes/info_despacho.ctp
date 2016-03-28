@@ -38,26 +38,30 @@
 		)
 	);
 
-		foreach ($transportes as $clave=>$transporte){
+	foreach ($transportes as $clave=>$transporte){
 				if (isset($transporte['Operacion']['Contrato']['si_entrega'])) {
 				  $entrega  = $transporte['Operacion']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
 				  $entrega = ' ('.$entrega.')';
 				}else{ 
 				  	$entrega ='';
 				}
-		echo $this->Html->tableCells(array(
-			$transporte['Operacion']['referencia'],
-			$transporte['Transporte']['linea'],			
-			$transporte['Operacion']['Contrato']['CalidadNombre']['nombre'],
-			$transporte['Transporte']['cantidad_embalaje'],					
-		    $this->Date->format($transporte['Transporte']['fecha_despacho_op']),
-      		$this->Html->link('<i class="fa fa-info-circle"></i>',array(
-      			'action'=>'view',$transporte['Transporte']['id']), array(
-      			'class'=>'boton','escape' => false,'title'=>'Detalle'
-      			)
-      			)		
-		));
+
+		if($transporte['Transporte']['fecha_despacho_op']!= NULL){		
+			echo $this->Html->tableCells(array(
+				$transporte['Operacion']['referencia'],
+				$transporte['Transporte']['linea'],			
+				$transporte['Operacion']['Contrato']['CalidadNombre']['nombre'],
+				$transporte['Transporte']['cantidad_embalaje'],					
+			    $this->Date->format($transporte['Transporte']['fecha_despacho_op']),
+		     		$this->Html->link('<i class="fa fa-info-circle"></i>',array(
+		     			'action'=>'view',$transporte['Transporte']['id']), array(
+		     			'class'=>'boton','escape' => false,'title'=>'Detalle'
+		     			)
+		     			)
+		     		)
+			);
 		}
+	}
 ?>
 	</table>
 </div>

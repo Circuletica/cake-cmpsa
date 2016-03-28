@@ -11,12 +11,12 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
 if ($action == 'add') {
     $transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
     echo "<h2>Añadir Transporte a Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
-    echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].' / Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.' / Bultos pendientes: '.$transportado.' en '.$embalaje.'</h4>';
+    echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].'/ Precio:'.$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg / Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.' / Bultos pendientes: '.$transportado.' en '.$embalaje.'</h4>';
 }
 
 if ($action == 'edit') {
     echo "<h2>Modificar Transporte de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
-    echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].' / Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.' / Transportados previamente: '.$transportado.'</h4>';
+    echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].'/ Precio: '.$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg / Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.' / Transportados previamente: '.$transportado.'</h4>';
 }
 
     //Formulario para rellenar transporte
@@ -176,7 +176,7 @@ if ($action == 'edit') {
 <?php
 if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
     ?>
-    <legend>Seguro</legend>
+     <legend>Seguro</legend>
      <div class="col2">    
             <?php
                         echo $this->Form->input('aseguradora_id',
