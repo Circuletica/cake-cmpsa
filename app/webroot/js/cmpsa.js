@@ -340,3 +340,6 @@ function pesoFacturacion() {
     var totalOperacion = (totalCafe + totalGastos) / pesoFacturacion;
     totalOperacionField.innerHTML = 'Precio real operación: '+totalOperacion.toFixed(6)+'€/kg';
 }
+
+
+

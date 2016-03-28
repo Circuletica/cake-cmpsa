@@ -8,9 +8,9 @@ $this->start('main');
 ?>
 <table>
   <tr>
-    <th><?php echo $this->Paginator->sort('Operacion.referencia','Operación')?></th>
-    <th><?php echo $this->Paginator->sort('Banco.nombre_corto','Banco')?></th>
-    <th><?php echo $this->Paginator->sort('Financiacion.fecha_vencimiento','F. Vencimiento')?></th>
+    <th><?php echo 'Operación'?></th>
+    <th><?php echo 'Banco'?></th>
+    <th><?php echo 'F. Vencimiento'?></th>
   </tr>
 <?php
 foreach($financiaciones as $financiacion):

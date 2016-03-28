@@ -13,7 +13,7 @@ if(empty($transporte['Aseguradora']['nombre'] && $transporte['Transporte']['peri
 	Madrid, <?php echo $dia.' de '. $mes.' del '.$ano?>
 	</div>
 	<br><br><br>
-<?php echo '<b>Ref.: '.$transporte['Operacion']['referencia'].' '.'('.$num.'ª parte)&nbsp&nbsp&nbsp&nbsp Supl.: '.$transporte['Transporte']['suplemento_seguro'].'</b>'?> 
+<?php echo '<b>Ref.: '.$transporte['Operacion']['referencia'].' '.'('.$transporte['Transporte']['linea'].'ª parte)&nbsp&nbsp&nbsp&nbsp Supl.: '.$transporte['Transporte']['suplemento_seguro'].'</b>'?> 
 <br><br><br>
 <?php echo '<h2>Café '.$transporte['Operacion']['Contrato']['CalidadNombre']['nombre'].'</h2>';?>
 <br><br>
