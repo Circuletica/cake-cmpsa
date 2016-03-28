@@ -1,4 +1,4 @@
-<h2>Línea de Transporte: Operación <?php echo $transporte['Operacion']['referencia'] ?></h2>
+<h2>Línea de Transporte Nº <?php echo $num?></h2>
 
 <div class='view'>
 	<dl><?php

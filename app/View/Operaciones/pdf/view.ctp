@@ -10,10 +10,6 @@ $this->assign('line_add','1');
 
 $this->start('main');
 echo "<dl>";
-echo "  <dt>Referencia Contrato:</dt>\n";
-echo "<dd>";
-echo $operacion['Contrato']['referencia'];
-echo "  </dd>";
 echo "  <dt>Proveedor:</dt>\n";
 echo "<dd>";
 echo $operacion['Contrato']['Proveedor']['nombre_corto'];
@@ -27,15 +23,11 @@ echo "  <dd>".
     $operacion['PesoOperacion']['cantidad_embalaje'].' x '.
     $embalaje['Embalaje']['nombre'].
     ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
-echo "  <dt>Lotes:</dt>\n";
-echo "  <dd>".$operacion['Operacion']['lotes_operacion']."&nbsp;</dd>";
 echo "  <dt>Puerto de Embarque:</dt>\n";
 echo "  <dd>".$operacion['PuertoCarga']['nombre'].'&nbsp;'."</dd>";
 echo "  <dt>Puerto de Destino:</dt>\n";
 echo "  <dd>".$operacion['PuertoDestino']['nombre'].'&nbsp;'."</dd>";
 //mysql almacena la fecha en formato ymd
-echo "  <dt>Fecha fijación:</dt>\n";
-echo "  <dd>".$this->Date->format($fecha_fijacion).'&nbsp;'."</dd>";
 echo "  <dt>Precio fijación:</dt>\n";
 echo "  <dd>".$operacion['Operacion']['precio_fijacion']
     .$divisa

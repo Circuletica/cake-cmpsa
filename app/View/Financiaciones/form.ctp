@@ -37,8 +37,10 @@ echo $this->Form->input(
     'fecha_vencimiento',
     array(
 	'label' => 'Fecha de vencimiento',
-	//'type' => 'text'
 	'dateFormat' => 'DMY',
+	'minYear' => date('Y')-1,
+	'maxYear' => date('Y')+5,
+	'orderYear' => 'asc',
 	'autofocus' => 'autofocus'
     )
 );
@@ -49,7 +51,7 @@ if ($action == 'add') {
     echo $this->Form->input('banco_id', array( 'value' => 3));
     echo $this->Form->input('tipo_iva_id', array( 'value' => 3));
     echo $this->Form->input('tipo_iva_comision_id', array( 'value' => 4));
-    echo $this->Form->input('precio_euro_kilo', array( 'value' => $precio_euro_kilo));
+    echo $this->Form->input('precio_euro_kilo', array('value' => $precio_euro_kilo));
 } else {
     echo $this->Form->input('banco_id');
     echo $this->Form->input('tipo_iva_id');

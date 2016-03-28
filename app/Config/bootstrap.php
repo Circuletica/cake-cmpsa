@@ -86,8 +86,8 @@ CakePlugin::load('CakePdf',array(
 
 Configure::write('CakePdf', array(
    	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona
-//	'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows 
-	'binary'=> ('/usr/local/bin/wkhtmltox/bin/wkhtmltopdf'),
+	'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows 
+// 	 		'binary'=> ('/usr/local/bin/wkhtmltox/bin/wkhtmltopdf'),
         'margin' => array(
             'bottom' => 10,
             'left' => 15,

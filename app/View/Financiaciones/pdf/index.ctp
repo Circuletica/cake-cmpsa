@@ -3,8 +3,6 @@ $this->extend('/Common/pdf/indexPdf');
 $this->assign('object', 'Financiación');
 $this->assign('class', 'Financiacion');
 
-$this->start('filter');
-$this->end();
 
 $this->start('main');
 ?>

@@ -11,10 +11,6 @@ $this->assign('line2_controller','anticipos');
 $this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'
 $this->assign('line2_add', '1'); //si se muestra el botón de añadir 'line2'
 
-$this->start('filter');
-//echo $this->element('filtrofinanciacion');
-$this->end();
-
 $this->start('main');
 echo "<dl>";
 echo "  <dt>Operación</dt>\n";
@@ -152,9 +148,7 @@ foreach ($anticipos as $anticipo):
 	$anticipo['AsociadoOperacion']['Asociado']['nombre'],
 	$this->Date->format($anticipo['Anticipo']['fecha_conta']),
 	$anticipo['Anticipo']['importe'],
-	$anticipo['Banco']['nombre_corto'],
-	$this->Button->editLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'])
-	.' '.$this->Button->deleteLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'],'el anticipo de '.$anticipo['Anticipo']['importe'].'€')
+	$anticipo['Banco']['nombre_corto']
     ));
 endforeach;
 echo"</table>\n";
