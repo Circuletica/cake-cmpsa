@@ -1,5 +1,5 @@
 <?php
-$this->extend('/Common/view');
+$this->extend('/Common/pdf/viewPdf');
 $this->assign('object', 'Financiación operación '.$referencia);
 $this->assign('line_object', 'Distribución');
 $this->assign('id',$financiacion['Financiacion']['id']);
@@ -19,22 +19,13 @@ $this->start('main');
 echo "<dl>";
 echo "  <dt>Operación</dt>\n";
 echo "<dd>";
-echo $this->html->link($referencia, array(
-    'controller' => 'operaciones',
-    'action' => 'view',
-    $financiacion_id
-)
-	).'&nbsp;';
+echo $referencia.'&nbsp;';
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "  <dd>".$calidad.'&nbsp;'."</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
-echo $this->html->link($proveedor, array(
-    'controller' => 'proveedores',
-    'action' => 'view',
-    $proveedor_id)
-).'&nbsp;';
+echo $proveedor.'&nbsp;';
 echo "</dd>";
 echo "  <dt>Condición</dt>\n";
 echo "<dd>".$condicion.'&nbsp;'."</dd>";

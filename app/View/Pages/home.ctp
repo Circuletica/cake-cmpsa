@@ -34,7 +34,8 @@
 			</ul>
 		</li>
 </ul>
-<script type='text/javascript' src='http://www.aemet.es/es/eltiempo/prediccion/municipios/launchwidget/madrid-id28079?w=g4p01110001ovmffffffw608z328x9999cct95b6e9r1s8n2'></script><noscript><a target='_blank' style='font-weight: bold;font-size: 1.20em;' href='http://www.aemet.es/es/eltiempo/prediccion/municipios/madrid-id28079'>El Tiempo. Consulte la predicción de la AEMET para Madrid</a></noscript>
+<!--<script type='text/javascript' src='http://www.aemet.es/es/eltiempo/prediccion/municipios/launchwidget/madrid-id28079?w=g4p01110001ovmffffffw608z328x9999cct95b6e9r1s8n2'></script><noscript><a target='_blank' style='font-weight: bold;font-size: 1.20em;' href='http://www.aemet.es/es/eltiempo/prediccion/municipios/madrid-id28079'>El Tiempo. Consulte la predicción de la AEMET para Madrid</a></noscript> -->
+<iframe frameborder="0" scrolling="no" height="350" width="400" allowtransparency="true" marginwidth="0" marginheight="0" src="http://tools.es.forexprostools.com/market_quotes.php?tabs=1,3,2,4&tab_1=1,2,6&tab_2=27,166,172&tab_3=8830,8832,8911&tab_4=8880,8907,8886&select_color=000000&default_color=0059b0"></iframe><br />
 <br>
 </body>
 </html>
