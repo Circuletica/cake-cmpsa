@@ -31,7 +31,8 @@ class FacturacionesController extends AppController {
 			    'Naviera',
 			    'Agente',
 			),
-			'PrecioTotalOperacion'
+			'PrecioTotalOperacion',
+			'PesoOperacion'
 		    ),
 		    'Factura' => array(
 			'Empresa'
@@ -49,7 +50,7 @@ class FacturacionesController extends AppController {
 	$this->set('condicion',$facturacion['Operacion']['Contrato']['condicion']);
 	$this->set('precio_estimado', $facturacion['Operacion']['PrecioTotalOperacion']['precio_euro_kilo_total']);
 	$this->set('cambio_teorico', $facturacion['Operacion']['cambio_dolar_euro']);
-	$this->set('precio_real', $facturacion['Facturacion']['precio_dolar_tm']);
+	$this->set('precio_cafe', $facturacion['Facturacion']['precio_dolar_tm']);
 	$this->set('cambio_real', $facturacion['Facturacion']['cambio_dolar_euro']);
 	$this->set('gastos_bancarios', $facturacion['Facturacion']['gastos_bancarios_pagados']);
 	$this->set('despacho', $facturacion['Facturacion']['despacho_pagado']);
@@ -58,6 +59,39 @@ class FacturacionesController extends AppController {
 	$this->set('total_cafe', round($facturacion['Facturacion']['total_cafe'],2));
 	$this->set('total_gastos', $facturacion['Facturacion']['total_gastos']);
 	$this->set('peso_facturacion', $facturacion['Facturacion']['peso_facturacion']);
+	$peso_medio_saco = $facturacion['Facturacion']['peso_facturacion']/$facturacion['Operacion']['PesoOperacion']['cantidad_embalaje'];
+	$this->set(compact('peso_medio_saco'));
+	$this->set(
+	    'precio_real',
+	    round(($facturacion['Facturacion']['total_gastos']+$facturacion['Facturacion']['total_cafe'])/$facturacion['Facturacion']['peso_facturacion'],6)
+	);
+
+	//ahora el precio que facturamos por asociado
+	$this->loadModel('PesoFacturacion');
+	$peso_asociados = $this->PesoFacturacion->find(
+	    'all',
+	    array(
+		'conditions' => array(
+		    'operacion_id' => $id
+		)
+	    )
+	);
+	$this->set(compact('peso_asociados'));
+	$this->PesoFacturacion->virtualFields = array(
+	    'total_peso_retirado' => 'sum(total_peso_retirado)',
+	    'total_sacos_pendientes' => 'sum(sacos_pendientes)',
+	    'total_peso_pendiente' => 'sum(peso_pendiente)',
+	    'total_peso_total' => 'sum(peso_total)'
+	);
+	$totales = $this->PesoFacturacion->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'PesoFacturacion.operacion_id' => $id
+		)
+	    )
+	);
+	$this->set('totales',$totales['PesoFacturacion']);
     }
 
     public function add() {
@@ -201,6 +235,7 @@ class FacturacionesController extends AppController {
 	if (!empty($id)) $this->Facturacion->id = $id;
 
 	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
+	    $this->request->data['Facturacion']['peso_medio_saco']= $this->request->data['Facturacion']['peso_facturacion']/$operacion['PesoOperacion']['cantidad_embalaje'];
 	    if($this->Facturacion->save($this->request->data)){
 		$this->Session->setFlash('Facturación guardada');
 		$this->redirect(array(
