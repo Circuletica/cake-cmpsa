@@ -225,7 +225,7 @@ class FacturacionesController extends AppController {
 	    array(
 		$peso_retirado => 'Peso retirado ('.$peso_retirado.'kg)',
 		$peso_entrada => 'Peso entrada ('.$peso_entrada.'kg)',
-		$peso_pagado => 'Peso facturado ('.$peso_pagado.'kg)'
+		$peso_pagado => 'Peso factura ('.$peso_pagado.'kg)'
 	    )
 	);
 

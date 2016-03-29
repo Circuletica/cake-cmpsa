@@ -30,10 +30,11 @@ echo "  <dt>Cambio teórico</dt>\n";
 echo "  <dd>".$cambio_teorico.'$/€&nbsp;'."</dd>";
 echo "  <dt>Transportes</dt>\n";
 echo "  <dd>";
+if(isset($transportes))
 foreach($transportes as $transporte) {
     echo $transporte.'&nbsp;'."<br>\n";
 }
-echo "  </dd>";
+echo "  &nbsp;</dd>";
 echo "  <dt>Último despacho</dt>\n";
 echo "  <dd>".$this->Date->format($ultimo_despacho).'&nbsp;'."</dd>";
 echo "  <dt>Bultos despachos</dt>\n";
@@ -53,6 +54,7 @@ echo $this->Form->radio(
     $peso_facturacion,
     array(
 	'legend' => false,
+	//'legend' => 'Peso factura',
 	//por defecto, usar peso_retirado, 1a clave del array
 	'value' => ($action == 'add')?current(array_keys($peso_facturacion)):$this->request->data['Facturacion']['peso_facturacion'],
 	'separator' => '-- ',
