@@ -38,8 +38,9 @@
 		$this->Paginator->sort('PuertoDestino.nombre','Pto. Destino'),		
 		$this->Paginator->sort('Transporte.fecha_carga','Fecha carga'),		
 		$this->Paginator->sort('Transporte.fecha_llegada','Fecha llegada'),
-		$this->Paginator->sort('Transporte.nombre_vehiculo','Nombre vehículo'),
-		$this->Paginator->sort('Transporte.fecha_prevista','Llegada prevista'),
+		//$this->Paginator->sort('Transporte.nombre_vehiculo','Nombre vehículo'),
+		//$this->Paginator->sort('Transporte.fecha_prevista','Llegada prevista'),
+		$this->Paginator->sort('Transporte.observaciones','Observaciones'),
 		'Detalle'			
 		)
 	);
@@ -62,8 +63,9 @@
 		    $transporte['PuertoDestino']['nombre'],
 		    $this->Date->format($transporte['Transporte']['fecha_carga']),
 		    $this->Date->format($transporte['Transporte']['fecha_llegada']),
-		    $transporte['Transporte']['nombre_vehiculo'],
-		    $this->Date->format($transporte['Transporte']['fecha_prevista']),
+		  //  $transporte['Transporte']['nombre_vehiculo'],
+		   // $this->Date->format($transporte['Transporte']['fecha_prevista']),
+		    $transporte['Transporte']['observaciones'], 
       		$this->Html->link('<i class="fa fa-info-circle"></i>',array(
       			'action'=>'view',$transporte['Transporte']['id']), array(
       			'class'=>'boton','escape' => false,'title'=>'Detalle'

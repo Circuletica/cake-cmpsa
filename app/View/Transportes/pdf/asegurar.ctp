@@ -7,14 +7,14 @@
 	<div style="margin-left: 450px;">
 	<br>
 	<b><?php echo $transporte['Aseguradora']['nombre'] ?></b>
-<br><br>
+<br>
 	Madrid, <?php echo $dia.' de '. $mes.' del '.$ano?>
 	</div>
-	<br><br><br>
+	<br><br>
 <?php echo '<h2>Solicitamos asegurar Ref.: '.$transporte['Operacion']['referencia'].' '.'('.$transporte['Transporte']['linea'].'ª parte)</h2>'?>
-<br><br>
-Muy Sres. nuestros,<br>
 <br>
+Muy Sres. nuestros,
+<br><br>
 Les escribimos para solicitarles asegurar lo siguiente:<br><br>
 <?php
 echo "<dl>";
