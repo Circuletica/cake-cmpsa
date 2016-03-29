@@ -689,7 +689,7 @@ div.laterali {
 /* PORTADA En el comiendo de la aplicación se colocan los botones */
 .portada{
 	position: relative;
-	padding-right:10%;
+	padding-right:5%;
 	display: inline;
 	font-size: 12 5%;
 
@@ -734,7 +734,7 @@ div.laterali {
 }
 .portada ul li a {
 	font-weight:800;
-	padding: 5% 15%;
+	padding: 2.5% 10%;
 	background: #42B4D6;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#42B4D6), to(#3F8EC1));
 	background-image: -webkit-linear-gradient(top, #42B4D6, #3F8EC1);
