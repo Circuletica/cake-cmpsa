@@ -30,16 +30,68 @@ class FacturacionesController extends AppController {
 			'Transporte' => array(
 			    'Naviera',
 			    'Agente',
-			)
+			),
+			'PrecioTotalOperacion',
+			'PesoOperacion'
 		    ),
-		    'Facturas' => array(
-			'Asociado'
+		    'Factura' => array(
+			'Empresa'
 		    )
 		),
 		'recursive' => 3
 	    )
 	);
 	$this->set(compact('facturacion'));
+	$this->set('facturacion_id',$id);
+	$this->set('referencia',$facturacion['Operacion']['referencia']);
+	$this->set('proveedor',$facturacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
+	$this->set('proveedor_id',$facturacion['Operacion']['Contrato']['Proveedor']['id']);
+	$this->set('calidad',$facturacion['Operacion']['Contrato']['CalidadNombre']['nombre']);
+	$this->set('condicion',$facturacion['Operacion']['Contrato']['condicion']);
+	$this->set('precio_estimado', $facturacion['Operacion']['PrecioTotalOperacion']['precio_euro_kilo_total']);
+	$this->set('cambio_teorico', $facturacion['Operacion']['cambio_dolar_euro']);
+	$this->set('precio_cafe', $facturacion['Facturacion']['precio_dolar_tm']);
+	$this->set('cambio_real', $facturacion['Facturacion']['cambio_dolar_euro']);
+	$this->set('gastos_bancarios', $facturacion['Facturacion']['gastos_bancarios_pagados']);
+	$this->set('despacho', $facturacion['Facturacion']['despacho_pagado']);
+	$this->set('seguro', $facturacion['Facturacion']['seguro_pagado']);
+	$this->set('flete', $facturacion['Facturacion']['flete_pagado']);
+	$this->set('total_cafe', round($facturacion['Facturacion']['total_cafe'],2));
+	$this->set('total_gastos', $facturacion['Facturacion']['total_gastos']);
+	$this->set('peso_facturacion', $facturacion['Facturacion']['peso_facturacion']);
+	$peso_medio_saco = $facturacion['Facturacion']['peso_facturacion']/$facturacion['Operacion']['PesoOperacion']['cantidad_embalaje'];
+	$this->set(compact('peso_medio_saco'));
+	$this->set(
+	    'precio_real',
+	    round(($facturacion['Facturacion']['total_gastos']+$facturacion['Facturacion']['total_cafe'])/$facturacion['Facturacion']['peso_facturacion'],6)
+	);
+
+	//ahora el precio que facturamos por asociado
+	$this->loadModel('PesoFacturacion');
+	$peso_asociados = $this->PesoFacturacion->find(
+	    'all',
+	    array(
+		'conditions' => array(
+		    'operacion_id' => $id
+		)
+	    )
+	);
+	$this->set(compact('peso_asociados'));
+	$this->PesoFacturacion->virtualFields = array(
+	    'total_peso_retirado' => 'sum(total_peso_retirado)',
+	    'total_sacos_pendientes' => 'sum(sacos_pendientes)',
+	    'total_peso_pendiente' => 'sum(peso_pendiente)',
+	    'total_peso_total' => 'sum(peso_total)'
+	);
+	$totales = $this->PesoFacturacion->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'PesoFacturacion.operacion_id' => $id
+		)
+	    )
+	);
+	$this->set('totales',$totales['PesoFacturacion']);
     }
 
     public function add() {
@@ -134,7 +186,7 @@ class FacturacionesController extends AppController {
 	$this->set('cambio_teorico', $operacion['Operacion']['cambio_dolar_euro']);
 	foreach($operacion['Transporte'] as $transporte) {
 	    $transportes[] = (empty($transporte['Naviera'])?'pendiente':$transporte['Naviera']['nombre_corto'])
-	    .'/'.(empty($transporte['Agente'])?'pendiente':$transporte['Agente']['nombre_corto']);
+		.'/'.(empty($transporte['Agente'])?'pendiente':$transporte['Agente']['nombre_corto']);
 	}
 	$this->set(compact('transportes'));
 	$this->set(
@@ -163,17 +215,40 @@ class FacturacionesController extends AppController {
 		)
 	    )
 	);
-	$peso_retirado = $operacion['PesoOperacion']['peso_retirado']*$operacion['PesoOperacion']['cantidad_embalaje']/$sacos_retirados;
-	$peso_entrada = $operacion['PesoOperacion']['peso_entrada'];
+	//el peso real de la operacion, basado en el peso ya retirado
+	$peso_retirado = round($operacion['PesoOperacion']['peso_retirado']*$operacion['PesoOperacion']['cantidad_embalaje']/$sacos_retirados);
+	//el peso real de la operacion, basado en el peso medido a la entrada de almacén
+	$peso_entrada = round($operacion['PesoOperacion']['peso_entrada']);
+	//el peso real de la operacion, basado en el peso que aparece en la factura del proveedor
 	$peso_pagado = $operacion['PesoOperacion']['peso_pagado'];
 	$this->set('peso_facturacion',
 	    array(
 		$peso_retirado => 'Peso retirado ('.$peso_retirado.'kg)',
 		$peso_entrada => 'Peso entrada ('.$peso_entrada.'kg)',
-		$peso_pagado => 'Peso facturado ('.$peso_pagado.'kg)'
+		$peso_pagado => 'Peso factura ('.$peso_pagado.'kg)'
 	    )
 	);
 
+	//si es un edit, hay que rellenar el id, ya que
+	//si no se hace, al guardar el edit, se va a crear
+	//un _nuevo_ registro, como si fuera un add
+	if (!empty($id)) $this->Facturacion->id = $id;
+
+	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
+	    $this->request->data['Facturacion']['peso_medio_saco']= $this->request->data['Facturacion']['peso_facturacion']/$operacion['PesoOperacion']['cantidad_embalaje'];
+	    if($this->Facturacion->save($this->request->data)){
+		$this->Session->setFlash('Facturación guardada');
+		$this->redirect(array(
+		    'action' => 'view',
+		    'controller' => 'facturaciones',
+		    $id
+		));
+	    } else {
+		$this->Session->setFlash('Facturación NO guardada');
+	    }
+	} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
+	    $this->request->data = $this->Facturacion->read(null, $id);
+	}
     }
 }
 ?>

@@ -59,6 +59,8 @@ echo "  <dt>Transporte:</dt>\n";
 echo "  <dd>".$operacion['Contrato']['transporte']."&nbsp;</dd>";
 echo "  <dt>Peso:</dt>\n";
 echo "  <dd>".$operacion['PesoOperacion']['peso'].' kg&nbsp;'."</dd>";
+echo "  <dt>Peso factura:</dt>\n";
+echo "  <dd>".$operacion['PesoOperacion']['peso_pagado'].' kg&nbsp;'."</dd>";
 echo "  <dt>Embalaje:</dt>\n";
 echo "  <dd>".
     $operacion['PesoOperacion']['cantidad_embalaje'].' x '.

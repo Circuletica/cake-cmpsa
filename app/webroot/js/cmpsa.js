@@ -315,14 +315,31 @@ function operacionAlmacen() {
 	almacenId.options[0].selected = true;
     }
 }
-//FUNCIÓN PARA IMPRIMIR SÓLO UNA PARTE DE LO VISUALIZADO EN LA PANTALLA
-/*function imprSelec(viewprint){
-	var ficha=document.getElementById(viewprint);
-	var ventimp=window.open(' ','popimpr');
-	ventimp.document.write(ficha.innerHTML);
-	ventimp.document.close();
-	ventimp.print();
-	ventimp.close();
-}*/
+
+function pesoFacturacion() {
+    var pesoFacturacionRadio = document.getElementsByName('data[Facturacion][peso_facturacion]');
+    var totalCafeField = document.getElementById('totalCafe');
+    var totalGastosField = document.getElementById('totalGastos');
+    var totalOperacionField = document.getElementById('totalOperacion');
+    var precioDolarTm = document.getElementById('FacturacionPrecioDolarTm').value;
+    var cambioDolarEuro = document.getElementById('FacturacionCambioDolarEuro').value;
+    var pesoFacturacion;
+    for (var i = 0; i < pesoFacturacionRadio.length; i++) {
+	if (pesoFacturacionRadio[i].checked) {
+	    pesoFacturacion = pesoFacturacionRadio[i].value;
+	}
+    }
+    var totalCafe = (pesoFacturacion/1000) * precioDolarTm / cambioDolarEuro;
+    totalCafeField.innerHTML = 'Total café: '+totalCafe.toFixed(2)+'€';
+    var gastosBancarios = parseFloat(document.getElementById('FacturacionGastosBancariosPagados').value);
+    var fletePagado = parseFloat(document.getElementById('FacturacionFletePagado').value);
+    var despachoPagado = parseFloat(document.getElementById('FacturacionDespachoPagado').value);
+    var seguroPagado = parseFloat(document.getElementById('FacturacionSeguroPagado').value);
+    var totalGastos = gastosBancarios + fletePagado + despachoPagado + seguroPagado;
+    totalGastosField.innerHTML = 'Total gastos: '+totalGastos+'€';
+    var totalOperacion = (totalCafe + totalGastos) / pesoFacturacion;
+    totalOperacionField.innerHTML = 'Precio real operación: '+totalOperacion.toFixed(6)+'€/kg';
+}
+
 
 
