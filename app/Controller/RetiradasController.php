@@ -313,7 +313,12 @@ class RetiradasController extends AppController {
 			'fields' => array(
 			    'nombre'
 			)
-		    )
+		    ),
+		    'AsociadoOperacion' => array(
+		    	'fields' => array(
+		    		'asociado_id'
+		    		)
+		    	)
 		)
 	    )
 	);
@@ -338,25 +343,32 @@ class RetiradasController extends AppController {
 	    if($id == NULL && $this->Retirada->save($this->request->data)){
 		$this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
-		    'action' => 'view_trafico',
-		    'controller' => 'operaciones',
-		    $this->params['named']['from_id']
+			'action'=>'view_asociado',
+	    	'controller' => 'retiradas',
+	    	'asociado_id'=> $this->params['named']['asociado_id'],
+	    	'from_controller'=> $this->params['named']['from_controller'],
+	    	 'from_id'=>$this->params['named']['from_id']
 		)
 	    );
 
 	    }elseif($id != NULL && !empty($this->params['named']['from_id']) && $this->Retirada->save($this->request->data)){
 		$this->Session->setFlash('Retirada modificada');
 		$this->redirect(array(
-		    'action' => 'view_trafico',
-		    'controller' => 'operaciones',
-		    $this->params['named']['from_id']
+			'action'=>'view_asociado',
+	    	'controller' => 'retiradas',
+	    	'asociado_id'=> $this->params['named']['asociado_id'],
+	    	'from_controller'=> $this->params['named']['from_controller'],
+	    	 'from_id'=>$this->params['named']['from_id']
 		)
 	    );
 	    }elseif($id != NULL && $this->Retirada->save($this->request->data)){
 		$this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
-		    'action' => 'index',
-		    'controller' => 'retiradas'
+			'action'=>'view_asociado',
+	    	'controller' => 'retiradas',
+	    	'asociado_id'=> $this->params['named']['asociado_id'],
+	    	'from_controller'=> $this->params['named']['from_controller'],
+	    	 'from_id'=>$this->params['named']['from_id']
 		)
 	    );
 	    }else{
@@ -370,22 +382,34 @@ class RetiradasController extends AppController {
 
 
     public function delete($id = null) {
+    $asociado_id = $this->Retirada->find(
+    	'first',
+    	array(
+    		'conditions' => array(
+    			'Retirada.id' => $id
+    			),
+    		'fields'=> array(
+    			'id',
+    			'asociado_id',
+    			'operacion_id'
+    			)
+    		)
+    	);
+    $this->set(compact('asociado_id'));
+    
 	if (!$id or $this->request->is('get')){
 	    throw new MethodNotAllowedException();
 	}
-	/*if ($this->Retirada->delete($id) && (!empty($this->params['named']['from_id']))){
-	    $this->Session->setFlash('Retirada borrada');
-	    $this->redirect(array(
-	    	'controller' => 'operaciones',
-	    	'action'=>'view_trafico',
-	    	'from_controller'.$this->params['named']['from_controller'],
-	    	'from_id'.$this->params['named']['from_id']
-	    	)
-	    );
-	}else{*/
 		if ($this->Retirada->delete($id))	{
 		$this->Session->setFlash('Retirada borrada');
-	    $this->redirect(array('action'=>'index'));
+	    $this->redirect(array(
+	    	'action'=>'view_asociado',
+	    	'controller' => 'retiradas',
+	    	'asociado_id'=> $asociado_id,
+	    	'from_controller'=> 'operaciones',
+	    	'from_id'=>$this->params['named']['from_id']
+	    	)
+	    );
 	}
 
     }
