@@ -625,67 +625,112 @@ endif;
 	$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
 
 	//*****AQUI HACE EXCESO DE QUERIES, HAY QUE DEPURARLO*****
+	//	$operacion_retiradas = $this->Operacion->Retirada->find(
+	//	    'all',
+	//	    array(
+	//		'conditions' => array(
+	//		    'operacion_id' => $id
+	//		),
+	//		'recursive' => 1
+	//	    )
+	//	);	
+	$this->Operacion->Retirada->virtualFields = array(
+	    'total_embalaje_retirado' => 'sum(Retirada.embalaje_retirado)',
+	    'total_peso_retirado' => 'sum(Retirada.peso_retirado)'
+	);
+	$this->Operacion->Retirada->Asociado->bindModel(
+	    array(
+		'hasMany' => array(
+		    'AsociadoOperacion' => array(
+			'foreignKey' => 'asociado_id'
+		    )
+		)
+	    )
+	);
 	$operacion_retiradas = $this->Operacion->Retirada->find(
 	    'all',
 	    array(
 		'conditions' => array(
-		    'operacion_id' => $id
-		)
+		    'Retirada.operacion_id' => $id
+		),
+		'recursive' => 2,
+		'contain' => array(
+		    'Asociado' => array(
+			'AsociadoOperacion' => array(
+			    'conditions' => array(
+				'AsociadoOperacion.operacion_id' => $id
+			    )
+			)
+		    )
+		),
+		'joins' => array(
+		    array(
+			'table' => 'asociado_operaciones',
+			'alias' => 'AsociadoOperacion',
+			'type' => 'LEFT',
+			'conditions' => array(
+			    'AsociadoOperacion.asociado_id=Retirada.asociado_id',
+			    'AsociadoOperacion.operacion_id=Retirada.operacion_id'
+			)
+		    )
+		),
+		'group' => 'AsociadoOperacion.asociado_id'
 	    )
-	);	
+	);
+
 	//Líneas de reparto
-	//		debug($operacion_retiradas);
+	debug($operacion_retiradas);
 	$total_sacos = 0;
 	$total_peso = 0;
 	$total_sacos_retirados = 0;
 	$total_peso_retirado = 0;
 	$total_pendiente = 0;
 
-	foreach ($operacion['AsociadoOperacion'] as $linea):
+	foreach ($operacion['AsociadoOperacion'] as $linea) {
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 
-	$cantidad_retirado = 0;
-	$peso_retirado = 0;
-	$pendiente = 0;
+	    $cantidad_retirado = 0;
+	    $peso_retirado = 0;
+	    $pendiente = 0;
 
-	foreach ($operacion_retiradas as $clave => $operacion_retirada){
-	    $retirada = $operacion_retirada['Retirada'];
-	    if($retirada['asociado_id'] == $linea['Asociado']['id']){
-		$cantidad_retirado += $retirada['embalaje_retirado'];
-		$peso_retirado += $retirada['peso_retirado'];
+	    foreach ($operacion_retiradas as $clave => $operacion_retirada){
+		$retirada = $operacion_retirada['Retirada'];
+		if($retirada['asociado_id'] == $linea['Asociado']['id']){
+		    $cantidad_retirado += $retirada['embalaje_retirado'];
+		    $peso_retirado += $retirada['peso_retirado'];
+		}
+		$pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
 	    }
-	    $pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
+
+	    $lineas_retirada[] = array(
+		'asociado_id' => $linea['Asociado']['id'],
+		'Nombre' => $linea['Asociado']['nombre_corto'],
+		'Cantidad' => $linea['cantidad_embalaje_asociado'],
+		'Peso' => $peso,
+		'Cantidad_retirado' => $cantidad_retirado,
+		'Peso_retirado' => $peso_retirado,
+		'Pendiente' => $pendiente
+	    );
+
+	    $total_sacos += $linea['cantidad_embalaje_asociado'];
+	    $total_peso += $peso;
+	    $total_sacos_retirados += $cantidad_retirado; 
+	    $total_peso_retirado += $peso_retirado;
+	    $total_pendiente += $pendiente;
+
 	}
 
-	$lineas_retirada[] = array(
-	    'asociado_id' => $linea['Asociado']['id'],
-	    'Nombre' => $linea['Asociado']['nombre_corto'],
-	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
-	    'Peso' => $peso,
-	    'Cantidad_retirado' => $cantidad_retirado,
-	    'Peso_retirado' => $peso_retirado,
-	    'Pendiente' => $pendiente
-	);
-
-	$total_sacos += $linea['cantidad_embalaje_asociado'];
-	$total_peso += $peso;
-	$total_sacos_retirados += $cantidad_retirado; 
-	$total_peso_retirado += $peso_retirado;
-	$total_pendiente += $pendiente;
-
-endforeach;
-
-ksort($lineas_retirada);
-$this->set('lineas_retirada',$lineas_retirada);
-$this->set('total_sacos',$total_sacos);
-$this->set('total_peso',$total_peso);	
-$this->set('total_sacos_retirados',$total_sacos_retirados);
-$this->set('total_peso_retirado',$total_peso_retirado);
-$this->set('total_pendiente',$total_pendiente);
+	ksort($lineas_retirada);
+	$this->set('lineas_retirada',$lineas_retirada);
+	$this->set('total_sacos',$total_sacos);
+	$this->set('total_peso',$total_peso);	
+	$this->set('total_sacos_retirados',$total_sacos_retirados);
+	$this->set('total_peso_retirado',$total_peso_retirado);
+	$this->set('total_pendiente',$total_pendiente);
 
 
-//Se declara para acceder al PDF
-$this->set(compact('id'));
+	//Se declara para acceder al PDF
+	$this->set(compact('id'));
     }
 
     public function delete($id = null) {
