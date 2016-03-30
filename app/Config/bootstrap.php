@@ -89,7 +89,7 @@ Configure::write('CakePdf', array(
 	//'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows
 	//Instalar sudo apt-get install xvfb wkhtmltopdf
 	// Alojar carpeta en donde indica más abajo. Descargar de: http://wkhtmltopdf.org/downloads.html
-	   'binary'=>  '/usr/local/bin/wkhtmltox/bin/wkhtmltopdf'
+	   'binary'=>  '/usr/local/bin/wkhtmltox/bin/wkhtmltopdf',
         'margin' => array(
             'bottom' => 10,
             'left' => 15,
