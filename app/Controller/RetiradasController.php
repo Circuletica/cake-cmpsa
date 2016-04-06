@@ -112,6 +112,7 @@ class RetiradasController extends AppController {
 		    )//Cierre CONTAIN
 		)
 	    );
+
 	$asociado_nombre = $this->Retirada->Asociado->find(
 	    'first',
 	    array(
@@ -138,7 +139,8 @@ class RetiradasController extends AppController {
 		'recursive'=>-1,
 		'fields' => array(
 		    'id',
-		    'cantidad_embalaje_asociado'
+		    'cantidad_embalaje_asociado',
+		    'asociado_id'
 		)
 	    )
 	);
@@ -171,6 +173,41 @@ class RetiradasController extends AppController {
 	$peso = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] * $solicitado['ContratoEmbalaje']['peso_embalaje_real'];
 	$this->set(compact('peso'));
 
+
+// Necesario para evitar agregar retirada si no hay en el almacen nada.
+	$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
+	    'all',
+	    array(
+		'contain' => array(
+			'Transporte' =>array(
+					'AlmacenTransporte'
+					)
+		   		)
+		)
+	);
+		foreach($operaciones_almacen as $clave => $operacion){
+	    $operaciones_almacen[$clave]['AlmacenTransporte'] = array();
+	    foreach($operacion['Transporte'] as $transporte){
+
+		if(!empty($transporte['AlmacenTransporte'])){
+		    foreach($transporte['AlmacenTransporte'] as $cuenta){
+			$operaciones_almacen[$clave]['AlmacenTransporte'][] = $cuenta;
+		    }
+		}
+	    }
+	    unset($operaciones_almacen[$clave]['Transporte']);
+	    //quitamos operaciones sin cuenta de almacén
+	    if (empty($operaciones_almacen[$clave]['AlmacenTransporte'])) {
+		unset($operaciones_almacen[$clave]);
+	    }
+	}
+
+	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
+
+	$this->set(compact('operaciones_almacen'));
+
+
+	//Para exportar en PDF nececisto declarar la id
 	$this->set(compact('id'));
 
     }
@@ -261,11 +298,11 @@ class RetiradasController extends AppController {
 	    'all',
 	    array(
 		'contain' => array(
-		    'Transporte' =>array(
-			'AlmacenTransporte'
-		    )
+			'Transporte' =>array(
+					'AlmacenTransporte'
+					)
+		   		)
 		)
-	    )
 	);
 
 	foreach($operaciones_almacen as $clave => $operacion){
@@ -323,14 +360,21 @@ class RetiradasController extends AppController {
 	    )
 	);
 	$this->set('operacion',$operacion);
+
+//Se declara para asignar el asociado
+	$asociado_id = NULL; 	
+	if(!empty($this->params['named']['asociado_id'])){
+	$asociado_id = $this->params['named']['asociado_id'];
+	}
+	$this->set(compact('asociado_id'));
 // Saco la referencia de la operación para usar en el form excepto en un add() desde index
 	$operacion_ref = NULL;
 	if(!empty($this->params['named']['from_id'])){
 	    $operacion_ref = $operacion['Operacion']['referencia'];
-
 	}
-
 	$this->set(compact('operacion_ref'));
+
+
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
 	//un _nuevo_ registro, como si fuera un add

@@ -84,7 +84,7 @@ echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
 						'<i class="fa fa-plus"></i> Añadir retirada de '. $asociado_nombre['Asociado']['nombre_corto'],array(
 							'controller' => 'retiradas',
 							'action' => 'add',
-							'asociado_id'=>$retirada['Retirada']['asociado_id'],
+							'asociado_id'=>$asociado_op['AsociadoOperacion']['asociado_id'],
 							'from_controller' => 'operaciones',
 							'from_id' => $operacion_id
 							),
