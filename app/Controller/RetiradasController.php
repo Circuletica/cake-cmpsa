@@ -354,19 +354,33 @@ class RetiradasController extends AppController {
 		    'AsociadoOperacion' => array(
 		    	'fields' => array(
 		    		'asociado_id'
+		    		),
+		    	'Asociado' =>array(
+		    		'fields' => array(
+		    			'nombre_corto'
+		    			)
 		    		)
 		    	)
 		)
 	    )
 	);
+
 	$this->set('operacion',$operacion);
 
-//Se declara para asignar el asociado
-	$asociado_id = NULL; 	
+//Se declara para asignar el valor del array del asociado
+	//$asociado_valor = NULL; 
+	$a=0;	
 	if(!empty($this->params['named']['asociado_id'])){
-	$asociado_id = $this->params['named']['asociado_id'];
+		foreach ($operacion['AsociadoOperacion'] as $valor){
+			if($valor['asociado_id'] == $this->params['named']['asociado_id']){
+				 $asoc=$a; //Guardo valor array
+				 $asociado_nombre = $valor['Asociado']['nombre_corto'];
+			}
+		$a++; //Contador recorrido array
+		}
 	}
-	$this->set(compact('asociado_id'));
+	$this->set(compact('asoc'));	
+	$this->set(compact('asociado_nombre'));
 // Saco la referencia de la operación para usar en el form excepto en un add() desde index
 	$operacion_ref = NULL;
 	if(!empty($this->params['named']['from_id'])){
@@ -426,32 +440,20 @@ class RetiradasController extends AppController {
 
 
     public function delete($id = null) {
-    $asociado_id = $this->Retirada->find(
-    	'first',
-    	array(
-    		'conditions' => array(
-    			'Retirada.id' => $id
-    			),
-    		'fields'=> array(
-    			'id',
-    			'asociado_id',
-    			'operacion_id'
-    			)
-    		)
-    	);
-    $this->set(compact('asociado_id'));
-    
+   
 	if (!$id or $this->request->is('get')){
 	    throw new MethodNotAllowedException();
 	}
 		if ($this->Retirada->delete($id))	{
+		//	$this ->view_asociado();
+		//	$this ->render('view_asociado');
 		$this->Session->setFlash('Retirada borrada');
 	    $this->redirect(array(
 	    	'action'=>'view_asociado',
 	    	'controller' => 'retiradas',
-	    	'asociado_id'=> $asociado_id,
+	    	//'asociado_id'=> $this->params['asociado_id']['from_id'],
 	    	'from_controller'=> 'operaciones',
-	    	'from_id'=>$this->params['named']['from_id']
+	    	//'from_id'=>$this->params['named']['from_id']
 	    	)
 	    );
 	}

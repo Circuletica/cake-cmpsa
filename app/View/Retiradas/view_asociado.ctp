@@ -55,23 +55,9 @@ foreach($retiradas as $retirada):
 				)
 			.' '.$this->Button->deleteLine('retiradas',	$retirada['Retirada']['id'],'operaciones',	$retirada['Retirada']['operacion_id'],
 					'la retirada del día: '.$this->Date->format($retirada['Retirada']['fecha_retirada']
-					)).''.
-
-					$this->Html->link(
-						'<i class="fa fa-pencil-square-o"></i> ',array(
-							'action' => 'delete',
-							'controller' => 'retiradas',
-							$retirada['Retirada']['id'],
-							'from_id' => $retirada['Retirada']['operacion_id']		
-							),
-						array(
-							'class' => 'botond',
-							'title' => 'Borrar',
-							'escape' => false,
-							'confirm' => '¿Seguro que quieres borrar la retirada del día '.$this->Date->format($retirada['Retirada']['fecha_retirada'])
-							)
-						)
 					)
+					)
+			)
 			);	
 endforeach;?>
 </table>
