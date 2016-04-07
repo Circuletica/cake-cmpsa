@@ -92,6 +92,10 @@ class FacturacionesController extends AppController {
 	    )
 	);
 	$this->set('totales',$totales['PesoFacturacion']);
+
+	//Se declara para acceder al PDF
+	$this->set(compact('id'));
+	
     }
 
     public function add() {
