@@ -175,12 +175,42 @@ class RetiradasController extends AppController {
 
 
 // Necesario para evitar agregar retirada si no hay en el almacen nada.
-	$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
+	//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
+	$this->loadModel('Operacion');
+	$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Transporte.operacion_id' => $operacion_id
+		    ),
+		'recursive' => 2,
+		'fields' => array(
+		    'cuenta_almacen'
+		)
+		)
+		);
+	if(empty($cuenta_almacen['AlmacenTransporte'])){
+	    $cuenta_almacen = NULL;
+	}else{
+	    $cuenta_almacen = $cuenta_almacen['AlmacenTransporte'];
+	}
+	$this->set(compact('cuenta_almacen'));
+
+
+
+
+
+
+/*	$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
 	    'all',
 	    array(
 		'contain' => array(
 			'Transporte' =>array(
-					'AlmacenTransporte'
+					'AlmacenTransporte'=>array(
+						'fields' => array(
+							'id'
+							)
+						)
 					)
 		   		)
 		)
@@ -204,7 +234,7 @@ class RetiradasController extends AppController {
 
 	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
 
-	$this->set(compact('operaciones_almacen'));
+	$this->set(compact('operaciones_almacen'));*/
 
 
 	//Para exportar en PDF nececisto declarar la id

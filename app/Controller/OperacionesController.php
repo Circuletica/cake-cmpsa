@@ -555,7 +555,7 @@ endif;
 	);
 
 	$this ->set(compact('operacion'));
-	//Controlo la posibilidad de agregar retirdas unicamente si hay cuentas de almacen.
+	//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
 	$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
 	    'first',
 	    array(

@@ -64,7 +64,7 @@ endforeach;?>
 <?php
 
 echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
-			if ($retirado < $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado']){
+			if (($retirado < $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado']) && $cuenta_almacen['cuenta_almacen']!= NULL ){
 			echo '<div class="btabla">';
 				echo $this->Html->link(
 						'<i class="fa fa-plus"></i> Añadir retirada de '. $asociado_nombre['Asociado']['nombre_corto'],array(
@@ -80,10 +80,10 @@ echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
 							'escape' => false
 							)
 				);
-
-
-
 			echo '</div>';
+			}elseif($cuenta_almacen['cuenta_almacen'] == NULL ){
+				echo " - "."<span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
+
 			}else{
 				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido almacenados</span></h4>";
 			}

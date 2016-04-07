@@ -53,7 +53,7 @@ if ($action == 'add' && !empty($operacion_ref)  ) {
                     'empty' =>array('' => 'Selecciona'),
                     'class' => 'ui-widget',
                     'id' => 'asociado', 
-                    'value'=> $asoc          
+                   // 'value'=> $this->params['named']['asociado_id']         
                      )
                );  
 ?>
