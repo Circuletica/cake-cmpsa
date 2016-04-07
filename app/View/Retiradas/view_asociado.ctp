@@ -38,26 +38,69 @@ foreach($retiradas as $retirada):
 				$retirada['AlmacenTransporte']['marca_almacen'],
 				$retirada['Retirada']['embalaje_retirado'],
 				$retirada['Retirada']['peso_retirado'],
-				$this->Button->editLine('retiradas',$retirada['Retirada']['id'],'operaciones',$retirada['Retirada']['operacion_id'])
-			.' '.$this->Button->deleteLine('retiradas',
-					$retirada['Retirada']['id'],
-					'operaciones',
-					$retirada['Retirada']['operacion_id'],
+				$this->Html->link(
+						'<i class="fa fa-pencil-square-o"></i> ',array(
+							'controller' => 'retiradas',
+							'action' => 'edit',
+							$retirada['Retirada']['id'],
+							'asociado_id'=>$this->params['named']['asociado_id'],
+							'from_controller' => 'operaciones',
+							'from_id' => $retirada['Retirada']['operacion_id']
+							),
+						array(
+							'class' => 'botond',
+							'title' => 'Modificar',
+							'escape' => false
+							)
+				)
+			.' '.$this->Button->deleteLine('retiradas',	$retirada['Retirada']['id'],'operaciones',$retirada['Retirada']['operacion_id'],
 					'la retirada del día: '.$this->Date->format($retirada['Retirada']['fecha_retirada']
 					)
-				)
-			)
-		);
-	
+					)
+			.
+			$this->Html->link('<i class="fa fa-trash"></i>',
+				    array(
+					'controller' => 'retiradas',
+					'asociado_id' => $this->params['named']['asociado_id'],
+					'action' => 'delete',
+					$retirada['Retirada']['id'],
+					'from_controller' => 'operaciones',
+					'from_id' => $retirada['Retirada']['operacion_id']
+				    ),
+				    array(
+					'class' => 'botond',
+					'escape' => false,
+					'title' => 'Borrar',
+					'confirm' => '¿Seguro que quieres borrar la retirada del día: '.$this->Date->format($retirada['Retirada']['fecha_retirada'].'?'	)
+					)
+			)	
+			));
+				
 endforeach;?>
 </table>
 <?php
 
 echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
-			if ($retirado < $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado']){
+			if (($retirado < $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado']) && $cuenta_almacen['cuenta_almacen']!= NULL ){
 			echo '<div class="btabla">';
-				echo $this->Button->addLine('retiradas','operaciones',$operacion_id,'retirada de '.$asociado_nombre['Asociado']['nombre_corto']);
+				echo $this->Html->link(
+						'<i class="fa fa-plus"></i> Añadir retirada de '. $asociado_nombre['Asociado']['nombre_corto'],array(
+							'controller' => 'retiradas',
+							'action' => 'add',
+							'asociado_id'=>$asociado_op['AsociadoOperacion']['asociado_id'],
+							'from_controller' => 'operaciones',
+							'from_id' => $operacion_id
+							),
+						array(
+							'class' => 'botond',
+							'title' => 'Añadir retirada de '. $asociado_nombre['Asociado']['nombre_corto'],
+							'escape' => false
+							)
+				);
 			echo '</div>';
+			}elseif($cuenta_almacen['cuenta_almacen'] == NULL ){
+				echo " - "."<span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
+
 			}else{
 				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido almacenados</span></h4>";
 			}
@@ -65,10 +108,16 @@ echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
 <br><br>
 <?php
     echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Volver', 
-    	$this->request->referer(''), array('class' => 'botond',
-    	'escape'=>false
-    	)
-    );
+    	array(
+    		'action'=>'view_trafico',
+	   		'controller' => 'operaciones',
+	   		$operacion_id
+	   		),
+     	array(
+	  		'class' => 'botond',
+    		'escape'=>false
+    		)
+     	);
 	$this->end();
 
 ?>
