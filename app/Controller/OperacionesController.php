@@ -635,6 +635,39 @@ endif;
 	);	
 	//Líneas de reparto
 	//		debug($operacion_retiradas);
+
+//ahora el precio que facturamos por asociado
+/*  MIRAR ATENTAMENTE PARA CAMBIAR EL CóDIGO POR ESTO SOLO
+       $this->loadModel('PesoFacturacion');
+        $peso_asociados = $this->PesoFacturacion->find(
+            'all',
+            array(
+                'conditions' => array(
+                    'operacion_id' => $id
+                )
+            )
+        );
+        $this->set(compact('peso_asociados'));
+        $this->PesoFacturacion->virtualFields = array(
+            'total_peso_retirado' => 'sum(total_peso_retirado)',
+            'total_sacos_pendientes' => 'sum(sacos_pendientes)',
+            'total_peso_pendiente' => 'sum(peso_pendiente)',
+            'total_peso_total' => 'sum(peso_total)'
+        );
+        $totales = $this->PesoFacturacion->find(
+            'first',
+            array(
+                'conditions' => array(
+                    'PesoFacturacion.operacion_id' => $id
+                )
+            )
+        );
+        $this->set('totales',$totales['PesoFacturacion']);-*/
+
+
+
+
+
 	$total_sacos = 0;
 	$total_peso = 0;
 	$total_sacos_retirados = 0;

@@ -5,18 +5,15 @@ $this->Js->set('operaciones_asociados', $operaciones_asociados);
 $this->Js->set('operaciones_almacen', $operaciones_almacen);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
-
-if ($action == 'add' && !empty($operacion_ref)  ) {
+if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
        echo "<h2>Añadir retirada de ".$asociado_nombre." en operación ".$operacion_ref."</h2>\n";
-       echo 'hola';
 }elseif($action == 'edit') {
     echo "<h2>Modificar retirada de ".$asociado_nombre." en operación ".$operacion_ref."</h2>\n";  
     //echo '<h4>Sacos solicitados: ' $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' en '.$embalaje.' / Pendientes: '.$retirados'</h4>';*/
-}elseif (empty($operacion_ref) && $action == 'add'){
-    $asoc = NULL; //Necesario para que no de error cuando no hay operacion ni asociado previo.
-    echo "<h2>Añadir retirada de asociado</h2>\n";
+}elseif (!empty($operacion_ref) && $action == 'add'){
+    echo "<h2>Añadir retirada de asociado en operación ".$operacion_ref."</h2>\n";
 }else{
-   echo "<h2>Añadir retirada de asociado en Operación ".$operacion_ref."</h2>\n";
+   echo "<h2>Añadir retirada de asociado en operación ".$operacion_ref."</h2>\n";;
 }
 
     echo $this->Form->create('Retirada');
@@ -53,7 +50,7 @@ if ($action == 'add' && !empty($operacion_ref)  ) {
                     'empty' =>array('' => 'Selecciona'),
                     'class' => 'ui-widget',
                     'id' => 'asociado', 
-                   // 'value'=> $this->params['named']['asociado_id']         
+                    'value'=> isset($asociado_id)?$asociado_id:null  
                      )
                );  
 ?>
@@ -94,10 +91,11 @@ if ($action == 'add' && !empty($operacion_ref)  ) {
 ?>
 </div> 
 <?php
-   echo $this->Form->end('Guardar Retirada');
+  echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
+  echo $this->Form->end('Guardar Retirada');
 ?>
 
 </fieldset>
-<script type="text/javascript">
+<!--<script type="text/javascript">
 window.onload = operacionesRetirada();
-</script>
+</script> -->

@@ -255,6 +255,7 @@ function operacionesRetirada(){
     //el id de la operación, asociado y cuenta almacén
     var operacionId = operacionBox.options[operacionIndex].value;
     var asociadoId = asociadoBox.options[asociadoIndex].value;
+    //console.log(asociadoId);
     var cuentaId = cuentaBox.options[cuentaIndex].value;
 
 		//modificamos _todo_ el select de operaciones

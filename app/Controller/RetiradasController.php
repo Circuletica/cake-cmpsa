@@ -199,7 +199,7 @@ class RetiradasController extends AppController {
 
 
 
-
+//NO TENGO NI IDEA QUE PINTA ESTE CODIGO, DE NO VER ERRORES EN EL FUNCIONAMIENTO SER BORRARA 07/04/2016
 
 /*	$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
 	    'all',
@@ -405,11 +405,12 @@ class RetiradasController extends AppController {
 			if($valor['asociado_id'] == $this->params['named']['asociado_id']){
 				 $asoc=$a; //Guardo valor array
 				 $asociado_nombre = $valor['Asociado']['nombre_corto'];
+				 $asociado_id = $this->params['named']['asociado_id'];
 			}
 		$a++; //Contador recorrido array
 		}
 	}
-	$this->set(compact('asoc'));	
+	$this->set(compact('asociado_id'));	
 	$this->set(compact('asociado_nombre'));
 // Saco la referencia de la operación para usar en el form excepto en un add() desde index
 	$operacion_ref = NULL;
@@ -480,10 +481,10 @@ class RetiradasController extends AppController {
 		$this->Session->setFlash('Retirada borrada');
 	    $this->redirect(array(
 	    	'action'=>'view_asociado',
-	    	'controller' => 'retiradas',
-	    	//'asociado_id'=> $this->params['asociado_id']['from_id'],
-	    	'from_controller'=> 'operaciones',
-	    	//'from_id'=>$this->params['named']['from_id']
+	    	'controller' =>'retiradas',
+	    	'asociado_id'=> $this->params['named']['asociado_id'],
+	    	'from_controller'=> $this->params['named']['from_controller'],
+	    	'from_id'=>$this->params['named']['from_id']
 	    	)
 	    );
 	}
