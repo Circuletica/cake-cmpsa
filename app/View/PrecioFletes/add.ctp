@@ -31,6 +31,7 @@
       'label' => 'Coste de flete ($/contenedor)'
   )
 );
+echo $this->element('cancelarform');  
   echo $this->Form->end('Guardar precio');
   ?>
 </fieldset>

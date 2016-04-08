@@ -58,4 +58,5 @@ if ($action == 'add') {
     echo $this->Form->input('tipo_iva_comision_id');
     echo $this->Form->input('precio_euro_kilo');
 }
+  echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Financiación');

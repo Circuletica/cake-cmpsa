@@ -10,5 +10,6 @@ echo $this->Form->create('Pais'); ?>
 	?>
 	</div>
  	<?php
+echo $this->element('cancelarform'); 	
  	echo $this->Form->end('Guardar país');
  ?>

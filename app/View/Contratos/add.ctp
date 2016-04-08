@@ -352,6 +352,7 @@ echo $this->Form->input('fecha_transporte', array(
 		);
 echo "</div>\n";
 echo $this->Form->input('comentario');
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Contrato');
 ?>
 	</div>

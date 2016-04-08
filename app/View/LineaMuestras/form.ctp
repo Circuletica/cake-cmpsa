@@ -201,6 +201,7 @@ echo $this->Html->tableCells(array(
 ?>
 </div>
 <?php
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Linea de muestra');
 ?>
 <script type="text/javascript">

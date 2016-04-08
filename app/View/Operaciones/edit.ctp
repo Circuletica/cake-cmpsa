@@ -119,6 +119,7 @@ echo $this->Form->input('peso_pagado', array(
 	)
 );
 echo $this->Form->input('comentario');
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Operacion');
 ?>
 </div>

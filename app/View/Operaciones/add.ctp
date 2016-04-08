@@ -172,7 +172,7 @@ endforeach;
 ?>
 	</table>
 <?php
-echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Operación');
 ?>
 </fieldset>

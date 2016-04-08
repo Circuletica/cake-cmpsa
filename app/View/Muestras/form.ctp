@@ -139,7 +139,7 @@ echo $this->Form->input('fecha', array(
 
 <?php
 echo $this->Form->input('incidencia');
-echo $this->Html->link('Cancelar', $this->request->referer(''), array('class' => 'botond'));  
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Muestra');
 ?>
 </div>

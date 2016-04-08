@@ -43,5 +43,6 @@ echo $this->Form->input('email');
 ?>
     </div>
 <?php
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar contacto');
 ?>
