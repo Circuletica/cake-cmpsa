@@ -401,8 +401,9 @@ echo '<br><h3>Reclamación</h3>';
 				array('style' => 'text-align:right'
 					)
 				),
-			$linea['marca_almacen'],
-			$this->Button->editLine(
+			$linea['marca_almacen'],			
+			!empty($linea['Retirada'])? '<i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-left"></i>
+':$this->Button->editLine(
 				'almacen_transportes',
 				$linea['id'],'transportes',
 				$transporte['Transporte']['id']
@@ -416,6 +417,7 @@ echo '<br><h3>Reclamación</h3>';
 				)
 			)
 		);
+
 	endforeach;?>
 	</table>
 

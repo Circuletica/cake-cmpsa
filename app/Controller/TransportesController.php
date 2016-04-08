@@ -167,7 +167,12 @@ $this->set(compact('pdf'));
 						'fields' => (
 							'nombre_corto'
 						)
-					)
+					),
+					'Retirada'=> array(
+						'fields' => array(
+							'id'
+							)
+						)
 				)	
 			)
 		)
