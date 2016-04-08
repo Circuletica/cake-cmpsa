@@ -522,8 +522,116 @@ $this->set(compact('num'));
 	$this->set(compact('transportes'));
 	}
 	public function info_despacho() {
-		$this ->info_embarque();
-		$this ->render('info_despacho');
+	//	$this ->info_embarque();
+	//	$this ->render('info_despacho');
+   $this->pdfConfig = array(
+		'filename' => 'info_embarque',
+		'paperSize' => 'A4',
+        'orientation' => 'landscape',
+	);
+
+	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
+	$this->paginate['recursive'] = 1;
+	$this->paginate['condition'] = array(
+	    'Transporte.fecha_despacho_op'=> NULL
+		);	
+
+	$this->paginate['contain'] = array(
+		   'Operacion' => array(
+		    	'fields'=> array(
+		    		'id',
+		    		'referencia',
+		    		'contrato_id'
+		    		),
+		    	'PesoOperacion'=> array(
+					'fields' =>array(
+				 	   'peso',
+					   'cantidad_embalaje'
+						)
+					),	
+		    	'Contrato'=>array(	
+					'fields'=> array(
+					    'id'
+						    ),
+					'CalidadNombre' => array(
+				    	'fields' =>(
+						'nombre'
+				    	)
+				    )
+				)
+			)
+	);
+
+	//$this->set(compact('transportes'));
+	
+
+	$title = $this->filtroPaginador(
+	    array(
+		'Transporte' => array(
+		    'Registro' => array(
+			'columna' => 'referencia',
+			'exacto' => false,
+			'lista' => ''
+		    )
+		),
+		'CalidadNombre' => array(
+		    'Calidad' => array(
+			'columna' => 'nombre',
+			'exacto' => false,
+			'lista' => ''
+		    )
+		)
+	    )
+	);
+
+
+	//filtramos por fecha
+	if(isset($this->passedArgs['Search.fechadesde'])) {
+	    $fechadesde = $this->passedArgs['Search.fechadesde'];
+	    //Si solo se ha introducido un año (aaaa)
+	    if (preg_match('/^\d{4}$/',$fechadesde)) { $anyo = $fechadesde; }
+	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
+	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
+		list($mes,$anyo) = explode('-',$fechadesde);
+	    } else {
+		$this->Session->setFlash('Error de fecha');
+		$this->redirect(array('action' => 'index'));
+	    }
+	    //si se ha introducido un año, filtramos por el año
+	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
+	    //si se ha introducido un mes, filtramos por el mes
+	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
+	    $this->request->data['Search']['fecha'] = $fechadesd;
+	    //completamos el titulo
+	    $title .= '|Fecha: '.$fechadesde;
+	}
+	if(isset($this->passedArgs['Search.fechahasta'])) {
+	    $fecha = $this->passedArgs['Search.fechasta'];
+	    //Si solo se ha introducido un año (aaaa)
+	    if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fechahasta; }
+	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
+	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
+		list($mes,$anyo) = explode('-',$fechahasta);
+	    } else {
+		$this->Session->setFlash('Error de fecha');
+		$this->redirect(array('action' => 'index'));
+	    }
+	    //si se ha introducido un año, filtramos por el año
+	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
+	    //si se ha introducido un mes, filtramos por el mes
+	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
+	    $this->request->data['Search']['fecha'] = $fechahasta;
+	    //completamos el titulo
+	    $title .= '|Fecha: '.$fechahasta;
+	}
+
+
+
+	$despachos =  $this->paginate();
+	$title = 'Despachos | '.$title;
+
+	//pasamos los datos a la vista
+	$this->set(compact('despachos','title'));
 
 	}
     public function reclamacion($id = null) {

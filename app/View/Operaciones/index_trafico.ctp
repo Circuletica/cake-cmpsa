@@ -25,7 +25,8 @@
   <?php 
   echo $this->element('filtrooperacion');
   echo '<br>';
-  echo  $this->Html->link(('<i class="fa fa-area-chart fa-lg"></i> Info embarques'),
+  echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info
+ Embarques',
     array(
     'action' =>'info_embarque',
     'controller' => 'transportes'
@@ -35,7 +36,8 @@
     'title'=>'Informe de situación'
     )
   );
-  echo  $this->Html->link(('<i class="fa fa-area-chart fa-lg"></i> Informe de despachos'),
+  echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i>
+ Info Despachos',
     array(
     'action' =>'info_despacho',
     'controller' => 'transportes'
@@ -46,7 +48,7 @@
     )
   );
 
-    echo  $this->Html->link(('<i class="fa fa-area-chart fa-lg"></i> Informe suplemento sin recl.'),
+    echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info suplemento sin recl.',
     array(
     'action' =>'situacion',
     'controller' => 'transportes'

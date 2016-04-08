@@ -12,6 +12,7 @@ echo "  <tr>\n";
 echo "    <th>".$this->Paginator->sort('Operacion.referencia','Operación')."</th>\n";
 echo "    <th>".$this->Paginator->sort('CalidadNombre.nombre','Calidad')."</th>\n";
 echo "    <th>".$this->Paginator->sort('Proveedor.nombre_corto','Proveedor')."</th>\n";
+echo "    <th>"."Detalle"."</th>\n";
 echo "  </tr>\n";
 foreach($facturaciones as $facturacion) {
     echo "  <tr>\n";

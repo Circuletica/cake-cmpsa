@@ -34,7 +34,6 @@ if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
     
       ?>
       </div>
-      <div class="col2">
       <?php
         echo $this->Form->input('operacion_id',
           array(
@@ -54,7 +53,6 @@ if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
                      )
                );  
 ?>
-  </div>
    </fieldset>
    <fieldset>
 <?php
@@ -67,12 +65,11 @@ if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
             )
            );
 ?>
-<div class="col2">
 <?php
   if(!empty($operacion['Embalaje']['nombre'])){
    echo $this->Form->input('embalaje_retirado',
          array(
-              'label'=>'Sacos retirados en '.$operacion['Embalaje']['nombre']
+              'label'=>'Cantidad en '.$operacion['Embalaje']['nombre']
               )
          );
   }else{
@@ -89,7 +86,7 @@ if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
               )
           );
 ?>
-</div> 
+
 <?php
   echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
   echo $this->Form->end('Guardar Retirada');
