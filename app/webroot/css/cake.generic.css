@@ -179,7 +179,7 @@ div.view {
 }
 div.actions {
 	float:left;
-	width:17%;
+	width:18%;
 	padding:1% 0% 2%;
 	border: 5px;
    /* height: 90px;*/
@@ -416,7 +416,8 @@ select[multiple=multiple] {
 	width: 100%;
 }
 option {
-	font-size: 120%;
+	/*font-size: 120%;*/
+	font-size: 100%;
 	padding: 0 3px;
 }
 input[type=checkbox] {
@@ -649,7 +650,7 @@ input[type=submit]:active,
 	text-decoration: none;
 }
 .actions select {
-	width: 100%;
+	/*width: 100%; Actions para date, fecha*/
 	color: #585757;
 	font-size: 13px;
 	line-height: 100%;

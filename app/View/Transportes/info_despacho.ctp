@@ -22,7 +22,7 @@
 	echo '<h2>Situación de líneas transporte despachadas a día '.date("d-m-Y").'</h2>';
 ?>
 <div class='actions'>
-  <?php echo $this->element('filtrooperacion'); ?>
+  <?php echo $this->element('filtrodespacho');?>
 </div>
 <div class='index'>
     <table>
@@ -38,23 +38,17 @@
 		)
 	);
 
-	foreach ($transportes as $clave=>$transporte){
-				if (isset($transporte['Operacion']['Contrato']['si_entrega'])) {
-				  $entrega  = $transporte['Operacion']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
-				  $entrega = ' ('.$entrega.')';
-				}else{ 
-				  	$entrega ='';
-				}
+	foreach ($despachos as $despacho){
 
-		if($transporte['Transporte']['fecha_despacho_op']!= NULL){		
+		if($despacho['Transporte']['fecha_despacho_op']!= NULL){		
 			echo $this->Html->tableCells(array(
-				$transporte['Operacion']['referencia'],
-				$transporte['Transporte']['linea'],			
-				$transporte['Operacion']['Contrato']['CalidadNombre']['nombre'],
-				$transporte['Transporte']['cantidad_embalaje'],					
-			    $this->Date->format($transporte['Transporte']['fecha_despacho_op']),
+				$despacho['Operacion']['referencia'],
+				$despacho['Transporte']['linea'],			
+				$despacho['Operacion']['Contrato']['CalidadNombre']['nombre'],
+				$despacho['Transporte']['cantidad_embalaje'],					
+			    $this->Date->format($despacho['Transporte']['fecha_despacho_op']),
 		     		$this->Html->link('<i class="fa fa-info-circle"></i>',array(
-		     			'action'=>'view',$transporte['Transporte']['id']), array(
+		     			'action'=>'view',$despacho['Transporte']['id']), array(
 		     			'class'=>'boton','escape' => false,'title'=>'Detalle'
 		     			)
 		     			)
