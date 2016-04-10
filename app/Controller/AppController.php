@@ -188,14 +188,33 @@ class AppController extends Controller {
 
     public function filtroPaginador($criterios) {
 	//$criterios es un array como
-	//'Naviera' => array(
-	//	"Registro" => "registro",
-	//	"Proveedor" => "proveedor_id",
-	//	"Marca" => "marca_almacen"
-	//	),
-	//'Proveedor' => array(
-	//	'Nombre' => 'nombre_corto',
-	//)
+//	    array(
+//		'Muestra' => array(
+//		    'Tipo' => array( //nombre del criterio que aparece
+//			'columna' =>'tipo_id', //columna de la tabla
+//			'exacto' => true, //busqueda exacta o no (%%)
+//			'lista' => $this->tipoMuestras //opciones posibles
+//		    ),
+//		    'Registro' => array(
+//			'columna' => 'tipo_registro',
+//			'exacto' => false,
+//			'lista' => ''
+//		    ),
+//		    'Proveedor' => array(
+//			'columna' => 'proveedor_id',
+//			'exacto' => true,
+//			'lista' => $proveedores
+//		    )
+//		),
+//		'CalidadNombre' => array(
+//		    'Calidad' => array(
+//			'columna' => 'nombre',
+//			'exacto' => false,
+//			'lista' => ''
+//		    )
+//		)
+//	    )
+//	);
 	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
 	//por ej.
 	//$passedArgs['Search.palabras'] = mipalabra
@@ -205,7 +224,6 @@ class AppController extends Controller {
 		$columna = $elementos['columna'];
 		if (isset($this->passedArgs['Search.'.$columna])) {
 		    $valor = $this->passedArgs['Search.'.$columna];
-		    //if (isset($elementos['exacto'])) {
 		    if ($elementos['exacto']) {
 			$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = $valor;
 		    } else {

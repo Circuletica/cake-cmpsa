@@ -6,7 +6,29 @@ class FacturacionesController extends AppController {
 
     public function index() {
 	$this->paginate['contain'] = array(
-	    'Operacion'
+	    'Operacion',
+	    'Contrato',
+	    'Proveedor',
+	    'CalidadNombre'
+	);
+	$this->Facturacion->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Contrato' => array(
+			'foreignKey' => false,
+			'conditions' => array('Operacion.contrato_id = Contrato.id')
+		    ),
+		    'CalidadNombre' => array(
+			'foreignKey' => false,
+			'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+		    ),
+		    'Proveedor' => array(
+			'className' => 'Empresa',
+			'foreignKey' => false,
+			'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+		    )
+		)
+	    )
 	);
 	$this->set('facturaciones', $this->paginate());
     }
