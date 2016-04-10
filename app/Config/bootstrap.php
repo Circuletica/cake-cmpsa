@@ -88,7 +88,7 @@ Configure::write('CakePdf', array(
    	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona
 	//'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows
 	//Instalar sudo apt-get install xvfb wkhtmltopdf
-	    'binary'=> APP.'Plugin/CakePdf/Vendor/wkhtmltox/bin/wkhtmltopdf',
+	    'binary'=> '/usr/local/bin/wkhtmltox/bin/wkhtmltopdf',
         'margin' => array(
             'bottom' => 10,
             'left' => 15,

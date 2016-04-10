@@ -84,7 +84,7 @@ foreach($peso_asociados as $linea):
 	    $this->Number->round($linea['PesoFacturacion']['sacos_pendientes']),
 	    array(
 		'style' => 'text-align:right',
-		'bgcolor' => ((float)$linea['PesoFacturacion']['sacos_pendientes'] == 0) ? '#FFFFFF':'#00FFFF'
+		'bgcolor' => ((float)$linea['PesoFacturacion']['sacos_pendientes'] == 0) ? '#FFFFFF':'#74daf8'
 	    )
 	),
 	array(
@@ -101,7 +101,7 @@ foreach($peso_asociados as $linea):
 	    $this->Number->round($linea['PesoFacturacion']['peso_total']*$precio_real),
 	    array(
 		'style' => 'text-align:right;',
-		'bgcolor' => '#00FFFF'
+		'bgcolor' => '#74daf8'
 	    )
 	)
     ));
