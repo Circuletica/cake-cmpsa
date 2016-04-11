@@ -256,7 +256,7 @@ function operacionesRetirada(){
     var operacionId = operacionBox.options[operacionIndex].value;
     var asociadoId = asociadoBox.options[asociadoIndex].value;
     var cuentaId = cuentaBox.options[cuentaIndex].value;
-    console.log(operacioneId);
+    console.log(asociadoId);
 
 		//modificamos _todo_ el select de operaciones
 	if (operacionId in operaciones) {
@@ -267,6 +267,9 @@ function operacionesRetirada(){
 	    for (var i=0; i<opt1; i++){
 		asociadoBox.options[i].value = asociadosOperacion[i].id;
 		asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
+			if(asociadoBox.options[i].value == asociadoId){
+				asociadoBox.options[i].selected = true;
+			}
 		}
  	  
 		//CUENTA ALMACEN

@@ -34,7 +34,7 @@
 		$this->Paginator->sort('Operacion.referencia','Operación'),
 		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 		$this->Paginator->sort('PesoOperacion.cantidad_embalaje','Cantidad'),
-		$this->Paginator->sort('Embarque / Entrega'),
+		$this->Paginator->sort('Contrato.fecha_transporte','Embarque / Entrega'),
 		$this->Paginator->sort('PuertoDestino.nombre','Pto. Destino'),		
 		$this->Paginator->sort('Transporte.fecha_carga','Fecha carga'),		
 		$this->Paginator->sort('Transporte.fecha_llegada','Fecha llegada'),
@@ -76,3 +76,4 @@
 ?>
 	</table>
 </div>
+<?php echo $this->element('paginador');?>

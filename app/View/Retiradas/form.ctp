@@ -93,6 +93,8 @@ if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
 ?>
 
 </fieldset>
-<!--<script type="text/javascript">
+
+<script type="text/javascript">
 window.onload = operacionesRetirada();
-</script> -->
+</script>
+

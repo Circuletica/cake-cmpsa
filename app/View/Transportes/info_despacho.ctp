@@ -58,4 +58,5 @@
 	}
 ?>
 	</table>
+	<?php echo $this->element('paginador');?>
 </div>
