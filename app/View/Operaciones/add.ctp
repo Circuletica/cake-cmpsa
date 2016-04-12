@@ -26,7 +26,7 @@ echo 'Peso total: '.$contrato['Contrato']['peso_comprado']."\n";
 echo "<p>\n";
 echo 'Peso sin fijar: '.$contrato['RestoContrato']['peso_restante']."\n";
 ?>
-<div class="col3">
+<div class="col2">
 <?php
 echo $this->Form->input('referencia', array(
     'autofocus' => 'autofocus'
@@ -46,6 +46,7 @@ echo $this->Form->input('lotes_operacion',
     )
 );
 ?>
+<br><br><br>
 </div>
 <div class="col2">
 		<div class='linea'>

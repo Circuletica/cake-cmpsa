@@ -6,13 +6,60 @@
 ?>
 
 <div class="printdet">
-  <?php 
-  echo $this->element('imprimirI');
-  ?>
+ <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
+ <?php //PARA INDEX
+ echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
+    array(
+      'action' => 'index_trafico',
+      'ext' => 'pdf'),
+    array(
+      'escape'=>false,
+      'target' => '_blank',
+      'title'=>'Exportar a PDF'
+      )
+    );
+ ?>
 </div>
 <h2>Operaciones<?php //echo $title;?></h2>
 <div class="actions">
-  <?php echo $this->element('filtrooperacion');?>
+  <?php 
+  echo $this->element('filtrooperacion');
+  echo '<br>';
+  echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info
+ Embarques',
+    array(
+    'action' =>'info_embarque',
+    'controller' => 'transportes'
+    ),
+    array(
+    'escape'=>false,
+    'title'=>'Informe de situación'
+    )
+  );
+  echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i>
+ Info Despachos',
+    array(
+    'action' =>'info_despacho',
+    'controller' => 'transportes'
+    ),
+    array(
+    'escape'=>false,
+    'title'=>'Informe de despachos'
+    )
+  );
+
+    echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info suplemento sin recl.',
+    array(
+    'action' =>'situacion',
+    'controller' => 'transportes'
+    ),
+    array(
+    'escape'=>false,
+    'title'=>'Informe de operaciones con suplemento sin reclamación'
+    )
+  );
+
+  ?>
   <!--h3>Filtro de operacion</h3-->
 </div>
 <div class='index'>

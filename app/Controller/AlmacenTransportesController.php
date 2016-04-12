@@ -58,13 +58,26 @@ class AlmacenTransportesController extends AppController {
 			'conditions' => array(
 				'Transporte.id' => $this->params['named']['from_id']
 				),
-			'recursive' => 2,
+			'recursive' => 3,
 			'fields' => array(
 				'id',
 				'matricula',
 				'cantidad_embalaje'
-				)
+				),
+			'contain'=> array(
+				'AlmacenTransporte',
+				'Operacion' => array(
+					'fields'=>array(
+						'embalaje_id'
+						),
+					'Embalaje' => array(
+						'fields' => array(
+							'nombre'
+							)
+						)
+					)
 			)
+		)
 	);
 	$this->set('transporte',$transporte);
 	
@@ -94,6 +107,7 @@ class AlmacenTransportesController extends AppController {
 		)
 	);
 	$cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
+
 	}elseif( $id == NULL && $almacenado != 0){
 		$cantidadcuenta = $this->AlmacenTransporte->find(
 		'first',
@@ -108,17 +122,19 @@ class AlmacenTransportesController extends AppController {
 		)
 		);
 		$cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
+	}else{
+		//En caso que se agregue al principio sin sacos guardados
+		$cantidadcuenta = 0;
 	}
 
-	
 	//si es un edit, hay que rellenar el id, ya que si no se hace, al guardar el edit,
 	// se va a crear un _nuevo_ registro, como si fuera un add
 	if (!empty($id))$this->AlmacenTransporte->id = $id;
+
 	if (!empty($this->request->data)) {//ES UN POST
 			$this->request->data['AlmacenTransporte']['id'] = $id;
 			$this->request->data['AlmacenTransporte']['transporte_id'] = $this->params['named']['from_id'];
-			
-			if($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado && $id == NULL){
+			if($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado && $id == NULL) {
 					if($this->AlmacenTransporte->save($this->request->data)){
 						$this->Session->setFlash('Cuenta almacén guardada');
 						$this->redirect(array(
@@ -129,7 +145,17 @@ class AlmacenTransportesController extends AppController {
 					}else{
 						$this->Session->setFlash('Cuenta de almacén NO guardada');
 					}
-			}elseif (($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta) xor (
+			}elseif ($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado){
+					if($this->AlmacenTransporte->save($this->request->data)){
+							$this->Session->setFlash('Cuenta almacén fuardada Sup');
+							$this->redirect(array(
+								'controller' => 'transportes',
+								'action' => 'view',
+								$this->params['named']['from_id']	
+								)
+							);
+					}	
+			}elseif ($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta xor (
 					 $this->request->data['AlmacenTransporte']['cantidad_cuenta'] > $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] - $cantidadcuenta <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado) xor
 					($transporte['Transporte']['cantidad_embalaje'] == NULL)){
 					if($this->AlmacenTransporte->save($this->request->data)){
@@ -140,7 +166,7 @@ class AlmacenTransportesController extends AppController {
 								$this->params['named']['from_id']	
 								)
 							);
-					}				
+					}	
 			}else{
 					$this->Session->setFlash('La cantidad de bultos debe ser inferior');
 			}

@@ -14,6 +14,7 @@ class AsociadoComisionesController extends AppController {
 	$this->set(compact('asociado'));
 	$this->set('referencia','Comisiones '.$asociado['Empresa']['nombre_corto']);
 	$this->set('comisiones', $asociado['AsociadoComision']);
+	$this->set(compact('id'));
     }
 
     public function add() {

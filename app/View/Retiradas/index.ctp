@@ -1,6 +1,6 @@
 <?php
 $this->extend('/Common/index');
-$this->assign('object', 'Retirada');
+$this->assign('object', 'Retiradas');
 $this->assign('controller', 'retiradas');
 $this->assign('class', 'Retirada');
 
@@ -35,7 +35,7 @@ if (empty($retiradas)){
 	    <td> <?php echo $retirada['Asociado']['nombre_corto']?> </td>
       <td> <?php echo $retirada['Retirada']['embalaje_retirado']?> </td>
       <td> <?php echo $retirada['Retirada']['peso_retirado']?> </td>    
-	    <td> <?php echo $this->Button->view('retiradas',$retirada['Retirada']['id']);?></td>
+	    <td> <?php echo $this->Button->viewCrossed('asociado','retiradas','asociado_id', $retirada['Retirada']['asociado_id'],'operaciones',$retirada['Retirada']['operacion_id']);?></td>
   </tr>
 <?php endforeach;?>
 </table>

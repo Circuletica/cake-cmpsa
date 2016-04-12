@@ -9,9 +9,22 @@
 ));
 ?><div class="acciones">
 	<div class="printdet">
-		<?php 
-		echo $this->element('imprimirV');
-		?>	
+
+ <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
+ <?php // PARA VIEW
+ echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
+ 	array(
+ 		'action' => 'view_trafico',$id,'ext' => 'pdf',
+ 		), 
+ 	array(
+ 		'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
+ $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array(
+ 	'escape'=>false,
+ 	'target' => '_blank',
+ 	'title'=>'Enviar e-mail')
+ );
+ ?>
+ 
 	</div>
 </div>
 <h2>Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
@@ -74,7 +87,7 @@
 	<!--Se hace un index de la Linea de contratos-->
 
 	<!--Se listan los asociados que forman parte de la operación-->
-	<div class="detallado">
+<div class="detallado">
 	<h3>Líneas de transporte</h3>
 	<table>
 	<?php
@@ -98,15 +111,17 @@
 		$i++;
 	endforeach;
 ?>	</table>
-<?php
-	echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
-
-			if ($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
-			echo '<div class="btabla">';
-			echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
-			echo '</div>';
-			}else{
-				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido transportados</span></h4>";
+<?php		
+	echo '<div class="btabla">';
+	echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
+	echo '</div>';
+			if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
+				echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
+			
+			}elseif($transportado > $operacion['PesoOperacion']['cantidad_embalaje']){
+				echo "<h4>Transportados: ".$transportado.' / <span style=color:#c43c35;>Restan: '.$restan."   ¡ATENCIÓN! La cantidad de Bultos son mayores a los establecidos en contrato</span></h4>";
+			}else{ 
+				echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan." - "."<span style=color:#c43c35;>Todos los bultos han sido transportados</span></h4>";
 			}
 
 ?>

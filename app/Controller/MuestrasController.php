@@ -123,9 +123,9 @@ class MuestrasController extends AppController {
 	}
 	$this->pdfConfig = array(
 	    'orientation'=>'portrait',
-	    'download'=>true,
 	    'filename'=>'INFORME-'.$id.'pdf'
 	);
+	$this->set(compact('id'));
 	//hay una view distinta para cada
 	//tipo de muestra, ya que los campos
 	//no son iguales

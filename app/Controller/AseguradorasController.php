@@ -14,6 +14,7 @@ class AseguradorasController extends AppController {
 	    $this->redirect(array('action'=>'index'));
 	}
 	$this->viewCompany($this->class, $id);
+	$this->set(compact('id'));
     }
 
     public function add() {

@@ -79,7 +79,6 @@ foreach($empresa['Empresa']['Contacto'] as $contacto):
 endforeach;
 echo "</table>";
 $this->end();
-
 if ($this->fetch('class') == 'Asociado'):
     $this->assign('line2_object', 'comisión');
     $this->assign('line2_controller','asociado_comisiones');

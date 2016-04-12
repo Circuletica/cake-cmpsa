@@ -1,7 +1,7 @@
 <?php
 $id = $this->fetch('id');
 $class = $this->fetch('class');
-$controller = $this->fetch('controller');
+$controller = ($this->fetch('controller')?:Inflector::tableize($class));
 $line_controller = $this->fetch('line_controller');
 $line2_controller = $this->fetch('line2_controller');
 $object = $this->fetch('object');
@@ -62,6 +62,7 @@ echo $this->Button->edit($controller,$id)
 	</div>
 <?php endif;?>
 <?php if($line2_object):?>
+	<br>
 	<div class="detallado">
 	<?php echo "<h3>".ucfirst($line2_object)."</h3>\n";?>
 	<?php echo $this->fetch('lines2'); ?>

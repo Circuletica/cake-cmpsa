@@ -20,7 +20,6 @@
 <h2>Listado de calidades</h2>
 <table>
   <tr>
-    <th><?php echo $this->Paginator->sort('id')?></th>
     <th><?php echo $this->Paginator->sort('descafeinado','Proceso')?></th>
     <th><?php echo $this->Paginator->sort('Pais.nombre','Origen')?></th>
     <th><?php echo $this->Paginator->sort('descripcion', 'Descripción')?></th>
@@ -28,9 +27,6 @@
   </tr>
 <?php foreach($calidades as $calidad):?>
   <tr>
-    <td>
-      <?php echo $calidad['Calidad']['id']?>
-    </td>
     <td>
       <?php echo $calidad['Calidad']['descafeinado'] ? 'Descafeinado' : 'Natural'; ?>
     </td>

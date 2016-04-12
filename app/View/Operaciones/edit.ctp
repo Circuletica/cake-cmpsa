@@ -114,6 +114,10 @@ echo $this->Form->input('cambio_dolar_euro', array(
 	'label' => 'Cambio dolar/euro'
 	)
 );
+echo $this->Form->input('peso_pagado', array(
+	'label' => 'Peso factura'
+	)
+);
 echo $this->Form->input('comentario');
 echo $this->Form->end('Guardar Operacion');
 ?>
