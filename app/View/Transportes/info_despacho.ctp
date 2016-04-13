@@ -38,13 +38,11 @@
 		)
 	);
 
-	foreach ($despachos as $despacho){
-
-		if($despacho['Transporte']['fecha_despacho_op']!= NULL){		
+	foreach ($despachos as $despacho){		
 			echo $this->Html->tableCells(array(
 				$despacho['Operacion']['referencia'],
 				$despacho['Transporte']['linea'],			
-				$despacho['Operacion']['Contrato']['CalidadNombre']['nombre'],
+				$despacho['CalidadNombre']['nombre'],
 				$despacho['Transporte']['cantidad_embalaje'],					
 			    $this->Date->format($despacho['Transporte']['fecha_despacho_op']),
 		     		$this->Html->link('<i class="fa fa-info-circle"></i>',array(
@@ -54,7 +52,6 @@
 		     			)
 		     		)
 			);
-		}
 	}
 ?>
 	</table>

@@ -476,39 +476,42 @@ $this->set(compact('num'));
 
 	$this->paginate['order'] = array('CalidadNombre.nombre' => 'asc');
 	$this->paginate['recursive'] = 2;
-	$this->paginate['condition'] = array(
-	    'Transporte.fecha_despacho_op'=> NULL
-		);		
+	/*$this->paginate['condition'] = array(
+	    'Transporte.fecha_despacho_op !='=> NULL
+		);*/
+	$this->paginate = array(
+        'conditions' => array('Transporte.fecha_despacho_op!=' => NULL)
+        );
 	$this->paginate['contain'] = array(
 		    'Operacion' => array(
 		    	'fields'=> array(
 		    		'id',
 		    		'referencia',
-		    		'contrato_id'
+		    		'contrato_id',
 		    		),
-		    	'PesoOperacion'=> array(
-					'fields' =>array(
-				 	   'peso',
-					   'cantidad_embalaje'
-						)
-					),	
-		    	'Contrato'=>array(	
+				'PesoOperacion'=> array(
+						'fields' =>array(
+							'id',
+					 	   	'peso',
+						   	'cantidad_embalaje'
+							)
+						)					    				    	
+			),
+			'Contrato'=>array(	
 					'fields'=> array(
 					    'id',
 					    'fecha_transporte',
 					    'si_entrega',
-						    ),
-					'Proveedor'=>array(
-					    'id',
-					    'nombre_corto'
-					),
-					'CalidadNombre' => array(
-				    	'fields' =>(
-						'nombre'
-				    	)
+					    'proveedor_id'
+						    )
+				),
+			'Proveedor'=>array(
+				'fields'=>array(
+					'id',
+				    'nombre_corto'
 				    )
-				)
-			),
+				),
+
 			'PuertoDestino' => array(
 				'fields' => array(
 					'id',
@@ -517,9 +520,32 @@ $this->set(compact('num'));
 		    )
 	);
 
+	$this->Transporte->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Contrato' => array(
+				'foreignKey' => false,
+				'conditions' => array('Operacion.contrato_id = Contrato.id')
+		    ),	  
+		    'Proveedor' => array(
+				'className' => 'Empresa',
+				'foreignKey' => false,
+				'conditions' => array('Contrato.proveedor_id = Proveedor.id')
+			),
+			'Operacion' => array(
+				'hasOne' => array(
+					'PesoOperacion' => array(
+						'className' => 'PesoOperacion',
+						'foreignKey' => 'id'
+						)
+					)
+				)
+		    )
+	    )
+	);
+	
+	$this->set('transportes',$this->paginate());
 
-	$transportes = $this->paginate();
-	$this->set(compact('transportes'));
 	}
 	public function info_despacho() {
 	//	$this ->info_embarque();
@@ -530,10 +556,10 @@ $this->set(compact('num'));
         'orientation' => 'landscape',
 	);
 
-	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
+	//$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
 	$this->paginate['recursive'] = 1;
-	$this->paginate['condition'] = array(
-	    'Transporte.fecha_despacho_op'=> NULL
+	$this->paginate = array (
+		'condition' => array('Transporte.fecha_despacho_op' == '01-01-2015')
 		);	
 
 	$this->paginate['contain'] = array(
@@ -542,25 +568,37 @@ $this->set(compact('num'));
 		    		'id',
 		    		'referencia',
 		    		'contrato_id'
-		    		),
-		    	'PesoOperacion'=> array(
-					'fields' =>array(
-				 	   'peso',
-					   'cantidad_embalaje'
-						)
-					),	
-		    	'Contrato'=>array(	
-					'fields'=> array(
-					    'id'
-						    ),
-					'CalidadNombre' => array(
+		    		)
+			),	
+		    'Contrato'=>array(	
+				'fields'=> array(
+				    'id',
+				    'calidad_id'
+				    )
+				    ),
+			'CalidadNombre' => array(
 				    	'fields' =>(
 						'nombre'
 				    	)
-				    )
-				)
-			)
+		    	)
 	);
+
+	$this->Transporte->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Contrato' => array(
+				'foreignKey' => false,
+				'conditions' => array('Operacion.contrato_id = Contrato.id')
+			    ),
+		    'CalidadNombre' => array(
+				'foreignKey' => false,
+				'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+				)
+		    )
+	    )
+	);
+
+
 
 	//$this->set(compact('transportes'));
 	
