@@ -89,6 +89,7 @@ Configure::write('CakePdf', array(
 	//'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows
 	//Instalar sudo apt-get install xvfb wkhtmltopdf
 	'binary'=> '/usr/bin/wkhtmltopdf',
+	//'binary'=> '/usr/local/bin/wkhtmltopdf',
         'margin' => array(
             'bottom' => 10,
             'left' => 15,

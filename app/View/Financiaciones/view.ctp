@@ -55,7 +55,7 @@ setlocale(LC_ALL, "es_ES.UTF-8");
 echo $this->html->tableheaders(array('Asociado','Reparto (%)','Peso (kg)','Coste (€)','IVA ('.$iva.'%)', 'Comisión', 'IVA ('.$iva_comision.'%)','Total anticipo','Pendiente'));
 foreach($distribuciones as $linea):
     echo $this->Html->tableCells(array(
-	$linea['Asociado']['nombre'],
+	$linea['Asociado']['nombre_corto'],
 	array(
 	    $this->Number->round($linea['RepartoOperacionAsociado']['porcentaje_embalaje_asociado']),
 	    array(
