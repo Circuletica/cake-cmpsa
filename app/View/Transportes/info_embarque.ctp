@@ -46,8 +46,8 @@
 	);
 
 	foreach ($transportes as $clave=>$transporte){
-			if (isset($transporte['Operacion']['Contrato']['si_entrega'])) {
-			  $entrega  = $transporte['Operacion']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
+			if (isset($transporte['Contrato']['si_entrega'])) {
+			  $entrega  = $transporte['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
 			  $entrega = ' ('.$entrega.')';
 			}else{ 
 			  	$entrega ='';
@@ -57,7 +57,7 @@
 			//$transporte['CalidadNombre']['nombre'],			
 			$transporte['Operacion']['referencia'],
 			$transporte['Proveedor']['nombre_corto'],
-			$transporte['Operacion']['PesoOperacion']['cantidad_embalaje'],		//SORTING!!
+			$transporte['PesoOperacion']['cantidad_embalaje'],		
 		//	$transporte['Operacion']['PesoOperacion']['peso'].'kg',			
 		    $this->Date->format($transporte['Contrato']['fecha_transporte']).$entrega,	
 		    $transporte['PuertoDestino']['nombre'],

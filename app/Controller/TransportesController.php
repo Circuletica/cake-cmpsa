@@ -476,26 +476,23 @@ $this->set(compact('num'));
 
 	$this->paginate['order'] = array('CalidadNombre.nombre' => 'asc');
 	$this->paginate['recursive'] = 2;
-	/*$this->paginate['condition'] = array(
-	    'Transporte.fecha_despacho_op !='=> NULL
-		);*/
-	$this->paginate = array(
-        'conditions' => array('Transporte.fecha_despacho_op!=' => NULL)
-        );
+	$this->paginate['condition'] = array(
+	    'Transporte.fecha_despacho_op'=> NULL
+		);
 	$this->paginate['contain'] = array(
 		    'Operacion' => array(
 		    	'fields'=> array(
 		    		'id',
 		    		'referencia',
 		    		'contrato_id',
-		    		),
-				'PesoOperacion'=> array(
-						'fields' =>array(
-							'id',
-					 	   	'peso',
-						   	'cantidad_embalaje'
-							)
-						)					    				    	
+		    		)				    				    	
+			),
+			'PesoOperacion'=> array(
+				'fields' =>array(
+					'id',
+					'peso',
+					'cantidad_embalaje'
+					)
 			),
 			'Contrato'=>array(	
 					'fields'=> array(
@@ -531,17 +528,15 @@ $this->set(compact('num'));
 				'className' => 'Empresa',
 				'foreignKey' => false,
 				'conditions' => array('Contrato.proveedor_id = Proveedor.id')
-			),
-			'Operacion' => array(
-				'hasOne' => array(
-					'PesoOperacion' => array(
-						'className' => 'PesoOperacion',
-						'foreignKey' => 'id'
-						)
-					)
-				)
-		    )
-	    )
+			)
+		),
+		'hasOne' => array(
+			'PesoOperacion' => array(
+				'foreignKey' => false,
+				'conditions' => array('Transporte.operacion_id = PesoOperacion.id')
+			)
+		)
+		)
 	);
 	
 	$this->set('transportes',$this->paginate());
@@ -558,9 +553,9 @@ $this->set(compact('num'));
 
 	//$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
 	$this->paginate['recursive'] = 1;
-	$this->paginate = array (
-		'condition' => array('Transporte.fecha_despacho_op' == '01-01-2015')
-		);	
+	$this->paginate['conditions'] = array(
+	    'Transporte.fecha_despacho_op IS NOT NULL'
+		);
 
 	$this->paginate['contain'] = array(
 		   'Operacion' => array(
@@ -670,8 +665,8 @@ $this->set(compact('num'));
 
 	//pasamos los datos a la vista
 	$this->set(compact('despachos','title'));
-
 	}
+
     public function reclamacion($id = null) {
 
     $this->pdfConfig = array(

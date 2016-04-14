@@ -43,7 +43,7 @@
 				$despacho['Operacion']['referencia'],
 				$despacho['Transporte']['linea'],			
 				$despacho['CalidadNombre']['nombre'],
-				$despacho['Transporte']['cantidad_embalaje'],					
+				$despacho['Transporte']['cantidad_embalaje'],		
 			    $this->Date->format($despacho['Transporte']['fecha_despacho_op']),
 		     		$this->Html->link('<i class="fa fa-info-circle"></i>',array(
 		     			'action'=>'view',$despacho['Transporte']['id']), array(
