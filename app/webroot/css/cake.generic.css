@@ -339,7 +339,7 @@ fieldset {
 	/*width: 47%;
 	/*margin-right: 10px; 
 	margin: 0 30px 10px 0;*/
-	margin: 0 2% 0px 0px;
+	margin: 0 1% 0px 1%;
 }
 fieldset legend {
 	color: #2c6877;
@@ -385,7 +385,7 @@ form div.submit {
 	border: 0;
 	clear: both;
 	/*margin-top: 1.5%; Botones formularios demasiado separados*/
-	margin-right: 10px;
+	/*margin-right: 10px;*/
 }
 
 form :focus {

@@ -37,10 +37,13 @@ if (isset($operacion_almacenes)) {
 }
 
 echo $this->Form->create();
+?>
+<fieldset>
+<?php
  if($muestra['tipo_id']!='1'){
- 	echo "<div class='col3'>";
+ 	//echo "<div class='col3'>";
  }else{
- 	echo "<div class='col4'>";
+ 	//echo "<div class='col4'>";
  }
 
 echo $this->Html->tableCells(
@@ -77,8 +80,9 @@ echo $this->Html->tableCells(
     )
 );
 ?>
-	</div>
-	<div class="col3">
+<!--	</div>-->
+</fieldset>
+<fieldset>
 <?php
 echo $this->Form->input('apreciacion_bebida', array(
     'label' => 'Bebida')
@@ -87,8 +91,10 @@ echo $this->Form->input('apreciacion_bebida', array(
 echo $this->Form->input('defecto');
 echo $this->Form->input('observaciones');
 ?>
-	</div>
-	<div class="col4">
+
+</fieldset>
+<fieldset>	
+	<div class="col2">
 <?php
 
 echo $this->Html->tableCells(array(
@@ -195,7 +201,7 @@ echo $this->Html->tableCells(array(
 	'class' => 'criba',
 	'oninput' => 'totalCriba()')
     ),
-    'Total : <input type="number" name="total" id="total"/>'
+    '<b>TOTAL:</b> <input type="number" name="total" id="total"/>'
 )
 	)."\n";
 ?>
@@ -204,6 +210,7 @@ echo $this->Html->tableCells(array(
 echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Linea de muestra');
 ?>
+</fieldset>
 <script type="text/javascript">
 window.onload = totalCriba();
 window.onload = operacionAlmacen();
