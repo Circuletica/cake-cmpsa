@@ -50,31 +50,33 @@ $enlace_anyadir_proveedor = $this->Html->link (
 echo $this->Form->create('Muestra');
 ?>
 <fieldset>
-<?php
-echo $this->Form->hidden(
-    'tipo_id',
-    array(
-	'value' => $tipo_id
-    )
-);
-if ($action == 'add') {
-    echo $this->Form->input(
-	'registro',
-	array(
-	    'autofocus' => 'autofocus',
-	    'between' => $siglas_tipos[$tipo_id].'-',
-	    'value' => $nuevo_registro
-	)
-    );
-} else {
-    echo $this->Form->input(
-	'registro',
-	array(
-	    'autofocus' => 'autofocus',
-	    'between' => $siglas_tipos[$tipo_id].'-',
-	)
-    );
-}
+	<?php
+	echo $this->Form->hidden(
+	    'tipo_id',
+	    array(
+		'value' => $tipo_id
+	    )
+	);
+	if ($action == 'add') {
+	    echo $this->Form->input(
+		'registro',
+		array(
+		    'autofocus' => 'autofocus',
+		    'between' => $siglas_tipos[$tipo_id].'-',
+		    'value' => $nuevo_registro,
+		    'style' => 'width: auto;'
+		)
+	    );
+	} else {
+	    echo $this->Form->input(
+		'registro',
+		array(
+		    'autofocus' => 'autofocus',
+		    'between' => $siglas_tipos[$tipo_id].'-',
+		    'style' => 'width: auto;'
+		)
+	    );
+	}
 echo $this->Form->input(
     'aprobado',
     array(
@@ -103,6 +105,10 @@ if ($tipo_id == 3) {
 	)
     );
 }
+?>
+</fieldset>
+<fieldset>
+<?php
 echo $this->Form->input(
     'calidad_id',
     array(
@@ -123,20 +129,19 @@ echo $this->Form->input(
 	'disabled' => $tipo_id != 1
     )
 );
-echo 'Transporte : <var id="transporte_contrato"></var>';
+echo '<label>Transporte: </label><var id="transporte_contrato"></var>';
 echo "<p>\n";
 ?>
+	<div class="linea">
+	<?php
+	echo $this->Form->input('fecha', array(
+	    'dateFormat' => 'DMY',
+	    'timeFormat' => null )
+	);
+	?>
+	</div>
 </fieldset>
 <fieldset>
-	    <div class="linea">
-<?php
-echo $this->Form->input('fecha', array(
-    'dateFormat' => 'DMY',
-    'timeFormat' => null )
-);
-?>
-	    </div>
-
 <?php
 echo $this->Form->input('incidencia');
 echo $this->element('cancelarform');

@@ -177,8 +177,7 @@ if ($action == 'edit') {
 if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
     ?>
      <legend>Seguro</legend>
-     <div class="col2">    
-            <?php
+          <?php
                         echo $this->Form->input('aseguradora_id',
                             array(
                             'label'=>'Aseguradora',
@@ -201,9 +200,9 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
                 );
             ?>
             </div>
-    </div>
+
             <br>
-     <div class="col3">              
+     <div class="col2">              
             <?php
 
                    // echo $this->Form->input('coste_seguro',array('label'=>'Coste seguro'));
@@ -213,7 +212,7 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
        </div>
           <legend>Reclamación</legend> 
           <br>
-        <div class="col2">          
+              
             <div class="linea">
             <?php
             echo $this->Form->input('fecha_reclamacion', array(
@@ -227,7 +226,7 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
             );
             ?>
             </div>  
-
+ <div class="col2">   
         <?php
         echo $this->Form->input('peritacion',array(
             'label'=>'Peritación (€)'
