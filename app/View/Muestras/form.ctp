@@ -1,6 +1,6 @@
 <div class="add">
 <?php
-$this->Html->addCrumb('Muestras', '/muestras');
+$this->Html->addCrumb('Muestras '.$tipo_nombre, '/muestras/index/Search.tipo_id:'.$tipo_id);
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 //Pasamos la lista de 'contratosMuestra' del contrato al javascript de la vista
 $this->Js->set('contratosMuestra', $contratosMuestra);
