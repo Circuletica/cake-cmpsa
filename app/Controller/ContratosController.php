@@ -27,38 +27,29 @@ class ContratosController extends AppController {
 	//$passedArgs['Search.palabras'] = mipalabra
 	//$passedArgs['Search.id'] = 3
 
-	//Si queremos un titulo con los criterios de busqueda
-	$titulo = array();
-
-	//filtramos por referencia
-	if(isset($this->passedArgs['Search.referencia'])) {
-	    $criterio = $this->passedArgs['Search.referencia'];
-	    $this->paginate['conditions']['Contrato.referencia LIKE'] = "%$criterio%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['referencia'] = $criterio;
-	    //completamos el titulo
-	    $title[] = 'Referencia: '.$criterio;
-	}
-
-	//filtramos por calidad
-	if(isset($this->passedArgs['Search.calidad'])) {
-	    $criterio = $this->passedArgs['Search.calidad'];
-	    $this->paginate['conditions']['Calidad.nombre LIKE'] = "%$criterio%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['calidad'] = $criterio;
-	    //completamos el titulo
-	    $title[] ='Calidad: '.$criterio;
-	}
-
-	//filtramos por proveedor
-	if(isset($this->passedArgs['Search.proveedor_id'])) {
-	    $criterio = $this->passedArgs['Search.proveedor_id'];
-	    $this->paginate['conditions']['Empresa.id LIKE'] = "$criterio";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['proveedor_id'] = $criterio;
-	    //completamos el titulo
-	    $title[] ='Proveedor: '.$proveedores[$criterio];
-	}
+	$titulo = $this->filtroPaginador(
+	    array(
+		'Contrato' => array(
+		    'Referencia' => array(
+			'columna' => 'referencia',
+			'exacto' => false,
+			'lista' => '',
+		    ),
+		    'Proveedor' => array(
+			'columna' => 'proveedor_id',
+			'exacto' => true,
+			'lista' => $proveedores
+		    )
+		),
+		'Calidad' => array(
+		    'Calidad' => array(
+			'columna' => 'nombre',
+			'exacto' => false,
+			'lista' => ''
+		    )
+		)
+	    )
+	);
 	//filtramos por fecha
 	if(isset($this->passedArgs['Search.fecha'])) {
 	    $criterio = $this->passedArgs['Search.fecha'];

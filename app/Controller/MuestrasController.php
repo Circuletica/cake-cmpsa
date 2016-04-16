@@ -2,11 +2,12 @@
 class MuestrasController extends AppController {
 
     public function index() {
+	$this->Muestra->virtualFields['calidad']=$this->Muestra->Calidad->virtualFields['nombre'];
 	$this->paginate['contain'] = array(
 	    'Proveedor',
 	    'Calidad',
 	    'Contrato' => array(
-		'Calidad',
+//		'Calidad',
 		'Proveedor'
 	    ),
 	    'MuestraEmbarque' => array(
@@ -52,11 +53,9 @@ class MuestrasController extends AppController {
 			'columna' => 'proveedor_id',
 			'exacto' => true,
 			'lista' => $proveedores
-		    )
-		),
-		'Calidad' => array(
+		    ),
 		    'Calidad' => array(
-			'columna' => 'nombre',
+			'columna' => 'calidad',
 			'exacto' => false,
 			'lista' => ''
 		    )

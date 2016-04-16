@@ -20,7 +20,7 @@
       )
   );
   echo $this->Form->input(
-      'Search.nombre',
+      'Search.calidad',
       array(
 	  'label' => 'Calidad'
       )

@@ -180,7 +180,8 @@ class AppController extends Controller {
 	//http://gestion.gargantilla.net/controller/index/Search.referencia:mireferencia/Search.id:3
 	foreach ($this->data as $k=>$v){ 
 	    foreach ($v as $kk=>$vv){ 
-		if ($vv) {$url[$k.'.'.$kk]=$vv;} 
+		//sustituimos '_' por '/' en los criterios de búsqueda
+		if ($vv) {$url[$k.'.'.$kk]=strtr($vv,'/','_');} 
 	    } 
 	}
 	$this->redirect($url,null,true);
@@ -204,8 +205,8 @@ class AppController extends Controller {
 	    foreach ($campos as $nombre => $elementos) {
 		$columna = $elementos['columna'];
 		if (isset($this->passedArgs['Search.'.$columna])) {
-		    $valor = $this->passedArgs['Search.'.$columna];
-		    //if (isset($elementos['exacto'])) {
+		    //en la URL (filtroListado()) sustituimos '_' por '/' ahora, al revés
+		    $valor = strtr($this->passedArgs['Search.'.$columna],'_','/');
 		    if ($elementos['exacto']) {
 			$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = $valor;
 		    } else {

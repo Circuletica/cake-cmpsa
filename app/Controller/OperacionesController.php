@@ -2,11 +2,15 @@
 class OperacionesController extends AppController {
 
     public function index() {
-
+	$this->Operacion->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
 	$this->paginate['order'] = array('Operacion.referencia' => 'asc');
 	$this->paginate['recursive'] = 2;
 	$this->paginate['contain'] = array(
-	    'Contrato',
+	    'Contrato' =>array(
+		'fields' => array(
+		    'referencia'
+		)
+	    ),
 	    'PesoOperacion',
 	    'Proveedor',
 	    'Calidad'
@@ -24,52 +28,38 @@ class OperacionesController extends AppController {
 	);
 	$this->set('proveedores',$proveedores);
 
-	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
-	//por ej.
-	//$passedArgs['Search.palabras'] = mipalabra
-	//$passedArgs['Search.id'] = 3
-
-	//Si queremos un titulo con los criterios de busqueda
-	$titulo = array();
-
-	//filtramos por referencia
-	if(isset($this->passedArgs['Search.referencia'])) {
-	    $criterio = $this->passedArgs['Search.referencia'];
-	    $this->paginate['conditions']['Operacion.referencia LIKE'] = "%$criterio%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['referencia'] = $criterio;
-	    //completamos el titulo
-	    $title[] = 'Referencia: '.$criterio;
-	}
+	$titulo = $this->filtroPaginador(
+	    array(
+		'Operacion' =>array(
+		    'Referencia' => array(
+			'columna' => 'referencia',
+			'exacto' => false,
+			'lista' => ''
+		    ),
+		    'Calidad' => array(
+			'columna' => 'calidad',
+			'exacto' => false,
+			'lista' => ''
+		    )
+		),
+		'Contrato' => array(
+		    'Proveedor' => array(
+			'columna' => 'proveedor_id',
+			'exacto' => true,
+			'lista' => $proveedores
+		    )
+		)
+	    )
+	);
 
 	//filtramos por contrato
 	if(isset($this->passedArgs['Search.contrato_referencia'])) {
-	    $criterio = $this->passedArgs['Search.contrato_referencia'];
+	    $criterio = strtr($this->passedArgs['Search.contrato_referencia'],'_','/');
 	    $this->paginate['conditions']['Contrato.referencia LIKE'] = "%$criterio%";
 	    //guardamos el criterio para el formulario de vuelta
 	    $this->request->data['Search']['contrato_referencia'] = $criterio;
 	    //completamos el titulo
 	    $title[] = 'Contrato: '.$criterio;
-	}
-
-	//filtramos por calidad
-	if(isset($this->passedArgs['Search.calidad'])) {
-	    $criterio = $this->passedArgs['Search.calidad'];
-	    $this->paginate['conditions']['Calidad.nombre LIKE'] = "%$criterio%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['calidad'] = $criterio;
-	    //completamos el titulo
-	    $title[] ='Calidad: '.$criterio;
-	}
-
-	//filtramos por proveedor
-	if(isset($this->passedArgs['Search.proveedor_id'])) {
-	    $criterio = $this->passedArgs['Search.proveedor_id'];
-	    $this->paginate['conditions']['Proveedor.id LIKE'] = "$criterio";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['proveedor_id'] = $criterio;
-	    //completamos el titulo
-	    $title[] ='Proveedor: '.$proveedores[$criterio];
 	}
 
 	$this->Operacion->bindModel(
