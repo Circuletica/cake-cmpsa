@@ -7,7 +7,7 @@ class ContratosController extends AppController {
 	    'Proveedor',
 	    'Incoterm',
 	    'CalidadNombre',
-	    'CanalCompra'
+	    'CanalCompra',
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda

@@ -32,10 +32,8 @@
 		$this->Paginator->sort('CanalCompra.nombre','Bolsa'),
 		$this->Paginator->sort('Contrato.lotes_contrato','Lotes'),
 		$this->Paginator->sort('Contrato.posicion_bolsa','Posición'),
-		//El diferencial para view()
-		//'Diferencial',
-		//Las opciones en Operacion
-		//'Opciones',
+		'Apr. Emb.',
+		'Apr. Entr.',
 		'Detalle')
 	);
 	foreach($contratos as $contrato):
@@ -55,8 +53,9 @@
 			$contrato['CanalCompra']['nombre'],
 			$contrato['Contrato']['lotes_contrato'],
 			$posicion_bolsa,
+			$contrato['Contrato']['si_muestra_emb_aprob']?'&#10004;':'',
+			$contrato['Contrato']['si_muestra_entr_aprob']?'&#10004;':'',
 			$this->Button->view('contratos',$contrato['Contrato']['id'])
-			//$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))
 	));
 	endforeach;?>
 	</table>
