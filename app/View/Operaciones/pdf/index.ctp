@@ -9,7 +9,7 @@
 		$this->Paginator->sort('Operacion.referencia','Referencia'),
 		$this->Paginator->sort('Contrato.referencia','Contrato'),
 		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
-		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
+		$this->Paginator->sort('Calidad.nombre','Calidad'),
 		$this->Paginator->sort('PesoOperacion.peso','Peso'),
 		$this->Paginator->sort('Operacion.lotes_operacion','Lotes')
 		)
@@ -20,7 +20,7 @@
 			$operacion['Operacion']['referencia'],
 			$operacion['Contrato']['referencia'],
 			$operacion['Proveedor']['nombre_corto'],
-			$operacion['CalidadNombre']['nombre'],
+			$operacion['Calidad']['nombre'],
 			$operacion['PesoOperacion']['peso'].'kg',
 			$operacion['Operacion']['lotes_operacion']
 	));

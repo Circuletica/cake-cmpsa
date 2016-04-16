@@ -83,8 +83,8 @@ class Contrato extends AppModel {
 	'Incoterm' => array(
 	    'className' => 'Incoterm',
 	    'foreignKey' => 'incoterm_id'),
-	'CalidadNombre' => array(
-	    'className' => 'CalidadNombre',
+	'Calidad' => array(
+	    'className' => 'Calidad',
 	    'foreignKey' => 'calidad_id')
 	);
 }

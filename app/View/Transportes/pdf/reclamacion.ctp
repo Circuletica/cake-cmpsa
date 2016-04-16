@@ -14,7 +14,7 @@ if(empty($transporte['Aseguradora']['nombre'] && $transporte['Transporte']['peri
 	<br><br>
 <?php echo '<b>Ref.: '.$transporte['Operacion']['referencia'].' '.'('.$transporte['Transporte']['linea'].'ª parte)&nbsp&nbsp&nbsp&nbsp Supl.: '.$transporte['Transporte']['suplemento_seguro'].'</b>'?> 
 <br><br>
-<?php echo '<h2>Café '.$transporte['Operacion']['Contrato']['CalidadNombre']['nombre'].'</h2>';?>
+<?php echo '<h2>Café '.$transporte['Operacion']['Contrato']['Calidad']['nombre'].'</h2>';?>
 <br>
 Muy Sres. nuestros:
 <br>

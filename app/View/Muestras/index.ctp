@@ -26,7 +26,7 @@
   <tr>
     <th><?php echo $this->Paginator->sort('registro', 'Registro')?></th>
     <th><?php echo $this->Paginator->sort('fecha')?></th>
-    <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
+    <th><?php echo $this->Paginator->sort('Calidad.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('Proveedor.nombre_corto', 'Proveedor')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Contrato')?></th>
     <th><?php echo 'Detalle'?></th>
@@ -42,7 +42,7 @@
      ?>
     </td>
     <td>
-      <?php echo $muestra['CalidadNombre']['nombre']; ?>
+      <?php echo $muestra['Calidad']['nombre']; ?>
     </td>
     <td>
       <?php echo $muestra['Proveedor']['nombre_corto']; ?>

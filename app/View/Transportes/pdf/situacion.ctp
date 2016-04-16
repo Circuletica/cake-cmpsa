@@ -6,7 +6,7 @@
 <?php    
 
 	echo $this->Html->tableHeaders(array(
-		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
+		$this->Paginator->sort('Calidad.nombre','Calidad'),
 		$this->Paginator->sort('Contrato.referencia','Operación'),
 		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 		$this->Paginator->sort('PesoOperacion.cantidad_embalaje','Cantidad'),
@@ -27,7 +27,7 @@
 				  	$entrega ='';
 				}
 		echo $this->Html->tableCells(array(
-			$transporte['Operacion']['Contrato']['CalidadNombre']['nombre'],			
+			$transporte['Operacion']['Contrato']['Calidad']['nombre'],			
 			$transporte['Operacion']['referencia'],
 			$transporte['Operacion']['Contrato']['Proveedor']['nombre_corto'],
 			$transporte['Operacion']['PesoOperacion']['cantidad_embalaje'],		

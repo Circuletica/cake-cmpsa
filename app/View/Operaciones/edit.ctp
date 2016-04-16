@@ -13,7 +13,7 @@ echo 'Contrato: '.$operacion['Contrato']['referencia']."\n";
 echo "<p>\n";
 echo 'Proveedor: '.$operacion['Contrato']['Proveedor']['nombre_corto']."\n";
 echo "<p>\n";
-echo 'Calidad: '.$operacion['Contrato']['CalidadNombre']['nombre']."\n";
+echo 'Calidad: '.$operacion['Contrato']['Calidad']['nombre']."\n";
 echo "<p>\n";
 echo 'Bolsa: '.$operacion['Contrato']['CanalCompra']['nombre'].
 	' ('.$operacion['Contrato']['Incoterm']['nombre'].")\n";

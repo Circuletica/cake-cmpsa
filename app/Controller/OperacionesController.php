@@ -9,7 +9,7 @@ class OperacionesController extends AppController {
 	    'Contrato',
 	    'PesoOperacion',
 	    'Proveedor',
-	    'CalidadNombre'
+	    'Calidad'
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
@@ -55,7 +55,7 @@ class OperacionesController extends AppController {
 	//filtramos por calidad
 	if(isset($this->passedArgs['Search.calidad'])) {
 	    $criterio = $this->passedArgs['Search.calidad'];
-	    $this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$criterio%";
+	    $this->paginate['conditions']['Calidad.nombre LIKE'] = "%$criterio%";
 	    //guardamos el criterio para el formulario de vuelta
 	    $this->request->data['Search']['calidad'] = $criterio;
 	    //completamos el titulo
@@ -75,9 +75,9 @@ class OperacionesController extends AppController {
 	$this->Operacion->bindModel(
 	    array(
 		'belongsTo' => array(
-		    'CalidadNombre' => array(
+		    'Calidad' => array(
 			'foreignKey' => false,
-			'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+			'conditions' => array('Contrato.calidad_id = Calidad.id')
 		    ),
 		    'Proveedor' => array(
 			'className' => 'Empresa',
@@ -155,7 +155,7 @@ class OperacionesController extends AppController {
 		'Incoterm.nombre',
 		'Incoterm.si_flete',
 		'Incoterm.si_seguro',
-		'CalidadNombre.nombre')
+		'Calidad.nombre')
 	    ));
 	$this->set('contrato',$contrato);
 	$this->set('puerto_carga_contrato_id', $contrato['Contrato']['puerto_carga_id']);
@@ -530,7 +530,7 @@ endif;
 				'si_flete'
 			    )
 			),
-			'CalidadNombre' => array(
+			'Calidad' => array(
 			    'fields' =>(
 				'nombre'
 			    )
@@ -614,9 +614,7 @@ endif;
 	$anyo = substr($fecha,0,4);
 	$this->set('fecha_transporte', $dia.'-'.$mes.'-'.$anyo);		
 	$this->set('embalaje', $embalaje);
-	$this->loadModel('CalidadNombre');
-	//Línea de transporte
-	//	$this->set('tipo_fecha_carga', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
+	$this->loadModel('Calidad');
 	//mysql almacena la fecha en formato ymd
 	//$fecha = $transporte['Transporte']['fecha_carga'];
 	$dia = substr($fecha,8,2);
@@ -636,39 +634,39 @@ endif;
 	//Líneas de reparto
 	//		debug($operacion_retiradas);
 
-//ahora el precio que facturamos por asociado
+	//ahora el precio que facturamos por asociado
 /*  MIRAR ATENTAMENTE PARA CAMBIAR EL CóDIGO POR ESTO SOLO
        $this->loadModel('PesoFacturacion');
-        $peso_asociados = $this->PesoFacturacion->find(
-            'all',
-            array(
-                'conditions' => array(
-                    'operacion_id' => $id
-                )
-            )
-        );
-        $this->set(compact('peso_asociados'));
-        $this->PesoFacturacion->virtualFields = array(
-            'total_peso_retirado' => 'sum(total_peso_retirado)',
-            'total_sacos_pendientes' => 'sum(sacos_pendientes)',
-            'total_peso_pendiente' => 'sum(peso_pendiente)',
-            'total_peso_total' => 'sum(peso_total)'
-        );
-        $totales = $this->PesoFacturacion->find(
-            'first',
-            array(
-                'conditions' => array(
-                    'PesoFacturacion.operacion_id' => $id
-                )
-            )
-        );
-        $this->set('totales',$totales['PesoFacturacion']);-*/
+	$peso_asociados = $this->PesoFacturacion->find(
+	    'all',
+	    array(
+		'conditions' => array(
+		    'operacion_id' => $id
+		)
+	    )
+	);
+	$this->set(compact('peso_asociados'));
+	$this->PesoFacturacion->virtualFields = array(
+	    'total_peso_retirado' => 'sum(total_peso_retirado)',
+	    'total_sacos_pendientes' => 'sum(sacos_pendientes)',
+	    'total_peso_pendiente' => 'sum(peso_pendiente)',
+	    'total_peso_total' => 'sum(peso_total)'
+	);
+	$totales = $this->PesoFacturacion->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'PesoFacturacion.operacion_id' => $id
+		)
+	    )
+	);
+	$this->set('totales',$totales['PesoFacturacion']);-*/
 
 
 
 
 
-	$total_sacos = 0;
+	    $total_sacos = 0;
 	$total_peso = 0;
 	$total_sacos_retirados = 0;
 	$total_peso_retirado = 0;

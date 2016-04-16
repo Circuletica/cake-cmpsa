@@ -4,13 +4,13 @@ class MuestrasController extends AppController {
     public function index() {
 	$this->paginate['contain'] = array(
 	    'Proveedor',
-	    'CalidadNombre',
+	    'Calidad',
 	    'Contrato' => array(
-		'CalidadNombre',
+		'Calidad',
 		'Proveedor'
 	    ),
 	    'MuestraEmbarque' => array(
-		'CalidadNombre',
+		'Calidad',
 		'Proveedor'
 	    )
 	);
@@ -54,7 +54,7 @@ class MuestrasController extends AppController {
 			'lista' => $proveedores
 		    )
 		),
-		'CalidadNombre' => array(
+		'Calidad' => array(
 		    'Calidad' => array(
 			'columna' => 'nombre',
 			'exacto' => false,
@@ -99,9 +99,9 @@ class MuestrasController extends AppController {
 	}
 	$this->Muestra->bindModel(array(
 	    'belongsTo' => array(
-		'CalidadNombre' => array(
+		'Calidad' => array(
 		    'foreignKey' => false,
-		    'conditions' => array('CalidadNombre.id = Muestra.calidad_id'),
+		    'conditions' => array('Calidad.id = Muestra.calidad_id'),
 		)
 	    )
 	));
@@ -109,7 +109,7 @@ class MuestrasController extends AppController {
 	    'conditions' => array('Muestra.id' => $id),
 	    'fields' => array(
 		'Muestra.*',
-		'CalidadNombre.*'
+		'Calidad.*'
 	    ),
 	    'recursive' => 3));
 	$this->set('muestra',$muestra);
@@ -234,7 +234,7 @@ class MuestrasController extends AppController {
 
 	//el titulado completo de la Calidad sale de una vista
 	//de MySQL que concatena descafeinado, pais y descripcion
-	$calidades = $this->Muestra->CalidadNombre->find('list');
+	$calidades = $this->Muestra->Calidad->find('list');
 	$this->set('calidades',$calidades);
 	$this->set(
 	    'contratos',
@@ -252,11 +252,11 @@ class MuestrasController extends AppController {
 			    'nombre_corto'
 			)
 		    ),
-		    'CalidadNombre'
+		    'Calidad'
 		),
 		'fields' => array(
 		    'Contrato.id',
-		    'CalidadNombre.nombre',
+		    'Calidad.nombre',
 		    'Contrato.transporte'
 		)
 	    )
@@ -348,7 +348,7 @@ class MuestrasController extends AppController {
 		    $this->request->data['Muestra']['proveedor_id'] =
 			$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['Proveedor']['id'];
 		    $this->request->data['Muestra']['calidad_id'] =
-			$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['CalidadNombre']['id'];
+			$contratosMuestra[$this->request->data['Muestra']['contrato_id']]['Calidad']['id'];
 		} else {
 		    $this->request->data['Muestra']['proveedor_id'] =
 			$muestrasEmbarque[$this->request->data['Muestra']['muestra_embarque_id']]['Contrato']['proveedor_id'];
@@ -362,8 +362,6 @@ class MuestrasController extends AppController {
 		$this->Session->setFlash('Muestra guardada');
 		$this->redirect(
 		    array(
-			//			'action' => 'index',
-			//			'Search.tipo_id' => $tipo
 			'action' => 'view',
 			$this->Muestra->id
 		    )

@@ -17,7 +17,7 @@ echo $this->Form->create('Operacion');
 <?php
 echo 'Proveedor: '.$proveedor."\n";
 echo "<p>\n";
-echo 'Calidad: '.$contrato['CalidadNombre']['nombre']."\n";
+echo 'Calidad: '.$contrato['Calidad']['nombre']."\n";
 echo "<p>\n";
 echo 'Bolsa: '.$contrato['CanalCompra']['nombre'].
     ' ('.$contrato['Incoterm']['nombre'].")\n";

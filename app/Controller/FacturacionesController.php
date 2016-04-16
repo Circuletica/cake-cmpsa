@@ -23,7 +23,7 @@ class FacturacionesController extends AppController {
 		'contain' => array(
 		    'Operacion' => array(
 			'Contrato' => array(
-			    'CalidadNombre',
+			    'Calidad',
 			    'Incoterm',
 			    'Proveedor'
 			),
@@ -46,7 +46,7 @@ class FacturacionesController extends AppController {
 	$this->set('referencia',$facturacion['Operacion']['referencia']);
 	$this->set('proveedor',$facturacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
 	$this->set('proveedor_id',$facturacion['Operacion']['Contrato']['Proveedor']['id']);
-	$this->set('calidad',$facturacion['Operacion']['Contrato']['CalidadNombre']['nombre']);
+	$this->set('calidad',$facturacion['Operacion']['Contrato']['Calidad']['nombre']);
 	$this->set('condicion',$facturacion['Operacion']['Contrato']['condicion']);
 	$this->set('precio_estimado', $facturacion['Operacion']['PrecioTotalOperacion']['precio_euro_kilo_total']);
 	$this->set('cambio_teorico', $facturacion['Operacion']['cambio_dolar_euro']);
@@ -123,7 +123,7 @@ class FacturacionesController extends AppController {
 		'conditions' => array('Operacion.id' => $id),
 		'contain' => array(
 		    'Contrato' => array(
-			'CalidadNombre',
+			'Calidad',
 			'Proveedor'
 		    ),
 		    'Transporte' => array(
@@ -183,7 +183,7 @@ class FacturacionesController extends AppController {
 	$this->set('referencia', $operacion['Operacion']['referencia']);
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['nombre_corto']);
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
-	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
+	$this->set('calidad', $operacion['Contrato']['Calidad']['nombre']);
 	$this->set('condicion', $operacion['Contrato']['condicion']);
 	$this->set('coste_teorico', $operacion['PrecioTotalOperacion']['precio_dolar_tonelada']);
 	$this->set('coste_estimado', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);

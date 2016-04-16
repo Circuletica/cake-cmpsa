@@ -46,7 +46,7 @@ echo $muestra['Contrato']['transporte'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
-echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
+echo $muestra['Calidad']['nombre'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";

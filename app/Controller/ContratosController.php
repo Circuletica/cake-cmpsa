@@ -6,7 +6,7 @@ class ContratosController extends AppController {
 	$this->paginate['contain'] = array(
 	    'Proveedor',
 	    'Incoterm',
-	    'CalidadNombre',
+	    'Calidad',
 	    'CanalCompra',
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
@@ -43,7 +43,7 @@ class ContratosController extends AppController {
 	//filtramos por calidad
 	if(isset($this->passedArgs['Search.calidad'])) {
 	    $criterio = $this->passedArgs['Search.calidad'];
-	    $this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$criterio%";
+	    $this->paginate['conditions']['Calidad.nombre LIKE'] = "%$criterio%";
 	    //guardamos el criterio para el formulario de vuelta
 	    $this->request->data['Search']['calidad'] = $criterio;
 	    //completamos el titulo
@@ -203,10 +203,10 @@ class ContratosController extends AppController {
 	//desplegable con las calidades de café
 	$this->set(
 	    'calidades',
-	    $this->Contrato->CalidadNombre->find(
+	    $this->Contrato->Calidad->find(
 		'list',
 		array(
-		    'order' => array('CalidadNombre.nombre' => 'ASC')
+		    'order' => array('Calidad.nombre' => 'ASC')
 		)
 	    )
 	);
@@ -274,8 +274,8 @@ class ContratosController extends AppController {
 	$this->set('contrato',$contrato);
 	//el titulado completo de la Calidad sale de una vista
 	//de MySQL que concatena descafeinado, pais y descripcion
-	$this->set('calidades',$this->Contrato->CalidadNombre->find('list', array(
-			'order' => array('CalidadNombre.nombre' => 'ASC')
+	$this->set('calidades',$this->Contrato->Calidad->find('list', array(
+			'order' => array('Calidad.nombre' => 'ASC')
 			)
 		));
 	$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
