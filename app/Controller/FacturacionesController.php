@@ -5,8 +5,51 @@ class FacturacionesController extends AppController {
     );
 
     public function index() {
+	$this->paginate['order'] = array('Operacion.referencia' => 'asc');
+	$this->paginate['recursive'] = 3;
 	$this->paginate['contain'] = array(
-	    'Operacion'
+//	    'fields' => array(
+//		'id'
+//	    ),
+	    'Operacion' => array(
+		'fields' => array(
+		    'referencia',
+		    'contrato_id'
+		)
+	    ),
+	    'Calidad' => array(
+		'fields' => array(
+		    'nombre'
+		)
+	    ),
+	    'Proveedor' => array(
+		'fields' => array(
+		    'nombre_corto'
+		)
+	    ),
+	    'Contrato' => array(
+		'calidad_id',
+		'proveedor_id'
+	    )
+	);
+	$this->Facturacion->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Contrato' => array(
+			'foreignKey' => false,
+			'conditions' => array('Contrato.id = Operacion.contrato_id')
+		    ),
+		    'Calidad' => array(
+			'foreignKey' => false,
+			'conditions' => array('Contrato.calidad_id = Calidad.id')
+		    ),
+		    'Proveedor' => array(
+			'className' => 'Empresa',
+			'foreignKey' => false,
+			'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+		    )
+		)
+	    )
 	);
 	$this->set('facturaciones', $this->paginate());
     }
@@ -95,7 +138,7 @@ class FacturacionesController extends AppController {
 
 	//Se declara para acceder al PDF
 	$this->set(compact('id'));
-	
+
     }
 
     public function add() {
