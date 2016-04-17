@@ -3,11 +3,42 @@ class ContratosController extends AppController {
     var $displayField = 'referencia';
     public function index() {
 	$this->paginate['order'] = array('Contrato.posicion_bolsa' => 'asc');
+	$this->Contrato->virtualFields['calidad']=$this->Contrato->Calidad->virtualFields['nombre'];
+	//	$this->paginate['fields'] = array(
+	//	    'id',
+	//	    'proveedor_id',
+	//	    'calidad_id',
+	//	    'calidad',
+	//	    'incoterm_id',
+	//	    'canal_compra_id',
+	//	    'referencia',
+	//	    'posicion_bolsa',
+	//	    'peso_comprado',
+	//	    'lotes_contrato',
+	//	    'si_muestra_emb_aprob',
+	//	    'si_muestra_entr_aprob'
+	//	);
 	$this->paginate['contain'] = array(
-	    'Proveedor',
-	    'Incoterm',
-	    'Calidad',
-	    'CanalCompra',
+	    'Proveedor' => array(
+		'fields' => array(
+		    'nombre_corto'
+		)
+	    ),
+	    'Incoterm' => array(
+		'fields' => array(
+		    'nombre'
+		)
+	    ),
+	    'Calidad' => array(
+		'fields' => array(
+		    'nombre'
+		)
+	    ),
+	    'CanalCompra' => array(
+		'fields' => array(
+		    'nombre'
+		)
+	    )
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
@@ -39,11 +70,9 @@ class ContratosController extends AppController {
 			'columna' => 'proveedor_id',
 			'exacto' => true,
 			'lista' => $proveedores
-		    )
-		),
-		'Calidad' => array(
+		    ),
 		    'Calidad' => array(
-			'columna' => 'nombre',
+			'columna' => 'calidad',
 			'exacto' => false,
 			'lista' => ''
 		    )

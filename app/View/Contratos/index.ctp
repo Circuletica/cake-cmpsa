@@ -1,4 +1,3 @@
-<?php //$this->Html->getCrumbs(' > ');?>
 <?php
 	$this->Html->addCrumb('Contratos', array(
 		'controller' => 'contratos',
@@ -27,7 +26,8 @@
 		$this->Paginator->sort('Contrato.referencia','Referencia'),
 		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 		$this->Paginator->sort('Incoterm.nombre','Incoterm'),
-		$this->Paginator->sort('Calidad.nombre','Calidad'),
+		//$this->Paginator->sort('Calidad.nombre','Calidad'),
+		$this->Paginator->sort('Contrato.calidad','Calidad'),
 		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
 		$this->Paginator->sort('CanalCompra.nombre','Bolsa'),
 		$this->Paginator->sort('Contrato.lotes_contrato','Lotes'),
@@ -48,7 +48,8 @@
 			$contrato['Contrato']['referencia'],
 			$contrato['Proveedor']['nombre_corto'],
 			$contrato['Incoterm']['nombre'],
-			$contrato['Calidad']['nombre'],
+			//$contrato['Calidad']['nombre'],
+			$contrato['Contrato']['calidad'],
 			$contrato['Contrato']['peso_comprado'].'kg',
 			$contrato['CanalCompra']['nombre'],
 			$contrato['Contrato']['lotes_contrato'],
