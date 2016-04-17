@@ -101,21 +101,18 @@ class MuestrasController extends AppController {
 	    $this->Session->setFlash('URL mal formada Muestra/view');
 	    $this->redirect(array('action'=>'index'));
 	}
-	$this->Muestra->bindModel(array(
-	    'belongsTo' => array(
-		'Calidad' => array(
-		    'foreignKey' => false,
-		    'conditions' => array('Calidad.id = Muestra.calidad_id'),
-		)
+	$muestra = $this->Muestra->find(
+	    'first',
+	    array(
+		'conditions' => array('Muestra.id' => $id),
+		'contain' => array(
+		    'Proveedor',
+		    'Calidad',
+		    'Contrato',
+		    'LineaMuestra'
+		),
 	    )
-	));
-	$muestra = $this->Muestra->find('first', array(
-	    'conditions' => array('Muestra.id' => $id),
-	    'fields' => array(
-		'Muestra.*',
-		'Calidad.*'
-	    ),
-	    'recursive' => 3));
+	);
 	$this->set('muestra',$muestra);
 
 	//Exportar PDF
@@ -258,11 +255,11 @@ class MuestrasController extends AppController {
 		    ),
 		    'Calidad'
 		),
-		'fields' => array(
-		    'Contrato.id',
-		    'Calidad.nombre',
-		    'Contrato.transporte'
-		)
+//		'fields' => array(
+//		    'Contrato.id',
+//		    'Calidad.nombre',
+//		    'Contrato.transporte'
+//		)
 	    )
 	);
 	//queremos el id del contrato como index del array
