@@ -250,16 +250,12 @@ class MuestrasController extends AppController {
 		'contain' => array(
 		    'Proveedor' => array(
 			'fields' =>array(
+			    'id',
 			    'nombre_corto'
 			)
 		    ),
 		    'Calidad'
 		),
-//		'fields' => array(
-//		    'Contrato.id',
-//		    'Calidad.nombre',
-//		    'Contrato.transporte'
-//		)
 	    )
 	);
 	//queremos el id del contrato como index del array

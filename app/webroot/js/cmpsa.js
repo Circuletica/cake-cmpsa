@@ -134,7 +134,7 @@ function contratosMuestra(){
 	//cambiamos el 'selected' del combobox
 	var opts = calidadId.options.length;
 	for (var i=0; i<opts; i++){
-	    if (calidadId.options[i].value == contratos[contratoSelOpt].CalidadNombre.id){
+	    if (calidadId.options[i].value == contratos[contratoSelOpt].Calidad.id){
 		calidadId.options[i].selected = true;
 		break;
 	    }
@@ -258,27 +258,27 @@ function operacionesRetirada(){
     var cuentaId = cuentaBox.options[cuentaIndex].value;
     console.log(operacioneId);
 
-		//modificamos _todo_ el select de operaciones
-	if (operacionId in operaciones) {
-		var asociadosOperacion = operaciones[operacionId].Asociado;
-		var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
-	    asociadoBox.options.length = opt1;
+    //modificamos _todo_ el select de operaciones
+    if (operacionId in operaciones) {
+	var asociadosOperacion = operaciones[operacionId].Asociado;
+	var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
+	asociadoBox.options.length = opt1;
 
-	    for (var i=0; i<opt1; i++){
-		asociadoBox.options[i].value = asociadosOperacion[i].id;
-		asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
-		}
- 	  
-		//CUENTA ALMACEN
-			var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
-			var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
-			cuentaBox.options.length = opt2;
-	
-			for (var i=0; i<opt2; i++){
-			cuentaBox.options[i].value = almacenesOperacion[i].id;
-			cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
-			}
+	for (var i=0; i<opt1; i++){
+	    asociadoBox.options[i].value = asociadosOperacion[i].id;
+	    asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
 	}
+
+	//CUENTA ALMACEN
+	var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
+	var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
+	cuentaBox.options.length = opt2;
+
+	for (var i=0; i<opt2; i++){
+	    cuentaBox.options[i].value = almacenesOperacion[i].id;
+	    cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
+	}
+    }
 }
 
 function operacionAlmacen() {
