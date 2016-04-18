@@ -87,6 +87,14 @@ echo $this->Form->input(
 	'onchange' => ($tipo_id == 1 ? 'muestraOferta()':'')
     )
 );
+if ($tipo_id == 1) {
+    echo $this->Form->input(
+	'si_sample',
+	array(
+	    'label' => 'Sample'
+	)
+    );
+}
 echo $this->Form->input('contrato_id',
     array(
 	'empty' => true,

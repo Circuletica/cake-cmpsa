@@ -32,7 +32,7 @@ echo "</dd>";
 echo "  <dt>Comprado</dt>\n";
 echo "<dd>";
 echo ($muestra['Muestra']['aprobado'] ?
-    'Sí ('
+    '&#10004; (contrato: '
     .$this->Html->link(
 	$muestra['Contrato']['referencia'],
 	array(
@@ -42,7 +42,7 @@ echo ($muestra['Muestra']['aprobado'] ?
 	)
     )
     .')'
-    : 'No');
+    : '&nbsp;');
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
@@ -54,6 +54,13 @@ echo $this->Html->link($muestra['Proveedor']['nombre_corto'], array(
     'controller' => 'proveedores',
     'action' => 'view',
     $muestra['Proveedor']['id'])
+);
+echo "</dd>";
+echo "  <dt>Sample</dt>\n";
+echo "<dd>";
+echo ($muestra['Muestra']['si_sample'] ?
+    '&#10004;'
+    : '&nbsp;'
 );
 echo "</dd>";
 echo "  <dt>Fecha</dt>\n";
