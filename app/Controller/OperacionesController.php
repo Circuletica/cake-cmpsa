@@ -130,23 +130,37 @@ class OperacionesController extends AppController {
 
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
-	$contrato = $this->Operacion->Contrato->find('first', array(
-	    'conditions' => array('Contrato.id' => $contrato_id),
-	    'recursive' => 2,
-	    'fields' => array(
-		'Contrato.id',
-		'Contrato.referencia',
-		'Contrato.proveedor_id',
-		'Contrato.peso_comprado',
-		'Contrato.puerto_carga_id',
-		'Contrato.puerto_destino_id',
-		'CanalCompra.nombre',
-		'CanalCompra.divisa',
-		'Incoterm.nombre',
-		'Incoterm.si_flete',
-		'Incoterm.si_seguro',
-		'Calidad.nombre')
-	    ));
+	$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
+	$contrato = $this->Operacion->Contrato->find(
+	    'first',
+	    array(
+		'conditions' => array('Contrato.id' => $contrato_id),
+		'recursive' => 2,
+		'contain' => array(
+		    'Calidad',
+		    'CanalCompra',
+		    'Incoterm',
+		    'Proveedor',
+		    'RestoContrato',
+		    'RestoLotesContrato'
+		),
+		'fields' => array(
+		    'Contrato.id',
+		    'Contrato.referencia',
+		    'Contrato.proveedor_id',
+		    'Contrato.peso_comprado',
+		    'Contrato.puerto_carga_id',
+		    'Contrato.puerto_destino_id',
+		    'Contrato.calidad',
+		    'CanalCompra.nombre',
+		    'CanalCompra.divisa',
+		    'Incoterm.nombre',
+		    'Incoterm.si_flete',
+		    'Incoterm.si_seguro',
+		    'Proveedor.nombre_corto'
+		)
+	    )
+	);
 	$this->set('contrato',$contrato);
 	$this->set('puerto_carga_contrato_id', $contrato['Contrato']['puerto_carga_id']);
 	$this->set('puerto_destino_contrato_id', $contrato['Contrato']['puerto_destino_id']);
@@ -194,7 +208,7 @@ class OperacionesController extends AppController {
 	$embalajes_completo = array_replace_recursive($embalajes_nombre,$embalajes_peso);
 	$this->set('embalajes_completo', $embalajes_completo);
 	//solo para mostrar el proveedor a nivel informativo
-	$this->set('proveedor',$contrato['Proveedor']['nombre']);
+	$this->set('proveedor',$contrato['Proveedor']['nombre_corto']);
 	//a quienes van asociadas las lineas de contrato
 
 
@@ -258,7 +272,7 @@ class OperacionesController extends AppController {
 	//usar el mismo valor para varias opciones del select.
 	//Con un array simple no funciona, no se puede usar la misma clave
 	//varias veces. 
-	foreach($precio_fletes as $precio_flete) {
+	foreach($precio_fletes as &$precio_flete) {
 	    $fletes[] = array( 
 		'name' => $precio_flete['Flete']['Naviera']['nombre_corto'].'('
 		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
@@ -267,8 +281,11 @@ class OperacionesController extends AppController {
 		.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
 		'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
 	    );
+	    //guardamos solo ese array para el js
+	    unset($precio_flete['PrecioFleteContrato']);
 	}
 	$this->set(compact('fletes'));
+	$this->set(compact('precio_fletes'));
 
 	if($this->request->is('post')) {
 	    //al guardar la linea, se incluye a qué contrato pertenece
