@@ -1,0 +1,11 @@
+Mejora formulario operaciones add
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# En la rama trafico
+# Your branch is up-to-date with 'origin/trafico'.
+#
+# Cambios para hacer commit:
+#	modificado: app/View/Elements/desplegabledatos.ctp
+#	modificado: app/View/Operaciones/add.ctp
+#	modificado: app/View/Pages/gestiondatos.ctp
+#
