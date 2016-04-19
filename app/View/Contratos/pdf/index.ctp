@@ -9,14 +9,14 @@
 	else:
 	echo "<table>\n";
 	echo $this->Html->tableHeaders(array(
-		$this->Paginator->sort('Contrato.referencia','Referencia'),
-		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
-		$this->Paginator->sort('Incoterm.nombre','Incoterm'),
-		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
-		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
-		$this->Paginator->sort('CanalCompra.nombre','Bolsa'),
-		$this->Paginator->sort('Contrato.lotes_contrato','Lotes'),
-		$this->Paginator->sort('Contrato.posicion_bolsa','Posición')
+		'Referencia',
+		'Proveedor',
+		'Incoterm',
+		'Calidad',
+		'Peso',
+		'Bolsa',
+		'Lotes',
+		'Posición'
 		)
 	);
 	foreach($contratos as $contrato):

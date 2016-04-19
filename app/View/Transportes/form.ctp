@@ -11,12 +11,12 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
 if ($action == 'add') {
     $transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
     echo "<h2>Añadir Transporte a Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
-    echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].' / Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.' / Bultos pendientes: '.$transportado.' en '.$embalaje.'</h4>';
+    echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].'/ Precio:'.$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg / Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.' / Bultos pendientes: '.$transportado.' en '.$embalaje.'</h4>';
 }
 
 if ($action == 'edit') {
     echo "<h2>Modificar Transporte de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
-    echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].' / Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.' / Transportados previamente: '.$transportado.'</h4>';
+    echo '<h4>Incoterm: '.$operacion['Contrato']['Incoterm']['nombre'].'/ Precio: '.$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg / Bultos operación: '.$operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.' / Transportados previamente: '.$transportado.'</h4>';
 }
 
     //Formulario para rellenar transporte
@@ -176,9 +176,8 @@ if ($action == 'edit') {
 <?php
 if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
     ?>
-    <legend>Seguro</legend>
-     <div class="col2">    
-            <?php
+     <legend>Seguro</legend>
+          <?php
                         echo $this->Form->input('aseguradora_id',
                             array(
                             'label'=>'Aseguradora',
@@ -201,18 +200,19 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
                 );
             ?>
             </div>
-    </div>
+
             <br>
-     <div class="col3">              
+     <div class="col2">              
             <?php
-                    echo $this->Form->input('coste_seguro',array('label'=>'Coste seguro'));
+
+                   // echo $this->Form->input('coste_seguro',array('label'=>'Coste seguro'));
                     echo $this->Form->input('suplemento_seguro',array('label'=>'Suplemento'));
-                    echo $this->Form->input('peso_neto',array('label'=>'Peso neto'));
+                    echo $this->Form->input('peso_neto',array('label'=>'Peso neto (Kg)'));
                     ?>
        </div>
           <legend>Reclamación</legend> 
           <br>
-        <div class="col2">          
+              
             <div class="linea">
             <?php
             echo $this->Form->input('fecha_reclamacion', array(
@@ -226,7 +226,7 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
             );
             ?>
             </div>  
-
+ <div class="col2">   
         <?php
         echo $this->Form->input('peritacion',array(
             'label'=>'Peritación (€)'
@@ -245,8 +245,10 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
             )
         );
 
-        echo $this->Form->input('observaciones', array('label'=>'Observaciones'));        
-        echo $this->Html->Link('<i class="fa fa-times"></i> Cancelar', $this->request->referer(''), array('class' => 'botond', 'escape'=>false));
+        echo $this->Form->input('observaciones', array('label'=>'Observaciones')); 
+        //Agregamos el número de línea que le corresponde     
+        echo $this->Form->hidden('linea', array('value' =>$num));    
+        echo $this->element('cancelarform');
         echo $this->Form->end('Guardar Línea Transporte', array('escape'=>false));
         ?>
     </fieldset>

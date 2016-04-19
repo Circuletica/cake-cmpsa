@@ -130,6 +130,18 @@ class FinanciacionesController extends AppController {
 	$this->set('precio_euro_kilo', $financiacion['Financiacion']['precio_euro_kilo']);
 	$this->set('iva',$financiacion['ValorIvaFinanciacion']['valor']);
 	$this->set('iva_comision',$financiacion['ValorIvaComision']['valor']);
+	
+	//Se declara para acceder al PDF
+	$this->set(compact('id'));
+
+	$this->pdfConfig = array(
+		'filename' => 'financiacion',
+		'paperSize' => 'A4',
+    	'orientation' => 'landscape'
+    	);	
+
+
+
     }
 
     public function add() {

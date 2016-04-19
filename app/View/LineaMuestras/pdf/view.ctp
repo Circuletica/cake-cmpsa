@@ -1,26 +1,12 @@
 <?php
 // Usamos plantilla clásica de vistas View/Common/view.ctp
-$this->extend('/Common/view');
+$this->extend('/Common/pdf/viewPdf');
 $this->assign('object', 'Línea de la muestra '.$linea['Muestra']['tipo_registro']);
 $this->assign('id',$linea['LineaMuestra']['id']);
 $this->assign('class','LineaMuestra');
 $this->assign('controller','linea_muestras');
 $this->assign('from_controller','muestras');
 $this->assign('from_id',$linea['Muestra']['id']);
-
-$this->Html->addCrumb('Muestras de '.$linea['Muestra']['tipo_nombre'], array(
-    'controller'=>'muestras',
-    'action'=>'index',
-    'Search.tipo_id' => $linea['Muestra']['tipo_id']
-));
-$this->Html->addCrumb('Muestra '.$linea['Muestra']['tipo_registro'], array(
-    'controller'=>'muestras',
-    'action'=>'view',
-    $linea['Muestra']['id']
-));
-$this->start('filter');
-echo $this->element('filtromuestra');
-$this->end();
 
 $this->start('main');
 echo "<dl>\n";

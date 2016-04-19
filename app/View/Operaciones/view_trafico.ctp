@@ -18,7 +18,11 @@
  		), 
  	array(
  		'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
- $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array('escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'));
+ $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array(
+ 	'escape'=>false,
+ 	'target' => '_blank',
+ 	'title'=>'Enviar e-mail')
+ );
  ?>
  
 	</div>
@@ -246,7 +250,64 @@ echo $this->html->tablecells(array(
 				echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
 			}
 
-		?>
+		/*	if($asociados_error !=0){
+			echo "<h4><span style=color:#c43c35;>Hay retiradas que no se encuentra en la operación asignada, por favor, corriga el error eliminando las retiradas o agregando el asociado a la operación correspondientes</span></h4>";		
+
+			?>
+
+			<div class="detallado">
+			<br>
+			<h2>Asociados que han retirado que no se encuentran en la operación</h2>
+			
+			<table>
+			<?php
+					echo $this->Html->tableHeaders(array('Asociado','Embalaje retirado','Peso retirado (Kg)', 'Fecha retirada','Detalle'));
+				
+					foreach ($operacion_retiradas as $operacion_retirada):
+						echo $this->Html->tableCells(array(
+							$operacion_retirada['Asociado']['nombre_corto'],
+							array(
+								$operacion_retirada['Retirada']['embalaje_retirado'],
+								array(
+									'style' => 'text-align:right'
+								)
+							),
+							array(
+								$operacion_retirada['Retirada']['peso_retirado'],
+								array(
+									'style' => 'text-align:right'
+								)
+							),
+							array(
+								$this->Date->format($operacion_retirada['Retirada']['fecha_retirada']),
+								array(
+									'style' => 'text-align:right'
+								)
+							),
+				
+								$this->Html->link(
+									'<i class="fa fa-info-circle"></i> ',array(
+										'controller' => 'retiradas',
+										'action' => 'view_asociado',
+										'asociado_id'=>$operacion_retirada['Retirada']['asociado_id'],
+										'from_controller' => 'operaciones',
+										'from_id' => $operacion['Operacion']['id']
+										),
+									array(
+										'class' => 'boton',
+										'title' => 'Detalle asociado',
+										'escape' => false
+										)
+									)
+								)
+							
+						);
+					endforeach;
+					?>
+			</table>
+			<?php 
+			}*/
+			?>	
 		</div>
 	</div>
 	</div>

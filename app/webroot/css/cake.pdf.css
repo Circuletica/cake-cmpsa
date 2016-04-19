@@ -9,7 +9,7 @@
 body {
 	color: #000000;
 	font-family:verdana,helvetica,arial,sans-serif;
-	font-size:80%;
+	font-size:110%;
 	margin: 0;
 	font-weight: 500;
 }
@@ -21,7 +21,7 @@ h1 {
 	color: #000000;
 	text-align:center;
 	font-size: 170%;
-	margin-bottom: 1em;
+	margin-bottom: 0.5em;
 }
 h2 {
 	color:#990033;
@@ -32,12 +32,12 @@ h2 {
 h3 {
 	color:  #2c6877;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 130%;
+	font-size: 135%;
 	font-weight: bold;
 }
 h4 {
 	color: #000;
-	font-size: 100%;
+	font-size: 120%;
 	font-weight: bold;
 }
 ul, li {
@@ -153,10 +153,10 @@ dt {
 	font-weight: bold;
 	padding-left: 1%;
 	vertical-align: top;
-	width: 25%;
+	width: 30%;
 }
 dd {
-	margin-left: 25%;
+	margin-left: 30%;
 	margin-top: -2em;
 	vertical-align: top;
 }

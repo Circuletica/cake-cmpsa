@@ -34,11 +34,12 @@
 		//	$transporte['Operacion']['PesoOperacion']['peso'].'kg',			
 		    $this->Date->format($transporte['Operacion']['Contrato']['fecha_transporte']).$entrega,	
 		    $transporte['PuertoDestino']['nombre'],
-		    $transporte['Transporte']['fecha_carga'],
-		    $transporte['Transporte']['fecha_llegada'],
+		    $this->Date->format($transporte['Transporte']['fecha_carga']),
+		    $this->Date->format($transporte['Transporte']['fecha_llegada']),
 		    $transporte['Transporte']['nombre_vehiculo'],
-		    $transporte['Transporte']['fecha_prevista']	
-		));
+		    $this->Date->format($transporte['Transporte']['fecha_prevista']    			)
+      			)		
+		);
 		}
 ?>
 	</table>

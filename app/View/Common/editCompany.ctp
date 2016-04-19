@@ -78,5 +78,6 @@ FORMATO MODELO PROVEEDORES EDIT.CTP
 	<?php
 		//echo $this->Form->input('BancoPrueba.cuenta_cliente_2');
 		echo $this->Form->input('id',array('type'=>'hidden'));
+		echo $this->element('cancelarform');
 		echo $this->Form->end('Guardar proveedor');
 	?>

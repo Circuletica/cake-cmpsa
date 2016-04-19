@@ -13,5 +13,6 @@ echo $this->Form->create('Pais', array('action' => 'edit'));?>
 	</div>
  	<?php
    echo $this->Form->input('id', array('type'=>'hidden'));
+echo $this->element('cancelarform');   
    echo $this->Form->end('Guardar país');
 ?>

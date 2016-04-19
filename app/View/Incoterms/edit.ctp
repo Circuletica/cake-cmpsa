@@ -6,6 +6,7 @@ echo $this->Form->create('Incoterms', array('action' => 'edit'));?>
 <?php
    echo $this->Form->input('nombre');
    echo $this->Form->input('id', array('type'=>'hidden'));
+   echo $this->element('cancelarform');  
    echo $this->Form->end('Guardar Incoterms');
 ?>
 </fieldset>

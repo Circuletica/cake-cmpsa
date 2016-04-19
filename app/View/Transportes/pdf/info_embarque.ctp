@@ -1,19 +1,5 @@
-<div class="printdet">
- <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
- <?php //PARA INDEX
- echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
-    array(
-      'action' => 'situacion',
-      'ext' => 'pdf'),
-    array(
-      'escape'=>false,
-      'target' => '_blank',
-      'title'=>'Exportar a PDF')
-  );
-?>
-</div>
 <?php
-	echo '<h2>Situación de embarques a día '.date("d-m-Y").' sin despachar</h2>';
+	echo '<h2>Situación de embarques sin despachar</h2>';
 ?>
 <div class='ancho_completo'>
     <table>
@@ -29,8 +15,7 @@
 		$this->Paginator->sort('Fecha carga'),		
 		$this->Paginator->sort('Fecha llegada'),
 		$this->Paginator->sort('Nombre vehículo'),
-		$this->Paginator->sort('Llegada prevista'),
-		'Detalle'			
+		$this->Paginator->sort('Llegada prevista')	
 		)
 	);
 
@@ -49,16 +34,12 @@
 		//	$transporte['Operacion']['PesoOperacion']['peso'].'kg',			
 		    $this->Date->format($transporte['Operacion']['Contrato']['fecha_transporte']).$entrega,	
 		    $transporte['PuertoDestino']['nombre'],
-		    $transporte['Transporte']['fecha_carga'],
-		    $transporte['Transporte']['fecha_llegada'],
+		    $this->Date->format($transporte['Transporte']['fecha_carga']),
+		    $this->Date->format($transporte['Transporte']['fecha_llegada']),
 		    $transporte['Transporte']['nombre_vehiculo'],
-		    $transporte['Transporte']['fecha_prevista'],
-      		$this->Html->link('<i class="fa fa-info-circle"></i>',array(
-      			'action'=>'view',$transporte['Transporte']['id']), array(
-      			'class'=>'boton','escape' => false,'title'=>'Detalle'
-      			)
+		    $this->Date->format($transporte['Transporte']['fecha_prevista']    			)
       			)		
-		));
+		);
 		}
 ?>
 	</table>

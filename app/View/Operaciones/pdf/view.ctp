@@ -1,5 +1,5 @@
 <?php
-$this->extend('/Common/view');
+$this->extend('/Common/pdf/viewPdf');
 $this->assign('object', 'Operación '.$referencia);
 $this->assign('line_object', 'Reparto asociados');
 $this->assign('id',$operacion['Operacion']['id']);
@@ -10,21 +10,9 @@ $this->assign('line_add','1');
 
 $this->start('main');
 echo "<dl>";
-echo "  <dt>Referencia Contrato:</dt>\n";
-echo "<dd>";
-echo $this->html->link($operacion['Contrato']['referencia'], array(
-    'controller' => 'contratos',
-    'action' => 'view',
-    $operacion['Contrato']['id'])
-);
-echo "  </dd>";
 echo "  <dt>Proveedor:</dt>\n";
 echo "<dd>";
-echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], array(
-    'controller' => 'proveedores',
-    'action' => 'view',
-    $operacion['Contrato']['Proveedor']['id'])
-);
+echo $operacion['Contrato']['Proveedor']['nombre_corto'];
 echo "  </dd>";
 echo "  <dt>Transporte:</dt>\n";
 echo "  <dd>".$operacion['Contrato']['transporte']."&nbsp;</dd>";
@@ -35,15 +23,11 @@ echo "  <dd>".
     $operacion['PesoOperacion']['cantidad_embalaje'].' x '.
     $embalaje['Embalaje']['nombre'].
     ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
-echo "  <dt>Lotes:</dt>\n";
-echo "  <dd>".$operacion['Operacion']['lotes_operacion']."&nbsp;</dd>";
 echo "  <dt>Puerto de Embarque:</dt>\n";
 echo "  <dd>".$operacion['PuertoCarga']['nombre'].'&nbsp;'."</dd>";
 echo "  <dt>Puerto de Destino:</dt>\n";
 echo "  <dd>".$operacion['PuertoDestino']['nombre'].'&nbsp;'."</dd>";
 //mysql almacena la fecha en formato ymd
-echo "  <dt>Fecha fijación:</dt>\n";
-echo "  <dd>".$this->Date->format($fecha_fijacion).'&nbsp;'."</dd>";
 echo "  <dt>Precio fijación:</dt>\n";
 echo "  <dd>".$operacion['Operacion']['precio_fijacion']
     .$divisa

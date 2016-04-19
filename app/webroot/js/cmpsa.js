@@ -256,6 +256,7 @@ function operacionesRetirada(){
     var operacionId = operacionBox.options[operacionIndex].value;
     var asociadoId = asociadoBox.options[asociadoIndex].value;
     var cuentaId = cuentaBox.options[cuentaIndex].value;
+    console.log(asociadoId);
 
 		//modificamos _todo_ el select de operaciones
 	if (operacionId in operaciones) {
@@ -266,6 +267,9 @@ function operacionesRetirada(){
 	    for (var i=0; i<opt1; i++){
 		asociadoBox.options[i].value = asociadosOperacion[i].id;
 		asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
+			if(asociadoBox.options[i].value == asociadoId){
+				asociadoBox.options[i].selected = true;
+			}
 		}
  	  
 		//CUENTA ALMACEN
@@ -315,3 +319,31 @@ function operacionAlmacen() {
 	almacenId.options[0].selected = true;
     }
 }
+
+function pesoFacturacion() {
+    var pesoFacturacionRadio = document.getElementsByName('data[Facturacion][peso_facturacion]');
+    var totalCafeField = document.getElementById('totalCafe');
+    var totalGastosField = document.getElementById('totalGastos');
+    var totalOperacionField = document.getElementById('totalOperacion');
+    var precioDolarTm = document.getElementById('FacturacionPrecioDolarTm').value;
+    var cambioDolarEuro = document.getElementById('FacturacionCambioDolarEuro').value;
+    var pesoFacturacion;
+    for (var i = 0; i < pesoFacturacionRadio.length; i++) {
+	if (pesoFacturacionRadio[i].checked) {
+	    pesoFacturacion = pesoFacturacionRadio[i].value;
+	}
+    }
+    var totalCafe = (pesoFacturacion/1000) * precioDolarTm / cambioDolarEuro;
+    totalCafeField.innerHTML = 'Total café: '+totalCafe.toFixed(2)+'€';
+    var gastosBancarios = parseFloat(document.getElementById('FacturacionGastosBancariosPagados').value);
+    var fletePagado = parseFloat(document.getElementById('FacturacionFletePagado').value);
+    var despachoPagado = parseFloat(document.getElementById('FacturacionDespachoPagado').value);
+    var seguroPagado = parseFloat(document.getElementById('FacturacionSeguroPagado').value);
+    var totalGastos = gastosBancarios + fletePagado + despachoPagado + seguroPagado;
+    totalGastosField.innerHTML = 'Total gastos: '+totalGastos+'€';
+    var totalOperacion = (totalCafe + totalGastos) / pesoFacturacion;
+    totalOperacionField.innerHTML = 'Precio real operación: '+totalOperacion.toFixed(6)+'€/kg';
+}
+
+
+

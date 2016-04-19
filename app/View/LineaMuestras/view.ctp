@@ -5,7 +5,7 @@ $this->assign('object', 'Línea de la muestra '.$linea['Muestra']['tipo_registro
 $this->assign('id',$linea['LineaMuestra']['id']);
 $this->assign('class','LineaMuestra');
 $this->assign('controller','linea_muestras');
-$this->assign('from_controller','muestras');
+//$this->assign('from_controller','muestras'); Se comenta porque da error a la hora de ver los botones de borrar.
 $this->assign('from_id',$linea['Muestra']['id']);
 
 $this->Html->addCrumb('Muestras de '.$linea['Muestra']['tipo_nombre'], array(
@@ -18,6 +18,8 @@ $this->Html->addCrumb('Muestra '.$linea['Muestra']['tipo_registro'], array(
     'action'=>'view',
     $linea['Muestra']['id']
 ));
+
+
 $this->start('filter');
 echo $this->element('filtromuestra');
 $this->end();

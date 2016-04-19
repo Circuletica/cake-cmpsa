@@ -88,7 +88,7 @@ p {
 
 #header{
 	padding: 10px 20px;
-	width: 1280px;
+	width: 1200px;
  	margin: 0 auto;}
 #header h1 {
 	/*line-height:30px;*/
@@ -113,16 +113,17 @@ p {
 	background: #fff;
 	clear: both;
 	color: #333;
-	/*padding: 0px 20px 40px 20px; Anterior*/
-	padding: 0px 40px 40px 40px;
+	/*padding: 0px 20px 40px 20px; Anterior
+	padding: 0px 40px 40px 40px;*/
+	padding: 0px 2% 1% 2% ;
 	overflow: auto;
 	/*ANCHO PANTALLA*/
-	width: 1280px;
+	width: 1200px;
  	margin: 0 auto;
 	/*border: 1px solid; /*Borde pestaña y caja*/
 }
 #footer {
-	width: 1280px;
+	width: 1200px;
  	margin: 0 auto;
 	clear: both;
 	padding: 0px 20px 0px 10px;
@@ -130,7 +131,7 @@ p {
 #header a, {			/*Se elimina footer a*/
 	color: #fff;
 }
-/*Para pantallas menores de 1280px*/
+/*Para pantallas menores de 1280px
 @media only screen and (min-width: 1300px) {
 	#header{
 		padding: 10px 20px;
@@ -143,7 +144,7 @@ p {
 		color: #333;
 		padding: 0px 40px 40px 40px;
 		overflow: auto;
-		/*ANCHO PANTALLA*/
+	ANCHO PANTALLA
 		width: 85%;
 	 	margin: 0 auto;
 	}
@@ -153,14 +154,7 @@ p {
 		clear: both;
 		padding: 0px 20px 0px 10px;
 		}
-}
-
-
-
-
-
-
-
+}*/
 
 /** containers **/
 div.menuheader{
@@ -186,7 +180,7 @@ div.view {
 }
 div.actions {
 	float:left;
-	width:17%;
+	width:18%;
 	padding:1% 0% 2%;
 	border: 5px;
    /* height: 90px;*/
@@ -331,9 +325,9 @@ dd {
 /** Forms **/
 form {
 	clear: both;
-	margin-right: 20px;
+	/*margin-right: 20px; Eliminado para cuadrar*/
 	padding: 0;
-	width: 95%;
+	/*width: 95%;*/
 }
 fieldset {
 	border: 1px;
@@ -345,7 +339,7 @@ fieldset {
 	/*width: 47%;
 	/*margin-right: 10px; 
 	margin: 0 30px 10px 0;*/
-	margin: 0 3% 0px 0px;
+	margin: 0 1% 0px 1%;
 }
 fieldset legend {
 	color: #2c6877;
@@ -391,7 +385,7 @@ form div.submit {
 	border: 0;
 	clear: both;
 	/*margin-top: 1.5%; Botones formularios demasiado separados*/
-	margin-right: 10px;
+	/*margin-right: 10px;*/
 }
 
 form :focus {
@@ -423,7 +417,8 @@ select[multiple=multiple] {
 	width: 100%;
 }
 option {
-	font-size: 120%;
+	/*font-size: 120%;*/
+	font-size: 100%;
 	padding: 0 3px;
 }
 input[type=checkbox] {
@@ -656,7 +651,7 @@ input[type=submit]:active,
 	text-decoration: none;
 }
 .actions select {
-	width: 100%;
+	/*width: 100%; Actions para date, fecha*/
 	color: #585757;
 	font-size: 13px;
 	line-height: 100%;

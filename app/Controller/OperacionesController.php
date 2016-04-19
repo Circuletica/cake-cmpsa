@@ -476,8 +476,12 @@ endif;
 	if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 	    $this->set('existe_financiacion', 1);
 	}
-		//Se declara para acceder al PDF
-		$this->set(compact('id'));
+	//comprobamos si ya existe una facturación para esta operación
+	if ($this->Operacion->Facturacion->hasAny(array('Facturacion.id' => $id))) {
+	    $this->set('existe_facturacion', 1);
+	}
+	//Se declara para acceder al PDF
+	$this->set(compact('id'));
 
     }
 
@@ -551,7 +555,7 @@ endif;
 	);
 
 	$this ->set(compact('operacion'));
-	//Controlo la posibilidad de agregar retirdas unicamente si hay cuentas de almacen.
+	//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
 	$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
 	    'first',
 	    array(
@@ -620,17 +624,58 @@ endif;
 	$anyo = substr($fecha,0,4);
 	$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
 
-	//*****AQUI HACE EXCESO DE QUERIES, HAY QUE DEPURARLO*****
 	$operacion_retiradas = $this->Operacion->Retirada->find(
 	    'all',
 	    array(
+	    'recursive'=>1,
 		'conditions' => array(
 		    'operacion_id' => $id
-		)
+		),
+		'contain'=>array(
+			'Asociado'=>array(
+				'fields'=>array(
+				'id',
+				'nombre_corto'
+				)
+			)
+			)
 	    )
 	);	
 	//Líneas de reparto
 	//		debug($operacion_retiradas);
+
+//ahora el precio que facturamos por asociado
+/*  MIRAR ATENTAMENTE PARA CAMBIAR EL CóDIGO POR ESTO SOLO
+       $this->loadModel('PesoFacturacion');
+        $peso_asociados = $this->PesoFacturacion->find(
+            'all',
+            array(
+                'conditions' => array(
+                    'operacion_id' => $id
+                )
+            )
+        );
+        $this->set(compact('peso_asociados'));
+        $this->PesoFacturacion->virtualFields = array(
+            'total_peso_retirado' => 'sum(total_peso_retirado)',
+            'total_sacos_pendientes' => 'sum(sacos_pendientes)',
+            'total_peso_pendiente' => 'sum(peso_pendiente)',
+            'total_peso_total' => 'sum(peso_total)'
+        );
+        $totales = $this->PesoFacturacion->find(
+            'first',
+            array(
+                'conditions' => array(
+                    'PesoFacturacion.operacion_id' => $id
+                )
+            )
+        );
+        $this->set('totales',$totales['PesoFacturacion']);-*/
+
+
+
+
+
 	$total_sacos = 0;
 	$total_peso = 0;
 	$total_sacos_retirados = 0;
@@ -643,6 +688,7 @@ endif;
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
 	$pendiente = 0;
+	$asociados_error=0;
 
 	foreach ($operacion_retiradas as $clave => $operacion_retirada){
 	    $retirada = $operacion_retirada['Retirada'];
@@ -671,6 +717,30 @@ endif;
 
 endforeach;
 
+/*foreach ($operacion_retiradas as $clave=>$operacion_retirada){
+	$error_retirada[] = array (
+		'error_id' => $operacion_retirada['Retirada']['asociado_id']
+	);
+}
+
+foreach($operacion['AsociadoOperacion'] as $operacion_asociado){
+		$error_asociado[] = array (
+		'error_id' => $operacion_asociado['asociado_id']
+	);
+/*		if($operacion_retirada['Retirada']['asociado_id']!=$operacion_asociado['asociado_id']){
+				debug($operacion_asociado);
+				$asociados_error++;
+
+	debug($asociados_error);
+		}
+
+}
+
+
+$asociados_error = array_diff($error_retirada, $error_asociado);
+
+ksort($error_asociado);
+ksort($error_retirada);*/
 ksort($lineas_retirada);
 $this->set('lineas_retirada',$lineas_retirada);
 $this->set('total_sacos',$total_sacos);
@@ -679,9 +749,15 @@ $this->set('total_sacos_retirados',$total_sacos_retirados);
 $this->set('total_peso_retirado',$total_peso_retirado);
 $this->set('total_pendiente',$total_pendiente);
 
+//debug($error_retirada);
+//debug($error_asociado);
+//debug($asociados_error);
 
-	//Se declara para acceder al PDF
-	$this->set(compact('id'));
+//$this->set(compact('asociados_error'));
+$this->set(compact('operacion_retiradas'));
+
+//Se declara para acceder al PDF
+$this->set(compact('id'));
     }
 
     public function delete($id = null) {
@@ -732,6 +808,6 @@ $this->set('total_pendiente',$total_pendiente);
 	    )
 	);
     }
-  
+
 }
 ?>

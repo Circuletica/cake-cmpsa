@@ -8,6 +8,9 @@ class AlmacenTransporte extends AppModel {
 	    'className' => 'Transporte',
 	    'foreignKey' => 'transporte_id')
 	);
+	public $hasMany = array(
+		'Retirada'
+		);
     public $virtualFields = array(
 	'cuenta_marca' => 'CONCAT(cuenta_almacen," (",COALESCE(marca_almacen,""),")")'
 );

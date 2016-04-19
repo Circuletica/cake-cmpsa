@@ -14,19 +14,13 @@ if (url != "no") window.location = url;
     <option value="/bancos">Bancos
     <option value="/calidades">Calidades
     <option value="/contactos">Contactos
-    <option value="/contratos">Contratos
-    <option value="/admin/cuenta_contables">Cuentas
     <option value="/embalajes">Embalajes
-    <option value="/fletes">Fletes
     <option value="/incoterms">Incoterms  
     <option value="/tipoiva">IVA    	
-    <option value="/muestras">Muestras
-    <option value="/navieras">Navieras
-    <option value="/operaciones">Operaciones    	
+    <option value="/navieras">Navieras   	
     <option value="/paises">Paises
     <option value="/proveedores">Proveedores
     <option value="/puertos">Puertos   	
-    <option value="/seguros">Seguros
 </select>
 </form>
 <br>

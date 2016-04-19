@@ -5,14 +5,15 @@ $this->Js->set('operaciones_asociados', $operaciones_asociados);
 $this->Js->set('operaciones_almacen', $operaciones_almacen);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
-
-if ($action == 'add' && ($operacion_ref == NULL)) {
-    echo "<h2>Añadir retirada de asociado</h2>\n";
+if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
+       echo "<h2>Añadir retirada de ".$asociado_nombre." en operación ".$operacion_ref."</h2>\n";
 }elseif($action == 'edit') {
-    echo "<h2>Modificar retirada de asociado en la operación ".$operacion_ref."</h2>\n";  
+    echo "<h2>Modificar retirada de ".$asociado_nombre." en operación ".$operacion_ref."</h2>\n";  
     //echo '<h4>Sacos solicitados: ' $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' en '.$embalaje.' / Pendientes: '.$retirados'</h4>';*/
+}elseif (!empty($operacion_ref) && $action == 'add'){
+    echo "<h2>Añadir retirada de asociado en operación ".$operacion_ref."</h2>\n";
 }else{
-   echo "<h2>Añadir retirada de asociado en Operación ".$operacion_ref."</h2>\n";
+   echo "<h2>Añadir retirada de asociado en operación ".$operacion_ref."</h2>\n";;
 }
 
     echo $this->Form->create('Retirada');
@@ -33,7 +34,6 @@ if ($action == 'add' && ($operacion_ref == NULL)) {
     
       ?>
       </div>
-      <div class="col2">
       <?php
         echo $this->Form->input('operacion_id',
           array(
@@ -48,11 +48,11 @@ if ($action == 'add' && ($operacion_ref == NULL)) {
                     'label'=>'Asociado',
                     'empty' =>array('' => 'Selecciona'),
                     'class' => 'ui-widget',
-                    'id' => 'asociado',              
+                    'id' => 'asociado', 
+                    'value'=> isset($asociado_id)?$asociado_id:null  
                      )
                );  
 ?>
-  </div>
    </fieldset>
    <fieldset>
 <?php
@@ -65,12 +65,11 @@ if ($action == 'add' && ($operacion_ref == NULL)) {
             )
            );
 ?>
-<div class="col2">
 <?php
   if(!empty($operacion['Embalaje']['nombre'])){
    echo $this->Form->input('embalaje_retirado',
          array(
-              'label'=>'Sacos retirados en '.$operacion['Embalaje']['nombre']
+              'label'=>'Cantidad en '.$operacion['Embalaje']['nombre']
               )
          );
   }else{
@@ -87,12 +86,15 @@ if ($action == 'add' && ($operacion_ref == NULL)) {
               )
           );
 ?>
-</div> 
+
 <?php
-   echo $this->Form->end('Guardar Retirada');
+  echo $this->element('cancelarform');
+  echo $this->Form->end('Guardar Retirada');
 ?>
 
 </fieldset>
+
 <script type="text/javascript">
 window.onload = operacionesRetirada();
 </script>
+

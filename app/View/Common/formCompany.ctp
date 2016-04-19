@@ -64,6 +64,7 @@ echo $this->Form->input('Empresa.website', array(
     'label'=>'Sitio web',
     'between'=>'http://'
 ));
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar '.$class);
 ?>
 </fieldset>
