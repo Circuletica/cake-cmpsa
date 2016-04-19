@@ -17,8 +17,7 @@ echo $this->element('desplegabledatos');
 
 	</tr>
 	<tr>
-			<td><?php echo $this->Html->link('Calidades','/calidades',array('class'=>'boton'));?></td>
-			<td><?php echo $this->Html->link('Contactos','/contactos',array('class'=>'boton'));?></td>
+		<td><?php echo $this->Html->link('Calidades','/calidades',array('class'=>'boton'));?></td>
 		<td><?php echo $this->Html->link('Embalajes','/embalajes',array('class'=>'boton'));?></td>
 		<td><?php echo $this->Html->link('Incoterms','/incoterms',array('class'=>'boton'));?></td>
 		<td><?php echo $this->Html->link('IVA','/tipo_ivas',array('class'=>'boton'));?></td>
