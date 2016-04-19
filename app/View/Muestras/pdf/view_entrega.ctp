@@ -1,4 +1,4 @@
-<?php
+<?php;
 // Usamos plantilla clásica de vistas View/Common/pdf/viewPdf.ctp
 $this->extend('/Common/pdf/viewPdf');
 $this->assign('id',$muestra['Muestra']['id']);

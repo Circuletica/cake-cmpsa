@@ -1,14 +1,24 @@
 <?php
+$this->layout = 'laboratorio';
+
 // Usamos plantilla clásica de vistas View/Common/view.ctp
 $this->extend('/Common/pdf/viewPdf');
-$this->assign('object', 'Línea de la muestra '.$linea['Muestra']['tipo_registro']);
+//$this->assign('object', 'Línea de la muestra '.$linea['Muestra']['tipo_registro']);
 $this->assign('id',$linea['LineaMuestra']['id']);
 $this->assign('class','LineaMuestra');
 $this->assign('controller','linea_muestras');
 $this->assign('from_controller','muestras');
 $this->assign('from_id',$linea['Muestra']['id']);
 
+
 $this->start('main');
+echo "<h3>DEPARTAMENTO DE CONTROL DE CALIDAD</h3>";
+echo "<h3>INFORME DE CALIDAD Nº ".$linea['Muestra']['tipo_registro'].'</h3>';
+echo "<hr><br>";
+echo "A: un destinatario<p> \n";
+echo "ATN: una persona<p> \n";
+echo "REF: una info\n";
+
 echo "<dl>\n";
 if ($linea['Muestra']['tipo_id'] != 1) {
     echo "  <dt>Operación</dt><dd>".$linea['Operacion']['referencia']."&nbsp;</dd>\n";
