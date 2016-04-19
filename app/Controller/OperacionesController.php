@@ -624,13 +624,21 @@ endif;
 	$anyo = substr($fecha,0,4);
 	$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
 
-	//*****AQUI HACE EXCESO DE QUERIES, HAY QUE DEPURARLO*****
 	$operacion_retiradas = $this->Operacion->Retirada->find(
 	    'all',
 	    array(
+	    'recursive'=>1,
 		'conditions' => array(
 		    'operacion_id' => $id
-		)
+		),
+		'contain'=>array(
+			'Asociado'=>array(
+				'fields'=>array(
+				'id',
+				'nombre_corto'
+				)
+			)
+			)
 	    )
 	);	
 	//Líneas de reparto
@@ -680,6 +688,7 @@ endif;
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
 	$pendiente = 0;
+	$asociados_error=0;
 
 	foreach ($operacion_retiradas as $clave => $operacion_retirada){
 	    $retirada = $operacion_retirada['Retirada'];
@@ -708,6 +717,30 @@ endif;
 
 endforeach;
 
+/*foreach ($operacion_retiradas as $clave=>$operacion_retirada){
+	$error_retirada[] = array (
+		'error_id' => $operacion_retirada['Retirada']['asociado_id']
+	);
+}
+
+foreach($operacion['AsociadoOperacion'] as $operacion_asociado){
+		$error_asociado[] = array (
+		'error_id' => $operacion_asociado['asociado_id']
+	);
+/*		if($operacion_retirada['Retirada']['asociado_id']!=$operacion_asociado['asociado_id']){
+				debug($operacion_asociado);
+				$asociados_error++;
+
+	debug($asociados_error);
+		}
+
+}
+
+
+$asociados_error = array_diff($error_retirada, $error_asociado);
+
+ksort($error_asociado);
+ksort($error_retirada);*/
 ksort($lineas_retirada);
 $this->set('lineas_retirada',$lineas_retirada);
 $this->set('total_sacos',$total_sacos);
@@ -716,6 +749,12 @@ $this->set('total_sacos_retirados',$total_sacos_retirados);
 $this->set('total_peso_retirado',$total_peso_retirado);
 $this->set('total_pendiente',$total_pendiente);
 
+//debug($error_retirada);
+//debug($error_asociado);
+//debug($asociados_error);
+
+//$this->set(compact('asociados_error'));
+$this->set(compact('operacion_retiradas'));
 
 //Se declara para acceder al PDF
 $this->set(compact('id'));
