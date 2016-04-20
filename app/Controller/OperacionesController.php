@@ -8,7 +8,9 @@ class OperacionesController extends AppController {
 	$this->paginate['contain'] = array(
 	    'Contrato' =>array(
 		'fields' => array(
-		    'referencia'
+		    'referencia',
+		    'fecha_transporte',
+		    'si_entrega'
 		)
 	    ),
 	    'PesoOperacion',
@@ -170,7 +172,6 @@ if (empty($this->params['named']['from_id'])){
 	}else{
 		$contrato_id = $this->params['named']['from_id'];
 	}
-	debug($contrato_id);
 
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
@@ -337,36 +338,52 @@ if (empty($this->params['named']['from_id'])){
 	if (!empty($id))$this->Operacion->id = $id;
 	debug($id);
 
-	if($this->request->is('post')) {
+	if (!empty($this->request->data)) {//ES UN POST
 	    //al guardar la linea, se incluye a qué contrato pertenece
 	    $this->request->data['Operacion']['contrato_id'] = $contrato_id;
+
+	    if($id == NULL){
 	    //primero guardamos los datos de Operacion
-	    if($this->Operacion->save($this->request->data)){
-		//luego las cantidades de cada asociado en AsociadoOperacion
-		foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
-		    if ($cantidad != NULL) {
-			$this->request->data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
-			$this->request->data['AsociadoOperacion']['asociado_id'] = $asociado_id;
-			$this->request->data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
-			//$cantidad_embalaje_operacion += $cantidad;
-			if (!$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']))
-			    throw New Exception('error en guardar AsociadoOperacion');
-		    }
+		    if($this->Operacion->save($this->request->data)){
+			//luego las cantidades de cada asociado en AsociadoOperacion
+				foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
+				    if ($cantidad != NULL) {
+					$this->request->data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
+					$this->request->data['AsociadoOperacion']['asociado_id'] = $asociado_id;
+					$this->request->data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
+					//$cantidad_embalaje_operacion += $cantidad;
+					if (!$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']))
+					    throw New Exception('error en guardar AsociadoOperacion');
+				    }
+				}
+				//falta aquí guardar el peso total de la linea de contrato
+				//y el tipo de embalaje
+				//.....
+				$this->Session->setFlash('Operación guardada');
+				//volvemos al contrato a la que pertenece la linea creada
+				$this->redirect(array(
+				    'controller' => 'contratos',
+				    'action' => 'view',
+				    $contrato_id));
+		    }else{
+		    	$this->Session->setFlash('Operación NO guardada');
+		    } 
+		}else{
+			
+			if($this->Operacion->save($this->request->data)){
+				$this->Session->setFlash('Operación modificada');
+				$this->redirect(array(
+					'controller' => 'operaciones',
+					'action' => 'view',
+					$id
+					)
+				);
+			}
 		}
-		//falta aquí guardar el peso total de la linea de contrato
-		//y el tipo de embalaje
-		//.....
-		$this->Session->setFlash('Linea de Contrato guardada');
-		//volvemos al contrato a la que pertenece la linea creada
-		$this->redirect(array(
-		    'controller' => $this->params['named']['from_controller'],
-		    'action' => 'view',
-		    $contrato_id));
-	    } else {
-		$this->Session->setFlash('Operación NO guardada');
-	    }
+	}else{//es un GET
+	     $this->request->data = $this->Operacion->read(null, $id);
 	}
-    } 
+} 
 
     public function view($id = null) {
 	//el id y la clase de la entidad de origen vienen en la URL
