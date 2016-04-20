@@ -42,9 +42,9 @@ echo "<dl>";
 	echo "<dd style=margin-left:30%;>";
 		echo $contrato['RestoContrato']['peso_restante'].'&nbsp;';
 	echo "</dd>";	
-echo '</dl>';
+echo "</dl><br><hr style=border-width:2px><br>";	
+echo $this->Form->input('observaciones');
 ?>
-
 </fieldset>
 <fieldset>
 <legend>Datos</legend>
@@ -163,9 +163,7 @@ echo $this->Form->input('forfait', array(
 		);
 ?>
 </div>
-<?php
-echo $this->Form->input('comentario');
-?>
+
 </fieldset>
 <fieldset>
 <legend>Asociados</legend>

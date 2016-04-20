@@ -84,16 +84,12 @@ class OperacionesController extends AppController {
 	$this->set(compact('operaciones','title'));
     }
 
-    public function add() {
-	//el id y la clase de la entidad de origen vienen en la URL
-	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
-	    $this->redirect(array(
-		'controller' => $this->params['named']['from_controller'],
-		'action' => 'index')
-	    );
+    public function edit($id = null) {
+	if (!$id) {
+	    $this->Session->setFlash('URL mal formado');
+	    $this->redirect(array('action'=>'index'));
 	}
-	$contrato_id = $this->params['named']['from_id'];
+	$this->Operacion->id = $id;
 	$this->loadModel('Asociado');
 	$asociados = $this->Asociado->find(
 	    'all',
@@ -103,38 +99,26 @@ class OperacionesController extends AppController {
 		    'Empresa.codigo_contable',
 		    'Empresa.nombre_corto'
 		),
-		'order' => array(
-		    'Empresa.codigo_contable' => 'ASC'
-		),
-		'recursive' => 1
-	    )
-	);	
-	//reindexamos los asociados por codigo contable
-	$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
-	ksort($asociados);
-	$this->set('asociados', $asociados);
-	//necesitamos la lista de proveedor_id/nombre para rellenar el select
-	//del formulario de busqueda
-	$this->loadModel('Proveedor');
-	$proveedores = $this->Proveedor->find(
-	    'list',
-	    array(
-		'fields' => array(
-		    'Proveedor.id',
-		    'Empresa.nombre_corto'),
-		'order' => array(
-		    'Empresa.nombre_corto' => 'asc'),
+		'order' => array('Empresa.codigo_contable' => 'asc'),
 		'recursive' => 1
 	    )
 	);
-	$this->set('proveedores',$proveedores);
+	$operacion = $this->Operacion->find(
+	    'first',
+	    array(
+		'conditions' => array('Operacion.id' => $id),
+		'recursive' => 2
+	    )
+	);
+	$contrato_id =  $operacion['Operacion']['contrato_id'];
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
 	$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
+	
 	$contrato = $this->Operacion->Contrato->find(
 	    'first',
 	    array(
-		'conditions' => array('Contrato.id' => $contrato_id),
+		'conditions' => array('Contrato.id' => $operacion['Contrato']['id']),
 		'recursive' => 2,
 		'contain' => array(
 		    'Calidad',
@@ -161,10 +145,24 @@ class OperacionesController extends AppController {
 		)
 	    )
 	);
-	$this->set('contrato',$contrato);
+	$this->set('operacion', $operacion);
+
+	$this->set('contrato', $contrato);
+	//reindexamos los asociados por codigo contable
+	$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
+	ksort($asociados);
+	$this->set('asociados', $asociados);
+	$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
 	$this->set('puerto_carga_contrato_id', $contrato['Contrato']['puerto_carga_id']);
 	$this->set('puerto_destino_contrato_id', $contrato['Contrato']['puerto_destino_id']);
 	$this->set('divisa', $contrato['CanalCompra']['divisa']);
+
+	//los que ya tienen embalajes en la operacion
+	$asociados_operacion = $operacion['AsociadoOperacion'];
+	//queremos el id del socio como index del array
+	$asociados_operacion = Hash::combine($asociados_operacion, '{n}.Asociado.id', '{n}');
+	$this->set('asociados_operacion', $asociados_operacion);
+	//Ahora que tenemos todos los datos, rellenamos el formulario
 	$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find('all', array(
 	    'conditions' => array(
 		'ContratoEmbalaje.contrato_id' => $contrato_id
@@ -223,12 +221,8 @@ class OperacionesController extends AppController {
 		'conditions' => array( 'Pais.nombre' => 'España')
 	    )
 	));
-	//Por defecto ponemos las opciones, el forfait, el seguro y el flete a cero
-	$this->request->data['Operacion']['opciones'] = 0;
-	$this->request->data['Operacion']['forfait'] = 0;
-	$this->request->data['Operacion']['seguro'] = 0;
-	$this->request->data['Operacion']['flete'] = 0;
-	//Queremos la lista de costes de fletes
+
+//Queremos la lista de costes de fletes
 	$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find('all', array(
 	    'recursive' => 3,
 	    'contain' => array(
@@ -287,98 +281,11 @@ class OperacionesController extends AppController {
 	}
 	$this->set(compact('fletes'));
 	$this->set(compact('precio_fletes'));
-	if($this->request->is('post')) {
-	    //al guardar la linea, se incluye a qué contrato pertenece
-	    $this->request->data['Operacion']['contrato_id'] = $contrato_id;
-	    //primero guardamos los datos de Operacion
-	    if($this->Operacion->save($this->request->data)){
-		//luego las cantidades de cada asociado en AsociadoOperacion
-		foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
-		    if ($cantidad != NULL) {
-			$this->request->data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
-			$this->request->data['AsociadoOperacion']['asociado_id'] = $asociado_id;
-			$this->request->data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
-			//$cantidad_embalaje_operacion += $cantidad;
-			if (!$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']))
-			    throw New Exception('error en guardar AsociadoOperacion');
-		    }
-		}
-		//falta aquí guardar el peso total de la linea de contrato
-		//y el tipo de embalaje
-		//.....
-		$this->Session->setFlash('Linea de Contrato guardada');
-		//volvemos al contrato a la que pertenece la linea creada
-		$this->redirect(array(
-		    'controller' => $this->params['named']['from_controller'],
-		    'action' => 'view',
-		    $contrato_id));
-	    } else {
-		$this->Session->setFlash('Operación NO guardada');
-	    }
-	}
-    }
-    public function edit($id = null) {
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
-	    $this->redirect(array('action'=>'index'));
-	}
-	$this->Operacion->id = $id;
-	$this->loadModel('Asociado');
-	$asociados = $this->Asociado->find(
-	    'all',
-	    array(
-		'fields' => array(
-		    'Asociado.id',
-		    'Empresa.codigo_contable',
-		    'Empresa.nombre_corto'
-		),
-		'order' => array('Empresa.codigo_contable' => 'asc'),
-		'recursive' => 1
-	    )
-	);
-	$operacion = $this->Operacion->find(
-	    'first',
-	    array(
-		'conditions' => array('Operacion.id' => $id),
-		'recursive' => 3
-	    )
-	);
-	$this->set('operacion', $operacion);
-	//reindexamos los asociados por codigo contable
-	$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
-	ksort($asociados);
-	$this->set('asociados', $asociados);
-	$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
-	//los que ya tienen embalajes en la operacion
-	$asociados_operacion = $operacion['AsociadoOperacion'];
-	//queremos el id del socio como index del array
-	$asociados_operacion = Hash::combine($asociados_operacion, '{n}.Asociado.id', '{n}');
-	$this->set('asociados_operacion', $asociados_operacion);
-	//Ahora que tenemos todos los datos, rellenamos el formulario
-	$embalaje = $this->Operacion->Contrato->ContratoEmbalaje->find('first', array(
-	    'conditions' => array(
-		'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-		'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
-	    )
-	));
-	$this->set('embalaje', $embalaje);
-	//para el js de la view
-	$this->set('pesoEmbalaje', $embalaje['ContratoEmbalaje']['peso_embalaje_real']);
-	//para los puertos de carga y destino
-	$this->set('puertoCargas',$this->Operacion->PuertoCarga->find('list', array(
-	    'order' => array('PuertoCarga.nombre' =>'ASC')
-	)
-    ));
-	$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find(
-	    'list',
-	    #el café solo llega a puerto españoles
-	    array(
-		'contain' => array('Pais'),
-		'conditions' => array( 'Pais.nombre' => 'España')
-	    )
-	));
+	$this->set('proveedor',$contrato['Proveedor']['nombre_corto']);
+
+
 	if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
-	    $this->request->data = $this->Operacion->read();
+	   $this->request->data = $this->Operacion->read();
 	    foreach ($asociados_operacion as $asociado_id => $asociado) {
 		$this->request->data['CantidadAsociado'][$asociado_id] = $asociado['cantidad_embalaje_asociado'];
 	    }
@@ -408,12 +315,14 @@ class OperacionesController extends AppController {
 		$this->Session->setFlash('Operacion NO guardada');
 	    }
 	}
+		$this->set('action', $this->action);
+		$this->render('form');
     }
 
 
  //// AQUI EMPIEZA EL FORM ()   
 
-   /* public function add() {
+    public function add() {
     if (!$this->params['named']['from_id']) {
 	    $this->Session->setFlash('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
 	    $this->redirect(array(
@@ -425,7 +334,7 @@ class OperacionesController extends AppController {
 	$this->render('form');
     }
 
-    public function edit($id = null) {
+    /*public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 		    $this->Session->setFlash('error en URL');
 		    $this->redirect(array(
@@ -665,15 +574,15 @@ if (empty($this->params['named']['from_id'])){
 	$this->set(compact('precio_fletes'));
 
 	if (!empty($id))$this->Operacion->id = $id;
-	debug($id);
 
-	if (!empty($this->request->data)) {//ES UN POST
+
+	if ($this->request->is('post')) {//ES UN POST
 	    //al guardar la linea, se incluye a qué contrato pertenece
 	    $this->request->data['Operacion']['contrato_id'] = $contrato_id;
-
+	debug($contrato_id);
 	    if($id == NULL){
 	    //primero guardamos los datos de Operacion
-		   /* if($this->Operacion->save($this->request->data)){
+		    if($this->Operacion->save($this->request->data)){
 			//luego las cantidades de cada asociado en AsociadoOperacion
 				foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
 				    if ($cantidad != NULL) {
@@ -696,7 +605,7 @@ if (empty($this->params['named']['from_id'])){
 				    $contrato_id));
 		    }else{
 		    	$this->Session->setFlash('Operación NO guardada');
-		    } */
+		    } 
 		}else{
 
 		/*	if($this->Operacion->save($this->request->data)){
