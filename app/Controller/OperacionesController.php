@@ -281,7 +281,14 @@ class OperacionesController extends AppController {
 		.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
 		'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
 	    );
-	    //guardamos solo ese array para el js
+	    //vamos a tener otro array para un js que modifique la lista de fletes disponibles
+	    //segun se elija uno u otro puerto embarque/puerto destino/embalaje
+	    $precio_flete['Flete']['value']=$precio_flete['PrecioFleteContrato']['precio_flete'];
+	    $precio_flete['Flete']['name']=end($fletes)['name'];
+	    unset($precio_flete['Flete']['Naviera']);
+	    unset($precio_flete['Flete']['PuertoCarga']);
+	    unset($precio_flete['Flete']['PuertoDestino']);
+	    unset($precio_flete['Flete']['Embalaje']);
 	    unset($precio_flete['PrecioFleteContrato']);
 	}
 	$this->set(compact('fletes'));
@@ -379,39 +386,37 @@ class OperacionesController extends AppController {
 	    )
 	));
 
-	if($this->request->is('get')): //al abrir el edit, meter los datos de la bdd
+	if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
 	    $this->request->data = $this->Operacion->read();
-	foreach ($asociados_operacion as $asociado_id => $asociado) {
-	    $this->request->data['CantidadAsociado'][$asociado_id] = $asociado['cantidad_embalaje_asociado'];
-	}
-	else:
-	    if ($this->Operacion->save($this->request->data)):
+	    foreach ($asociados_operacion as $asociado_id => $asociado) {
+		$this->request->data['CantidadAsociado'][$asociado_id] = $asociado['cantidad_embalaje_asociado'];
+	    }
+	} else {
+	    if ($this->Operacion->save($this->request->data)){
 		//Los registros de AsociadoOperacion se van sumando
 		//asi que hay que borrarlos todos porque el saveAll() los
 		//vuelve a crear y no queremos duplicados.
 		$this->Operacion->AsociadoOperacion->deleteAll(array(
 		    'AsociadoOperacion.operacion_id' => $id
 		));
-	foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
-	    if ($cantidad != NULL) {
-		$this->request->data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
-		$this->request->data['AsociadoOperacion']['asociado_id'] = $asociado_id;
-		$this->request->data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
-		$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']);
+		foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
+		    if ($cantidad != NULL) {
+			$this->request->data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
+			$this->request->data['AsociadoOperacion']['asociado_id'] = $asociado_id;
+			$this->request->data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
+			$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']);
+		    }
+		}
+		$this->Session->setFlash(
+		    'Operacion '.
+		    $this->request->data['Operacion']['referencia'].
+		    ' modificada con éxito'
+		);
+		$this->redirect(array('action' => 'view', $id));
+	    } else {
+		$this->Session->setFlash('Operacion NO guardada');
 	    }
 	}
-	$this->Session->setFlash('Operacion '.
-	    $this->request->data['Operacion']['referencia'].
-	    ' modificada con éxito');
-	$this->redirect(array(
-	    'action' => 'view',
-	    $id
-	)
-    );
-	    else:
-		$this->Session->setFlash('Operacion NO guardada');
-endif;
-endif;
     }
 
     public function view($id = null) {
