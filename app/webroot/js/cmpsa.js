@@ -355,8 +355,9 @@ function pesoFacturacion() {
 	    pesoFacturacion = pesoFacturacionRadio[i].value;
 	}
     }
+    var totalCafeDolar = (pesoFacturacion/1000) * precioDolarTm;
     var totalCafe = (pesoFacturacion/1000) * precioDolarTm / cambioDolarEuro;
-    totalCafeField.innerHTML = 'Total café: '+totalCafe.toFixed(2)+'€';
+    totalCafeField.innerHTML = 'Total café: '+totalCafe.toFixed(4)+'€ / '+totalCafeDolar.toFixed(4)+'$';
     var gastosBancarios = parseFloat(document.getElementById('FacturacionGastosBancariosPagados').value);
     var fletePagado = parseFloat(document.getElementById('FacturacionFletePagado').value);
     var despachoPagado = parseFloat(document.getElementById('FacturacionDespachoPagado').value);
