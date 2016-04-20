@@ -17,7 +17,7 @@ echo "<dd>";
 echo $contrato['Proveedor']['nombre_corto'];
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
-echo "  <dd>".$contrato['CalidadNombre']['nombre'].'&nbsp;'."</dd>";
+echo "  <dd>".$contrato['Calidad']['nombre'].'&nbsp;'."</dd>";
 echo "  <dt>Lotes</dt>\n";
 echo "  <dd>".$contrato['Contrato']['lotes_contrato'].' ('.$posicion_bolsa.')&nbsp;'."</dd>";
 echo "  <dt>Peso comprado</dt>\n";

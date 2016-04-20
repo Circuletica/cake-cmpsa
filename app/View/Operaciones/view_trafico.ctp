@@ -53,7 +53,7 @@
 	echo "  <dd>".$fecha_transporte."</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
-	echo $operacion['Contrato']['CalidadNombre']['nombre'].'&nbsp;';
+	echo $operacion['Contrato']['Calidad']['nombre'].'&nbsp;';
 	echo "  <dt>Proveedor</dt>\n";
 	echo "<dd>";
 	echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], array(

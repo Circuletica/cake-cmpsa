@@ -16,7 +16,7 @@ if(empty($transporte['Aseguradora']['nombre'] && $transporte['Transporte']['peri
 
 <br>
 <br>
-<?php echo '<h2>'.$transporte['Operacion']['Contrato']['CalidadNombre']['nombre'].'</h2>';?>
+<?php echo '<h2>'.$transporte['Operacion']['Contrato']['Calidad']['nombre'].'</h2>';?>
 <br>
 Muy Sres. nuestros:<br>
 <br>

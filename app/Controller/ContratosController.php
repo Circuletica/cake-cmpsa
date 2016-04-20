@@ -3,11 +3,42 @@ class ContratosController extends AppController {
     var $displayField = 'referencia';
     public function index() {
 	$this->paginate['order'] = array('Contrato.posicion_bolsa' => 'asc');
+	$this->Contrato->virtualFields['calidad']=$this->Contrato->Calidad->virtualFields['nombre'];
+	//	$this->paginate['fields'] = array(
+	//	    'id',
+	//	    'proveedor_id',
+	//	    'calidad_id',
+	//	    'calidad',
+	//	    'incoterm_id',
+	//	    'canal_compra_id',
+	//	    'referencia',
+	//	    'posicion_bolsa',
+	//	    'peso_comprado',
+	//	    'lotes_contrato',
+	//	    'si_muestra_emb_aprob',
+	//	    'si_muestra_entr_aprob'
+	//	);
 	$this->paginate['contain'] = array(
-	    'Proveedor',
-	    'Incoterm',
-	    'CalidadNombre',
-	    'CanalCompra'
+	    'Proveedor' => array(
+		'fields' => array(
+		    'nombre_corto'
+		)
+	    ),
+	    'Incoterm' => array(
+		'fields' => array(
+		    'nombre'
+		)
+	    ),
+	    'Calidad' => array(
+		'fields' => array(
+		    'nombre'
+		)
+	    ),
+	    'CanalCompra' => array(
+		'fields' => array(
+		    'nombre'
+		)
+	    )
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
@@ -27,38 +58,27 @@ class ContratosController extends AppController {
 	//$passedArgs['Search.palabras'] = mipalabra
 	//$passedArgs['Search.id'] = 3
 
-	//Si queremos un titulo con los criterios de busqueda
-	$titulo = array();
-
-	//filtramos por referencia
-	if(isset($this->passedArgs['Search.referencia'])) {
-	    $criterio = $this->passedArgs['Search.referencia'];
-	    $this->paginate['conditions']['Contrato.referencia LIKE'] = "%$criterio%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['referencia'] = $criterio;
-	    //completamos el titulo
-	    $title[] = 'Referencia: '.$criterio;
-	}
-
-	//filtramos por calidad
-	if(isset($this->passedArgs['Search.calidad'])) {
-	    $criterio = $this->passedArgs['Search.calidad'];
-	    $this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$criterio%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['calidad'] = $criterio;
-	    //completamos el titulo
-	    $title[] ='Calidad: '.$criterio;
-	}
-
-	//filtramos por proveedor
-	if(isset($this->passedArgs['Search.proveedor_id'])) {
-	    $criterio = $this->passedArgs['Search.proveedor_id'];
-	    $this->paginate['conditions']['Empresa.id LIKE'] = "$criterio";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['proveedor_id'] = $criterio;
-	    //completamos el titulo
-	    $title[] ='Proveedor: '.$proveedores[$criterio];
-	}
+	$titulo = $this->filtroPaginador(
+	    array(
+		'Contrato' => array(
+		    'Referencia' => array(
+			'columna' => 'referencia',
+			'exacto' => false,
+			'lista' => '',
+		    ),
+		    'Proveedor' => array(
+			'columna' => 'proveedor_id',
+			'exacto' => true,
+			'lista' => $proveedores
+		    ),
+		    'Calidad' => array(
+			'columna' => 'calidad',
+			'exacto' => false,
+			'lista' => ''
+		    )
+		)
+	    )
+	);
 	//filtramos por fecha
 	if(isset($this->passedArgs['Search.fecha'])) {
 	    $criterio = $this->passedArgs['Search.fecha'];
@@ -203,10 +223,10 @@ class ContratosController extends AppController {
 	//desplegable con las calidades de café
 	$this->set(
 	    'calidades',
-	    $this->Contrato->CalidadNombre->find(
+	    $this->Contrato->Calidad->find(
 		'list',
 		array(
-		    'order' => array('CalidadNombre.nombre' => 'ASC')
+		    'order' => array('Calidad.nombre' => 'ASC')
 		)
 	    )
 	);
@@ -274,8 +294,8 @@ class ContratosController extends AppController {
 	$this->set('contrato',$contrato);
 	//el titulado completo de la Calidad sale de una vista
 	//de MySQL que concatena descafeinado, pais y descripcion
-	$this->set('calidades',$this->Contrato->CalidadNombre->find('list', array(
-			'order' => array('CalidadNombre.nombre' => 'ASC')
+	$this->set('calidades',$this->Contrato->Calidad->find('list', array(
+			'order' => array('Calidad.nombre' => 'ASC')
 			)
 		));
 	$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(

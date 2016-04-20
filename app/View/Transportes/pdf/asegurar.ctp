@@ -24,7 +24,7 @@ echo $transporte['Operacion']['referencia'];
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
-echo $transporte['Operacion']['Contrato']['CalidadNombre']['nombre'];
+echo $transporte['Operacion']['Contrato']['Calidad']['nombre'];
 echo "</dd>";
 echo "  <dt>Puerto de carga</dt>\n";
 echo "<dd>";

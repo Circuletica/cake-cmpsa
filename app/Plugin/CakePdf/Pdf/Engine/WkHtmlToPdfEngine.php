@@ -27,7 +27,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  */
 	public function output() {
 	    //as per https://webtoolsplus.com/cakephp-wkhtmltopdf-didnt-return-any-data/
-		//$content = $this->_exec($this->_getCommand(), $this->_Pdf->html());
+	    //$content = $this->_exec($this->_getCommand(), $this->_Pdf->html());
 	    $content = $this->_exec('xvfb-run -a -s "-screen 0 640x480x16" ' . $this->_getCommand(), $this->_Pdf->html());
 
 		if (strpos(mb_strtolower($content['stderr']), 'error')) {

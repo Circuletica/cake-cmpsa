@@ -31,7 +31,7 @@
 	echo $this->Html->tableHeaders(array(
 		$this->Paginator->sort('Operacion.referencia','Ref. Operación'),
 		$this->Paginator->sort('Transporte.linea','Línea'),
-		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
+		$this->Paginator->sort('Calidad.nombre','Calidad'),
 		$this->Paginator->sort('Transporte.cantidad_embalaje','Cantidad'),	
 		$this->Paginator->sort('Transporte.fecha_despacho_op','Fecha despacho'),
 		'Detalle'			
@@ -44,7 +44,7 @@
 			echo $this->Html->tableCells(array(
 				$despacho['Operacion']['referencia'],
 				$despacho['Transporte']['linea'],			
-				$despacho['Operacion']['Contrato']['CalidadNombre']['nombre'],
+				$despacho['Operacion']['Contrato']['Calidad']['nombre'],
 				$despacho['Transporte']['cantidad_embalaje'],					
 			    $this->Date->format($despacho['Transporte']['fecha_despacho_op']),
 		     		$this->Html->link('<i class="fa fa-info-circle"></i>',array(

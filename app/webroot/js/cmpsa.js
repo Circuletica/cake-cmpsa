@@ -28,9 +28,9 @@ function pesoAsociado(){
     //el valor del option del desplegable
     var selectedIndex = document.getElementById('OperacionEmbalajeId').selectedIndex;
     //el id de embalaje al que se corresponde
-    var selectedOption = document.getElementById('OperacionEmbalajeId').options[selectedIndex].value;
+    var EmbalajeOption = document.getElementById('OperacionEmbalajeId').options[selectedIndex].value;
     //el peso del embalaje seleccionado
-    var pesoEmbalaje = embalajes[selectedOption].peso_embalaje_real;
+    var pesoEmbalaje = embalajes[EmbalajeOption].peso_embalaje_real;
     //un array con las cantidades de cada socio
     var cantidades = document.getElementsByClassName('cantidad');
     for(var i=0;i<cantidades.length;i++){
@@ -45,6 +45,31 @@ function pesoAsociado(){
 	//escribimos el peso
 	textoPesoAsociado.innerHTML = "= " + pesoAsociado + "kg";
     }
+    //ahora cambiar la lista de fletes segun puertos/embalajes
+    var precioFletes = window.app.precioFletes;
+    var fleteId = document.getElementById('OperacionFlete');
+    selectedIndex = document.getElementById('OperacionPuertoCargaId').selectedIndex;
+    var puertoCargaOption = document.getElementById('OperacionPuertoCargaId').options[selectedIndex].value;
+    selectedIndex = document.getElementById('OperacionPuertoDestinoId').selectedIndex;
+    var puertoDestinoOption = document.getElementById('OperacionPuertoDestinoId').options[selectedIndex].value;
+    var opts = precioFletes.length;
+    var listaFlete = [];
+    for (var i=0; i<opts; i++){
+	if (precioFletes[i].Flete.puerto_carga_id == puertoCargaOption
+		&& precioFletes[i].Flete.puerto_destino_id == puertoDestinoOption
+		&& precioFletes[i].Flete.embalaje_id == EmbalajeOption) {
+	    var flete = {name:precioFletes[i].Flete.name, value:precioFletes[i].Flete.value};
+	    listaFlete.push(flete);
+	}
+    }
+    //if (listaFlete.length != 0) {
+	var opts = listaFlete.length;
+	fleteId.options.length = opts;
+	for (var i=0; i<opts; i++){
+	    fleteId.options[i].value = listaFlete[i].value;
+	    fleteId.options[i].text = listaFlete[i].name;
+	}
+    //}
 }
 
 function pesoAsociadoEdit(){
@@ -134,7 +159,7 @@ function contratosMuestra(){
 	//cambiamos el 'selected' del combobox
 	var opts = calidadId.options.length;
 	for (var i=0; i<opts; i++){
-	    if (calidadId.options[i].value == contratos[contratoSelOpt].CalidadNombre.id){
+	    if (calidadId.options[i].value == contratos[contratoSelOpt].Calidad.id){
 		calidadId.options[i].selected = true;
 		break;
 	    }
@@ -258,27 +283,27 @@ function operacionesRetirada(){
     var cuentaId = cuentaBox.options[cuentaIndex].value;
     console.log(operacioneId);
 
-		//modificamos _todo_ el select de operaciones
-	if (operacionId in operaciones) {
-		var asociadosOperacion = operaciones[operacionId].Asociado;
-		var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
-	    asociadoBox.options.length = opt1;
+    //modificamos _todo_ el select de operaciones
+    if (operacionId in operaciones) {
+	var asociadosOperacion = operaciones[operacionId].Asociado;
+	var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
+	asociadoBox.options.length = opt1;
 
-	    for (var i=0; i<opt1; i++){
-		asociadoBox.options[i].value = asociadosOperacion[i].id;
-		asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
-		}
- 	  
-		//CUENTA ALMACEN
-			var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
-			var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
-			cuentaBox.options.length = opt2;
-	
-			for (var i=0; i<opt2; i++){
-			cuentaBox.options[i].value = almacenesOperacion[i].id;
-			cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
-			}
+	for (var i=0; i<opt1; i++){
+	    asociadoBox.options[i].value = asociadosOperacion[i].id;
+	    asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
 	}
+
+	//CUENTA ALMACEN
+	var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
+	var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
+	cuentaBox.options.length = opt2;
+
+	for (var i=0; i<opt2; i++){
+	    cuentaBox.options[i].value = almacenesOperacion[i].id;
+	    cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
+	}
+    }
 }
 
 function operacionAlmacen() {

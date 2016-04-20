@@ -17,7 +17,25 @@ class Contrato extends AppModel {
 	    SUBSTR(Contrato.fecha_transporte,6,2),
 	    "/",
 	    SUBSTR(Contrato.fecha_transporte,1,4)
-	)'
+	)',
+	//existe una muestra de embarque aprobada para ese contrato?
+	'si_muestra_emb_aprob' => 'CASE(SELECT
+		COUNT(*)
+		FROM muestras
+		WHERE muestras.contrato_id=Contrato.id
+			AND muestras.tipo_id = 2
+			AND muestras.aprobado = 1
+		) WHEN 0 THEN 0 ELSE 1 END
+	',
+	//existe una muestra de embarque aprobada para ese contrato?
+	'si_muestra_entr_aprob' => 'CASE(SELECT
+		COUNT(*)
+		FROM muestras
+		WHERE muestras.contrato_id=Contrato.id
+			AND muestras.tipo_id = 3
+			AND muestras.aprobado = 1
+		) WHEN 0 THEN 0 ELSE 1 END
+	'
     );
     public $validate = array(
 	'incoterm_id' => array('rule' => 'notEmpty'),
@@ -65,8 +83,8 @@ class Contrato extends AppModel {
 	'Incoterm' => array(
 	    'className' => 'Incoterm',
 	    'foreignKey' => 'incoterm_id'),
-	'CalidadNombre' => array(
-	    'className' => 'CalidadNombre',
+	'Calidad' => array(
+	    'className' => 'Calidad',
 	    'foreignKey' => 'calidad_id')
 	);
 }
