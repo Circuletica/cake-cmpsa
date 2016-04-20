@@ -198,40 +198,6 @@ $this->set(compact('pdf'));
 	//Necesario para exportar en PDf
 	$this->set(compact('id'));
 
-	/*//Se crea para saber el número de línea de la operación
-		$parte = $this->Transporte->Operacion->find(
-		'first',
-		array(
-			'conditions' => array(
-				'Operacion.id' => $transporte['Operacion']['id']
-				),
-			'recursive' => -1,
-			'fields' => array(
-						'id'
-						),	
-			'contain' => array(
-				'Transporte' => array(
-					'fields' => array(
-						    'id',
-						    'operacion_id'
-						    )
-					)
-				)
-			)
-		);
-//Saco el número del array para numerar las líneas de transporte	
-foreach ($parte as $clave => $lineas){
-  $parte = $lineas;
-  unset($parte['Operacion']);
-}
-foreach ($parte as $clave=>$lineas){
-	$i = $clave;
-	if($lineas['id'] == $transporte['Transporte']['id']){
-  	$num = $i+1;
-	}
-}
-$this->set(compact('num'));*/
-
     }
     public function add() {
     if (!$this->params['named']['from_id']) {
