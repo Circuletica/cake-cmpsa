@@ -23,7 +23,7 @@ echo "<dl>";
 	echo "</dd>";
 		echo "<dt style=width:30%;>Calidad</dt>\n";
 	echo "<dd style=margin-left:30%;>";
-		echo $contrato['CalidadNombre']['nombre'].'&nbsp;';
+		echo $contrato['Contrato']['calidad'].'&nbsp;';
 	echo "</dd>";
 		echo "<dt style=width:30%;>Bolsa</dt>\n";
 	echo "<dd style=margin-left:30%;>";
