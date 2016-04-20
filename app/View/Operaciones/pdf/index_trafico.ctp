@@ -1,4 +1,3 @@
-
 <h2>Operaciones<?php //echo $title;?></h2>
 <div class='index'>
   <table>
@@ -6,7 +5,7 @@
     <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Ref. Operación')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Ref. Contrato')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.fecha_transporte','Embarque/Entrega')?></th>
-    <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
+    <th><?php echo $this->Paginator->sort('Calidad.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('Proveedor.nombre_corto', 'Proveedor');?></th>
     <th><?php echo $this->Paginator->sort('PesoOperacion.cantidad_embalaje', 'Bultos')?></th>
   </tr>
@@ -20,7 +19,7 @@
       $operacion['Operacion']['referencia'],
       $operacion['Contrato']['referencia'],
       $this->Date->format($operacion['Contrato']['fecha_transporte']).$entrega,
-      $operacion['CalidadNombre']['nombre'],
+      $operacion['Calidad']['nombre'],
       $operacion['Proveedor']['nombre_corto'],
       $operacion['PesoOperacion']['cantidad_embalaje']
       )

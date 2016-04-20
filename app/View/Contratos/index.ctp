@@ -1,4 +1,3 @@
-<?php //$this->Html->getCrumbs(' > ');?>
 <?php
 	$this->Html->addCrumb('Contratos', array(
 		'controller' => 'contratos',
@@ -27,15 +26,13 @@
 		$this->Paginator->sort('Contrato.referencia','Referencia'),
 		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 		$this->Paginator->sort('Incoterm.nombre','Incoterm'),
-		$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
+		$this->Paginator->sort('Contrato.calidad','Calidad'),
 		$this->Paginator->sort('Contrato.peso_comprado','Peso'),
 		$this->Paginator->sort('CanalCompra.nombre','Bolsa'),
 		$this->Paginator->sort('Contrato.lotes_contrato','Lotes'),
 		$this->Paginator->sort('Contrato.posicion_bolsa','Posición'),
-		//El diferencial para view()
-		//'Diferencial',
-		//Las opciones en Operacion
-		//'Opciones',
+		'Apr. Emb.',
+		'Apr. Entr.',
 		'Detalle')
 	);
 	foreach($contratos as $contrato):
@@ -50,13 +47,14 @@
 			$contrato['Contrato']['referencia'],
 			$contrato['Proveedor']['nombre_corto'],
 			$contrato['Incoterm']['nombre'],
-			$contrato['CalidadNombre']['nombre'],
+			$contrato['Contrato']['calidad'],
 			$contrato['Contrato']['peso_comprado'].'kg',
 			$contrato['CanalCompra']['nombre'],
 			$contrato['Contrato']['lotes_contrato'],
 			$posicion_bolsa,
+			$contrato['Contrato']['si_muestra_emb_aprob']?'&#10004;':'',
+			$contrato['Contrato']['si_muestra_entr_aprob']?'&#10004;':'',
 			$this->Button->view('contratos',$contrato['Contrato']['id'])
-			//$this->Html->link('Detalles',array('action'=>'view',$contrato['Contrato']['id']), array('class' =>'boton' , ))
 	));
 	endforeach;?>
 	</table>

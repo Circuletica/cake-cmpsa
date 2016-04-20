@@ -134,7 +134,7 @@ function contratosMuestra(){
 	//cambiamos el 'selected' del combobox
 	var opts = calidadId.options.length;
 	for (var i=0; i<opts; i++){
-	    if (calidadId.options[i].value == contratos[contratoSelOpt].CalidadNombre.id){
+	    if (calidadId.options[i].value == contratos[contratoSelOpt].Calidad.id){
 		calidadId.options[i].selected = true;
 		break;
 	    }

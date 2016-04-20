@@ -31,7 +31,7 @@
 			$contrato['Contrato']['referencia'],
 			$contrato['Proveedor']['nombre_corto'],
 			$contrato['Incoterm']['nombre'],
-			$contrato['CalidadNombre']['nombre'],
+			$contrato['Calidad']['nombre'],
 			$contrato['Contrato']['peso_comprado'].'kg',
 			$contrato['CanalCompra']['nombre'],
 			$contrato['Contrato']['lotes_contrato'],

@@ -2,14 +2,18 @@
 class OperacionesController extends AppController {
 
     public function index() {
-
+	$this->Operacion->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
 	$this->paginate['order'] = array('Operacion.referencia' => 'asc');
 	$this->paginate['recursive'] = 2;
 	$this->paginate['contain'] = array(
-	    'Contrato',
+	    'Contrato' =>array(
+		'fields' => array(
+		    'referencia'
+		)
+	    ),
 	    'PesoOperacion',
 	    'Proveedor',
-	    'CalidadNombre'
+	    'Calidad'
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
@@ -24,27 +28,33 @@ class OperacionesController extends AppController {
 	);
 	$this->set('proveedores',$proveedores);
 
-	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
-	//por ej.
-	//$passedArgs['Search.palabras'] = mipalabra
-	//$passedArgs['Search.id'] = 3
-
-	//Si queremos un titulo con los criterios de busqueda
-	$titulo = array();
-
-	//filtramos por referencia
-	if(isset($this->passedArgs['Search.referencia'])) {
-	    $criterio = $this->passedArgs['Search.referencia'];
-	    $this->paginate['conditions']['Operacion.referencia LIKE'] = "%$criterio%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['referencia'] = $criterio;
-	    //completamos el titulo
-	    $title[] = 'Referencia: '.$criterio;
-	}
+	$titulo = $this->filtroPaginador(
+	    array(
+		'Operacion' =>array(
+		    'Referencia' => array(
+			'columna' => 'referencia',
+			'exacto' => false,
+			'lista' => ''
+		    ),
+		    'Calidad' => array(
+			'columna' => 'calidad',
+			'exacto' => false,
+			'lista' => ''
+		    )
+		),
+		'Contrato' => array(
+		    'Proveedor' => array(
+			'columna' => 'proveedor_id',
+			'exacto' => true,
+			'lista' => $proveedores
+		    )
+		)
+	    )
+	);
 
 	//filtramos por contrato
 	if(isset($this->passedArgs['Search.contrato_referencia'])) {
-	    $criterio = $this->passedArgs['Search.contrato_referencia'];
+	    $criterio = strtr($this->passedArgs['Search.contrato_referencia'],'_','/');
 	    $this->paginate['conditions']['Contrato.referencia LIKE'] = "%$criterio%";
 	    //guardamos el criterio para el formulario de vuelta
 	    $this->request->data['Search']['contrato_referencia'] = $criterio;
@@ -52,32 +62,12 @@ class OperacionesController extends AppController {
 	    $title[] = 'Contrato: '.$criterio;
 	}
 
-	//filtramos por calidad
-	if(isset($this->passedArgs['Search.calidad'])) {
-	    $criterio = $this->passedArgs['Search.calidad'];
-	    $this->paginate['conditions']['CalidadNombre.nombre LIKE'] = "%$criterio%";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['calidad'] = $criterio;
-	    //completamos el titulo
-	    $title[] ='Calidad: '.$criterio;
-	}
-
-	//filtramos por proveedor
-	if(isset($this->passedArgs['Search.proveedor_id'])) {
-	    $criterio = $this->passedArgs['Search.proveedor_id'];
-	    $this->paginate['conditions']['Proveedor.id LIKE'] = "$criterio";
-	    //guardamos el criterio para el formulario de vuelta
-	    $this->request->data['Search']['proveedor_id'] = $criterio;
-	    //completamos el titulo
-	    $title[] ='Proveedor: '.$proveedores[$criterio];
-	}
-
 	$this->Operacion->bindModel(
 	    array(
 		'belongsTo' => array(
-		    'CalidadNombre' => array(
+		    'Calidad' => array(
 			'foreignKey' => false,
-			'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+			'conditions' => array('Contrato.calidad_id = Calidad.id')
 		    ),
 		    'Proveedor' => array(
 			'className' => 'Empresa',
@@ -216,6 +206,7 @@ if (empty($this->params['named']['from_id'])){
 		)
 	    )
 	);
+
 	$this->set('contrato',$contrato);
 	$this->set('puerto_carga_contrato_id', $contrato['Contrato']['puerto_carga_id']);
 	$this->set('puerto_destino_contrato_id', $contrato['Contrato']['puerto_destino_id']);
@@ -500,7 +491,7 @@ if (empty($this->params['named']['from_id'])){
 				'si_flete'
 			    )
 			),
-			'CalidadNombre' => array(
+			'Calidad' => array(
 			    'fields' =>(
 				'nombre'
 			    )
@@ -584,9 +575,7 @@ if (empty($this->params['named']['from_id'])){
 	$anyo = substr($fecha,0,4);
 	$this->set('fecha_transporte', $dia.'-'.$mes.'-'.$anyo);		
 	$this->set('embalaje', $embalaje);
-	$this->loadModel('CalidadNombre');
-	//Línea de transporte
-	//	$this->set('tipo_fecha_carga', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
+	$this->loadModel('Calidad');
 	//mysql almacena la fecha en formato ymd
 	//$fecha = $transporte['Transporte']['fecha_carga'];
 	$dia = substr($fecha,8,2);
@@ -614,39 +603,39 @@ if (empty($this->params['named']['from_id'])){
 	//Líneas de reparto
 	//		debug($operacion_retiradas);
 
-//ahora el precio que facturamos por asociado
+	//ahora el precio que facturamos por asociado
 /*  MIRAR ATENTAMENTE PARA CAMBIAR EL CóDIGO POR ESTO SOLO
        $this->loadModel('PesoFacturacion');
-        $peso_asociados = $this->PesoFacturacion->find(
-            'all',
-            array(
-                'conditions' => array(
-                    'operacion_id' => $id
-                )
-            )
-        );
-        $this->set(compact('peso_asociados'));
-        $this->PesoFacturacion->virtualFields = array(
-            'total_peso_retirado' => 'sum(total_peso_retirado)',
-            'total_sacos_pendientes' => 'sum(sacos_pendientes)',
-            'total_peso_pendiente' => 'sum(peso_pendiente)',
-            'total_peso_total' => 'sum(peso_total)'
-        );
-        $totales = $this->PesoFacturacion->find(
-            'first',
-            array(
-                'conditions' => array(
-                    'PesoFacturacion.operacion_id' => $id
-                )
-            )
-        );
-        $this->set('totales',$totales['PesoFacturacion']);-*/
+	$peso_asociados = $this->PesoFacturacion->find(
+	    'all',
+	    array(
+		'conditions' => array(
+		    'operacion_id' => $id
+		)
+	    )
+	);
+	$this->set(compact('peso_asociados'));
+	$this->PesoFacturacion->virtualFields = array(
+	    'total_peso_retirado' => 'sum(total_peso_retirado)',
+	    'total_sacos_pendientes' => 'sum(sacos_pendientes)',
+	    'total_peso_pendiente' => 'sum(peso_pendiente)',
+	    'total_peso_total' => 'sum(peso_total)'
+	);
+	$totales = $this->PesoFacturacion->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'PesoFacturacion.operacion_id' => $id
+		)
+	    )
+	);
+	$this->set('totales',$totales['PesoFacturacion']);-*/
 
 
 
 
 
-	$total_sacos = 0;
+	    $total_sacos = 0;
 	$total_peso = 0;
 	$total_sacos_retirados = 0;
 	$total_peso_retirado = 0;

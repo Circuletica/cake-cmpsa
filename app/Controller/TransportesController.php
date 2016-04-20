@@ -38,7 +38,7 @@ class TransportesController extends AppController {
 					    'id',
 					    'nombre_corto'
 					),
-					'CalidadNombre' => array(
+					'Calidad' => array(
 				    	'fields' =>(
 						'nombre'
 				    	)
@@ -440,7 +440,7 @@ $this->set(compact('num'));
 //	$this->set(compact('invoice');
 
 
-	$this->paginate['order'] = array('CalidadNombre.nombre' => 'asc');
+	$this->paginate['order'] = array('Calidad.nombre' => 'asc');
 	$this->paginate['recursive'] = 2;
 	$this->paginate['condition'] = array(
 	    'Transporte.fecha_despacho_op'=> NULL
@@ -474,7 +474,6 @@ $this->set(compact('num'));
 				    'nombre_corto'
 				    )
 				),
-
 			'PuertoDestino' => array(
 				'fields' => array(
 					'id',
@@ -537,8 +536,8 @@ $this->set(compact('num'));
 				    'calidad_id'
 				    )
 				    ),
-			'CalidadNombre' => array(
-				    	'fields' =>(
+			'Calidad' => array(
+				    	'fields' =>array(
 						'nombre'
 				    	)
 		    	)
@@ -573,7 +572,7 @@ $this->set(compact('num'));
 			'lista' => ''
 		    )
 		),
-		'CalidadNombre' => array(
+		'Calidad' => array(
 		    'Calidad' => array(
 			'columna' => 'nombre',
 			'exacto' => false,
@@ -656,7 +655,7 @@ $this->set(compact('num'));
 						    'id',
 						    'referencia'
 						),
-				   		'CalidadNombre'=>array(
+				   		'Calidad'=>array(
 				   			'fields'=> array(
 				   				'nombre'
 				   			)
@@ -748,7 +747,7 @@ $this->set(compact('num'));
 						    'id',
 						    'referencia'
 						),
-				   		'CalidadNombre'=>array(
+				   		'Calidad'=>array(
 				   			'fields'=> array(
 				   				'nombre'
 				   			)

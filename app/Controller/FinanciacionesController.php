@@ -25,7 +25,7 @@ class FinanciacionesController extends AppController {
 		    'Banco',
 		    'Operacion' => array(
 			'Contrato' => array(
-			    'CalidadNombre',
+			    'Calidad',
 			    'Incoterm',
 			    'Proveedor'
 			),
@@ -122,7 +122,7 @@ class FinanciacionesController extends AppController {
 	$this->set('referencia', $financiacion['Operacion']['referencia']);
 	$this->set('proveedor', $financiacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
 	$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);
-	$this->set('calidad', $financiacion['Operacion']['Contrato']['CalidadNombre']['nombre']);
+	$this->set('calidad', $financiacion['Operacion']['Contrato']['Calidad']['nombre']);
 	$this->set('condicion', $financiacion['Operacion']['Contrato']['condicion']);
 	$this->set('fecha_vencimiento',$financiacion['Financiacion']['fecha_vencimiento']);
 	$cuenta = $financiacion['Banco']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['cuenta_bancaria']);
@@ -195,7 +195,7 @@ class FinanciacionesController extends AppController {
 		'contain' => array(
 		    'Contrato' => array(
 			'Proveedor',
-			'CalidadNombre',
+			'Calidad',
 			'Incoterm'
 		    ),
 		    'PrecioTotalOperacion'
@@ -210,7 +210,7 @@ class FinanciacionesController extends AppController {
 	$this->set('referencia', $operacion['Operacion']['referencia']);
 	$this->set('proveedor', $operacion['Contrato']['Proveedor']['nombre_corto']);
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
-	$this->set('calidad', $operacion['Contrato']['CalidadNombre']['nombre']);
+	$this->set('calidad', $operacion['Contrato']['Calidad']['nombre']);
 	$this->set('condicion', $operacion['Contrato']['condicion']);
 	$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
 	$this->set('action', $this->action);
