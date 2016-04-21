@@ -8,7 +8,8 @@ class OperacionesController extends AppController {
 	$this->paginate['contain'] = array(
 	    'Contrato' =>array(
 		'fields' => array(
-		    'referencia'
+		    'referencia',
+		'fecha_transporte'
 		)
 	    ),
 	    'PesoOperacion',
@@ -80,6 +81,11 @@ class OperacionesController extends AppController {
 	$operaciones = $this->paginate();
 	//pasamos los datos a la vista
 	$this->set(compact('operaciones','title'));
+    }
+
+    public function index_trafico() {
+	$this->index();
+	$this->render('index_trafico');
     }
 
     public function add() {
@@ -497,10 +503,6 @@ class OperacionesController extends AppController {
 
     }
 
-    public function index_trafico() {
-	$this->index();
-	$this->render('index_trafico');
-    }
 
     public function view_trafico($id = null) {
 	if (!$id) {
