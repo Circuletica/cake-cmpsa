@@ -278,11 +278,13 @@ $this->set(compact('pdf'));
 				),
 			'fields' => array(
 				'operacion_id',
-				'cantidad_embalaje'
+				'cantidad_embalaje',
+				'linea'
 				)
 			)
 		);
 		$operacion_id =  $transporte['Transporte']['operacion_id'];
+		$num_linea =  $transporte['Transporte']['linea'];
 	}else{
 		$operacion_id = $this->params['named']['from_id'];
 	}
@@ -304,7 +306,8 @@ $this->set(compact('pdf'));
 	    'Transporte' => array(
 			'fields' => array(
 			    'id',
-			    'operacion_id'
+			    'operacion_id',
+			    'linea'
 		 		)
 			),
 	    'PrecioTotalOperacion'=> array(
@@ -360,18 +363,30 @@ $this->set(compact('pdf'));
 	$this->set(compact('operacion'));
 	$this->set(compact('transportado'));
 //CALCULAMOS EL NÚMERO DE LÍNEA DE TRANSPORTE
-	//Saco el número del array para numerar las líneas de transporte	
-foreach ($operacion['Transporte'] as $clave=>$transporte){
-  $num = $clave;
-  //unset($parte['Operacion']);
-}
-//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva línea.
-if (!empty($id)){
-	$num = $num+2;
-}else{
-	$num = $num+1;
-}
+	//Saco el número del array para numerar las líneas de transporte
 
+ //Línea primera para comenzar desde el array que es 0. Si $clave es 5, $num será 6.
+//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva línea.
+$num = 0;	
+
+if (!empty($id)){ //En el EDIT
+	if($num_linea !=null){
+		$num = $num_linea;
+	}else{
+		foreach($transporte as $linea){
+			$num++;
+		}
+	}
+}else{ //En el ADD
+	if(empty($operacion['Transporte'])){ //Primera línea
+		$num = 1;
+	}else{ //A partir de la primera
+		foreach ($operacion['Transporte'] as $clave=>$transporte){
+  			$num = $clave;
+		}
+		$num = $num+2;
+	}
+}
 $this->set(compact('num'));
 
 
