@@ -37,6 +37,7 @@ if (isset($operacion_almacenes)) {
 }
 
 echo $this->Form->create();
+
 ?>
 <fieldset>
 <?php
@@ -45,6 +46,7 @@ echo $this->Form->create();
  }else{
  	//echo "<div class='col4'>";
  }
+
 
 echo $this->Html->tableCells(
     array(

@@ -84,10 +84,12 @@ class OperacionesController extends AppController {
 	$this->set(compact('operaciones','title'));
     }
 
+
     public function edit($id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado');
 	    $this->redirect(array('action'=>'index'));
+
 	}
 	$this->Operacion->id = $id;
 	$this->loadModel('Asociado');
@@ -701,10 +703,6 @@ if (empty($this->params['named']['from_id'])){
 
     }
 
-    public function index_trafico() {
-	$this->index();
-	$this->render('index_trafico');
-    }
 
     public function view_trafico($id = null) {
 	if (!$id) {
