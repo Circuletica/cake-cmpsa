@@ -37,11 +37,11 @@ if (isset($operacion_almacenes)) {
 }
 
 echo $this->Form->create();
- if($muestra['tipo_id']!='1'){
- 	echo "<div class='col3'>";
- }else{
- 	echo "<div class='col4'>";
- }
+if($muestra['tipo_id']!='1'){
+    echo "<div class='col3'>";
+}else{
+    echo "<div class='col4'>";
+}
 
 echo $this->Html->tableCells(
     array(
@@ -88,6 +88,24 @@ echo $this->Form->input('defecto');
 echo $this->Form->input('observaciones');
 ?>
 	</div>
+<?php
+if ($muestra['tipo_id'] == 3) {
+    echo "	<div class='col2'>\n";
+    echo $this->Form->input(
+	'si_facturado',
+	array(
+	    'label' => 'Facturado ?'
+	)
+    );
+    echo $this->Form->input(
+	'dato_factura',
+	array(
+	    'label' => 'Detalle factura'
+	)
+    );
+    echo "	</div>\n";
+}
+?>
 	<div class="col4">
 <?php
 
