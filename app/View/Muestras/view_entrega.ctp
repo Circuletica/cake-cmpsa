@@ -19,7 +19,6 @@ $this->Html->addCrumb(
     )
 );
 $this->end();
-
 $this->start('filtro');
 echo $this->element('filtromuestra');
 $this->end();
@@ -75,7 +74,7 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
-echo $this->Html->tableHeaders(array('','Marca', 'Cuenta almacén', 'Sacos', 'Operación', 'Detalle'));
+echo $this->Html->tableHeaders(array('Registro','Marca', 'Cuenta almacén', 'Sacos', 'Operación', 'Detalle'));
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas
 $i = 1;

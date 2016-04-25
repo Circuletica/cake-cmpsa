@@ -5,23 +5,38 @@ class RetiradasController extends AppController {
 	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'desc');
 	$this->paginate['contain'] = array(
 	    'Asociado',
-	    'AlmacenTransporte' => array (
+	    'AlmacenTransporte',
 		'Almacen' => array (
 		    'fields' => array(
+		    'id',
 			'nombre_corto'
 		    )
-		)
 	    ),
 	    'Operacion' => array (
-		'fields' => array(
-		    'id',
-		    'referencia'
-		)
+			'fields' => array(
+			    'id',
+			    'referencia'
+			)
+	    )
+	);
+	$this->Retirada->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Operacion' => array(
+				'foreignKey' => false,
+				'conditions' => array('Retirada.operacion_id = Operacion.id')
+		    ),		    
+		    'Almacen' => array(
+				'className' => 'Empresa',
+				'foreignKey' => false,
+				'conditions' => array('Almacen.id = AlmacenTransporte.almacen_id')	 
+			)
+	    )
 	    )
 	);
 
-	$retiradas = $this->paginate();
-	$this->set(compact('retiradas'));
+
+	$this->set('retiradas',$this->paginate());
 
     }
 

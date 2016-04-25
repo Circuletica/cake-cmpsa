@@ -88,3 +88,4 @@ class Contrato extends AppModel {
 	    'foreignKey' => 'calidad_id')
 	);
 }
+?>

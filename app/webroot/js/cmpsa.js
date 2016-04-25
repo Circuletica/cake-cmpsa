@@ -281,29 +281,32 @@ function operacionesRetirada(){
     var operacionId = operacionBox.options[operacionIndex].value;
     var asociadoId = asociadoBox.options[asociadoIndex].value;
     var cuentaId = cuentaBox.options[cuentaIndex].value;
-    console.log(operacioneId);
+    console.log(asociadoId);
 
-    //modificamos _todo_ el select de operaciones
-    if (operacionId in operaciones) {
-	var asociadosOperacion = operaciones[operacionId].Asociado;
-	var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
-	asociadoBox.options.length = opt1;
+		//modificamos _todo_ el select de operaciones
+	if (operacionId in operaciones) {
+		var asociadosOperacion = operaciones[operacionId].Asociado;
+		var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
+	    asociadoBox.options.length = opt1;
 
-	for (var i=0; i<opt1; i++){
-	    asociadoBox.options[i].value = asociadosOperacion[i].id;
-	    asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
+	    for (var i=0; i<opt1; i++){
+		asociadoBox.options[i].value = asociadosOperacion[i].id;
+		asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
+			if(asociadoBox.options[i].value == asociadoId){
+				asociadoBox.options[i].selected = true;
+			}
+		}
+ 	  
+		//CUENTA ALMACEN
+			var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
+			var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
+			cuentaBox.options.length = opt2;
+	
+			for (var i=0; i<opt2; i++){
+			cuentaBox.options[i].value = almacenesOperacion[i].id;
+			cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
+			}
 	}
-
-	//CUENTA ALMACEN
-	var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
-	var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
-	cuentaBox.options.length = opt2;
-
-	for (var i=0; i<opt2; i++){
-	    cuentaBox.options[i].value = almacenesOperacion[i].id;
-	    cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
-	}
-    }
 }
 
 function operacionAlmacen() {

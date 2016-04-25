@@ -308,15 +308,18 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 
 	}else{
 		echo "La fecha de la carga de la mercancía sin asignar";
+		echo "</dd>";
 	}
 			echo "  <dt>Vencimiento del seguro</dt>\n";
 			echo "<dd>";
 			if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 					$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha_llegada +1 month"));
 					$transporte['Transporte']['fecha_vencimiento_seg'] = $fecha_vencimiento_seg; //Asigno una fecha + 1 mes
-					echo $fecha_vencimiento_seg.'&nbsp;' ;
+					echo $fecha_vencimiento_seg.'&nbsp;';
+					echo "</dd>";
 			}else{
 				echo "La fecha de llegada sin asignar";
+				echo "</dd>";
 			}
 	if (!empty($transporte['Transporte']['fecha_llegada'])){
 		//	echo "</dd>";
@@ -342,7 +345,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 			echo "<dd>";
 			echo $transporte['Transporte']['peso_neto'].' Kg&nbsp;';
 			echo "</dd>";
-		}
+		}	
 echo '<br><h3>Reclamación</h3>';
 		if ($transporte['Transporte']['peritacion'] !=NULL){
 			echo "  <dt>Peritación</dt>\n";

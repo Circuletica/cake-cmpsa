@@ -198,40 +198,6 @@ $this->set(compact('pdf'));
 	//Necesario para exportar en PDf
 	$this->set(compact('id'));
 
-	/*//Se crea para saber el número de línea de la operación
-		$parte = $this->Transporte->Operacion->find(
-		'first',
-		array(
-			'conditions' => array(
-				'Operacion.id' => $transporte['Operacion']['id']
-				),
-			'recursive' => -1,
-			'fields' => array(
-						'id'
-						),	
-			'contain' => array(
-				'Transporte' => array(
-					'fields' => array(
-						    'id',
-						    'operacion_id'
-						    )
-					)
-				)
-			)
-		);
-//Saco el número del array para numerar las líneas de transporte	
-foreach ($parte as $clave => $lineas){
-  $parte = $lineas;
-  unset($parte['Operacion']);
-}
-foreach ($parte as $clave=>$lineas){
-	$i = $clave;
-	if($lineas['id'] == $transporte['Transporte']['id']){
-  	$num = $i+1;
-	}
-}
-$this->set(compact('num'));*/
-
     }
     public function add() {
     if (!$this->params['named']['from_id']) {
@@ -312,11 +278,13 @@ $this->set(compact('num'));*/
 				),
 			'fields' => array(
 				'operacion_id',
-				'cantidad_embalaje'
+				'cantidad_embalaje',
+				'linea'
 				)
 			)
 		);
 		$operacion_id =  $transporte['Transporte']['operacion_id'];
+		//$num_linea =  $transporte['Transporte']['linea'];
 	}else{
 		$operacion_id = $this->params['named']['from_id'];
 	}
@@ -338,7 +306,8 @@ $this->set(compact('num'));*/
 	    'Transporte' => array(
 			'fields' => array(
 			    'id',
-			    'operacion_id'
+			    'operacion_id',
+			    'linea'
 		 		)
 			),
 	    'PrecioTotalOperacion'=> array(
@@ -394,18 +363,22 @@ $this->set(compact('num'));*/
 	$this->set(compact('operacion'));
 	$this->set(compact('transportado'));
 //CALCULAMOS EL NÚMERO DE LÍNEA DE TRANSPORTE
-	//Saco el número del array para numerar las líneas de transporte	
-foreach ($operacion['Transporte'] as $clave=>$transporte){
-  $num = $clave;
-  //unset($parte['Operacion']);
-}
-//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva línea.
-if (!empty($id)){
-	$num = $num+2;
-}else{
-	$num = $num+1;
-}
+	//Saco el número del array para numerar las líneas de transporte
 
+ //Línea primera para comenzar desde el array que es 0. Si $clave es 5, $num será 6.
+//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva línea.
+//Este proceso genera la línea de nuevo siempre para que el contador lo haga desde el principio
+$num = 0;	
+		foreach ($operacion['Transporte'] as $clave=>$transporte){
+  			$num++;
+		}
+if (empty($id)){ //En el ADD
+	if(empty($operacion['Transporte'])){ //Primera línea
+		$num = 1;
+	}else{ //A partir de la primera
+		$num = $num+1;
+	};
+}
 $this->set(compact('num'));
 
 
@@ -478,37 +451,36 @@ $this->set(compact('num'));
 	$this->paginate['recursive'] = 2;
 	$this->paginate['condition'] = array(
 	    'Transporte.fecha_despacho_op'=> NULL
-		);		
+		);
 	$this->paginate['contain'] = array(
 		    'Operacion' => array(
 		    	'fields'=> array(
 		    		'id',
 		    		'referencia',
-		    		'contrato_id'
-		    		),
-		    	'PesoOperacion'=> array(
-					'fields' =>array(
-				 	   'peso',
-					   'cantidad_embalaje'
-						)
-					),	
-		    	'Contrato'=>array(	
+		    		'contrato_id',
+		    		)				    				    	
+			),
+			'PesoOperacion'=> array(
+				'fields' =>array(
+					'id',
+					'peso',
+					'cantidad_embalaje'
+					)
+			),
+			'Contrato'=>array(	
 					'fields'=> array(
 					    'id',
 					    'fecha_transporte',
 					    'si_entrega',
-						    ),
-					'Proveedor'=>array(
-					    'id',
-					    'nombre_corto'
-					),
-					'Calidad' => array(
-				    	'fields' =>(
-						'nombre'
-				    	)
+					    'proveedor_id'
+						    )
+				),
+			'Proveedor'=>array(
+				'fields'=>array(
+					'id',
+				    'nombre_corto'
 				    )
-				)
-			),
+				),
 			'PuertoDestino' => array(
 				'fields' => array(
 					'id',
@@ -517,9 +489,30 @@ $this->set(compact('num'));
 		    )
 	);
 
+	$this->Transporte->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Contrato' => array(
+				'foreignKey' => false,
+				'conditions' => array('Operacion.contrato_id = Contrato.id')
+		    ),	  
+		    'Proveedor' => array(
+				'className' => 'Empresa',
+				'foreignKey' => false,
+				'conditions' => array('Contrato.proveedor_id = Proveedor.id')
+			)
+		),
+		'hasOne' => array(
+			'PesoOperacion' => array(
+				'foreignKey' => false,
+				'conditions' => array('Transporte.operacion_id = PesoOperacion.id')
+			)
+		)
+		)
+	);
+	
+	$this->set('transportes',$this->paginate());
 
-	$transportes = $this->paginate();
-	$this->set(compact('transportes'));
 	}
 	public function info_despacho() {
 	//	$this ->info_embarque();
@@ -530,11 +523,11 @@ $this->set(compact('num'));
         'orientation' => 'landscape',
 	);
 
-	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
+	//$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
 	$this->paginate['recursive'] = 1;
-	$this->paginate['condition'] = array(
-	    'Transporte.fecha_despacho_op'=> NULL
-		);	
+	$this->paginate['conditions'] = array(
+	    'Transporte.fecha_despacho_op IS NOT NULL'
+		);
 
 	$this->paginate['contain'] = array(
 		   'Operacion' => array(
@@ -542,25 +535,37 @@ $this->set(compact('num'));
 		    		'id',
 		    		'referencia',
 		    		'contrato_id'
-		    		),
-		    	'PesoOperacion'=> array(
-					'fields' =>array(
-				 	   'peso',
-					   'cantidad_embalaje'
-						)
-					),	
-		    	'Contrato'=>array(	
-					'fields'=> array(
-					    'id'
-						    ),
-					'Calidad' => array(
-				    	'fields' =>(
+		    		)
+			),	
+		    'Contrato'=>array(	
+				'fields'=> array(
+				    'id',
+				    'calidad_id'
+				    )
+				    ),
+			'Calidad' => array(
+				    	'fields' =>array(
 						'nombre'
 				    	)
-				    )
-				)
-			)
+		    	)
 	);
+
+	$this->Transporte->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Contrato' => array(
+				'foreignKey' => false,
+				'conditions' => array('Operacion.contrato_id = Contrato.id')
+			    ),
+		    'CalidadNombre' => array(
+				'foreignKey' => false,
+				'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+				)
+		    )
+	    )
+	);
+
+
 
 	//$this->set(compact('transportes'));
 	
@@ -632,8 +637,8 @@ $this->set(compact('num'));
 
 	//pasamos los datos a la vista
 	$this->set(compact('despachos','title'));
-
 	}
+
     public function reclamacion($id = null) {
 
     $this->pdfConfig = array(

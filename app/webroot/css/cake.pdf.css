@@ -9,7 +9,7 @@
 body {
 	color: #000000;
 	font-family:verdana,helvetica,arial,sans-serif;
-	font-size:110%;
+	font-size:100%;
 	margin: 0;
 	font-weight: 500;
 }
@@ -20,24 +20,29 @@ h1, h2, h3, h4 {
 h1 {
 	color: #000000;
 	text-align:center;
-	font-size: 170%;
+	font-size: 140%;
 	margin-bottom: 0.5em;
 }
 h2 {
 	color:#990033;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 160%;
+	font-size: 120%;
 	font-weight: bold;
 }
 h3 {
 	color:  #2c6877;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 135%;
+	font-size: 110%;
 	font-weight: bold;
 }
 h4 {
 	color: #000;
-	font-size: 120%;
+	font-size: 100%;
+	font-weight: bold;
+}
+h5 {
+	color: #000;
+	font-size: 90%;
 	font-weight: bold;
 }
 ul, li {
@@ -101,6 +106,7 @@ table {
 	margin-bottom: 10px;
 	width: 100%;
 	font-weight: normal;
+	font-size: 80%;
 }
 th {
 	border-bottom:2px solid #555;
@@ -141,6 +147,7 @@ table td.actions a {
 dl {
 	line-height: 2em;
 	margin: 0em 0em;
+		font-size: 80%;
 	/*width: 90%;*/
 	/*width:100%;*/
 }
@@ -154,7 +161,7 @@ dt {
 	padding-left: 1%;
 	vertical-align: top;
 	width: 30%;
-}
+}	
 dd {
 	margin-left: 30%;
 	margin-top: -2em;

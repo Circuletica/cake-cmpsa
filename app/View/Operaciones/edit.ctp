@@ -118,7 +118,8 @@ echo $this->Form->input('peso_pagado', array(
 	'label' => 'Peso factura'
 	)
 );
-echo $this->Form->input('comentario');
+echo $this->Form->input('observaciones');
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Operacion');
 ?>
 </div>

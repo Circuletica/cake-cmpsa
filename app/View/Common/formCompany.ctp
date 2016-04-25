@@ -18,17 +18,22 @@ echo $this->Form->create($class);
 	<fieldset>
 <?php
 echo $this->Form->input('Empresa.nombre_corto', array(
+	'label' => 'Nombre',
     'autofocus' => 'autofocus'
     )
 );
 echo $this->Form->input('Empresa.nombre', array('label'=>'Denominacion legal'));
 echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
 ?>
-	<div class="columna2">
+<div class='col2'>
 <?php
 echo $this->Form->input('Empresa.cp', array('label'=>'Código Postal'));
 echo $this->Form->input('Empresa.municipio');
 ?>
+</div>
+</fieldset>
+<fieldset>
+
 	    <div class="formuboton">
 		<ul>
 		    <li>
@@ -54,16 +59,20 @@ echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País', array(
 <?php
 echo $this->Form->input('Empresa.telefono', array('label'=>'Teléfono'));
 ?>
-	</div>
 <?php
 echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));
 echo $this->Form->input('Empresa.codigo_contable', array('label'=>'Código Contable'));
+?>
+</fieldset>
+<fieldset>
+<?php
 echo $this->Form->input('Empresa.bic', array('label'=>'BIC'));
 echo $this->Form->input('Empresa.cuenta_bancaria');
 echo $this->Form->input('Empresa.website', array(
     'label'=>'Sitio web',
     'between'=>'http://'
 ));
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar '.$class);
 ?>
 </fieldset>

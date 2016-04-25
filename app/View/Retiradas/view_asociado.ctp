@@ -57,7 +57,7 @@ foreach($retiradas as $retirada):
 					'la retirada del día: '.$this->Date->format($retirada['Retirada']['fecha_retirada']
 					)
 					)
-			.
+			/*.
 			$this->Html->link('<i class="fa fa-trash"></i>',
 				    array(
 					'controller' => 'retiradas',
@@ -73,7 +73,7 @@ foreach($retiradas as $retirada):
 					'title' => 'Borrar',
 					'confirm' => '¿Seguro que quieres borrar la retirada del día: '.$this->Date->format($retirada['Retirada']['fecha_retirada'].'?'	)
 					)
-			)	
+			)	*/
 			));
 				
 endforeach;?>

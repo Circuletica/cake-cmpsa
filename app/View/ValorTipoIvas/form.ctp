@@ -32,6 +32,7 @@ echo $this->Form->input('fecha_fin', array(
     ));
 echo "</div>\n";
 echo $this->Form->input('valor', array('label' => 'Valor'));
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar valor');
 echo "</fieldset>\n";
 ?>

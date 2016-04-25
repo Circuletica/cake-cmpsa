@@ -79,6 +79,7 @@
 		  $entrega  = $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
 		  $entrega = ' ('.$entrega.')';
 	  } else { $entrega ='';}
+    
     echo $this->Html->tableCells(array(
       $operacion['Operacion']['referencia'],
       $operacion['Contrato']['referencia'],

@@ -113,8 +113,9 @@ p {
 	background: #fff;
 	clear: both;
 	color: #333;
-	/*padding: 0px 20px 40px 20px; Anterior*/
-	padding: 0px 40px 40px 40px;
+	/*padding: 0px 20px 40px 20px; Anterior
+	padding: 0px 40px 40px 40px;*/
+	padding: 0px 2% 1% 2% ;
 	overflow: auto;
 	/*ANCHO PANTALLA*/
 	width: 1200px;
@@ -324,9 +325,9 @@ dd {
 /** Forms **/
 form {
 	clear: both;
-	margin-right: 20px;
+	/*margin-right: 20px; Eliminado para cuadrar*/
 	padding: 0;
-	width: 95%;
+	/*width: 95%;*/
 }
 fieldset {
 	border: 1px;
@@ -338,7 +339,7 @@ fieldset {
 	/*width: 47%;
 	/*margin-right: 10px; 
 	margin: 0 30px 10px 0;*/
-	margin: 0 3% 0px 0px;
+	margin: 0 1% 0px 1%;
 }
 fieldset legend {
 	color: #2c6877;
@@ -384,7 +385,7 @@ form div.submit {
 	border: 0;
 	clear: both;
 	/*margin-top: 1.5%; Botones formularios demasiado separados*/
-	margin-right: 10px;
+	/*margin-right: 10px;*/
 }
 
 form :focus {

@@ -42,6 +42,7 @@
 		'contrato',
 		array('label' => 'Contrato naviera')
 	);
+	  echo $this->element('cancelarform');
 	echo $this->Form->end('Guardar Flete');
 ?>
 </fieldset>
