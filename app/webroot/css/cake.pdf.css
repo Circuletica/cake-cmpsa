@@ -37,7 +37,12 @@ h3 {
 }
 h4 {
 	color: #000;
-	font-size: 105%;
+	font-size: 100%;
+	font-weight: bold;
+}
+h5 {
+	color: #000;
+	font-size: 90%;
 	font-weight: bold;
 }
 ul, li {
@@ -101,6 +106,7 @@ table {
 	margin-bottom: 10px;
 	width: 100%;
 	font-weight: normal;
+	font-size: 80%;
 }
 th {
 	border-bottom:2px solid #555;
@@ -141,6 +147,7 @@ table td.actions a {
 dl {
 	line-height: 2em;
 	margin: 0em 0em;
+		font-size: 80%;
 	/*width: 90%;*/
 	/*width:100%;*/
 }
@@ -154,7 +161,7 @@ dt {
 	padding-left: 1%;
 	vertical-align: top;
 	width: 30%;
-}
+}	
 dd {
 	margin-left: 30%;
 	margin-top: -2em;

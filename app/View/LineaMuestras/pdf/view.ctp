@@ -12,11 +12,12 @@ $this->assign('from_id',$linea['Muestra']['id']);
 
 
 $this->start('main');
-echo "<h3>DEPARTAMENTO DE CONTROL DE CALIDAD</h3>";
-echo "<h3>INFORME DE CALIDAD Nº ".$linea['Muestra']['tipo_registro'].'</h3>';
+echo "<h3 style='text-align: center;'>DEPARTAMENTO DE CONTROL DE CALIDAD</h3>";
+echo "<h3 style='text-align: center;'>INFORME DE CALIDAD Nº ".$linea['Muestra']['tipo_registro'].'</h3>';
 echo "<hr><br>";
-echo "A: un destinatario<p> \n";
-echo "ATN: una persona<p> \n";
+echo "<h4 style='text-align: right;'>".date('d/m/Y')."</h4>";
+echo "A: un destinatario<br> \n";
+echo "ATN: una persona<br>\n";
 echo "REF: una info\n";
 
 echo "<dl>\n";
@@ -25,14 +26,14 @@ if ($linea['Muestra']['tipo_id'] != 1) {
     echo "  <dt>Cuenta Almacen</dt><dd>".$linea['AlmacenTransporte']['cuenta_almacen']."&nbsp;</dd>\n";
     echo "  <dt>Marca</dt><dd>".$linea['AlmacenTransporte']['marca_almacen']."&nbsp;</dd>\n";
 }
-echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."&nbsp;</dd>\n";
-echo "  <dt>Sacos</dt><dd>".$linea['LineaMuestra']['sacos'].
-    " ".(isset($linea['Operacion']['Embalaje'])?
-    $linea['Operacion']['Embalaje']['nombre']:'')."&nbsp;</dd>\n";
+//echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."&nbsp;</dd>\n";
+echo "  <dt>Sacos</dt><dd>".$linea['LineaMuestra']['sacos']."&nbsp;</dd>\n";
 echo "  <dt>Humedad</dt><dd>".$linea['LineaMuestra']['humedad']."&nbsp;</dd>\n";
+		
+
+
 echo "  <dt>Defectos</dt><dd>".nl2br(h($linea['LineaMuestra']['defecto']))."&nbsp;</dd>\n";
 echo "  <dt>Tueste</dt><dd>".$linea['LineaMuestra']['tueste']."&nbsp;</dd>\n";
-echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida']))."&nbsp;</dd>\n";
 echo "  <dt>Observaciones</dt><dd>".nl2br(h($linea['LineaMuestra']['observaciones']))."&nbsp;</dd>\n";
 //Tabla de criba medida y ponderada (con los caracoles)
 //Antes de todo, necesitamos saber que criba corresponde al fondo.
@@ -139,7 +140,12 @@ echo $this->Html->tableCells(array(
     array($suma_ponderada."%",array('class' => 'total'))
 ));
 echo "</table>\n";
+
+echo "<dl>";
 echo "</div>\n";
-echo '<h3>Criba Media '.$linea['CribaPonderada']['criba_media'].'</h3>';
-$this->end()
+echo "  <dt>Criba Media</dt><dd>".$linea['CribaPonderada']['criba_media']."</dd>\n";
+echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida']))."&nbsp;</dd>\n";
+
+echo "</dl>";
+$this->end();
 ?>
