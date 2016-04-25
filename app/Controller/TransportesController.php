@@ -284,7 +284,7 @@ $this->set(compact('pdf'));
 			)
 		);
 		$operacion_id =  $transporte['Transporte']['operacion_id'];
-		$num_linea =  $transporte['Transporte']['linea'];
+		//$num_linea =  $transporte['Transporte']['linea'];
 	}else{
 		$operacion_id = $this->params['named']['from_id'];
 	}
@@ -367,25 +367,17 @@ $this->set(compact('pdf'));
 
  //Línea primera para comenzar desde el array que es 0. Si $clave es 5, $num será 6.
 //Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva línea.
+//Este proceso genera la línea de nuevo siempre para que el contador lo haga desde el principio
 $num = 0;	
-
-if (!empty($id)){ //En el EDIT
-	if($num_linea !=null){
-		$num = $num_linea;
-	}else{
-		foreach($transporte as $linea){
-			$num++;
+		foreach ($operacion['Transporte'] as $clave=>$transporte){
+  			$num++;
 		}
-	}
-}else{ //En el ADD
+if (empty($id)){ //En el ADD
 	if(empty($operacion['Transporte'])){ //Primera línea
 		$num = 1;
 	}else{ //A partir de la primera
-		foreach ($operacion['Transporte'] as $clave=>$transporte){
-  			$num = $clave;
-		}
-		$num = $num+2;
-	}
+		$num = $num+1;
+	};
 }
 $this->set(compact('num'));
 

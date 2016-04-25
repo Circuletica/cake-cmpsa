@@ -97,7 +97,7 @@
 	$i = 1;
 	foreach($operacion['Transporte'] as $linea):
 		echo $this->Html->tableCells(array(
-			$i,
+			$linea['linea'],
 			$linea['nombre_vehiculo'],
 			$linea['matricula'],
 			//Nos da el formato DD-MM-YYYY
@@ -108,7 +108,7 @@
 			$this->Button->viewLine('transportes',$linea['id'],'operaciones',$linea['operacion_id'])
 			));
 		//numero de la línea siguiente
-		$i++;
+	//	$i++;
 	endforeach;
 ?>	</table>
 <?php		

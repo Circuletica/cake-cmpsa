@@ -726,7 +726,8 @@ if (empty($this->params['named']['from_id'])){
 			    'matricula',
 			    'fecha_carga',
 			    'fecha_seguro',
-			    'cantidad_embalaje'
+			    'cantidad_embalaje',
+			    'linea'
 			)
 		    ),
 		    'Contrato'=>array(
