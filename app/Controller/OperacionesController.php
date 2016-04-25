@@ -703,6 +703,11 @@ if (empty($this->params['named']['from_id'])){
 
     }
 
+    public function index_trafico() {
+	$this->index();
+	$this->render('index_trafico');
+    }
+
 
     public function view_trafico($id = null) {
 	if (!$id) {
