@@ -8,29 +8,28 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
 );
 //$this->Html->addCrumb('Transporte','/transporte/view/');
   echo $this->Form->create('Transporte');
-?>
-<fieldset>
-<?php
 if ($action == 'add') {
 
     $transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
     echo "<h2>Añadir Transporte a Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+echo "<fieldset>";
+echo "<legend>Info</legend>";
   
  echo "<dl>";
-        echo "<dt style=width:33%;>Incoterm</dt>\n";
-    echo "<dd style=margin-left:33%;>";
+        echo "<dt style=width:40%;>Incoterm</dt>\n";
+    echo "<dd style=margin-left:40%;>";
         echo $operacion['Contrato']['Incoterm']['nombre'].'&nbsp;';
     echo "</dd>";
-        echo "<dt style=width:33%;>Precio</dt>\n";
-    echo "<dd style=margin-left:33%;>";
+        echo "<dt style=width:40%;>Precio</dt>\n";
+    echo "<dd style=margin-left:40%;>";
         echo $operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg &nbsp;';
     echo "</dd>";
-        echo "<dt style=width:33%;>Bultos operación</dt>\n";
-    echo "<dd style=margin-left:33%;>";
+        echo "<dt style=width:40%;>Bultos operación</dt>\n";
+    echo "<dd style=margin-left:40%;>";
         echo $operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.'&nbsp;';
     echo "</dd>";
-        echo "<dt style=width:33%;>Bultos pendientes</dt>\n";
-    echo "<dd style=margin-left:33%;>";
+        echo "<dt style=width:40%;>Bultos pendientes</dt>\n";
+    echo "<dd style=margin-left:40%;>";
         echo $transportado.' en '.$embalaje.'&nbsp;';
     echo "</dd>";  
 echo "</dl>";  
@@ -40,22 +39,24 @@ echo "</dl>";
 
 if ($action == 'edit') {
     echo "<h2>Modificar Transporte de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+  echo "<fieldset>";
+  echo "<legend>Info</legend>"; 
  
   echo "<dl>";
-        echo "<dt style=width:33%;>Incoterm</dt>\n";
-    echo "<dd style=margin-left:33%;>";
+        echo "<dt style=width:40%;>Incoterm</dt>\n";
+    echo "<dd style=margin-left:40%;>";
         echo $operacion['Contrato']['Incoterm']['nombre'].'&nbsp;';
     echo "</dd>";
-        echo "<dt style=width:33%;>Precio</dt>\n";
-    echo "<dd style=margin-left:33%;>";
+        echo "<dt style=width:40%;>Precio</dt>\n";
+    echo "<dd style=margin-left:40%;>";
         echo $operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg &nbsp;';
     echo "</dd>";
-        echo "<dt style=width:33%;>Bultos operación</dt>\n";
-    echo "<dd style=margin-left:33%;>";
+        echo "<dt style=width:40%;>Bultos operación</dt>\n";
+    echo "<dd style=margin-left:40%;>";
         echo $operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.'&nbsp;';
     echo "</dd>";
-        echo "<dt style=width:33%;>Transportados</dt>\n";
-    echo "<dd style=margin-left:33%;>";
+        echo "<dt style=width:40%;>Transportados</dt>\n";
+    echo "<dd style=margin-left:40%;>";
         echo $transportado.'&nbsp;';
     echo "</dd>";  
 echo "</dl>";
@@ -68,6 +69,7 @@ echo "</dl>";
     <br>
     <hr>
     <br>
+    <legend>Datos</legend>
 
     <div class="col2"> 
         <?php
@@ -93,7 +95,6 @@ echo "</dl>";
             array('label' => 'Cantidad '.$embalaje
                 )
             );
-         echo '<br>';   
         ?>
     </div>
         <div class="col2">   
@@ -125,13 +126,11 @@ echo "</dl>";
                 ));
         ?>
     </div>
-        </fieldset>
-    <fieldset>
-
-         
+</fieldset>
+<fieldset>   
     <legend>Fechas</legend>
 
-        <div class="linea">
+        <div class="linea" style="margin-left: 18%">
             <?php
             echo $this->Form->input('fecha_carga', array(
             'dateFormat' => 'DMY',
@@ -218,13 +217,11 @@ echo "</dl>";
             'empty' => ' ')
             );
         }
-                   echo '<br><br>';
             ?>
             
         </div>
-
 </fieldset>
-   <fieldset>    <!-- Seguro de la línea transporte -->
+<fieldset>    <!-- Seguro de la línea transporte -->
 
 <?php
 if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
@@ -253,8 +250,7 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
                 );
             ?>
             </div>
-
-            <br>
+            
      <div class="col2">              
             <?php
 
@@ -263,7 +259,6 @@ if ($operacion['Contrato']['Incoterm']['nombre'] == 'FOB'){
                     echo $this->Form->input('peso_neto',array('label'=>'Peso neto (Kg)'));
                     ?>
        </div>
-       <br>
        <hr>
        <br>
           <legend>Reclamación</legend> 

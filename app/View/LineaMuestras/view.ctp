@@ -49,8 +49,7 @@ $fondo++;
 $this->end();
 
 $this->start('lines');
-echo "<div class='cribai'>\n";
-echo "<table>\n";
+echo "<table style=width:45%;margin-left:25%>\n";
 echo $this->Html->tableHeaders(array('Criba', 'Medida original', 'Medida ponderada'));
 //solo mostramos la línea si tiene algún valor
 if ($linea['LineaMuestra']['criba20'] || $linea['CribaPonderada']['criba20']) {
@@ -140,12 +139,38 @@ if ($linea['LineaMuestra']['criba12'] || $linea['CribaPonderada']['criba12']) {
 	+$linea['CribaPonderada']['criba12']));
 }
 echo $this->Html->tableCells(array(
-    'Total',
-    array($suma_linea."%",array('class' => 'total')),
-    array($suma_ponderada."%",array('class' => 'total'))
-));
+    array(
+    array(
+        'TOTAL',
+        array(
+        'style' => 'font-weight:bold;text-align:center'
+        )
+        ),
+        array(
+            $suma_linea."%",array(
+                'class' => 'total'
+                )
+            ),
+        array(
+            $suma_ponderada."%",array(
+                'class' => 'total'
+                )
+            )
+        )
+        )
+);
+echo $this->Html->tableCells(array(
+    array(
+        array(
+            'CRIBA MEDIA',
+            array(
+                'style' => 'font-weight: bold; text-align:center'
+                )
+            ),
+        $linea['CribaPonderada']['criba_media']
+        )
+    )
+);
 echo "</table>\n";
-echo "</div>\n";
-echo '<h3>Criba Media '.$linea['CribaPonderada']['criba_media'].'</h3>';
 $this->end()
 ?>
