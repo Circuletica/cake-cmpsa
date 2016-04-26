@@ -113,7 +113,7 @@ class OperacionesController extends AppController {
 	$contrato_id =  $operacion['Operacion']['contrato_id'];
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
-	$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
+	//$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
 	
 	$contrato = $this->Operacion->Contrato->find(
 	    'first',
@@ -135,7 +135,7 @@ class OperacionesController extends AppController {
 		    'Contrato.peso_comprado',
 		    'Contrato.puerto_carga_id',
 		    'Contrato.puerto_destino_id',
-		    'Contrato.calidad',
+		   // 'Contrato.calidad',
 		    'CanalCompra.nombre',
 		    'CanalCompra.divisa',
 		    'Incoterm.nombre',
@@ -163,17 +163,19 @@ class OperacionesController extends AppController {
 	$asociados_operacion = Hash::combine($asociados_operacion, '{n}.Asociado.id', '{n}');
 	$this->set('asociados_operacion', $asociados_operacion);
 	//Ahora que tenemos todos los datos, rellenamos el formulario
-	$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find('all', array(
-	    'conditions' => array(
-		'ContratoEmbalaje.contrato_id' => $contrato_id
-	    ),
+	$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find(
+		'all',
+		array(
+			    'conditions' => array(
+			    	'ContratoEmbalaje.contrato_id' => $contrato_id
+			    	),
 	    'fields' => array(
-		'Embalaje.id',
-		'Embalaje.nombre',
-		'ContratoEmbalaje.cantidad_embalaje',
-		'ContratoEmbalaje.peso_embalaje_real'
+	    	'Embalaje.id',
+	    	'Embalaje.nombre',
+			'ContratoEmbalaje.cantidad_embalaje',
+			'ContratoEmbalaje.peso_embalaje_real'
+			)
 	    )
-	)
     );
 	//hace falta para el desplegable de 'Embalaje'
 	//recombinamos el array anterior que quedaba asi:
@@ -316,7 +318,7 @@ class OperacionesController extends AppController {
 	    }
 	}
 		$this->set('action', $this->action);
-		$this->render('form');
+	//	$this->render('form');
     }
 
 
@@ -402,7 +404,7 @@ if (empty($this->params['named']['from_id'])){
 				),
 			'fields' => array(
 				'contrato_id',
-				//'cantidad_embalaje'
+				'cantidad_embalaje'
 				)
 			)
 		);
