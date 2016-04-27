@@ -1,9 +1,9 @@
 <?php
 if ($action == 'add') {
-    echo "<h2>Añadir Operación a Contrato<em>".$contrato['Contrato']['referencia']."</em></h2>\n";
+    echo "<h2>Añadir Operación a Contrato <em>".$contrato['Contrato']['referencia']."</em></h2>\n";
 }
 if ($action == 'edit') {
-    echo "<h2>Modificar Operación a Contrato<em>".$contrato['Contrato']['referencia']."</em></h2>\n";
+    echo "<h2>Modificar Operación a Contrato <em>".$contrato['Contrato']['referencia']."</em></h2>\n";
 }
 
 $this->Html->addCrumb('Contratos','/contratos');

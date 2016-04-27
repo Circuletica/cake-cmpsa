@@ -71,10 +71,16 @@ p {
 	/*border: 1px solid; /*Borde pestaña y caja*/
 }
 #footer {
-	width: 1280px;
+	//*width: 1280px;*/
+    position: absolute;
+    bottom: 20000px;
+    right: 0;
+    height: 10px;
+    border: 3px solid #73AD2;
+/*
  	margin: 0 auto;
 	clear: both;
-	padding: 0px 20px 0px 10px;
+	padding: 0px 20px 0px 10px;*/
 }
 /** containers **/
 div.menuheader{
@@ -98,6 +104,13 @@ div.view {
 	float:right;
 	font-weight: bold;
 }
+div .piepagina{
+	position: fixed;
+    bottom: 20000px;
+    right: 0;
+    height: 10px;
+    border: 3px solid #73AD2;
+}
 /** Tables **/
 table {
 	border-right:0;
@@ -106,7 +119,7 @@ table {
 	margin-bottom: 10px;
 	width: 100%;
 	font-weight: normal;
-	font-size: 80%;
+	font-size: 90%;
 }
 th {
 	border-bottom:2px solid #555;
@@ -147,7 +160,7 @@ table td.actions a {
 dl {
 	line-height: 2em;
 	margin: 0em 0em;
-		font-size: 80%;
+	font-size: 78%;
 	/*width: 90%;*/
 	/*width:100%;*/
 }

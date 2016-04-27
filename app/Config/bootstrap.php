@@ -71,7 +71,7 @@ Configure::write('Config.language', 'spa');
  * Uncomment one of the lines below, as you need. Make sure you read the documentation on CakePlugin to use more
  * advanced ways of loading plugins
  *
- CakePlugin::loadAll(); // Loads all plugins at once
+ * CakePlugin::loadAll(); // Loads all plugins at once
  * CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
  */
 CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
@@ -84,14 +84,12 @@ CakePlugin::load('CakePdf',array(
 //Esto lo ponian como altamente recomendado pero a mi me ha estado dando problemas.Es para generar las imágenes y colores
 //define('DOMPDF_ENABLE_REMOTE', false);
 
-//Generar PDFs en CakePHP con el plugin CakePDF  http://www.edsonmm.com/generar-pdf-en-cakephp-con-el-plugin-cakepdf/#cakephp2
-CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
 Configure::write('CakePdf', array(
    	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona
 	//'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows
 	//Instalar sudo apt-get install xvfb wkhtmltopdf
-	'binary'=> '/usr/bin/wkhtmltopdf',
-	//'binary'=> '/usr/local/bin/wkhtmltopdf',
+	//'binary'=> '/usr/bin/wkhtmltopdf', //Este es el bueno para ACER
+	'binary'=> '/usr/local/bin/wkhtmltox/bin/wkhtmltopdf',
         'margin' => array(
             'bottom' => 10,
             'left' => 15,
@@ -100,7 +98,7 @@ Configure::write('CakePdf', array(
         ),
         'paperSize' => 'A4',
         'orientation' => 'portrait',
-));
+    ));
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:
  *

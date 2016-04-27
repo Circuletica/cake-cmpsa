@@ -252,5 +252,10 @@ class LineaMuestrasController extends AppController {
 	    ));
 	}
     }
+
+    public function info_calidad(){
+    	$this ->view();
+		$this ->render('info_calidad');
+    }
 }
 ?>

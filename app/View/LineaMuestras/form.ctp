@@ -14,8 +14,15 @@ function totalCriba(){
 	document.getElementById('total').style.color = "red";
 }
 </script>
-
 <?php
+//Pasamos la lista de 'operacion_almacenes' al javascript de la vista
+echo $this->Html->script('jquery')."\n"; // Include jQuery library
+if (isset($operacion_almacenes)) {
+    $this->Js->set('operacionAlmacenes', $operacion_almacenes);
+    echo $this->Js->writeBuffer(array('onDomReady' => false));
+}
+
+echo $this->Form->create();
 if ($action == 'add') {
     echo "<h2>Añadir Línea a la muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 }
@@ -28,18 +35,8 @@ $this->Html->addCrumb('Muestras de '.$muestra['tipo_nombre'],'/muestras/index/Se
 $this->Html->addCrumb('Muestra '.$muestra['tipo_registro'],'/muestras/view/'.$muestra['id']);
 
 ?>
-<?php
-//Pasamos la lista de 'operacion_almacenes' al javascript de la vista
-echo $this->Html->script('jquery')."\n"; // Include jQuery library
-if (isset($operacion_almacenes)) {
-    $this->Js->set('operacionAlmacenes', $operacion_almacenes);
-    echo $this->Js->writeBuffer(array('onDomReady' => false));
-}
-
-echo $this->Form->create();
-
-?>
 <fieldset>
+<legend>Datos</legend>
 <?php
  if($muestra['tipo_id']!='1'){
  	//echo "<div class='col3'>";
@@ -85,6 +82,7 @@ echo $this->Html->tableCells(
 <!--	</div>-->
 </fieldset>
 <fieldset>
+<br>
 <?php
 echo $this->Form->input('apreciacion_bebida', array(
     'label' => 'Bebida')
@@ -93,9 +91,10 @@ echo $this->Form->input('apreciacion_bebida', array(
 echo $this->Form->input('defecto');
 echo $this->Form->input('observaciones');
 ?>
-
+<hr>
 </fieldset>
 <fieldset>	
+<legend>Criba</legend>
 	<div class="col2">
 <?php
 

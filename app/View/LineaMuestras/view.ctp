@@ -22,6 +22,37 @@ $this->Html->addCrumb('Muestra '.$linea['Muestra']['tipo_registro'], array(
 
 $this->start('filter');
 echo $this->element('filtromuestra');
+echo '<br>';
+echo $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Informe calidad PDF'),
+    array(
+        'action' => 'info_calidad',
+        $id,
+        'ext' => 'pdf',
+        ), 
+    array(
+        'escape'=>false,'target' => '_blank','title'=>'Informe calidad previo'));
+
+echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info
+    Embarques',
+   array(
+   'action' =>'info_calidad'
+   ),
+   array(
+   'escape'=>false,
+   'title'=>'Informe de situación'
+   )
+ );
+ echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i>
+Info Despachos',
+   array(
+   'action' =>'info_despacho',
+   'controller' => 'transportes'
+   ),
+   array(
+   'escape'=>false,
+   'title'=>'Informe de despachos'
+   )
+ );
 $this->end();
 
 $this->start('main');
@@ -54,8 +85,7 @@ $fondo++;
 $this->end();
 
 $this->start('lines');
-echo "<div class='cribai'>\n";
-echo "<table>\n";
+echo "<table style=width:45%;margin-left:25%>\n";
 echo $this->Html->tableHeaders(array('Criba', 'Medida original', 'Medida ponderada'));
 //solo mostramos la línea si tiene algún valor
 if ($linea['LineaMuestra']['criba20'] || $linea['CribaPonderada']['criba20']) {
@@ -145,12 +175,38 @@ if ($linea['LineaMuestra']['criba12'] || $linea['CribaPonderada']['criba12']) {
 	+$linea['CribaPonderada']['criba12']));
 }
 echo $this->Html->tableCells(array(
-    'Total',
-    array($suma_linea."%",array('class' => 'total')),
-    array($suma_ponderada."%",array('class' => 'total'))
-));
+    array(
+    array(
+        'TOTAL',
+        array(
+        'style' => 'font-weight:bold;text-align:center'
+        )
+        ),
+        array(
+            $suma_linea."%",array(
+                'class' => 'total'
+                )
+            ),
+        array(
+            $suma_ponderada."%",array(
+                'class' => 'total'
+                )
+            )
+        )
+        )
+);
+echo $this->Html->tableCells(array(
+    array(
+        array(
+            'CRIBA MEDIA',
+            array(
+                'style' => 'font-weight: bold; text-align:center'
+                )
+            ),
+        $linea['CribaPonderada']['criba_media']
+        )
+    )
+);
 echo "</table>\n";
-echo "</div>\n";
-echo '<h3>Criba Media '.$linea['CribaPonderada']['criba_media'].'</h3>';
 $this->end()
 ?>
