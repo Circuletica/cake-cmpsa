@@ -56,7 +56,7 @@ echo $this->Html->link($muestra['Proveedor']['nombre_corto'], array(
     $muestra['Proveedor']['id'])
 );
 echo "</dd>";
-echo "  <dt>Sample</dt>\n";
+echo "  <dt>Type Sample</dt>\n";
 echo "<dd>";
 echo ($muestra['Muestra']['si_sample'] ?
     '&#10004;'

@@ -66,6 +66,11 @@ echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedo
 echo "  <dt>Sacos</dt><dd>".$linea['LineaMuestra']['sacos'].
     " ".(isset($linea['Operacion']['Embalaje'])?
     $linea['Operacion']['Embalaje']['nombre']:'')."&nbsp;</dd>\n";
+if ($linea['Muestra']['tipo_id'] == 3) {
+    echo "  <dt>Facturado</dt><dd>".
+	($linea['LineaMuestra']['si_facturado'] ? '&#10004; ('.$linea['LineaMuestra']['dato_factura'].')' :'&nbsp;')
+	."</dd>\n";
+}
 echo "  <dt>Humedad</dt><dd>".$linea['LineaMuestra']['humedad']."&nbsp;</dd>\n";
 echo "  <dt>Defectos</dt><dd>".nl2br(h($linea['LineaMuestra']['defecto']))."&nbsp;</dd>\n";
 echo "  <dt>Tueste</dt><dd>".$linea['LineaMuestra']['tueste']."&nbsp;</dd>\n";

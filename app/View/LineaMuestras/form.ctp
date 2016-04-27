@@ -44,6 +44,7 @@ $this->Html->addCrumb('Muestra '.$muestra['tipo_registro'],'/muestras/view/'.$mu
  	//echo "<div class='col4'>";
  }
 
+
 echo $this->Html->tableCells(
     array(
 	$this->Form->input('humedad'),

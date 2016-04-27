@@ -93,7 +93,7 @@ if ($tipo_id == 1) {
     echo $this->Form->input(
 	'si_sample',
 	array(
-	    'label' => 'Sample'
+	    'label' => 'Type Sample'
 	)
     );
 }

@@ -84,10 +84,12 @@ class OperacionesController extends AppController {
 	$this->set(compact('operaciones','title'));
     }
 
+
     public function edit($id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado');
 	    $this->redirect(array('action'=>'index'));
+
 	}
 	$this->Operacion->id = $id;
 	$this->loadModel('Asociado');
@@ -113,6 +115,7 @@ class OperacionesController extends AppController {
 	$contrato_id =  $operacion['Operacion']['contrato_id'];
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
+
 	//$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
 	
 	$contrato = $this->Operacion->Contrato->find(
@@ -145,6 +148,7 @@ class OperacionesController extends AppController {
 		)
 	    )
 	);
+
 	$this->set('operacion', $operacion);
 
 	$this->set('contrato', $contrato);
@@ -284,7 +288,6 @@ class OperacionesController extends AppController {
 	$this->set(compact('fletes'));
 	$this->set(compact('precio_fletes'));
 	$this->set('proveedor',$contrato['Proveedor']['nombre_corto']);
-
 
 	if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
 	   $this->request->data = $this->Operacion->read();
@@ -507,6 +510,7 @@ if (empty($this->params['named']['from_id'])){
 		'conditions' => array( 'Pais.nombre' => 'España')
 	    )
 	));
+
 	//Por defecto ponemos las opciones, el forfait, el seguro y el flete a cero
 	$this->request->data['Operacion']['opciones'] = 0;
 	$this->request->data['Operacion']['forfait'] = 0;
@@ -704,6 +708,7 @@ if (empty($this->params['named']['from_id'])){
 	$this->index();
 	$this->render('index_trafico');
     }
+
 
     public function view_trafico($id = null) {
 	if (!$id) {

@@ -7,6 +7,7 @@ $this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this-
 //Pasamos la lista de 'embalajes_completo' del contrato al javascript de la vista
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 $this->Js->set('embalajesCompleto', $embalajes_completo);
+$this->Js->set('precioFletes', $precio_fletes);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 echo $this->Form->create('Operacion');
@@ -47,14 +48,13 @@ echo $this->Form->input('observaciones');
 <?php
 echo $this->Form->input('referencia', array(
     'autofocus' => 'autofocus'
-	)
+)
 );
 echo $this->Form->input('embalaje_id', array(
     //'after' => '(quedan '.$embalajes_completo[1]['cantidad_embalaje'].' sin fijar)'
     'after' => '(quedan ????? sin fijar)',
-    //'onchange' => 'pesoAsociado(this)'
     'onchange' => 'pesoAsociado()'
-		)
+)
 );
 ?>
 </div>
@@ -87,22 +87,22 @@ echo $this->Form->input(
     array(
 	'label' => 'Puerto embarque',
 	'default' => $puerto_carga_contrato_id,
-	'empty' => array('' => '')
+	'empty' => array('' => ''),
+	'onchange' => 'pesoAsociado()'
     )
 );
-
 
 echo $this->Form->input(
     'precio_fijacion',
     array(
-    'label' => 'Precio fijación',	
+	'label' => 'Precio fijación',	
 	'between' => '('.$divisa.')'
     )
 );
 echo $this->Form->input('precio_compra', array(
     'between' => '('.$divisa.')',
     'label' => 'Precio factura'
-			)
+)
 );
 
 echo $this->Form->input(
@@ -116,7 +116,7 @@ echo $this->Form->input(
 echo $this->Form->input('opciones', array(
     'between' => '('.$divisa.')',
     'label' => 'Opciones'
-	)
+)
 );
 ?>
 <br><br>
@@ -151,10 +151,10 @@ echo $this->Form->input('forfait', array(
 )
 					);
 
-		echo $this->Form->input('cambio_dolar_euro', array(
-		    'label' => 'Cambio dolar/euro',
-		    'between' => '($=>€)'
-			)
+echo $this->Form->input('cambio_dolar_euro', array(
+    'label' => 'Cambio dolar/euro',
+    'between' => '($=>€)'
+)
 		);
 ?>
 </div>
