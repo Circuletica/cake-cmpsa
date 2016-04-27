@@ -84,7 +84,7 @@ class OperacionesController extends AppController {
 	$this->set(compact('operaciones','title'));
     }
 
-    /*public function edit($id = null) {
+    public function edit($id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado');
 	    $this->redirect(array('action'=>'index'));
@@ -317,9 +317,9 @@ class OperacionesController extends AppController {
 		$this->Session->setFlash('Operacion NO guardada');
 	    }
 	}
-		$this->set('action', $this->action);
+	//	$this->set('action', $this->action);
 	//	$this->render('form');
-    }*/
+    }
 
 
  //// AQUI EMPIEZA EL FORM ()   
@@ -336,7 +336,7 @@ class OperacionesController extends AppController {
 	$this->render('form');
     }
 
-    public function edit($id = null) {
+  /*  public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 		    $this->Session->setFlash('error en URL');
 		    $this->redirect(array(
@@ -347,7 +347,7 @@ class OperacionesController extends AppController {
 		}
 		$this->form($id);
 		$this->render('form');
-	}
+	}*/
 
     public function form($id=null) {
     $this->set('action', $this->action);
@@ -410,8 +410,10 @@ if (empty($this->params['named']['from_id'])){
 	//nos sirven en la vista para detallar campos
 
 ////////////////////OJO CON ESTO////////////////Falla el EDIT
-	//$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
-	
+
+	$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
+		debug($this->Operacion->Contrato->virtualFields['calidad']);
+
 	$contrato = $this->Operacion->Contrato->find(
 	    'first',
 	    array(
