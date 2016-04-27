@@ -194,6 +194,7 @@ echo $this->Form->create('Contrato');
 <hr>
 <br>
 <fieldset>
+<legend>Datos</legend>
 	<div class="col2">
 <?php
 
@@ -280,6 +281,7 @@ echo $this->Form->input(
 
 </fieldset>
 <fieldset>
+<br>
 
  <table>
 	<tr>

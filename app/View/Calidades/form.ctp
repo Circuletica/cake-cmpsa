@@ -22,7 +22,6 @@ $enlace_anyadir_origen = $this->Html->link ('<i class="fa fa-plus"></i> Añadir 
     );
 ?>
 	<fieldset>
-	<div class="columna2">
 <?php
 echo $this->Form->input('descafeinado');
 ?>
@@ -47,11 +46,10 @@ echo $enlace_anyadir_origen;
       </li>
    </ul>
    </div>
+</fieldset>
+<fieldset>
 <?php
 echo $this->Form->input('descripcion',array("label"=>'Descripción'));
-?>
-	</div>
-<?php
 echo $this->Form->end('Guardar Calidad');
 ?>
 </fieldset>

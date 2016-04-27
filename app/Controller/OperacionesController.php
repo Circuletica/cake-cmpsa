@@ -84,7 +84,7 @@ class OperacionesController extends AppController {
 	$this->set(compact('operaciones','title'));
     }
 
-    public function edit($id = null) {
+    /*public function edit($id = null) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado');
 	    $this->redirect(array('action'=>'index'));
@@ -319,7 +319,7 @@ class OperacionesController extends AppController {
 	}
 		$this->set('action', $this->action);
 	//	$this->render('form');
-    }
+    }*/
 
 
  //// AQUI EMPIEZA EL FORM ()   
@@ -336,7 +336,7 @@ class OperacionesController extends AppController {
 	$this->render('form');
     }
 
-    /*public function edit($id = null) {
+    public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 		    $this->Session->setFlash('error en URL');
 		    $this->redirect(array(
@@ -347,18 +347,10 @@ class OperacionesController extends AppController {
 		}
 		$this->form($id);
 		$this->render('form');
-	}*/
+	}
 
     public function form($id=null) {
     $this->set('action', $this->action);
-	//el id y la clase de la entidad de origen vienen en la URL
-/*	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
-	    $this->redirect(array(
-		'controller' => $this->params['named']['from_controller'],
-		'action' => 'index')
-	    );
-	}*/
 
 	$this->loadModel('Asociado');
 	$asociados = $this->Asociado->find(
@@ -395,6 +387,7 @@ class OperacionesController extends AppController {
 	);
 	$this->set('proveedores',$proveedores);
 
+//Sacamos el valor de la operación si es un ADD
 if (empty($this->params['named']['from_id'])){
 		$operacion = $this->Operacion->find(
 		'first',
@@ -404,7 +397,7 @@ if (empty($this->params['named']['from_id'])){
 				),
 			'fields' => array(
 				'contrato_id',
-				'cantidad_embalaje'
+				//'cantidad_embalaje'
 				)
 			)
 		);
@@ -415,7 +408,9 @@ if (empty($this->params['named']['from_id'])){
 
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
-	$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
+
+////////////////////OJO CON ESTO////////////////Falla el EDIT
+	//$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
 	
 	$contrato = $this->Operacion->Contrato->find(
 	    'first',
