@@ -197,7 +197,6 @@ $this->set(compact('pdf'));
 
 	//Necesario para exportar en PDf
 	$this->set(compact('id'));
-
     }
     public function add() {
     if (!$this->params['named']['from_id']) {

@@ -226,4 +226,9 @@ class AppController extends Controller {
 	    return $titulo;
 	}
     }
+
+//Función para sacar los porcentajes
+    function porcentaje($total, $parte, $redondear) {
+    	return round($parte / $total * 100, $redondear);
+	}
 }

@@ -23,7 +23,7 @@ $this->Html->addCrumb('Muestra '.$linea['Muestra']['tipo_registro'], array(
 $this->start('filter');
 echo $this->element('filtromuestra');
 echo '<br>';
-echo $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Informe calidad PDF'),
+echo $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar informe'),
     array(
         'action' => 'info_calidad',
         $id,
@@ -32,25 +32,13 @@ echo $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Informe calidad 
     array(
         'escape'=>false,'target' => '_blank','title'=>'Informe calidad previo'));
 
-echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info
-    Embarques',
+echo  $this->Html->link('<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
    array(
-   'action' =>'info_calidad'
+   'action' =>'envio_info'
    ),
    array(
    'escape'=>false,
-   'title'=>'Informe de situación'
-   )
- );
- echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i>
-Info Despachos',
-   array(
-   'action' =>'info_despacho',
-   'controller' => 'transportes'
-   ),
-   array(
-   'escape'=>false,
-   'title'=>'Informe de despachos'
+   'title'=>'Envío informe de calidad'
    )
  );
 $this->end();

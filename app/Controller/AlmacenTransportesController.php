@@ -6,8 +6,75 @@ class AlmacenTransportesController extends AppController {
 	);
 
 	public function index() {
+	
+		$this->paginate['order'] = array('AlmacenTransporte.cuenta_almacen' => 'asc');
+		//$this->paginate['recursive'] = 3;
+		$this->paginate['contain'] = array(
+			'Almacen'=>array(
+			    'id',
+			    'nombre_corto'
+			)
+		);
+
 		$this->set('almacentransportes', $this->paginate());
 	}
+
+public function view($id = null) {
+
+	if (!$id) {
+	    $this->Session->setFlash('URL mal formada AlmacenTransporte/view ');
+	    $this->redirect(array('action'=>'index'));
+	}
+	
+	$almacentransportes = $this->AlmacenTransporte->find(
+		'first',
+		array(
+			'conditions' => array(
+				'AlmacenTransporte.id' => $id
+				),
+			'recursive' => 3,
+			'contain' => array(
+				'Transporte'=> array(
+					'fields'=> array(
+						'linea',
+						'matricula',
+						'nombre_vehiculo',
+						'operacion_id'
+						)
+					),
+				/*'Embalaje' => array(
+					'fields' => array(
+				   		'nombre'
+				   		)
+					 ),*/
+				'Almacen' => array(
+					'fields' => (
+						'nombre_corto'
+					)
+				),
+				'Retirada'=> array(
+					'fields' => array(
+						'id'
+						)
+					)
+				)
+			)
+		);
+	$this->set(compact('almacentransportes'));
+
+	//Necesario para exportar en PDf
+	$this->set(compact('id'));
+	
+$n1 = 255;
+$n2 = 133;
+$n3 = 87;
+ 
+$total = $n1+$n2+$n3;
+
+	$resultado = $this->porcentaje($total, $n1, 0);
+	debug($resultado);
+	$this->set(compact('resultado'));
+    }
 
     public function add() {
     		//el id y la clase de la entidad de origen vienen en la URL
