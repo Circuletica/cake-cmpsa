@@ -40,40 +40,81 @@ public function view($id = null) {
 						'matricula',
 						'nombre_vehiculo',
 						'operacion_id'
+						),
+					'Operacion'=> array(
+						'fields' => array(
+							'id'
+							),
+						'AsociadoOperacion' => array(
+							'fields'=> array(
+								'asociado_id',
+								'cantidad_embalaje_asociado',
+								'operacion_id'
+								),
+							'Asociado'=> array(
+								'fields'=> array(
+									'nombre_corto'
+									)
+								)
+							)
 						)
 					),
-				/*'Embalaje' => array(
-					'fields' => array(
-				   		'nombre'
-				   		)
-					 ),*/
-				'Almacen' => array(
-					'fields' => (
-						'nombre_corto'
+					'Almacen' => array(
+						'fields' => (
+							'nombre_corto'
+							)
+						),
+					'Retirada'=> array(
+						'fields' => array(
+							'id',
+							'almacen_transporte_id'
+							)
+						)
 					)
-				),
-				'Retirada'=> array(
+				)
+			);
+	$this->set(compact('almacentransportes'));
+
+	$distribucion = $this->AlmacenTransporte->Transporte->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Transporte.id'=> $almacentransportes['AlmacenTransporte']['transporte_id']),
+			'recursive' => 3,
+			'contain' => array(
+				'Operacion' => array(
 					'fields' => array(
 						'id'
+						),
+					'AsociadoOperacion' => array(
+						'fields'=> array(
+							'asociado_id',
+							'cantidad_embalaje_asociado',
+							'operacion_id'
+							),
+						'Asociado'=> array(
+							'fields'=> array(
+								'nombre_corto'
+								)
+							)
 						)
 					)
 				)
 			)
 		);
-	$this->set(compact('almacentransportes'));
-
+	$this->set(compact('distribucion'));
 	//Necesario para exportar en PDf
 	$this->set(compact('id'));
 	
-$n1 = 255;
-$n2 = 133;
-$n3 = 87;
- 
-$total = $n1+$n2+$n3;
-
+/*	
+	$n1 = 255;
+	$n2 = 133;
+	$n3 = 87; 
+	$total = $n1+$n2+$n3;
 	$resultado = $this->porcentaje($total, $n1, 0);
-	debug($resultado);
 	$this->set(compact('resultado'));
+*/
+	
     }
 
     public function add() {

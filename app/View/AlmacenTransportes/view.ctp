@@ -31,44 +31,11 @@
 		<li>
 			<?php
 			//Contempar si hay retirada ya o no de esto.
-			!empty($linea['Retirada'])? '<i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-left"></i>':$this->Button->editLine(
-				'almacen_transportes',
-				$linea['id'],'transportes',
-				$transporte['Transporte']['id']
-				)
-			.' '.$this->Button->deleteLine(
-				'almacen_transportes',
-				$linea['id'],
-				'transportes',
-				$transporte['Transporte']['id'],
-				'la ref. almacén '.$linea['cuenta_almacen']
-				)
-
-
-
-
-
-
-
-			echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',
-				array(
-				'action'=>'edit',
-				$almacentransportes['AlmacenTransporte']['id']
-				),
-				array('title'=>'Modificar Transporte',
-					'escape'=>false))
-
-			.' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',
-				array(
-				'action'=>'delete',
-				$almacentransportes['AlmacenTransporte']['id'],
-				'from_controller' => 'almacentransportes',
-				'from_id' => $almacentransportes['AlmacenTransporte']['transporte_id']
-				),		
-				array(
-				'escape'=>false, 'title'=> 'Borrar Transporte',
-				'confirm'=>'¿Realmente quiere borrar la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['id'].'?')
-			);
+			echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas': 
+			$this->Button->edit('almacentransportes',$almacentransportes['AlmacenTransporte']['id'])
+			.' '.
+			$this->Button->delete('almacentransportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
+			
 		?>
 		</li>
 	</ul>
@@ -126,13 +93,15 @@
 	<table>
 <?php
 	echo $this->Html->tableHeaders(array('Asociado','Asignados', 'Pendientes','Porcentaje'));
+	//	echo $this->Html->tableCells(array(
+	//		$almacentransporte['AsociadoOperacion']['Asociado']['nombre_corto']));
 	
 ?>	</table>
 	<div class='btabla'>
 	<?php
 		echo $this->Html->link(('<i class="fa fa-users" aria-hidden="true" fa-lg></i> Cambiar distribución'),
 	 	array(
-	 		'controller' => 'transporte',
+	 		'controller' => 'transportes',
 	 		'action' => 'view',
 	 		$almacentransportes['AlmacenTransporte']['transporte_id']
 	 		), 
