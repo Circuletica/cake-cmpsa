@@ -13,14 +13,14 @@ echo 'Contrato: '.$operacion['Contrato']['referencia']."\n";
 echo "<p>\n";
 echo 'Proveedor: '.$operacion['Contrato']['Proveedor']['nombre_corto']."\n";
 echo "<p>\n";
-echo 'Calidad: '.$operacion['Contrato']['CalidadNombre']['nombre']."\n";
+echo 'Calidad: '.$operacion['Contrato']['Calidad']['nombre']."\n";
 echo "<p>\n";
 echo 'Bolsa: '.$operacion['Contrato']['CanalCompra']['nombre'].
 	' ('.$operacion['Contrato']['Incoterm']['nombre'].")\n";
 echo "<p>\n";
 echo 'Peso total del contrato: '.$operacion['Contrato']['peso_comprado']."kg\n";
 echo "<p>\n";
-echo 'Embalaje: '.$embalaje['Embalaje']['nombre']."\n";
+//echo 'Embalaje: '.$embalaje['Embalaje']['nombre']."\n";
 echo "<p>\n";
 echo $this->Form->create('Operacion');
 echo $this->Form->input('referencia');
@@ -118,7 +118,7 @@ echo $this->Form->input('peso_pagado', array(
 	'label' => 'Peso factura'
 	)
 );
-echo $this->Form->input('comentario');
+echo $this->Form->input('observaciones');
 echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Operacion');
 ?>

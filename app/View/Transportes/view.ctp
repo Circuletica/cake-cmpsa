@@ -58,8 +58,8 @@
 
 <div class="actions">
 	<?php
-	echo $this->element('filtrooperacion');
-	echo '<br>';
+	//echo $this->element('filtrooperacion');
+	//echo '<br>';
 	echo $this->Html->link('Descargar PDF', array(
 		'action' => 'view',
 		 $id,
@@ -72,6 +72,7 @@
  		'title'=>'Descargar PDF'
  		)
 	);
+	echo "<br><hr>";
 	echo $this->Html->link(('<i class="fa fa-exclamation-circle fa-lg"></i> Reclamación seguro'),array(
 		'action' => 'reclamacion',
  		$id,
@@ -92,8 +93,20 @@
  		'title'=>'Asegurar línea peso'
  		)
  		);
-	?>
-</div>
+	echo "<br><hr>";
+
+	echo $this->Html->link(('<i class="fa fa-users" aria-hidden="true" fa-lg></i>
+ Distribución asociados'),array(
+	'action' => 'view',
+	$id,
+	'controller' => 'almacen_transportes',
+	), array(
+	'escape'=>false,
+	//'target' => '_blank',
+	'title'=>'Distribución asociados por cuenta almacén'
+	)
+	);
+?>	</div>
 
 	<div class='view'>
 	<dl><?php
@@ -308,15 +321,18 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 
 	}else{
 		echo "La fecha de la carga de la mercancía sin asignar";
+		echo "</dd>";
 	}
 			echo "  <dt>Vencimiento del seguro</dt>\n";
 			echo "<dd>";
 			if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 					$fecha_vencimiento_seg = date("d-m-Y", strtotime("$fecha_llegada +1 month"));
 					$transporte['Transporte']['fecha_vencimiento_seg'] = $fecha_vencimiento_seg; //Asigno una fecha + 1 mes
-					echo $fecha_vencimiento_seg.'&nbsp;' ;
+					echo $fecha_vencimiento_seg.'&nbsp;';
+					echo "</dd>";
 			}else{
 				echo "La fecha de llegada sin asignar";
+				echo "</dd>";
 			}
 	if (!empty($transporte['Transporte']['fecha_llegada'])){
 		//	echo "</dd>";
@@ -342,7 +358,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 			echo "<dd>";
 			echo $transporte['Transporte']['peso_neto'].' Kg&nbsp;';
 			echo "</dd>";
-		}
+		}	
 echo '<br><h3>Reclamación</h3>';
 		if ($transporte['Transporte']['peritacion'] !=NULL){
 			echo "  <dt>Peritación</dt>\n";
@@ -393,8 +409,9 @@ echo '<br><h3>Reclamación</h3>';
 				array('style' => 'text-align:right'
 					)
 				),
-			$linea['marca_almacen'],			
-			!empty($linea['Retirada'])? '<i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-left"></i>
+			$linea['marca_almacen'],
+			$this->Button->viewLine('almacen_transportes',$linea['id'],'transportes',$linea['transporte_id'])						
+		/*	!empty($linea['Retirada'])? '<i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-left"></i>
 ':$this->Button->editLine(
 				'almacen_transportes',
 				$linea['id'],'transportes',
@@ -406,7 +423,7 @@ echo '<br><h3>Reclamación</h3>';
 				'transportes',
 				$transporte['Transporte']['id'],
 				'la ref. almacén '.$linea['cuenta_almacen']
-				)
+				)*/
 			)
 		);
 
@@ -423,7 +440,6 @@ echo '<br><h3>Reclamación</h3>';
 				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido almacenados</span></h4>";
 			}
 ?>
-	</div>
 	</div>
 	
 </div>

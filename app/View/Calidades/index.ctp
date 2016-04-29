@@ -17,7 +17,7 @@
   </li>
 </ul>
 </div>
-<h2>Listado de calidades</h2>
+<h2>Calidades</h2>
 <table>
   <tr>
     <th><?php echo $this->Paginator->sort('descafeinado','Proceso')?></th>

@@ -1,4 +1,4 @@
-<?php
+<?php;
 // Usamos plantilla clásica de vistas View/Common/pdf/viewPdf.ctp
 $this->extend('/Common/pdf/viewPdf');
 $this->assign('id',$muestra['Muestra']['id']);
@@ -43,7 +43,7 @@ echo $muestra['Contrato']['transporte'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
-echo $muestra['CalidadNombre']['nombre'].'&nbsp;';
+echo $muestra['Calidad']['nombre'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";

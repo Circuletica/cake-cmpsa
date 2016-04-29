@@ -53,7 +53,7 @@
 	echo "  <dd>".$fecha_transporte."</dd>";
 	echo "  <dt>Calidad</dt>\n";
 	echo "<dd>";
-	echo $operacion['Contrato']['CalidadNombre']['nombre'].'&nbsp;';
+	echo $operacion['Contrato']['Calidad']['nombre'].'&nbsp;';
 	echo "  <dt>Proveedor</dt>\n";
 	echo "<dd>";
 	echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], array(
@@ -97,7 +97,7 @@
 	$i = 1;
 	foreach($operacion['Transporte'] as $linea):
 		echo $this->Html->tableCells(array(
-			$i,
+			$linea['linea'],
 			$linea['nombre_vehiculo'],
 			$linea['matricula'],
 			//Nos da el formato DD-MM-YYYY
@@ -108,7 +108,7 @@
 			$this->Button->viewLine('transportes',$linea['id'],'operaciones',$linea['operacion_id'])
 			));
 		//numero de la línea siguiente
-		$i++;
+	//	$i++;
 	endforeach;
 ?>	</table>
 <?php		

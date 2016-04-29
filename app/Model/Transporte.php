@@ -7,14 +7,14 @@ class Transporte extends AppModel {
       	'rule' => 'notEmpty',
      	'message' => 'El nombre del vehículo no puede estar vacío'
       ),  	
-	/*  	'naviera_id' => array(
-      	'rule' => 'notEmpty',
-      	'message' => 'La naviera no puede estar vacía'
-      )*/
  	 	'cantidad_embalaje' => array(
       	'rule' => 'notEmpty',
       	'message' => 'La cantidad de bultos no puede estar vacía'
-      )
+      ),
+ 	   	'linea' => array(
+      	'rule' => 'notEmpty',
+      	'message' => 'La linea de transporte no puede estar vacía'
+      )	
     );
 
     public $belongsTo = array(

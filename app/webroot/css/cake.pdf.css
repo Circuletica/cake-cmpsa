@@ -9,7 +9,7 @@
 body {
 	color: #000000;
 	font-family:verdana,helvetica,arial,sans-serif;
-	font-size:110%;
+	font-size:100%;
 	margin: 0;
 	font-weight: 500;
 }
@@ -20,24 +20,29 @@ h1, h2, h3, h4 {
 h1 {
 	color: #000000;
 	text-align:center;
-	font-size: 170%;
+	font-size: 140%;
 	margin-bottom: 0.5em;
 }
 h2 {
 	color:#990033;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 160%;
+	font-size: 120%;
 	font-weight: bold;
 }
 h3 {
 	color:  #2c6877;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 135%;
+	font-size: 110%;
 	font-weight: bold;
 }
 h4 {
 	color: #000;
-	font-size: 120%;
+	font-size: 100%;
+	font-weight: bold;
+}
+h5 {
+	color: #000;
+	font-size: 90%;
 	font-weight: bold;
 }
 ul, li {
@@ -66,10 +71,16 @@ p {
 	/*border: 1px solid; /*Borde pestaña y caja*/
 }
 #footer {
-	width: 1280px;
+	//*width: 1280px;*/
+    position: absolute;
+    bottom: 20000px;
+    right: 0;
+    height: 10px;
+    border: 3px solid #73AD2;
+/*
  	margin: 0 auto;
 	clear: both;
-	padding: 0px 20px 0px 10px;
+	padding: 0px 20px 0px 10px;*/
 }
 /** containers **/
 div.menuheader{
@@ -93,6 +104,13 @@ div.view {
 	float:right;
 	font-weight: bold;
 }
+div .piepagina{
+	position: fixed;
+    bottom: 20000px;
+    right: 0;
+    height: 10px;
+    border: 3px solid #73AD2;
+}
 /** Tables **/
 table {
 	border-right:0;
@@ -101,6 +119,7 @@ table {
 	margin-bottom: 10px;
 	width: 100%;
 	font-weight: normal;
+	font-size: 90%;
 }
 th {
 	border-bottom:2px solid #555;
@@ -141,6 +160,7 @@ table td.actions a {
 dl {
 	line-height: 2em;
 	margin: 0em 0em;
+	font-size: 78%;
 	/*width: 90%;*/
 	/*width:100%;*/
 }
@@ -154,7 +174,7 @@ dt {
 	padding-left: 1%;
 	vertical-align: top;
 	width: 30%;
-}
+}	
 dd {
 	margin-left: 30%;
 	margin-top: -2em;

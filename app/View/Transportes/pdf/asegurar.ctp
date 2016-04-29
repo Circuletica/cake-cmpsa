@@ -4,7 +4,7 @@
 	echo '<h1>Faltan campos del seguro por rellenar para generar la carta</h1>';
 }else{*/
 ?>
-	<div style="margin-left: 450px;">
+	<div style="margin-left: 390px;">
 	<br>
 	<b><?php echo $transporte['Aseguradora']['nombre'] ?></b>
 <br>
@@ -24,7 +24,7 @@ echo $transporte['Operacion']['referencia'];
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
-echo $transporte['Operacion']['Contrato']['CalidadNombre']['nombre'];
+echo $transporte['Operacion']['Contrato']['Calidad']['nombre'];
 echo "</dd>";
 echo "  <dt>Puerto de carga</dt>\n";
 echo "<dd>";

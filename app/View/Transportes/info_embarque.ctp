@@ -30,7 +30,8 @@
 <?php    
 
 	echo $this->Html->tableHeaders(array(
-		//$this->Paginator->sort('CalidadNombre.nombre','Calidad'),
+
+		//$this->Paginator->sort('Calidad.nombre','Calidad'),
 		$this->Paginator->sort('Operacion.referencia','Ref. Operación'),
 		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 		$this->Paginator->sort('PesoOperacion.cantidad_embalaje','Cantidad'),
@@ -54,7 +55,9 @@
 			}
 
 		echo $this->Html->tableCells(array(
+
 			//$transporte['CalidadNombre']['nombre'],			
+
 			$transporte['Operacion']['referencia'],
 			$transporte['Proveedor']['nombre_corto'],
 			$transporte['PesoOperacion']['cantidad_embalaje'],		
@@ -77,3 +80,4 @@
 	</table>
 </div>
 <?php echo $this->element('paginador');?>
+

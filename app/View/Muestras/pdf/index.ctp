@@ -5,7 +5,7 @@
     <th><?php echo $this->Paginator->sort('tipo')?></th>
     <th><?php echo $this->Paginator->sort('referencia')?></th>
     <th><?php echo $this->Paginator->sort('fecha')?></th>
-    <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
+    <th><?php echo $this->Paginator->sort('Calidad.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('proveedor')?></th>
   </tr>
   <?php foreach($muestras as $muestra):?>
@@ -24,7 +24,7 @@
      ?>
     </td>
     <td>
-      <?php echo $muestra['CalidadNombre']['nombre']; ?>
+      <?php echo $muestra['Calidad']['nombre']; ?>
     </td>
     <td>
       <?php echo $muestra['Proveedor']['Empresa']['nombre']; ?>

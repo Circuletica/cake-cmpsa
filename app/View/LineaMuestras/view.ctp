@@ -22,6 +22,25 @@ $this->Html->addCrumb('Muestra '.$linea['Muestra']['tipo_registro'], array(
 
 $this->start('filter');
 echo $this->element('filtromuestra');
+echo '<br>';
+echo $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar informe'),
+    array(
+        'action' => 'info_calidad',
+        $id,
+        'ext' => 'pdf',
+        ), 
+    array(
+        'escape'=>false,'target' => '_blank','title'=>'Informe calidad previo'));
+
+echo  $this->Html->link('<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
+   array(
+   'action' =>'envio_info'
+   ),
+   array(
+   'escape'=>false,
+   'title'=>'Envío informe de calidad'
+   )
+ );
 $this->end();
 
 $this->start('main');
@@ -35,6 +54,11 @@ echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedo
 echo "  <dt>Sacos</dt><dd>".$linea['LineaMuestra']['sacos'].
     " ".(isset($linea['Operacion']['Embalaje'])?
     $linea['Operacion']['Embalaje']['nombre']:'')."&nbsp;</dd>\n";
+if ($linea['Muestra']['tipo_id'] == 3) {
+    echo "  <dt>Facturado</dt><dd>".
+	($linea['LineaMuestra']['si_facturado'] ? '&#10004; ('.$linea['LineaMuestra']['dato_factura'].')' :'&nbsp;')
+	."</dd>\n";
+}
 echo "  <dt>Humedad</dt><dd>".$linea['LineaMuestra']['humedad']."&nbsp;</dd>\n";
 echo "  <dt>Defectos</dt><dd>".nl2br(h($linea['LineaMuestra']['defecto']))."&nbsp;</dd>\n";
 echo "  <dt>Tueste</dt><dd>".$linea['LineaMuestra']['tueste']."&nbsp;</dd>\n";
@@ -49,8 +73,7 @@ $fondo++;
 $this->end();
 
 $this->start('lines');
-echo "<div class='cribai'>\n";
-echo "<table>\n";
+echo "<table style=width:45%;margin-left:25%>\n";
 echo $this->Html->tableHeaders(array('Criba', 'Medida original', 'Medida ponderada'));
 //solo mostramos la línea si tiene algún valor
 if ($linea['LineaMuestra']['criba20'] || $linea['CribaPonderada']['criba20']) {
@@ -140,12 +163,38 @@ if ($linea['LineaMuestra']['criba12'] || $linea['CribaPonderada']['criba12']) {
 	+$linea['CribaPonderada']['criba12']));
 }
 echo $this->Html->tableCells(array(
-    'Total',
-    array($suma_linea."%",array('class' => 'total')),
-    array($suma_ponderada."%",array('class' => 'total'))
-));
+    array(
+    array(
+        'TOTAL',
+        array(
+        'style' => 'font-weight:bold;text-align:center'
+        )
+        ),
+        array(
+            $suma_linea."%",array(
+                'class' => 'total'
+                )
+            ),
+        array(
+            $suma_ponderada."%",array(
+                'class' => 'total'
+                )
+            )
+        )
+        )
+);
+echo $this->Html->tableCells(array(
+    array(
+        array(
+            'CRIBA MEDIA',
+            array(
+                'style' => 'font-weight: bold; text-align:center'
+                )
+            ),
+        $linea['CribaPonderada']['criba_media']
+        )
+    )
+);
 echo "</table>\n";
-echo "</div>\n";
-echo '<h3>Criba Media '.$linea['CribaPonderada']['criba_media'].'</h3>';
 $this->end()
 ?>

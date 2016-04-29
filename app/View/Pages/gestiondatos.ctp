@@ -14,15 +14,12 @@ echo $this->element('desplegabledatos');
 		<td><?php echo $this->Html->link('Asociados','/asociados',array('class'=>'boton'));?></td>
 		<td><?php echo $this->Html->link('Bancos','/bancos',array('class'=>'boton'));?></td>
 
-
 	</tr>
 	<tr>
-			<td><?php echo $this->Html->link('Calidades','/calidades',array('class'=>'boton'));?></td>
-			<td><?php echo $this->Html->link('Contactos','/contactos',array('class'=>'boton'));?></td>
+		<td><?php echo $this->Html->link('Calidades','/calidades',array('class'=>'boton'));?></td>
 		<td><?php echo $this->Html->link('Embalajes','/embalajes',array('class'=>'boton'));?></td>
 		<td><?php echo $this->Html->link('Incoterms','/incoterms',array('class'=>'boton'));?></td>
 		<td><?php echo $this->Html->link('IVA','/tipo_ivas',array('class'=>'boton'));?></td>
-
 	</tr>
 	<tr>
 		<td><?php echo $this->Html->link('Navieras','/navieras',array('class'=>'boton'));?></td>

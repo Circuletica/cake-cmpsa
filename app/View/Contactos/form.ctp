@@ -10,7 +10,7 @@ $this->Html->addCrumb('Entidades','/'.$this->params['named']['from_controller'])
 $this->Html->addCrumb($empresa['Empresa']['nombre'], '/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 echo $this->Form->create();
 ?>
-  <div class="columna2">
+<fieldset>
 <?php
 echo $this->Form->input(
     'nombre',
@@ -22,9 +22,9 @@ echo $this->Form->input(
 	'empty' => true
     )
 );
-?> 
-  </div>
-  <div class="columna3">
+?>
+</fieldset>
+<fieldset>
 <?php
 echo $this->Form->input(
     'funcion',
@@ -32,17 +32,25 @@ echo $this->Form->input(
 );
 echo $this->Form->input(
     'telefono1',
-    array('label'=>'Teléfono Nº1')
-);
+    array('label'=>'Teléfono Nº1'
+        )
+    );
+?>
+</fieldset>
+<fieldset>
+<?php
 
 echo $this->Form->input(
     'telefono2',
-    array('label'=>'Teléfono Nº2')
-);
-echo $this->Form->input('email');
-?>
-    </div>
-<?php
+    array('label'=>'Teléfono Nº2'
+        )
+    );
+echo $this->Form->input(
+    'email',
+    array('label'=> 'e-Mail'
+        )
+    );
 echo $this->element('cancelarform');
 echo $this->Form->end('Guardar contacto');
 ?>
+</fieldset>

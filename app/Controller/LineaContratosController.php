@@ -29,7 +29,7 @@ class LineaContratosController extends AppController {
 				'Contrato.peso_comprado',
 				'CanalCompra.nombre',
 				'CanalCompra.divisa',
-				'CalidadNombre.nombre')
+				'Calidad.nombre')
 		));
 		$this->set('contrato',$contrato);
 		$embalajes_contrato = $this->LineaContrato->Contrato->ContratoEmbalaje->find('all', array(

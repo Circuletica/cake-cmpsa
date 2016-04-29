@@ -616,7 +616,7 @@ input[type=submit],
 }
 
 /** CRIBA **/
-div.cribai {
+/*div.cribai {
 	border-right:0;
 	clear: both;
 	color: #333;
@@ -647,7 +647,7 @@ div.cribai {
 .cribai .total{
 	font-weight: bold;
 	color: #CE443E;
-}
+}*/
 /* LATERAL DERECHA */
 div.laterald {
 	float:right;

@@ -38,7 +38,7 @@ class TransportesController extends AppController {
 					    'id',
 					    'nombre_corto'
 					),
-					'CalidadNombre' => array(
+					'Calidad' => array(
 				    	'fields' =>(
 						'nombre'
 				    	)
@@ -197,41 +197,6 @@ $this->set(compact('pdf'));
 
 	//Necesario para exportar en PDf
 	$this->set(compact('id'));
-
-	/*//Se crea para saber el número de línea de la operación
-		$parte = $this->Transporte->Operacion->find(
-		'first',
-		array(
-			'conditions' => array(
-				'Operacion.id' => $transporte['Operacion']['id']
-				),
-			'recursive' => -1,
-			'fields' => array(
-						'id'
-						),	
-			'contain' => array(
-				'Transporte' => array(
-					'fields' => array(
-						    'id',
-						    'operacion_id'
-						    )
-					)
-				)
-			)
-		);
-//Saco el número del array para numerar las líneas de transporte	
-foreach ($parte as $clave => $lineas){
-  $parte = $lineas;
-  unset($parte['Operacion']);
-}
-foreach ($parte as $clave=>$lineas){
-	$i = $clave;
-	if($lineas['id'] == $transporte['Transporte']['id']){
-  	$num = $i+1;
-	}
-}
-$this->set(compact('num'));*/
-
     }
     public function add() {
     if (!$this->params['named']['from_id']) {
@@ -312,11 +277,13 @@ $this->set(compact('num'));*/
 				),
 			'fields' => array(
 				'operacion_id',
-				'cantidad_embalaje'
+				'cantidad_embalaje',
+				'linea'
 				)
 			)
 		);
 		$operacion_id =  $transporte['Transporte']['operacion_id'];
+		//$num_linea =  $transporte['Transporte']['linea'];
 	}else{
 		$operacion_id = $this->params['named']['from_id'];
 	}
@@ -338,7 +305,8 @@ $this->set(compact('num'));*/
 	    'Transporte' => array(
 			'fields' => array(
 			    'id',
-			    'operacion_id'
+			    'operacion_id',
+			    'linea'
 		 		)
 			),
 	    'PrecioTotalOperacion'=> array(
@@ -394,18 +362,22 @@ $this->set(compact('num'));*/
 	$this->set(compact('operacion'));
 	$this->set(compact('transportado'));
 //CALCULAMOS EL NÚMERO DE LÍNEA DE TRANSPORTE
-	//Saco el número del array para numerar las líneas de transporte	
-foreach ($operacion['Transporte'] as $clave=>$transporte){
-  $num = $clave;
-  //unset($parte['Operacion']);
-}
-//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva línea.
-if (!empty($id)){
-	$num = $num+2;
-}else{
-	$num = $num+1;
-}
+	//Saco el número del array para numerar las líneas de transporte
 
+ //Línea primera para comenzar desde el array que es 0. Si $clave es 5, $num será 6.
+//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva línea.
+//Este proceso genera la línea de nuevo siempre para que el contador lo haga desde el principio
+$num = 0;	
+		foreach ($operacion['Transporte'] as $clave=>$transporte){
+  			$num++;
+		}
+if (empty($id)){ //En el ADD
+	if(empty($operacion['Transporte'])){ //Primera línea
+		$num = 1;
+	}else{ //A partir de la primera
+		$num = $num+1;
+	};
+}
 $this->set(compact('num'));
 
 
@@ -474,7 +446,7 @@ $this->set(compact('num'));
 //	$this->set(compact('invoice');
 
 
-	$this->paginate['order'] = array('CalidadNombre.nombre' => 'asc');
+	$this->paginate['order'] = array('Calidad.nombre' => 'asc');
 	$this->paginate['recursive'] = 2;
 	$this->paginate['condition'] = array(
 	    'Transporte.fecha_despacho_op'=> NULL
@@ -508,7 +480,6 @@ $this->set(compact('num'));
 				    'nombre_corto'
 				    )
 				),
-
 			'PuertoDestino' => array(
 				'fields' => array(
 					'id',
@@ -571,8 +542,8 @@ $this->set(compact('num'));
 				    'calidad_id'
 				    )
 				    ),
-			'CalidadNombre' => array(
-				    	'fields' =>(
+			'Calidad' => array(
+				    	'fields' =>array(
 						'nombre'
 				    	)
 		    	)
@@ -607,7 +578,7 @@ $this->set(compact('num'));
 			'lista' => ''
 		    )
 		),
-		'CalidadNombre' => array(
+		'Calidad' => array(
 		    'Calidad' => array(
 			'columna' => 'nombre',
 			'exacto' => false,
@@ -690,7 +661,7 @@ $this->set(compact('num'));
 						    'id',
 						    'referencia'
 						),
-				   		'CalidadNombre'=>array(
+				   		'Calidad'=>array(
 				   			'fields'=> array(
 				   				'nombre'
 				   			)
@@ -782,7 +753,7 @@ $this->set(compact('num'));
 						    'id',
 						    'referencia'
 						),
-				   		'CalidadNombre'=>array(
+				   		'Calidad'=>array(
 				   			'fields'=> array(
 				   				'nombre'
 				   			)
@@ -870,19 +841,6 @@ $this->set(compact('num'));
 				)
 			)
 		);
-//Saco el número del array para numerar las líneas de transporte	
-/*foreach ($parte as $clave => $lineas){
-  $parte = $lineas;
-  unset($parte['Operacion']);
-}
-foreach ($parte as $clave=>$lineas){
-	$i = $clave;
-	if($lineas['id'] == $transporte['Transporte']['id']){
-  	$num = $i+1;
-	}
-}
-$this->set(compact('num'));*/
-
     }
 
 }

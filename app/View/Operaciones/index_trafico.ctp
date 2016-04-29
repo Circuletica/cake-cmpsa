@@ -68,7 +68,7 @@
     <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Ref. Operación')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Ref. Contrato')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.fecha_transporte','Embarque/Entrega')?></th>
-    <th><?php echo $this->Paginator->sort('CalidadNombre.nombre', 'Calidad')?></th>
+    <th><?php echo $this->Paginator->sort('Calidad.nombre', 'Calidad')?></th>
     <th><?php echo $this->Paginator->sort('Proveedor.nombre_corto', 'Proveedor');?></th>
     <th><?php echo $this->Paginator->sort('PesoOperacion.cantidad_embalaje', 'Bultos')?></th>
     <th><?php echo 'Detalle'?></th>
@@ -79,11 +79,12 @@
 		  $entrega  = $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
 		  $entrega = ' ('.$entrega.')';
 	  } else { $entrega ='';}
+    
     echo $this->Html->tableCells(array(
       $operacion['Operacion']['referencia'],
       $operacion['Contrato']['referencia'],
       $this->Date->format($operacion['Contrato']['fecha_transporte']).$entrega,
-      $operacion['CalidadNombre']['nombre'],
+      $operacion['Calidad']['nombre'],
       $operacion['Proveedor']['nombre_corto'],
       $operacion['PesoOperacion']['cantidad_embalaje'],
       //No se puede usar el ButtonHelper. Enlace distinto.

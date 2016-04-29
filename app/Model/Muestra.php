@@ -38,8 +38,8 @@ class Muestra extends AppModel {
     }
     public $displayField = 'tipo_registro';
     public $belongsTo = array(
-	'CalidadNombre' => array(
-	    'className' => 'CalidadNombre',
+	'Calidad' => array(
+	    'className' => 'Calidad',
 	    'foreignKey' => 'calidad_id'),
 	'Proveedor' => array(
 	    'className' => 'Empresa',

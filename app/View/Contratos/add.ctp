@@ -175,23 +175,29 @@ $enlace_anyadir_proveedor = $this->Html->link (
 
 echo $this->Form->create('Contrato');
 ?>
-	<div class='radiomuestra'>
-<?php
-echo $this->Form->radio(
-    'canal_compra_id',
-    $canal_compras,
-    array(
-	'legend' => false,
-	'value' => 1,
-	'separator' => '-- ',
-	'onclick' => 'canalCompra()'
-    ),
-    array('class'=>'radiomuestra')
-);
-?>
+	
+    <div class='radiomuestra'>
+	<?php
+	echo $this->Form->radio(
+	    'canal_compra_id',
+	    $canal_compras,
+	    array(
+		'legend' => false,
+		'value' => 1,
+		'separator' => ' -- ',
+		'onclick' => 'canalCompra()'
+	    ),
+	    array('class'=>'radiomuestra')
+	);
+	?>
 	</div>
-	<div class="col4">
+<hr>
+<br>
+<fieldset>
+<legend>Datos</legend>
+	<div class="col2">
 <?php
+
 echo $this->Form->input(
     'referencia',
     array('autofocus' => 'autofocus')
@@ -203,33 +209,37 @@ echo $this->Form->input(
 	'empty' => array('' => 'Selecciona')
     )
 );
-echo $this->Form->input(
-    'puerto_carga_id',
-    array(
-	'label' => 'Puerto de carga',
-	'empty' => true
-    )
-);
-echo $this->Form->input(
-    'puerto_destino_id',
-    array(
-	'label' => 'Puerto de destino',
-	'empty' => true
-    )
-);
-?>
-	  </div>
-	  <div class="col2">
-<?php
+?></div>
+	<div class="col2">
+	<?php
+	echo $this->Form->input(
+	    'puerto_carga_id',
+	    array(
+		'label' => 'Puerto de carga',
+		'empty' => true
+	    )
+	);
+	echo $this->Form->input(
+	    'puerto_destino_id',
+	    array(
+		'label' => 'Puerto de destino',
+		'empty' => true
+	    )
+	);
+	?>
+	</div>
+	<?php
+
 echo $this->Form->input(
     'calidad_id',
     array(
 	'label' => 'Calidad ('.$enlace_anyadir_calidad.')',
 	'empty' => array('' => 'Selecciona'),
 	'class' => 'ui-widget',
-	'id' => 'combobox'
+	'id' => 'combobox',
+    'style' => 'width: 100%' //Si no marco el estilo se deforma todo el fieldset.
     )
-);
+    );
 echo $this->Form->input(
     'proveedor_id',
     array(
@@ -237,41 +247,45 @@ echo $this->Form->input(
 	'empty' => array('' => 'Selecciona')
     )
 );
-?>
-	    </div>
-	    <div class="col3">
-<?php
-echo $this->Form->input(
-    'peso_comprado',
-    array(
-	'label' => 'Peso comprado (kg)',
-	'id' => 'pesoComprado',
-	'oninput' => 'totalDesglose()'
-    )
-);
-echo $this->Form->input('lotes_contrato');
-echo "<div class='linea'>\n";
-echo $this->Form->input(
-    'posicion_bolsa',
-    array(
-	'label' => 'Posición de bolsa',
-	'dateFormat' => 'MY',
-	'minYear' => date('Y'),
-	'maxYear' => date('Y')+5,
-	'orderYear' => 'asc',
-	//'selected' => date('Y-m'),
-	//'div' => false
-    )
-);
-
-?>
+	?>
+<div class="col2">
+	<?php
+	echo $this->Form->input(
+	    'peso_comprado',
+	    array(
+		'label' => 'Peso comprado (kg)',
+		'id' => 'pesoComprado',
+		'oninput' => 'totalDesglose()'
+	    )
+	);
+	echo $this->Form->input('lotes_contrato');
+	?>
 	</div>
-    </div>
-    <div class="col2">
+<div class='linea'>
+	<?php
+	echo $this->Form->input(
+	    'posicion_bolsa',
+	    array(
+		'label' => 'Posición de bolsa',
+		'dateFormat' => 'MY',
+		'minYear' => date('Y'),
+		'maxYear' => date('Y')+5,
+		'orderYear' => 'asc',
+		//'selected' => date('Y-m'),
+		//'div' => false
+	    )
+	);
+	?>
+	</div>
+	
 
-    <table>
+</fieldset>
+<fieldset>
+<br>
+
+ <table>
 	<tr>
-      <th>Tipo de bulto</th>
+      <th>Tipo bulto</th>
       <th>Cantidad</th>
       <th>Peso</th>
 	</tr>
@@ -321,41 +335,48 @@ foreach ($embalajes as $embalaje){
 ?>
     </table>
     <p id="total"></p>
-<?php
-echo $this->Form->input(
+    <?php
+    echo $this->Form->input(
     'diferencial',
     array('between' => '(<var id="divisa_diferencial"></var>)')
 );
+?>
+ </fieldset>
+<fieldset> 
+<?php
 //echo '<p id="divisa_opciones"></p>';
 ?>
-<br><br><br>
+<legend>Fecha de transporte</legend>
     <div class='radiomuestra'>
-<?php
-echo $this->Form->radio(
-    'si_entrega',
-    $tipos_fecha_transporte,
-    array(
-	'legend' => 'Fecha de transporte',
-	'value' => '0'
-    )
-);
-echo "</div>\n";
-echo "<div class='linea'>\n";
-echo $this->Form->input('fecha_transporte', array(
-    'label' => '',
-    'dateFormat' => 'DMY',
-    'minYear' => date('Y'),
-    'maxYear' => date('Y')+5,
-    'orderYear' => 'asc',
-    'selected' => date('Y-m-1', strtotime("+30 days"))
-)
-		);
+	<?php
+	echo $this->Form->radio(
+	    'si_entrega',
+	    $tipos_fecha_transporte,
+	    array(
+		'legend' => '',//Fecha de transporte',
+		'value' => '0'
+	    )
+	);
+	?>
+	<br>
+	</div>
+	<div class='linea'>
+	<?php
+	echo $this->Form->input('fecha_transporte', array(
+	    'label' => '',
+	    'dateFormat' => 'DMY',
+	    'minYear' => date('Y'),
+	    'maxYear' => date('Y')+5,
+	    'orderYear' => 'asc',
+	    'selected' => date('Y-m-1', strtotime("+30 days"))
+	    )
+	);
 echo "</div>\n";
 echo $this->Form->input('comentario');
 echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Contrato');
 ?>
-	</div>
+</fieldset>
 </div>
 <script type="text/javascript">
 window.onload = canalCompra();

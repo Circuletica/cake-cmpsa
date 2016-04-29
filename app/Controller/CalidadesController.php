@@ -32,10 +32,8 @@ class CalidadesController extends AppController {
 	$this->set('action', $this->action);
 	$this->set('paises', $this->Calidad->Pais->find('list'));
 	if (!empty($id)) {
-	    $this->Calidad->id = $id;
-	    $this->loadModel('CalidadNombre');
-	    $calidad = $this->CalidadNombre->findById($id);
-	    $this->set('referencia', $calidad['CalidadNombre']['nombre']);
+	    $calidad = $this->Calidad->findById($id);
+	    $this->set('referencia', $calidad['Calidad']['nombre']);
 	}
 	if (!empty($this->request->data)){  //es un POST
 	    if($this->Calidad->save($this->request->data)) {

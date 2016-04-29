@@ -100,7 +100,7 @@ class LineaMuestrasController extends AppController {
 		),
 		'recursive' => 3,
 		'contain' => array(
-		    'CalidadNombre',
+		    'Calidad',
 		    'Proveedor',
 		    'Contrato' => array(
 			'Operacion' => array(
@@ -131,7 +131,7 @@ class LineaMuestrasController extends AppController {
 	//		'calidad_id' => '28',
 	//		'contrato_id' => '27',
 	//	),
-	//	'CalidadNombre' => array(),
+	//	'Calidad' => array(),
 	//	'Contrato' => array()
 	//)
 	//a
@@ -139,7 +139,7 @@ class LineaMuestrasController extends AppController {
 	//	'id' => '22',
 	//	'calidad_id' => '28',
 	//	'contrato_id' => '27',
-	//	'CalidadNombre' => array(),
+	//	'Calidad' => array(),
 	//	'Contrato' => array()
 	//)
 	$muestra += $muestra['Muestra'];
@@ -251,6 +251,11 @@ class LineaMuestrasController extends AppController {
 		$this->params['named']['from_id']
 	    ));
 	}
+    }
+
+    public function info_calidad(){
+    	$this ->view();
+		$this ->render('info_calidad');
     }
 }
 ?>

@@ -6,8 +6,116 @@ class AlmacenTransportesController extends AppController {
 	);
 
 	public function index() {
+	
+		$this->paginate['order'] = array('AlmacenTransporte.cuenta_almacen' => 'asc');
+		//$this->paginate['recursive'] = 3;
+		$this->paginate['contain'] = array(
+			'Almacen'=>array(
+			    'id',
+			    'nombre_corto'
+			)
+		);
+
 		$this->set('almacentransportes', $this->paginate());
 	}
+
+public function view($id = null) {
+
+	if (!$id) {
+	    $this->Session->setFlash('URL mal formada AlmacenTransporte/view ');
+	    $this->redirect(array('action'=>'index'));
+	}
+	
+	$almacentransportes = $this->AlmacenTransporte->find(
+		'first',
+		array(
+			'conditions' => array(
+				'AlmacenTransporte.id' => $id
+				),
+			'recursive' => 3,
+			'contain' => array(
+				'Transporte'=> array(
+					'fields'=> array(
+						'linea',
+						'matricula',
+						'nombre_vehiculo',
+						'operacion_id'
+						),
+					'Operacion'=> array(
+						'fields' => array(
+							'id'
+							),
+						'AsociadoOperacion' => array(
+							'fields'=> array(
+								'asociado_id',
+								'cantidad_embalaje_asociado',
+								'operacion_id'
+								),
+							'Asociado'=> array(
+								'fields'=> array(
+									'nombre_corto'
+									)
+								)
+							)
+						)
+					),
+					'Almacen' => array(
+						'fields' => (
+							'nombre_corto'
+							)
+						),
+					'Retirada'=> array(
+						'fields' => array(
+							'id',
+							'almacen_transporte_id'
+							)
+						)
+					)
+				)
+			);
+	$this->set(compact('almacentransportes'));
+
+	$distribucion = $this->AlmacenTransporte->Transporte->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Transporte.id'=> $almacentransportes['AlmacenTransporte']['transporte_id']),
+			'recursive' => 3,
+			'contain' => array(
+				'Operacion' => array(
+					'fields' => array(
+						'id'
+						),
+					'AsociadoOperacion' => array(
+						'fields'=> array(
+							'asociado_id',
+							'cantidad_embalaje_asociado',
+							'operacion_id'
+							),
+						'Asociado'=> array(
+							'fields'=> array(
+								'nombre_corto'
+								)
+							)
+						)
+					)
+				)
+			)
+		);
+	$this->set(compact('distribucion'));
+	//Necesario para exportar en PDf
+	$this->set(compact('id'));
+	
+/*	
+	$n1 = 255;
+	$n2 = 133;
+	$n3 = 87; 
+	$total = $n1+$n2+$n3;
+	$resultado = $this->porcentaje($total, $n1, 0);
+	$this->set(compact('resultado'));
+*/
+	
+    }
 
     public function add() {
     		//el id y la clase de la entidad de origen vienen en la URL
