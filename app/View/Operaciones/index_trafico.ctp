@@ -58,7 +58,9 @@
     'title'=>'Informe de operaciones con suplemento sin reclamación'
     )
   );
-
+echo $this->Html->link('As CSV', array(
+  'action' => 'index',
+  'ext' => 'csv'));
   ?>
   <!--h3>Filtro de operacion</h3-->
 </div>

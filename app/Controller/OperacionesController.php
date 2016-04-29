@@ -1028,5 +1028,16 @@ $this->set(compact('id'));
 	);
     }
 
+    	public function export() {
+
+		$this->response->download("export.csv");
+
+		$data = $this->Operacion->find('all');
+		$this->set(compact('data'));
+
+		$this->viewBuilder()->className('CsvView.Csv');
+		$this->set(compact('data', '_serialize', '_header', '_footer'));
+	}
+
 }
 ?>
