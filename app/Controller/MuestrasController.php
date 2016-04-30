@@ -13,7 +13,13 @@ class MuestrasController extends AppController {
 		    'proveedor_id',
 		    'calidad_id'
 		),
-		'Proveedor'
+		'Proveedor',
+		'Operacion' => array(
+		    'fields' => array(
+			'id',
+			'referencia'
+		    )
+		)
 	    ),
 	    'MuestraEmbarque' => array(
 		'Calidad',
