@@ -105,7 +105,7 @@ echo "  <dt>Forfait:</dt>\n";
 echo "  <dd>".$operacion['Operacion']['forfait'].'€/Tm&nbsp;'."</dd>";
 echo "  <dt>Precio €/kg estimado:</dt>\n";
 echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
-echo "  <dt>Observaciones:</dt>\n";
+echo "  <dt>Comentarios:</dt>\n";
 echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
 echo "</dl>";
 $this->end();
