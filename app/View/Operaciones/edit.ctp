@@ -124,11 +124,7 @@ echo $this->Form->input(
 	'label' => 'Comentarios'
     )
 );
-<<<<<<< HEAD
-echo $this->Form->input('observaciones');
 echo $this->element('cancelarform');
-=======
->>>>>>> master
 echo $this->Form->end('Guardar Operacion');
 ?>
 </div>

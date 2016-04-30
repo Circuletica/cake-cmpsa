@@ -173,9 +173,6 @@ echo $this->Form->input('cambio_dolar_euro', array(
 		);
 ?>
 </div>
-<<<<<<< HEAD
-
-=======
 <?php
 echo $this->Form->input(
 	'observaciones',
@@ -184,7 +181,6 @@ echo $this->Form->input(
 	)
 );
 ?>
->>>>>>> master
 </fieldset>
 <fieldset>
 <legend>Asociados</legend>
