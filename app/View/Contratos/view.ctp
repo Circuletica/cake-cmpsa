@@ -8,6 +8,16 @@ $this->assign('controller','contratos');
 $this->assign('line_controller','operaciones');
 $this->assign('line_add','1');
 
+$this->start('breadcrumb');
+$this->Html->addCrumb(
+    'Contratos',
+    array(
+	'controller' => 'contratos',
+	'action' => 'index'
+    )
+);
+$this->end();
+
 $this->start('filter');
 echo $this->Html->link(
     'Duplicar contrato',
