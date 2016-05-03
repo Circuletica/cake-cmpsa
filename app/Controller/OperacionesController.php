@@ -1028,15 +1028,24 @@ $this->set(compact('id'));
 	);
     }
 
-    	public function export() {
+//var $helpers = array('Html', 'Form','Csv'); 
 
-		$this->response->download("export.csv");
-
-		$data = $this->Operacion->find('all');
-		$this->set(compact('data'));
-
-		$this->viewBuilder()->className('CsvView.Csv');
-		$this->set(compact('data', '_serialize', '_header', '_footer'));
+    public function export() {
+    $this->set('operaciones', $this->Operacion->find(
+    	'all',
+    	array(
+    	'recursive' => 1,
+		'fields' => array(
+		    'id',
+		    'referencia'
+		    )
+		)
+	)
+	);
+    $this->layout = null;
+    $this->autoLayout = false;
+    Configure::write('debug', '0');
+	$this->response->download("export".date('Ymd').".csv");
 	}
 
 }

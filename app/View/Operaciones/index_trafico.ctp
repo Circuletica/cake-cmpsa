@@ -58,9 +58,17 @@
     'title'=>'Informe de operaciones con suplemento sin reclamación'
     )
   );
-echo $this->Html->link('As CSV', array(
-  'action' => 'index',
-  'ext' => 'csv'));
+   echo $this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> Descargar a CSV',array(
+    'controller'=>'operaciones',
+    'action'=>'export'
+    ),
+    array(
+      'target'=>'_blank',
+      'escape'=>false,
+      'title'=>'Descargar la información a un archivo CSV'
+      )
+    ); 
+   
   ?>
   <!--h3>Filtro de operacion</h3-->
 </div>
