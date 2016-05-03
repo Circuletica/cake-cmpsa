@@ -7,10 +7,7 @@ $this->assign('class','Operacion');
 $this->assign('controller','operaciones');
 $this->assign('line_controller','asociado_operaciones');
 $this->assign('line_add','1');
-<<<<<<< HEAD
 
-=======
->>>>>>> master
 $this->start('breadcrumb');
 $this->Html->addCrumb(
     'Operaciones',
