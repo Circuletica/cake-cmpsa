@@ -265,8 +265,8 @@ class FacturacionesController extends AppController {
 	//el peso real de la operacion, basado en el peso ya retirado
 	//solo mostramos los pesos que estan definidos
 	$peso_facturacion = array();
+	if ($sacos_retirados != 0) {
 	$peso_retirado = round($operacion['PesoOperacion']['peso_retirado']*$operacion['PesoOperacion']['cantidad_embalaje']/$sacos_retirados);
-	if ($peso_retirado != 0) {
 	    $peso_facturacion[$peso_retirado] = 'Peso retirado ('.$peso_retirado.'kg)';
 	};
 	//el peso real de la operacion, basado en el peso medido a la entrada de almacén
