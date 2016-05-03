@@ -8,9 +8,6 @@ class FacturacionesController extends AppController {
 	$this->paginate['order'] = array('Operacion.referencia' => 'asc');
 	$this->paginate['recursive'] = 3;
 	$this->paginate['contain'] = array(
-	    //	    'fields' => array(
-	    //		'id'
-	    //	    ),
 	    'Operacion' => array(
 		'fields' => array(
 		    'referencia',
@@ -262,9 +259,10 @@ class FacturacionesController extends AppController {
 		)
 	    )
 	);
-	//el peso real de la operacion, basado en el peso ya retirado
+
 	//solo mostramos los pesos que estan definidos
 	$peso_facturacion = array();
+	//el peso real de la operacion, basado en el peso ya retirado
 	if ($sacos_retirados != 0) {
 	$peso_retirado = round($operacion['PesoOperacion']['peso_retirado']*$operacion['PesoOperacion']['cantidad_embalaje']/$sacos_retirados);
 	    $peso_facturacion[$peso_retirado] = 'Peso retirado ('.$peso_retirado.'kg)';
@@ -280,26 +278,6 @@ class FacturacionesController extends AppController {
 	    $peso_facturacion[$peso_pagado] = 'Peso factura ('.$peso_pagado.'kg)';
 	};
 	$this->set('peso_facturacion', $peso_facturacion);
-	//With a simpel key/value list and select() we don’t get far. We cannot use the same key twice in an array.
-	//$peso_retirado => 'Peso retirado ('.$peso_retirado.'kg)',
-	//$peso_entrada => 'Peso entrada ('.$peso_entrada.'kg)',
-	//$peso_pagado => 'Peso factura ('.$peso_pagado.'kg)'
-	//	    array(
-	//		array(
-	////		    'name' => 'Peso retirado ('.$peso_retirado.'kg)',
-	////		    'value' => $peso_retirado
-	//		    'Peso retirado ('.$peso_retirado.'kg)' => $peso_retirado
-	//		),
-	//		array(
-	//		    'Peso entrada ('.$peso_entrada.'kg)',
-	//		    $peso_entrada
-	//		),
-	//		array(
-	//		    'name' => 'Peso factura ('.$peso_pagado.'kg)',
-	//		    'value' => $peso_pagado
-	//		)
-	//	    )
-	//	);
 
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear

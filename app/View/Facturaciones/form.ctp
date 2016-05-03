@@ -48,13 +48,13 @@ echo $this->Form->hidden(
 	'value' => $operacion['Operacion']['id']
     )
 );
+if ($peso_facturacion != null) {
 echo "<div class='radiomuestra'>\n";
 echo $this->Form->radio(
     'peso_facturacion',
     $peso_facturacion,
     array(
 	'legend' => false,
-	//'legend' => 'Peso factura',
 	//por defecto, usar peso_retirado, 1a clave del array
 	'value' => ($action == 'add')?current(array_keys($peso_facturacion)):$this->request->data['Facturacion']['peso_facturacion'],
 	'separator' => '-- ',
@@ -62,6 +62,9 @@ echo $this->Form->radio(
     )
 );
 echo "</div>\n";
+} else {
+    echo "<em>No hay ningun peso definido, el cálculo de precio puede ser erróneo</em>\n";
+}
 echo "<div class='linea'>\n";
 echo $this->Form->input(
     'fecha_factura',

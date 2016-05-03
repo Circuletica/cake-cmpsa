@@ -7,6 +7,16 @@ $this->assign('class','Operacion');
 $this->assign('controller','operaciones');
 $this->assign('line_controller','asociado_operaciones');
 $this->assign('line_add','1');
+$this->start('breadcrumb');
+$this->Html->addCrumb(
+    'Operaciones',
+    array(
+	'controller' => 'operaciones',
+	'action' => 'index'
+    )
+);
+$this->end();
+
 $this->start('filter');
 //solo se puede generar una financiacion si aun no existe
 if (empty($existe_financiacion)) {
