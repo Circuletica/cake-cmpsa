@@ -263,18 +263,43 @@ class FacturacionesController extends AppController {
 	    )
 	);
 	//el peso real de la operacion, basado en el peso ya retirado
+	//solo mostramos los pesos que estan definidos
+	$peso_facturacion = array();
 	$peso_retirado = round($operacion['PesoOperacion']['peso_retirado']*$operacion['PesoOperacion']['cantidad_embalaje']/$sacos_retirados);
+	if ($peso_retirado != 0) {
+	    $peso_facturacion[$peso_retirado] = 'Peso retirado ('.$peso_retirado.'kg)';
+	};
 	//el peso real de la operacion, basado en el peso medido a la entrada de almacén
 	$peso_entrada = round($operacion['PesoOperacion']['peso_entrada']);
+	if ($peso_entrada != 0) {
+	    $peso_facturacion[$peso_entrada] = 'Peso entrada ('.$peso_entrada.'kg)';
+	};
 	//el peso real de la operacion, basado en el peso que aparece en la factura del proveedor
 	$peso_pagado = $operacion['PesoOperacion']['peso_pagado'];
-	$this->set('peso_facturacion',
-	    array(
-		$peso_retirado => 'Peso retirado ('.$peso_retirado.'kg)',
-		$peso_entrada => 'Peso entrada ('.$peso_entrada.'kg)',
-		$peso_pagado => 'Peso factura ('.$peso_pagado.'kg)'
-	    )
-	);
+	if ($peso_pagado != 0) {
+	    $peso_facturacion[$peso_pagado] = 'Peso factura ('.$peso_pagado.'kg)';
+	};
+	$this->set('peso_facturacion', $peso_facturacion);
+		//With a simpel key/value list and select() we don’t get far. We cannot use the same key twice in an array.
+		//$peso_retirado => 'Peso retirado ('.$peso_retirado.'kg)',
+		//$peso_entrada => 'Peso entrada ('.$peso_entrada.'kg)',
+		//$peso_pagado => 'Peso factura ('.$peso_pagado.'kg)'
+//	    array(
+//		array(
+////		    'name' => 'Peso retirado ('.$peso_retirado.'kg)',
+////		    'value' => $peso_retirado
+//		    'Peso retirado ('.$peso_retirado.'kg)' => $peso_retirado
+//		),
+//		array(
+//		    'Peso entrada ('.$peso_entrada.'kg)',
+//		    $peso_entrada
+//		),
+//		array(
+//		    'name' => 'Peso factura ('.$peso_pagado.'kg)',
+//		    'value' => $peso_pagado
+//		)
+//	    )
+//	);
 
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
