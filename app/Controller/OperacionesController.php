@@ -138,7 +138,6 @@ class OperacionesController extends AppController {
 		    'Contrato.peso_comprado',
 		    'Contrato.puerto_carga_id',
 		    'Contrato.puerto_destino_id',
-		   // 'Contrato.calidad',
 		    'CanalCompra.nombre',
 		    'CanalCompra.divisa',
 		    'Incoterm.nombre',

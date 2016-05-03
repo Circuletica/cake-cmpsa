@@ -20,7 +20,7 @@ echo 'Bolsa: '.$operacion['Contrato']['CanalCompra']['nombre'].
 echo "<p>\n";
 echo 'Peso total del contrato: '.$operacion['Contrato']['peso_comprado']."kg\n";
 echo "<p>\n";
-echo 'Embalaje: '.$embalaje['Embalaje']['nombre']."\n";
+echo 'Embalaje: '.$operacion['Embalaje']['nombre']."\n";
 echo "<p>\n";
 echo $this->Form->create('Operacion');
 echo $this->Form->input('referencia');
