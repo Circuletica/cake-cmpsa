@@ -34,8 +34,10 @@ if(isset($this->request->data['Search']['tipo_id'])){
   </tr>
 <?php foreach($muestras as $muestra):
 $operaciones = '';
-foreach($muestra['Contrato']['Operacion'] as $operacion) {
-    $operaciones .= $operacion['referencia'].' ';
+if (isset($muestra['Contrato']['Operacion'])) {
+    foreach($muestra['Contrato']['Operacion'] as $operacion) {
+	$operaciones .= $operacion['referencia'].' ';
+    }
 }
 ?>
   <tr>
