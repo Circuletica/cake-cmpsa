@@ -7,7 +7,7 @@ $this->Html->addCrumb('Contrato '.$operacion['Contrato']['referencia'],'/contrat
 //Pasamos el peso del embalaje de la operacion al javascript de la vista
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 //$this->Js->set(compact('pesoEmbalaje'));
-$this->Js->set('pesoEmbalaje', $operacion['Embalaje']['peso_embalaje']);
+$this->Js->set('pesoEmbalaje', $peso_embalaje_real);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 echo 'Contrato: '.$operacion['Contrato']['referencia']."\n";
