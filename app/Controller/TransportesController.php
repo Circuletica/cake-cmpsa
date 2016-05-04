@@ -86,14 +86,15 @@ class TransportesController extends AppController {
 $this->set(compact('pdf'));
 */
 
-/* $Email = new CakeEmail();
+ $Email = new CakeEmail();
  $Email->config('smtp')
  	->template('default')
     ->emailFormat('html')
     ->subject('AVISO PREVISIÓN LLEGADA')
     ->to('info@circuletica.org')
-    //->from('app@domain.com')
-    ->send();*/
+    ->from('rodolgl@gmail.com')
+    ->cc('rodolgl@gmail.com')
+    ->send('Un mensaje');
 
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formada Transporte/view ');

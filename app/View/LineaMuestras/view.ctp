@@ -34,11 +34,13 @@ echo $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar in
 
 echo  $this->Html->link('<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
    array(
-   'action' =>'envio_info'
+    'from_controller' => 'muestras',
+    'action' =>'info_envio',
+    'from_id'=>$linea['Muestra']['id']
    ),
    array(
    'escape'=>false,
-   'title'=>'Envío informe de calidad'
+   'title'=>'Envío informe de calidad',
    )
  );
 $this->end();

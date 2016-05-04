@@ -257,5 +257,57 @@ class LineaMuestrasController extends AppController {
     	$this ->view();
 		$this ->render('info_calidad');
     }
+
+
+
+       public function info_envio ($id = null) {
+    $muestra_id = $this->params['named']['from_id'];
+
+	$muestra = $this->LineaMuestra->Muestra->find(
+	    'first',
+	    array(
+			'conditions' => array(
+			    'Muestra.id' => $muestra_id
+			),
+			'recursive' => -1
+			)
+		);
+	$this->set('muestra',$muestra);
+	$muestra += $muestra['Muestra'];
+	unset($muestra['Muestra']);
+	//legado a este punto, vengamos de add o edit
+	//$muestra tiene el mismo valor
+	$this->set('muestra',$muestra);
+
+	$this->loadModel('Contacto');
+	$contactos = $this->Contacto->find(
+	    'all',
+	    array(
+	    	 'conditions' =>array(
+	    	 	'departamento_id' => 2
+	    	 	),
+	    	// 'fields' => array('Contacto.id','Empresa.nombre_corto'),
+	    	 //'order' => array('Empresa.nombre_corto' => 'asc'),
+	    	// 'recursive' => 1
+	    	 )
+	    );
+	$this->set('contactos',$contactos);
+	//$selected = null;	
+	//$this->set('selected',$selected);
+
+    if (!empty($this->request->data)) { 
+    	debug($this->request->data);
+      /* instantiate CakeEmail class */
+      $Email = new CakeEmail();      
+      /* pass user input to function */
+      $Email->from('rodolgl@gmail.com'); // Aquí calidad@cmpsa.com
+      $Email->to($this->request->data('selected'));
+      $Email->subject($this->request->data('asunto'));
+      $Email->send($this->request->data('mensaje'))	;
+      $this->Session->setFlash('Informe de calidad enviado.');
+	}
+	
+    }
+
 }
 ?>
