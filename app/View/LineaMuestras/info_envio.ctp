@@ -7,27 +7,28 @@ echo "<h2>Informe de calidad de la línea de muestra <em>".$muestra['tipo_regist
 <?php
 $selected = 0;
 echo "<table>";
-echo $this->Html->tableHeaders(array('Nombre', 'Departamento','Email', 'Enviar'));
+echo $this->Html->tableHeaders(array('Asociado','Nombre', 'Departamento','Email', 'Enviar'));
 	foreach($contactos as $contacto){
 		$email = $contacto['Contacto']['email'] ;
 	    echo $this->Html->tableCells(array(
+	    	$contacto['Empresa']['nombre_corto'],
 	    	$contacto['Contacto']['nombre'],
 	    	isset($contacto['Departamento']['nombre']) ? $contacto['Departamento']['nombre'] : '',
 	    	$contacto['Contacto']['email'],
-	       	$this->Form->input('email',array(
+	       	$this->Form->checkbox('email',array(
 	    		'value'=> $email ,
 	    		'type'=> 'select',
 	    		'multiple'=>'checkbox',
 	    		'selected' => $contacto['Contacto']['email'],
-	    		'options'=>array($contacto['Contacto']['email']),	    		)
+	    		'options'=>array($contacto['Contacto']['email']),
+	    		'name' => 'correo'	    		
+	    		)
 	    	)
 	    	)
 	    );
 	}
 
 echo "</table>";
-  echo $this->Form->input('Checkboxes', array('type'=>'select', 'multiple'=>'checkbox', 'options'=>array(1=>'One Value', 2=>'Two Value')));
-
 ?>
 </fieldset>
 <fieldset>

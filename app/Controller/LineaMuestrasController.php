@@ -301,7 +301,7 @@ class LineaMuestrasController extends AppController {
       $Email = new CakeEmail();      
       /* pass user input to function */
       $Email->from('rodolgl@gmail.com'); // Aquí calidad@cmpsa.com
-      $Email->to($this->request->data('selected'));
+      $Email->to($this->request->data('email'));
       $Email->subject($this->request->data('asunto'));
       $Email->send($this->request->data('mensaje'))	;
       $this->Session->setFlash('Informe de calidad enviado.');
