@@ -6,8 +6,8 @@ function totalCriba(){
 	if(parseFloat(arr[i].value))
 	    tot += parseFloat(arr[i].value);
     }
-    document.getElementById('total').value = tot.toFixed(1);
-    //console.log(tot);
+    //document.getElementById('total').value = tot.toFixed(1);
+    document.getElementById('total').innerHTML = 'TOTAL: '+tot.toFixed(1);
     if(tot == 100)
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
@@ -38,12 +38,6 @@ $this->Html->addCrumb('Muestra '.$muestra['tipo_registro'],'/muestras/view/'.$mu
 <fieldset>
 <legend>Datos</legend>
 <?php
- if($muestra['tipo_id']!='1'){
- 	//echo "<div class='col3'>";
- }else{
- 	//echo "<div class='col4'>";
- }
-
 
 echo $this->Html->tableCells(
     array(
@@ -79,7 +73,6 @@ echo $this->Html->tableCells(
     )
 );
 ?>
-<!--	</div>-->
 </fieldset>
 <fieldset>
 <br>
@@ -202,7 +195,7 @@ echo $this->Html->tableCells(array(
 	'class' => 'criba',
 	'oninput' => 'totalCriba()')
     ),
-    '<b>TOTAL:</b> <input type="number" name="total" id="total"/>'
+    '<div id="total">TOTAL: </div>'
 )
 	)."\n";
 ?>

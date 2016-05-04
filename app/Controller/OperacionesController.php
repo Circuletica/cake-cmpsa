@@ -421,7 +421,6 @@ class OperacionesController extends AppController {
 	////////////////////OJO CON ESTO////////////////Falla el EDIT
 
 	$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
-	debug($this->Operacion->Contrato->virtualFields['calidad']);
 
 	$contrato = $this->Operacion->Contrato->find(
 	    'first',

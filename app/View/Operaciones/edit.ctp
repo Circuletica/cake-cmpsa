@@ -47,7 +47,7 @@ foreach ($asociados as $codigo => $asociado) {
     echo "</tr>";
 }
 echo "</table>";
-echo '<div id=totalReparto>'."Total sacos: ??? / Total peso: ???kg".'</div>';
+echo '<div id=totalReparto>Total sacos: ??? / Total peso: ???kg</div>';
 echo "<div class='linea'>\n";
 //Los lotes que quedan por fijar = los de RestoLotesContrato +
 //los de esta operacion visto que estamos editando.
