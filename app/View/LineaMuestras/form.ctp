@@ -47,7 +47,10 @@ $this->Html->addCrumb('Muestra '.$muestra['tipo_registro'],'/muestras/view/'.$mu
 
 echo $this->Html->tableCells(
     array(
-	$this->Form->input('humedad'),
+	$this->Form->input('humedad',array(
+		'autofocus' => 'autofocus'
+		)
+	),
 	$this->Form->input('tueste'),
 	$this->Form->input(
 	    'referencia_proveedor',

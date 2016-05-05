@@ -12,7 +12,10 @@
 	?>
 	<fieldset>
     <?php	
-  	echo $this->Form->input('naviera_id');
+  	echo $this->Form->input('naviera_id', array(
+  		'autofocus' => 'autofocus'
+  		)
+  	);
 	echo $this->Form->input(
 		'puerto_carga_id',
 		array(
@@ -20,6 +23,10 @@
 			'options' => $puerto_cargas
 		)
 	);
+	?>
+	</fieldset>
+	<fieldset>
+	<?php
 	echo $this->Form->input(
 		'puerto_destino_id',
 		array(
@@ -34,6 +41,10 @@
 			'empty' => true
 		)
 	);
+		?>
+	</fieldset>
+	<fieldset>
+	<?php
 	echo $this->Form->input(
 		'peso_contenedor_tm',
 		array('label' => 'Peso contenedor (Tm)')
@@ -42,7 +53,7 @@
 		'contrato',
 		array('label' => 'Contrato naviera')
 	);
-	  echo $this->element('cancelarform');
+	echo $this->element('cancelarform');
 	echo $this->Form->end('Guardar Flete');
 ?>
 </fieldset>

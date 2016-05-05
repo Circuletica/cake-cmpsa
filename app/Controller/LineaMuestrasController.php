@@ -9,10 +9,12 @@ class LineaMuestrasController extends AppController {
     }
 
     public function view($id = null) {
+
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado Muestra/view');
 	    $this->redirect(array('action'=>'index'));
 	}
+
 	$linea = $this->LineaMuestra->findById($id);
 	$this->set('tipos', $this->tipoMuestras);
 	$this->set('linea',$linea);
@@ -254,11 +256,9 @@ class LineaMuestrasController extends AppController {
     }
 
     public function info_calidad(){
-    	$this ->view();
+    	$this ->view($id);
 		$this ->render('info_calidad');
     }
-
-
 
        public function info_envio ($id = null) {
     $muestra_id = $this->params['named']['from_id'];
@@ -292,19 +292,37 @@ class LineaMuestrasController extends AppController {
 	    	 )
 	    );
 	$this->set('contactos',$contactos);
-	//$selected = null;	
-	//$this->set('selected',$selected);
+	/*$email=null;
+foreach ($contactos as $i => $contacto){
+	$email[$i]= $contacto['Contacto']['email'];
+}
+	debug($email);	
+	$this->set('email',$email);*/
 
     if (!empty($this->request->data)) { 
     	debug($this->request->data);
       /* instantiate CakeEmail class */
       $Email = new CakeEmail();      
       /* pass user input to function */
-      $Email->from('rodolgl@gmail.com'); // Aquí calidad@cmpsa.com
-      $Email->to($this->request->data('email'));
+      $Email->config('smtp');
+      $Email->from('info@circuletica.org'); // Aquí calidad@cmpsa.com
+      $Email->to($this->request->data('correo'));
       $Email->subject($this->request->data('asunto'));
       $Email->send($this->request->data('mensaje'))	;
+      //$Email->attachments(APP.'//file/path/file.png')
       $this->Session->setFlash('Informe de calidad enviado.');
+
+   /*        $Email = new CakeEmail();
+ 	$Email->config('smtp')
+    ->subject('AVISO PREVISIÓN LLEGADA')
+    ->to('info@circuletica.org')
+    ->from('rodolgl@gmail.com')
+    ->cc('rodolgl@gmail.com')
+    ->send('Un mensaje');
+*/
+
+
+
 	}
 	
     }

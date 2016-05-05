@@ -412,10 +412,7 @@ if (empty($this->params['named']['from_id'])){
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
 
-////////////////////OJO CON ESTO////////////////Falla el EDIT
-
 	$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
-		debug($this->Operacion->Contrato->virtualFields['calidad']);
 
 	$contrato = $this->Operacion->Contrato->find(
 	    'first',
@@ -1028,8 +1025,7 @@ $this->set(compact('id'));
 	);
     }
 
-//var $helpers = array('Html', 'Form','Csv'); 
-
+var $helpers = array('Html', 'Form','Csv'); //Necesario para exportar a cSV
     public function export() {
     $this->set('operaciones', $this->Operacion->find(
     	'all',
