@@ -86,7 +86,7 @@ class TransportesController extends AppController {
 $this->set(compact('pdf'));
 */
 
- $Email = new CakeEmail();
+ /*$Email = new CakeEmail();
  $Email->config('smtp')
  	->template('default')
     ->emailFormat('html')
@@ -94,7 +94,7 @@ $this->set(compact('pdf'));
     ->to('info@circuletica.org')
     ->from('rodolgl@gmail.com')
     ->cc('rodolgl@gmail.com')
-    ->send('Un mensaje');
+    ->send('Un mensaje');*/
 
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formada Transporte/view ');
@@ -557,9 +557,9 @@ $this->set(compact('num'));
 				'foreignKey' => false,
 				'conditions' => array('Operacion.contrato_id = Contrato.id')
 			    ),
-		    'CalidadNombre' => array(
+		    'Calidad' => array(
 				'foreignKey' => false,
-				'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
+				'conditions' => array('Contrato.calidad_id = Calidad.id')
 				)
 		    )
 	    )

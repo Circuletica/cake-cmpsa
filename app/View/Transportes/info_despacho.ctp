@@ -9,8 +9,10 @@
  <?php //PARA INDEX
  echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
     array(
-      'action' => 'info_embarque',
-      'ext' => 'pdf'),
+      'action' => 'info_despacho',
+      'ext' => 'pdf',
+      'situacion_despacho_'.date('Ymd')
+    ),
     array(
       'escape'=>false,
       'target' => '_blank',
@@ -42,7 +44,7 @@
 			echo $this->Html->tableCells(array(
 				$despacho['Operacion']['referencia'],
 				$despacho['Transporte']['linea'],			
-				$despacho['Operacion']['Contrato']['Calidad']['nombre'],
+				$despacho['Calidad']['nombre'],
 				$despacho['Transporte']['cantidad_embalaje'],					
 
 			    $this->Date->format($despacho['Transporte']['fecha_despacho_op']),

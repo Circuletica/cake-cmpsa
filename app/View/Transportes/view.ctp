@@ -60,19 +60,17 @@
 	<?php
 	//echo $this->element('filtrooperacion');
 	//echo '<br>';
-	echo $this->Html->link('Descargar PDF', array(
-		'action' => 'view',
-		 $id,
-		 'ext' => 'pdf',
-		  '?' => array('download' => 1)
-		  ),
-	array(
+	echo $this->Html->link(('<i class="fa fa-lock fa-lg"></i> Asegurar línea'),array(
+		'action' => 'asegurar',
+ 		$id,
+ 		'ext' => 'pdf',
+ 		date('Ymd').'seguro_linea_'.$transporte['Transporte']['linea']
+ 		), array(
  		'escape'=>false,
  		'target' => '_blank',
- 		'title'=>'Descargar PDF'
+ 		'title'=>'Asegurar línea peso'
  		)
-	);
-	echo "<br><hr>";
+ 		);	
 	echo $this->Html->link(('<i class="fa fa-exclamation-circle fa-lg"></i> Reclamación seguro'),array(
 		'action' => 'reclamacion',
  		$id,
@@ -83,16 +81,7 @@
  		'title'=>'Reclamación peso'
  		)
  		);
-	echo $this->Html->link(('<i class="fa fa-lock fa-lg"></i> Asegurar línea'),array(
-		'action' => 'asegurar',
- 		$id,
- 		'ext' => 'pdf',
- 		), array(
- 		'escape'=>false,
- 		'target' => '_blank',
- 		'title'=>'Asegurar línea peso'
- 		)
- 		);
+
 	echo "<br><hr>";
 
 	echo $this->Html->link(('<i class="fa fa-users" aria-hidden="true" fa-lg></i>

@@ -7,7 +7,7 @@
 	<div style="margin-left: 390px;">
 	<br>
 	<b><?php echo $transporte['Aseguradora']['nombre'] ?></b>
-<br>
+<br><br>
 	Madrid, <?php echo $dia.' de '. $mes.' del '.$ano?>
 	</div>
 	<br><br>
@@ -49,20 +49,42 @@ echo "</dd>";
 echo '<br><table>';
 echo $this->Html->tableHeaders(array(
 	'Cantidad de sacos',
-	'Tonelada métrica',
+	'Kilogramos totales',
 	'BL/Matrícula',
 	'€/Kg',
 	'Fecha de carga'
 	)
 );
 	echo $this->Html->tableCells(array(
-		$transporte['Transporte']['cantidad_embalaje'],
-		$transporte['Transporte']['cantidad_embalaje']*$transporte['Operacion']['Embalaje']['peso_embalaje'],
+		array(
+			array(
+				$transporte['Transporte']['cantidad_embalaje'],
+				array(
+					'style' => 'text-align:center'
+					)
+				),
+		array(
+			$transporte['Transporte']['cantidad_embalaje']*$transporte['Operacion']['Embalaje']['peso_embalaje'],
+			array('style' => 'text-align:center'
+				)
+			),
+		array(
 		$transporte['Transporte']['matricula'],
+				array('style' => 'text-align:center'
+				)
+			),
+		array(
 		number_format($transporte['Operacion']['PrecioTotalOperacion']['precio_euro_kilo_total'], 4, ',', '.'),
+		array('style' => 'text-align:center'
+				)		
+		),
+		array(
 		 $this->Date->format($transporte['Transporte']['fecha_carga']),
+		 		array('style' => 'text-align:center'
+				)
+				)
+				)
 		)
-
 	);
 
 echo '</table><br>';
