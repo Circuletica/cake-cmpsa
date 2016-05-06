@@ -34,9 +34,9 @@ echo $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar in
 
 echo  $this->Html->link('<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
    array(
-    'from_controller' => 'muestras',
+    //'from_controller' => 'linea_muestras',
     'action' =>'info_envio',
-    'from_id'=>$linea['Muestra']['id']
+    'from_id'=>$linea['LineaMuestra']['id']
    ),
    array(
    'escape'=>false,

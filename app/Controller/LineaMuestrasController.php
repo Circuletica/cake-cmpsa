@@ -255,21 +255,60 @@ class LineaMuestrasController extends AppController {
 	}
     }
 
-    public function info_calidad(){
-    	$this ->view($id);
-		$this ->render('info_calidad');
+    public function info_calidad($id){
+	$linea = $this->LineaMuestra->findById($id);
+	$this->set('tipos', $this->tipoMuestras);
+	$this->set('linea',$linea);
+	$suma_linea = $linea['LineaMuestra']['criba20'] +
+	    $linea['LineaMuestra']['criba19'] +
+	    $linea['LineaMuestra']['criba13p'] +
+	    $linea['LineaMuestra']['criba18'] +
+	    $linea['LineaMuestra']['criba12p'] +
+	    $linea['LineaMuestra']['criba17'] +
+	    $linea['LineaMuestra']['criba11p'] +
+	    $linea['LineaMuestra']['criba16'] +
+	    $linea['LineaMuestra']['criba10p'] +
+	    $linea['LineaMuestra']['criba15'] +
+	    $linea['LineaMuestra']['criba9p'] +
+	    $linea['LineaMuestra']['criba14'] +
+	    $linea['LineaMuestra']['criba8p'] +
+	    $linea['LineaMuestra']['criba13'] +
+	    $linea['LineaMuestra']['criba12'];
+	$suma_ponderada = $linea['CribaPonderada']['criba20'] +
+	    $linea['CribaPonderada']['criba19'] +
+	    $linea['CribaPonderada']['criba18'] +
+	    $linea['CribaPonderada']['criba17'] +
+	    $linea['CribaPonderada']['criba16'] +
+	    $linea['CribaPonderada']['criba15'] +
+	    $linea['CribaPonderada']['criba14'] +
+	    $linea['CribaPonderada']['criba13'] +
+	    $linea['CribaPonderada']['criba12'];
+	$this->set('suma_linea',$suma_linea);
+	$this->set('suma_ponderada',$suma_ponderada);
+	
+	//Para crear PDF
+	$this->set(compact('id'));
+
     }
 
-       public function info_envio ($id = null) {
-    $muestra_id = $this->params['named']['from_id'];
+ public function info_envio () {
+    $linea_id = $this->params['named']['from_id'];
 
-	$muestra = $this->LineaMuestra->Muestra->find(
+	$muestra = $this->LineaMuestra->find(
 	    'first',
 	    array(
 			'conditions' => array(
-			    'Muestra.id' => $muestra_id
+			    'LineaMuestra.id' => $linea_id
 			),
-			'recursive' => -1
+			'recursive' => -1,
+			'contain' => array(
+				'Muestra' => array(
+					'fields' => array(
+						'id',
+						'tipo_registro'
+						)
+					)
+				)
 			)
 		);
 	$this->set('muestra',$muestra);
@@ -292,24 +331,20 @@ class LineaMuestrasController extends AppController {
 	    	 )
 	    );
 	$this->set('contactos',$contactos);
-	/*$email=null;
-foreach ($contactos as $i => $contacto){
-	$email[$i]= $contacto['Contacto']['email'];
-}
-	debug($email);	
-	$this->set('email',$email);*/
 
     if (!empty($this->request->data)) { 
     	debug($this->request->data);
-      /* instantiate CakeEmail class */
+       /* instantiate CakeEmail class */
       $Email = new CakeEmail();      
       /* pass user input to function */
-      $Email->config('smtp');
+      //$Email->config('smtp');
       $Email->from('info@circuletica.org'); // Aquí calidad@cmpsa.com
-      $Email->to($this->request->data('correo'));
-      $Email->subject($this->request->data('asunto'));
-      $Email->send($this->request->data('mensaje'))	;
-      //$Email->attachments(APP.'//file/path/file.png')
+      $Email->to($this->data['EnvioCalidad']['email']);
+      $Email->subject($this->data['EnvioCalidad']['asunto']);
+      $Email->send($this->data['EnvioCalidad']['mensaje'])	;
+      //debug($Email);
+      $Email->attachments('home/circuletica/'.$muestra['tipo_registro']);
+      ///$Email->attachments(APP.'//Informes/file.pdf')
       $this->Session->setFlash('Informe de calidad enviado.');
 
    /*        $Email = new CakeEmail();

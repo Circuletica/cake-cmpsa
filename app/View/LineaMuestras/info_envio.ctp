@@ -1,5 +1,5 @@
 <?php
-echo $this->Form->create();
+echo $this->Form->create('EnvioCalidad');
 echo "<h2>Informe de calidad de la línea de muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 ?>
 <fieldset style=width:63%;>
@@ -14,10 +14,11 @@ echo $this->Html->tableHeaders(array('Asociado','Nombre', 'Departamento','Email'
 	    	$contacto['Contacto']['nombre'],
 	    	isset($contacto['Departamento']['nombre']) ? $contacto['Departamento']['nombre'] : '',
 	    	$contacto['Contacto']['email'],
-	       	$this->Form->checkbox('email', array(
-	       		//'value'=>$contacto['Contacto'],
-	    		'selected' =>$selected,
-	    		//'options'=>array($contacto['Contacto']['email']),
+	       	$this->Form->input('email', array(
+	       		'type' => 'checkbox',
+	       		'value'=>$contacto['Contacto']['email'],
+	    		'selected' =>$contacto['Contacto']['email'],
+	    		'options'=>array($contacto['Contacto']['email']),
 	    		//'name' => 'email'	
 	    		)
 	    	)
@@ -27,15 +28,6 @@ echo $this->Html->tableHeaders(array('Asociado','Nombre', 'Departamento','Email'
 	  	 $selected = $contacto['Contacto']['email'];*/
 	}
 echo "</table>";
-	  /*   echo  	$this->Form->input('correo',array(
-	    		'value'=> array($email),
-	    		'type'=> 'select',
-	    		'multiple'=>'checkbox',
-	    		'selected' => array($email),
-	    		'options'=>$email
-	    		//'name' => 'correo'	    		
-	    		)
-	    	);*/
 
 ?>
 </fieldset>
@@ -43,7 +35,7 @@ echo "</table>";
 <legend>Datos de envío</legend>
 
 <?php
-echo $this->Form->input('correo',array(
+echo $this->Form->input('email',array(
 	'label'=> 'Correos a enviar (separado por comas): ',
 	'after' => 'Solución temporal'
 	)
@@ -79,15 +71,17 @@ echo $this->element('cancelarform')
 $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar'),
     array(
         'action' => 'info_calidad',
-        $muestra['id'],
+        $this->params['named']['from_id'],
         'ext' => 'pdf',
-        ), 
+        $muestra['tipo_registro']
+         ), 
     array(
     	'class' => 'botond',
         'escape'=>false,
         'target' => '_blank','title'=>'Informe calidad previo'
         )
     );
+
 	echo $this->Form->end('Enviar informe');
 
 	/*$Email = new CakeEmail();
