@@ -587,7 +587,6 @@ class OperacionesController extends AppController {
 	if ($this->request->is('post')) {//ES UN POST
 	    //al guardar la linea, se incluye a qué contrato pertenece
 	    $this->request->data['Operacion']['contrato_id'] = $contrato_id;
-	    debug($contrato_id);
 	    if($id == NULL){
 		//primero guardamos los datos de Operacion
 		if($this->Operacion->save($this->request->data)){
@@ -695,6 +694,7 @@ class OperacionesController extends AppController {
 	ksort($lineas_reparto);
 	$this->set('columnas_reparto',$columnas_reparto);
 	$this->set('lineas_reparto',$lineas_reparto);
+
 	$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
 	//comprobamos si ya existe una financiacion para esta operación
 	if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
@@ -865,8 +865,6 @@ class OperacionesController extends AppController {
 		)
 	    )
 	);	
-	//Líneas de reparto
-	//		debug($operacion_retiradas);
 
 	//ahora el precio que facturamos por asociado
 /*  MIRAR ATENTAMENTE PARA CAMBIAR EL CóDIGO POR ESTO SOLO
@@ -911,7 +909,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 
 	$cantidad_retirado = 0;
 	$peso_retirado = 0;
-	$pendiente = 0;
+	$pendiente = $linea['cantidad_embalaje_asociado'];
 	$asociados_error=0;
 
 	foreach ($operacion_retiradas as $clave => $operacion_retirada){
@@ -952,10 +950,8 @@ foreach($operacion['AsociadoOperacion'] as $operacion_asociado){
 		'error_id' => $operacion_asociado['asociado_id']
 	);
 /*		if($operacion_retirada['Retirada']['asociado_id']!=$operacion_asociado['asociado_id']){
-				debug($operacion_asociado);
 				$asociados_error++;
 
-	debug($asociados_error);
 		}
 
 }
@@ -973,9 +969,6 @@ $this->set('total_sacos_retirados',$total_sacos_retirados);
 $this->set('total_peso_retirado',$total_peso_retirado);
 $this->set('total_pendiente',$total_pendiente);
 
-//debug($error_retirada);
-//debug($error_asociado);
-//debug($asociados_error);
 
 //$this->set(compact('asociados_error'));
 $this->set(compact('operacion_retiradas'));
