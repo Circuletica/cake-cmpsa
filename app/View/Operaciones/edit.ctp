@@ -26,56 +26,78 @@ echo 'Peso total del contrato: '.$contrato['peso_comprado']."kg\n";
 echo "<p>\n";
 echo 'Embalaje: '.$operacion['Embalaje']['nombre']."\n";
 echo "<p>\n";
+echo "</dl><br><hr style=border-width:2px><br>";
+echo $this->Form->input(
+    'observaciones',
+    array(
+    'label' => 'Comentarios'
+    )
+);
 ?>
 </fieldset>
 <fieldset>
 <legend>Datos</legend>
 <?php
-echo $this->Form->input('referencia');
 echo '<div id=totalReparto>Total sacos: ??? / Total peso: ???kg</div>';
-echo "<div class='linea'>\n";
 //Los lotes que quedan por fijar = los de RestoLotesContrato +
 //los de esta operacion visto que estamos editando.
 $lotes_por_fijar = $contrato['RestoLotesContrato']['lotes_restantes'] + $this->request->data['Operacion']['lotes_operacion'];
+?>
+<div class='col2'>
+<?php
+echo $this->Form->input('referencia');
 echo $this->Form->input('lotes_operacion',
     array(
-	'label' => 'Lotes <em>(Quedan por fijar <var id="lotes">'.$lotes_por_fijar.'</var> lotes)</em>',
+	'label' => 'Lotes',
+    'after' =>'Quedan por fijar <var id="lotes">'.$lotes_por_fijar.'</var> lotes',
 	'oninput' => 'lotesPorFijar()'
     )
 );
-
-echo $this->Form->input('puerto_carga_id', array(
-    'label' => 'Puerto de Carga',
-    'empty' => array('' => '')
-)
-);
-
-echo $this->Form->input('puerto_destino_id', array(
-    'label' => 'Puerto de Destino',
-    'empty' => array('' => '')
-)
-);
-
+?>
+</div>
+<div class='linea'>
+<?php
 echo $this->Form->input('fecha_pos_fijacion', array(
     'label' => 'Fecha de fijación',
     'dateFormat' => 'DMY',
 )
 );
 echo "</div>\n";
+?>
+<div class='col2'>
+<?php
+echo $this->Form->input('puerto_carga_id', array(
+    'label' => 'Puerto de Carga',
+    'empty' => array('' => '')
+)
+);
 echo $this->Form->input('precio_fijacion', array(
     'between' => '('.$divisa.')'
 )
 );
+
+
+
 echo $this->Form->input('precio_compra', array(
     'between' => '('.$divisa.')',
     'label' => 'Precio factura'
 )
 );
+echo $this->Form->input('puerto_destino_id', array(
+    'label' => 'Puerto de Destino',
+    'empty' => array('' => '')
+)
+);
+
 echo $this->Form->input('opciones', array(
     'between' => '('.$divisa.')',
     'label' => 'Opciones'
 )
 );
+?>
+<br><br>
+</div>
+<?php
 if ($contrato['Incoterm']['si_flete']) {
     echo $this->Form->input('flete', array(
 	'between' => '(€/Tm)',
@@ -90,6 +112,9 @@ if ($contrato['Incoterm']['si_seguro']) {
     )
 );
 }
+?>
+    <div class='col2'>
+<?php
 echo $this->Form->input('forfait', array(
     'between' => '(€/Tm)',
     'label' => 'Forfait'
@@ -99,17 +124,15 @@ echo $this->Form->input('cambio_dolar_euro', array(
     'label' => 'Cambio dolar/euro'
 )
 );
+echo '<br>';
 echo $this->Form->input('peso_pagado', array(
     'label' => 'Peso factura'
 )
 );
-echo $this->Form->input(
-    'observaciones',
-    array(
-	'label' => 'Comentarios'
-    )
-);
+
 ?>
+<br><br>
+</div>
 </fieldset>
 <fieldset>
 <legend>Asociados</legend>
@@ -140,6 +163,7 @@ echo "</table>";
 echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Operacion');
 ?>
+
 </div>
 </fieldset>
 <script type="text/javascript">

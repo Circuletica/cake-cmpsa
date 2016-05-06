@@ -21,11 +21,15 @@ $this->end();
 $this->start('filter');
 //solo se puede generar una financiacion si aun no existe
 if (empty($existe_financiacion)) {
-    echo $this->Html->link('Generar financiación', array(
+    echo $this->Html->link('<i class="fa fa-file-text-o fa-lg" aria-hidden="true"></i>
+ Generar financiación', array(
 	'controller' => 'operaciones',
 	'action' => 'generarFinanciacion',
 	$operacion['Operacion']['id']
-    )); 
+    ),
+    array(
+        'escape' => false)
+    ); 
 } else {
     echo $this->Html->link('Ver financiación', array(
 	'controller' => 'financiaciones',
@@ -34,11 +38,14 @@ if (empty($existe_financiacion)) {
     )); 
 }
 if (empty($existe_facturacion)) {
-    echo $this->Html->link('Generar facturación', array(
+    echo $this->Html->link('<i class="fa fa-file-text fa-lg" aria-hidden="true"></i>
+ Generar facturación', array(
 	'controller' => 'operaciones',
 	'action' => 'generarFacturacion',
 	$operacion['Operacion']['id']
-    )); 
+    ),
+    array('escape' => false)
+    ); 
 } else {
     echo $this->Html->link('Ver facturación', array(
 	'controller' => 'facturaciones',

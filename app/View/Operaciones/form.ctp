@@ -66,7 +66,7 @@ echo $this->Form->input('embalaje_id', array(
 echo $this->Form->input('lotes_operacion',
     array(
     'label'=> 'Lotes',	
-	'between' => 'Quedan por fijar '.$contrato['RestoLotesContrato']['lotes_restantes'].' lotes'
+	'after' => 'Quedan por fijar '.$contrato['RestoLotesContrato']['lotes_restantes'].' lotes'
     )
 );
 ?>
