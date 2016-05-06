@@ -77,6 +77,9 @@ function pesoAsociadoEdit(){
     var pesoEmbalaje = window.app.pesoEmbalaje;
     //un array con las cantidades de cada socio
     var cantidades = document.getElementsByClassName('cantidad');
+    var totalCantidad = 0;
+    var totalPeso = 0;
+    var totalReparto = document.getElementById('totalReparto');
     for(var i=0;i<cantidades.length;i++){
 	//el id del socio
 	var id = cantidades[i].id;
@@ -88,7 +91,14 @@ function pesoAsociadoEdit(){
 	var textoPesoAsociado = document.getElementById('pesoAsociado' + id);
 	//escribimos el peso
 	textoPesoAsociado.innerHTML = "= " + pesoAsociado + "kg";
+	//el total de sacos/peso
+	if (cantidad) {
+	totalCantidad += parseInt(cantidad);
+	}
+	totalPeso += pesoAsociado;
     }
+    totalReparto.innerHTML = "Total sacos: " + totalCantidad +
+	" / Total peso: " + totalPeso + "kg";
 }
 
 function canalCompra(){

@@ -1,13 +1,12 @@
 <?php
 if ($action == 'add') {
     echo "<h2>Añadir Operación a Contrato <em>".$contrato['Contrato']['referencia']."</em></h2>\n";
+	$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 }
 if ($action == 'edit') {
     echo "<h2>Modificar Operación a Contrato <em>".$contrato['Contrato']['referencia']."</em></h2>\n";
+	$this->Html->addCrumb('Operaciones','/operaciones');
 }
-
-$this->Html->addCrumb('Contratos','/contratos');
-//$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 
 //Pasamos la lista de 'embalajes_completo' del contrato al javascript de la vista
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
@@ -158,7 +157,7 @@ echo $this->Form->input('forfait', array(
 
 		echo $this->Form->input('cambio_dolar_euro', array(
 		    'label' => 'Cambio dolar/euro',
-		    'between' => '($=>€)'
+		    'between' => '($/€)'
 			)
 		);
 ?>

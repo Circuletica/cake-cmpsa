@@ -61,8 +61,20 @@ echo $this->Form->input('embalaje_id', array(
 <?php
 echo $this->Form->input('lotes_operacion',
     array(
+<<<<<<< HEAD
     'label'=> 'Lotes',	
 	'between' => 'Quedan por fijar '.$contrato['RestoLotesContrato']['lotes_restantes'].' lotes'
+=======
+	'label' => 'Fecha de fijación',
+	'dateFormat' => 'DMY',
+	'minYear' => date('Y')-1,
+	'maxYear' => date('Y')+5,
+	'orderYear' => 'asc',
+	//'selected' => date('Y-m-1')
+	'selected' => array(
+		'year' => date('Y')-1
+	)
+>>>>>>> master
     )
 );
 ?>
@@ -115,7 +127,8 @@ echo $this->Form->input(
 );
 echo $this->Form->input('opciones', array(
     'between' => '('.$divisa.')',
-    'label' => 'Opciones'
+    'label' => 'Opciones',
+'default' => 0
 )
 );
 ?>
@@ -138,7 +151,8 @@ if ($contrato['Incoterm']['si_flete']) {
 if ($contrato['Incoterm']['si_seguro']) {
     echo $this->Form->input('seguro', array(
 	'between' => '(%)',
-	'label' => 'Seguro'
+	'label' => 'Seguro',
+'default' => 0
     )
 );
 }
@@ -147,18 +161,26 @@ if ($contrato['Incoterm']['si_seguro']) {
 <?php
 echo $this->Form->input('forfait', array(
     'between' => '(€/Tm)',
-    'label' => 'Forfait'
+    'label' => 'Forfait',
+'default' => 0
 )
 					);
 
 echo $this->Form->input('cambio_dolar_euro', array(
     'label' => 'Cambio dolar/euro',
-    'between' => '($=>€)'
+    'between' => '($/€)'
 )
 		);
 ?>
 </div>
-
+<?php
+echo $this->Form->input(
+	'observaciones',
+	array(
+		'label' => 'Comentarios'
+	)
+);
+?>
 </fieldset>
 <fieldset>
 <legend>Asociados</legend>

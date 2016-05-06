@@ -6,7 +6,18 @@ $this->assign('id',$operacion['Operacion']['id']);
 $this->assign('class','Operacion');
 $this->assign('controller','operaciones');
 $this->assign('line_controller','asociado_operaciones');
-$this->assign('line_add','1');
+$this->assign('line_add','0');
+
+$this->start('breadcrumb');
+$this->Html->addCrumb(
+    'Operaciones',
+    array(
+	'controller' => 'operaciones',
+	'action' => 'index'
+    )
+);
+$this->end();
+
 $this->start('filter');
 //solo se puede generar una financiacion si aun no existe
 if (empty($existe_financiacion)) {
@@ -105,23 +116,24 @@ echo "  <dt>Forfait:</dt>\n";
 echo "  <dd>".$operacion['Operacion']['forfait'].'€/Tm&nbsp;'."</dd>";
 echo "  <dt>Precio €/kg estimado:</dt>\n";
 echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
-echo "  <dt>Observaciones:</dt>\n";
+echo "  <dt>Comentarios:</dt>\n";
 echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
 echo "</dl>";
 $this->end();
 $this->start('lines');
 //la tabla con el reparto de sacos para los asociados
 echo "<table>\n";
-echo $this->Html->tableHeaders($columnas_reparto);
-foreach ($lineas_reparto as $codigo => $linea_reparto):
-    echo $this->Html->tableCells(array(
-	$codigo,
-	$linea_reparto['Nombre'],
-	$linea_reparto['Cantidad'],
-	$linea_reparto['Peso'],
-    )
-);
-endforeach;
+if (isset($columnas_reparto)) echo $this->Html->tableHeaders($columnas_reparto);
+if (isset($lineas_reparto)) {
+    foreach ($lineas_reparto as $codigo => $linea_reparto) {
+	echo $this->Html->tableCells(array(
+	    $codigo,
+	    $linea_reparto['Nombre'],
+	    $linea_reparto['Cantidad'],
+	    $linea_reparto['Peso'],
+	));
+    }
+}
 echo "</table>\n";
 $this->end();
 ?>
