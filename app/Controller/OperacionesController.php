@@ -235,64 +235,64 @@ class OperacionesController extends AppController {
 	));
 
 	//Queremos la lista de costes de fletes
-	$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find('all', array(
-	    'recursive' => 3,
-	    'contain' => array(
-		'Flete' => array(
-		    'PuertoCarga' => array(
-			'fields' => array(
-			    'nombre'
-			)
-		    ),
-		    'PuertoDestino' => array(
-			'fields' => array(
-			    'nombre'
-			)
-		    ),
-		    'Naviera' => array(
-			'fields' => array(
-			    'nombre_corto'
-			)
-		    ),
-		    'Embalaje' => array(
-			'fields' => array(
-			    'nombre'
-			)
-		    )
-		)
-	    ),
-	    'conditions' => array(
-		'PrecioFleteContrato.contrato_id' => $contrato_id,
-		//'PrecioFleteContrato.precio_flete is not null'
-	    )
-	));
-	//el desplegable con los costes de flete según los puertos de
-	//carga/destino asociados con el contrato.
-	//Tenemos que hacer un array con name =>, value => para poder
-	//usar el mismo valor para varias opciones del select.
-	//Con un array simple no funciona, no se puede usar la misma clave
-	//varias veces. 
-	foreach($precio_fletes as &$precio_flete) {
-	    $fletes[] = array( 
-		'name' => $precio_flete['Flete']['Naviera']['nombre_corto'].'('
-		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
-		.$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
-		.(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
-		.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
-		'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
-	    );
-	    //vamos a tener otro array para un js que modifique la lista de fletes disponibles
-	    //segun se elija uno u otro puerto embarque/puerto destino/embalaje
-	    $precio_flete['Flete']['value']=$precio_flete['PrecioFleteContrato']['precio_flete'];
-	    $precio_flete['Flete']['name']=end($fletes)['name'];
-	    unset($precio_flete['Flete']['Naviera']);
-	    unset($precio_flete['Flete']['PuertoCarga']);
-	    unset($precio_flete['Flete']['PuertoDestino']);
-	    unset($precio_flete['Flete']['Embalaje']);
-	    unset($precio_flete['PrecioFleteContrato']);
-	}
-	$this->set(compact('fletes'));
-	$this->set(compact('precio_fletes'));
+//	$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find('all', array(
+//	    'recursive' => 3,
+//	    'contain' => array(
+//		'Flete' => array(
+//		    'PuertoCarga' => array(
+//			'fields' => array(
+//			    'nombre'
+//			)
+//		    ),
+//		    'PuertoDestino' => array(
+//			'fields' => array(
+//			    'nombre'
+//			)
+//		    ),
+//		    'Naviera' => array(
+//			'fields' => array(
+//			    'nombre_corto'
+//			)
+//		    ),
+//		    'Embalaje' => array(
+//			'fields' => array(
+//			    'nombre'
+//			)
+//		    )
+//		)
+//	    ),
+//	    'conditions' => array(
+//		'PrecioFleteContrato.contrato_id' => $contrato_id,
+//		//'PrecioFleteContrato.precio_flete is not null'
+//	    )
+//	));
+//	//el desplegable con los costes de flete según los puertos de
+//	//carga/destino asociados con el contrato.
+//	//Tenemos que hacer un array con name =>, value => para poder
+//	//usar el mismo valor para varias opciones del select.
+//	//Con un array simple no funciona, no se puede usar la misma clave
+//	//varias veces. 
+//	foreach($precio_fletes as &$precio_flete) {
+//	    $fletes[] = array( 
+//		'name' => $precio_flete['Flete']['Naviera']['nombre_corto'].'('
+//		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
+//		.$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
+//		.(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
+//		.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
+//		'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
+//	    );
+//	    //vamos a tener otro array para un js que modifique la lista de fletes disponibles
+//	    //segun se elija uno u otro puerto embarque/puerto destino/embalaje
+//	    $precio_flete['Flete']['value']=$precio_flete['PrecioFleteContrato']['precio_flete'];
+//	    $precio_flete['Flete']['name']=end($fletes)['name'];
+//	    unset($precio_flete['Flete']['Naviera']);
+//	    unset($precio_flete['Flete']['PuertoCarga']);
+//	    unset($precio_flete['Flete']['PuertoDestino']);
+//	    unset($precio_flete['Flete']['Embalaje']);
+//	    unset($precio_flete['PrecioFleteContrato']);
+//	}
+//	$this->set(compact('fletes'));
+//	$this->set(compact('precio_fletes'));
 	$this->set('proveedor',$contrato['Proveedor']['nombre_corto']);
 
 	if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
