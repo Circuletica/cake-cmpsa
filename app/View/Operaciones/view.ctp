@@ -123,16 +123,17 @@ $this->end();
 $this->start('lines');
 //la tabla con el reparto de sacos para los asociados
 echo "<table>\n";
-echo $this->Html->tableHeaders($columnas_reparto);
-foreach ($lineas_reparto as $codigo => $linea_reparto):
-    echo $this->Html->tableCells(array(
-	$codigo,
-	$linea_reparto['Nombre'],
-	$linea_reparto['Cantidad'],
-	$linea_reparto['Peso'],
-    )
-);
-endforeach;
+if (isset($columnas_reparto)) echo $this->Html->tableHeaders($columnas_reparto);
+if (isset($lineas_reparto)) {
+    foreach ($lineas_reparto as $codigo => $linea_reparto) {
+	echo $this->Html->tableCells(array(
+	    $codigo,
+	    $linea_reparto['Nombre'],
+	    $linea_reparto['Cantidad'],
+	    $linea_reparto['Peso'],
+	));
+    }
+}
 echo "</table>\n";
 $this->end();
 ?>

@@ -85,7 +85,7 @@ class OperacionesController extends AppController {
     }
 
 
-    public function edit($id = null) {
+    public function edit($id) {
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formado');
 	    $this->redirect(array('action'=>'index'));
@@ -184,7 +184,6 @@ class OperacionesController extends AppController {
 	//queremos el id del socio como index del array
 	$asociados_operacion = Hash::combine($operacion['AsociadoOperacion'], '{n}.asociado_id', '{n}');
 	$this->set('asociados_operacion', $asociados_operacion);
-	//Ahora que tenemos todos los datos, rellenamos el formulario
 	//hace falta para el desplegable de 'Embalaje'
 	//recombinamos el array anterior que quedaba asi:
 	//Array
@@ -234,65 +233,6 @@ class OperacionesController extends AppController {
 	    )
 	));
 
-	//Queremos la lista de costes de fletes
-//	$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find('all', array(
-//	    'recursive' => 3,
-//	    'contain' => array(
-//		'Flete' => array(
-//		    'PuertoCarga' => array(
-//			'fields' => array(
-//			    'nombre'
-//			)
-//		    ),
-//		    'PuertoDestino' => array(
-//			'fields' => array(
-//			    'nombre'
-//			)
-//		    ),
-//		    'Naviera' => array(
-//			'fields' => array(
-//			    'nombre_corto'
-//			)
-//		    ),
-//		    'Embalaje' => array(
-//			'fields' => array(
-//			    'nombre'
-//			)
-//		    )
-//		)
-//	    ),
-//	    'conditions' => array(
-//		'PrecioFleteContrato.contrato_id' => $contrato_id,
-//		//'PrecioFleteContrato.precio_flete is not null'
-//	    )
-//	));
-//	//el desplegable con los costes de flete según los puertos de
-//	//carga/destino asociados con el contrato.
-//	//Tenemos que hacer un array con name =>, value => para poder
-//	//usar el mismo valor para varias opciones del select.
-//	//Con un array simple no funciona, no se puede usar la misma clave
-//	//varias veces. 
-//	foreach($precio_fletes as &$precio_flete) {
-//	    $fletes[] = array( 
-//		'name' => $precio_flete['Flete']['Naviera']['nombre_corto'].'('
-//		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
-//		.$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
-//		.(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
-//		.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
-//		'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
-//	    );
-//	    //vamos a tener otro array para un js que modifique la lista de fletes disponibles
-//	    //segun se elija uno u otro puerto embarque/puerto destino/embalaje
-//	    $precio_flete['Flete']['value']=$precio_flete['PrecioFleteContrato']['precio_flete'];
-//	    $precio_flete['Flete']['name']=end($fletes)['name'];
-//	    unset($precio_flete['Flete']['Naviera']);
-//	    unset($precio_flete['Flete']['PuertoCarga']);
-//	    unset($precio_flete['Flete']['PuertoDestino']);
-//	    unset($precio_flete['Flete']['Embalaje']);
-//	    unset($precio_flete['PrecioFleteContrato']);
-//	}
-//	$this->set(compact('fletes'));
-//	$this->set(compact('precio_fletes'));
 	$this->set('proveedor',$contrato['Proveedor']['nombre_corto']);
 
 	if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
@@ -344,19 +284,6 @@ class OperacionesController extends AppController {
 	$this->form();
 	$this->render('form');
     }
-
-  /*  public function edit($id = null) {
-		if (!$id && empty($this->request->data)) {
-		    $this->Session->setFlash('error en URL');
-		    $this->redirect(array(
-			'action' => 'view',
-			'controller' => 'operaciones',
-			$this->params['from_id']
-		    ));
-		}
-		$this->form($id);
-		$this->render('form');
-  }*/
 
     public function form($id=null) {
 	$this->set('action', $this->action);
@@ -521,6 +448,7 @@ class OperacionesController extends AppController {
 	$this->request->data['Operacion']['forfait'] = 0;
 	$this->request->data['Operacion']['seguro'] = 0;
 	$this->request->data['Operacion']['flete'] = 0;
+
 	//Queremos la lista de costes de fletes
 	$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find('all', array(
 	    'recursive' => 3,
@@ -559,7 +487,9 @@ class OperacionesController extends AppController {
 	//usar el mismo valor para varias opciones del select.
 	//Con un array simple no funciona, no se puede usar la misma clave
 	//varias veces. 
-	foreach($precio_fletes as &$precio_flete) {
+	//si $precio_fletes == null evitar acabar con una variable null en el form.ctp
+	$fletes = array();
+	foreach($precio_fletes as &$precio_flete) { //usar &$ para que funcione el unset
 	    $fletes[] = array( 
 		'name' => $precio_flete['Flete']['Naviera']['nombre_corto'].'('
 		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
@@ -678,23 +608,26 @@ class OperacionesController extends AppController {
 	$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);	
 
 	//Líneas de reparto
-	foreach ($operacion['AsociadoOperacion'] as $linea) {
-	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-	    $codigo = substr($linea['Asociado']['codigo_contable'],-2);
-	    $lineas_reparto[] = array(
-		'Código' => $codigo,
-		'Nombre' => $linea['Asociado']['nombre_corto'],
-		'Cantidad' => $linea['cantidad_embalaje_asociado'],
-		'Peso' => $peso
-	    );	
+	if (!empty($operacion['AsociadoOperacion'])) {
+	    foreach ($operacion['AsociadoOperacion'] as $linea) {
+		$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+		$codigo = substr($linea['Asociado']['codigo_contable'],-2);
+		$lineas_reparto[] = array(
+		    'Código' => $codigo,
+		    'Nombre' => $linea['Asociado']['nombre_corto'],
+		    'Cantidad' => $linea['cantidad_embalaje_asociado'],
+		    'Peso' => $peso
+		);	
+	    }
+	    $columnas_reparto = array_keys($lineas_reparto[0]);
+	    //indexamos el array por el codigo de asociado
+	    $lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
+	    //se ordena por codigo ascendente
+	    ksort($lineas_reparto);
+	    $this->set('columnas_reparto',$columnas_reparto);
+	    $this->set('lineas_reparto',$lineas_reparto);
 	}
-	$columnas_reparto = array_keys($lineas_reparto[0]);
-	//indexamos el array por el codigo de asociado
-	$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
-	//se ordena por codigo ascendente
-	ksort($lineas_reparto);
-	$this->set('columnas_reparto',$columnas_reparto);
-	$this->set('lineas_reparto',$lineas_reparto);
+
 	$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
 	//comprobamos si ya existe una financiacion para esta operación
 	if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
