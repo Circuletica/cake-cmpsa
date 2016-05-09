@@ -166,7 +166,6 @@ class OperacionesController extends AppController {
 	//sacamos los datos del contrato al que pertenece la linea
 	//nos sirven en la vista para detallar campos
 
-	//$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
 	$contrato = $operacion['Contrato'];
 
 	$this->set('operacion', $operacion);
@@ -220,18 +219,26 @@ class OperacionesController extends AppController {
 	$this->set('proveedor',$contrato['Proveedor']['nombre_corto']);
 	//a quienes van asociadas las lineas de contrato
 	//para los puertos de carga y destino
-	$this->set('puertoCargas',$this->Operacion->PuertoCarga->find('list', array(
-	    'order' => array('PuertoCarga.nombre' =>'ASC')
-	)
-    ));
-	$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find(
-	    'list',
-	    #el café solo llega a puerto españoles
-	    array(
-		'contain' => array('Pais'),
-		'conditions' => array( 'Pais.nombre' => 'España')
+	$this->set(
+	    'puertoCargas',
+	    $this->Operacion->PuertoCarga->find(
+		'list',
+		array(
+		    'order' => array('PuertoCarga.nombre' =>'ASC')
+		)
 	    )
-	));
+	);
+	$this->set(
+	    'puertoDestinos',
+	    $this->Operacion->PuertoDestino->find(
+		'list',
+		#el café solo llega a puerto españoles
+		array(
+		    'contain' => array('Pais'),
+		    'conditions' => array( 'Pais.nombre' => 'España')
+		)
+	    )
+	);
 
 	$this->set('proveedor',$contrato['Proveedor']['nombre_corto']);
 
@@ -514,7 +521,6 @@ class OperacionesController extends AppController {
 	if ($this->request->is('post')) {//ES UN POST
 	    //al guardar la linea, se incluye a qué contrato pertenece
 	    $this->request->data['Operacion']['contrato_id'] = $contrato_id;
-	    debug($contrato_id);
 	    if($id == NULL){
 		//primero guardamos los datos de Operacion
 		if($this->Operacion->save($this->request->data)){
@@ -795,8 +801,6 @@ class OperacionesController extends AppController {
 		)
 	    )
 	);	
-	//Líneas de reparto
-	//		debug($operacion_retiradas);
 
 	//ahora el precio que facturamos por asociado
 /*  MIRAR ATENTAMENTE PARA CAMBIAR EL CóDIGO POR ESTO SOLO
@@ -836,82 +840,54 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	$total_peso_retirado = 0;
 	$total_pendiente = 0;
 
-	foreach ($operacion['AsociadoOperacion'] as $linea):
+	foreach ($operacion['AsociadoOperacion'] as $linea) {
 	    $peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 
-	$cantidad_retirado = 0;
-	$peso_retirado = 0;
-	$pendiente = 0;
-	$asociados_error=0;
+	    $cantidad_retirado = 0;
+	    $peso_retirado = 0;
+	    $pendiente = $linea['cantidad_embalaje_asociado'];
+	    $asociados_error=0;
 
-	foreach ($operacion_retiradas as $clave => $operacion_retirada){
-	    $retirada = $operacion_retirada['Retirada'];
-	    if($retirada['asociado_id'] == $linea['Asociado']['id']){
-		$cantidad_retirado += $retirada['embalaje_retirado'];
-		$peso_retirado += $retirada['peso_retirado'];
+	    foreach ($operacion_retiradas as $clave => $operacion_retirada){
+		$retirada = $operacion_retirada['Retirada'];
+		if($retirada['asociado_id'] == $linea['Asociado']['id']){
+		    $cantidad_retirado += $retirada['embalaje_retirado'];
+		    $peso_retirado += $retirada['peso_retirado'];
+		}
+		$pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
 	    }
-	    $pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
+
+	    $lineas_retirada[] = array(
+		'asociado_id' => $linea['Asociado']['id'],
+		'Nombre' => $linea['Asociado']['nombre_corto'],
+		'Cantidad' => $linea['cantidad_embalaje_asociado'],
+		'Peso' => $peso,
+		'Cantidad_retirado' => $cantidad_retirado,
+		'Peso_retirado' => $peso_retirado,
+		'Pendiente' => $pendiente
+	    );
+
+	    $total_sacos += $linea['cantidad_embalaje_asociado'];
+	    $total_peso += $peso;
+	    $total_sacos_retirados += $cantidad_retirado; 
+	    $total_peso_retirado += $peso_retirado;
+	    $total_pendiente += $pendiente;
 	}
 
-	$lineas_retirada[] = array(
-	    'asociado_id' => $linea['Asociado']['id'],
-	    'Nombre' => $linea['Asociado']['nombre_corto'],
-	    'Cantidad' => $linea['cantidad_embalaje_asociado'],
-	    'Peso' => $peso,
-	    'Cantidad_retirado' => $cantidad_retirado,
-	    'Peso_retirado' => $peso_retirado,
-	    'Pendiente' => $pendiente
-	);
-
-	$total_sacos += $linea['cantidad_embalaje_asociado'];
-	$total_peso += $peso;
-	$total_sacos_retirados += $cantidad_retirado; 
-	$total_peso_retirado += $peso_retirado;
-	$total_pendiente += $pendiente;
-
-endforeach;
-
-/*foreach ($operacion_retiradas as $clave=>$operacion_retirada){
-	$error_retirada[] = array (
-		'error_id' => $operacion_retirada['Retirada']['asociado_id']
-	);
-}
-
-foreach($operacion['AsociadoOperacion'] as $operacion_asociado){
-		$error_asociado[] = array (
-		'error_id' => $operacion_asociado['asociado_id']
-	);
-/*		if($operacion_retirada['Retirada']['asociado_id']!=$operacion_asociado['asociado_id']){
-				debug($operacion_asociado);
-				$asociados_error++;
-
-	debug($asociados_error);
-		}
-
-}
+	ksort($lineas_retirada);
+	$this->set('lineas_retirada',$lineas_retirada);
+	$this->set('total_sacos',$total_sacos);
+	$this->set('total_peso',$total_peso);	
+	$this->set('total_sacos_retirados',$total_sacos_retirados);
+	$this->set('total_peso_retirado',$total_peso_retirado);
+	$this->set('total_pendiente',$total_pendiente);
 
 
-$asociados_error = array_diff($error_retirada, $error_asociado);
+	//$this->set(compact('asociados_error'));
+	$this->set(compact('operacion_retiradas'));
 
-ksort($error_asociado);
-ksort($error_retirada);*/
-ksort($lineas_retirada);
-$this->set('lineas_retirada',$lineas_retirada);
-$this->set('total_sacos',$total_sacos);
-$this->set('total_peso',$total_peso);	
-$this->set('total_sacos_retirados',$total_sacos_retirados);
-$this->set('total_peso_retirado',$total_peso_retirado);
-$this->set('total_pendiente',$total_pendiente);
-
-//debug($error_retirada);
-//debug($error_asociado);
-//debug($asociados_error);
-
-//$this->set(compact('asociados_error'));
-$this->set(compact('operacion_retiradas'));
-
-//Se declara para acceder al PDF
-$this->set(compact('id'));
+	//Se declara para acceder al PDF
+	$this->set(compact('id'));
     }
 
     public function delete($id = null) {
@@ -934,7 +910,6 @@ $this->set(compact('id'));
 	    $this->redirect(array('action'=>'index'));
 	}
 	//vamos al add de la nueva financiacion
-	//$this->request->data['algo'] = 'algo';
 	$this->redirect(
 	    array(
 		'controller' => 'financiaciones',
@@ -963,24 +938,24 @@ $this->set(compact('id'));
 	);
     }
 
-var $helpers = array('Html', 'Form','Csv'); //Necesario para exportar a cSV
+    var $helpers = array('Html', 'Form','Csv'); //Necesario para exportar a cSV
     public function export() {
-    $this->set('operaciones', $this->Operacion->find(
-    	'all',
-    	array(
-    	'recursive' => 1,
+	$this->set('operaciones', $this->Operacion->find(
+	    'all',
+	    array(
+		'recursive' => 1,
 		'fields' => array(
 		    'id',
 		    'referencia'
-		    )
 		)
+	    )
 	)
-	);
-    $this->layout = null;
-    $this->autoLayout = false;
-    Configure::write('debug', '0');
+    );
+	$this->layout = null;
+	$this->autoLayout = false;
+	Configure::write('debug', '0');
 	$this->response->download("export".date('Ymd').".csv");
-	}
+    }
 
 }
 ?>
