@@ -733,6 +733,7 @@ $this->set(compact('pdf'));
 	    // $this->reclamacion();
 	    //$this->render('asegurar');
 
+	    setlocale(LC_TIME, "es_ES.UTF-8");
 	    $this->pdfConfig = array(
 		    'filename' => 'asegurar',
 		    'paperSize' => 'A4',
