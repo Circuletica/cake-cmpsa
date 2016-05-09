@@ -293,7 +293,8 @@ class LineaMuestrasController extends AppController {
 
  public function info_envio () {
     $linea_id = $this->params['named']['from_id'];
-
+//$action = $this->action;
+//debug($action);
 	$muestra = $this->LineaMuestra->find(
 	    'first',
 	    array(
@@ -332,35 +333,40 @@ class LineaMuestrasController extends AppController {
 	    );
 	$this->set('contactos',$contactos);
 
+
+
     if (!empty($this->request->data)) { 
-    	debug($this->request->data);
-       /* instantiate CakeEmail class */
-      $Email = new CakeEmail();      
-      /* pass user input to function */
-      //$Email->config('smtp');
-      $Email->from('info@circuletica.org'); // Aquí calidad@cmpsa.com
-      $Email->to($this->data['EnvioCalidad']['email']);
-      $Email->subject($this->data['EnvioCalidad']['asunto']);
-      $Email->send($this->data['EnvioCalidad']['mensaje'])	;
-      //debug($Email);
-      $Email->attachments('home/circuletica/'.$muestra['tipo_registro']);
-      ///$Email->attachments(APP.'//Informes/file.pdf')
-      $this->Session->setFlash('Informe de calidad enviado.');
-
-   /*        $Email = new CakeEmail();
- 	$Email->config('smtp')
-    ->subject('AVISO PREVISIÓN LLEGADA')
-    ->to('info@circuletica.org')
-    ->from('rodolgl@gmail.com')
-    ->cc('rodolgl@gmail.com')
-    ->send('Un mensaje');
-*/
-
-
-
-	}
+		if (isset($this->request->data['info_calidad'])) {
+		    $this->info_calidad($linea_id);
+			$this->redirect(array(
+				'action' => 'info_calidad',
+				$this->params['named']['from_id'],
+				'ref'=>$this->data['EnvioCalidad']['referencia'],
+				'ext' => 'pdf',
+        		$muestra['tipo_registro']
+        		)
+			);
+		} else {
+	    	foreach ($this->data['EnvioCalidad']['email'] as $email) {
+    		$lista_email .= $email.',';
+    		}
+    		debug($this->request->data);
+		       /* instantiate CakeEmail class */
+		      $Email = new CakeEmail();      
+		      /* pass user input to function */
+		      //$Email->config('smtp');
+		      $Email->from('info@circuletica.org'); // Aquí calidad@cmpsa.com
+		      $Email->to($lista_email);
+		      $Email->subject($this->data['EnvioCalidad']['asunto']);
+		      $Email->send($this->data['EnvioCalidad']['mensaje'])	;
+		      //debug($Email);
+		      $Email->attachments('home/circuletica/'.$muestra['tipo_registro']);
+		      ///$Email->attachments(APP.'//Informes/file.pdf')
+		      $this->Session->setFlash('Informe de calidad enviado.');
+		}
 	
     }
 
+}
 }
 ?>

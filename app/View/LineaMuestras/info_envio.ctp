@@ -5,28 +5,18 @@ echo "<h2>Informe de calidad de la línea de muestra <em>".$muestra['tipo_regist
 <fieldset style=width:63%;>
 <legend>Contactos</legend>
 <?php
-$selected = null;
 echo "<table>";
 echo $this->Html->tableHeaders(array('Asociado','Nombre', 'Departamento','Email', 'Enviar'));
 	foreach($contactos as $contacto){
-	    echo $this->Html->tableCells(array(
-	    	$contacto['Empresa']['nombre_corto'],
-	    	$contacto['Contacto']['nombre'],
-	    	isset($contacto['Departamento']['nombre']) ? $contacto['Departamento']['nombre'] : '',
-	    	$contacto['Contacto']['email'],
-	       	$this->Form->input('email', array(
-	       		'type' => 'checkbox',
-	       		'value'=>$contacto['Contacto']['email'],
-	    		'selected' =>$contacto['Contacto']['email'],
-	    		'options'=>array($contacto['Contacto']['email']),
-	    		//'name' => 'email'	
-	    		)
-	    	)
-	    	)
-	    );
-	   /* if ($contacto['Contacto']['email'][=>1)
-	  	 $selected = $contacto['Contacto']['email'];*/
+		$opciones[$contacto['Contacto']['email']] = $contacto['Empresa']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 	}
+	debug($opciones);
+	echo $this->Form->input('email', array(
+		'type' => 'select',
+		'multiple' => 'checkbox',
+		'options'=>$opciones
+		)
+	);
 echo "</table>";
 
 ?>
@@ -35,11 +25,11 @@ echo "</table>";
 <legend>Datos de envío</legend>
 
 <?php
-echo $this->Form->input('email',array(
+/*echo $this->Form->input('email',array(
 	'label'=> 'Correos a enviar (separado por comas): ',
 	'after' => 'Solución temporal'
 	)
-);
+);*/
 echo $this->Form->input('referencia',array(
 	'label'=> 'Referencia: '
 	)
@@ -66,11 +56,11 @@ echo $this->Form->input('observacion', array(
 	'type' => 'textarea'
 	)
 );
-echo $this->element('cancelarform')
+/*echo $this->element('cancelarform')
 .' '.
 $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar'),
     array(
-        'action' => 'info_calidad',
+        'action' => 'info_envio',
         $this->params['named']['from_id'],
         'ext' => 'pdf',
         $muestra['tipo_registro']
@@ -80,9 +70,9 @@ $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar'),
         'escape'=>false,
         'target' => '_blank','title'=>'Informe calidad previo'
         )
-    );
-
-	echo $this->Form->end('Enviar informe');
+    );*/
+	echo $this->Form->submit('Previsualizar informe',array('name'=>'info_calidad'));
+	echo $this->Form->end('Enviar informe',array('name' => 'info_envio'));
 
 	/*$Email = new CakeEmail();
  	$Email->config('smtp')

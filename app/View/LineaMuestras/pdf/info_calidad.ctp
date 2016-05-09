@@ -18,7 +18,7 @@ echo "<hr><br>";
 
 if(!empty($destinatario or $atencion or $referencia)){
 echo "<dl>";
-	echo "<dt>A: </dt><dd>".$destinatario."</dd>\n";
+	echo "<dt>A: </dt><dd>".$this->params['named']['ref']."</dd>\n";
 	echo "<dt>ATN: </dt><dd>".$atencion."</dd>\n";
 	echo "<dt>REFA: </dt><dd>".$referencia."</dd>\n";
 echo "</dl>";

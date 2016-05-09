@@ -25,84 +25,56 @@ public function view($id = null) {
 	    $this->Session->setFlash('URL mal formada AlmacenTransporte/view ');
 	    $this->redirect(array('action'=>'index'));
 	}
-	
+
+	$this->AlmacenTransporte->AlmacenTransporteAsociado->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
+										
 	$almacentransportes = $this->AlmacenTransporte->find(
 		'first',
 		array(
 			'conditions' => array(
 				'AlmacenTransporte.id' => $id
 				),
-			'recursive' => 3,
+			//'recursive' => 2,
 			'contain' => array(
+				'AlmacenTransporteAsociado' =>array(
+					'Asociado'=> array(
+								'fields'=> array(
+									'id',
+									//'nombre_corto'
+									),
+								'Retirada'=>array(
+									'conditions' => array(
+										'Retirada.almacen_transporte_id' => $id
+										)
+									),
+								'Empresa',
+								'AlmacenReparto'=> array(
+									'conditions'=> array(
+										'AlmacenReparto.id' => $id
+										)
+									)
+								)	
+				),
+				
 				'Transporte'=> array(
 					'fields'=> array(
 						'linea',
 						'matricula',
 						'nombre_vehiculo',
 						'operacion_id'
-						),
-					'Operacion'=> array(
-						'fields' => array(
-							'id'
-							),
-						'AsociadoOperacion' => array(
-							'fields'=> array(
-								'asociado_id',
-								'cantidad_embalaje_asociado',
-								'operacion_id'
-								),
-							'Asociado'=> array(
-								'fields'=> array(
-									'nombre_corto'
-									)
-								)
-							)
 						)
 					),
 					'Almacen' => array(
 						'fields' => (
 							'nombre_corto'
 							)
-						),
-					'Retirada'=> array(
-						'fields' => array(
-							'id',
-							'almacen_transporte_id'
-							)
 						)
 					)
-				)
-			);
-	$this->set(compact('almacentransportes'));
-
-	$distribucion = $this->AlmacenTransporte->Transporte->find(
-		'first',
-		array(
-			'conditions' => array(
-				'Transporte.id'=> $almacentransportes['AlmacenTransporte']['transporte_id']),
-			'recursive' => 3,
-			'contain' => array(
-				'Operacion' => array(
-					'fields' => array(
-						'id'
-						),
-					'AsociadoOperacion' => array(
-						'fields'=> array(
-							'asociado_id',
-							'cantidad_embalaje_asociado',
-							'operacion_id'
-							),
-						'Asociado'=> array(
-							'fields'=> array(
-								'nombre_corto'
-								)
-							)
-						)
-					)
-				)
 			)
 		);
-	$this->set(compact('distribucion'));
+	$this->set(compact('almacentransportes'));
+
+	
 	//Necesario para exportar en PDf
 	$this->set(compact('id'));
 	

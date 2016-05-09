@@ -1,4 +1,16 @@
 <?php 
+/*$this->extend('/Common/view');
+$this->assign('object', 'Cuenta corriente'.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
+$this->assign('line_object', 'Distribución asociados');
+$this->assign('id',$almacentransportes['AlmacenTransporte']['id']);
+$this->assign('class','AlmacenTransporte');
+$this->assign('controller','almacen_transportes');
+$this->assign('line_controller', 'almacen_transporte_asociados');
+$this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'*/
+
+
+
+
 	$this->Html->addCrumb('Operación', array(
 	'controller'=>'operaciones',
 	'action'=>'view_trafico',
@@ -85,16 +97,24 @@
 
 
 ?>
-
+	
 	<div class="detallado">
 
 	<h3>Distribución asociados</h3>
 
 	<table>
 <?php
-	echo $this->Html->tableHeaders(array('Asociado','Asignados', 'Pendientes','Porcentaje'));
-	//	echo $this->Html->tableCells(array(
-	//		$almacentransporte['AsociadoOperacion']['Asociado']['nombre_corto']));
+	echo $this->Html->tableHeaders(array('Asociado','Asignado Teorico', 'Asignados Real','Pendiente','% teorico', '% real'));
+	foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte)
+		echo $this->Html->tableCells(array(
+			$almacentransporte['Asociado']['Empresa']['nombre_corto'],
+			$almacentransporte['sacos_asignados'],
+			$almacentransporte['Asociado']['AlmacenReparto'][0]	['sacos_asignados'],
+			!empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'],
+			$almacentransporte['Asociado']['AlmacenReparto'][0]	['porcentaje_embalaje_asociado'],			
+			($almacentransporte['sacos_asignados']*100)/$almacentransportes['AlmacenTransporte']['cantidad_cuenta']
+			)
+		);
 	
 ?>	</table>
 	<div class='btabla'>

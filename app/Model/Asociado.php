@@ -17,6 +17,7 @@ class Asociado extends AppModel {
 		'Retirada' => array(
 			'className' => 'Retirada',
 			'foreignKey' => 'asociado_id'
-		)		
+		),
+		'AlmacenReparto'		
 	);
 }
