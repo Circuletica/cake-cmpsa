@@ -296,8 +296,8 @@ class LineaMuestrasController extends AppController {
 //$action = $this->action;
 //debug($action);
 	$muestra = $this->LineaMuestra->find(
-	    'first',
-	    array(
+		'first',
+		array(
 			'conditions' => array(
 			    'LineaMuestra.id' => $linea_id
 			),
@@ -307,11 +307,11 @@ class LineaMuestrasController extends AppController {
 					'fields' => array(
 						'id',
 						'tipo_registro'
-						)
 					)
 				)
 			)
-		);
+		)
+	 );
 	$this->set('muestra',$muestra);
 	$muestra += $muestra['Muestra'];
 	unset($muestra['Muestra']);
@@ -327,7 +327,7 @@ class LineaMuestrasController extends AppController {
 	    	 	'departamento_id' => 2
 	    	 	),
 	    	// 'fields' => array('Contacto.id','Empresa.nombre_corto'),
-	    	 //'order' => array('Empresa.nombre_corto' => 'asc'),
+	    	 'order' => array('Empresa.nombre_corto' => 'asc'),
 	    	// 'recursive' => 1
 	    	 )
 	    );

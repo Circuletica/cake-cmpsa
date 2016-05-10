@@ -1,28 +1,26 @@
 <?php
 echo $this->Form->create('EnvioCalidad');
 echo "<h2>Informe de calidad de la línea de muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
+
+
 ?>
-<fieldset style=width:63%;>
+<fieldset style=width:50%;>
 <legend>Contactos</legend>
 <?php
-echo "<table>";
-echo $this->Html->tableHeaders(array('Asociado','Nombre', 'Departamento','Email', 'Enviar'));
-	foreach($contactos as $contacto){
+
+foreach($contactos as $contacto){
 		$opciones[$contacto['Contacto']['email']] = $contacto['Empresa']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 	}
-	debug($opciones);
 	echo $this->Form->input('email', array(
 		'type' => 'select',
 		'multiple' => 'checkbox',
 		'options'=>$opciones
 		)
 	);
-echo "</table>";
-
 ?>
 </fieldset>
-<fieldset>
-<legend>Datos de envío</legend>
+<fieldset style=width:20%;>
+<legend>Datos</legend>
 
 <?php
 /*echo $this->Form->input('email',array(
@@ -42,6 +40,12 @@ echo $this->Form->input('atn', array(
 	'label' =>'ATN: '
 	)
 );
+?>
+</fieldset>
+<fieldset style=width:20%;>
+<legend>Correo</legend>
+
+<?php
 echo $this->Form->input('asunto',array(
 	'label'=> 'Asunto: '
 	)
