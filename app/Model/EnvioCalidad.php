@@ -3,11 +3,11 @@ class EnvioCalidad extends AppModel {
     var $useTable = false;
     var $_schema = array(
 	    'email' => array('type'=>'string', 'length'=>200),
-	    'aeferencia' => array('type'=>'string', 'length'=>100), 
+	    'referencia' => array('type'=>'text'), 
 	    'a' => array('type'=>'string', 'length'=>100), 
 	    'atn' => array('type'=>'string'), 
-	    'asunto' => array('type'=>'string','length'=>150), 
-	    'mensaje' => array('type'=>'text'), 
+	    //'asunto' => array('type'=>'string','length'=>150), 
+	    //'mensaje' => array('type'=>'text'), 
 	    'observacion' => array('type'=>'text')
 	    );
 

@@ -143,7 +143,7 @@ function totalCriba(){
     if(tot == 100)
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
-	document.getElementById('total').style.color = "red";
+    document.getElementById('total').style.color = "red";
 }
 
 function contratosMuestra(){

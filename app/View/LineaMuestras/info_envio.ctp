@@ -4,7 +4,7 @@ echo "<h2>Informe de calidad de la línea de muestra <em>".$muestra['tipo_regist
 
 
 ?>
-<fieldset style=width:50%;>
+<fieldset style=width:60%;>
 <legend>Contactos</legend>
 <?php
 
@@ -19,7 +19,7 @@ foreach($contactos as $contacto){
 	);
 ?>
 </fieldset>
-<fieldset style=width:20%;>
+<fieldset>
 <legend>Datos</legend>
 
 <?php
@@ -40,13 +40,8 @@ echo $this->Form->input('atn', array(
 	'label' =>'ATN: '
 	)
 );
-?>
-</fieldset>
-<fieldset style=width:20%;>
-<legend>Correo</legend>
 
-<?php
-echo $this->Form->input('asunto',array(
+/*echo $this->Form->input('asunto',array(
 	'label'=> 'Asunto: '
 	)
 );
@@ -54,13 +49,13 @@ echo $this->Form->input('mensaje',array(
 	'label'=> 'Mensaje: ',
 	'type' => 'textarea'
 	)
-);
+);*/
 echo $this->Form->input('observacion', array(
 	'label' => 'Observaciones de la línea',
 	'type' => 'textarea'
 	)
 );
-/*echo $this->element('cancelarform')
+echo $this->element('cancelarform')
 .' '.
 $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar'),
     array(
@@ -74,9 +69,15 @@ $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar'),
         'escape'=>false,
         'target' => '_blank','title'=>'Informe calidad previo'
         )
-    );*/
-	echo $this->Form->submit('Previsualizar informe',array('name'=>'info_calidad'));
-	echo $this->Form->end('Enviar informe',array('name' => 'info_envio'));
+    );
+	echo $this->Form->submit('Previsualizar informe',array(
+		'name'=>'info_calidad',
+		'escape'=>false
+		)
+	);
+	echo $this->Form->end('Enviar informe');
+//	echo $this->Form->end('Enviar informe' => 'info_envio'));
+
 
 	/*$Email = new CakeEmail();
  	$Email->config('smtp')

@@ -46,12 +46,12 @@ echo $this->Html->tableCells(
 		)
 	),
 	$this->Form->input('tueste'),
-	$this->Form->input(
+	/*$this->Form->input(
 	    'referencia_proveedor',
 	    array(
 		'label' => 'Referencia Proveedor'
 	    )
-	),
+	),*/
 	isset($operaciones) && $muestra['tipo_id']!='1' ?
 	$this->Form->input(
 	    'operacion_id',
