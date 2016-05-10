@@ -1,4 +1,4 @@
-  <?php echo $this->Form->create('Despacho', array('action'=>'filtroListado'));?>
+<?php echo $this->Form->create('Transporte', array('action'=>'filtroListado'));?>
   <div class="radiomuestra">
   </div>
 <?php
@@ -8,43 +8,38 @@
 	  'label' => 'Ref. Operación'
       )
   );
- // echo $this->Form->input(
-   //   'Search.tipo_id', array(
-  //  'type' => 'hidden'
-  //    )
-  //);
   echo $this->Form->input(
       'Search.nombre',
       array(
-    'label' => 'Calidad'
+	  'label' => 'Calidad'
       )
   );  
-  ?>
+?>
   <div class="linea">
-    <?php
-    echo $this->Form->input(
-        'Search.fechadesde',
-        array(
-      'type'=>'date',
-      'dateFormat' => 'DMY',
-      'minYear' => date('Y')-4,
-      'maxYear' => date('Y'),
-      'orderYear' => 'asc',
-      'label'=> 'Despacho desde'
-        )
-    );
-    echo $this->Form->input(
-        'Search.fechahasta',
-        array(
-      'type'=>'date',
-      'dateFormat' => 'DMY',
-      'minYear' => date('Y')-4,
-      'maxYear' => date('Y'),
-      'orderYear' => 'asc',
-      'label'=> 'Despacho hasta'
-        )
-    );    
-    ?>
+<?php
+  echo $this->Form->input(
+      'Search.fechadesde',
+      array(
+	  'type'=>'date',
+	  'dateFormat' => 'DMY',
+	  'minYear' => date('Y')-4,
+	  'maxYear' => date('Y'),
+	  'orderYear' => 'asc',
+	  'label'=> 'Despacho desde'
+      )
+  );
+  echo $this->Form->input(
+      'Search.fechahasta',
+      array(
+	  'type'=>'date',
+	  'dateFormat' => 'DMY',
+	  'minYear' => date('Y')-4,
+	  'maxYear' => date('Y'),
+	  'orderYear' => 'asc',
+	  'label'=> 'Despacho hasta'
+      )
+  );    
+?>
   </div>
 <?php
 
@@ -53,11 +48,12 @@
     <ul>
     <li><?php
   if(isset($this->request->data['Search']['tipo_id'])){
-      echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array(
-	  'action'=>'index',
-	  'Search.tipo_id'=>$this->request->data['Search']['tipo_id']),
-      array(
-	  'escape'=>false)
+      echo $this->Html->Link(
+	  '<i class="fa fa-refresh"></i> Resetear',
+	  array(
+	      'action'=>'index'
+	  ),
+	  array('escape'=>false)
       );
   } else {
       echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>'index'), array('escape'=>false));

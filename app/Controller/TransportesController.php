@@ -6,7 +6,7 @@ class TransportesController extends AppController {
 	 $this->Post->recursive = 0;
 	 $this->set('posts', $this->paginate());
 
-	 } */
+    } */
 
     public function index() {
 
@@ -59,10 +59,10 @@ class TransportesController extends AppController {
 
     public function view($id = null) {
 	$this->pdfConfig = array(
-		'filename' => 'linea'.date('Ymd'),
-		//'output'=> 'files/Report.pdf'  
-		//'download' => (bool)$this->request->query('download')
-		);
+	    'filename' => 'linea'.date('Ymd'),
+	    //'output'=> 'files/Report.pdf'  
+	    //'download' => (bool)$this->request->query('download')
+	);
 	$linea = $this->Transporte->find(
 	    'first',
 	    array(
@@ -74,25 +74,25 @@ class TransportesController extends AppController {
 
 	/*$pdf = $CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
 	$this->set(compact('pdf'));*/
-    //$CakePdf = new CakePdf();
-  //  $CakePdf->template('default');
-    //$CakePdf->viewVars($this->viewVars);
-    // Get the PDF string returned
-    //$pdf = $CakePdf->output();
-    // Or write it to file directly
+	//$CakePdf = new CakePdf();
+	//  $CakePdf->template('default');
+	//$CakePdf->viewVars($this->viewVars);
+	// Get the PDF string returned
+	//$pdf = $CakePdf->output();
+	// Or write it to file directly
  /*   $pdf = $this->write(APP . 'files' . DS . 'newsletter.pdf');
 $this->set(compact('pdf'));
-*/
+  */
 
  /*$Email = new CakeEmail();
  $Email->config('smtp')
- 	->template('default')
+	->template('default')
     ->emailFormat('html')
     ->subject('AVISO PREVISIÓN LLEGADA')
     ->to('info@circuletica.org')
     ->from('rodolgl@gmail.com')
     ->cc('rodolgl@gmail.com')
-    ->send('Un mensaje');*/
+ ->send('Un mensaje');*/
 
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formada Transporte/view ');
@@ -111,7 +111,7 @@ $this->set(compact('pdf'));
 			    'fields' => array(
 				'id',
 				'referencia'
-				),
+			    ),
 			    'Incoterm'=>array(
 				'fields'=> array(
 				    'nombre'
@@ -128,7 +128,7 @@ $this->set(compact('pdf'));
 			'fields' => array(
 			    'id',
 			    'nombre'
-			    )
+			)
 		    ),
 		    'Agente'=> array(
 			'fields' => array(
@@ -165,8 +165,8 @@ $this->set(compact('pdf'));
 			'Almacen' => array(
 			    'fields' => (
 				'nombre_corto'
-				)
-			    ),
+			    )
+			),
 			'Retirada'=> array(
 			    'fields' => array(
 				'id'
@@ -184,8 +184,8 @@ $this->set(compact('pdf'));
 	    foreach ($transporte['AlmacenTransporte'] as $suma):
 		if ($almacenTransporte['transporte_id'] = $transporte['Transporte']['id']):
 		    $almacenado = $almacenado + $suma['cantidad_cuenta'];
-	    endif;
-	    endforeach;
+endif;
+endforeach;
 	}
 	$restan = $transporte['Transporte']['cantidad_embalaje'] - $almacenado; 
 	$this->set(compact('restan'));
@@ -253,14 +253,14 @@ $this->set(compact('pdf'));
 	$this->set(compact('agentes'));
 	$this->loadModel('Aseguradora');
 	$aseguradoras = $this->Aseguradora->find('list',
-		array(
-		    'fields' => array(
-			'Aseguradora.id',
-			'Empresa.nombre_corto'
-			),
-		    'recursive' => 1
-		    )
-		);
+	    array(
+		'fields' => array(
+		    'Aseguradora.id',
+		    'Empresa.nombre_corto'
+		),
+		'recursive' => 1
+	    )
+	);
 	$this->set(compact('aseguradoras'));
 	$this->loadModel('Almacen');
 	$almacenes = $this->Almacen->find(
@@ -353,7 +353,7 @@ $this->set(compact('pdf'));
 	    array(
 		'contain' => array('Pais'),
 		'conditions' => array( 'Pais.nombre' => 'España')
-		)
+	    )
 	));		
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
 
@@ -423,426 +423,422 @@ $this->set(compact('pdf'));
 	    $this->request->data = $this->Transporte->read(null, $id);
 	}
 
-	}
+    }
 
-	public function delete($id = null) {
-	    if (!$id or $this->request->is('get')) :
-		throw new MethodNotAllowedException();
-	    endif;
-	    if ($this->Transporte->delete($id)):
-		$this->Session->setFlash('Línea de transporte borrada');
-	    $this->redirect(array(
-			'controller' => 'operaciones',
-			'action' => 'view_trafico',
-			$this->params['named']['from_id']
-			));
-	    endif;
-	}
+    public function delete($id = null) {
+	if (!$id or $this->request->is('get')) :
+	    throw new MethodNotAllowedException();
+endif;
+if ($this->Transporte->delete($id)):
+    $this->Session->setFlash('Línea de transporte borrada');
+$this->redirect(array(
+    'controller' => 'operaciones',
+    'action' => 'view_trafico',
+    $this->params['named']['from_id']
+));
+endif;
+    }
 
-	public function info_embarque() {
-	    $this->pdfConfig = array(
-		'filename' => 'info_embarque',
-		'paperSize' => 'A4',
-		'orientation' => 'landscape',
-	    );
-	    //	$invoice = $this->Invoice->find('first', array('conditions' => array('id' => $id)));
-	    //	$this->set(compact('invoice');
+    public function info_embarque() {
+	$this->pdfConfig = array(
+	    'filename' => 'info_embarque',
+	    'paperSize' => 'A4',
+	    'orientation' => 'landscape',
+	);
+	//	$invoice = $this->Invoice->find('first', array('conditions' => array('id' => $id)));
+	//	$this->set(compact('invoice');
 
 
-	    $this->paginate['order'] = array('Calidad.nombre' => 'asc');
-	    $this->paginate['recursive'] = 2;
-	    $this->paginate['condition'] = array(
-		'Transporte.fecha_despacho_op'=> NULL
-	    );
-	    $this->paginate['contain'] = array(
-		'Operacion' => array(
-		    'fields'=> array(
-			'id',
-			'referencia',
-			'contrato_id',
-		    )				    				    	
-		),
-		'PesoOperacion'=> array(
-		    'fields' =>array(
-			'id',
-			'peso',
-			'cantidad_embalaje'
+	$this->paginate['order'] = array('Calidad.nombre' => 'asc');
+	$this->paginate['recursive'] = 2;
+	$this->paginate['condition'] = array(
+	    'Transporte.fecha_despacho_op'=> NULL
+	);
+	$this->paginate['contain'] = array(
+	    'Operacion' => array(
+		'fields'=> array(
+		    'id',
+		    'referencia',
+		    'contrato_id',
+		)				    				    	
+	    ),
+	    'PesoOperacion'=> array(
+		'fields' =>array(
+		    'id',
+		    'peso',
+		    'cantidad_embalaje'
+		)
+	    ),
+	    'Contrato'=>array(	
+		'fields'=> array(
+		    'id',
+		    'fecha_transporte',
+		    'si_entrega',
+		    'proveedor_id'
+		)
+	    ),
+	    'Proveedor'=>array(
+		'fields'=>array(
+		    'id',
+		    'nombre_corto'
+		)
+	    ),
+	    'PuertoDestino' => array(
+		'fields' => array(
+		    'id',
+		    'nombre'
+		)
+	    )
+	);
+
+	$this->Transporte->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Contrato' => array(
+			'foreignKey' => false,
+			'conditions' => array('Operacion.contrato_id = Contrato.id')
+		    ),	  
+		    'Proveedor' => array(
+			'className' => 'Empresa',
+			'foreignKey' => false,
+			'conditions' => array('Contrato.proveedor_id = Proveedor.id')
 		    )
 		),
-		'Contrato'=>array(	
-		    'fields'=> array(
-			'id',
-			'fecha_transporte',
-			'si_entrega',
-			'proveedor_id'
-		    )
-		),
-		'Proveedor'=>array(
-		    'fields'=>array(
-			'id',
-			'nombre_corto'
-		    )
-		),
-		'PuertoDestino' => array(
-		    'fields' => array(
-			'id',
-			'nombre'
+		'hasOne' => array(
+		    'PesoOperacion' => array(
+			'foreignKey' => false,
+			'conditions' => array('Transporte.operacion_id = PesoOperacion.id')
 		    )
 		)
-	    );
+	    )
+	);
 
-	    $this->Transporte->bindModel(
-		array(
-		    'belongsTo' => array(
-			'Contrato' => array(
-			    'foreignKey' => false,
-			    'conditions' => array('Operacion.contrato_id = Contrato.id')
-			),	  
-			'Proveedor' => array(
-			    'className' => 'Empresa',
-			    'foreignKey' => false,
-			    'conditions' => array('Contrato.proveedor_id = Proveedor.id')
-			)
+	$this->set('transportes',$this->paginate());
+
+    }
+    public function info_despacho() {
+	//	$this ->info_embarque();
+	//	$this ->render('info_despacho');
+	$this->pdfConfig = array(
+	    'filename' => 'info_embarque',
+	    'paperSize' => 'A4',
+	    'orientation' => 'landscape',
+	);
+
+	//$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
+	//$this->paginate['recursive'] = 3;
+	//$this->Transporte->virtualFields['calidad']=$this->Transporte->Operacion->Contrato->Calidad->virtualFields['nombre'];
+	$this->paginate['conditions'] = array(
+	    'Transporte.fecha_despacho_op IS NOT NULL'
+	);
+
+	$this->paginate['contain'] = array(
+	    'Calidad',
+	    'Contrato' => array(
+		'fields' => array(
+		    'referencia',
+		    'calidad_id'
+		)
+	    ),
+	    'Operacion' =>array(
+		'fields'=> array(
+		    'id',
+		    'referencia',
+		    'contrato_id'
+		)
+	    )
+	);
+
+	$this->Transporte->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Contrato' => array(
+			'foreignKey' => false,
+			'conditions' => array('Operacion.contrato_id = Contrato.id')
 		    ),
-		    'hasOne' => array(
-			'PesoOperacion' => array(
-			    'foreignKey' => false,
-			    'conditions' => array('Transporte.operacion_id = PesoOperacion.id')
-			)
+		    'Calidad' => array(
+			'foreignKey' => false,
+			'conditions' => array('Contrato.calidad_id = Calidad.id')
 		    )
 		)
-	    );
+	    )
+	);
 
-	    $this->set('transportes',$this->paginate());
-
-	}
-	public function info_despacho() {
-	    //	$this ->info_embarque();
-	    //	$this ->render('info_despacho');
-	    $this->pdfConfig = array(
-		    'filename' => 'info_embarque',
-		    'paperSize' => 'A4',
-		    'orientation' => 'landscape',
-		    );
-
-	    //$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
-	    $this->paginate['recursive'] = 1;
-	    $this->paginate['conditions'] = array(
-		    'Transporte.fecha_despacho_op IS NOT NULL'
-		    );
-
-	    $this->paginate['contain'] = array(
-		'Operacion' => array(
-		    'fields'=> array(
-			'id',
-			'referencia',
-			'contrato_id'
-		    )
-		),	
-		'Contrato'=>array(	
-		    'fields'=> array(
-			'id',
-			'calidad_id'
+	$title = $this->filtroPaginador(
+	    array(
+		'Transporte' => array(
+		    'Operaci�n' => array(
+			'columna' => 'referencia',
+			'exacto' => false,
+			'lista' => ''
 		    )
 		),
 		'Calidad' => array(
-		    'fields' =>array(
-			'nombre'
-		    )
-		)
-	    );
-
-	    $this->Transporte->bindModel(
-		array(
-		    'belongsTo' => array(
-			'Contrato' => array(
-			    'foreignKey' => false,
-			    'conditions' => array('Operacion.contrato_id = Contrato.id')
-			),
-			'CalidadNombre' => array(
-			    'foreignKey' => false,
-			    'conditions' => array('Contrato.calidad_id = CalidadNombre.id')
-			)
-		    )
-		)
-	    );
-
-	    $title = $this->filtroPaginador(
-		array(
-		    'Transporte' => array(
-			'Registro' => array(
-			    'columna' => 'referencia',
-			    'exacto' => false,
-			    'lista' => ''
-			)
-		    ),
 		    'Calidad' => array(
-			'Calidad' => array(
-			    'columna' => 'nombre',
-			    'exacto' => false,
-			    'lista' => ''
-			)
+			'columna' => 'nombre',
+			'exacto' => false,
+			'lista' => ''
 		    )
 		)
-	    );
+	    )
+	);
 
-
-	    //filtramos por fecha
-	    if(isset($this->passedArgs['Search.fechadesde'])) {
-		$fechadesde = $this->passedArgs['Search.fechadesde'];
-		//Si solo se ha introducido un año (aaaa)
-		if (preg_match('/^\d{4}$/',$fechadesde)) {
-		    $anyo = $fechadesde;
-		}
-		//la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
-		elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
-		    list($mes,$anyo) = explode('-',$fechadesde);
-		} else {
-		    $this->Session->setFlash('Error de fecha');
-		    $this->redirect(array('action' => 'index'));
-		}
-		//si se ha introducido un año, filtramos por el año
-		if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
-		//si se ha introducido un mes, filtramos por el mes
-		if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
-		$this->request->data['Search']['fecha'] = $fechadesd;
-		//completamos el titulo
-		$title .= '|Fecha: '.$fechadesde;
+	//filtramos por fecha
+	if(isset($this->passedArgs['Search.fechadesde'])) {
+	    $fechadesde = $this->passedArgs['Search.fechadesde'];
+	    //Si solo se ha introducido un año (aaaa)
+	    if (preg_match('/^\d{4}$/',$fechadesde)) {
+		$anyo = $fechadesde;
 	    }
-	    if(isset($this->passedArgs['Search.fechahasta'])) {
-		$fecha = $this->passedArgs['Search.fechasta'];
-		//Si solo se ha introducido un año (aaaa)
-		if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fechahasta; }
-		//la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
-		elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
-		    list($mes,$anyo) = explode('-',$fechahasta);
-		} else {
-		    $this->Session->setFlash('Error de fecha');
-		    $this->redirect(array('action' => 'index'));
-		}
-		//si se ha introducido un año, filtramos por el año
-		if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
-		//si se ha introducido un mes, filtramos por el mes
-		if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
-		$this->request->data['Search']['fecha'] = $fechahasta;
-		//completamos el titulo
-		$title .= '|Fecha: '.$fechahasta;
+	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
+	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
+		list($mes,$anyo) = explode('-',$fechadesde);
+	    } else {
+		$this->Session->setFlash('Error de fecha');
+		$this->redirect(array('action' => 'index'));
 	    }
-
-
-
-	    $despachos =  $this->paginate();
-	    $title = 'Despachos | '.$title;
-
-	    //pasamos los datos a la vista
-	    $this->set(compact('despachos','title'));
+	    //si se ha introducido un año, filtramos por el año
+	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
+	    //si se ha introducido un mes, filtramos por el mes
+	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
+	    $this->request->data['Search']['fecha'] = $fechadesd;
+	    //completamos el titulo
+	    $title .= '|Fecha: '.$fechadesde;
+	}
+	if(isset($this->passedArgs['Search.fechahasta'])) {
+	    $fecha = $this->passedArgs['Search.fechasta'];
+	    //Si solo se ha introducido un año (aaaa)
+	    if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fechahasta; }
+	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
+	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
+		list($mes,$anyo) = explode('-',$fechahasta);
+	    } else {
+		$this->Session->setFlash('Error de fecha');
+		$this->redirect(array('action' => 'index'));
+	    }
+	    //si se ha introducido un año, filtramos por el año
+	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
+	    //si se ha introducido un mes, filtramos por el mes
+	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
+	    $this->request->data['Search']['fecha'] = $fechahasta;
+	    //completamos el titulo
+	    $title .= '|Fecha: '.$fechahasta;
 	}
 
-	public function reclamacion($id = null) {
-	    $this->pdfConfig = array(
-		'filename' => 'reclamacion',
-		'paperSize' => 'A4',
-		'orientation' => 'portrait',
-		'layout' =>'facturas'
-	    );	
 
-	    $transporte = $this->Transporte->find(
-		'first',
-		array(
-		    'conditions' => array(
-			'Transporte.id' => $id
-		    ),
-		    'recursive' => 3,
-		    'contain' => array(
-			'Operacion' => array(
-			    'Contrato' => array(
-				'fields' => array(
-				    'id',
-				    'referencia'
-				),
-				'Calidad'=>array(
-				    'fields'=> array(
-					'nombre'
-				    )
-				)
+
+	$despachos =  $this->paginate();
+	$title = 'Despachos | '.$title;
+
+	//pasamos los datos a la vista
+	$this->set(compact('despachos','title'));
+    }
+
+    public function reclamacion($id = null) {
+	$this->pdfConfig = array(
+	    'filename' => 'reclamacion',
+	    'paperSize' => 'A4',
+	    'orientation' => 'portrait',
+	    'layout' =>'facturas'
+	);	
+
+	$transporte = $this->Transporte->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Transporte.id' => $id
+		),
+		'recursive' => 3,
+		'contain' => array(
+		    'Operacion' => array(
+			'Contrato' => array(
+			    'fields' => array(
+				'id',
+				'referencia'
 			    ),
-			    'PrecioTotalOperacion'
-			),
-			'PuertoDestino' => array(
-			    'fields' => array(
-				'id',
-				'nombre'
+			    'Calidad'=>array(
+				'fields'=> array(
+				    'nombre'
+				)
 			    )
 			),
-			'Aseguradora' => array(
-			    'fields' => array(
-				'id',
-				'nombre'
-			    )
-			)
-		    )	
-		)
-	    );
-	    $this->set('transporte',$transporte);
-
-	    $dia = date ('d');
-	    //$mes=date('m');
-	    $mes=date('F');
-	    $ano = date('Y');
-
-//	    if ($mes=="1") $mes="Enero";
-//	    if ($mes=="2") $mes="Febrero";
-//	    if ($mes=="3") $mes="Marzo";
-//	    if ($mes=="4") $mes="Abril";
-//	    if ($mes=="5") $mes="Mayo";
-//	    if ($mes=="6") $mes="Junio";
-//	    if ($mes=="7") $mes="Julio";
-//	    if ($mes=="8") $mes="Agosto";
-//	    if ($mes=="9") $mes="Setiembre";
-//	    if ($mes=="10") $mes="Octubre";
-//	    if ($mes=="11") $mes="Noviembre";
-//	    if ($mes=="12") $mes="Diciembre";
-	    $this->set(compact('dia'));
-	    $this->set(compact('mes'));
-	    $this->set(compact('ano'));
-
-
-	    $parte = $this->Transporte->Operacion->find(
-		'first',
-		array(
-		    'conditions' => array(
-			'Operacion.id' => $transporte['Operacion']['id']
+			'PrecioTotalOperacion'
 		    ),
-		    'recursive' => -1,
-		    'fields' => array(
-			'id'
-		    ),	
-		    'contain' => array(
-			'Transporte' => array(
-			    'fields' => array(
-				'id',
-				'operacion_id'
-			    )
+		    'PuertoDestino' => array(
+			'fields' => array(
+			    'id',
+			    'nombre'
+			)
+		    ),
+		    'Aseguradora' => array(
+			'fields' => array(
+			    'id',
+			    'nombre'
+			)
+		    )
+		)	
+	    )
+	);
+	$this->set('transporte',$transporte);
+
+	$dia = date ('d');
+	//$mes=date('m');
+	$mes=date('F');
+	$ano = date('Y');
+
+	//	    if ($mes=="1") $mes="Enero";
+	//	    if ($mes=="2") $mes="Febrero";
+	//	    if ($mes=="3") $mes="Marzo";
+	//	    if ($mes=="4") $mes="Abril";
+	//	    if ($mes=="5") $mes="Mayo";
+	//	    if ($mes=="6") $mes="Junio";
+	//	    if ($mes=="7") $mes="Julio";
+	//	    if ($mes=="8") $mes="Agosto";
+	//	    if ($mes=="9") $mes="Setiembre";
+	//	    if ($mes=="10") $mes="Octubre";
+	//	    if ($mes=="11") $mes="Noviembre";
+	//	    if ($mes=="12") $mes="Diciembre";
+	$this->set(compact('dia'));
+	$this->set(compact('mes'));
+	$this->set(compact('ano'));
+
+
+	$parte = $this->Transporte->Operacion->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Operacion.id' => $transporte['Operacion']['id']
+		),
+		'recursive' => -1,
+		'fields' => array(
+		    'id'
+		),	
+		'contain' => array(
+		    'Transporte' => array(
+			'fields' => array(
+			    'id',
+			    'operacion_id'
 			)
 		    )
 		)
-	    );
-	}	
+	    )
+	);
+    }	
 
-	public function asegurar($id = null) {
-	    // $this->reclamacion();
-	    //$this->render('asegurar');
+    public function asegurar($id = null) {
+	// $this->reclamacion();
+	//$this->render('asegurar');
 
-	    setlocale(LC_TIME, "es_ES.UTF-8");
-	    $this->pdfConfig = array(
-		    'filename' => 'asegurar',
-		    'paperSize' => 'A4',
-		    'orientation' => 'portrait'
-		    );	
+	setlocale(LC_TIME, "es_ES.UTF-8");
+	$this->pdfConfig = array(
+	    'filename' => 'asegurar',
+	    'paperSize' => 'A4',
+	    'orientation' => 'portrait'
+	);	
 
-	    $transporte = $this->Transporte->find(
-		'first',
-		array(
-		    'conditions' => array(
-			'Transporte.id' => $id
-		    ),
-		    'recursive' => 3,
-		    'contain' => array(
-			'Operacion' => array(
-			    'Contrato' => array(
-				'fields' => array(
-				    'id',
-				    'referencia'
-				),
-				'Calidad'=>array(
-				    'fields'=> array(
-					'nombre'
-				    )
-				),
-				'Proveedor'	=> array(
-				    'fields' => array(
-					'id',
-					'nombre'
-				    )
-				)			   		
+	$transporte = $this->Transporte->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Transporte.id' => $id
+		),
+		'recursive' => 3,
+		'contain' => array(
+		    'Operacion' => array(
+			'Contrato' => array(
+			    'fields' => array(
+				'id',
+				'referencia'
 			    ),
-			    'PrecioTotalOperacion',
-			    'Embalaje' => array(
-				'fields' => array(
-				    'peso_embalaje'
+			    'Calidad'=>array(
+				'fields'=> array(
+				    'nombre'
 				)
-			    )
-			),
-			'PuertoCarga' => array(
+			    ),
+			    'Proveedor'	=> array(
 				'fields' => array(
 				    'id',
 				    'nombre'
 				)
-			),				
-			'PuertoDestino' => array(
-			    'fields' => array(
-				'id',
-				'nombre'
-			    )
+			    )			   		
 			),
-			'Aseguradora' => array(
+			'PrecioTotalOperacion',
+			'Embalaje' => array(
 			    'fields' => array(
-				'id',
-				'nombre'
-			    )
-			),
-			'Naviera' => array(
-			    'fields' => array(
-				'id',
-				'nombre'
+				'peso_embalaje'
 			    )
 			)
-		    )
-		)
-	    );
-	    $this->set('transporte',$transporte);
-
-	    $dia = date ('d');
-	    //$mes=date('m');
-	    $mes=date('F');
-	    $ano = date('Y');
-
-//	    if ($mes=="1") $mes="Enero";
-//	    if ($mes=="2") $mes="Febrero";
-//	    if ($mes=="3") $mes="Marzo";
-//	    if ($mes=="4") $mes="Abril";
-//	    if ($mes=="5") $mes="Mayo";
-//	    if ($mes=="6") $mes="Junio";
-//	    if ($mes=="7") $mes="Julio";
-//	    if ($mes=="8") $mes="Agosto";
-//	    if ($mes=="9") $mes="Setiembre";
-//	    if ($mes=="10") $mes="Octubre";
-//	    if ($mes=="11") $mes="Noviembre";
-//	    if ($mes=="12") $mes="Diciembre";
-	    $this->set(compact('dia'));
-	    $this->set(compact('mes'));
-	    $this->set(compact('ano'));
-
-	    $parte = $this->Transporte->Operacion->find(
-		'first',
-		array(
-		    'conditions' => array(
-			'Operacion.id' => $transporte['Operacion']['id']
 		    ),
-		    'recursive' => -1,
-		    'fields' => array(
-			'id'
-		    ),	
-		    'contain' => array(
-			'Transporte' => array(
-			    'fields' => array(
-				'id',
-				'operacion_id'
-			    )
+		    'PuertoCarga' => array(
+			'fields' => array(
+			    'id',
+			    'nombre'
+			)
+		    ),				
+		    'PuertoDestino' => array(
+			'fields' => array(
+			    'id',
+			    'nombre'
+			)
+		    ),
+		    'Aseguradora' => array(
+			'fields' => array(
+			    'id',
+			    'nombre'
+			)
+		    ),
+		    'Naviera' => array(
+			'fields' => array(
+			    'id',
+			    'nombre'
 			)
 		    )
 		)
-	    );
-	}
+	    )
+	);
+	$this->set('transporte',$transporte);
+
+	$dia = date ('d');
+	//$mes=date('m');
+	$mes=date('F');
+	$ano = date('Y');
+
+	//	    if ($mes=="1") $mes="Enero";
+	//	    if ($mes=="2") $mes="Febrero";
+	//	    if ($mes=="3") $mes="Marzo";
+	//	    if ($mes=="4") $mes="Abril";
+	//	    if ($mes=="5") $mes="Mayo";
+	//	    if ($mes=="6") $mes="Junio";
+	//	    if ($mes=="7") $mes="Julio";
+	//	    if ($mes=="8") $mes="Agosto";
+	//	    if ($mes=="9") $mes="Setiembre";
+	//	    if ($mes=="10") $mes="Octubre";
+	//	    if ($mes=="11") $mes="Noviembre";
+	//	    if ($mes=="12") $mes="Diciembre";
+	$this->set(compact('dia'));
+	$this->set(compact('mes'));
+	$this->set(compact('ano'));
+
+	$parte = $this->Transporte->Operacion->find(
+	    'first',
+	    array(
+		'conditions' => array(
+		    'Operacion.id' => $transporte['Operacion']['id']
+		),
+		'recursive' => -1,
+		'fields' => array(
+		    'id'
+		),	
+		'contain' => array(
+		    'Transporte' => array(
+			'fields' => array(
+			    'id',
+			    'operacion_id'
+			)
+		    )
+		)
+	    )
+	);
     }
+}
 ?>
