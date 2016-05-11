@@ -55,48 +55,48 @@ echo $this->Html->tableCells(
 		'onchange' => 'operacionAlmacen()'
 	    )
 	)
-    ),
-    $this->Form->input('tueste'),
-    $this->Form->input(
-	'referencia_proveedor',
-	array(
-	    'label' => 'Referencia Proveedor'
+	: '',
+	$this->Form->input('tueste'),
+	$this->Form->input(
+	    'referencia_proveedor',
+	    array(
+		'label' => 'Referencia Proveedor'
+	    )
+	),
+	isset($operaciones) && $muestra['tipo_id']!='1' ?
+	$this->Form->input(
+	    'operacion_id',
+	    array(
+		'empty' => true,
+		'label' => 'Operación',
+		'onchange' => 'operacionAlmacen()'
+	    )
 	)
-    ),
-    isset($operaciones) && $muestra['tipo_id']!='1' ?
-    $this->Form->input(
-	'operacion_id',
-	array(
-	    'empty' => true,
-	    'label' => 'Operación',
-	    'onchange' => 'operacionAlmacen()'
+	: '',
+	isset($operacion_almacenes) && $muestra['tipo_id']!='1' ?
+	$this->Form->input(
+	    'almacen_transporte_id',
+	    array(
+		'empty' => true,
+		'label' => 'Cuenta almacén',
+		'onchange' => 'operacionAlmacen()'
+	    )
+	)
+	: '',
+	$this->Form->input('sacos'),
+	$this->Form->input(
+	    'si_facturado',
+	    array(
+		'label' => 'Facturado'
+	    ) 
+	),
+	$this->Form->input(
+	    'dato_factura',
+	    array(
+		'label' => 'Datos de factura'
+	    )
 	)
     )
-    : '',
-    isset($operacion_almacenes) && $muestra['tipo_id']!='1' ?
-    $this->Form->input(
-	'almacen_transporte_id',
-	array(
-	    'empty' => true,
-	    'label' => 'Cuenta almacén',
-	    'onchange' => 'operacionAlmacen()'
-	)
-    )
-    : '',
-    $this->Form->input('sacos'),
-    $this->Form->input(
-	'si_facturado',
-	array(
-	    'label' => 'Facturado'
-	) 
-    ),
-    $this->Form->input(
-	'dato_factura',
-	array(
-	    'label' => 'Datos de factura'
-	)
-    )
-)
 );
 ?>
 </fieldset>
