@@ -334,8 +334,12 @@ class LineaMuestrasController extends AppController {
 	    	 	'order' => array('Empresa.nombre_corto' => 'asc')
 	    	 )
 	    );
-	$this->set('contactos',$contactos);
+	$this->set('contactos',$contactos);	
 
+	$this->pdfConfig = array(
+		'download' => false,
+		'filename' => 'prueba.pdf'
+		);
 
 
     if (!empty($this->request->data)) { 
@@ -354,22 +358,18 @@ class LineaMuestrasController extends AppController {
     		$lista_email .= $email.',';
     		}*/
     		debug($this->request->data);
-		       /* instantiate CakeEmail class */
-		      $Email = new CakeEmail();      
-		      /* pass user input to function */
-		      //$Email->config('smtp');
-		      $Email->from('info@circuletica.org'); // Aquí calidad@cmpsa.com
-		      $Email->to('rodolgl@gmail.com');
-		     // $Email->to($lista_email);
-		      $Email->subject('Informe de calidad '.$muestra['tipo_registro'].' / Ref. operación '.$muestra['Operacion']['referencia']);
-		      //$Email->subject($this->data['EnvioCalidad']['asunto']);
-		      //$Email->send($this->data['EnvioCalidad']['mensaje']);
-		      $Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la operación '.$muestra['Operacion']['referencia']);
-
-		      //debug($Email);
-		      $Email->attachments('home/circuletica/'.$muestra['tipo_registro']);
-		      ///$Email->attachments(APP.'//Informes/file.pdf')
-		      $this->Session->setFlash('Informe de calidad enviado.');
+	/* instantiate CakeEmail class */
+		$Email = new CakeEmail();      
+	/* pass user input to function */
+		$Email->config('calidad');
+		$Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
+		$Email->to('info@circuletica.org, rodolgl@gmail, asistencia@circuletica.org');
+		// $Email->to($lista_email);
+		$Email->subject('Informe de calidad '.$muestra['tipo_registro'].' / operación '.$muestra['Operacion']['referencia']);
+		$Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la operación '.$muestra['Operacion']['referencia']);
+		// $Email->attachments('home/circuletica/informes_calidad/'.$muestra['tipo_registro']);
+		//$Email->attachments(APP.'//informes_calidad/'.$muestra['tipo_registro'].'.pdf');
+    	$this->Session->setFlash('Informe de calidad enviado.');
 		}
 	
     }

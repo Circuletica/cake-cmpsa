@@ -11,7 +11,7 @@ class EnvioCalidad extends AppModel {
 	    'observacion' => array('type'=>'text')
 	    );
 
-var $validate = array(
+	var $validate = array(
     'email' => array(
         'rule'=>'email', 
         'message'=>'Un correo válido al menos es requerido' ),
