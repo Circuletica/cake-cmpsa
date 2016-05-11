@@ -41,8 +41,19 @@ $this->Html->addCrumb('Muestra '.$muestra['tipo_registro'],'/muestras/view/'.$mu
 
 echo $this->Html->tableCells(
     array(
-	$this->Form->input('humedad',array(
-	    'autofocus' => 'autofocus'
+	$this->Form->input(
+	    'humedad',
+	    array('autofocus' => 'autofocus')
+	),
+	$this->Form->input('tueste'),
+	isset($operaciones) && $muestra['tipo_id']!='1' ?
+	$this->Form->input(
+	    'operacion_id',
+	    array(
+		'empty' => true,
+		'label' => 'Operación',
+		'onchange' => 'operacionAlmacen()'
+	    )
 	)
     ),
     $this->Form->input('tueste'),
