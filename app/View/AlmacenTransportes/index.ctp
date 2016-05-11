@@ -7,7 +7,9 @@ $this->start('filter');
 $this->end();
 
 $this->start('main');
-	echo "<table>\n";
+?>
+<table class="tr3 tr4">
+<?php
 	echo $this->Html->tableHeaders(array(
 		$this->Paginator->sort('AlmacenTransporte.cuenta_almacen','Cuenta Corriente'),
 		$this->Paginator->sort('Almacen.nombre_corto','Almacén'),
@@ -21,12 +23,14 @@ $this->start('main');
 		echo $this->Html->tableCells(array(
 			$almacentransporte['AlmacenTransporte']['cuenta_almacen'],
 			$almacentransporte['Almacen']['nombre_corto'],
-			$almacentransporte['AlmacenTransporte']['cantidad_cuenta'],
+			$almacentransporte['AlmacenTransporte']['cantidad_cuenta'].' bultos',
 			$almacentransporte['AlmacenTransporte']['peso_bruto'].' kg',
 			$almacentransporte['AlmacenTransporte']['marca_almacen'],
-			$this->Button->view('almacen_transporte',$almacentransporte['AlmacenTransporte']['id'])
+			$this->Button->view('almacen_transportes',$almacentransporte['AlmacenTransporte']['id'])
 	));
 
 	endforeach;
-echo "</table>";
+?>
+</table>
+<?php
 $this->end();

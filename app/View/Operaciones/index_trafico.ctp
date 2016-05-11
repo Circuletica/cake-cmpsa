@@ -73,7 +73,7 @@
   <!--h3>Filtro de operacion</h3-->
 </div>
 <div class='index'>
-  <table>
+  <table class="tc3 tr6">
   <tr>
     <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Ref. Operación')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Ref. Contrato')?></th>
