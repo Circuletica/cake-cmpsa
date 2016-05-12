@@ -1,15 +1,7 @@
-<?php 
-/*$this->extend('/Common/view');
-$this->assign('object', 'Cuenta corriente'.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
-$this->assign('line_object', 'Distribución asociados');
-$this->assign('id',$almacentransportes['AlmacenTransporte']['id']);
-$this->assign('class','AlmacenTransporte');
-$this->assign('controller','almacen_transportes');
-$this->assign('line_controller', 'almacen_transporte_asociados');
-$this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'*/
-
-
-
+<?php
+echo $this->Html->script('jquery')."\n"; // Include jQuery library
+echo $this->Js->set('cantidadCuenta',$almacentransportes['AlmacenTransporte']['cantidad_cuenta']);
+echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 	$this->Html->addCrumb('Operación', array(
 	'controller'=>'operaciones',
@@ -22,39 +14,11 @@ $this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'*/
 	$almacentransportes['AlmacenTransporte']['transporte_id']
 	)
 	);
+echo $this->Form->create('AlmacenTransporteAsociado');
+
 ?>
-<div class="acciones">
-	<div class="printdet">
-	<ul>
-		<li>
-			 <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
-			 <?php // PARA VIEW
-			 echo ' '.$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
-			 	array(
-			 		'action' => 'view',
-			 		$id,
-			 		'ext' => 'pdf',
-			 		), 
-			 	array(
-			 		'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
-			 $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array('escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'));
-		 	?>
-		</li>
-		<li>
-			<?php
-			//Contempar si hay retirada ya o no de esto.
-			echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas': 
-			$this->Button->edit('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'])
-			.' '.
-			$this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
-			
-		?>
-		</li>
-	</ul>
-	</div>
-</div>
 <h2>Cuenta corriente <?php echo $almacentransportes['AlmacenTransporte']['cuenta_almacen'] ?></h2>
-<div class='view'>
+<div class='content'>
 <?php
 	echo "<dl>";
 		echo "  <dt>Nº de linea </dt>\n";
@@ -102,20 +66,29 @@ $this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'*/
 
 	<h3>Distribución asociados</h3>
 
-	<table class='tr2 tr3 tr4 tr5 tr6'>
+	<table>
 <?php
 	echo $this->Html->tableHeaders(array('Asociado','Asignado Teorico', 'Asignados Real','Pendiente','% teorico', '% real'));
-	foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte)
+
+	foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte){
 		echo $this->Html->tableCells(array(
 			$almacentransporte['Asociado']['Empresa']['nombre_corto'],
 			$almacentransporte['sacos_asignados'],
-			$almacentransporte['Asociado']['AlmacenReparto'][0]	['sacos_asignados'],
+			$this->Form->input('CantidadAsociado.'.$almacentransporte['asociado_id'], array(
+			    'label' => '',
+			    'class' => 'cantidad',
+			    'id' => $almacentransporte['asociado_id'],
+			    'oninput' => 'sacosAsignados()'
+			    ),
+				array(
+					'style'=>'text-align:right')
+			),
 			!empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'],
-			$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]	['porcentaje_embalaje_asociado'],2),			
-			$this->Number->round($almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'],2)
+			$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),
+			'<div id=porcentajeAsociado'.$almacentransporte['asociado_id'].'>'." %".'</div>',
 			)
 		);
-	
+	}
 ?>	</table>
 	<div class='btabla'>
 	<?php
@@ -135,3 +108,8 @@ $this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'*/
 	</div>
 	</div>
 </div>
+<script type="text/javascript">
+window.onload = sacosAsignados();
+</script>
+
+

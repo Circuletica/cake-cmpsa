@@ -1,0 +1,1 @@
+/usr/bin/wkhtmltopdf: /opt/lampp/lib/libstdc++.so.6: version `GLIBCXX_3.4.9' not found (required by /usr/lib/x86_64-linux-gnu/libQtWebKit.so.4)

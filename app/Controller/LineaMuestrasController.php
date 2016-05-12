@@ -335,12 +335,19 @@ class LineaMuestrasController extends AppController {
 	    	 )
 	    );
 	$this->set('contactos',$contactos);	
-
-	$this->pdfConfig = array(
-		'download' => false,
-		'filename' => 'prueba.pdf'
-		);
-
+/*
+	$this->autoRender = false; // tell CakePHP that we don't need any view rendering in this case
+	$this->response->file('Informes/' . $muestra['id'].'.pdf', array('download' => true, 'name' => 'casa.pdf'));
+*/
+	//App::uses('CakePdf', 'CakePdf.Pdf');
+    require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+    $CakePdf = new CakePdf();
+    $CakePdf->template('info_calidad');
+    $CakePdf->viewVars($this->viewVars);
+    // Get the PDF string returned
+    //$pdf = $CakePdf->output();
+    // Or write it to file directly
+    $pdf = $CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].'.pdf');
 
     if (!empty($this->request->data)) { 
 		if (isset($this->request->data['info_calidad'])) {

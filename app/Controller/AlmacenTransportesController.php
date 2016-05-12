@@ -131,12 +131,30 @@ public function view($id = null) {
 	);	
 	$this->set(compact('almacenes'));
 
+	if($this->action == 'edit'){
+		$transporte_id = $this->AlmacenTransporte->find(
+			'first',
+			array(
+				'conditions' => array(
+					'AlmacenTransporte.id' => $id
+					),
+				'fields'=> array(
+					'id',
+					'transporte_id'
+					)
+				)
+			);
+		$transporte_id = $transporte_id['AlmacenTransporte']['transporte_id'];
+	}else{
+		$transporte_id=$this->params['named']['from_id'];
+	}
+	$this->set(compact('transporte_id'));
 	//$this->set('cantidadcuenta',$cantidadcuenta);
 	//Calculamos la cantidad de sacos almacenados en la línea	
 	$transporte = $this->AlmacenTransporte->Transporte->find(
 			'first', array(
 			'conditions' => array(
-				'Transporte.id' => $this->params['named']['from_id']
+				'Transporte.id' => $transporte_id
 				),
 			'recursive' => 3,
 			'fields' => array(
@@ -162,15 +180,15 @@ public function view($id = null) {
 	$this->set('transporte',$transporte);
 	
 
-	if(!empty($this->params['named']['from_id'])){
+	//if(!empty($transporte_id)){
 	    $suma = 0;
 	    $almacenado = 0;
 	    foreach ($transporte['AlmacenTransporte'] as $suma){
-	    	if ($transporte['Transporte']['id'] = $this->params['named']['from_id']){
+	    	if ($transporte['Transporte']['id'] = $transporte_id){
 	        	$almacenado = $almacenado + $suma['cantidad_cuenta'];
 	       	}
 	    }
-	}
+	//}
 	$this->set('almacenado',$almacenado);
 
 	//Control de cantidad en la cuenta para edit y add
@@ -213,14 +231,14 @@ public function view($id = null) {
 
 	if (!empty($this->request->data)) {//ES UN POST
 			$this->request->data['AlmacenTransporte']['id'] = $id;
-			$this->request->data['AlmacenTransporte']['transporte_id'] = $this->params['named']['from_id'];
+			$this->request->data['AlmacenTransporte']['transporte_id'] = $transporte_id;
 			if($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado && $id == NULL) {
 					if($this->AlmacenTransporte->save($this->request->data)){
 						$this->Session->setFlash('Cuenta almacén guardada');
 						$this->redirect(array(
 							'controller' => $this->params['named']['from_controller'],
 							'action' => 'view',
-							$this->params['named']['from_id']
+							$transporte_id
 						));
 					}else{
 						$this->Session->setFlash('Cuenta de almacén NO guardada');
@@ -231,7 +249,7 @@ public function view($id = null) {
 							$this->redirect(array(
 								'controller' => 'transportes',
 								'action' => 'view',
-								$this->params['named']['from_id']	
+								$transporte_id	
 								)
 							);
 					}	
@@ -243,7 +261,7 @@ public function view($id = null) {
 							$this->redirect(array(
 								'controller' => 'transportes',
 								'action' => 'view',
-								$this->params['named']['from_id']	
+								$transporte_id	
 								)
 							);
 					}	
@@ -267,4 +285,70 @@ public function view($id = null) {
 		));
 		endif;
 		    }
+	public function distribucion($id){
+	$this->AlmacenTransporte->AlmacenTransporteAsociado->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
+										
+	$almacentransportes = $this->AlmacenTransporte->find(
+		'first',
+		array(
+			'conditions' => array(
+				'AlmacenTransporte.id' => $id
+				),
+			//'recursive' => 2,
+			'contain' => array(
+				'AlmacenTransporteAsociado' =>array(
+					'Asociado'=> array(
+								'fields'=> array(
+									'id',
+									//'nombre_corto'
+									),
+								'Retirada'=>array(
+									'conditions' => array(
+										'Retirada.almacen_transporte_id' => $id
+										)
+									),
+								'Empresa',
+								'AlmacenReparto'=> array(
+									'conditions'=> array(
+										'AlmacenReparto.id' => $id
+										)
+									)
+								)	
+				),
+				
+				'Transporte'=> array(
+					'fields'=> array(
+						'linea',
+						'matricula',
+						'nombre_vehiculo',
+						'operacion_id'
+						)
+					),
+					'Almacen' => array(
+						'fields' => (
+							'nombre_corto'
+							)
+						)
+					)
+			)
+		);
+	$this->set(compact('almacentransportes'));
+	//Necesario para exportar en Pdf
+	$this->set(compact('id'));
+	$asociados_distribucion = Hash::combine($almacentransportes['AlmacenTransporteAsociado'], '{n}.asociado_id', '{n}');
+
+
+	if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
+	    $this->request->data = $this->AlmacenTransporte->AlmacenTransporteAsociado->read();
+	    foreach ($asociados_distribucion as $clave => $asociado) {
+		$this->request->data['CantidadAsociado'][$clave] = $asociado['sacos_asignados'];
+	    }
+	} 
+	
+	
+	}
+
+
+
+
 }
