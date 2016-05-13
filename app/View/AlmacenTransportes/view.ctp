@@ -1,16 +1,4 @@
 <?php 
-/*$this->extend('/Common/view');
-$this->assign('object', 'Cuenta corriente'.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
-$this->assign('line_object', 'Distribución asociados');
-$this->assign('id',$almacentransportes['AlmacenTransporte']['id']);
-$this->assign('class','AlmacenTransporte');
-$this->assign('controller','almacen_transportes');
-$this->assign('line_controller', 'almacen_transporte_asociados');
-$this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'*/
-
-
-
-
 	$this->Html->addCrumb('Operación', array(
 	'controller'=>'operaciones',
 	'action'=>'view_trafico',
@@ -44,9 +32,9 @@ $this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'*/
 			<?php
 			//Contempar si hay retirada ya o no de esto.
 			echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas': 
-			$this->Button->edit('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'])
+			$this->Button->edit('almacen_transportes',$id)
 			.' '.
-			$this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
+			$this->Button->delete('almacen_transportes',$id,'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
 			
 		?>
 		</li>
@@ -94,27 +82,84 @@ $this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'*/
 		echo "  <dd>".$almacentransportes['AlmacenTransporte']['peso_bruto'].'&nbsp;'."</dd>";
 
 	echo "</dl>";
-
-
-?>
-	
+?>	
 	<div class="detallado">
-
 	<h3>Distribución asociados</h3>
-
 	<table class='tr2 tr3 tr4 tr5 tr6'>
 <?php
-	echo $this->Html->tableHeaders(array('Asociado','Asignado Teorico', 'Asignados Real','Pendiente','% teorico', '% real'));
-	foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte)
+	$total_asignacion_teorica=0;
+	$total_asignacion_real=0;
+	$total_pendiente = 0;
+	$total_porcentaje_teorico = 0;
+	$total_porcentaje_real = 0;
+
+	echo $this->Html->tableHeaders(array('Asociado','Asignación teórica', 'Asignación real','Pendiente','% teorico', '% real'));
+
+	foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte){
+		$pendiente = !empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'];
+
 		echo $this->Html->tableCells(array(
 			$almacentransporte['Asociado']['Empresa']['nombre_corto'],
 			$almacentransporte['sacos_asignados'],
-			$almacentransporte['Asociado']['AlmacenReparto'][0]	['sacos_asignados'],
-			!empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'],
-			$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]	['porcentaje_embalaje_asociado'],2),			
+			$almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'],
+			$pendiente,
+			$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),			
 			$this->Number->round($almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'],2)
 			)
 		);
+	$total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['sacos_asignados'];
+	$total_asignacion_real = $total_asignacion_real + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
+	$total_pendiente = $total_pendiente + $pendiente;
+	$total_porcentaje_teorico = $total_porcentaje_teorico + $almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'];
+	$total_porcentaje_real = $total_porcentaje_real +$almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'];
+
+	}
+	echo $this->html->tablecells(array(
+	array(
+    array(
+    	'TOTALES',
+ 	array(
+		'style' => 'font-weight: bold; text-align:center'
+		)
+	),
+
+	array(
+	$total_asignacion_teorica,
+	array(
+		'style' => 'font-weight: bold;',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    $total_asignacion_real,
+	array(
+		'style' => 'font-weight: bold;',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    $total_pendiente,
+	array(
+		'style' => 'font-weight: bold;',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+    $total_porcentaje_teorico.'%',
+	array(
+		'style' => 'font-weight: bold;',
+		'bgcolor' => '#5FCF80'
+		)
+	),
+	array(
+	$total_porcentaje_real.'%',
+	array(
+		'style' => 'font-weight: bold;',
+		'bgcolor' => '#5FCF80'
+		)
+	)
+	))
+	);
 	
 ?>	</table>
 	<div class='btabla'>
@@ -123,7 +168,7 @@ $this->assign('line_add', '0'); // si se muestra el botón de añadir 'line'*/
 	 	array(
 	 		'controller' => 'almacen_transportes',
 	 		'action' => 'distribucion',
-	 		$almacentransportes['AlmacenTransporte']['id']
+	 		$id
 	 		), 
 	 	array(
 			'class' => 'boton',

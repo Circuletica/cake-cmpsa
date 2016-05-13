@@ -1,5 +1,5 @@
 <?php
-$this->extend('/Common/index');
+$this->extend('/Common/index_withoutAdd');
 $this->assign('object', 'Cuentas de almacén');
 $this->assign('class', 'AlmacenTransporte');
 

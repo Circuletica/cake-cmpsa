@@ -384,10 +384,11 @@ function pesoFacturacion() {
 }
 
 function sacosAsignados(){
-    //la tabla con el peso de los embalajes del contrato que nos viene de la View
+    //la tabla con la cantidad de los sacos almacenados en la cuenta del distribucion.ctp
     var cantidadCuenta = window.app.cantidadCuenta;
     //un array con las cantidades de cada socio
     var cantidades = document.getElementsByClassName('cantidad');
+
     var totalCantidad = 0;
         for(var i=0;i<cantidades.length;i++){
             totalCantidad += parseInt(cantidades[i].value);
@@ -398,7 +399,7 @@ function sacosAsignados(){
     for(var i=0;i<cantidades.length;i++){
     //el id del socio
     var id = cantidades[i].id;
-    //la cantidad de embalajes del socio
+    //la cantidad de sacos del socio
     var cantidad = cantidades[i].value;
     //el peso que representa
     var porcentajeAsociado = cantidad * 100/ totalCantidad;
@@ -413,7 +414,11 @@ function sacosAsignados(){
     totalPeso += sacosAsociado;
     }
     totalReparto.innerHTML = "Total sacos: " + totalCantidad +
-    " / Total peso: " + totalPeso + "kg";*/
+    " / Total peso: " + totalPeso + "kg";
+    if(tot == 100)
+    document.getElementById('total').style.color = "black";
+    if(tot != 100)
+    document.getElementById('total').style.color = "red";*/
     }
 }
 

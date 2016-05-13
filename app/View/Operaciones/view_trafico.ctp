@@ -130,7 +130,7 @@
 
 	<div class="detallado">
 	<h3>Resumen retiradas</h3>
-	<table>
+	<table class="tr2 tr3 tr4 tr5 tr6">
 		<?php
 		//Se calcula la cantidad total de bultos retirados
 
@@ -139,37 +139,12 @@
 		foreach ($lineas_retirada as $linea_retirada):
 			echo $this->Html->tableCells(array(
 				$linea_retirada['Nombre'],
-				array(
-					$linea_retirada['Cantidad'],
-					array(
-						'style' => 'text-align:right'
-					)
-				),
-				array(
-					$linea_retirada['Peso'],
-					array(
-						'style' => 'text-align:right'
-					)
-				),
-				array(
-					$linea_retirada['Cantidad_retirado'],
-					array(
-						'style' => 'text-align:right'
-					)
-				),
-				array(
-					$linea_retirada['Peso_retirado'],
-					array(
-						'style' => 'text-align:right'
-					)
-				),
-				array(
-					$linea_retirada['Pendiente'],
-					array(
-						'style' => 'text-align:right'
-					)
-				),
-					$this->Html->link(
+				$linea_retirada['Cantidad'],
+		     	$linea_retirada['Peso'],
+				$linea_retirada['Cantidad_retirado'],
+				$linea_retirada['Peso_retirado'],
+				$linea_retirada['Pendiente'],
+				$this->Html->link(
 						'<i class="fa fa-info-circle"></i> ',array(
 							'controller' => 'retiradas',
 							'action' => 'view_asociado',
@@ -199,35 +174,35 @@ echo $this->html->tablecells(array(
 	array(
 	$total_sacos,
 	array(
-		'style' => 'font-weight: bold; text-align:right',
+		'style' => 'font-weight: bold;',
 		'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
     $total_peso,
 	array(
-		'style' => 'font-weight: bold; text-align:right',
+		'style' => 'font-weight: bold;',
 		'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
     $total_sacos_retirados,
 	array(
-		'style' => 'font-weight: bold; text-align:right',
+		'style' => 'font-weight: bold;',
 		'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
     $total_peso_retirado,
 	array(
-		'style' => 'font-weight: bold; text-align:right',
+		'style' => 'font-weight: bold;',
 		'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
 	$total_pendiente,
 	array(
-		'style' => 'font-weight: bold; text-align:right',
+		'style' => 'font-weight: bold;',
 		'bgcolor' => '#5FCF80'
 		)
 	),
