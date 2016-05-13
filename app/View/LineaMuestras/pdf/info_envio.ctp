@@ -66,7 +66,7 @@ echo $this->element('cancelarform')
 .' '.
 $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar'),
     array(
-        'action' => 'info_calidad',
+        'action' => 'info_envio',
         $this->params['named']['from_id'],
         'ext' => 'pdf',
         $muestra['tipo_registro']
@@ -84,7 +84,15 @@ $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar'),
 	);*/
 	echo $this->Form->end('Enviar informe');
 //	echo $this->Form->end('Enviar informe' => 'info_envio'));
-s
+
+
+	/*$Email = new CakeEmail();
+ 	$Email->config('smtp')
+    ->subject('INFORME CALIDAD')
+    ->to('info@circuletica.org')
+    ->from('rodolgl@gmail.com')
+    ->cc('rodolgl@gmail.com')
+    ->send('Un informe de calidad');*/
 ?>
 
 </fieldset>

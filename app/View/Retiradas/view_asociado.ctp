@@ -26,7 +26,7 @@ echo "</dl>";
 
 $this->end();
 $this->start('lines');
-echo "<table>\n";
+echo "<table class='tc1 tc2 tr5 tr6'>\n";
 echo $this->Html->tableHeaders(array('Fecha retirada','Cuenta almacén','Almacén','Marca','Sacos retirados','Peso retirado', 'Detalle'));
 
 foreach($retiradas as $retirada):

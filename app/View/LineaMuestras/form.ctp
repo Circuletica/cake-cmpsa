@@ -1,19 +1,4 @@
-<script>
-function totalCriba(){
-    var arr = document.getElementsByClassName('criba');
-    var tot=0;
-    for(var i=0;i<arr.length;i++){
-	if(parseFloat(arr[i].value))
-	    tot += parseFloat(arr[i].value);
-    }
-    //document.getElementById('total').value = tot.toFixed(1);
-    document.getElementById('total').innerHTML = 'TOTAL: '+tot.toFixed(1);
-    if(tot == 100)
-	document.getElementById('total').style.color = "black";
-    if(tot != 100)
-	document.getElementById('total').style.color = "red";
-}
-</script>
+
 <?php
 //Pasamos la lista de 'operacion_almacenes' al javascript de la vista
 echo $this->Html->script('jquery')."\n"; // Include jQuery library

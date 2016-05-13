@@ -383,5 +383,44 @@ function pesoFacturacion() {
     totalOperacionField.innerHTML = 'Precio real operación: '+totalOperacion.toFixed(6)+'€/kg';
 }
 
+function sacosAsignados(){
+    //la tabla con la cantidad de los sacos almacenados en la cuenta del distribucion.ctp
+    var cantidadCuenta = window.app.cantidadCuenta;
+    //un array con las cantidades de cada socio
+    var cantidades = document.getElementsByClassName('cantidad');
+
+    var totalCantidad = 0;
+        for(var i=0;i<cantidades.length;i++){
+            totalCantidad += parseInt(cantidades[i].value);
+        }
+    console.log(totalCantidad);
+   // var totalPeso = 0;
+    //var totalReparto = document.getElementById('totalReparto');
+    for(var i=0;i<cantidades.length;i++){
+    //el id del socio
+    var id = cantidades[i].id;
+    //la cantidad de sacos del socio
+    var cantidad = cantidades[i].value;
+    //el peso que representa
+    var porcentajeAsociado = cantidad * 100/ totalCantidad;
+    //el elemento html donde vamos a escribir el peso
+    var textoporcentajeAsociado = document.getElementById('porcentajeAsociado' + id);
+    //escribimos el peso
+    textoporcentajeAsociado.innerHTML = porcentajeAsociado.toFixed(2) + "%";
+    //el total de sacos/peso
+  /*  if (cantidad) {
+        totalCantidad += parseInt(cantidad);
+    }
+    totalPeso += sacosAsociado;
+    }
+    totalReparto.innerHTML = "Total sacos: " + totalCantidad +
+    " / Total peso: " + totalPeso + "kg";
+    if(tot == 100)
+    document.getElementById('total').style.color = "black";
+    if(tot != 100)
+    document.getElementById('total').style.color = "red";*/
+    }
+}
+
 
 

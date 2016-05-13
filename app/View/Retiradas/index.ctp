@@ -12,7 +12,7 @@ if (empty($retiradas)){
     echo "No hay retiradas en esta lista";
 }else{
 ?>
-<table>
+<table class="tc1 tr6 tr7">
   <tr>
     <th><?php echo $this->Paginator->sort('Retirada.fecha_retirada','Fecha retirada')?></th>
     <th><?php echo $this->Paginator->sort('Operacion.referencia','Ref.Operación')?></th>
