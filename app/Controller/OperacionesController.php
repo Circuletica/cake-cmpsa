@@ -706,7 +706,8 @@ class OperacionesController extends AppController {
 		    ),
 		   'PrecioTotalOperacion'=> array(
 			'fields'=>array(
-			    'precio_divisa_tonelada'
+			    'precio_divisa_tonelada',
+			    'divisa'
 			)
 		    ),
 		    'AsociadoOperacion'=>array(
