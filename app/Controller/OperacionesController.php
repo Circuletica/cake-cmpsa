@@ -939,6 +939,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
     }
 
     var $helpers = array('Html', 'Form','Csv'); //Necesario para exportar a cSV
+
     public function export() {
 	$this->set('operaciones', $this->Operacion->find(
 	    'all',
@@ -957,5 +958,91 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	$this->response->download("export".date('Ymd').".csv");
     }
 
+    public function index_pdf() {
+	$this->Operacion->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
+	$this->paginate['order'] = array('Operacion.referencia' => 'asc');
+	$this->paginate['limit'] = 100; //Muestra al cantidad de registros por pantalla, así como se podrá ver en el pdf
+	$this->paginate['recursive'] = 2;
+	$this->paginate['contain'] = array(
+	    'Contrato' =>array(
+		'fields' => array(
+		    'referencia',
+		    'fecha_transporte',
+		    'si_entrega'
+		)
+	    ),
+	    'PesoOperacion',
+	    'Proveedor',
+	    'Calidad'
+	);
+	//necesitamos la lista de proveedor_id/nombre para rellenar el select
+	//del formulario de busqueda
+	$this->loadModel('Proveedor');
+	$proveedores = $this->Proveedor->find(
+	    'list',
+	    array(
+		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+		'order' => array('Empresa.nombre_corto' => 'asc'),
+		'recursive' => 1
+	    )
+	);
+	$this->set('proveedores',$proveedores);
+
+	$titulo = $this->filtroPaginador(
+	    array(
+		'Operacion' =>array(
+		    'Referencia' => array(
+			'columna' => 'referencia',
+			'exacto' => false,
+			'lista' => ''
+		    ),
+		    'Calidad' => array(
+			'columna' => 'calidad',
+			'exacto' => false,
+			'lista' => ''
+		    )
+		),
+		'Contrato' => array(
+		    'Proveedor' => array(
+			'columna' => 'proveedor_id',
+			'exacto' => true,
+			'lista' => $proveedores
+		    )
+		)
+	    )
+	);
+
+	//filtramos por contrato
+	if(isset($this->passedArgs['Search.contrato_referencia'])) {
+	    $criterio = strtr($this->passedArgs['Search.contrato_referencia'],'_','/');
+	    $this->paginate['conditions']['Contrato.referencia LIKE'] = "%$criterio%";
+	    //guardamos el criterio para el formulario de vuelta
+	    $this->request->data['Search']['contrato_referencia'] = $criterio;
+	    //completamos el titulo
+	    $title[] = 'Contrato: '.$criterio;
+	}
+
+	$this->Operacion->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Calidad' => array(
+			'foreignKey' => false,
+			'conditions' => array('Contrato.calidad_id = Calidad.id')
+		    ),
+		    'Proveedor' => array(
+			'className' => 'Empresa',
+			'foreignKey' => false,
+			'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+		    )
+		)
+	    )
+	);
+	$operaciones = $this->paginate();
+	//pasamos los datos a la vista
+	$this->set(compact('operaciones','title'));
+    }
+
 }
+
+
 ?>
