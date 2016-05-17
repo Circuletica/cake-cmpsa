@@ -1,4 +1,25 @@
-<?php 
+<script>
+function totalSacos(){
+    var cal = document.getElementsByClassName('calidad');
+    var tot=0;
+    for(var i=0;i<cal.length;i++){
+	if(parseFloat(cal[i].value))
+	    tot += parseFloat(cal[i].value);
+    }
+    //document.getElementById('total').value = tot.toFixed(1);
+    document.getElementById('total').innerHTML = 'TOTAL: '+tot.toFixed(1);
+    if(tot == 100)
+	document.getElementById('total').style.color = "black";
+    if(tot != 100)
+	document.getElementById('total').style.color = "red";
+}
+</script>
+
+<?php
+echo $this->Html->script('jquery')."\n"; // Include jQuery library
+echo $this->Js->set('cantidadCuenta',$almacentransportes['AlmacenTransporte']['cantidad_cuenta']);
+echo $this->Js->writeBuffer(array('onDomReady' => false));
+
 	$this->Html->addCrumb('Operación', array(
 	'controller'=>'operaciones',
 	'action'=>'view_trafico',
@@ -10,43 +31,16 @@
 	$almacentransportes['AlmacenTransporte']['transporte_id']
 	)
 	);
+echo $this->Form->create('AlmacenTransporteAsociado');
+
 ?>
-<div class="acciones">
-	<div class="printdet">
-	<ul>
-		<li>
-			 <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
-			 <?php // PARA VIEW
-			 echo ' '.$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
-			 	array(
-			 		'action' => 'view',
-			 		$id,
-			 		'ext' => 'pdf',
-			 		), 
-			 	array(
-			 		'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
-			 $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array('escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'));
-		 	?>
-		</li>
-		<li>
-			<?php
-			//Contempar si hay retirada ya o no de esto.
-			echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas': 
-			$this->Button->edit('almacen_transportes',$id)
-			.' '.
-			$this->Button->delete('almacen_transportes',$id,'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
-			
-		?>
-		</li>
-	</ul>
-	</div>
-</div>
 <h2>Cuenta corriente <?php echo $almacentransportes['AlmacenTransporte']['cuenta_almacen'] ?></h2>
-<div class='view'>
+<fieldset>
+<legend>Info</legend>
 <?php
 	echo "<dl>";
-		echo "  <dt>Nº de linea </dt>\n";
-		echo "<dd>";
+		echo "<dt style=width:50%;>Nº de linea </dt>\n";
+		echo "<dd style=margin-left:50%;>";
 		echo $this->html->link($almacentransportes['Transporte']['linea'], array(
 		    'controller' => 'operaciones',
 		    'action' => 'view',
@@ -55,8 +49,8 @@
 			).'&nbsp;';
 		echo "</dd>";
 
-		echo "  <dt>Nombre del transporte </dt>\n";
-		echo "<dd>";
+		echo "<dt style=width:50%;>Nombre del transporte </dt>\n";
+		echo "<dd style=margin-left:50%;>";
 		echo $this->html->link($almacentransportes['Transporte']['nombre_vehiculo'], array(
 		    'controller' => 'transportes',
 		    'action' => 'view',
@@ -65,8 +59,8 @@
 			).'&nbsp;';
 		echo "</dd>";
 
-		echo "  <dt>BL/Matrícula </dt>\n";
-		echo "<dd>";
+		echo "<dt style=width:50%;>BL/Matrícula </dt>\n";
+		echo "<dd style=margin-left:50%;>";
 		echo $this->html->link($almacentransportes['Transporte']['matricula'], array(
 		    'controller' => 'transportes',
 		    'action' => 'view',
@@ -74,26 +68,29 @@
 		    )
 			).'&nbsp;';
 		echo "</dd>";
-		echo "  <dt>Almacén</dt>\n";
-		echo "  <dd>".$almacentransportes['Almacen']['nombre_corto'].'&nbsp;'."</dd>";
-		echo "  <dt>Cantidad</dt>\n";
-		echo "  <dd>".$almacentransportes['AlmacenTransporte']['cantidad_cuenta'].'&nbsp;'."</dd>";
-		echo "  <dt>Peso bruto</dt>\n";
-		echo "  <dd>".$almacentransportes['AlmacenTransporte']['peso_bruto'].'&nbsp;'."</dd>";
+		echo "<dt style=width:50%;>Almacén</dt>\n";
+		echo "  <dd style=margin-left:50%;>".$almacentransportes['Almacen']['nombre_corto'].'&nbsp;'."</dd>";
+		echo "<dt style=width:50%;>Cantidad</dt>\n";
+		echo "  <dd style=margin-left:50%;>".$almacentransportes['AlmacenTransporte']['cantidad_cuenta'].'&nbsp;sacos'."</dd>";
+		echo "<dt style=width:50%;>Peso bruto</dt>\n";
+		echo "<dd style=margin-left:50%;>".$almacentransportes['AlmacenTransporte']['peso_bruto'].'&nbsp;Kg'."</dd>";
 
 	echo "</dl>";
-?>	
-	<div class="detallado">
-	<h3>Distribución asociados</h3>
-	<table class='tr2 tr3 tr4 tr5 tr6'>
+
+?>
+</fieldset>
+<fieldset style='width: 66%'>	
+<legend>Distribución asociados</legend>
+
+<table class="tr2 tr3 tr4 tr5 tr6">
 <?php
 	$total_asignacion_teorica=0;
 	$total_asignacion_real=0;
 	$total_pendiente = 0;
 	$total_porcentaje_teorico = 0;
 	$total_porcentaje_real = 0;
-
-	echo $this->Html->tableHeaders(array('Asociado','Asignación teórica', 'Asignación real','Pendiente','% teorico', '% real'));
+	
+	echo $this->Html->tableHeaders(array('Asociado','Asignado Teorico', 'Asignados Real','Pendiente','% teorico', '% real'));
 
 	foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte){
 		$pendiente = !empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'];
@@ -101,10 +98,16 @@
 		echo $this->Html->tableCells(array(
 			$almacentransporte['Asociado']['Empresa']['nombre_corto'],
 			$almacentransporte['sacos_asignados'],
-			$almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'],
+			$this->Form->input('CantidadAsociado.'.$almacentransporte['asociado_id'], array(
+			    'label' => '',
+			    'class' => 'cantidad',
+			    'id' => $almacentransporte['asociado_id'],
+			    'oninput' => 'sacosAsignados()'
+			    )
+			),
 			$pendiente,
-			$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),			
-			$this->Number->round($almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'],2)
+			$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),
+			'<div id=porcentajeAsociado'.$almacentransporte['asociado_id'].'>'." %".'</div>',
 			)
 		);
 	$total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['sacos_asignados'];
@@ -114,7 +117,7 @@
 	$total_porcentaje_real = $total_porcentaje_real +$almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'];
 
 	}
-	echo $this->html->tablecells(array(
+echo $this->html->tablecells(array(
 	array(
     array(
     	'TOTALES',
@@ -145,14 +148,7 @@
 		)
 	),
 	array(
-    $total_porcentaje_teorico.'%',
-	array(
-		'style' => 'font-weight: bold;',
-		'bgcolor' => '#5FCF80'
-		)
-	),
-	array(
-	$total_porcentaje_real.'%',
+    $total_porcentaje_teorico,
 	array(
 		'style' => 'font-weight: bold;',
 		'bgcolor' => '#5FCF80'
@@ -160,23 +156,15 @@
 	)
 	))
 	);
-	
 ?>	</table>
-	<div class='btabla'>
 	<?php
-		echo $this->Html->link(('<i class="fa fa-users" aria-hidden="true" fa-lg></i> Cambiar distribución'),
-	 	array(
-	 		'controller' => 'almacen_transportes',
-	 		'action' => 'distribucion',
-	 		$id
-	 		), 
-	 	array(
-			'class' => 'boton',
-			'title' => 'Cambiar distribución sacos asociados',
-			'escape' => false
-			)
-	 	);
+        echo $this->element('cancelarform');
+        echo $this->Form->end('Guardar Distribución');
 	?>
-	</div>
-	</div>
 </div>
+</fieldset>
+<script type="text/javascript">
+window.onload = sacosAsignados();
+</script>
+
+

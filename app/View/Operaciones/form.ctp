@@ -197,6 +197,7 @@ echo $this->Form->input('forfait', array(
 		?>
 	</table>
 <?php
+echo '<div id=totalReparto>Total peso: ???kg</div>';
 echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Operación');
 ?>

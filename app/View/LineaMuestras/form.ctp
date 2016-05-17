@@ -1,19 +1,4 @@
-<script>
-function totalCriba(){
-    var arr = document.getElementsByClassName('criba');
-    var tot=0;
-    for(var i=0;i<arr.length;i++){
-	if(parseFloat(arr[i].value))
-	    tot += parseFloat(arr[i].value);
-    }
-    //document.getElementById('total').value = tot.toFixed(1);
-    document.getElementById('total').innerHTML = 'TOTAL: '+tot.toFixed(1);
-    if(tot == 100)
-	document.getElementById('total').style.color = "black";
-    if(tot != 100)
-	document.getElementById('total').style.color = "red";
-}
-</script>
+
 <?php
 //Pasamos la lista de 'operacion_almacenes' al javascript de la vista
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
@@ -41,10 +26,21 @@ $this->Html->addCrumb('Muestra '.$muestra['tipo_registro'],'/muestras/view/'.$mu
 
 echo $this->Html->tableCells(
     array(
-	$this->Form->input('humedad',array(
-		'autofocus' => 'autofocus'
-		)
+	$this->Form->input(
+	    'humedad',
+	    array('autofocus' => 'autofocus')
 	),
+	$this->Form->input('tueste'),
+	isset($operaciones) && $muestra['tipo_id']!='1' ?
+	$this->Form->input(
+	    'operacion_id',
+	    array(
+		'empty' => true,
+		'label' => 'Operación',
+		'onchange' => 'operacionAlmacen()'
+	    )
+	)
+	: '',
 	$this->Form->input('tueste'),
 	$this->Form->input(
 	    'referencia_proveedor',
@@ -72,7 +68,19 @@ echo $this->Html->tableCells(
 	    )
 	)
 	: '',
-	$this->Form->input('sacos')
+	$this->Form->input('sacos'),
+	$this->Form->input(
+	    'si_facturado',
+	    array(
+		'label' => 'Facturado'
+	    ) 
+	),
+	$this->Form->input(
+	    'dato_factura',
+	    array(
+		'label' => 'Datos de factura'
+	    )
+	)
     )
 );
 ?>

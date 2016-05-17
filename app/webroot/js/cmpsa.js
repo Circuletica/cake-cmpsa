@@ -33,6 +33,8 @@ function pesoAsociado(){
     var pesoEmbalaje = embalajes[EmbalajeOption].peso_embalaje_real;
     //un array con las cantidades de cada socio
     var cantidades = document.getElementsByClassName('cantidad');
+    var totalReparto = document.getElementById('totalReparto');
+    var totalPeso = 0;
     for(var i=0;i<cantidades.length;i++){
 	//el id del socio
 	var id = cantidades[i].id;
@@ -44,7 +46,9 @@ function pesoAsociado(){
 	var textoPesoAsociado = document.getElementById('pesoAsociado' + id);
 	//escribimos el peso
 	textoPesoAsociado.innerHTML = "= " + pesoAsociado + "kg";
+	totalPeso += pesoAsociado;
     }
+    totalReparto.innerHTML = "Total peso: " + totalPeso + 'kg';
     //ahora cambiar la lista de fletes segun puertos/embalajes
     var precioFletes = window.app.precioFletes;
     var fleteId = document.getElementById('OperacionFlete');
@@ -62,14 +66,12 @@ function pesoAsociado(){
 	    listaFlete.push(flete);
 	}
     }
-    //if (listaFlete.length != 0) {
-	var opts = listaFlete.length;
-	fleteId.options.length = opts;
-	for (var i=0; i<opts; i++){
-	    fleteId.options[i].value = listaFlete[i].value;
-	    fleteId.options[i].text = listaFlete[i].name;
-	}
-    //}
+    var opts = listaFlete.length;
+    fleteId.options.length = opts;
+    for (var i=0; i<opts; i++){
+	fleteId.options[i].value = listaFlete[i].value;
+	fleteId.options[i].text = listaFlete[i].name;
+    }
 }
 
 function pesoAsociadoEdit(){
@@ -93,7 +95,7 @@ function pesoAsociadoEdit(){
 	textoPesoAsociado.innerHTML = "= " + pesoAsociado + "kg";
 	//el total de sacos/peso
 	if (cantidad) {
-	totalCantidad += parseInt(cantidad);
+	    totalCantidad += parseInt(cantidad);
 	}
 	totalPeso += pesoAsociado;
     }
@@ -141,7 +143,7 @@ function totalCriba(){
     if(tot == 100)
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
-	document.getElementById('total').style.color = "red";
+    document.getElementById('total').style.color = "red";
 }
 
 function contratosMuestra(){
@@ -293,30 +295,30 @@ function operacionesRetirada(){
     var cuentaId = cuentaBox.options[cuentaIndex].value;
     console.log(asociadoId);
 
-		//modificamos _todo_ el select de operaciones
-	if (operacionId in operaciones) {
-		var asociadosOperacion = operaciones[operacionId].Asociado;
-		var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
-	    asociadoBox.options.length = opt1;
+    //modificamos _todo_ el select de operaciones
+    if (operacionId in operaciones) {
+	var asociadosOperacion = operaciones[operacionId].Asociado;
+	var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
+	asociadoBox.options.length = opt1;
 
-	    for (var i=0; i<opt1; i++){
-		asociadoBox.options[i].value = asociadosOperacion[i].id;
-		asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
-			if(asociadoBox.options[i].value == asociadoId){
-				asociadoBox.options[i].selected = true;
-			}
-		}
- 	  
-		//CUENTA ALMACEN
-			var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
-			var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
-			cuentaBox.options.length = opt2;
-	
-			for (var i=0; i<opt2; i++){
-			cuentaBox.options[i].value = almacenesOperacion[i].id;
-			cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
-			}
+	for (var i=0; i<opt1; i++){
+	    asociadoBox.options[i].value = asociadosOperacion[i].id;
+	    asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
+	    if(asociadoBox.options[i].value == asociadoId){
+		asociadoBox.options[i].selected = true;
+	    }
 	}
+
+	//CUENTA ALMACEN
+	var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
+	var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
+	cuentaBox.options.length = opt2;
+
+	for (var i=0; i<opt2; i++){
+	    cuentaBox.options[i].value = almacenesOperacion[i].id;
+	    cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
+	}
+    }
 }
 
 function operacionAlmacen() {
@@ -379,6 +381,45 @@ function pesoFacturacion() {
     totalGastosField.innerHTML = 'Total gastos: '+totalGastos+'€';
     var totalOperacion = (totalCafe + totalGastos) / pesoFacturacion;
     totalOperacionField.innerHTML = 'Precio real operación: '+totalOperacion.toFixed(6)+'€/kg';
+}
+
+function sacosAsignados(){
+    //la tabla con la cantidad de los sacos almacenados en la cuenta del distribucion.ctp
+    var cantidadCuenta = window.app.cantidadCuenta;
+    //un array con las cantidades de cada socio
+    var cantidades = document.getElementsByClassName('cantidad');
+
+    var totalCantidad = 0;
+        for(var i=0;i<cantidades.length;i++){
+            totalCantidad += parseInt(cantidades[i].value);
+        }
+    console.log(totalCantidad);
+   // var totalPeso = 0;
+    //var totalReparto = document.getElementById('totalReparto');
+    for(var i=0;i<cantidades.length;i++){
+    //el id del socio
+    var id = cantidades[i].id;
+    //la cantidad de sacos del socio
+    var cantidad = cantidades[i].value;
+    //el peso que representa
+    var porcentajeAsociado = cantidad * 100/ totalCantidad;
+    //el elemento html donde vamos a escribir el peso
+    var textoporcentajeAsociado = document.getElementById('porcentajeAsociado' + id);
+    //escribimos el peso
+    textoporcentajeAsociado.innerHTML = porcentajeAsociado.toFixed(2) + "%";
+    //el total de sacos/peso
+  /*  if (cantidad) {
+        totalCantidad += parseInt(cantidad);
+    }
+    totalPeso += sacosAsociado;
+    }
+    totalReparto.innerHTML = "Total sacos: " + totalCantidad +
+    " / Total peso: " + totalPeso + "kg";
+    if(tot == 100)
+    document.getElementById('total').style.color = "black";
+    if(tot != 100)
+    document.getElementById('total').style.color = "red";*/
+    }
 }
 
 

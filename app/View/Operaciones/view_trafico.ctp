@@ -128,33 +128,63 @@ if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
 <div class="detallado">
 <h3>Resumen retiradas</h3>
 <table>
+    <div class="detallado">
+    <h3>Resumen retiradas</h3>
+    <table class="tr2 tr3 tr4 tr5 tr6">
 <?php
-//Se calcula la cantidad total de bultos retirados
-
-echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)','Detalle'));
-
-foreach ($lineas_retirada as $linea_retirada) {
-    echo $this->Html->tableCells(array(
-	$linea_retirada['Nombre'],
-	array(
+    //Se calcula la cantidad total de bultos retirados
+    echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)','Detalle'));
+    foreach ($lineas_retirada as $linea_retirada) {
+	echo $this->Html->tableCells(array(
+	    $linea_retirada['Nombre'],
 	    $linea_retirada['Cantidad'],
-	    array('style' => 'text-align:right')
+	    $linea_retirada['Peso'],
+	    $linea_retirada['Cantidad_retirado'],
+	    $linea_retirada['Peso_retirado'],
+	    $linea_retirada['Pendiente'],
+	    $this->Html->link(
+		'<i class="fa fa-info-circle"></i> ',
+		array(
+		    'controller' => 'retiradas',
+		    'action' => 'view_asociado',
+		    'asociado_id'=>$linea_retirada['asociado_id'],
+		    'from_controller' => 'operaciones',
+		    'from_id' => $operacion['Operacion']['id']
+		),
+		array(
+		    'class' => 'boton',
+		    'title' => 'Detalle asociado',
+		    'escape' => false
+		)
+	    )
+	));
+    }
+    echo $this->html->tablecells(array(
+	array(
+	    $linea_retirada['Nombre']
 	),
 	array(
-	    $linea_retirada['Peso'],
-	    array('style' => 'text-align:right')
+	    $linea_retirada['Cantidad']
+	),
+	array(
+	    $linea_retirada['Peso']
 	),
 	array(
 	    $linea_retirada['Cantidad_retirado'],
-	    array('style' => 'text-align:right')
+	    array(
+		'style' => 'font-weight: bold;',
+		'bgcolor' => '#5FCF80'
+		)
 	),
 	array(
-	    $linea_retirada['Peso_retirado'],
-	    array( 'style' => 'text-align:right')
+	    $linea_retirada['Peso_retirado']
 	),
 	array(
 	    $linea_retirada['Pendiente'],
-	    array( 'style' => 'text-align:right')
+	    array(
+		'style' => 'font-weight: bold;',
+		'bgcolor' => '#5FCF80'
+		)
 	),
 	$this->Html->link(
 	    '<i class="fa fa-info-circle"></i> ',
@@ -182,14 +212,14 @@ echo $this->html->tablecells(array(
 	array(
 	    $total_sacos,
 	    array(
-		'style' => 'font-weight: bold; text-align:right',
+		'style' => 'font-weight: bold;',
 		'bgcolor' => '#5FCF80'
 	    )
 	),
 	array(
 	    $total_peso,
 	    array(
-		'style' => 'font-weight: bold; text-align:right',
+		'style' => 'font-weight: bold;',
 		'bgcolor' => '#5FCF80'
 	    )
 	),
@@ -210,7 +240,7 @@ echo $this->html->tablecells(array(
 	array(
 	    $total_pendiente,
 	    array(
-		'style' => 'font-weight: bold; text-align:right',
+		'style' => 'font-weight: bold;',
 		'bgcolor' => '#5FCF80'
 	    )
 	),

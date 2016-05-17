@@ -8,41 +8,50 @@ $this->assign('controller','linea_muestras');
 //$this->assign('from_controller','muestras'); Se comenta porque da error a la hora de ver los botones de borrar.
 $this->assign('from_id',$linea['Muestra']['id']);
 
-$this->Html->addCrumb('Muestras de '.$linea['Muestra']['tipo_nombre'], array(
-    'controller'=>'muestras',
-    'action'=>'index',
-    'Search.tipo_id' => $linea['Muestra']['tipo_id']
-));
-$this->Html->addCrumb('Muestra '.$linea['Muestra']['tipo_registro'], array(
-    'controller'=>'muestras',
-    'action'=>'view',
-    $linea['Muestra']['id']
-));
+$this->Html->addCrumb(
+    'Muestras de '.$linea['Muestra']['tipo_nombre'],
+    array(
+	'controller'=>'muestras',
+	'action'=>'index',
+	'Search.tipo_id' => $linea['Muestra']['tipo_id']
+    )
+);
+$this->Html->addCrumb(
+    'Muestra '.$linea['Muestra']['tipo_registro'],
+    array(
+	'controller'=>'muestras',
+	'action'=>'view',
+	$linea['Muestra']['id']
+    )
+);
 
 
 $this->start('filter');
 echo $this->element('filtromuestra');
 echo '<br>';
-echo $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar informe'),
+echo $this->Html->link(
+    '<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar informe',
     array(
-        'action' => 'info_calidad',
-        $id,
-        'ext' => 'pdf',
-        ), 
+	'action' => 'info_calidad',
+	$id,
+	'ext' => 'pdf',
+    ), 
     array(
-        'escape'=>false,'target' => '_blank','title'=>'Informe calidad previo'));
+	'escape'=>false,'target' => '_blank','title'=>'Informe calidad previo'
+    )
+);
 
-echo  $this->Html->link('<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
-   array(
-    //'from_controller' => 'linea_muestras',
-    'action' =>'info_envio',
-    'from_id'=>$linea['LineaMuestra']['id']
-   ),
-   array(
-   'escape'=>false,
-   'title'=>'Envío informe de calidad',
-   )
- );
+echo  $this->Html->link(
+    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
+    array(
+	'action' =>'info_envio',
+	'from_id'=>$linea['LineaMuestra']['id']
+    ),
+    array(
+	'escape'=>false,
+	'title'=>'Envío informe de calidad',
+    )
+);
 $this->end();
 
 $this->start('main');
@@ -164,37 +173,39 @@ if ($linea['LineaMuestra']['criba12'] || $linea['CribaPonderada']['criba12']) {
 	+$linea['LineaMuestra']['criba12'],
 	+$linea['CribaPonderada']['criba12']));
 }
-echo $this->Html->tableCells(array(
+echo $this->Html->tableCells(
     array(
-    array(
-        'TOTAL',
-        array(
-        'style' => 'font-weight:bold;text-align:center'
-        )
-        ),
-        array(
-            $suma_linea."%",array(
-                'class' => 'total'
-                )
-            ),
-        array(
-            $suma_ponderada."%",array(
-                'class' => 'total'
-                )
-            )
-        )
-        )
+	array(
+	    array(
+		'TOTAL',
+		array(
+		    'style' => 'font-weight:bold;text-align:center'
+		)
+	    ),
+	    array(
+		$suma_linea."%",array(
+		    'class' => 'total'
+		)
+	    ),
+	    array(
+		$suma_ponderada."%",array(
+		    'class' => 'total'
+		)
+	    )
+	)
+    )
 );
-echo $this->Html->tableCells(array(
+echo $this->Html->tableCells(
     array(
-        array(
-            'CRIBA MEDIA',
-            array(
-                'style' => 'font-weight: bold; text-align:center'
-                )
-            ),
-        $linea['CribaPonderada']['criba_media']
-        )
+	array(
+	    array(
+		'CRIBA MEDIA',
+		array(
+		    'style' => 'font-weight: bold; text-align:center'
+		)
+	    ),
+	    $linea['CribaPonderada']['criba_media']
+	)
     )
 );
 echo "</table>\n";

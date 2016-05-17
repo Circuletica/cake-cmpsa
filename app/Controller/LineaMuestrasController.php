@@ -296,8 +296,8 @@ class LineaMuestrasController extends AppController {
 //$action = $this->action;
 //debug($action);
 	$muestra = $this->LineaMuestra->find(
-	    'first',
-	    array(
+		'first',
+		array(
 			'conditions' => array(
 			    'LineaMuestra.id' => $linea_id
 			),
@@ -307,11 +307,16 @@ class LineaMuestrasController extends AppController {
 					'fields' => array(
 						'id',
 						'tipo_registro'
+					)
+				),
+				'Operacion' =>array(
+					'fields'=> array(
+						'referencia'
 						)
 					)
-				)
 			)
-		);
+		)
+	 );
 	$this->set('muestra',$muestra);
 	$muestra += $muestra['Muestra'];
 	unset($muestra['Muestra']);
@@ -326,14 +331,23 @@ class LineaMuestrasController extends AppController {
 	    	 'conditions' =>array(
 	    	 	'departamento_id' => 2
 	    	 	),
-	    	// 'fields' => array('Contacto.id','Empresa.nombre_corto'),
-	    	 //'order' => array('Empresa.nombre_corto' => 'asc'),
-	    	// 'recursive' => 1
+	    	 	'order' => array('Empresa.nombre_corto' => 'asc')
 	    	 )
 	    );
-	$this->set('contactos',$contactos);
-
-
+	$this->set('contactos',$contactos);	
+/*
+	$this->autoRender = false; // tell CakePHP that we don't need any view rendering in this case
+	$this->response->file('Informes/' . $muestra['id'].'.pdf', array('download' => true, 'name' => 'casa.pdf'));
+*/
+	//App::uses('CakePdf', 'CakePdf.Pdf');
+    require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+    $CakePdf = new CakePdf();
+    $CakePdf->template('info_calidad');
+    $CakePdf->viewVars($this->viewVars);
+    // Get the PDF string returned
+    //$pdf = $CakePdf->output();
+    // Or write it to file directly
+    $pdf = $CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].'.pdf');
 
     if (!empty($this->request->data)) { 
 		if (isset($this->request->data['info_calidad'])) {
@@ -341,28 +355,28 @@ class LineaMuestrasController extends AppController {
 			$this->redirect(array(
 				'action' => 'info_calidad',
 				$this->params['named']['from_id'],
-				'ref'=>$this->data['EnvioCalidad']['referencia'],
+			'ref' =>$this->params['named'][$this->data['EnvioCalidad']['referencia']],
 				'ext' => 'pdf',
         		$muestra['tipo_registro']
         		)
 			);
 		} else {
-	    	foreach ($this->data['EnvioCalidad']['email'] as $email) {
+	    	/*foreach ($this->data['EnvioCalidad']['email'] as $email) {
     		$lista_email .= $email.',';
-    		}
+    		}*/
     		debug($this->request->data);
-		       /* instantiate CakeEmail class */
-		      $Email = new CakeEmail();      
-		      /* pass user input to function */
-		      //$Email->config('smtp');
-		      $Email->from('info@circuletica.org'); // Aquí calidad@cmpsa.com
-		      $Email->to($lista_email);
-		      $Email->subject($this->data['EnvioCalidad']['asunto']);
-		      $Email->send($this->data['EnvioCalidad']['mensaje'])	;
-		      //debug($Email);
-		      $Email->attachments('home/circuletica/'.$muestra['tipo_registro']);
-		      ///$Email->attachments(APP.'//Informes/file.pdf')
-		      $this->Session->setFlash('Informe de calidad enviado.');
+	/* instantiate CakeEmail class */
+		$Email = new CakeEmail();      
+	/* pass user input to function */
+		$Email->config('calidad');
+		$Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
+		$Email->to('info@circuletica.org, rodolgl@gmail, asistencia@circuletica.org');
+		// $Email->to($lista_email);
+		$Email->subject('Informe de calidad '.$muestra['tipo_registro'].' / operación '.$muestra['Operacion']['referencia']);
+		$Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la operación '.$muestra['Operacion']['referencia']);
+		// $Email->attachments('home/circuletica/informes_calidad/'.$muestra['tipo_registro']);
+		//$Email->attachments(APP.'//informes_calidad/'.$muestra['tipo_registro'].'.pdf');
+    	$this->Session->setFlash('Informe de calidad enviado.');
 		}
 	
     }
