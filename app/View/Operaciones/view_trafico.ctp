@@ -71,11 +71,11 @@
 	echo "  <dt>Embalaje:</dt>\n";
 	echo "  <dd>".
 		$operacion['PesoOperacion']['cantidad_embalaje'].' x '.
-				 $embalaje['Embalaje']['nombre'].
-				 ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."
-				 </dd>";
+		 $embalaje['Embalaje']['nombre'].
+		 ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."
+		 </dd>";
 	echo "  <dt>Precio $/Tm total:</dt>\n";
-		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_dolar_tonelada'].'$/Tm&nbsp;'."</dd>";
+		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].'$/Tm&nbsp;'."</dd>";
 		if ($operacion['Contrato']['Incoterm']['si_flete']) {
 			echo "  <dt>Flete:</dt>\n";
 			echo "  <dd>".$operacion['Operacion']['flete'].'$/Tm&nbsp;'."</dd>";
