@@ -8,7 +8,22 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
     $operacion['Operacion']['id']
 ));
 ?><div class="acciones">
-	<div class="printdet">
+<div class="printdet">
+
+<a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
+<?php // PARA VIEW
+echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
+    array(
+	'action' => 'view_trafico',$id,'ext' => 'pdf',
+    ), 
+    array(
+	'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
+	$this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array(
+	    'escape'=>false,
+	    'target' => '_blank',
+	    'title'=>'Enviar e-mail')
+	);
+?>
 
  <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
 <?php // PARA VIEW
@@ -24,8 +39,7 @@ echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
 	    'title'=>'Enviar e-mail')
 	);
 ?>
-
-	</div>
+</div>
 </div>
 <h2>Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
 <div class="actions">
@@ -34,7 +48,7 @@ echo $this->element('filtrooperacion');
 ?>
 </div>
 
-	<div class='view'>
+<div class='view'>
 <?php
 echo "<dl>";
 echo "  <dt>Operación</dt>\n";
@@ -75,7 +89,7 @@ echo "  <dd>".
     ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."
     </dd>";
     echo "  <dt>Precio $/Tm total:</dt>\n";
-echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_dolar_tonelada'].'$/Tm&nbsp;'."</dd>";
+echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].'$/Tm&nbsp;'."</dd>";
 if ($operacion['Contrato']['Incoterm']['si_flete']) {
     echo "  <dt>Flete:</dt>\n";
     echo "  <dd>".$operacion['Operacion']['flete'].'$/Tm&nbsp;'."</dd>";
@@ -84,18 +98,18 @@ echo "  <dt>Observaciones</dt>\n";
 echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
 echo "</dl>";
 ?>
-	<!--Se hace un index de la Linea de contratos-->
+<!--Se hace un index de la Linea de contratos-->
 
-	<!--Se listan los asociados que forman parte de la operación-->
+<!--Se listan los asociados que forman parte de la operación-->
 <div class="detallado">
-	<h3>Líneas de transporte</h3>
-	<table>
+<h3>Líneas de transporte</h3>
+<table>
 <?php
 echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
     'Fecha Carga','Bultos','Asegurado','Detalle'));
 //hay que numerar las líneas
 $i = 1;
-foreach($operacion['Transporte'] as $linea):
+foreach($operacion['Transporte'] as $linea) {
     echo $this->Html->tableCells(array(
 	$linea['linea'],
 	$linea['nombre_vehiculo'],
@@ -107,35 +121,33 @@ foreach($operacion['Transporte'] as $linea):
 	//$linea['referencia_almacen'],
 	$this->Button->viewLine('transportes',$linea['id'],'operaciones',$linea['operacion_id'])
     ));
-//numero de la línea siguiente
-//	$i++;
-endforeach;
-?>	</table>
+    //numero de la línea siguiente
+    //	$i++;
+}
+?>
+</table>
 <?php		
-    echo '<div class="btabla">';
+echo '<div class="btabla">';
 echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
 echo '</div>';
 if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
     echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
-
 }elseif($transportado > $operacion['PesoOperacion']['cantidad_embalaje']){
     echo "<h4>Transportados: ".$transportado.' / <span style=color:#c43c35;>Restan: '.$restan."   ¡ATENCIÓN! La cantidad de Bultos son mayores a los establecidos en contrato</span></h4>";
 }else{ 
     echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan." - "."<span style=color:#c43c35;>Todos los bultos han sido transportados</span></h4>";
 }
-
 ?>
-	</div>
-	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
+</div>
+<br>
+<br>		<!--Se listan los asociados que forman parte de la operación-->
 
-	<div class="detallado">
-	<h3>Resumen retiradas</h3>
-	<table class="tr2 tr3 tr4 tr5 tr6">
+<div class="detallado">
+<h3>Resumen retiradas</h3>
+<table class="tr2 tr3 tr4 tr5 tr6">
 <?php
 //Se calcula la cantidad total de bultos retirados
-
 echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)','Detalle'));
-
 foreach ($lineas_retirada as $linea_retirada) {
     echo $this->Html->tableCells(array(
 	$linea_retirada['Nombre'],
@@ -159,35 +171,59 @@ foreach ($lineas_retirada as $linea_retirada) {
 		'escape' => false
 	    )
 	)
-    )
-
-);
+    ));
 }
+echo $this->html->tablecells(array(
+    array(
+	$linea_retirada['Nombre']
+    ),
+    array(
+	$linea_retirada['Cantidad']
+    ),
+    array(
+	$linea_retirada['Peso']
+    ),
+    array(
+	$linea_retirada['Cantidad_retirado'],
+	array(
+	    'style' => 'font-weight: bold;',
+	    'bgcolor' => '#5FCF80'
+	)
+    ),
+    array(
+	$linea_retirada['Peso_retirado']
+    ),
+    array(
+	$linea_retirada['Pendiente'],
+	array(
+	    'style' => 'font-weight: bold;',
+	    'bgcolor' => '#5FCF80'
+	)
+    ),
+    $this->Html->link(
+	'<i class="fa fa-info-circle"></i> ',
+	array(
+	    'controller' => 'retiradas',
+	    'action' => 'view_asociado',
+	    'asociado_id'=>$linea_retirada['asociado_id'],
+	    'from_controller' => 'operaciones',
+	    'from_id' => $operacion['Operacion']['id']
+	),
+	array(
+	    'class' => 'boton',
+	    'title' => 'Detalle asociado',
+	    'escape' => false
+	)
+    )
+));
 echo $this->html->tablecells(array(
     array(
 	array(
 	    'TOTALES',
-	    array(
-		'style' => 'font-weight: bold; text-align:center'
-	    )
+	    array('style' => 'font-weight: bold; text-align:center')
 	),
-
 	array(
 	    $total_sacos,
-	    array(
-		'style' => 'font-weight: bold;',
-		'bgcolor' => '#5FCF80'
-	    )
-	),
-	array(
-	    $total_peso,
-	    array(
-		'style' => 'font-weight: bold;',
-		'bgcolor' => '#5FCF80'
-	    )
-	),
-	array(
-	    $total_sacos_retirados,
 	    array(
 		'style' => 'font-weight: bold;',
 		'bgcolor' => '#5FCF80'
@@ -197,6 +233,20 @@ echo $this->html->tablecells(array(
 	    $total_peso_retirado,
 	    array(
 		'style' => 'font-weight: bold;',
+		'bgcolor' => '#5FCF80'
+	    )
+	),
+	array(
+	    $total_sacos_retirados,
+	    array(
+		'style' => 'font-weight: bold; text-align:right',
+		'bgcolor' => '#5FCF80'
+	    )
+	),
+	array(
+	    $total_peso_retirado,
+	    array(
+		'style' => 'font-weight: bold; text-align:right',
 		'bgcolor' => '#5FCF80'
 	    )
 	),
@@ -214,8 +264,8 @@ echo $this->html->tablecells(array(
 		'escape' => false
 	    )
 	)
-    ))
-);
+    )
+));
 ?></table>
 <?php
 if ($cuenta_almacen['cuenta_almacen'] != NULL ){
@@ -287,5 +337,17 @@ if ($cuenta_almacen['cuenta_almacen'] != NULL ){
 		</div>
 	</div>
 	</div>
+</table>
+<?php
+if ($cuenta_almacen['cuenta_almacen'] != NULL ){
+    echo '<div class="btabla">';
+    echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
+    echo '</div>';
+}else{
+    echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
+}
+?>	
 </div>
-
+</div>
+</div>
+</div>

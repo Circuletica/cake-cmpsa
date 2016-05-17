@@ -48,7 +48,7 @@
 		echo "  <dt>Nº de linea </dt>\n";
 		echo "<dd>";
 		echo $this->html->link($almacentransportes['Transporte']['linea'], array(
-		    'controller' => 'operaciones',
+		    'controller' => 'transportes',
 		    'action' => 'view',
 		    $almacentransportes['AlmacenTransporte']['transporte_id']
 		)

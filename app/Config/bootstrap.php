@@ -87,7 +87,7 @@ CakePlugin::load('CakePdf',array(
 
 Configure::write('CakePdf', array(
    	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona
-	//'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows
+	//'binary'=>'C:\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows
 	//Instalar sudo apt-get install xvfb wkhtmltopdf
 	//'binary'=> '/usr/bin/wkhtmltopdf', //Este es el bueno para ACER
 	'binary'=> '/usr/local/bin/wkhtmltox/bin/wkhtmltopdf',
