@@ -104,7 +104,7 @@ if ($operacion['Operacion']['opciones'] != 0){
     echo "  <dd>".$operacion['Operacion']['opciones'].$divisa.'&nbsp;'."</dd>";
 }
 echo "  <dt>Precio $/Tm:</dt>\n";
-echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_dolar_tonelada'].'$/Tm&nbsp;'."</dd>";
+echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].'$/Tm&nbsp;'."</dd>";
 if ($operacion['Contrato']['Incoterm']['si_flete']) {
     echo "  <dt>Flete:</dt>\n";
     echo "  <dd>".$operacion['Operacion']['flete'].'$/Tm&nbsp;'."</dd>";
