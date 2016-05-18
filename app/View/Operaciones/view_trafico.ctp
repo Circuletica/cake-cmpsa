@@ -7,83 +7,101 @@
 	'action'=>'view_trafico',
 	$operacion['Operacion']['id']
 ));
-?><div class="acciones">
-	<div class="printdet">
-
- <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
- <?php // PARA VIEW
- echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
- 	array(
- 		'action' => 'view_trafico',$id,'ext' => 'pdf',
- 		), 
- 	array(
- 		'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
- $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array(
- 	'escape'=>false,
- 	'target' => '_blank',
- 	'title'=>'Enviar e-mail')
- );
- ?>
+?>
+<div class="acciones">
+    <div class="printdet">
+    <a href="javascript:window.print()">
+	<i class="fa fa-print fa-lg"></i>
+    </a>
+<?php // PARA VIEW
+echo " ".$this->Html->link(
+    ('<i class="fa fa-file-pdf-o fa-lg"></i>'),
+    array(
+	'action' => 'view_trafico',$id,'ext' => 'pdf',
+    ), 
+    array(
+	'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
+    $this->Html->link(
+	'<i class="fa fa-envelope-o fa-lg"></i>',
+	'mailto:',
+	array(
+	    'escape'=>false,
+	    'target' => '_blank',
+	    'title'=>'Enviar e-mail'
+	)
+     );
+?>
  
-	</div>
+    </div>
 </div>
 <h2>Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
 <div class="actions">
-	<?php
-	echo $this->element('filtrooperacion');
-	?>
+<?php
+echo $this->element('filtrooperacion');
+?>
 </div>
 
-	<div class='view'>
-	<?php
-	echo "<dl>";
-	echo "  <dt>Operación</dt>\n";
-	echo "<dd>";
-	echo $operacion['Operacion']['referencia'].'&nbsp;';
-	echo "</dd>";
-	echo "  <dt>Contrato</dt>\n";
-	echo "<dd>";
-	echo $this->html->link($operacion['Contrato']['referencia'], array(
-		'controller' => 'contratos',
-		'action' => 'view',
-		$operacion['Operacion']['contrato_id'])
-	);
-	echo "</dd>";
-	echo "  <dt>".$tipo_fecha_transporte."</dt>\n";
-	echo "  <dd>".$fecha_transporte."</dd>";
-	echo "  <dt>Calidad</dt>\n";
-	echo "<dd>";
-	echo $operacion['Contrato']['Calidad']['nombre'].'&nbsp;';
-	echo "  <dt>Proveedor</dt>\n";
-	echo "<dd>";
-	echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], array(
-		'controller' => 'proveedores',
-		'action' => 'view',
-		$operacion['Contrato']['Proveedor']['id'])
-	);
-	echo "</dd>";
-	echo "  <dt>Incoterms</dt>\n";
-	echo "<dd>";
-	echo $operacion['Contrato']['Incoterm']['nombre'].'&nbsp;';
-	echo "</dd>";
-		echo "  <dt>Peso:</dt>\n";
-	echo "  <dd>".$operacion['PesoOperacion']['peso'].'kg&nbsp;'."</dd>";
-	echo "  <dt>Embalaje:</dt>\n";
-	echo "  <dd>".
-		$operacion['PesoOperacion']['cantidad_embalaje'].' x '.
-				 $embalaje['Embalaje']['nombre'].
-				 ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."
-				 </dd>";
-	echo "  <dt>Precio $/Tm total:</dt>\n";
-		echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_dolar_tonelada'].'$/Tm&nbsp;'."</dd>";
-		if ($operacion['Contrato']['Incoterm']['si_flete']) {
-			echo "  <dt>Flete:</dt>\n";
-			echo "  <dd>".$operacion['Operacion']['flete'].'$/Tm&nbsp;'."</dd>";
-		}
-	echo "  <dt>Observaciones</dt>\n";
-	echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
-	echo "</dl>";
-	?>
+<div class='view'>
+<?php
+echo "<dl>";
+echo "  <dt>Operación</dt>\n";
+echo "<dd>";
+echo $operacion['Operacion']['referencia'].'&nbsp;';
+echo "</dd>";
+echo "  <dt>Contrato</dt>\n";
+echo "<dd>";
+echo $this->html->link(
+    $operacion['Contrato']['referencia'],
+    array(
+	'controller' => 'contratos',
+	'action' => 'view',
+	$operacion['Operacion']['contrato_id'])
+);
+echo "</dd>";
+echo "  <dt>".$tipo_fecha_transporte."</dt>\n";
+echo "  <dd>".$fecha_transporte."</dd>";
+echo "  <dt>Calidad</dt>\n";
+echo "<dd>";
+echo $operacion['Contrato']['Calidad']['nombre'].'&nbsp;';
+echo "  <dt>Proveedor</dt>\n";
+echo "<dd>";
+echo $this->html->link(
+    $operacion['Contrato']['Proveedor']['nombre_corto'],
+    array(
+	'controller' => 'proveedores',
+	'action' => 'view',
+	$operacion['Contrato']['Proveedor']['id']
+    )
+);
+echo "</dd>";
+echo "  <dt>Incoterms</dt>\n";
+echo "<dd>";
+echo $operacion['Contrato']['Incoterm']['nombre'].'&nbsp;';
+echo "</dd>";
+echo "  <dt>Peso:</dt>\n";
+echo "  <dd>".$operacion['PesoOperacion']['peso'].'kg&nbsp;'."</dd>";
+echo "  <dt>Embalaje:</dt>\n";
+echo "  <dd>".
+    $operacion['PesoOperacion']['cantidad_embalaje'].' x '.
+    $embalaje['Embalaje']['nombre'].
+    ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."
+    </dd>";
+echo "  <dt>Precio ".$operacion['PrecioTotalOperacion']['divisa']."/Tm:</dt>\n";
+echo "  <dd>".
+    $operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].
+    $operacion['PrecioTotalOperacion']['divisa'].
+    '/Tm&nbsp;'.
+    "</dd>";
+if ($operacion['Contrato']['Incoterm']['si_flete']) {
+    echo "  <dt>Flete:</dt>\n";
+    echo "  <dd>".
+	$operacion['Operacion']['flete'].
+	'$/Tm&nbsp;'."</dd>";
+}
+echo "  <dt>Observaciones</dt>\n";
+echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
+echo "</dl>";
+?>
 	<!--Se hace un index de la Linea de contratos-->
 
 	<!--Se listan los asociados que forman parte de la operación-->
@@ -130,7 +148,7 @@
 
 	<div class="detallado">
 	<h3>Resumen retiradas</h3>
-	<table class="tr2 tr3 tr4 tr5 tr6">
+	<table>
 		<?php
 		//Se calcula la cantidad total de bultos retirados
 
@@ -139,12 +157,37 @@
 		foreach ($lineas_retirada as $linea_retirada):
 			echo $this->Html->tableCells(array(
 				$linea_retirada['Nombre'],
-				$linea_retirada['Cantidad'],
-		     	$linea_retirada['Peso'],
-				$linea_retirada['Cantidad_retirado'],
-				$linea_retirada['Peso_retirado'],
-				$linea_retirada['Pendiente'],
-				$this->Html->link(
+				array(
+					$linea_retirada['Cantidad'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+				array(
+					$linea_retirada['Peso'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+				array(
+					$linea_retirada['Cantidad_retirado'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+				array(
+					$linea_retirada['Peso_retirado'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+				array(
+					$linea_retirada['Pendiente'],
+					array(
+						'style' => 'text-align:right'
+					)
+				),
+					$this->Html->link(
 						'<i class="fa fa-info-circle"></i> ',array(
 							'controller' => 'retiradas',
 							'action' => 'view_asociado',
@@ -174,35 +217,35 @@ echo $this->html->tablecells(array(
 	array(
 	$total_sacos,
 	array(
-		'style' => 'font-weight: bold;',
+		'style' => 'font-weight: bold; text-align:right',
 		'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
     $total_peso,
 	array(
-		'style' => 'font-weight: bold;',
+		'style' => 'font-weight: bold; text-align:right',
 		'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
     $total_sacos_retirados,
 	array(
-		'style' => 'font-weight: bold;',
+		'style' => 'font-weight: bold; text-align:right',
 		'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
     $total_peso_retirado,
 	array(
-		'style' => 'font-weight: bold;',
+		'style' => 'font-weight: bold; text-align:right',
 		'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
 	$total_pendiente,
 	array(
-		'style' => 'font-weight: bold;',
+		'style' => 'font-weight: bold; text-align:right',
 		'bgcolor' => '#5FCF80'
 		)
 	),

@@ -651,7 +651,7 @@ class OperacionesController extends AppController {
     }
 
 
-    public function view_trafico($id = null) {
+    public function view_trafico($id = null){
 	if (!$id) {
 	    $this->Session->setFlash('URL mal formada Operación/view_trafico ');
 	    $this->redirect(array('action'=>'index_trafico'));
@@ -704,9 +704,10 @@ class OperacionesController extends AppController {
 			    'cantidad_embalaje'
 			)
 		    ),
-		    'PrecioTotalOperacion'=> array(
+		   'PrecioTotalOperacion'=> array(
 			'fields'=>array(
-			    'precio_dolar_tonelada'
+			    'precio_divisa_tonelada',
+			    'divisa'
 			)
 		    ),
 		    'AsociadoOperacion'=>array(
@@ -758,9 +759,9 @@ class OperacionesController extends AppController {
 	    $suma = 0;
 	    $transportado=0;
 	    foreach ($operacion['Transporte'] as $suma){
-		if ($transporte['operacion_id']=$operacion['Operacion']['id']){
-		    $transportado = $transportado + $suma['cantidad_embalaje'];
-		}
+			if ($transporte['operacion_id']=$operacion['Operacion']['id']){
+			    $transportado = $transportado + $suma['cantidad_embalaje'];
+			}
 	    }
 	}
 	$restan = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
@@ -830,10 +831,6 @@ class OperacionesController extends AppController {
 	);
 $this->set('totales',$totales['PesoFacturacion']);-*/
 
-
-
-
-
 	$total_sacos = 0;
 	$total_peso = 0;
 	$total_sacos_retirados = 0;
@@ -850,10 +847,10 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 
 	    foreach ($operacion_retiradas as $clave => $operacion_retirada){
 		$retirada = $operacion_retirada['Retirada'];
-		if($retirada['asociado_id'] == $linea['Asociado']['id']){
-		    $cantidad_retirado += $retirada['embalaje_retirado'];
-		    $peso_retirado += $retirada['peso_retirado'];
-		}
+			if($retirada['asociado_id'] == $linea['Asociado']['id']){
+			    $cantidad_retirado += $retirada['embalaje_retirado'];
+			    $peso_retirado += $retirada['peso_retirado'];
+			}
 		$pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
 	    }
 
@@ -888,7 +885,8 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 
 	//Se declara para acceder al PDF
 	$this->set(compact('id'));
-    }
+}
+
 
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) {
