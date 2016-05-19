@@ -34,7 +34,7 @@
 			echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas': 
 			$this->Button->edit('almacen_transportes',$id)
 			.' '.
-			$this->Button->delete('almacen_transportes',$id,'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
+			$this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
 			
 		?>
 		</li>

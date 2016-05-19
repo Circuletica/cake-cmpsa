@@ -94,10 +94,10 @@ $this->set(compact('pdf'));
     ->cc('rodolgl@gmail.com')
  ->send('Un mensaje');*/
 
-	if (!$id) {
+	/*if (!$id) {
 	    $this->Session->setFlash('URL mal formada Transporte/view ');
 	    $this->redirect(array('action'=>'index_trafico'));
-	}
+	}*/
 	$transporte = $this->Transporte->find(
 	    'first',
 	    array(
@@ -428,15 +428,16 @@ endforeach;
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) :
 	    throw new MethodNotAllowedException();
-endif;
-if ($this->Transporte->delete($id)):
-    $this->Session->setFlash('LÃ­nea de transporte borrada');
-$this->redirect(array(
-    'controller' => 'operaciones',
-    'action' => 'view_trafico',
-    $this->params['named']['from_id']
-));
-endif;
+	endif;
+
+	if ($this->Transporte->delete($id)):
+	    $this->Session->setFlash('Línea de transporte borrada');
+		$this->redirect(array(
+		    'controller' => 'operaciones',
+		    'action' => 'view_trafico',
+		    $this->params['named']['from_id']
+	));
+	endif;
     }
 
     public function info_embarque() {

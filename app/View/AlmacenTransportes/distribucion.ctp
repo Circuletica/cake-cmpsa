@@ -133,13 +133,8 @@ echo $this->html->tablecells(array(
 		'bgcolor' => '#5FCF80'
 		)
 	),
-	array(
-    $total_asignacion_real,
-	array(
-		'style' => 'font-weight: bold;',
-		'bgcolor' => '#5FCF80'
-		)
-	),
+	'<div id=totalCantidad></div>'
+	,
 	array(
     $total_pendiente,
 	array(

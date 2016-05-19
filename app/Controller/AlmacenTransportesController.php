@@ -55,7 +55,7 @@ public function view($id = null) {
 									)
 								)	
 				),
-				
+				'Retirada',
 				'Transporte'=> array(
 					'fields'=> array(
 						'linea',
@@ -228,19 +228,21 @@ public function view($id = null) {
 						$this->Session->setFlash('Cuenta almacén guardada');
 						$this->redirect(array(
 							'controller' => 'almacen_transportes',
-							'action' => 'view',
-							//$id
-						));
+							'action' => 'distribucion',
+							$id
+							)
+						);
 					}else{
 						$this->Session->setFlash('Cuenta de almacén NO guardada');
 					}
 			}elseif ($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado){
+				debug($this->AlmacenTransporte->save);
 					if($this->AlmacenTransporte->save($this->request->data)){
 							$this->Session->setFlash('Cuenta almacén guardada');
 							$this->redirect(array(
 								'controller' => 'almacen_transportes',
-								'action' => 'view',
-								//$id	
+								'action' => 'distribucion',
+								$id	
 								)
 							);
 					}	
@@ -266,16 +268,18 @@ public function view($id = null) {
 
 
  	public function delete($id = null) {
-			if (!$id or $this->request->is('get')) :
+		if (!$id or $this->request->is('get')) :
 			    throw new MethodNotAllowedException();
 		endif;
+
 		if ($this->AlmacenTransporte->delete($id)){
-			$this->Session->setFlash('Cuenta corriente almacén borrada');
+			//$this->Session->setFlash('Cuenta corriente almacén borrada');
 			$this->redirect(array(
 			    'controller' => 'transportes',
 			    'action'=>'view',
-		    $this->params['named']['from_id']
-		));
+		    	$this->params['named']['from_id']
+		    	)
+			);
 		}
 	}
 	
