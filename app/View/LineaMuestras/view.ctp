@@ -45,7 +45,7 @@ echo  $this->Html->link(
     '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
     array(
 	'action' =>'info_envio',
-	'from_id'=>$linea['LineaMuestra']['id']
+	$linea['LineaMuestra']['id']
     ),
     array(
 	'escape'=>false,

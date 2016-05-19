@@ -29,7 +29,7 @@ foreach($contactos as $contacto){
 	'after' => 'Solución temporal'
 	)
 );*/
-echo $this->Form->input('referencia',array(
+echo $this->Form->input('ref',array(
 	'label'=> 'Referencia: '
 	)
 );
@@ -57,22 +57,21 @@ echo $this->Form->input('atn', array(
 	'label' =>'ATN: '
 	)
 );
-echo $this->Form->input('observacion', array(
+echo $this->Form->input('observacion_externa', array(
 	'label' => 'Observaciones de la línea',
 	'type' => 'textarea'
 	)
 );
-echo $this->element('cancelarform')
-.' '.
-$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar'),
+echo $this->element('cancelarform');
+echo $this->Html->link('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar',
     array(
         'action' => 'info_calidad',
-        $this->params['named']['from_id'],
+        $muestra['LineaMuestra']['id'],
         'ext' => 'pdf',
         $muestra['tipo_registro']
          ), 
     array(
-    	'class' => 'botond',
+    	'class'=>'botond',
         'escape'=>false,
         'target' => '_blank','title'=>'Informe calidad previo'
         )
@@ -83,8 +82,8 @@ $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar'),
 		)
 	);*/
 	echo $this->Form->end('Enviar informe');
+
 //	echo $this->Form->end('Enviar informe' => 'info_envio'));
-s
 ?>
 
 </fieldset>

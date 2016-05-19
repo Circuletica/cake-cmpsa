@@ -1,6 +1,5 @@
 <?php
 $this->layout = 'laboratorio';
-
 // Usamos plantilla clásica de vistas View/Common/view.ctp
 $this->extend('/Common/pdf/viewPdf');
 //$this->assign('object', 'Línea de la muestra '.$linea['Muestra']['tipo_registro']);
@@ -16,11 +15,11 @@ echo "<h3 style='text-align: center;'>DEPARTAMENTO DE CONTROL DE CALIDAD</h3>";
 echo "<h3 style='text-align: center;'>INFORME DE CALIDAD Nº ".$linea['Muestra']['tipo_registro'].'</h3>';
 echo "<hr><br>";
 
-if(!empty($destinatario or $atencion or $referencia)){
+if(!empty($linea['LineaMuestra']['a'] or $linea['LineaMuestra']['atn'] or $linea['LineaMuestra']['ref'])){
 echo "<dl>";
-	echo "<dt>A: </dt><dd>".$this->params['named']['ref']."</dd>\n";
-	echo "<dt>ATN: </dt><dd>".$atencion."</dd>\n";
-	echo "<dt>REFA: </dt><dd>".$referencia."</dd>\n";
+	echo "<dt>A: </dt><dd>".$linea['LineaMuestra']['a']."</dd>\n";
+	echo "<dt>ATN: </dt><dd>".$linea['LineaMuestra']['atn']."</dd>\n";
+	echo "<dt>REF: </dt><dd>".$linea['LineaMuestra']['ref']."</dd>\n";
 echo "</dl>";
 }
 
@@ -42,10 +41,7 @@ if ($linea['Muestra']['tipo_id'] != 1) {
 
 
 }
-//echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."&nbsp;</dd>\n";
-//echo "  <dt>Observaciones</dt><dd>".nl2br(h($linea['LineaMuestra']['observaciones']))."&nbsp;</dd>\n";
-//Tabla de criba medida y ponderada (con los caracoles)
-//Antes de todo, necesitamos saber que criba corresponde al fondo.
+
 for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){
     $fondo = $i;
 }
@@ -121,7 +117,7 @@ echo "  <dt>Tueste</dt><dd>".$linea['LineaMuestra']['tueste']."&nbsp;</dd>\n";
 echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida']))."&nbsp;</dd>\n";
 echo "</dl>";
 echo "<dl>";
-echo "  <dt>Observaciones</dt><dd>variable que recoge un texto</dd>\n";
+echo "  <dt>Observaciones</dt><dd>".$linea['LineaMuestra']['observacion_externa']."</dd>\n";
 echo "</dl>";
 $this->end();
 ?>
