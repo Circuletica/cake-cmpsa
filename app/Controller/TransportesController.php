@@ -398,20 +398,20 @@ endforeach;
 	    $this->request->data['Transporte']['id'] = $id;
 	    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
 
-	    if($id == NULL){
+	    if($id == NULL){debug($this->request->data);
 		if($this->Transporte->save($this->request->data)){
-		    $this->Session->setFlash('LÃ­nea de transporte guardada');
+		    $this->Session->setFlash('Línea de transporte guardada');
 		    $this->redirect(array(
 			'controller' => 'operaciones',
 			'action' => 'view_trafico',
 			$operacion_id
 		    ));
 		}else{
-		    $this->Session->setFlash('LÃ­nea de transporte NO guardada');
+		    $this->Session->setFlash('Línea de transporte NO guardada');
 		}
 	    }else{
 		if($this->Transporte->save($this->request->data)){
-		    $this->Session->setFlash('LÃ­nea de transporte modificada');
+		    $this->Session->setFlash('Línea de transporte modificada');
 		    $this->redirect(array(
 			'controller' => 'transportes',
 			'action' => 'view',

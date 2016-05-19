@@ -225,11 +225,12 @@ public function view($id = null) {
 			$this->request->data['AlmacenTransporte']['transporte_id'] = $transporte_id;
 			if($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado && $id == NULL) {
 					if($this->AlmacenTransporte->save($this->request->data)){
+						$nuevoId = $this->AlmacenTransporte->id;
 						$this->Session->setFlash('Cuenta almacén guardada');
 						$this->redirect(array(
 							'controller' => 'almacen_transportes',
 							'action' => 'distribucion',
-							$id
+							$nuevoId	
 							)
 						);
 					}else{
@@ -238,11 +239,12 @@ public function view($id = null) {
 			}elseif ($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado){
 				debug($this->AlmacenTransporte->save);
 					if($this->AlmacenTransporte->save($this->request->data)){
+							$nuevoId = $this->AlmacenTransporte->id;
 							$this->Session->setFlash('Cuenta almacén guardada');
 							$this->redirect(array(
 								'controller' => 'almacen_transportes',
 								'action' => 'distribucion',
-								$id	
+								$nuevoId	
 								)
 							);
 					}	
@@ -254,7 +256,7 @@ public function view($id = null) {
 							$this->redirect(array(
 								'controller' => 'almacen_transportes',
 								'action' => 'view',
-								//$id	
+								$id	
 								)
 							);
 					}	
@@ -268,17 +270,25 @@ public function view($id = null) {
 
 
  	public function delete($id = null) {
-		if (!$id or $this->request->is('get')) :
+ 		if (!$id or $this->request->is('get')) :
 			    throw new MethodNotAllowedException();
 		endif;
-
+			$transporte_id = $this->AlmacenTransporte->find(
+				'first',
+				array(
+					'conditions'=> array(
+						'AlmacenTransporte.id' => $id
+					)
+				)
+			);
+			$transporte_id = $transporte_id['AlmacenTransporte']['transporte_id'];
 		if ($this->AlmacenTransporte->delete($id)){
-			//$this->Session->setFlash('Cuenta corriente almacén borrada');
+			$this->Session->setFlash('Cuenta corriente almacén borrada');
 			$this->redirect(array(
-			    'controller' => 'transportes',
-			    'action'=>'view',
-		    	$this->params['named']['from_id']
-		    	)
+				'controller'=>'transportes',
+				'action'=>'view',
+				$transporte_id
+				)
 			);
 		}
 	}
@@ -345,25 +355,27 @@ public function view($id = null) {
 	$asociados_distribucion = Hash::combine($almacentransportes['AlmacenTransporteAsociado'], '{n}.asociado_id', '{n}');
 
 
+//GUARDAR LA DISTRIBUCIÓN DE LOS ASOCIADOS
 	if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
-	    $this->request->data = $this->AlmacenTransporte->AlmacenTransporteAsociado->read();
-	    foreach ($asociados_distribucion as $clave => $asociado) {
-		$this->request->data['CantidadAsociado'][$clave] = $asociado['sacos_asignados'];
+	    //$this->request->data = $this->AlmacenTransporte->AlmacenTransporteAsociado->read();
+	   	$this->request->data = $this->AlmacenTransporte->read();
+	    foreach ($asociados_distribucion as $asociado_id => $asociado) {
+			$this->request->data['CantidadAsociado'][$asociado_id] = $asociado['sacos_asignados'];
 	    }
-	//} 
-	
-	//if (!empty($id))$this->AlmacenTransporte->id = $id;
-
-	}elseif ($this->AlmacenTransporte->save($this->request->data(['AlmacenTransporteAsociado']))){
-	//$this->AlmacenTransporte->AlmacenTransporteAsociado->deleteAll(array(		    'AlmacenTransporteAsociado.almacen_transporte_id' => $id);
-		/*foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
-		    if ($cantidad != NULL) {
-			$this->request->data['AlmacenTransporteAsociado']['operacion_id'] = $this->Operacion->id;
-			$this->request->data['AlmacenTransporteAsociado']['asociado_id'] = $asociado_id;
-			$this->request->data['AlmacenTransporteAsociado']['cantidad_embalaje_asociado'] = $cantidad;
-			$this->AlmacenTransporte->AlmacenTransporteAsociado->saveAll($this->request->data['AlmacenTransporteAsociado']);
-		    }
-		}	*/	
+	}else{
+		if($this->AlmacenTransporte->save($this->request->data)){
+	//	$this->AlmacenTransporte->AlmacenTransporteAsociado->deleteAll(array(
+	//		'AlmacenTransporteAsociado.almacen_transporte_id' => $id
+	//		)
+	//	);
+			foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
+			    if ($cantidad != NULL) {
+				$this->request->data['AlmacenTransporteAsociado']['almacen_transporte_id'] = $id;
+				$this->request->data['AlmacenTransporteAsociado']['asociado_id'] = $asociado_id;
+				$this->request->data['AlmacenTransporteAsociado']['sacos_asignados'] = $cantidad;
+				$this->AlmacenTransporte->AlmacenTransporteAsociado->saveAll($this->request->data['AlmacenTransporteAsociado']);
+			    }
+			}	
 		$this->Session->setFlash('Distribución asociados guardada');
 		$this->redirect(
 			array(
@@ -372,8 +384,10 @@ public function view($id = null) {
 			$id
 			)
 		);
-	}	
-	
+		}else{
+			$this->Session->setFlash('Distribución de asociados NO guardada');
 
+		}
+	}
 	}
 }

@@ -42,7 +42,7 @@ echo $this->Form->create('AlmacenTransporteAsociado');
 		echo "<dt style=width:50%;>Nº de linea </dt>\n";
 		echo "<dd style=margin-left:50%;>";
 		echo $this->html->link($almacentransportes['Transporte']['linea'], array(
-		    'controller' => 'operaciones',
+		    'controller' => 'transportes',
 		    'action' => 'view',
 		    $almacentransportes['AlmacenTransporte']['transporte_id']
 		)
@@ -153,8 +153,18 @@ echo $this->html->tablecells(array(
 	);
 ?>	</table>
 	<?php
-        echo $this->element('cancelarform');
-        echo $this->Form->end('Guardar Distribución');
+	echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Cancelar', 
+	    	array(
+	    		'action'=>'view',
+		   		'controller' => 'almacen_transportes',
+		   		$id
+		   		),
+	     	array(
+		  		'class' => 'botond',
+	    		'escape'=>false
+	    		)
+	     	);
+    echo $this->Form->end('Guardar Distribución');
 	?>
 </div>
 </fieldset>
