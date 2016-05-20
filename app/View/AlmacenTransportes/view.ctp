@@ -100,18 +100,14 @@
 
 		echo $this->Html->tableCells(array(
 			$almacentransporte['Asociado']['Empresa']['nombre_corto'],
-			$almacentransporte['sacos_asignados'],
 			$almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'],
+			$almacentransporte['sacos_asignados'],
 			$pendiente,
 			$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),			
-			$this->Number->round($almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'],2)
+			$this->Number->round($almacentransporte['sacos_asignados']*100/$total_asignacion_real ,2)
 			)
 		);
-	$total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['sacos_asignados'];
-	$total_asignacion_real = $total_asignacion_real + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
-	$total_pendiente = $total_pendiente + $pendiente;
-	$total_porcentaje_teorico = $total_porcentaje_teorico + $almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'];
-	$total_porcentaje_real = $total_porcentaje_real +$almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'];
+
 
 	}
 	echo $this->html->tablecells(array(

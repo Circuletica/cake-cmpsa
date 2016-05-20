@@ -342,8 +342,6 @@ public function view($id = null) {
 		);
 	$this->set(compact('almacentransportes'));
 
-
-
 		/*$this->set(compact($total_asignacion_teorica));
 		$this->set(compact($total_asignacion_real));
 		$this->set(compact($total_pendiente));
@@ -363,31 +361,26 @@ public function view($id = null) {
 			$this->request->data['CantidadAsociado'][$asociado_id] = $asociado['sacos_asignados'];
 	    }
 	}else{
-		if($this->AlmacenTransporte->save($this->request->data)){
-	//	$this->AlmacenTransporte->AlmacenTransporteAsociado->deleteAll(array(
-	//		'AlmacenTransporteAsociado.almacen_transporte_id' => $id
-	//		)
-	//	);
-			foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
-			    if ($cantidad != NULL) {
+		$this->AlmacenTransporte->AlmacenTransporteAsociado->deleteAll(array(
+		'AlmacenTransporteAsociado.almacen_transporte_id' => $id
+			)
+		);
+		foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
+		    if ($cantidad != NULL) {
 				$this->request->data['AlmacenTransporteAsociado']['almacen_transporte_id'] = $id;
 				$this->request->data['AlmacenTransporteAsociado']['asociado_id'] = $asociado_id;
 				$this->request->data['AlmacenTransporteAsociado']['sacos_asignados'] = $cantidad;
 				$this->AlmacenTransporte->AlmacenTransporteAsociado->saveAll($this->request->data['AlmacenTransporteAsociado']);
-			    }
-			}	
-		$this->Session->setFlash('Distribución asociados guardada');
-		$this->redirect(
-			array(
-			'controller' => 'almacen_transportes',
-			'action' => 'view',
-			$id
-			)
-		);
-		}else{
-			$this->Session->setFlash('Distribución de asociados NO guardada');
-
+		    }		
 		}
+		$this->Session->setFlash('Distribución asociados guardada');
+			$this->redirect(
+				array(
+				'controller' => 'almacen_transportes',
+				'action' => 'view',
+				$id
+				)
+			);
 	}
 	}
 }

@@ -348,22 +348,11 @@ class LineaMuestrasController extends AppController {
 
 if (!empty($id)) $this->LineaMuestra->id = $id; 
 	if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
-		
 		$this->request->data = $this->LineaMuestra->read();//Cargo los datos
-		if (!empty($this->request->data['previsualizar'])) {	//Pulsamos previsualizar PERO NO LO COGE NI PARA DIOS A LA HORA DE LEERLO
+	}else{//es un POST	
+		if (!empty($this->request->data['previsualizar'])) {	//Pulsamos previsualizar
 			$this->Session->setFlash('Esto es previsualizar');
-			$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra
-			//Recargamos la info y cargamos la visualización del pdf
-			$this->info_calidad($id);
-			$this->redirect(array(
-				'action' => 'info_calidad',
-				$id,
-				'ref' =>$this->params['named'][$this->data['EnvioCalidad']['referencia']],
-				'ext' => 'pdf',
-		    	$muestra['tipo_registro']
-		    	)
-			);
-			
+			$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra			
 		}elseif (isset($this->request->data['enviar'])) {
 		    $this->LineaMuestra->save($this->request->data); //Guardamos los datos actuales en los campos
 		    foreach ($this->data['EnvioCalidad']['email'] as $email){
