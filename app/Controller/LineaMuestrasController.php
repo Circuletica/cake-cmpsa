@@ -348,37 +348,52 @@ class LineaMuestrasController extends AppController {
     // Or write it to file directly
     $pdf = $CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].'.pdf');*/
 
-    if (!empty($this->request->data)) { 
-		if (isset($this->request->data['info_calidad'])) {
-		    $this->info_calidad($id);
-			$this->redirect(array(
-				'action' => 'info_calidad',
-				$id,
-				'ref' =>$this->params['named'][$this->data['EnvioCalidad']['referencia']],
-				'ext' => 'pdf',
-        		$muestra['tipo_registro']
-        		)
-			);
-		} else {
-	    	foreach ($this->data['EnvioCalidad']['email'] as $email) {
-    			$lista_email[]= $email;
-    		}
-
-	/* instantiate CakeEmail class */
-		$Email = new CakeEmail();      
-	/* pass user input to function */
-		$Email->config('calidad');
+    if (!empty($id)) $this->LineaMuestra->id = $id; 
+if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
+	$this->request->data = $this->LineaMuestra->read(); //Cargo los datos
+	if (isset($this->request->data['previsualizar'])) {	//Pulsamos previsualizar
+		$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos, nos olvidamos de los correos
+		//Recargamos la info y cargamos la visualización del pdf
+		$this->info_calidad($id);
+		$this->redirect(array(
+			'action' => 'info_calidad',
+			$id,
+			'ref' =>$this->params['named'][$this->data['EnvioCalidad']['referencia']],
+			'ext' => 'pdf',
+	    	$muestra['tipo_registro']
+	    	)
+		);
+	}elseif (isset($this->request->data['enviar'])) {
+	    $this->LineaMuestra->save($this->request->data); //Guardamos los datos actuales en los campos
+	    foreach ($this->data['EnvioCalidad']['email'] as $email){
+	   		$lista_email[]= $email;
+	   	}	 
+		$Email = new CakeEmail(); //Llamamos la instancia de email     
+		$Email->config('calidad'); //Plantilla de email.php
 		$Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
 		$Email->to($lista_email);
 		$Email->subject('Informe de calidad '.$muestra['tipo_registro'].' / operación '.$muestra['Operacion']['referencia']);
-		$Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la operación '.$muestra['Operacion']['referencia']);
+		$Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la operación '.$muestra['Operacion']['eferencia']);
 		// $Email->attachments('home/circuletica/informes_calidad/'.$muestra['tipo_registro']);
 		//$Email->attachments(APP.'//informes_calidad/'.$muestra['tipo_registro'].'.pdf');
-    	$this->Session->setFlash('Informe de calidad enviado.');
-		}
-	
-    }
+	    $this->Session->setFlash('Informe de calidad enviado.');
+	}
 
+
+	    if (!empty($this->request->data)) { 
+			if (isset($this->request->data['info_calidad'])) {
+			    $this->info_calidad($id);
+				$this->redirect(array(
+					'action' => 'info_calidad',
+					$id,
+					'ref' =>$this->params['named'][$this->data['EnvioCalidad']['referencia']],
+					'ext' => 'pdf',
+	        		$muestra['tipo_registro']
+	        		)
+				);	
+	  	  }
+		}
+	}
 }
 }
 ?>

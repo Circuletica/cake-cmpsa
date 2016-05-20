@@ -1,5 +1,6 @@
 <?php
-echo $this->Form->create('EnvioCalidad');
+
+echo $this->Form->create('EnvioCalidad'); 
 echo "<h2>Informe de calidad de la línea de muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
 
 
@@ -24,6 +25,7 @@ foreach($contactos as $contacto){
 <fieldset>
 <legend>Datos</legend>
 <?php
+echo $this->Form->create('LineaMuestra');
 /*echo $this->Form->input('email',array(
 	'label'=> 'Correos a enviar (separado por comas): ',
 	'after' => 'Solución temporal'
@@ -63,7 +65,7 @@ echo $this->Form->input('observacion_externa', array(
 	)
 );
 echo $this->element('cancelarform');
-echo $this->Html->link('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar',
+/*echo $this->Html->link('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar',
     array(
         'action' => 'info_calidad',
         $muestra['LineaMuestra']['id'],
@@ -73,17 +75,20 @@ echo $this->Html->link('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar',
     array(
     	'class'=>'botond',
         'escape'=>false,
-        'target' => '_blank','title'=>'Informe calidad previo'
+        'target' => '_blank',
+        'title'=>'Informe calidad previo'
         )
-    );
-/*	echo $this->Form->submit('Previsualizar informe',array(
-		'name'=>'info_calidad',
-		'escape'=>false
+    );*/
+echo $this->Form->submit('Previsualizar informe',
+	array(
+		'name'=>'previsualizar',
+        'target' => '_blank',
+        'label'=>'informe',
+        'title'=>'Informe calidad previo'
 		)
-	);*/
-	echo $this->Form->end('Enviar informe');
-
-//	echo $this->Form->end('Enviar informe' => 'info_envio'));
+);
+	//echo $this->Form->end('Enviar informe');
+	echo $this->Form->end('Enviar informe',array('name' =>'enviar'));
 ?>
 
 </fieldset>

@@ -77,6 +77,7 @@ echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida'
 echo "  <dt>Observaciones</dt><dd>".nl2br(h($linea['LineaMuestra']['observaciones']))."&nbsp;</dd>\n";
 //Tabla de criba medida y ponderada (con los caracoles)
 //Antes de todo, necesitamos saber que criba corresponde al fondo.
+$fondo=0; //Se asigna en caso de que no haya criba que lo genere.
 for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){
     $fondo = $i;
 }

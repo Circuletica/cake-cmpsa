@@ -20,7 +20,7 @@ echo "<dl>";
 	echo "<dt>A: </dt><dd>".$linea['LineaMuestra']['a']."</dd>\n";
 	echo "<dt>ATN: </dt><dd>".$linea['LineaMuestra']['atn']."</dd>\n";
 	echo "<dt>REF: </dt><dd>".$linea['LineaMuestra']['ref']."</dd>\n";
-echo "</dl>";
+echo "</dl><br><br>";
 }
 
 echo "<dl>\n";
@@ -115,8 +115,6 @@ echo "  <dt>Humedad</dt><dd>".$linea['LineaMuestra']['humedad']."&nbsp;</dd>\n";
 echo "  <dt>Defectos</dt><dd>".nl2br(h($linea['LineaMuestra']['defecto']))."&nbsp;</dd>\n";
 echo "  <dt>Tueste</dt><dd>".$linea['LineaMuestra']['tueste']."&nbsp;</dd>\n";
 echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida']))."&nbsp;</dd>\n";
-echo "</dl>";
-echo "<dl>";
 echo "  <dt>Observaciones</dt><dd>".$linea['LineaMuestra']['observacion_externa']."</dd>\n";
 echo "</dl>";
 $this->end();

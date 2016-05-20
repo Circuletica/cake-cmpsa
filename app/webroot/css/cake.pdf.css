@@ -65,11 +65,8 @@ p {
 	color: #333;
 }
 #footer {
-    clear: both;
-    position: relative;
-    z-index: 10;
-    height: 3em;
-    margin-top: 13em;
+    position:fixed;
+    bottom:0;
 }
 /** containers **/
 div.menuheader{

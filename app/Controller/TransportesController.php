@@ -1,13 +1,6 @@
 <?php
 class TransportesController extends AppController {
 
-    /*   public function excel (){
-	 $this->layout='excel';
-	 $this->Post->recursive = 0;
-	 $this->set('posts', $this->paginate());
-
-    } */
-
     public function index() {
 
 	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
@@ -398,7 +391,7 @@ endforeach;
 	    $this->request->data['Transporte']['id'] = $id;
 	    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
 
-	    if($id == NULL){debug($this->request->data);
+	    if($id == NULL){;
 		if($this->Transporte->save($this->request->data)){
 		    $this->Session->setFlash('Línea de transporte guardada');
 		    $this->redirect(array(
