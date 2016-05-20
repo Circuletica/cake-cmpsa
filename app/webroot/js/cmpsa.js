@@ -139,7 +139,9 @@ function totalCriba(){
 	if(parseFloat(arr[i].value))
 	    tot += parseFloat(arr[i].value);
     }
-    document.getElementById('total').value = tot.toFixed(1);
+   //document.getElementById('total').value = tot.toFixed(1);
+   //document.getElementById('total').innerHTML = tot.toFixed(1);
+   document.getElementById('total').innerHTML = 'TOTAL: ' + tot.toFixed(1);
     if(tot == 100)
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
@@ -326,7 +328,7 @@ function operacionAlmacen() {
     var operacionId = document.getElementById('LineaMuestraOperacionId');
     var almacenId = document.getElementById('LineaMuestraAlmacenTransporteId');
     var sacos = document.getElementById('LineaMuestraSacos');
-    console.log(sacos);
+    //console.log(sacos);
 
     //el almacen seleccionado (si edit)
     var almacenIndex = almacenId.selectedIndex;
@@ -337,8 +339,16 @@ function operacionAlmacen() {
     console.log(operacionSelOpt);
     if (operacionSelOpt != '') {
 	var almacenes = operacionAlmacenes[operacionSelOpt].AlmacenTransporte;
+    console.log(almacenes);
 	var opts = almacenes.length;
-	almacenId.options.length = opts;
+	if (opts != 0){
+        almacenId.options.length = opts;
+    } else {
+       almacenId.options.length = 1;
+        almacenId.options[0].value = '';
+        almacenId.options[0].text = '';
+        almacenId.options[0].selected = true;
+    }
 	for (var i=0; i<opts; i++){
 	    almacenId.options[i].value = almacenes[i].id;
 	    almacenId.options[i].text = almacenes[i].cuenta_marca;

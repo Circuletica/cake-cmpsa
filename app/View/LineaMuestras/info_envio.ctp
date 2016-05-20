@@ -31,11 +31,11 @@ echo $this->Form->create('LineaMuestra');
 	'after' => 'Solución temporal'
 	)
 );*/
-echo $this->Form->input('ref',array(
+echo $this->Form->input('LinueaMuestra.ref',array(
 	'label'=> 'Referencia: '
 	)
 );
-echo $this->Form->input('a', array(
+echo $this->Form->input('LinueaMuestra.a', array(
 	'label'=>'A: '
 	)
 );
@@ -55,11 +55,11 @@ echo $this->Form->input('mensaje',array(
 <fieldset style=width:29%;>
 <legend>&nbsp</legend>
 <?php
-echo $this->Form->input('atn', array(
+echo $this->Form->input('LinueaMuestra.atn', array(
 	'label' =>'ATN: '
 	)
 );
-echo $this->Form->input('observacion_externa', array(
+echo $this->Form->input('LinueaMuestra.observacion_externa', array(
 	'label' => 'Observaciones de la línea',
 	'type' => 'textarea'
 	)
@@ -73,7 +73,7 @@ echo $this->element('cancelarform');
         $muestra['tipo_registro']
          ), 
     array(
-    	'class'=>'botond',
+    	'class'=>'button',
         'escape'=>false,
         'target' => '_blank',
         'title'=>'Informe calidad previo'
@@ -82,8 +82,6 @@ echo $this->element('cancelarform');
 echo $this->Form->submit('Previsualizar informe',
 	array(
 		'name'=>'previsualizar',
-        'target' => '_blank',
-        'label'=>'informe',
         'title'=>'Informe calidad previo'
 		)
 );

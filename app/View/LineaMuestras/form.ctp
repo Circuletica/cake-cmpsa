@@ -194,8 +194,7 @@ echo $this->Html->tableCells(array(
 	'class' => 'criba',
 	'oninput' => 'totalCriba()')
     ),
-    '<b>TOTAL:</b> <input id="total"/>'
-    //'<div id="total">TOTAL: </div>'
+    '<br><b><div id="total">TOTAL: </div></b>'
 )
 	)."\n";
 ?>

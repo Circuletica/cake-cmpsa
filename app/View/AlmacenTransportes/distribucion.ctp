@@ -41,14 +41,8 @@ echo $this->Form->create('AlmacenTransporteAsociado');
 	echo "<dl>";
 		echo "<dt style=width:50%;>Nº de linea </dt>\n";
 		echo "<dd style=margin-left:50%;>";
-		echo $this->html->link($almacentransportes['Transporte']['linea'], array(
-		    'controller' => 'transportes',
-		    'action' => 'view',
-		    $almacentransportes['AlmacenTransporte']['transporte_id']
-		)
-			).'&nbsp;';
+		echo $almacentransportes['Transporte']['linea'].'&nbsp;';
 		echo "</dd>";
-
 		echo "<dt style=width:50%;>Nombre del transporte </dt>\n";
 		echo "<dd style=margin-left:50%;>";
 		echo $this->html->link($almacentransportes['Transporte']['nombre_vehiculo'], array(
@@ -61,12 +55,7 @@ echo $this->Form->create('AlmacenTransporteAsociado');
 
 		echo "<dt style=width:50%;>BL/Matrícula </dt>\n";
 		echo "<dd style=margin-left:50%;>";
-		echo $this->html->link($almacentransportes['Transporte']['matricula'], array(
-		    'controller' => 'transportes',
-		    'action' => 'view',
-		    $almacentransportes['AlmacenTransporte']['transporte_id']
-		    )
-			).'&nbsp;';
+		echo $almacentransportes['Transporte']['matricula'].'&nbsp;';
 		echo "</dd>";
 		echo "<dt style=width:50%;>Almacén</dt>\n";
 		echo "  <dd style=margin-left:50%;>".$almacentransportes['Almacen']['nombre_corto'].'&nbsp;'."</dd>";
