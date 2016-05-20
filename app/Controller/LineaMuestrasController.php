@@ -292,8 +292,6 @@ class LineaMuestrasController extends AppController {
     }
 
  public function info_envio ($id) {
-//$action = $this->action;
-//debug($action);
 	$muestra = $this->LineaMuestra->find(
 		'first',
 		array(
@@ -348,8 +346,9 @@ class LineaMuestrasController extends AppController {
     // Or write it to file directly
     $pdf = $CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].'.pdf');*/
 
-    if (!empty($id)) $this->LineaMuestra->id = $id; 
+if (!empty($id)) $this->LineaMuestra->id = $id; 
 if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
+	debug($id);
 	$this->request->data = $this->LineaMuestra->read(); //Cargo los datos
 	if (isset($this->request->data['previsualizar'])) {	//Pulsamos previsualizar
 		$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos, nos olvidamos de los correos
