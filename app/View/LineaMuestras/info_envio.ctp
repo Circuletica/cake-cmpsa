@@ -7,15 +7,16 @@ echo "<h2>Informe de calidad de la línea de muestra <em>".$muestra['tipo_regist
 
 
 ?>
-<fieldset style=width:35%;>
+<fieldset style=width:44%;>
 <legend>Contactos</legend>
 <?php
 
 foreach($contactos as $contacto){
-		if(!empty($contacto['Contacto']['email'])){//Controlo que no haya contactos sin email
+		if(!empty($contacto['Contacto']['email']) &&  $contacto['Empresa']['nombre_corto']!= 'CMPSA'){//Controlo que no haya contactos sin email
 		$opciones[$contacto['Contacto']['email']] = $contacto['Empresa']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 		}
-	}
+}
+
 	echo $this->Form->input('EnvioCalidad.email', array(
 		'type' => 'select',
 		'multiple' => 'checkbox',
@@ -24,7 +25,7 @@ foreach($contactos as $contacto){
 	);
 ?>
 </fieldset>
-<fieldset>
+<fieldset style=width:25%;>
 <legend>Datos</legend>
 <?php
 /*echo $this->Form->input('email',array(
@@ -53,7 +54,7 @@ echo $this->Form->input('mensaje',array(
 );*/
 ?>
 </fieldset>
-<fieldset style=width:29%;>
+<fieldset style=width:25%;>
 <legend>&nbsp</legend>
 <?php
 echo $this->Form->input('atn', array(
@@ -66,17 +67,18 @@ echo $this->Form->input('observacion_externa', array(
 	)
 );
 echo $this->element('cancelarform');
-echo $this->Form->submit('Previsualizar informe',
+	echo $this->Form->submit('Guardar',array('name' =>'guardar'));
+	echo $this->Form->submit('Previsualizar',
 	array(
 		'name'=>'previsualizar',
         'title'=>'Informe calidad previo',
-        'onclick' => "var openWin = window.open('".$this->Html->url(
+		'onclick' => "var openWin = window.open('".$this->Html->url(
         	array(
         	'action' => 'info_calidad',
 			$muestra['LineaMuestra']['id'],
 			'ext' => 'pdf',
 		    $muestra['tipo_registro']))
-		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"		    
+		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"	    
 	)
 );
 	echo $this->Form->end('Enviar informe',array('name' =>'enviar'));

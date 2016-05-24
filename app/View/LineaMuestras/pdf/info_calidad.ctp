@@ -20,7 +20,7 @@ echo "<dl>";
 	echo "<dt>A: </dt><dd>".$linea['LineaMuestra']['a']."</dd>\n";
 	echo "<dt>ATN: </dt><dd>".$linea['LineaMuestra']['atn']."</dd>\n";
 	echo "<dt>REF: </dt><dd>".$linea['LineaMuestra']['ref']."</dd>\n";
-echo "</dl><br><br>";
+echo "</dl><br>";
 }
 
 echo "<dl>\n";

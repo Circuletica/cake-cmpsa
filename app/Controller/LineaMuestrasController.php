@@ -338,8 +338,9 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 	if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
 		$this->request->data = $this->LineaMuestra->read();//Cargo los datos
 	}else{//es un POST	
-		if (!empty($this->request->data['previsualizar'])) {	//Pulsamos previsualizar
+		if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
 			$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra			
+			$this->Session->setFlash('Los Datos del informe han sido guardados.');
 		}elseif (isset($this->request->data['enviar'])) {
 		    $this->LineaMuestra->save($this->request->data); //Guardamos los datos actuales en los campos
 		    foreach ($this->data['EnvioCalidad']['email'] as $email){
@@ -371,5 +372,9 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 		}
 	}
 }
+	public function guardar ($id){
+		$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra			
+		$this->Session->setFlash('Esto es previsualizar'); 
+	}
 }
 ?>

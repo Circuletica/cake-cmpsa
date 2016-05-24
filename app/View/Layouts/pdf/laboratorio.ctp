@@ -19,12 +19,12 @@
 </div>
 <div id="footer">
 	<?php
-	echo "<h3 style='text-align: center;'>RESULTADOS DE BEBIDA EN PRUEBA DE CAFÉ VERDE</h3>";
+	echo "<h5 style='text-align: center;'>RESULTADOS DE BEBIDA EN PRUEBA DE CAFÉ VERDE</h5>";
 	echo "<hr>";
 	echo "<h5>COMENTARIOS:</h5>";
 
 	?>
-	<br><br><br><br><h5 style='text-align: center;'>LA NO RESPUESTA SE ENTENDERÁ COMO COINCIDENCIA CON ESTE INFORME.</h5>
+	<br><br><h5 style='text-align: center;'>LA NO RESPUESTA SE ENTENDERÁ COMO COINCIDENCIA CON ESTE INFORME.</h5>
 	<hr>
 	Saludos<br>
 	C.M.P.S.A

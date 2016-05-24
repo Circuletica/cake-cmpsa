@@ -66,6 +66,7 @@ p {
 }
 #footer {
     position:fixed;
+    left: 50px;
     bottom:0;
 }
 /** containers **/
@@ -138,7 +139,7 @@ table td.actions a {
 
 /** Scaffold View **/
 dl {
-	line-height: 2em;
+	line-height: 1.7em;
 	margin: 0em 0em;
 	font-size: 78%;
 	/*width: 90%;*/
