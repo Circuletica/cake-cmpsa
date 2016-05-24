@@ -332,38 +332,39 @@ class LineaMuestrasController extends AppController {
 	    	 )
 	    );
 	$this->set('contactos',$contactos);	
-/*
-	$this->autoRender = false; // tell CakePHP that we don't need any view rendering in this case
-	$this->response->file('Informes/' . $muestra['id'].'.pdf', array('download' => true, 'name' => 'casa.pdf'));
-*/
-	//App::uses('CakePdf', 'CakePdf.Pdf');
-    /*require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
-    $CakePdf = new CakePdf();
-    $CakePdf->template('info_calidad');
-    $CakePdf->viewVars($this->viewVars);
-    // Get the PDF string returned
-    //$pdf = $CakePdf->output();
-    // Or write it to file directly
-    $pdf = $CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].'.pdf');*/
+
 
 if (!empty($id)) $this->LineaMuestra->id = $id; 
 	if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
 		$this->request->data = $this->LineaMuestra->read();//Cargo los datos
 	}else{//es un POST	
 		if (!empty($this->request->data['previsualizar'])) {	//Pulsamos previsualizar
-			$this->Session->setFlash('Esto es previsualizar');
 			$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra			
 		}elseif (isset($this->request->data['enviar'])) {
 		    $this->LineaMuestra->save($this->request->data); //Guardamos los datos actuales en los campos
 		    foreach ($this->data['EnvioCalidad']['email'] as $email){
 		   		$lista_email[]= $email;
 		   	}	 
-			$Email = new CakeEmail(); //Llamamos la instancia de email     
+		/*	$Email = new CakeEmail(); //Llamamos la instancia de email     
 			$Email->config('calidad'); //Plantilla de email.php
 			$Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
 			$Email->to($lista_email);
 			$Email->subject('Informe de calidad '.$muestra['tipo_registro'].' / operación '.$muestra['Operacion']['referencia']);
-			$Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la operación '.$muestra['Operacion']['eferencia']);
+			$Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la operación '.$muestra['Operacion']['eferencia']);*/
+
+			$this->autoRender = false; // tell CakePHP that we don't need any view rendering in this case
+			$this->response->file('Informes/' . $muestra['id'].'.pdf', array('download' => true, 'name' => 'casa.pdf'));
+
+			App::uses('CakePdf', 'CakePdf.Pdf');
+		    require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+		    $CakePdf = new CakePdf();
+		    $CakePdf->template('info_calidad');
+		    $CakePdf->viewVars($this->viewVars);
+		    // Get the PDF string returned
+		    //$pdf = $CakePdf->output();
+		    // Or write it to file directly
+		    $pdf = $CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].date('DMY').'pdf');
+
 			// $Email->attachments('home/circuletica/informes_calidad/'.$muestra['tipo_registro']);
 			//$Email->attachments(APP.'//informes_calidad/'.$muestra['tipo_registro'].'.pdf');
 		    $this->Session->setFlash('Informe de calidad enviado.');
