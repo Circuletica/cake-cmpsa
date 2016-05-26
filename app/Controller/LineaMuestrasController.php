@@ -367,25 +367,12 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 		if(!empty($lista_bcc)){
 			$Email->bcc($lista_bcc);
 		}
-			$Email->subject('PRUEBAS//PRUEBAS//Informe de calidad '.$muestra['tipo_registro'].' / operación '.$muestra['Operacion']['referencia']);
-			$Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la operación '.$muestra['Operacion']['referencia']);
+			$Email->subject('PRUEBAS//PRUEBAS//Informe de calidad '.$muestra['tipo_registro'].' / ficha '.$muestra['Operacion']['referencia']);
+			$Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la ficha '.$muestra['Operacion']['referencia']);
 
-			//$this->autoRender = false; // tell CakePHP that we don't need any view rendering in this case
-			//$this->response->file('Informes/' . $muestra['id'].'.pdf', array('download' => true, 'name' => 'casa.pdf'));
-
-			App::uses('CakePdf', 'CakePdf.Pdf');
-		    require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
-		    $CakePdf = new CakePdf();
-		    $CakePdf->template('info_calidad');
-		    $CakePdf->viewVars($this->viewVars);
-		    // Get the PDF string returned
-		    //$pdf = $CakePdf->output();
-		    // Or write it to file directly
-		    $pdf = $CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].date('DMY').'pdf');
-
-			// $Email->attachments('home/circuletica/informes_calidad/'.$muestra['tipo_registro']);
-			//$Email->attachments(APP.'//informes_calidad/'.$muestra['tipo_registro'].'.pdf');
-		    $this->Session->setFlash('<i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i> ¡Informe de calidad enviado¡');
+			//$Email->attachments('home/circuletica/informes_calidad/'.$muestra['tipo_registro']);
+			$Email->attachments(APP.'//Informes/'.$muestra['tipo_registro'].'.pdf');
+		    $this->Session->setFlash('<i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i> ¡Informe de calidad enviado!');
 	  		$this->redirect(array(
 	  			'action'=>'view',
 	  			'controller' =>'LineaMuestras',
@@ -393,6 +380,16 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 	  			)
 	  		);
 		}
+
+		App::uses('CakePdf', 'CakePdf.Pdf');
+	    require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+		Configure::write('debug',0);
+	    $CakePdf = new CakePdf();
+		$CakePdf->template('info_calidad');
+	    //$CakePdf->viewVars($muestra);
+		//$this->response->file('Informes'. DS . $muestra['tipo_registro'].'_'.date('Ymd').'.pdf', array('download' => true, 'name' => 'my-filename.pdf'));
+		//$this->response->download($muestra['LineaMuestra']['id'].'.pdf');
+		$CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].date('Ymd').'.pdf');
 	}
 }
 }

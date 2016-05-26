@@ -82,8 +82,6 @@ CakePlugin::load('CakePdf',array(
 	'routes'=> true
 	)
 );
-//Esto lo ponian como altamente recomendado pero a mi me ha estado dando problemas.Es para generar las imágenes y colores
-//define('DOMPDF_ENABLE_REMOTE', false);
 
 Configure::write('CakePdf', array(
    	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona

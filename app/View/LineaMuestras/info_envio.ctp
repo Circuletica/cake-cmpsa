@@ -117,6 +117,7 @@ echo $this->element('cancelarform');
 	)
 );
 	echo $this->Form->end('Enviar informe',array('name' =>'enviar'));
+	
 ?>
 
 </fieldset>

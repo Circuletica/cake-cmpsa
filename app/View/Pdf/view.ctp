@@ -1,26 +1,25 @@
 <?php
 $this->layout = 'laboratorio';
+
 // Usamos plantilla clásica de vistas View/Common/view.ctp
 $this->extend('/Common/pdf/viewPdf');
 //$this->assign('object', 'Línea de la muestra '.$linea['Muestra']['tipo_registro']);
-//$this->assign('id',$linea['LineaMuestra']['id']);
+$this->assign('id',$linea['LineaMuestra']['id']);
 $this->assign('class','LineaMuestra');
 $this->assign('controller','linea_muestras');
 $this->assign('from_controller','muestras');
 $this->assign('from_id',$linea['Muestra']['id']);
 
-
 $this->start('main');
 echo "<h3 style='text-align: center;'>DEPARTAMENTO DE CONTROL DE CALIDAD</h3>";
 echo "<h3 style='text-align: center;'>INFORME DE CALIDAD Nº ".$linea['Muestra']['tipo_registro'].'</h3>';
 echo "<hr><br>";
-
-if(!empty($linea['LineaMuestra']['a'] or $linea['LineaMuestra']['atn'] or $linea['LineaMuestra']['ref'])){
+if(!empty($destinatario or $atencion or $referencia)){
 echo "<dl>";
-	echo "<dt>A: </dt><dd>".$linea['LineaMuestra']['a']."</dd>\n";
-	echo "<dt>ATN: </dt><dd>".$linea['LineaMuestra']['atn']."</dd>\n";
-	echo "<dt>REF: </dt><dd>".$linea['LineaMuestra']['ref']."</dd>\n";
-echo "</dl><br>";
+	echo "<dt>A: </dt><dd>".$destinatario."</dd>\n";
+	echo "<dt>ATN: </dt><dd>".$atencion."</dd>\n";
+	echo "<dt>REFA: </dt><dd>".$referencia."</dd>\n";
+echo "</dl>";
 }
 
 echo "<dl>\n";
@@ -41,7 +40,10 @@ if ($linea['Muestra']['tipo_id'] != 1) {
 
 
 }
-
+//echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."&nbsp;</dd>\n";
+//echo "  <dt>Observaciones</dt><dd>".nl2br(h($linea['LineaMuestra']['observaciones']))."&nbsp;</dd>\n";
+//Tabla de criba medida y ponderada (con los caracoles)
+//Antes de todo, necesitamos saber que criba corresponde al fondo.
 for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){
     $fondo = $i;
 }
@@ -115,7 +117,9 @@ echo "  <dt>Humedad</dt><dd>".$linea['LineaMuestra']['humedad']."&nbsp;</dd>\n";
 echo "  <dt>Defectos</dt><dd>".nl2br(h($linea['LineaMuestra']['defecto']))."&nbsp;</dd>\n";
 echo "  <dt>Tueste</dt><dd>".$linea['LineaMuestra']['tueste']."&nbsp;</dd>\n";
 echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida']))."&nbsp;</dd>\n";
-echo "  <dt>Observaciones</dt><dd>".$linea['LineaMuestra']['observacion_externa']."</dd>\n";
+echo "</dl>";
+echo "<dl>";
+echo "  <dt>Observaciones</dt><dd>variable que recoge un texto</dd>\n";
 echo "</dl>";
 $this->end();
 ?>
