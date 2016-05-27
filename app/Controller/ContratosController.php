@@ -461,14 +461,24 @@ class ContratosController extends AppController {
 		);
 	}
 
-	public function delete($id = null) {
-		if (!$id or $this->request->is('get')) :
-			throw new MethodNotAllowedException();
-		endif;
-		if ($this->Contrato->delete($id)):
-			$this->Session->setFlash('Contrato borrado');
-			$this->redirect(array('action'=>'index'));
-		endif;
+    public function delete($id = null) {
+	if (!$id or $this->request->is('get')){
+	    throw new MethodNotAllowedException();
 	}
+	if ($this->Contrato->delete($id)) {
+	    //$this->Session->setFlash('Contrato borrado');
+	    $this->Flash->set(
+		'El contrato ha sido borrado',
+		array(
+		    'element' => 'success',
+		    'key' => 'positive',
+		    'params' => array(
+			'referencia' => $id
+		    )
+		)
+	    );
+	    $this->redirect(array('action'=>'index'));
+	}
+    }
 }
 ?>
