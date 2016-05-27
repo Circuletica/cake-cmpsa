@@ -359,7 +359,6 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 		   		$lista_bcc[]= $email;
 		   	}
 		}
-		   	debug($lista_bcc);
 			$Email = new CakeEmail(); //Llamamos la instancia de email     
 			$Email->config('calidad'); //Plantilla de email.php
 			$Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
@@ -367,11 +366,16 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 		if(!empty($lista_bcc)){
 			$Email->bcc($lista_bcc);
 		}
-			$Email->subject('PRUEBAS//PRUEBAS//Informe de calidad '.$muestra['tipo_registro'].' / ficha '.$muestra['Operacion']['referencia']);
+			$Email->subject('PRUEBAS-Informe de calidad '.$muestra['tipo_registro'].' / ficha '.$muestra['Operacion']['referencia']);
 			$Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la ficha '.$muestra['Operacion']['referencia']);
 
-			//$Email->attachments('home/circuletica/informes_calidad/'.$muestra['tipo_registro']);
-			$Email->attachments(APP.'//Informes/'.$muestra['tipo_registro'].'.pdf');
+			$Path = APP."Informes".DS;$fileName = $muestra['tipo_registro'].'.pdf';
+			$ruta_informe = APP.'Informes/';
+			 $this->Session->setFlash($ruta_informe);
+			$Email->attachments(array($Path.$fileName
+				)
+			);
+			//$Email->attachments(APP.'Informes' . DS . $muestra['tipo_registro'].'.pdf');
 		    $this->Session->setFlash('<i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i> ¡Informe de calidad enviado!');
 	  		$this->redirect(array(
 	  			'action'=>'view',
@@ -380,16 +384,16 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 	  			)
 	  		);
 		}
+		$linea = $this->LineaMuestra->findById($muestra['LineaMuestra']['id']);
+		$this->set(compact('linea'));
 
 		App::uses('CakePdf', 'CakePdf.Pdf');
-	    require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
-		Configure::write('debug',0);
+	    //require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php"); PARECE NO NECESARIO
 	    $CakePdf = new CakePdf();
 		$CakePdf->template('info_calidad');
-	    //$CakePdf->viewVars($muestra);
-		//$this->response->file('Informes'. DS . $muestra['tipo_registro'].'_'.date('Ymd').'.pdf', array('download' => true, 'name' => 'my-filename.pdf'));
-		//$this->response->download($muestra['LineaMuestra']['id'].'.pdf');
-		$CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].date('Ymd').'.pdf');
+	    $CakePdf->viewVars(array($linea));
+	    //debug($CakePdf);
+		$CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].'.pdf');
 	}
 }
 }
