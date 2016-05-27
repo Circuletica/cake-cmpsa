@@ -16,6 +16,16 @@
       'target' => '_blank',
       'title'=>'Exportar a PDF')
   );
+ echo " ".$this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i>',array(
+    'controller'=>'transportes',
+    'action'=>'export'
+    ),
+    array(
+      'target'=>'_blank',
+      'escape'=>false,
+      'title'=>'Descargar la información a un archivo CSV'
+      )
+    );  
 ?>
 </div>
 <?php
@@ -26,7 +36,7 @@
   <!--h3>Filtro de transporte</h3-->
 <!--</div>-->
 <div class='ancho_completo'>
-    <table>
+    <table class="tr3 tc4 tc5 tc6 tc7">
 <?php    
 
 	echo $this->Html->tableHeaders(array(

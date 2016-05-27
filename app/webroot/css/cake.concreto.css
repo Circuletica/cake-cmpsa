@@ -615,39 +615,6 @@ input[type=submit],
 	margin: 0px 10px 0px 0px;
 }
 
-/** CRIBA **/
-/*div.cribai {
-	border-right:0;
-	clear: both;
-	color: #333;
-	margin-bottom: 10px;
-	width: 100%;
-	font-weight: normal;
-	font-size: 125%;
-}
-.cribai table{
-	width:55%;
-}
-.cribai tr td {
-	padding: 0.5% 1% 0.5% 1%;
-	text-align: right;
-	vertical-align: top;
-	border-bottom:1px solid #ddd;
-}
-.cribai tr:nth-child(even) {
-	background: #F6F9FA;
-}
-.cribai th{
-	width: 150px;
-}
-.cribai .negrita{
-	float:right;
-	font-weight: bold;
-}
-.cribai .total{
-	font-weight: bold;
-	color: #CE443E;
-}*/
 /* LATERAL DERECHA */
 div.laterald {
 	float:right;

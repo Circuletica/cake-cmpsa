@@ -680,18 +680,6 @@ endforeach;
 	$mes=date('F');
 	$ano = date('Y');
 
-	//	    if ($mes=="1") $mes="Enero";
-	//	    if ($mes=="2") $mes="Febrero";
-	//	    if ($mes=="3") $mes="Marzo";
-	//	    if ($mes=="4") $mes="Abril";
-	//	    if ($mes=="5") $mes="Mayo";
-	//	    if ($mes=="6") $mes="Junio";
-	//	    if ($mes=="7") $mes="Julio";
-	//	    if ($mes=="8") $mes="Agosto";
-	//	    if ($mes=="9") $mes="Setiembre";
-	//	    if ($mes=="10") $mes="Octubre";
-	//	    if ($mes=="11") $mes="Noviembre";
-	//	    if ($mes=="12") $mes="Diciembre";
 	$this->set(compact('dia'));
 	$this->set(compact('mes'));
 	$this->set(compact('ano'));
@@ -720,8 +708,6 @@ endforeach;
     }	
 
     public function asegurar($id = null) {
-	// $this->reclamacion();
-	//$this->render('asegurar');
 
 	setlocale(LC_TIME, "es_ES.UTF-8");
 	$this->pdfConfig = array(
@@ -797,18 +783,6 @@ endforeach;
 	$mes=date('F');
 	$ano = date('Y');
 
-	//	    if ($mes=="1") $mes="Enero";
-	//	    if ($mes=="2") $mes="Febrero";
-	//	    if ($mes=="3") $mes="Marzo";
-	//	    if ($mes=="4") $mes="Abril";
-	//	    if ($mes=="5") $mes="Mayo";
-	//	    if ($mes=="6") $mes="Junio";
-	//	    if ($mes=="7") $mes="Julio";
-	//	    if ($mes=="8") $mes="Agosto";
-	//	    if ($mes=="9") $mes="Setiembre";
-	//	    if ($mes=="10") $mes="Octubre";
-	//	    if ($mes=="11") $mes="Noviembre";
-	//	    if ($mes=="12") $mes="Diciembre";
 	$this->set(compact('dia'));
 	$this->set(compact('mes'));
 	$this->set(compact('ano'));
@@ -834,5 +808,91 @@ endforeach;
 	    )
 	);
     }
+
+    var $helpers = array('Html', 'Form','Csv'); //Necesario para exportar a cSV
+    public function export() {
+
+	$this->set('transportes', $this->Transporte->find(
+	    'all',
+	    array(
+	    	'conditions'=> array(
+	    		'Transporte.fecha_despacho_op' => NULL
+	    		),
+	    	'recursive' => 1,
+	    	'fields' => array(
+	    		'matricula',
+	    		'nombre_vehiculo',
+	    		'fecha_carga',
+	    		'fecha_llegada',
+	    		'fecha_prevista',
+	    		'observaciones'
+	    		),
+	    	'contain'=>array(
+	    		'Operacion'=>array(
+	    			'PesoOperacion',
+	    			'Contrato'=>array(
+	    				'fields'=>array(
+	    					'fecha_transporte'
+	    					),
+	    				'Proveedor' => array(
+	    					'fields'=>array(
+	    						'nombre_corto'
+	    						)
+	    					)
+	    				)
+	    			)
+	    		)
+	    	)
+
+	    )
+	
+    );
+	$this->layout = null;
+	$this->autoLayout = false;
+	Configure::write('debug', '0');
+	$this->response->download("export".date('Ymd').".csv");
+    }
+
+  /*  'Transporte.fecha_despacho_op'=> NULL
+	);
+	$this->paginate['contain'] = array(
+	    'Operacion' => array(
+		'fields'=> array(
+		    'id',
+		    'referencia',
+		    'contrato_id',
+		)				    				    	
+	    ),
+	    'PesoOperacion'=> array(
+		'fields' =>array(
+		    'id',
+		    'peso',
+		    'cantidad_embalaje'
+		)
+	    ),
+	    'Contrato'=>array(	
+		'fields'=> array(
+		    'id',
+		    'fecha_transporte',
+		    'si_entrega',
+		    'proveedor_id'
+		)
+	    ),
+	    'Proveedor'=>array(
+		'fields'=>array(
+		    'id',
+		    'nombre_corto'
+		)
+	    ),
+	    'PuertoDestino' => array(
+		'fields' => array(
+		    'id',
+		    'nombre'
+		)
+	    )
+	);
+*/
+
+
 }
 ?>
