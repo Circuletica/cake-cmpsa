@@ -45,7 +45,7 @@ echo  $this->Html->link(
     '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
     array(
 	'action' =>'info_envio',
-	'from_id'=>$linea['LineaMuestra']['id']
+	$linea['LineaMuestra']['id']
     ),
     array(
 	'escape'=>false,
@@ -77,6 +77,7 @@ echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida'
 echo "  <dt>Observaciones</dt><dd>".nl2br(h($linea['LineaMuestra']['observaciones']))."&nbsp;</dd>\n";
 //Tabla de criba medida y ponderada (con los caracoles)
 //Antes de todo, necesitamos saber que criba corresponde al fondo.
+//$fondo=0; //Se asigna en caso de que no haya criba que lo genere.
 for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){
     $fondo = $i;
 }
@@ -167,7 +168,7 @@ if (($linea['LineaMuestra']['criba13'] && $linea['LineaMuestra']['criba13'] != 0
 	+$linea['CribaPonderada']['criba13']));
 }
 //solo mostramos la línea si tiene algún valor
-if ($linea['LineaMuestra']['criba12'] || $linea['CribaPonderada']['criba12']) {
+if (($linea['LineaMuestra']['criba12'] && $linea['LineaMuestra']['criba12'] !=0) || ($linea['CribaPonderada']['criba12'] && $linea['CribaPonderada']['criba12'] !=0)) {
     echo $this->Html->tableCells(array(
 	$fondo == 12 ? 'Fondo' : 'Criba 12',
 	+$linea['LineaMuestra']['criba12'],

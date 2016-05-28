@@ -269,7 +269,7 @@ div.botond {
 }
 .botond, input[type="submit"] {
 	font-weight:normal;
-	padding: 2px 5px;
+	padding: 4px 8px;
 	text-align: center; 
  	background: #dcdcdc;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));

@@ -1,4 +1,3 @@
-
 <?php
 //Pasamos la lista de 'operacion_almacenes' al javascript de la vista
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
@@ -30,17 +29,6 @@ echo $this->Html->tableCells(
 	    'humedad',
 	    array('autofocus' => 'autofocus')
 	),
-	$this->Form->input('tueste'),
-	isset($operaciones) && $muestra['tipo_id']!='1' ?
-	$this->Form->input(
-	    'operacion_id',
-	    array(
-		'empty' => true,
-		'label' => 'Operación',
-		'onchange' => 'operacionAlmacen()'
-	    )
-	)
-	: '',
 	$this->Form->input('tueste'),
 	$this->Form->input(
 	    'referencia_proveedor',
@@ -206,7 +194,7 @@ echo $this->Html->tableCells(array(
 	'class' => 'criba',
 	'oninput' => 'totalCriba()')
     ),
-    '<div id="total">TOTAL: </div>'
+    '<br><b><div id="total">TOTAL: </div></b>'
 )
 	)."\n";
 ?>

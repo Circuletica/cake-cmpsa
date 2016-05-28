@@ -115,7 +115,14 @@ class MuestrasController extends AppController {
 		    'Proveedor',
 		    'Calidad',
 		    'Contrato',
-		    'LineaMuestra'
+		    'LineaMuestra'=>array(
+		    	'AlmacenTransporte',
+		    	'Operacion'=>array(
+		    		'fields'=>array(
+		    			'referencia'
+		    			)
+		    		)
+		    	)
 		),
 	    )
 	);

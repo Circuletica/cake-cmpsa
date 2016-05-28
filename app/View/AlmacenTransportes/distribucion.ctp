@@ -41,14 +41,8 @@ echo $this->Form->create('AlmacenTransporteAsociado');
 	echo "<dl>";
 		echo "<dt style=width:50%;>Nº de linea </dt>\n";
 		echo "<dd style=margin-left:50%;>";
-		echo $this->html->link($almacentransportes['Transporte']['linea'], array(
-		    'controller' => 'operaciones',
-		    'action' => 'view',
-		    $almacentransportes['AlmacenTransporte']['transporte_id']
-		)
-			).'&nbsp;';
+		echo $almacentransportes['Transporte']['linea'].'&nbsp;';
 		echo "</dd>";
-
 		echo "<dt style=width:50%;>Nombre del transporte </dt>\n";
 		echo "<dd style=margin-left:50%;>";
 		echo $this->html->link($almacentransportes['Transporte']['nombre_vehiculo'], array(
@@ -61,12 +55,7 @@ echo $this->Form->create('AlmacenTransporteAsociado');
 
 		echo "<dt style=width:50%;>BL/Matrícula </dt>\n";
 		echo "<dd style=margin-left:50%;>";
-		echo $this->html->link($almacentransportes['Transporte']['matricula'], array(
-		    'controller' => 'transportes',
-		    'action' => 'view',
-		    $almacentransportes['AlmacenTransporte']['transporte_id']
-		    )
-			).'&nbsp;';
+		echo $almacentransportes['Transporte']['matricula'].'&nbsp;';
 		echo "</dd>";
 		echo "<dt style=width:50%;>Almacén</dt>\n";
 		echo "  <dd style=margin-left:50%;>".$almacentransportes['Almacen']['nombre_corto'].'&nbsp;'."</dd>";
@@ -133,13 +122,8 @@ echo $this->html->tablecells(array(
 		'bgcolor' => '#5FCF80'
 		)
 	),
-	array(
-    $total_asignacion_real,
-	array(
-		'style' => 'font-weight: bold;',
-		'bgcolor' => '#5FCF80'
-		)
-	),
+	'<div id=totalCantidad></div>'
+	,
 	array(
     $total_pendiente,
 	array(
@@ -158,8 +142,18 @@ echo $this->html->tablecells(array(
 	);
 ?>	</table>
 	<?php
-        echo $this->element('cancelarform');
-        echo $this->Form->end('Guardar Distribución');
+	echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Cancelar', 
+	    	array(
+	    		'action'=>'view',
+		   		'controller' => 'almacen_transportes',
+		   		$id
+		   		),
+	     	array(
+		  		'class' => 'botond',
+	    		'escape'=>false
+	    		)
+	     	);
+    echo $this->Form->end('Guardar Distribución');
 	?>
 </div>
 </fieldset>

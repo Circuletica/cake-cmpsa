@@ -1,13 +1,6 @@
 <?php
 class TransportesController extends AppController {
 
-    /*   public function excel (){
-	 $this->layout='excel';
-	 $this->Post->recursive = 0;
-	 $this->set('posts', $this->paginate());
-
-    } */
-
     public function index() {
 
 	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
@@ -94,10 +87,10 @@ $this->set(compact('pdf'));
     ->cc('rodolgl@gmail.com')
  ->send('Un mensaje');*/
 
-	if (!$id) {
+	/*if (!$id) {
 	    $this->Session->setFlash('URL mal formada Transporte/view ');
 	    $this->redirect(array('action'=>'index_trafico'));
-	}
+	}*/
 	$transporte = $this->Transporte->find(
 	    'first',
 	    array(
@@ -398,20 +391,20 @@ endforeach;
 	    $this->request->data['Transporte']['id'] = $id;
 	    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
 
-	    if($id == NULL){
+	    if($id == NULL){;
 		if($this->Transporte->save($this->request->data)){
-		    $this->Session->setFlash('LÃ­nea de transporte guardada');
+		    $this->Session->setFlash('Línea de transporte guardada');
 		    $this->redirect(array(
 			'controller' => 'operaciones',
 			'action' => 'view_trafico',
 			$operacion_id
 		    ));
 		}else{
-		    $this->Session->setFlash('LÃ­nea de transporte NO guardada');
+		    $this->Session->setFlash('Línea de transporte NO guardada');
 		}
 	    }else{
 		if($this->Transporte->save($this->request->data)){
-		    $this->Session->setFlash('LÃ­nea de transporte modificada');
+		    $this->Session->setFlash('Línea de transporte modificada');
 		    $this->redirect(array(
 			'controller' => 'transportes',
 			'action' => 'view',
@@ -428,15 +421,16 @@ endforeach;
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) :
 	    throw new MethodNotAllowedException();
-endif;
-if ($this->Transporte->delete($id)):
-    $this->Session->setFlash('LÃ­nea de transporte borrada');
-$this->redirect(array(
-    'controller' => 'operaciones',
-    'action' => 'view_trafico',
-    $this->params['named']['from_id']
-));
-endif;
+	endif;
+
+	if ($this->Transporte->delete($id)):
+	    $this->Session->setFlash('Línea de transporte borrada');
+		$this->redirect(array(
+		    'controller' => 'operaciones',
+		    'action' => 'view_trafico',
+		    $this->params['named']['from_id']
+	));
+	endif;
     }
 
     public function info_embarque() {

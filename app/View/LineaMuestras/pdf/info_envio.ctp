@@ -82,7 +82,7 @@ $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar'),
 		'escape'=>false
 		)
 	);*/
-	echo $this->Form->end('Enviar informe');
+//	echo $this->Form->end('Enviar informe');
 //	echo $this->Form->end('Enviar informe' => 'info_envio'));
 
 
