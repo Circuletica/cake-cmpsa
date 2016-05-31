@@ -52,25 +52,27 @@ function pesoAsociado(){
     //ahora cambiar la lista de fletes segun puertos/embalajes
     var precioFletes = window.app.precioFletes;
     var fleteId = document.getElementById('OperacionFlete');
-    selectedIndex = document.getElementById('OperacionPuertoCargaId').selectedIndex;
-    var puertoCargaOption = document.getElementById('OperacionPuertoCargaId').options[selectedIndex].value;
-    selectedIndex = document.getElementById('OperacionPuertoDestinoId').selectedIndex;
-    var puertoDestinoOption = document.getElementById('OperacionPuertoDestinoId').options[selectedIndex].value;
-    var opts = precioFletes.length;
-    var listaFlete = [];
-    for (var i=0; i<opts; i++){
-	if (precioFletes[i].Flete.puerto_carga_id == puertoCargaOption
-		&& precioFletes[i].Flete.puerto_destino_id == puertoDestinoOption
-		&& precioFletes[i].Flete.embalaje_id == EmbalajeOption) {
-	    var flete = {name:precioFletes[i].Flete.name, value:precioFletes[i].Flete.value};
-	    listaFlete.push(flete);
+    if (fleteId != null) {
+	selectedIndex = document.getElementById('OperacionPuertoCargaId').selectedIndex;
+	var puertoCargaOption = document.getElementById('OperacionPuertoCargaId').options[selectedIndex].value;
+	selectedIndex = document.getElementById('OperacionPuertoDestinoId').selectedIndex;
+	var puertoDestinoOption = document.getElementById('OperacionPuertoDestinoId').options[selectedIndex].value;
+	var opts = precioFletes.length;
+	var listaFlete = [];
+	for (var i=0; i<opts; i++){
+	    if (precioFletes[i].Flete.puerto_carga_id == puertoCargaOption
+		    && precioFletes[i].Flete.puerto_destino_id == puertoDestinoOption
+		    && precioFletes[i].Flete.embalaje_id == EmbalajeOption) {
+		var flete = {name:precioFletes[i].Flete.name, value:precioFletes[i].Flete.value};
+		listaFlete.push(flete);
+	    }
 	}
-    }
-    var opts = listaFlete.length;
-    fleteId.options.length = opts;
-    for (var i=0; i<opts; i++){
-	fleteId.options[i].value = listaFlete[i].value;
-	fleteId.options[i].text = listaFlete[i].name;
+	var opts = listaFlete.length;
+	fleteId.options.length = opts;
+	for (var i=0; i<opts; i++){
+	    fleteId.options[i].value = listaFlete[i].value;
+	    fleteId.options[i].text = listaFlete[i].name;
+	}
     }
 }
 
@@ -139,13 +141,11 @@ function totalCriba(){
 	if(parseFloat(arr[i].value))
 	    tot += parseFloat(arr[i].value);
     }
-   //document.getElementById('total').value = tot.toFixed(1);
-   //document.getElementById('total').innerHTML = tot.toFixed(1);
-   document.getElementById('total').innerHTML = 'TOTAL: ' + tot.toFixed(1);
+    document.getElementById('total').innerHTML = 'TOTAL: ' + tot.toFixed(1);
     if(tot == 100)
 	document.getElementById('total').style.color = "black";
     if(tot != 100)
-    document.getElementById('total').style.color = "red";
+	document.getElementById('total').style.color = "red";
 }
 
 function contratosMuestra(){
@@ -339,16 +339,16 @@ function operacionAlmacen() {
     console.log(operacionSelOpt);
     if (operacionSelOpt != '') {
 	var almacenes = operacionAlmacenes[operacionSelOpt].AlmacenTransporte;
-    console.log(almacenes);
+	console.log(almacenes);
 	var opts = almacenes.length;
 	if (opts != 0){
-        almacenId.options.length = opts;
-    } else {
-       almacenId.options.length = 1;
-        almacenId.options[0].value = '';
-        almacenId.options[0].text = '';
-        almacenId.options[0].selected = true;
-    }
+	    almacenId.options.length = opts;
+	} else {
+	    almacenId.options.length = 1;
+	    almacenId.options[0].value = '';
+	    almacenId.options[0].text = '';
+	    almacenId.options[0].selected = true;
+	}
 	for (var i=0; i<opts; i++){
 	    almacenId.options[i].value = almacenes[i].id;
 	    almacenId.options[i].text = almacenes[i].cuenta_marca;
@@ -400,37 +400,26 @@ function sacosAsignados(){
     var cantidades = document.getElementsByClassName('cantidad');
 
     var totalCantidad = 0;
-        for(var i=0;i<cantidades.length;i++){
-            totalCantidad += parseInt(cantidades[i].value);
-        }
-    console.log(totalCantidad);
-   // var totalPeso = 0;
-    //var totalReparto = document.getElementById('totalReparto');
     for(var i=0;i<cantidades.length;i++){
-    //el id del socio
-    var id = cantidades[i].id;
-    //la cantidad de sacos del socio
-    var cantidad = cantidades[i].value;
-    //el peso que representa
-    var porcentajeAsociado = cantidad * 100/ totalCantidad;
-    //el elemento html donde vamos a escribir el peso
-    var textoporcentajeAsociado = document.getElementById('porcentajeAsociado' + id);
-    //escribimos el peso
-    textoporcentajeAsociado.innerHTML = porcentajeAsociado.toFixed(2) + "%";
-    //el total de sacos/peso
-  /*  if (cantidad) {
-        totalCantidad += parseInt(cantidad);
+	totalCantidad += parseInt(cantidades[i].value);
     }
-    totalPeso += sacosAsociado;
-    }
-    totalReparto.innerHTML = "Total sacos: " + totalCantidad +
-    " / Total peso: " + totalPeso + "kg";
-    if(tot == 100)
-    document.getElementById('total').style.color = "black";
-    if(tot != 100)
-    document.getElementById('total').style.color = "red";*/
+    console.log(totalCantidad);
+    for(var i=0;i<cantidades.length;i++){
+	//el id del socio
+	var id = cantidades[i].id;
+	//la cantidad de sacos del socio
+	var cantidad = cantidades[i].value;
+	//el peso que representa
+	var porcentajeAsociado = cantidad * 100/ totalCantidad;
+	//el elemento html donde vamos a escribir el peso
+	var textoporcentajeAsociado = document.getElementById('porcentajeAsociado' + id);
+	//escribimos el peso
+	textoporcentajeAsociado.innerHTML = porcentajeAsociado.toFixed(2) + "%";
     }
 }
 
-
+function precioF(){
+    console.log('szas');
+    $(".precioFijo").hide();
+}
 
