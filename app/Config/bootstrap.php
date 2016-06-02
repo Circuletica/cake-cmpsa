@@ -72,9 +72,17 @@ Configure::write('Config.language', 'spa');
  * advanced ways of loading plugins
  *
  * CakePlugin::loadAll(); // Loads all plugins at once
- * CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
+ * CakePlugin::load('DebugKit'); // Loads a single plugin named DebugKit
  */
-CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
+CakePlugin::load('DebugKit'); // Loads a single plugin named DebugKit
+
+/**
+ * To prefer app translation over plugin translation, you can set
+ *
+ * Configure::write('I18n.preferApp', true);
+ */
+
+
 //CakePlugin::load('Highcharts'); // Plugin de gráficas
 CakePlugin::load('CakePdf',array(
 	'bootstrap'=>true,
@@ -86,7 +94,7 @@ CakePlugin::load('CakePdf',array(
 
 Configure::write('CakePdf', array(
    	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona
-	//'binary'=>'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows
+	//'binary'=>'C:\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows
 	//Instalar sudo apt-get install xvfb wkhtmltopdf
 	//'binary'=> '/usr/bin/wkhtmltopdf', //Este es el bueno para ACER
 	'binary'=> '/usr/local/bin/wkhtmltox/bin/wkhtmltopdf',

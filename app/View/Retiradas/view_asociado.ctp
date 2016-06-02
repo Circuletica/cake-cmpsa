@@ -26,14 +26,19 @@ echo "</dl>";
 
 $this->end();
 $this->start('lines');
-echo "<table>\n";
+echo "<table class='tc1 tc2 tr5 tr6'>\n";
 echo $this->Html->tableHeaders(array('Fecha retirada','Cuenta almacén','Almacén','Marca','Sacos retirados','Peso retirado', 'Detalle'));
 
 foreach($retiradas as $retirada):
 		echo $this->Html->tableCells(
 			array(
 				$this->Date->format($retirada['Retirada']['fecha_retirada']),
-				$retirada['AlmacenTransporte']['cuenta_almacen'],
+				$this->html->link($retirada['AlmacenTransporte']['cuenta_almacen'], array(
+					'controller' => 'almacen_transportes',
+					'action'  => 'view',
+					$retirada['Retirada']['almacen_transporte_id']
+					)
+				),
 				$retirada['AlmacenTransporte']['Almacen']['nombre_corto'],
 				$retirada['AlmacenTransporte']['marca_almacen'],
 				$retirada['Retirada']['embalaje_retirado'],

@@ -36,7 +36,10 @@
  */
 	CakePlugin::routes();
 	Router::mapResources(array('Muestra'));
-	Router::parseExtensions('pdf');
+	//Router::parseExtensions('pdf');
+
+	Router::parseExtensions();
+	Router::setExtensions(array('json', 'xml', 'pdf','csv')); 
 
 /**
  * Load the CakePHP default routes. Only remove this if you do not want to use

@@ -444,7 +444,15 @@ class RetiradasController extends AppController {
 	if(!empty($this->request->data)) { //ES UN POST
 	    $this->request->data['Retirada']['id'] = $id;
 
-	    if($id == NULL && $this->Retirada->save($this->request->data)){
+	    if($id == NULL && $this->Retirada->save($this->request->data) && empty($this->params['named']['asociado_id'])){
+		$this->Session->setFlash('Retirada guardada');
+		$this->redirect(array(
+			'action'=>'view_trafico',
+	    	'controller' => 'operaciones',
+	    	$this->params['named']['from_id']
+		)
+	    );
+	    }elseif($id == NULL && $this->Retirada->save($this->request->data) && !empty($this->params['named']['asociado_id'])){
 		$this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
 			'action'=>'view_asociado',
@@ -454,7 +462,6 @@ class RetiradasController extends AppController {
 	    	 'from_id'=>$this->params['named']['from_id']
 		)
 	    );
-
 	    }elseif($id != NULL && !empty($this->params['named']['from_id']) && $this->Retirada->save($this->request->data)){
 		$this->Session->setFlash('Retirada modificada');
 		$this->redirect(array(
@@ -465,14 +472,15 @@ class RetiradasController extends AppController {
 	    	 'from_id'=>$this->params['named']['from_id']
 		)
 	    );
-	    }elseif($id != NULL && $this->Retirada->save($this->request->data)){
+	    }elseif($id == NULL && $this->Retirada->save($this->request->data)){
+	    //Retirada desde index retiradas	
 		$this->Session->setFlash('Retirada guardada');
 		$this->redirect(array(
-			'action'=>'view_asociado',
+			'action'=>'index',
 	    	'controller' => 'retiradas',
-	    	'asociado_id'=> $this->params['named']['asociado_id'],
-	    	'from_controller'=> $this->params['named']['from_controller'],
-	    	 'from_id'=>$this->params['named']['from_id']
+	    //	'asociado_id'=> $this->params['named']['asociado_id'],
+	    //	'from_controller'=> $this->params['named']['from_controller'],
+	    //	 'from_id'=>$this->params['named']['from_id']
 		)
 	    );
 	    }else{

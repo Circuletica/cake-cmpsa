@@ -16,15 +16,24 @@
 //		'from_action' => 'add',
 //		)
 //	);
-	$enlace_anyadir_origen = $this->Html->link ('<i class="fa fa-plus"></i> Añadir Origen', 'javascript:;', array(
-		'onclick' => "var openWin = window.open('".$this->Html->url(array(
-			'controller' => 'paises',
-			//'action' => 'addPopup',
-			'action' => 'add',
-			'from_controller' => 'calidades',
-			'from_action' => 'add'))."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=500,height=500');  return false;",
-	   	   	"class"=>"botond",
-    		'escape' => false)
+	$enlace_anyadir_origen = $this->Html->link(
+		'<i class="fa fa-plus"></i> Añadir Origen',
+		'javascript:;',
+		array(
+		'onclick' => "var openWin = window.open('".
+			$this->Html->url(
+				array(
+					'controller' => 'paises',
+					//'action' => 'addPopup',
+					'action' => 'add',
+					'from_controller' => 'calidades',
+					'from_action' => 'add'
+				)
+			)
+			."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=500,height=500');
+			return false;",
+	   	"class"=>"botond",
+    	'escape' => false)
 	);
 	?>
 	<fieldset>

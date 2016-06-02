@@ -58,20 +58,19 @@
 
 <div class="actions">
 	<?php
-	echo $this->element('filtrooperacion');
-	echo '<br>';
-	echo $this->Html->link('Descargar PDF', array(
-		'action' => 'view',
-		 $id,
-		 'ext' => 'pdf',
-		  '?' => array('download' => 1)
-		  ),
-	array(
+	//echo $this->element('filtrooperacion');
+	//echo '<br>';
+	echo $this->Html->link(('<i class="fa fa-lock fa-lg"></i> Asegurar línea'),array(
+		'action' => 'asegurar',
+ 		$id,
+ 		'ext' => 'pdf',
+ 		date('Ymd').'seguro_linea_'.$transporte['Transporte']['linea']
+ 		), array(
  		'escape'=>false,
  		'target' => '_blank',
- 		'title'=>'Descargar PDF'
+ 		'title'=>'Asegurar línea peso'
  		)
-	);
+ 		);	
 	echo $this->Html->link(('<i class="fa fa-exclamation-circle fa-lg"></i> Reclamación seguro'),array(
 		'action' => 'reclamacion',
  		$id,
@@ -82,18 +81,21 @@
  		'title'=>'Reclamación peso'
  		)
  		);
-	echo $this->Html->link(('<i class="fa fa-lock fa-lg"></i> Asegurar línea'),array(
-		'action' => 'asegurar',
- 		$id,
- 		'ext' => 'pdf',
- 		), array(
- 		'escape'=>false,
- 		'target' => '_blank',
- 		'title'=>'Asegurar línea peso'
- 		)
- 		);
-	?>
-</div>
+
+	echo "<br><hr>";
+
+	echo $this->Html->link(('<i class="fa fa-users" aria-hidden="true" fa-lg></i>
+ Distribución asociados'),array(
+	'action' => 'view',
+	$id,
+	'controller' => 'almacen_transportes',
+	), array(
+	'escape'=>false,
+	//'target' => '_blank',
+	'title'=>'Distribución asociados por cuenta almacén'
+	)
+	);
+?>	</div>
 
 	<div class='view'>
 	<dl><?php
@@ -396,8 +398,9 @@ echo '<br><h3>Reclamación</h3>';
 				array('style' => 'text-align:right'
 					)
 				),
-			$linea['marca_almacen'],			
-			!empty($linea['Retirada'])? '<i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-left"></i>
+			$linea['marca_almacen'],
+			$this->Button->viewLine('almacen_transportes',$linea['id'],'transportes',$linea['transporte_id'])						
+		/*	!empty($linea['Retirada'])? '<i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-left"></i>
 ':$this->Button->editLine(
 				'almacen_transportes',
 				$linea['id'],'transportes',
@@ -409,7 +412,7 @@ echo '<br><h3>Reclamación</h3>';
 				'transportes',
 				$transporte['Transporte']['id'],
 				'la ref. almacén '.$linea['cuenta_almacen']
-				)
+				)*/
 			)
 		);
 
@@ -426,7 +429,6 @@ echo '<br><h3>Reclamación</h3>';
 				echo " - "."<span style=color:#c43c35;>Todos los bultos han sido almacenados</span></h4>";
 			}
 ?>
-	</div>
 	</div>
 	
 </div>

@@ -8,7 +8,7 @@ $this->Html->addCrumb('Operaciones ', array(
 $this->Html->addCrumb('Transporte', array(
 'controller'=>'transportes',
 'action'=>'view',
-$this->params['named']['from_id']
+$transporte_id
 ));
   //FORMULARIO PARA RELLENAR ALMACEN TRANSPORTE
   echo $this->Form->create('AlmacenTransporte');
@@ -16,7 +16,7 @@ $this->params['named']['from_id']
 
 <?php
 if ($action == 'add') {
-  $almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
+  //$almacenado = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
 	echo "<h2>Agregar Cuenta corriente almacén</h2>\n";
   echo "<fieldset>";
   echo "<legend>Info</legend>";
@@ -93,15 +93,9 @@ echo "</dl>";
       'label'=>'Marca almacenada'
       )
     );
-
-   echo $this->Html->Link(
-    '<i class="fa fa-times"></i> Cancelar',
-    $this->request->referer(''), array(
-    'class' => 'botond',
-    'escape'=>false
-    )
-   );
+if ($action == 'edit') {
+}
+  echo $this->element('cancelarform');
 	echo $this->Form->end('Guardar Cuenta Almacén');
 	?> 
-	</div>
 </fieldset>

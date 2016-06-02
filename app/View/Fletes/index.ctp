@@ -18,7 +18,7 @@
 	if (empty($fletes)):
 		echo "No hay fletes en esta lista";
 	else:
-	echo "<table>\n";
+	echo "<table class='tr6 tc7'>\n";
 	echo $this->Html->tableHeaders(array(
 		$this->Paginator->sort('Pais.nombre','País de origen'),
 		$this->Paginator->sort('Naviera.nombre_corto','Naviera'),

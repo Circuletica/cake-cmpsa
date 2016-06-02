@@ -179,11 +179,11 @@ class TestShell extends Shell {
 /**
  * Parse the CLI options into an array CakeTestDispatcher can use.
  *
- * @return array Array of params for CakeTestDispatcher
+ * @return array|null Array of params for CakeTestDispatcher or null.
  */
 	protected function _parseArgs() {
 		if (empty($this->args)) {
-			return;
+			return null;
 		}
 		$params = array(
 			'core' => false,
@@ -336,7 +336,7 @@ class TestShell extends Shell {
  *
  * @param string $file The file to map.
  * @param string $category The test file category.
- * @param boolean $throwOnMissingFile Whether or not to throw an exception.
+ * @param bool $throwOnMissingFile Whether or not to throw an exception.
  * @return array array(type, case)
  * @throws Exception
  */

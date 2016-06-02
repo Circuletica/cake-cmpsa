@@ -149,7 +149,7 @@ echo "<p>\n";
 	?>
 	</div>
 </fieldset>
-<fieldset>
+<fieldset style="width:25%">
 <?php
 echo $this->Form->input('incidencia');
 echo $this->element('cancelarform');

@@ -10,7 +10,7 @@
  <?php //PARA INDEX
  echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
     array(
-      'action' => 'index_trafico',
+      'action' => 'index_trafico_pdf',
       'ext' => 'pdf'),
     array(
       'escape'=>false,
@@ -58,12 +58,22 @@
     'title'=>'Informe de operaciones con suplemento sin reclamación'
     )
   );
-
+   echo $this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> Descargar a CSV',array(
+    'controller'=>'operaciones',
+    'action'=>'export'
+    ),
+    array(
+      'target'=>'_blank',
+      'escape'=>false,
+      'title'=>'Descargar la información a un archivo CSV'
+      )
+    ); 
+   
   ?>
   <!--h3>Filtro de operacion</h3-->
 </div>
 <div class='index'>
-  <table>
+  <table class="tc3 tr6">
   <tr>
     <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Ref. Operación')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Ref. Contrato')?></th>

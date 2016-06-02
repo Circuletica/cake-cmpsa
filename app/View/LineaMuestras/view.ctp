@@ -8,51 +8,50 @@ $this->assign('controller','linea_muestras');
 //$this->assign('from_controller','muestras'); Se comenta porque da error a la hora de ver los botones de borrar.
 $this->assign('from_id',$linea['Muestra']['id']);
 
-$this->Html->addCrumb('Muestras de '.$linea['Muestra']['tipo_nombre'], array(
-    'controller'=>'muestras',
-    'action'=>'index',
-    'Search.tipo_id' => $linea['Muestra']['tipo_id']
-));
-$this->Html->addCrumb('Muestra '.$linea['Muestra']['tipo_registro'], array(
-    'controller'=>'muestras',
-    'action'=>'view',
-    $linea['Muestra']['id']
-));
+$this->Html->addCrumb(
+    'Muestras de '.$linea['Muestra']['tipo_nombre'],
+    array(
+	'controller'=>'muestras',
+	'action'=>'index',
+	'Search.tipo_id' => $linea['Muestra']['tipo_id']
+    )
+);
+$this->Html->addCrumb(
+    'Muestra '.$linea['Muestra']['tipo_registro'],
+    array(
+	'controller'=>'muestras',
+	'action'=>'view',
+	$linea['Muestra']['id']
+    )
+);
 
 
 $this->start('filter');
 echo $this->element('filtromuestra');
 echo '<br>';
-echo $this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i> Informe calidad PDF'),
+echo $this->Html->link(
+    '<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar informe',
     array(
-        'action' => 'info_calidad',
-        $id,
-        'ext' => 'pdf',
-        ), 
+	'action' => 'info_calidad',
+	$id,
+	'ext' => 'pdf',
+    ), 
     array(
-        'escape'=>false,'target' => '_blank','title'=>'Informe calidad previo'));
+	'escape'=>false,'target' => '_blank','title'=>'Informe calidad previo'
+    )
+);
 
-echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info
-    Embarques',
-   array(
-   'action' =>'info_calidad'
-   ),
-   array(
-   'escape'=>false,
-   'title'=>'Informe de situación'
-   )
- );
- echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i>
-Info Despachos',
-   array(
-   'action' =>'info_despacho',
-   'controller' => 'transportes'
-   ),
-   array(
-   'escape'=>false,
-   'title'=>'Informe de despachos'
-   )
- );
+echo  $this->Html->link(
+    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
+    array(
+	'action' =>'info_envio',
+	$linea['LineaMuestra']['id']
+    ),
+    array(
+	'escape'=>false,
+	'title'=>'Envío informe de calidad',
+    )
+);
 $this->end();
 
 $this->start('main');
@@ -78,6 +77,7 @@ echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida'
 echo "  <dt>Observaciones</dt><dd>".nl2br(h($linea['LineaMuestra']['observaciones']))."&nbsp;</dd>\n";
 //Tabla de criba medida y ponderada (con los caracoles)
 //Antes de todo, necesitamos saber que criba corresponde al fondo.
+//$fondo=0; //Se asigna en caso de que no haya criba que lo genere.
 for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){
     $fondo = $i;
 }
@@ -168,43 +168,45 @@ if (($linea['LineaMuestra']['criba13'] && $linea['LineaMuestra']['criba13'] != 0
 	+$linea['CribaPonderada']['criba13']));
 }
 //solo mostramos la línea si tiene algún valor
-if ($linea['LineaMuestra']['criba12'] || $linea['CribaPonderada']['criba12']) {
+if (($linea['LineaMuestra']['criba12'] && $linea['LineaMuestra']['criba12'] !=0) || ($linea['CribaPonderada']['criba12'] && $linea['CribaPonderada']['criba12'] !=0)) {
     echo $this->Html->tableCells(array(
 	$fondo == 12 ? 'Fondo' : 'Criba 12',
 	+$linea['LineaMuestra']['criba12'],
 	+$linea['CribaPonderada']['criba12']));
 }
-echo $this->Html->tableCells(array(
+echo $this->Html->tableCells(
     array(
-    array(
-        'TOTAL',
-        array(
-        'style' => 'font-weight:bold;text-align:center'
-        )
-        ),
-        array(
-            $suma_linea."%",array(
-                'class' => 'total'
-                )
-            ),
-        array(
-            $suma_ponderada."%",array(
-                'class' => 'total'
-                )
-            )
-        )
-        )
+	array(
+	    array(
+		'TOTAL',
+		array(
+		    'style' => 'font-weight:bold;text-align:center'
+		)
+	    ),
+	    array(
+		$suma_linea."%",array(
+		    'class' => 'total'
+		)
+	    ),
+	    array(
+		$suma_ponderada."%",array(
+		    'class' => 'total'
+		)
+	    )
+	)
+    )
 );
-echo $this->Html->tableCells(array(
+echo $this->Html->tableCells(
     array(
-        array(
-            'CRIBA MEDIA',
-            array(
-                'style' => 'font-weight: bold; text-align:center'
-                )
-            ),
-        $linea['CribaPonderada']['criba_media']
-        )
+	array(
+	    array(
+		'CRIBA MEDIA',
+		array(
+		    'style' => 'font-weight: bold; text-align:center'
+		)
+	    ),
+	    $linea['CribaPonderada']['criba_media']
+	)
     )
 );
 echo "</table>\n";

@@ -4,6 +4,7 @@
 /app/Config/email.php
 /app/tmp
 /app/Plugin/Highcharts/*
+/app/Vendor/*
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
 /vendors

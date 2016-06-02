@@ -1,4 +1,4 @@
-<?php
+	<?php
 // Usamos plantilla clásica de vistas View/Common/view.ctp
 $this->extend('/Common/view');
 $this->assign('id',$muestra['Muestra']['id']);
@@ -73,7 +73,7 @@ echo "</dl>";
 $this->end();
 
 $this->start('lines');
-echo "<table>";
+echo "<table class='tr4 tr5'>";
 echo $this->Html->tableHeaders(array('Registro','Marca', 'Cuenta almacén', 'Sacos', 'Operación', 'Detalle'));
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas

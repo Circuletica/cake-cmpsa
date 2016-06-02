@@ -61,26 +61,13 @@ p {
 }
 
 #content{
-	background: #000000;
 	clear: both;
 	color: #333;
-	/*padding: 0px 20px 40px 20px; Anterior*/
-	padding: 0px 40px 40px 40px;
-	overflow: auto;
- 	margin: 0 auto;
-	/*border: 1px solid; /*Borde pestaña y caja*/
 }
 #footer {
-	//*width: 1280px;*/
-    position: absolute;
-    bottom: 20000px;
-    right: 0;
-    height: 10px;
-    border: 3px solid #73AD2;
-/*
- 	margin: 0 auto;
-	clear: both;
-	padding: 0px 20px 0px 10px;*/
+    position:fixed;
+    left: 50px;
+    bottom:0;
 }
 /** containers **/
 div.menuheader{
@@ -104,13 +91,7 @@ div.view {
 	float:right;
 	font-weight: bold;
 }
-div .piepagina{
-	position: fixed;
-    bottom: 20000px;
-    right: 0;
-    height: 10px;
-    border: 3px solid #73AD2;
-}
+
 /** Tables **/
 table {
 	border-right:0;
@@ -158,7 +139,7 @@ table td.actions a {
 
 /** Scaffold View **/
 dl {
-	line-height: 2em;
+	line-height: 1.7em;
 	margin: 0em 0em;
 	font-size: 78%;
 	/*width: 90%;*/

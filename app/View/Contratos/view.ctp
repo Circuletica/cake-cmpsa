@@ -19,8 +19,7 @@ $this->Html->addCrumb(
 $this->end();
 
 $this->start('filter');
-echo $this->Html->link(
-    'Duplicar contrato',
+echo $this->Html->link('<i class="fa fa-clone fa-lg" aria-hidden="true"></i> Duplicar contrato',
     array(
 	'controller' => 'contratos',
 	'action' => 'copy',
@@ -117,8 +116,8 @@ endforeach;
 	</table>
 <?php
 //lotes que quedan por fijar
-echo "<em>Quedan por fijar ".$contrato['RestoLotesContrato']['lotes_restantes']
-." lotes</em>";
+echo "<h4>Quedan por fijar ".$contrato['RestoLotesContrato']['lotes_restantes']
+." lotes</h4>";
 $this->end();
 ?>
 	</div>

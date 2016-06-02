@@ -42,7 +42,7 @@ class AppController extends Controller {
 	'Button',
     );
 
-    public $components = array('DebugKit.Toolbar','Session','RequestHandler');
+    public $components = array('DebugKit.Toolbar','Session','RequestHandler','Flash');
 
     //cambia el 'hasOne' del Model por un 'belongsTo'
     //para que el LEFT JOIN de 3r nivel de la query se haga
@@ -226,4 +226,5 @@ class AppController extends Controller {
 	    return $titulo;
 	}
     }
+
 }
