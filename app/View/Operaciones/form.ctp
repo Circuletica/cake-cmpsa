@@ -72,12 +72,23 @@ echo $this->Form->input(
 	'after' => 'Quedan por fijar '.$contrato['RestoLotesContrato']['lotes_restantes'].' lotes'
     )
 );
+?>
+<?php
 echo $this->Form->input(
     'si_precio_fijo',
     array(
 	'label' => 'Precio fijo',
 	'type' => 'checkbox',
+	'id' => 'siPrecioFijo',
 	'onchange' => 'precioF()'
+    )
+);
+
+echo $this->Form->input(
+    'precio_directo_euro', array(
+	'label' => 'Precio fijo euro/kg',
+	'id' => 'precioFijoEuro',
+	'between' => '(€/kg)'
     )
 );
 ?>
@@ -185,13 +196,14 @@ echo $this->Form->input(
 
 echo $this->Form->input(
     'cambio_dolar_euro', array(
-	'label' => 'Cambio dolar/euro',
+	'label' => 'Cambio $/€',
 	'class' => 'precioFijo',
-	'between' => '($/€)'
+	//'between' => '($/€)'
     )
 );
+
+echo "</div>";
 ?>
-    </div>
 </fieldset>
 <fieldset>
     <legend>Asociados</legend>
@@ -236,4 +248,5 @@ echo $this->Form->end('Guardar Operación');
 
 <script type="text/javascript">
     window.onload = pesoAsociado();
+    window.onload = precioF();
 </script>

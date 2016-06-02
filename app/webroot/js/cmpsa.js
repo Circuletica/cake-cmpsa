@@ -419,7 +419,12 @@ function sacosAsignados(){
 }
 
 function precioF(){
-    console.log('szas');
-    $(".precioFijo").hide();
+    if ($("#siPrecioFijo").is(':checked')) {
+	$(".precioFijo").hide();
+	$("#precioFijoEuro").show();
+    } else {
+	$(".precioFijo").show();
+	$("#precioFijoEuro").hide();
+    }
 }
 
