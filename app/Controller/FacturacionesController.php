@@ -225,7 +225,7 @@ class FacturacionesController extends AppController {
 	$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
 	$this->set('calidad', $operacion['Contrato']['Calidad']['nombre']);
 	$this->set('condicion', $operacion['Contrato']['condicion']);
-	$this->set('coste_teorico', $operacion['PrecioTotalOperacion']['precio_dolar_tonelada']);
+	$this->set('coste_teorico', $operacion['PrecioTotalOperacion']['precio_divisa_tonelada']);
 	$this->set('coste_estimado', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
 	$this->set('cambio_teorico', $operacion['Operacion']['cambio_dolar_euro']);
 	foreach($operacion['Transporte'] as $transporte) {
