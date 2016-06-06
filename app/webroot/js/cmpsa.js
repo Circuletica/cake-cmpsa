@@ -419,12 +419,14 @@ function sacosAsignados(){
 }
 
 function precioF(){
-    if ($("#siPrecioFijo").is(':checked')) {
-	$(".precioFijo").hide();
-	$("#precioFijoEuro").show();
-    } else {
-	$(".precioFijo").show();
-	$("#precioFijoEuro").hide();
-    }
+//    if ($("#siPrecioFijo").is(':checked')) {
+//	$(".precioFijo").hide();
+//	$("#precioFijoEuro").show();
+//    } else {
+//	$(".precioFijo").show();
+//	$("#precioFijoEuro").hide();
+//    }
+    $(".precioFijo").prop('disabled', $("#siPrecioFijo").is(':checked'));
+    $("#precioFijoEuro").prop('disabled', !$("#siPrecioFijo").is(':checked'));
 }
 

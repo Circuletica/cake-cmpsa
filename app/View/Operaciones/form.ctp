@@ -35,11 +35,11 @@ echo $contrato['CanalCompra']['nombre'].' ('.$contrato['Incoterm']['nombre'].' )
 echo "</dd>";
 echo "<dt style=width:30%;>Peso total</dt>\n";
 echo "<dd style=margin-left:30%;>";
-echo $contrato['Contrato']['peso_comprado'].'&nbsp;';
+echo $contrato['Contrato']['peso_comprado'].'kg&nbsp;';
 echo "</dd>";
 echo "<dt style=width:30%;>Peso sin fijar</dt>\n";
 echo "<dd style=margin-left:30%;>";
-echo $contrato['RestoContrato']['peso_restante'].'&nbsp;';
+echo $contrato['RestoContrato']['peso_restante'].'kg&nbsp;';
 echo "</dd>";	
 echo "</dl><br><hr style=border-width:2px><br>";	
 echo $this->Form->input('observaciones');
@@ -77,7 +77,7 @@ echo $this->Form->input(
 echo $this->Form->input(
     'si_precio_fijo',
     array(
-	'label' => 'Precio fijo',
+	'label' => 'Precio fijo ?',
 	'type' => 'checkbox',
 	'id' => 'siPrecioFijo',
 	'onchange' => 'precioF()'
@@ -86,7 +86,7 @@ echo $this->Form->input(
 
 echo $this->Form->input(
     'precio_directo_euro', array(
-	'label' => 'Precio fijo euro/kg',
+	'label' => 'Precio fijo',
 	'id' => 'precioFijoEuro',
 	'between' => '(€/kg)'
     )
@@ -196,9 +196,9 @@ echo $this->Form->input(
 
 echo $this->Form->input(
     'cambio_dolar_euro', array(
-	'label' => 'Cambio $/€',
+	'label' => 'Cambio',
 	'class' => 'precioFijo',
-	//'between' => '($/€)'
+	'between' => '($/€)'
     )
 );
 
