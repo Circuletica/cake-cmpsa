@@ -9,7 +9,7 @@ class Agente extends AppModel{
   //public $belongsTo = 'Pais';
   //public $validate = array(
   //  'nombre' => array(
-  //    'rule' => 'notEmpty',
+  //    'rule' => 'notBlank',
   //    'message' => 'El nombre no puede estar vacio'
   //    )
   //);

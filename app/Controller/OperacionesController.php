@@ -519,19 +519,29 @@ class OperacionesController extends AppController {
 
 
 	if ($this->request->is('post')) {//ES UN POST
+	    $data = &$this->request->data;
 	    //al guardar la linea, se incluye a qué contrato pertenece
 	    $this->request->data['Operacion']['contrato_id'] = $contrato_id;
+	    //si es de precio fijo, quitamos los números que sobran
+	    //realmente no hace falta, porque si el campo es 'disabled' en 
+	    //el formulario, no devuelve valor.
+	    //if ($this->request->data['Operacion']['si_precio_fijo']) {
+	    //    $data['Operacion']['opciones'] = NULL;
+	    //    $data['Operacion']['forfait'] = NULL;
+	    //    $data['Operacion']['seguro'] = NULL;
+	    //    $data['Operacion']['flete'] = NULL;
+	    //}
 	    if($id == NULL){
 		//primero guardamos los datos de Operacion
 		if($this->Operacion->save($this->request->data)){
 		    //luego las cantidades de cada asociado en AsociadoOperacion
-		    foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
+		    foreach ($data['CantidadAsociado'] as $asociado_id => $cantidad) {
 			if ($cantidad != NULL) {
-			    $this->request->data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
-			    $this->request->data['AsociadoOperacion']['asociado_id'] = $asociado_id;
-			    $this->request->data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
+			    $data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
+			    $data['AsociadoOperacion']['asociado_id'] = $asociado_id;
+			    $data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
 			    //$cantidad_embalaje_operacion += $cantidad;
-			    if (!$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']))
+			    if (!$this->Operacion->AsociadoOperacion->saveAll($data['AsociadoOperacion']))
 				throw New Exception('error en guardar AsociadoOperacion');
 			}
 		    }
@@ -548,7 +558,6 @@ class OperacionesController extends AppController {
 		    $this->Session->setFlash('Operación NO guardada');
 		} 
 	    }else{
-
 		/*	if($this->Operacion->save($this->request->data)){
 				$this->Session->setFlash('Operación modificada');
 				$this->redirect(array(

@@ -7,7 +7,7 @@ class Contacto extends AppModel {
     public $displayField = 'nombre';
     public $validate = array(
 	'nombre' => array(
-	    'rule' => 'notEmpty',
+	    'rule' => 'notBlank',
 	    'message' => 'El nombre no puede estar vacio'
 	)
     );

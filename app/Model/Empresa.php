@@ -9,7 +9,7 @@ class Empresa extends AppModel {
         );
 	public $validate = array(
 		'nombre' => array(
-			'rule' => 'notEmpty',
+			'rule' => 'notBlank',
 			'message' => 'El nombre no puede estar vacio'
 		),
 		//a la hora de crear una nueva empresa, como se guarda

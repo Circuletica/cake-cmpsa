@@ -4,15 +4,15 @@ class Transporte extends AppModel {
 	public $recursive = 3;
  	public $validate = array(
     	'nombre_vehiculo' => array(
-      	'rule' => 'notEmpty',
+      	'rule' => 'notBlank',
      	'message' => 'El nombre del vehículo no puede estar vacío'
       ),  	
  	 	'cantidad_embalaje' => array(
-      	'rule' => 'notEmpty',
+      	'rule' => 'notBlank',
       	'message' => 'La cantidad de bultos no puede estar vacía'
       ),
  	   	'linea' => array(
-      	'rule' => 'notEmpty',
+      	'rule' => 'notBlank',
       	'message' => 'La linea de transporte no puede estar vacía'
       )	
     );
