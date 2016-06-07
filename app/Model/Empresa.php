@@ -1,6 +1,9 @@
 <?php
 class Empresa extends AppModel {
-        public $hasMany = 'Contacto';
+        public $hasMany = array(
+        	'Contacto',
+        	'Usuario'
+        	);
         public $belongsTo = array(
                 'Pais' => array(
                         'className' => 'Pais',
