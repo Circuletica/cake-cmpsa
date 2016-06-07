@@ -22,14 +22,14 @@ $this->start('filter');
 //solo se puede generar una financiacion si aun no existe
 if (empty($existe_financiacion)) {
     echo $this->Html->link('<i class="fa fa-file-text-o fa-lg" aria-hidden="true"></i>
- Generar financiación', array(
-	'controller' => 'operaciones',
-	'action' => 'generarFinanciacion',
-	$operacion['Operacion']['id']
-    ),
-    array(
-        'escape' => false)
-    ); 
+	Generar financiación', array(
+	    'controller' => 'operaciones',
+	    'action' => 'generarFinanciacion',
+	    $operacion['Operacion']['id']
+	),
+	array(
+	    'escape' => false)
+	); 
 } else {
     echo $this->Html->link('Ver financiación', array(
 	'controller' => 'financiaciones',
@@ -39,12 +39,12 @@ if (empty($existe_financiacion)) {
 }
 if (empty($existe_facturacion)) {
     echo $this->Html->link('<i class="fa fa-file-text fa-lg" aria-hidden="true"></i>
- Generar facturación', array(
-	'controller' => 'operaciones',
-	'action' => 'generarFacturacion',
-	$operacion['Operacion']['id']
-    ),
-    array('escape' => false)
+	Generar facturación', array(
+	    'controller' => 'operaciones',
+	    'action' => 'generarFacturacion',
+	    $operacion['Operacion']['id']
+	),
+	array('escape' => false)
     ); 
 } else {
     echo $this->Html->link('Ver facturación', array(
@@ -116,20 +116,25 @@ if ($operacion['Contrato']['Incoterm']['si_flete']) {
 	'$/Tm&nbsp;'.
 	"</dd>";
 }
-echo "  <dt>Cambio dolar/euro:</dt>\n";
-echo "  <dd>".$operacion['Operacion']['cambio_dolar_euro'].'&nbsp;'."</dd>";
-echo "  <dt>Precio €/Tm:</dt>\n";
-echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_tonelada'].'€/Tm&nbsp;'."</dd>";
-if ($operacion['Contrato']['Incoterm']['si_seguro']) {
-    echo "  <dt>Seguro:</dt>\n";
-    echo "  <dd>".$operacion['Operacion']['seguro'].'%'
-	.' ('.$operacion['PrecioTotalOperacion']['seguro_euro_tonelada'].'€/Tm)'
-	.'&nbsp;'."</dd>";
+if (isset($operacion['Operacion']['precio_directo_euro'])) {
+    echo "  <dt>Precio €/kg directo:</dt>\n";
+    echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_directo_euro'].'€/kg&nbsp;'."</dd>";
+}else{
+    echo "  <dt>Cambio dolar/euro:</dt>\n";
+    echo "  <dd>".$operacion['Operacion']['cambio_dolar_euro'].'&nbsp;'."</dd>";
+    echo "  <dt>Precio €/Tm:</dt>\n";
+    echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_tonelada'].'€/Tm&nbsp;'."</dd>";
+    if ($operacion['Contrato']['Incoterm']['si_seguro']) {
+	echo "  <dt>Seguro:</dt>\n";
+	echo "  <dd>".$operacion['Operacion']['seguro'].'%'
+	    .' ('.$operacion['PrecioTotalOperacion']['seguro_euro_tonelada'].'€/Tm)'
+	    .'&nbsp;'."</dd>";
+    }
+    echo "  <dt>Forfait:</dt>\n";
+    echo "  <dd>".$operacion['Operacion']['forfait'].'€/Tm&nbsp;'."</dd>";
+    echo "  <dt>Precio €/kg estimado:</dt>\n";
+    echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
 }
-echo "  <dt>Forfait:</dt>\n";
-echo "  <dd>".$operacion['Operacion']['forfait'].'€/Tm&nbsp;'."</dd>";
-echo "  <dt>Precio €/kg estimado:</dt>\n";
-echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
 echo "  <dt>Comentarios:</dt>\n";
 echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
 echo "</dl>";
@@ -151,5 +156,5 @@ if (isset($lineas_reparto)) {
 echo "</table>\n";
 $this->end();
 ?>
-		</div>
+    </div>
 </div>

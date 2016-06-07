@@ -72,9 +72,16 @@ Configure::write('Config.language', 'spa');
  * advanced ways of loading plugins
  *
  * CakePlugin::loadAll(); // Loads all plugins at once
- * CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
+ * CakePlugin::load('DebugKit'); // Loads a single plugin named DebugKit
  */
-CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
+CakePlugin::load('DebugKit'); // Loads a single plugin named DebugKit
+
+/**
+ * To prefer app translation over plugin translation, you can set
+ *
+ * Configure::write('I18n.preferApp', true);
+ */
+
 
 //CakePlugin::load('Highcharts'); // Plugin de gráficas
 CakePlugin::load('CakePdf',array(
