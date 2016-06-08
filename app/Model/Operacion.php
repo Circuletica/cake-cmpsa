@@ -6,7 +6,7 @@ class Operacion extends AppModel {
 
 	public $validate = array(
       'referencia' => array(
-      'rule' => 'notEmpty',
+      'rule' => 'notBlank',
       'message' => 'La referencia no puede estar vacía')
     );
 

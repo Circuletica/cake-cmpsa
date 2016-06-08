@@ -38,10 +38,10 @@ class Contrato extends AppModel {
 	'
     );
     public $validate = array(
-	'incoterm_id' => array('rule' => 'notEmpty'),
-	'proveedor_id' => array('rule' => 'notEmpty'),
-	'calidad_id' => array('rule' => 'notEmpty'),
-	'referencia' => array('rule' => 'notEmpty')
+	'incoterm_id' => array('rule' => 'notBlank'),
+	'proveedor_id' => array('rule' => 'notBlank'),
+	'calidad_id' => array('rule' => 'notBlank'),
+	'referencia' => array('rule' => 'notBlank')
     );
     public $hasOne = array(
 	'RestoContrato' => array(
