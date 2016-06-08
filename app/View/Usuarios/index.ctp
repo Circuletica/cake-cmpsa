@@ -19,14 +19,14 @@ $this->Html->addCrumb('Usuarios', '/Usuarios');
 if(empty($usuarios)): ?>
 No hay usuarios en esta lista
 <?php else: ?>
-<table class='tc5 tc6'>
+<table class='tc5 tc6 tc7'>
 <tr>
   <th>Nombre</th>
   <th>Función</th>
   <th>Teléfono1</th>
   <th>Teléfono2</th>
   <th>Email</th>
-  <th>Empresa</th>
+  <th>Departamento</th>
   <th>&nbspDetalle&nbsp</th>
 </tr>
 <?php foreach ($usuarios as $usuario): ?>
@@ -47,7 +47,7 @@ No hay usuarios en esta lista
   <?php echo $this->Text->autoLinkEmails($usuario['Usuario']['email'])?>
   </td>
   <td>
-  <?php echo $usuario['Empresa']['nombre'] ?>
+  <?php echo $usuario['Departamento']['nombre'] ?>
   </td>
   <td>
 <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',

@@ -1,8 +1,7 @@
 <?php
 class Empresa extends AppModel {
         public $hasMany = array(
-        	'Contacto',
-        	'Usuario'
+        	'Contacto'
         	);
         public $belongsTo = array(
                 'Pais' => array(

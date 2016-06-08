@@ -3,7 +3,6 @@ class UsuariosController extends AppController {
  var $name = 'Usuarios';
     function index() {
 	$this->set('usuarios', $this->Usuario->find('all'));
-//	$this->set('empresas', $this->Usuario->Empresa->find('list'));
     }
 
     public function add() {
@@ -19,16 +18,6 @@ class UsuariosController extends AppController {
     public function form($id = null) {
 	$this->set('action', $this->action);
 	//necesitamos el nombre de la empresa para el breadcrumb y el título de la vista
-	$empresa = $this->Usuario->Empresa->find(
-		'first',
-		array(
-			'conditions' => array(
-				'Empresa.nombre_corto'=> 'CMPSA'
-				)
-			)
-	);
-	$empresa_id = $empresa['Empresa']['id'];
-	$this->set('empresa',$empresa);
 	$this->set('departamentos',$this->Usuario->Departamento->find('list'));
 
 	if (!empty($id)) {
@@ -37,7 +26,6 @@ class UsuariosController extends AppController {
 	    $this->set('usuario', $usuario['Usuario']['nombre']);
 	}
 	if (!empty($this->request->data)){  //es un POST
-	    $this->request->data['Usuario']['empresa_id'] = $empresa_id;
 	    if($this->Usuario->save($this->request->data)) {
 		$this->Session->setFlash('Usuario guardado');
 		$this->redirect(

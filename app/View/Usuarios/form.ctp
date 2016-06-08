@@ -6,7 +6,7 @@ if ($action == 'add') {
 if ($action == 'edit') {
     echo "<h2>Modificar Usuario ".$usuario."</h2>\n";
 }
-$this->Html->addCrumb($empresa['Empresa']['nombre'], '/Usuarios');
+$this->Html->addCrumb('Usuarios');
 echo $this->Form->create('Usuario');
 ?>
 <fieldset>

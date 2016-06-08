@@ -3,7 +3,7 @@
 //echo $this->Form->create('EnvioCalidad');
 echo $this->Form->create('LineaMuestra');
 
-echo "<h2>Informe de calidad de la línea de muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
+echo "<h2>Informe de calidad de la línea de muestra <em>".$linea_muestra['tipo_registro']."</em></h2>\n";
 
 
 ?>
@@ -110,9 +110,9 @@ echo $this->element('cancelarform');
 		'onclick' => "var openWin = window.open('".$this->Html->url(
         	array(
         	'action' => 'info_calidad',
-			$muestra['LineaMuestra']['id'],
+			$linea_muestra['LineaMuestra']['id'],
 			'ext' => 'pdf',
-		    $muestra['tipo_registro']))
+		    $linea_muestra['tipo_registro']))
 		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"	    
 	)
 );
