@@ -26,9 +26,9 @@ foreach($contactos as $contacto){
 	);
 	echo "<hr><br>";
 	echo "<legend>Contactos CMPSA</legend>";
-	foreach($contactos as $contacto){
-		if(!empty($contacto['Contacto']['email']) &&  $contacto['Empresa']['nombre_corto']== 'CMPSA' && $contacto['Contacto']['departamento_id'] == 2){//Controlo que no haya contactos sin email
-		$calidad[$contacto['Contacto']['email']] = $contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
+	foreach($usuarios as $usuario){
+		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 2){//Controlo que no haya contactos sin email
+		$calidad[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
 		}
 	}
 	echo $this->Form->input('', array(
@@ -42,9 +42,9 @@ foreach($contactos as $contacto){
 		'options'=>$calidad
 		)
 	);	
-	foreach($contactos as $contacto){
-		if(!empty($contacto['Contacto']['email']) &&  $contacto['Empresa']['nombre_corto']== 'CMPSA' && $contacto['Contacto']['departamento_id'] == 4){//Controlo que no haya contactos sin email
-		$trafico[$contacto['Contacto']['email']] = $contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
+	foreach($usuarios as $usuario){
+		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 4){//Controlo que no haya usuarios sin email
+		$trafico[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
 		}
 	}
 		echo $this->Form->input('', array(

@@ -292,6 +292,39 @@ class LineaMuestrasController extends AppController {
     }
 
  public function info_envio ($id) {
+ 	
+//Necesario para volcar los datos en el PDF
+ 	$linea = $this->LineaMuestra->findById($id);
+	$this->set('tipos', $this->tipoMuestras);
+	$this->set('linea',$linea);
+	$suma_linea = $linea['LineaMuestra']['criba20'] +
+	    $linea['LineaMuestra']['criba19'] +
+	    $linea['LineaMuestra']['criba13p'] +
+	    $linea['LineaMuestra']['criba18'] +
+	    $linea['LineaMuestra']['criba12p'] +
+	    $linea['LineaMuestra']['criba17'] +
+	    $linea['LineaMuestra']['criba11p'] +
+	    $linea['LineaMuestra']['criba16'] +
+	    $linea['LineaMuestra']['criba10p'] +
+	    $linea['LineaMuestra']['criba15'] +
+	    $linea['LineaMuestra']['criba9p'] +
+	    $linea['LineaMuestra']['criba14'] +
+	    $linea['LineaMuestra']['criba8p'] +
+	    $linea['LineaMuestra']['criba13'] +
+	    $linea['LineaMuestra']['criba12'];
+	$suma_ponderada = $linea['CribaPonderada']['criba20'] +
+	    $linea['CribaPonderada']['criba19'] +
+	    $linea['CribaPonderada']['criba18'] +
+	    $linea['CribaPonderada']['criba17'] +
+	    $linea['CribaPonderada']['criba16'] +
+	    $linea['CribaPonderada']['criba15'] +
+	    $linea['CribaPonderada']['criba14'] +
+	    $linea['CribaPonderada']['criba13'] +
+	    $linea['CribaPonderada']['criba12'];
+	$this->set('suma_linea',$suma_linea);
+	$this->set('suma_ponderada',$suma_ponderada);
+
+
 	$linea_muestra = $this->LineaMuestra->find(
 		'first',
 		array(
@@ -321,6 +354,7 @@ class LineaMuestrasController extends AppController {
 	//$linea_muestra tiene el mismo valor
 	$this->set('linea_muestra',$linea_muestra);
 
+//Contactos de los asociados
 	$this->loadModel('Contacto');
 	$contactos = $this->Contacto->find(
 	    'all',
@@ -332,6 +366,25 @@ class LineaMuestrasController extends AppController {
 	    	 )
 	    );
 	$this->set('contactos',$contactos);	
+
+//Usuarios de la CMPSA
+	$this->loadModel('Usuario');
+	$usuarios = $this->Usuario->find(
+	    'all',
+	    array(
+	    	 'conditions' =>array(
+	    	 	'departamento_id' => array(2,4)
+	    	 	),
+	    	 'contain'=>array(
+	    	 	'Departamento'=>array(
+	    	 		'fields'=>array(
+	    	 			'nombre'
+	    	 			)
+	    	 		)	    	 	
+	    	 	)
+	    	 )
+	    );
+	$this->set('usuarios',$usuarios);		
 
 
 if (!empty($id)) $this->LineaMuestra->id = $id; 
@@ -354,19 +407,19 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 		   		$lista_bcc[]= $email;
 		   	}	
 		 }
-	/*	if(!empty($this->data['calidad'])){
+		if(!empty($this->data['calidad'])){
 		   	foreach ($this->data['calidad'] as $email){
 		   		$lista_bcc[]= $email;
 		   	}
 		}
-		   	debug($lista_bcc);*/
+		   	debug($lista_bcc);
 
 //GENERAMOS EL PDF
 			App::uses('CakePdf', 'CakePdf.Pdf');
 		    require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
 		    $CakePdf = new CakePdf();
 		    $CakePdf->template('info_calidad');
-		    $CakePdf->viewVars(array('linea_muestra'=>$linea_muestra));
+		    $CakePdf->viewVars(array('linea'=>$linea));
 		    // Get the PDF string returned
 		    //$pdf = $CakePdf->output();
 		    // Or write it to file directly
@@ -383,11 +436,6 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 			$Email->subject('PRUEBAS//PRUEBAS//Informe de calidad '.$linea_muestra['tipo_registro'].' / operación '.$linea_muestra['Operacion']['referencia']);
 			$Email->attachments(APP.'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 			$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la operación '.$linea_muestra['Operacion']['referencia']);
-
-			//$this->autoRender = false; // tell CakePHP that we don't need any view rendering in this case
-			//$this->response->file('Informes/' . $linea_muestra['id'].'.pdf', array('download' => true, 'name' => 'casa.pdf'));
-
-
 
 		    $this->Session->setFlash('<i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i> ¡Informe de calidad enviado!');
 	  		$this->redirect(array(
