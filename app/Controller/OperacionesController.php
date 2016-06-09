@@ -901,11 +901,15 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	if (!$id or $this->request->is('get')) {
 	    throw new MethodNotAllowedException();
 	}
+	$operacion = $this->Operacion->findById($id);
 	if ($this->Operacion->delete($id)) {
 	    $this->Session->setFlash('Línea de contrato borrada');
 	    $this->redirect(array(
-		'controller' => 'operaciones',
-		'action'=>'index',
+//		'controller' => 'operaciones',
+//		'action'=>'index',
+		'controller' => 'contratos',
+		'action' => 'view',
+		$operacion['Contrato']['id']
 	    ));
 	}
     }
