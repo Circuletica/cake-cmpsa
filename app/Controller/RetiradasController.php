@@ -498,14 +498,21 @@ class RetiradasController extends AppController {
 	if (!$id or $this->request->is('get')){
 	    throw new MethodNotAllowedException();
 	}
+	$asociado_id = $this->Retirada->find(
+		'first',
+		array(
+			'conditions' => array(
+				'Retirada.id' => $id
+				)
+			)
+		);
+	$asociado_id = $asociado_id['Retirada']['asociado_id'];
 		if ($this->Retirada->delete($id))	{
-		//	$this ->view_asociado();
-		//	$this ->render('view_asociado');
-		$this->Session->setFlash('Retirada borrada');
+		$this->Flash->set('Retirada borrada');
 	    $this->redirect(array(
 	    	'action'=>'view_asociado',
 	    	'controller' =>'retiradas',
-	    	'asociado_id'=> $this->params['named']['asociado_id'],
+	    	'asociado_id'=> $asociado_id,
 	    	'from_controller'=> $this->params['named']['from_controller'],
 	    	'from_id'=>$this->params['named']['from_id']
 	    	)
