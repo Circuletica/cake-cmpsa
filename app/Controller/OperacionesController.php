@@ -942,8 +942,6 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	);
     }
 
-    var $helpers = array('Html', 'Form','Csv'); //Necesario para exportar a cSV
-
     public function export() {
 	$this->set('operaciones', $this->Operacion->find(
 	    'all',

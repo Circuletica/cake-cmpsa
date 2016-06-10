@@ -810,7 +810,6 @@ endforeach;
 	);
     }
 
-    var $helpers = array('Html', 'Form','Csv'); //Necesario para exportar a cSV
     public function export() {
 
 	$this->set('transportes', $this->Transporte->find(

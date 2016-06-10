@@ -40,6 +40,7 @@ class AppController extends Controller {
 	'Form',
 	'Date',
 	'Button',
+	'Csv'
     );
 
     public $components = array('DebugKit.Toolbar','Session','RequestHandler','Flash','History');

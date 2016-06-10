@@ -77,7 +77,7 @@ echo "  <dt>Bebida</dt><dd>".nl2br(h($linea['LineaMuestra']['apreciacion_bebida'
 echo "  <dt>Observaciones</dt><dd>".nl2br(h($linea['LineaMuestra']['observaciones']))."&nbsp;</dd>\n";
 //Tabla de criba medida y ponderada (con los caracoles)
 //Antes de todo, necesitamos saber que criba corresponde al fondo.
-//$fondo=0; //Se asigna en caso de que no haya criba que lo genere.
+$fondo=11; //Se asigna en caso de que no haya criba que lo genere.
 for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){
     $fondo = $i;
 }
@@ -88,35 +88,35 @@ $this->start('lines');
 echo "<table style=width:45%;margin-left:25%>\n";
 echo $this->Html->tableHeaders(array('Criba', 'Medida original', 'Medida ponderada'));
 //solo mostramos la línea si tiene algún valor
-if ($linea['LineaMuestra']['criba20'] || $linea['CribaPonderada']['criba20']) {
+if (!empty((int)$linea['LineaMuestra']['criba20'])) {
     echo $this->Html->tableCells(array(
 	$fondo == 20 ? 'Fondo' : 'Criba 20',
 	+$linea['LineaMuestra']['criba20'],
 	+$linea['CribaPonderada']['criba20']));
 }
 //solo mostramos la línea si tiene algún valor
-if ($linea['LineaMuestra']['criba19'] || $linea['CribaPonderada']['criba19']) {
+if (!empty((int)$linea['LineaMuestra']['criba19'])) {
     echo $this->Html->tableCells(array(
 	$fondo == 19 ? 'Fondo' : 'Criba 19',
 	+$linea['LineaMuestra']['criba19'],
 	+$linea['CribaPonderada']['criba19']));
 }
 //solo mostramos la línea si tiene algún valor
-if ($linea['LineaMuestra']['criba13p'] && $linea['LineaMuestra']['criba13p'] != 0) {
+if (!empty((int)$linea['LineaMuestra']['criba13p'])) {
     echo $this->Html->tableCells(array('Caracol 13', +$linea['LineaMuestra']['criba13p'], '&nbsp;'));
 }
 //Mostrar la línea si la criba original o la criba ponderada no es NULL o 0
-if (($linea['LineaMuestra']['criba18'] && $linea['LineaMuestra']['criba18'] != 0) || ($linea['CribaPonderada']['criba18'] && $linea['CribaPonderada']['criba18'] != 0)) {
+if (!empty((int)$linea['LineaMuestra']['criba18']) || !empty((int)$linea['CribaPonderada']['criba18'])) {
     echo $this->Html->tableCells(array(
 	$fondo == 18 ? 'Fondo' : 'Criba 18',
 	+$linea['LineaMuestra']['criba18'],
 	+$linea['CribaPonderada']['criba18']));
 }
 //solo mostramos la línea si tiene algún valor
-if ($linea['LineaMuestra']['criba12p'] && $linea['LineaMuestra']['criba12p'] != 0) {
+if (!empty((int)$linea['LineaMuestra']['criba12p'])) {
     echo $this->Html->tableCells(array('Caracol 12', +$linea['LineaMuestra']['criba12p'], '&nbsp;'));
 }
-if (($linea['LineaMuestra']['criba17'] && $linea['LineaMuestra']['criba17'] != 0) || ($linea['CribaPonderada']['criba17'] && $linea['CribaPonderada']['criba17'] != 0)) {
+if (!empty((int)$linea['LineaMuestra']['criba17']) || !empty((int)$linea['CribaPonderada']['criba17'])) {
     echo $this->Html->tableCells(array(
 	$fondo == 17 ? 'Fondo' : 'Criba 17',
 	+$linea['LineaMuestra']['criba17'],
@@ -124,51 +124,52 @@ if (($linea['LineaMuestra']['criba17'] && $linea['LineaMuestra']['criba17'] != 0
     );
 }
 //solo mostramos la línea si tiene algún valor
-if ($linea['LineaMuestra']['criba11p'] && $linea['LineaMuestra']['criba11p'] != 0) {
+if (!empty((int)$linea['LineaMuestra']['criba11p'])) {
     echo $this->Html->tableCells(array('Caracol 11', +$linea['LineaMuestra']['criba11p'], '&nbsp;'));
 }
 //Mostrar la línea si la criba original o la criba ponderada no es NULL o 0
-if (($linea['LineaMuestra']['criba16'] && $linea['LineaMuestra']['criba16'] != 0) || ($linea['CribaPonderada']['criba16'] && $linea['CribaPonderada']['criba16'] != 0)) {
+if (!empty((int)$linea['LineaMuestra']['criba16']) || !empty((int)$linea['CribaPonderada']['criba16'])) {
     echo $this->Html->tableCells(array(
 	$fondo == 16 ? 'Fondo' : 'Criba 16',
 	+$linea['LineaMuestra']['criba16'],
 	+$linea['CribaPonderada']['criba16']));
 }
 //solo mostramos la línea si tiene algún valor
-if ($linea['LineaMuestra']['criba10p'] && $linea['LineaMuestra']['criba10p'] != 0) {
+if (!empty((int)(int)$linea['LineaMuestra']['criba10p'])) {
     echo $this->Html->tableCells(array('Caracol 10', +$linea['LineaMuestra']['criba10p'], '&nbsp;'));
 }
 //Mostrar la línea si la criba original o la criba ponderada no es NULL o 0
-if (($linea['LineaMuestra']['criba15'] && $linea['LineaMuestra']['criba15'] != 0) || ($linea['CribaPonderada']['criba15'] && $linea['CribaPonderada']['criba15'] != 0)) {
+if (!empty((int)(int)$linea['LineaMuestra']['criba15']) || !empty((int)$linea['CribaPonderada']['criba15'])) {
     echo $this->Html->tableCells(array(
 	$fondo == 15 ? 'Fondo' : 'Criba 15',
 	+$linea['LineaMuestra']['criba15'],
 	+$linea['CribaPonderada']['criba15']));
 }
 //solo mostramos la línea si tiene algún valor
-if ($linea['LineaMuestra']['criba9p'] && $linea['LineaMuestra']['criba9p'] != 0) {
+if (!empty((int)$linea['LineaMuestra']['criba9p'])) {
     echo $this->Html->tableCells(array('Caracol 9', +$linea['LineaMuestra']['criba9p'], '&nbsp;'));
 }
 //Mostrar la línea si la criba original o la criba ponderada no es NULL o 0
-if (($linea['LineaMuestra']['criba14'] && $linea['LineaMuestra']['criba14'] != 0) || ($linea['CribaPonderada']['criba14'] && $linea['CribaPonderada']['criba14'] != 0)) {
+if (!empty((int)$linea['LineaMuestra']['criba14']) || !empty((int)$linea['CribaPonderada']['criba14'])) {
     echo $this->Html->tableCells(array(
 	$fondo == 14 ? 'Fondo' : 'Criba 14',
 	+$linea['LineaMuestra']['criba14'],
 	+$linea['CribaPonderada']['criba14']));
 }
 //solo mostramos la línea si tiene algún valor
-if ($linea['LineaMuestra']['criba8p'] && $linea['LineaMuestra']['criba8p'] != 0) {
+if (!empty((int)$linea['LineaMuestra']['criba8p'])) {
     echo $this->Html->tableCells(array('Caracol 8', +$linea['LineaMuestra']['criba8p'], '&nbsp;'));
 }
 //Mostrar la línea si la criba original o la criba ponderada no es NULL o 0
-if (($linea['LineaMuestra']['criba13'] && $linea['LineaMuestra']['criba13'] != 0) || ($linea['CribaPonderada']['criba13'] && $linea['CribaPonderada']['criba13'] != 0)) {
+if (!empty((int)$linea['LineaMuestra']['criba13']) || !empty((int)$linea['CribaPonderada']['criba13'])) {
     echo $this->Html->tableCells(array(
 	$fondo == 13 ? 'Fondo' : 'Criba 13',
 	+$linea['LineaMuestra']['criba13'],
 	+$linea['CribaPonderada']['criba13']));
 }
 //solo mostramos la línea si tiene algún valor
-if (($linea['LineaMuestra']['criba12'] && $linea['LineaMuestra']['criba12'] !=0) || ($linea['CribaPonderada']['criba12'] && $linea['CribaPonderada']['criba12'] !=0)) {
+//if (($linea['LineaMuestra']['criba12'] && $linea['LineaMuestra']['criba12'] !=0) || ($linea['CribaPonderada']['criba12'] && $linea['CribaPonderada']['criba12'] !=0)) {
+if (!empty((int)$linea['LineaMuestra']['criba12'])) {
     echo $this->Html->tableCells(array(
 	$fondo == 12 ? 'Fondo' : 'Criba 12',
 	+$linea['LineaMuestra']['criba12'],
