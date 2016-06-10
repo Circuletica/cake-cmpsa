@@ -2,6 +2,8 @@
 class OperacionesController extends AppController {
 
     public function index() {
+    $this->set('action', $this->action);	//Se usa para tener la misma vista
+
 	$this->Operacion->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
 	$this->paginate['order'] = array('Operacion.referencia' => 'asc');
 	$this->paginate['recursive'] = 2;
@@ -656,9 +658,9 @@ class OperacionesController extends AppController {
 
     public function index_trafico() {
 	$this->index();
-	$this->render('index_trafico');
+    $this->set('action', $this->action);	
+	$this->render('index');
     }
-
 
     public function view_trafico($id = null){
 	if (!$id) {

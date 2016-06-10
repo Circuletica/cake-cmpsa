@@ -1,5 +1,7 @@
 <?php
 $class = $this->fetch('class');
+$add_button = $this->fetch('add_button');
+
 //el controller se calcula por defecto a partir
 //de la clase
 $controller = Inflector::tableize($class);
@@ -34,7 +36,13 @@ $this->Html->addCrumb($object, array(
 <div class='index'>
 	<?php echo $this->fetch('main'); ?>
 	<div class="btabla">
-		<?php echo $this->Button->add($controller,$object);?>
+		<?php
+        echo (
+        empty($add_button) ?
+        $this->Button->add($controller,$object):
+        ''
+        );
+        ?>
 	</div>
     <?php echo $this->element('paginador');?>
 </div>
