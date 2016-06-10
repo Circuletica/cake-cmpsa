@@ -22,7 +22,7 @@ class AlmacenTransportesController extends AppController {
 public function view($id = null) {
 
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formada AlmacenTransporte/view ');
+	    $this->Flash->set('URL mal formada AlmacenTransporte/view ');
 	    $this->redirect(array('action'=>'index'));
 	}
 
@@ -83,7 +83,7 @@ public function view($id = null) {
     public function add() {
     		//el id y la clase de la entidad de origen vienen en la URL
 	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado almacentransportes/add '.$this->params['named']['from_controller']);
+	    $this->Flash->set('URL mal formado almacentransportes/add '.$this->params['named']['from_controller']);
 	    $this->redirect(array(
 		'controller' => $this->params['named']['from_controller'],
 		'action' => 'index')
@@ -95,7 +95,7 @@ public function view($id = null) {
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL');
+	    $this->Flash->set('error en URL');
 	    $this->redirect(array(
 		'action' => 'view',
 		'controller' => $this->params['named']['from_controller'],
@@ -226,7 +226,7 @@ public function view($id = null) {
 			if($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado && $id == NULL) {
 					if($this->AlmacenTransporte->save($this->request->data)){
 						$nuevoId = $this->AlmacenTransporte->id;
-						$this->Session->setFlash('Cuenta almacén guardada');
+						$this->Flash->set('Cuenta almacén guardada');
 						$this->redirect(array(
 							'controller' => 'almacen_transportes',
 							'action' => 'distribucion',
@@ -234,13 +234,13 @@ public function view($id = null) {
 							)
 						);
 					}else{
-						$this->Session->setFlash('Cuenta de almacén NO guardada');
+						$this->Flash->set('Cuenta de almacén NO guardada');
 					}
 			}elseif ($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado){
 				debug($this->AlmacenTransporte->save);
 					if($this->AlmacenTransporte->save($this->request->data)){
 							$nuevoId = $this->AlmacenTransporte->id;
-							$this->Session->setFlash('Cuenta almacén guardada');
+							$this->Flash->set('Cuenta almacén guardada');
 							$this->redirect(array(
 								'controller' => 'almacen_transportes',
 								'action' => 'distribucion',
@@ -252,7 +252,7 @@ public function view($id = null) {
 					 $this->request->data['AlmacenTransporte']['cantidad_cuenta'] > $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] - $cantidadcuenta <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado) xor
 					($transporte['Transporte']['cantidad_embalaje'] == NULL)){
 					if($this->AlmacenTransporte->save($this->request->data)){
-							$this->Session->setFlash('Cuenta almacén modificada');
+							$this->Flash->set('Cuenta almacén modificada');
 							$this->redirect(array(
 								'controller' => 'almacen_transportes',
 								'action' => 'view',
@@ -261,7 +261,7 @@ public function view($id = null) {
 							);
 					}	
 			}else{
-				$this->Session->setFlash('La cantidad de bultos debe ser inferior');
+				$this->Flash->set('La cantidad de bultos debe ser inferior');
 			}
 	}else{ //es un GET
 	    $this->request->data = $this->AlmacenTransporte->read(null, $id);
@@ -283,7 +283,7 @@ public function view($id = null) {
 			);
 			$transporte_id = $transporte_id['AlmacenTransporte']['transporte_id'];
 		if ($this->AlmacenTransporte->delete($id)){
-			$this->Session->setFlash('Cuenta corriente almacén borrada');
+			$this->Flash->set('Cuenta corriente almacén borrada');
 			$this->redirect(array(
 				'controller'=>'transportes',
 				'action'=>'view',
@@ -373,7 +373,7 @@ public function view($id = null) {
 				$this->AlmacenTransporte->AlmacenTransporteAsociado->saveAll($this->request->data['AlmacenTransporteAsociado']);
 		    }		
 		}
-		$this->Session->setFlash('Distribución asociados guardada');
+		$this->Flash->set('Distribución asociados guardada');
 			$this->redirect(
 				array(
 				'controller' => 'almacen_transportes',

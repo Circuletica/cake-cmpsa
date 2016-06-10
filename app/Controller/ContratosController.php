@@ -88,7 +88,7 @@ class ContratosController extends AppController {
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
 		list($mes,$anyo) = explode('-',$criterio);
 	    } else {
-		$this->Session->setFlash('Error de fecha');
+		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
 	    //si se ha introducido un año, filtramos por el año
@@ -116,7 +116,7 @@ class ContratosController extends AppController {
 
     public function view($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Contrato/view');
+	    $this->Flash->set('URL mal formado Contrato/view');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$contrato = $this->Contrato->find('first', array(
@@ -266,7 +266,7 @@ class ContratosController extends AppController {
 			$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
 		    }
 		}
-		$this->Session->setFlash('Contrato guardado');
+		$this->Flash->set('Contrato guardado');
 		$this->redirect(array('action' => 'index'));
 	    }
 	}
@@ -274,7 +274,7 @@ class ContratosController extends AppController {
 
     public function edit($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
+	    $this->Flash->set('URL mal formado');
 	    $this->redirect(array('action'=>'index'));
 	}
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
@@ -372,14 +372,14 @@ class ContratosController extends AppController {
 			$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
 		    }
 		}
-		$this->Session->setFlash('Contrato '.$this->request->data['Contrato']['referencia'].' modificada con éxito');
+		$this->Flash->set('Contrato '.$this->request->data['Contrato']['referencia'].' modificada con éxito');
 		$this->redirect(array(
 		    'action' => 'view',
 		    $id
 		    )
 		);
 	    } else {
-		$this->Session->setFlash('Contrato NO guardado');
+		$this->Flash->set('Contrato NO guardado');
 	    }
 	}
     }
@@ -392,7 +392,7 @@ class ContratosController extends AppController {
 		//que lo necesitan (entre otros la referencia que es UNIQUE)
 
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado');
+			$this->Flash->set('URL mal formado');
 			$this->redirect(array('action'=>'index'));
 		}
 
@@ -466,7 +466,7 @@ class ContratosController extends AppController {
 	    throw new MethodNotAllowedException();
 	}
 	if ($this->Contrato->delete($id)) {
-	    //$this->Session->setFlash('Contrato borrado');
+	    //$this->Flash->set('Contrato borrado');
 	    $this->Flash->set(
 		'El contrato ha sido borrado',
 		array(

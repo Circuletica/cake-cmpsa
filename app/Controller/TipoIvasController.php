@@ -42,7 +42,7 @@ class TipoIvasController extends AppController {
     public function add() {
 	if($this->request->is('post')):
 	    if($this->TipoIva->save($this->request->data) ):
-		$this->Session->setFlash('Tipo de IVA guardado');
+		$this->Flash->set('Tipo de IVA guardado');
 	$this->redirect(array(
 	    'controller' => 'tipo_ivas',
 	    'action' => 'index'
@@ -55,7 +55,7 @@ endif;
     public function view($id = null) {
 	//el id y la clase del tipo de iva vienen en la URL
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado TipoIva/view');
+	    $this->Flash->set('URL mal formado TipoIva/view');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$tipo_iva = $this->TipoIva->find(
@@ -80,10 +80,10 @@ endif;
 	$this->request->data = $this->TipoIva->read();
 	else:
 	    if($this->TipoIva->save($this->request->data)):
-		$this->Session->setFlash(' Tipo de IVA '.$this->request->data['Iva']['nombre'].' guardado');
+		$this->Flash->set(' Tipo de IVA '.$this->request->data['Iva']['nombre'].' guardado');
 	$this->redirect(array('action' => 'index'));
 	    else:
-		$this->Session->setFlash('Tipo de IVA no guardado');
+		$this->Flash->set('Tipo de IVA no guardado');
 endif;
 endif;
     }
@@ -92,7 +92,7 @@ endif;
 	    throw new MethodNotAllowedException();
 	else:
 	    if($this->TipoIva->delete($id)):
-		$this->Session->setFlash('Tipo de IVA borrado');
+		$this->Flash->set('Tipo de IVA borrado');
 	$this->redirect(array('action' => 'index'));
 endif;
 endif;

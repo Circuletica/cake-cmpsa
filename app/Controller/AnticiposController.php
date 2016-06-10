@@ -19,7 +19,7 @@ class AnticiposController extends AppController {
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL Anticipos::edit()');
+	    $this->Flash->set('error en URL Anticipos::edit()');
 	    $this->redirect(array(
 		'action' => 'view',
 		'controller' => $this->params['named']['from_controller'],
@@ -93,14 +93,14 @@ class AnticiposController extends AppController {
 	    $asociado_operacion_id = $asociado_operacion['AsociadoOperacion']['id'];
 	    $this->request->data['Anticipo']['asociado_operacion_id'] = $asociado_operacion_id;
 	    if ($this->Anticipo->save($this->request->data)) {
-		$this->Session->setFlash('Anticipo guardado');
+		$this->Flash->set('Anticipo guardado');
 		$this->redirect(array(
 		    'action' => 'view',
 		    'controller' => $this->params['named']['from_controller'],
 		    $this->params['named']['from_id']
 		));
 	    } else {
-		$this->Session->setFlash('Anticipo NO guardado');
+		$this->Flash->set('Anticipo NO guardado');
 	    }
 	} else { //es un GET
 	    $this->request->data = $this->Anticipo->read(null, $id);
@@ -110,7 +110,7 @@ class AnticiposController extends AppController {
     public function delete($id) {
 	if($this->request->is('post')):
 	    if($this->Anticipo->delete($id)):
-		$this->Session->setFlash('Anticipo borrado');
+		$this->Flash->set('Anticipo borrado');
 	$this->redirect(array(
 	    'controller' => $this->params['named']['from_controller'],
 	    'action' => 'view',

@@ -83,7 +83,7 @@ class MuestrasController extends AppController {
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fecha)) {
 		list($mes,$anyo) = explode('-',$fecha);
 	    } else {
-		$this->Session->setFlash('Error de fecha');
+		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
 	    //si se ha introducido un año, filtramos por el año
@@ -104,7 +104,7 @@ class MuestrasController extends AppController {
 
     public function view($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formada Muestra/view');
+	    $this->Flash->set('URL mal formada Muestra/view');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$muestra = $this->Muestra->find(
@@ -161,14 +161,14 @@ class MuestrasController extends AppController {
 	    throw new MethodNotAllowedException();
 	}
 	if ($this->Muestra->delete($id)) {
-	    $this->Session->setFlash('Muestra borrada');
+	    $this->Flash->set('Muestra borrada');
 	    $this->redirect(array('action'=>'index'));
 	}
     }
 
     public function add() {
 	if(!isset($this->passedArgs['tipo_id'])) {
-	    $this->Session->setFlash('Error en URL, falta tipo muestra');
+	    $this->Flash->set('Error en URL, falta tipo muestra');
 	    $this->redirect(
 		array(
 		    'action' => 'index',
@@ -182,7 +182,7 @@ class MuestrasController extends AppController {
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL');
+	    $this->Flash->set('error en URL');
 	    $this->redirect(array(
 		'action' => 'index',
 		'controller' => 'financiaciones'
@@ -369,7 +369,7 @@ class MuestrasController extends AppController {
 		}
 	    }
 	    if($this->Muestra->save($this->request->data)) {
-		$this->Session->setFlash('Muestra guardada');
+		$this->Flash->set('Muestra guardada');
 		$this->redirect(
 		    array(
 			'action' => 'view',
@@ -377,7 +377,7 @@ class MuestrasController extends AppController {
 		    )
 		);
 	    } else {
-		$this->Session->setFlash('Muestra NO guardada');
+		$this->Flash->set('Muestra NO guardada');
 	    }
 	} else { //es un GET
 	    $this->request->data= $this->Muestra->read(null, $id);

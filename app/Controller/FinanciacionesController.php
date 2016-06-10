@@ -15,7 +15,7 @@ class FinanciacionesController extends AppController {
     public function view($id = null) {
 	//el id y la clase de la financiación de origen vienen en la URL
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Financiación/view');
+	    $this->Flash->set('URL mal formado Financiación/view');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$financiacion = $this->Financiacion->find(
@@ -151,7 +151,7 @@ class FinanciacionesController extends AppController {
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL');
+	    $this->Flash->set('error en URL');
 	    $this->redirect(array(
 		'action' => 'index',
 		'controller' => 'financiaciones'
@@ -221,14 +221,14 @@ class FinanciacionesController extends AppController {
 	if (!empty($id)) $this->Financiacion->id = $id; 
 	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
 	    if($this->Financiacion->save($this->request->data)){
-		$this->Session->setFlash('Financiación guardada');
+		$this->Flash->set('Financiación guardada');
 		$this->redirect(array(
 		    'action' => 'view',
 		    'controller' => 'financiaciones',
 		    $id
 		));
 	    } else {
-		$this->Session->setFlash('Financiación NO guardada');
+		$this->Flash->set('Financiación NO guardada');
 	    }
 	} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
 	    $this->request->data = $this->Financiacion->read(null, $id);
@@ -238,7 +238,7 @@ class FinanciacionesController extends AppController {
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
 	if ($this->Financiacion->delete($id)){
-	    $this->Session->setFlash('Financiación borrada');
+	    $this->Flash->set('Financiación borrada');
 	    $this->redirect(array(
 		'controller' => 'financiaciones',
 		'action'=>'index',

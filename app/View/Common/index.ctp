@@ -20,7 +20,7 @@ $this->Html->addCrumb($object, array(
     <h3>Búsqueda</h3>
     <ul>
     <?php echo $this->fetch('filter');
-    echo"<hr>\n";
+    //echo"<hr>\n";
     //echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos ?>
     </ul>
 </div>

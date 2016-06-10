@@ -10,7 +10,7 @@ class PuertosController extends AppController {
 	$this->set('paises', $this->Puerto->Pais->find('list'));
 	if($this->request->is('post')):
 	    if($this->Puerto->save($this->request->data) ):
-		$this->Session->setFlash('Puerto guardado');
+		$this->Flash->set('Puerto guardado');
 	$this->redirect(array(
 	    'controller' => $this->params['named']['from_controller'],
 	    'action' => $this->params['named']['from_action']));
@@ -21,7 +21,7 @@ endif;
 
     public function edit( $id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
+	    $this->Flash->set('URL mal formado');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$puerto = $this->Puerto->find('first',array(
@@ -34,19 +34,19 @@ endif;
 	    $this->request->data = $this->Puerto->read();
 	else:
 	    if  ($this->Puerto->save($this->request->data)):
-		$this->Session->setFlash('Puerto '.
+		$this->Flash->set('Puerto '.
 		$this->request->data['Puerto']['nombre'].
 		' modificado con éxito');
 	$this->redirect(array('action' => 'index', $id));
 	    else:
-		$this->Session->setFlash('Puerto NO guardado');
+		$this->Flash->set('Puerto NO guardado');
 endif;
 endif;
     }
     public function delete($id) {
 	if($this->request->is('post')):
 	    if($this->Puerto->delete($id)):
-		$this->Session->setFlash('Puerto borrado');
+		$this->Flash->set('Puerto borrado');
 	$this->redirect(array(
 	    'controller' => $this->params['named']['from_controller'],
 	    'action' => 'view',

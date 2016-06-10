@@ -2,6 +2,7 @@
 class RetiradasController extends AppController {
 
     public function index() {
+    $this->set('action', $this->action);	//Se usa para tener la misma vista
 	$this->paginate['order'] = array('Retirada.fecha_retirada' => 'desc');
 	$this->paginate['contain'] = array(
 	    'Asociado',
@@ -34,10 +35,14 @@ class RetiradasController extends AppController {
 	    )
 	    )
 	);
-
-
 	$this->set('retiradas',$this->paginate());
 
+    }
+
+    public function index_conta(){
+    	$this->index();
+    	$this->set('action', $this->action);
+		$this->render('index');
     }
 
     public function view_asociado($id = null) {

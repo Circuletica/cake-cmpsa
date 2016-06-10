@@ -9,7 +9,7 @@ class ContactosController extends AppController {
     public function add() {
 	//el id y la clase de la entidad de origen vienen en la URL
 	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado Contactos/add '.$this->params['named']['from_controller']);
+	    $this->Flash->set('URL mal formado Contactos/add '.$this->params['named']['from_controller']);
 	    $this->redirect(array(
 		'controller' => $this->params['named']['from_controller'],
 		'action' => 'index'));
@@ -20,7 +20,7 @@ class ContactosController extends AppController {
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL Contactos/edit');
+	    $this->Flash->set('error en URL Contactos/edit');
 	    $this->redirect(array(
 		'action' => 'index',
 		'controller' => $this->params['named']['from_controller'],
@@ -48,7 +48,7 @@ class ContactosController extends AppController {
 	if (!empty($this->request->data)){  //es un POST
 	    $this->request->data['Contacto']['empresa_id'] = $empresa_id;
 	    if($this->Contacto->save($this->request->data)) {
-		$this->Session->setFlash('Contacto guardado');
+		$this->Flash->set('Contacto guardado');
 		$this->redirect(
 		    array(
 			'action' => 'view',
@@ -57,7 +57,7 @@ class ContactosController extends AppController {
 		    )
 		);
 	    } else {
-		$this->Session->setFlash('Contacto NO guardado');
+		$this->Flash->set('Contacto NO guardado');
 	    }
 	} else { //es un GET
 	    $this->request->data= $this->Contacto->read(null, $id);
@@ -68,7 +68,7 @@ class ContactosController extends AppController {
 	//el $id es del contacto, sacamos el id y la clase de empresa de la URL
 	if($this->request->is('post')){
 	    if($this->Contacto->delete($id)) {
-		$this->Session->setFlash('Contacto borrado');
+		$this->Flash->set('Contacto borrado');
 		$this->redirect(array(
 		    'controller' => $this->params['named']['from_controller'],
 		    'action' => 'view',
