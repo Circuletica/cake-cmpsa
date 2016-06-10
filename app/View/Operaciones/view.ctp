@@ -74,8 +74,8 @@ echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], arra
 );
 echo "  </dd>";
 if (!isset($operacion['Operacion']['precio_directo_euro'])) {
-echo "  <dt>Transporte:</dt>\n";
-echo "  <dd>".$operacion['Contrato']['transporte']."&nbsp;</dd>";
+    echo "  <dt>Transporte:</dt>\n";
+    echo "  <dd>".$operacion['Contrato']['transporte']."&nbsp;</dd>";
 }
 echo "  <dt>Peso:</dt>\n";
 echo "  <dd>".$operacion['PesoOperacion']['peso'].' kg&nbsp;'."</dd>";
@@ -131,8 +131,8 @@ if (!isset($operacion['Operacion']['precio_directo_euro'])) {
     }
     echo "  <dt>Forfait:</dt>\n";
     echo "  <dd>".$operacion['Operacion']['forfait'].'€/Tm&nbsp;'."</dd>";
-//    echo "  <dt>Precio €/kg estimado:</dt>\n";
-//    echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
+    //    echo "  <dt>Precio €/kg estimado:</dt>\n";
+    //    echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
 }
 //echo "  <dt>Precio €/kg directo:</dt>\n";
 echo "  <dt>Precio €/kg:</dt>\n";

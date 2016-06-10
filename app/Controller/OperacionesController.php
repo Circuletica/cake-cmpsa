@@ -713,7 +713,7 @@ class OperacionesController extends AppController {
 			    'cantidad_embalaje'
 			)
 		    ),
-		   'PrecioTotalOperacion'=> array(
+		    'PrecioTotalOperacion'=> array(
 			'fields'=>array(
 			    'precio_divisa_tonelada',
 			    'divisa'
@@ -768,9 +768,9 @@ class OperacionesController extends AppController {
 	    $suma = 0;
 	    $transportado=0;
 	    foreach ($operacion['Transporte'] as $suma){
-			if ($transporte['operacion_id']=$operacion['Operacion']['id']){
-			    $transportado = $transportado + $suma['cantidad_embalaje'];
-			}
+		if ($transporte['operacion_id']=$operacion['Operacion']['id']){
+		    $transportado = $transportado + $suma['cantidad_embalaje'];
+		}
 	    }
 	}
 	$restan = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
@@ -856,10 +856,10 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 
 	    foreach ($operacion_retiradas as $clave => $operacion_retirada){
 		$retirada = $operacion_retirada['Retirada'];
-			if($retirada['asociado_id'] == $linea['Asociado']['id']){
-			    $cantidad_retirado += $retirada['embalaje_retirado'];
-			    $peso_retirado += $retirada['peso_retirado'];
-			}
+		if($retirada['asociado_id'] == $linea['Asociado']['id']){
+		    $cantidad_retirado += $retirada['embalaje_retirado'];
+		    $peso_retirado += $retirada['peso_retirado'];
+		}
 		$pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
 	    }
 
@@ -894,7 +894,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 
 	//Se declara para acceder al PDF
 	$this->set(compact('id'));
-}
+    }
 
 
     public function delete($id = null) {
@@ -903,10 +903,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	}
 	if ($this->Operacion->delete($id)) {
 	    $this->Session->setFlash('Línea de contrato borrada');
-	    $this->redirect(array(
-		'controller' => 'operaciones',
-		'action'=>'index',
-	    ));
+	    $this->History->back(-1);
 	}
     }
 

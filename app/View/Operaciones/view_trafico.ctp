@@ -34,7 +34,7 @@ echo " ".$this->Html->link(
  
     </div>
 </div>
-<h2>Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
+    <h2>Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
 <div class="actions">
 <?php
 echo $this->element('filtrooperacion');
@@ -326,8 +326,8 @@ echo $this->html->tablecells(array(
 			<?php 
 			}*/
 			?>	
-		</div>
+	    </div>
 	</div>
-	</div>
+    </div>
 </div>
 
