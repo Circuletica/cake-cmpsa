@@ -1,6 +1,6 @@
 <?php
 $class = $this->fetch('class');
-$add_button = $this->fetch('add_button');
+$add_button = $this->fetch('add_button'); //Variable que se asignará en el index cuando no se quiera  ver el botón de añadir.
 
 //el controller se calcula por defecto a partir
 //de la clase

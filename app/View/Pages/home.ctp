@@ -1,9 +1,9 @@
 <html>
 <body>
-<h1>Bienvenido a la gestión de COMERCIAL DE MATERIAS PRIMAS </h1>
+<h1 style="text-align:center;">Bienvenido a la gestión de COMERCIAL DE MATERIAS PRIMAS </h1>
 <br><br>
 <ul class="portada">
-		<li><i class="fa fa-shopping-cart fa-3x"></i> COMERCIAL<br>
+		<li>&nbsp;&nbsp;<i class="fa fa-shopping-cart fa-3x"></i> <b>COMERCIAL</b><br>
 			<ul>
 				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones',array('escape' => false));?>
 				</li>
@@ -11,14 +11,14 @@
 				</li>
 			</ul>
 		</li>
-		<li><i class="fa fa-flask fa-3x"></i> LABORATORIO<br>
+		<li>&nbsp;&nbsp;<i class="fa fa-flask fa-3x"></i> <b>LABORATORIO</b><br>
 				<ul>
 				<li><?php echo $this->Html->link('OFERTA','/muestras/index/Search.tipo_id:1',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('EMBARQUE','/muestras/index/Search.tipo_id:2	',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
 				</ul>
 			</li>
-			<li><i class="fa fa-ship fa-3x"></i> TRÁFICO<br>
+			<li>&nbsp;&nbsp;<i class="fa fa-ship fa-3x"></i> <b>TRÁFICO</b><br>
 				<ul>
 				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('RETIRADAS','/retiradas',array('escape' => false));?></li>
@@ -26,7 +26,7 @@
 				</ul>
 			</li>
 
-		<li><i class="fa fa-money fa-3x"></i> CONTABILIDAD<br>
+		<li>&nbsp;&nbsp;<i class="fa fa-money fa-3x"></i> <b>CONTABILIDAD</b><br>
 			<ul>
 				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('FINANCIACIÓN','/financiaciones',array('escape' => false));?></li>

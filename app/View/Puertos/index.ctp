@@ -6,12 +6,12 @@ $this->start('filter');
 $this->end();
 
 $this->start('main');
-echo "<table>\n";
+echo "<table class='tc4'>\n";
 echo $this->Html->tableHeaders(array(
-    'Id',
+   'Id',
     $this->Paginator->sort('nombre'),
     $this->Paginator->sort('pais'),
-    'Acciones'));
+    'Detalle'));
 
 foreach($puertos as $puerto):
  echo $this->Html->tableCells(array(
