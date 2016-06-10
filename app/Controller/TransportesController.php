@@ -88,7 +88,7 @@ $this->set(compact('pdf'));
  ->send('Un mensaje');*/
 
 	/*if (!$id) {
-	    $this->Session->setFlash('URL mal formada Transporte/view ');
+	    $this->Flash->set('URL mal formada Transporte/view ');
 	    $this->redirect(array('action'=>'index_trafico'));
 	}*/
 	$transporte = $this->Transporte->find(
@@ -193,7 +193,7 @@ endforeach;
 
     public function add() {
 	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado transporte/add '.$this->params['named']['from_controller']);
+	    $this->Flash->set('URL mal formado transporte/add '.$this->params['named']['from_controller']);
 	    $this->redirect(array(
 		'controller' => $this->params['named']['from_controller'],
 		'action' => 'index')
@@ -205,7 +205,7 @@ endforeach;
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL');
+	    $this->Flash->set('error en URL');
 	    $this->redirect(array(
 		'action' => 'view_trafico',
 		'controller' => 'operaciones',
@@ -393,18 +393,18 @@ endforeach;
 
 	    if($id == NULL){;
 		if($this->Transporte->save($this->request->data)){
-		    $this->Session->setFlash('Línea de transporte guardada');
+		    $this->Flash->set('Línea de transporte guardada');
 		    $this->redirect(array(
 			'controller' => 'operaciones',
 			'action' => 'view_trafico',
 			$operacion_id
 		    ));
 		}else{
-		    $this->Session->setFlash('Línea de transporte NO guardada');
+		    $this->Flash->set('Línea de transporte NO guardada');
 		}
 	    }else{
 		if($this->Transporte->save($this->request->data)){
-		    $this->Session->setFlash('Línea de transporte modificada');
+		    $this->Flash->set('Línea de transporte modificada');
 		    $this->redirect(array(
 			'controller' => 'transportes',
 			'action' => 'view',
@@ -424,12 +424,13 @@ endforeach;
 	endif;
 
 	if ($this->Transporte->delete($id)):
-	    $this->Session->setFlash('Línea de transporte borrada');
-		$this->redirect(array(
+	    $this->Flash->set('Línea de transporte borrada');
+		$this->History->back(-1);
+	/*  $this->redirect(array(
 		    'controller' => 'operaciones',
 		    'action' => 'view_trafico',
 		    $this->params['named']['from_id']
-	));
+	));*/
 	endif;
     }
 
@@ -588,7 +589,7 @@ endforeach;
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
 		list($mes,$anyo) = explode('-',$fechadesde);
 	    } else {
-		$this->Session->setFlash('Error de fecha');
+		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
 	    //si se ha introducido un aÃ±o, filtramos por el aÃ±o
@@ -607,7 +608,7 @@ endforeach;
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
 		list($mes,$anyo) = explode('-',$fechahasta);
 	    } else {
-		$this->Session->setFlash('Error de fecha');
+		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
 	    //si se ha introducido un aÃ±o, filtramos por el aÃ±o

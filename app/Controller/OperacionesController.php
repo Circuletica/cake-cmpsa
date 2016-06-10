@@ -87,7 +87,7 @@ class OperacionesController extends AppController {
 
     public function edit($id) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
+	    $this->Flash->set('URL mal formado');
 	    $this->redirect(array('action'=>'index'));
 
 	}
@@ -263,14 +263,14 @@ class OperacionesController extends AppController {
 			$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']);
 		    }
 		}
-		$this->Session->setFlash(
+		$this->Flash->set(
 		    'Operacion '.
 		    $this->request->data['Operacion']['referencia'].
 		    ' modificada con éxito'
 		);
 		$this->redirect(array('action' => 'view', $id));
 	    } else {
-		$this->Session->setFlash('Operacion NO guardada');
+		$this->Flash->set('Operacion NO guardada');
 	    }
 	}
 	//	$this->set('action', $this->action);
@@ -282,7 +282,7 @@ class OperacionesController extends AppController {
 
     public function add() {
 	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
+	    $this->Flash->set('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
 	    $this->redirect(array(
 		'controller' => $this->params['named']['from_controller'],
 		'action' => 'index')
@@ -548,18 +548,18 @@ class OperacionesController extends AppController {
 		    //falta aquí guardar el peso total de la linea de contrato
 		    //y el tipo de embalaje
 		    //.....
-		    $this->Session->setFlash('Operación guardada');
+		    $this->Flash->set('Operación guardada');
 		    //volvemos al contrato a la que pertenece la linea creada
 		    $this->redirect(array(
 			'controller' => 'contratos',
 			'action' => 'view',
 			$contrato_id));
 		}else{
-		    $this->Session->setFlash('Operación NO guardada');
+		    $this->Flash->set('Operación NO guardada');
 		} 
 	    }else{
 		/*	if($this->Operacion->save($this->request->data)){
-				$this->Session->setFlash('Operación modificada');
+				$this->Flash->set('Operación modificada');
 				$this->redirect(array(
 					'controller' => 'operaciones',
 					'action' => 'view',
@@ -576,7 +576,7 @@ class OperacionesController extends AppController {
     public function view($id = null) {
 	//el id y la clase de la entidad de origen vienen en la URL
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Operacion/view');
+	    $this->Flash->set('URL mal formado Operacion/view');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$operacion = $this->Operacion->find(
@@ -662,7 +662,7 @@ class OperacionesController extends AppController {
 
     public function view_trafico($id = null){
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formada Operación/view_trafico ');
+	    $this->Flash->set('URL mal formada Operación/view_trafico ');
 	    $this->redirect(array('action'=>'index_trafico'));
 	}
 	$operacion = $this->Operacion->find(
@@ -902,7 +902,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	    throw new MethodNotAllowedException();
 	}
 	if ($this->Operacion->delete($id)) {
-	    $this->Session->setFlash('Línea de contrato borrada');
+	    $this->Flash->set('Línea de contrato borrada');
 	    $this->History->back(-1);
 	}
     }
@@ -910,7 +910,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
     public function generarFinanciacion($id = null) {
 	//el id y la clase de la entidad de origen vienen en la URL
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Operacion/generarFinanciacion');
+	    $this->Flash->set('URL mal formado Operacion/generarFinanciacion');
 	    $this->redirect(array('action'=>'index'));
 	}
 	//vamos al add de la nueva financiacion
@@ -928,7 +928,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
     public function generarFacturacion($id = null) {
 	//el id y la clase de la entidad de origen vienen en la URL
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Operacion/generarFacturacion');
+	    $this->Flash->set('URL mal formado Operacion/generarFacturacion');
 	    $this->redirect(array('action'=>'index'));
 	}
 	//vamos al add de la nueva facturación
