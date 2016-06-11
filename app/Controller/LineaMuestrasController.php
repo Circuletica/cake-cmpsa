@@ -393,9 +393,9 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 	}else{//es un POST	
 		if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
 			$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra			
-			$this->Flash->set('<i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i> Los datos del informe han sido guardados.');
+			$this->Flash->set('Los datos del informe han sido guardados.');
 		}elseif(empty($this->request->data['email'])){
-			$this->Flash->set('<i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i> Los datos del informe NO fueron enviados. Faltan destinatarios');
+			$this->Flash->set('Los datos del informe NO fueron enviados. Faltan destinatarios');
 		}else{	
 		    $this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos		    
 
@@ -412,8 +412,6 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 		   		$lista_bcc[]= $email;
 		   	}
 		}
-		   	debug($lista_bcc);
-
 //GENERAMOS EL PDF
 			App::uses('CakePdf', 'CakePdf.Pdf');
 		    require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
@@ -433,11 +431,11 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 		if(!empty($lista_bcc)){
 			$Email->bcc($lista_bcc);
 		}
-			$Email->subject('PRUEBAS//PRUEBAS//Informe de calidad '.$linea_muestra['tipo_registro'].' / operación '.$linea_muestra['Operacion']['referencia']);
+			$Email->subject('NUEVO - Informe de calidad '.$linea_muestra['tipo_registro'].' / operación '.$linea_muestra['Operacion']['referencia']);
 			$Email->attachments(APP.'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 			$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la operación '.$linea_muestra['Operacion']['referencia']);
 
-		    $this->Flash->set('<i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i> ¡Informe de calidad enviado!');
+		    $this->Flash->set('¡Informe de calidad enviado!');
 	  		$this->redirect(array(
 	  			'action'=>'view',
 	  			'controller' =>'LineaMuestras',

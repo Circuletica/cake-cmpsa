@@ -8,7 +8,7 @@ $this->assign('add_button', 'no');
 
 $this->start('filter');
 		echo $this->element('filtrooperacion'); //Elemento del Filtro de operaciones
-		if ($action == 'index_trafico') {  //Departamento de compras
+		if ($action == 'index_trafico') {  //Departamento de tráfico
 			echo '<br>';
 		 	echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info embarques',
 		 		array(
