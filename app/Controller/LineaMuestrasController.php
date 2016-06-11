@@ -9,7 +9,6 @@ class LineaMuestrasController extends AppController {
     }
 
     public function view($id = null) {
-
 	if (!$id) {
 	    $this->Flash->set('URL mal formado Muestra/view');
 	    $this->redirect(array('action'=>'index'));
@@ -247,11 +246,12 @@ class LineaMuestrasController extends AppController {
 
 	if ($this->LineaMuestra->delete($id)) {
 	    $this->Flash->set('Línea de muestra borrada');
-	    $this->redirect(array(
-		'controller' => $this->params['named']['from_controller'],
-		'action'=>'view',
-		$this->params['named']['from_id']
-	    ));
+	    //$this->redirect(array(
+	    //    'controller' => $this->params['named']['from_controller'],
+	    //    'action'=>'view',
+	    //    $this->params['named']['from_id']
+	    //));
+	    $this->History->Back(-1);
 	}
     }
 
