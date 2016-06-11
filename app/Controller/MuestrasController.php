@@ -160,9 +160,16 @@ class MuestrasController extends AppController {
 	if (!$id or $this->request->is('get')){
 	    throw new MethodNotAllowedException();
 	}
+	$muestra = $this->Muestra->findById($id);
+	$tipo = $muestra['Muestra']['tipo_id'];
 	if ($this->Muestra->delete($id)) {
 	    $this->Flash->set('Muestra borrada');
-	    $this->redirect(array('action'=>'index'));
+	    $this->redirect(
+		array(
+		    'action'=>'index',
+		    'Search.tipo_id' => $tipo
+		)
+	    );
 	}
     }
 
