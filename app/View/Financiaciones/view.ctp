@@ -163,7 +163,7 @@ foreach ($anticipos as $anticipo):
 	$anticipo['Anticipo']['importe'],
 	$anticipo['Banco']['nombre_corto'],
 	$this->Button->editLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'])
-	.' '.$this->Button->deleteLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'],'el anticipo de '.$anticipo['Anticipo']['importe'].'€')
+	.' '.$this->Button->deleteLine('anticipos',$anticipo['Anticipo']['id'],'el anticipo de '.$anticipo['Anticipo']['importe'].'€')
     ));
 endforeach;
 echo"</table>\n";

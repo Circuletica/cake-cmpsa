@@ -126,7 +126,8 @@ class AppController extends Controller {
 	if ($this->$class->delete($id)) {
 	    $this->Session->setFlash($class.' borrado');
 	    $this->$class->Empresa->delete($id);
-	    $this->redirect(array('action'=>'index'));
+	    //$this->redirect(array('action'=>'index'));
+	    $this->History->Back(-1);
 	}
     }
 
@@ -227,5 +228,4 @@ class AppController extends Controller {
 	    return $titulo;
 	}
     }
-
 }

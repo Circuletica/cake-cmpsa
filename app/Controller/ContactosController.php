@@ -69,11 +69,7 @@ class ContactosController extends AppController {
 	if($this->request->is('post')){
 	    if($this->Contacto->delete($id)) {
 		$this->Flash->set('Contacto borrado');
-		$this->redirect(array(
-		    'controller' => $this->params['named']['from_controller'],
-		    'action' => 'view',
-		    $this->params['named']['from_id']
-		));
+		$this->History->Back(0);
 	    } else {
 		throw new MethodNotAllowedException();
 	    }
