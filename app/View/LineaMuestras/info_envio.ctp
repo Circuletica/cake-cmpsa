@@ -16,6 +16,7 @@ foreach($contactos as $contacto){
 		$opciones[$contacto['Contacto']['email']] = $contacto['Empresa']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 		}
 }
+	$opciones['info@circuletica.org'] = 'info@circuletica.org';
 
 	echo $this->Form->input('', array(
 		'name'=>'email',
@@ -31,6 +32,7 @@ foreach($contactos as $contacto){
 		$calidad[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
 		}
 	}
+
 	echo $this->Form->input('', array(
 		'name'=>'calidad',
 		'type' => 'select',

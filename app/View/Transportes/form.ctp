@@ -7,6 +7,8 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
     )
 );
 //$this->Html->addCrumb('Transporte','/transporte/view/');
+
+$mostrar = ($operacion['Contrato']['Incoterm']['nombre'] =='IN STORE') || ($operacion['Contrato']['Incoterm']['nombre'] =='IN STORE DESPACHADO');
   echo $this->Form->create('Transporte');
 if ($action == 'add') {
 
@@ -76,21 +78,22 @@ echo "</dl>";
         echo $this->Form->input('linea',
             array(
                 'label' => 'Número de línea',
-                'autofocus' => 'autofocus'
+                'autofocus' => 'autofocus',
+                'value'=>$num
                 )
-            );
+            ); 
 
         echo $this->Form->input('nombre_vehiculo',
             array(
-                'label' => 'Nombre del transporte',
+                'label' => 'Nombre del transporte'
                 )
             );
-        if ($operacion['Contrato']['Incoterm']['id'] !='3'){ //3 corresponde a IN STORE
         echo $this->Form->input('matricula',
-            array('label' => 'BL/Matrícula'
+            array(
+                'label' => 'BL/Matrícula',
+                'disabled'=> $mostrar
                 )
             );
-        }  
          echo $this->Form->input('cantidad_embalaje',
             array('label' => 'Cantidad '.$embalaje
                 )
@@ -102,7 +105,8 @@ echo "</dl>";
             echo $this->Form->input('puerto_carga_id',
                 array('
                     label'=>'Puerto de embarque',
-                    'empty' =>array('' => 'Sin Asignar')
+                    'empty' =>array('' => 'Sin Asignar'),
+                'disabled'=> $mostrar
                     )
                 );
            echo $this->Form->input('puerto_destino_id',
@@ -111,14 +115,12 @@ echo "</dl>";
                     'empty' =>array('' => 'Sin Asignar')
                     )
                 );
-        // id = 3 es el valor de IN STORE
-        if ($operacion['Contrato']['Incoterm']['id'] !='3'){ //3 corresponde a IN STORE
             echo $this->Form->input('naviera_id',
                 array(
                       'label'=>'Naviera',
-                      'empty' =>array('' => 'Sin Asignar')
+                      'empty' =>array('' => 'Sin Asignar'),
+                      'disabled'=> $mostrar
                 ));  
-        }
             echo $this->Form->input('agente_id',
                 array(
                     'label'=>'Agente aduanas',
@@ -132,32 +134,40 @@ echo "</dl>";
 
         <div class="linea" style="margin-left: 18%">
             <?php
-            echo $this->Form->input('fecha_carga', array(
-            'dateFormat' => 'DMY',
-            'minYear' => date('Y')-1,
-            'maxYear' => date('Y')+2,
-            'orderYear' => 'asc',
-            'timeFormat' => null ,
-            'label' => 'Carga mercancía',
-            'empty' => ' ')
+            echo $this->Form->input('fecha_carga',
+                array(
+                'dateFormat' => 'DMY',
+                'minYear' => date('Y')-1,
+                'maxYear' => date('Y')+2,
+                'orderYear' => 'asc',
+                'timeFormat' => null ,
+                'label' => 'Carga mercancía',
+                'empty' => ' ',
+                'disabled'=> $mostrar
+                )
             );
-            echo $this->Form->input('fecha_prevista', array(
-            'dateFormat' => 'DMY',
-            'minYear' => date('Y')-1,
-            'maxYear' => date('Y')+2,
-            'orderYear' => 'asc',
-            'timeFormat' => null ,
-            'label' => 'Fecha prevista llegada',
-            'empty' => ' ')
+            echo $this->Form->input('fecha_prevista', 
+                array(
+                'dateFormat' => 'DMY',
+                'minYear' => date('Y')-1,
+                'maxYear' => date('Y')+2,
+                'orderYear' => 'asc',
+                'timeFormat' => null ,
+                'label' => 'Fecha prevista llegada',
+                'empty' => ' '
+              )
             );
-            echo $this->Form->input('fecha_llegada', array(
-            'dateFormat' => 'DMY',
-            'minYear' => date('Y')-1,
-            'maxYear' => date('Y')+2,
-            'orderYear' => 'asc',
-            'timeFormat' => null ,
-            'label' => 'Fecha de llegada',
-            'empty' => ' ')
+            echo $this->Form->input('fecha_llegada',
+                array(
+                'dateFormat' => 'DMY',
+                'minYear' => date('Y')-1,
+                'maxYear' => date('Y')+2,
+                'orderYear' => 'asc',
+                'timeFormat' => null ,
+                'label' => 'Fecha de llegada',
+                'empty' => ' ',
+                'disabled'=> $mostrar
+                    )
             );
             echo $this->Form->input('fecha_pago', array(
             'dateFormat' => 'DMY',
@@ -177,15 +187,17 @@ echo "</dl>";
             'label' => 'Envío documentación',
             'empty' => ' ')
             );
-
-            echo $this->Form->input('fecha_entradamerc', array(
-            'dateFormat' => 'DMY',
-            'minYear' => date('Y')-1,
-            'maxYear' => date('Y')+2,
-            'orderYear' => 'asc',
-            'timeFormat' => null ,
-            'label' => 'Entrada mercancía',
-            'empty' => ' ')
+            echo $this->Form->input('fecha_entradamerc',
+                array(
+                'dateFormat' => 'DMY',
+                'minYear' => date('Y')-1,
+                'maxYear' => date('Y')+2,
+                'orderYear' => 'asc',
+                'timeFormat' => null ,
+                'label' => 'Entrada mercancía',
+                'empty' => ' ',
+                'disabled'=> $mostrar
+                )
             );
             echo $this->Form->input('fecha_despacho_op', array(
             'dateFormat' => 'DMY',
@@ -196,7 +208,7 @@ echo "</dl>";
             'label' => 'Despacho operación',
             'empty' => ' ')
             );
-            echo '<br>';           
+            //echo '<br>';           
         if ($operacion['Contrato']['Incoterm']['nombre'] !='FOB'){
             echo $this->Form->input('fecha_limite_retirada', array(
             'dateFormat' => 'DMY',

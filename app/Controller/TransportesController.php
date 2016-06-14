@@ -288,7 +288,7 @@ endforeach;
 	}else{
 	    $operacion_id = $this->params['named']['from_id'];
 	}
-
+	
 	$operacion = $this->Transporte->Operacion->find(
 	    'first', 
 	    array(
