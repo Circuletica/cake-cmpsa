@@ -33,6 +33,7 @@ class AnticiposController extends AppController {
 
 	public function form ($id = null) { //esta accion vale tanto para edit como add
 		$operacion_id = $this->params['named']['from_id'];
+        $this->set('action', $this->action);
 		$bancos = $this->Anticipo->Banco->find(
 			'list',
 			array(
