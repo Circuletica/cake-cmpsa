@@ -30,25 +30,14 @@ echo ' '.$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
 	</li>
 	<li>
 <?php
-echo $this->Html->link('<i class="fa fa-pencil-square-o"></i> Modificar',
-    array(
-	'action'=>'edit',
-	$transporte['Transporte']['id']
-    ),
-    array('title'=>'Modificar Transporte',
-    'escape'=>false))
-
-    .' '.$this->Form->postLink('<i class="fa fa-trash"></i> Borrar',
-	array(
-	    'action'=>'delete',
-	    $transporte['Transporte']['id'],
-	    'from_controller' => 'transportes',
-	    'from_id' => $transporte['Operacion']['id']
-	),		
-	array(
-	    'escape'=>false, 'title'=> 'Borrar Transporte',
-	    'confirm'=>'¿Realmente quiere borrar la línea con BL/Matrícula '.$transporte['Transporte']['matricula'].'?')
-	);
+//Contempar si hay retirada ya o no de esto.
+echo !empty($transporte['AlmacenTransporte'])? 
+	''
+	//'<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay cuentas de almacén'
+	: 
+	$this->Button->edit('transportes', $id)
+	.' '.
+	$this->Button->delete('transportes',$transporte['Transporte']['id'],'la línea con BL/Matrícula '.$transporte['Transporte']['matricula']);
 ?>
 	</li>
 	</ul>
@@ -83,8 +72,11 @@ echo $this->Html->link(('<i class="fa fa-exclamation-circle fa-lg"></i> Reclamac
 		);
 
 echo "<br><hr>";
-
-echo $this->Html->link(('<i class="fa fa-users" aria-hidden="true" fa-lg></i>
+//Control para las cuentas de almacén, si no hay, no puede haber distribución
+echo empty($transporte['AlmacenTransporte'])? 
+	''
+	:
+	$this->Html->link(('<i class="fa fa-users" aria-hidden="true" fa-lg></i>
     Distribución asociados'),array(
 	'action' => 'view',
 	$id,
@@ -105,7 +97,7 @@ echo $this->Html->link($transporte['Operacion']['referencia'], array(
     'controller' => 'operaciones',
     'action' => 'view_trafico',
     $transporte['Operacion']['id'])
-);
+).'&nbsp;';
 echo "</dd>";
 echo "  <dt>Contrato</dt>\n";
 echo "<dd>";

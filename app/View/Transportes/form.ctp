@@ -78,14 +78,15 @@ echo "</dl>";
         echo $this->Form->input('linea',
             array(
                 'label' => 'Número de línea',
-                'autofocus' => 'autofocus',
+                //'autofocus' => 'autofocus',
                 'value'=>$num
                 )
             ); 
 
         echo $this->Form->input('nombre_vehiculo',
             array(
-                'label' => 'Nombre del transporte'
+                'label' => 'Nombre transporte',
+                'autofocus' => 'autofocus'
                 )
             );
         echo $this->Form->input('matricula',
