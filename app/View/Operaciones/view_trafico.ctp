@@ -7,6 +7,7 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
     'action'=>'view_trafico',
     $operacion['Operacion']['id']
 ));
+echo $this->Flash->render();
 ?>
 <div class="acciones">
     <div class="printdet">

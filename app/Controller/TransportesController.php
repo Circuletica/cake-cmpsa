@@ -391,9 +391,18 @@ endforeach;
 	    $this->request->data['Transporte']['id'] = $id;
 	    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
 
-	    if($id == NULL){;
+	    if($id == NULL){
 		if($this->Transporte->save($this->request->data)){
-		    $this->Flash->set('Línea de transporte guardada');
+		    //$this->Flash->set('Línea de transporte guardada');
+//		    $this->Flash->success(
+//                'Línea de transporte guardada',
+//                array(
+//                    'params' => array(
+//                        'nombre' => $this->request->data['Transporte']['nombre_vehiculo']
+//                    )
+//                )
+//            );
+		    $this->Flash->message('Línea de transporte guardada');
 		    $this->redirect(array(
 			'controller' => 'operaciones',
 			'action' => 'view_trafico',
