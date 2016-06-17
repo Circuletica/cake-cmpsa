@@ -316,6 +316,12 @@ class RetiradasController extends AppController {
 	}
 	$this->set(compact('operacion_id'));
 
+	if(empty($this->passedArgs['almacen_transporte_id'])){
+		$almacen_transporte_id = NULL;
+	}else{
+		$this->set('almacen_transporte_id', $this->passedArgs['almacen_transporte_id']);
+	}
+
 	$operaciones_asociados = $this->Retirada->Operacion->find(
 	    'all',
 	    array(
@@ -453,12 +459,13 @@ class RetiradasController extends AppController {
 	    	if ($this->Retirada->save($this->request->data)){
 			    //Accedemos al form desde el index
 				$this->Flash->set('Retirada guardada');
-				$this->redirect(array(
+				$this->History->back(-1);
+				/*$this->redirect(array(
 					'action'=>'view_trafico',
 			    	'controller' => 'operaciones',
 			    	$this->params['named']['from_id']
 				)
-			    );
+			    );*/
 			 }
 	    }elseif(($id == NULL) && !empty($this->params['named']['asociado_id'])){
 			if($this->Retirada->save($this->request->data)) {

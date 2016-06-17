@@ -282,17 +282,23 @@ class AlmacenTransportesController extends AppController {
 	    )
 	);
 	$transporte_id = $transporte_id['AlmacenTransporte']['transporte_id'];
-	if ($this->AlmacenTransporte->delete($id)){
-	    $this->Flash->set('Cuenta corriente almacén borrada');
-	    //$this->redirect(array(
-	    //	'controller'=>'transportes',
-	    //	'action'=>'view',
-	    //	$transporte_id
-	    //	)
-	    //);
-	    $this->History->Back(-1);
+		if ($this->AlmacenTransporte->delete($id)){
+		    $this->Flash->set('Cuenta corriente almacén borrada');
+		    $this->redirect(array(
+		    	'controller'=>'transportes',
+		    	'action'=>'view',
+		    	$transporte_id
+		    	)
+		    );
+		}else{
+			$this->Flash->set('Cuenta corriente almacén NO borrada. Hay retiradas');
+		  	$this->redirect(array(
+			    'action' => 'view',
+			    $id
+			    )
+		  	);			
+		}
 	}
-    }
 
     public function distribucion($id){
 	$this->AlmacenTransporte->AlmacenTransporteAsociado->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';

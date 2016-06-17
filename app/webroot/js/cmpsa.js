@@ -319,6 +319,9 @@ function operacionesRetirada(){
 	for (var i=0; i<opt2; i++){
 	    cuentaBox.options[i].value = almacenesOperacion[i].id;
 	    cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
+	   	if(cuentaBox.options[i].value == cuentaId){
+		cuentaBox.options[i].selected = true;
+	    }
 	}
     }
 }
@@ -398,24 +401,33 @@ function sacosAsignados(){
     var cantidadCuenta = window.app.cantidadCuenta;
     //un array con las cantidades de cada socio
     var cantidades = document.getElementsByClassName('cantidad');
+    var porcentajes = document.getElementsByClassName('porcentajeAsociado');
+	//totalCantidad asignada
+	var textototalCantidad = document.getElementById('totalCantidad');
+	var textototalPorcentaje = document.getElementById('totalPorcentaje');
 
-    var totalCantidad = 0;
-    for(var i=0;i<cantidades.length;i++){
-	totalCantidad += parseInt(cantidades[i].value);
-    }
+	var totalCantidad = 0;
+	var totalPorcentaje = 0;
     console.log(totalCantidad);
+
     for(var i=0;i<cantidades.length;i++){
-	//el id del socio
-	var id = cantidades[i].id;
-	//la cantidad de sacos del socio
-	var cantidad = cantidades[i].value;
-	//el peso que representa
-	var porcentajeAsociado = cantidad * 100/ totalCantidad;
-	//el elemento html donde vamos a escribir el peso
-	var textoporcentajeAsociado = document.getElementById('porcentajeAsociado' + id);
-	//escribimos el peso
-	textoporcentajeAsociado.innerHTML = porcentajeAsociado.toFixed(2) + "%";
+    	totalCantidad += parseInt(cantidades[i].value);
     }
+    for(var i=0;i<cantidades.length;i++){
+		//el id del socio
+		var id = cantidades[i].id;
+		//la cantidad de sacos del socio
+		var cantidad = cantidades[i].value;
+		//el peso que representa
+		var porcentajeAsociado = cantidad * 100/ totalCantidad;
+		//el elemento html donde vamos a escribir el peso
+		var textoporcentajeAsociado = document.getElementById('porcentajeAsociado' + id);
+		//escribimos el peso
+		textoporcentajeAsociado.innerHTML = porcentajeAsociado.toFixed(2) + "%";
+		totalPorcentaje +=porcentajeAsociado;
+    }
+    textototalCantidad.innerHTML = totalCantidad;
+    textototalPorcentaje.innerHTML = totalPorcentaje.toFixed(2) + "%";
 }
 
 function precioF(){
