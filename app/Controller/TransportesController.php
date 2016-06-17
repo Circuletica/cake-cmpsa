@@ -1,6 +1,7 @@
 <?php
 class TransportesController extends AppController {
 
+
     public function index() {
 
 	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
@@ -218,6 +219,7 @@ endforeach;
 
     public function form($id = null) { //esta acciÃ³n vale tanto para edit como add
 	$this->set('action', $this->action);
+
 	//Listamos navieras
 	$this->loadModel('Naviera');	
 	$navieras = $this->Naviera->find(
@@ -288,7 +290,7 @@ endforeach;
 	}else{
 	    $operacion_id = $this->params['named']['from_id'];
 	}
-
+	
 	$operacion = $this->Transporte->Operacion->find(
 	    'first', 
 	    array(
@@ -345,7 +347,7 @@ endforeach;
 	    'list',
 	    array(
 		'contain' => array('Pais'),
-		'conditions' => array( 'Pais.nombre' => 'EspaÃ±a')
+		'conditions' => array( 'Pais.nombre' => 'España')
 	    )
 	));		
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
@@ -393,8 +395,8 @@ endforeach;
 
 	    if($id == NULL){;
 		if($this->Transporte->save($this->request->data)){
-		    $this->Flash->set('Línea de transporte guardada');
-		    $this->redirect(array(
+		    $this->Flash->set('Línea de transporte guardada correctamente');
+			$this->redirect(array(
 			'controller' => 'operaciones',
 			'action' => 'view_trafico',
 			$operacion_id
@@ -424,13 +426,14 @@ endforeach;
 	endif;
 
 	if ($this->Transporte->delete($id)):
-	    $this->Flash->set('Línea de transporte borrada');
 		$this->History->back(-1);
-	/*  $this->redirect(array(
+	    $this->Flash->set('Línea de transporte borrada');
+	   // $this->History->back(-1);
+	  	$this->redirect(array(
 		    'controller' => 'operaciones',
 		    'action' => 'view_trafico',
 		    $this->params['named']['from_id']
-	));*/
+	));
 	endif;
     }
 

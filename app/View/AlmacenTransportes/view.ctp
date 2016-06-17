@@ -63,16 +63,8 @@ echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" ari
 echo "<dl>";
 echo "  <dt>Nº de linea </dt>\n";
 echo "<dd>";
-echo $this->html->link(
-    $almacentransportes['Transporte']['linea'],
-    array(
-	'controller' => 'transportes',
-	'action' => 'view',
-	$almacentransportes['AlmacenTransporte']['transporte_id']
-    )
-).'&nbsp;';
+echo $almacentransportes['Transporte']['linea'].'&nbsp;';
 echo "</dd>";
-
 echo "  <dt>Nombre del transporte </dt>\n";
 echo "<dd>";
 echo $this->html->link(
@@ -115,6 +107,10 @@ $total_pendiente = 0;
 $total_porcentaje_teorico = 0;
 $total_porcentaje_real = 0;
 
+	foreach ($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte) {
+		$total_asignacion_real= $total_asignacion_real + $almacentransporte['sacos_asignados'];
+	}
+
 echo $this->Html->tableHeaders(
     array(
 	'Asociado',
@@ -137,6 +133,11 @@ foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte){
 	$this->Number->round($almacentransporte['sacos_asignados']*100/$total_asignacion_real ,2)
 	)
     );
+    //Saco los datos de los totales de la tabla
+    $total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
+    $total_pendiente = $total_pendiente + $pendiente;
+    $total_porcentaje_teorico = $total_porcentaje_teorico + $this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2);
+    $total_porcentaje_real = $total_porcentaje_real + $this->Number->round($almacentransporte['sacos_asignados']*100/$total_asignacion_real ,2);
 }
 echo $this->html->tablecells(array(
     array(
