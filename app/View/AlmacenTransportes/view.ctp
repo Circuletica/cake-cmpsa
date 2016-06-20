@@ -57,25 +57,25 @@ echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" ari
 	</ul>
     </div>
 </div>
+<h2>Cuenta corriente <?php echo $almacentransportes['AlmacenTransporte']['cuenta_almacen'] ?></h2>
 <div class="actions">
 <?php
-echo $this->Html->link(
-			'<i class="fa fa-plus"></i> Añadir retirada en almacén',array(
-				'controller' => 'retiradas',
-				'action' => 'add',
-				'almacen_transporte_id'=>$almacentransportes['AlmacenTransporte']['id'],
-				'from_controller' => 'operaciones',
-				'from_id' => $almacentransportes['Transporte']['operacion_id']
-				),
-				array(
-					'class' => 'botond',
-					'title' => 'Añadir retirada en cuenta '. $almacentransportes['AlmacenTransporte']['cuenta_almacen'],
-					'escape' => false
-					)
-				);
-?>
+	echo $this->Html->link(
+				'<i class="fa fa-plus"></i> Añadir retirada en almacén',array(
+					'controller' => 'retiradas',
+					'action' => 'add',
+					'almacen_transporte_id'=>$almacentransportes['AlmacenTransporte']['id'],
+					'from_controller' => 'operaciones',
+					'from_id' => $almacentransportes['Transporte']['operacion_id']
+					),
+					array(
+						'class' => 'botond',
+						'title' => 'Añadir retirada en cuenta '. $almacentransportes['AlmacenTransporte']['cuenta_almacen'],
+						'escape' => false
+						)
+					);
+	?>
 </div>
-<h2>Cuenta corriente <?php echo $almacentransportes['AlmacenTransporte']['cuenta_almacen'] ?></h2>
 <div class='view'>
 <?php
 echo "<dl>";
@@ -141,6 +141,7 @@ echo $this->Html->tableHeaders(
 
 foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte){
     $pendiente = !empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'];
+    $sacos_asignados = !empty($almacentransporte['sacos_asignados']) ? $this->Number->round($almacentransporte['sacos_asignados']*100/$total_asignacion_real ,2) : 'Sin asignar';
     echo $this->Html->tableCells(
 	array(
 	$almacentransporte['Asociado']['Empresa']['nombre_corto'],
@@ -148,14 +149,17 @@ foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte){
 	$almacentransporte['sacos_asignados'],
 	$pendiente,
 	$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),			
-	$this->Number->round($almacentransporte['sacos_asignados']*100/$total_asignacion_real ,2)
+	$sacos_asignados
+	//$this->Number->round($almacentransporte['sacos_asignados']*100/$total_asignacion_real ,2)
 	)
     );
     //Saco los datos de los totales de la tabla
     $total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
     $total_pendiente = $total_pendiente + $pendiente;
     $total_porcentaje_teorico = $total_porcentaje_teorico + $almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'];
-    $total_porcentaje_real = $total_porcentaje_real + $almacentransporte['sacos_asignados']*100/$total_asignacion_real;
+    if ($almacentransporte['sacos_asignados'] != 0){
+   	 	$total_porcentaje_real = $total_porcentaje_real + $almacentransporte['sacos_asignados']*100/$total_asignacion_real;
+   	}
 }
 echo $this->html->tablecells(array(
     array(
@@ -204,22 +208,29 @@ echo $this->html->tablecells(array(
 );
 ?>
 	</table>
+	<?php
+	if($total_asignacion_teorica !=$total_asignacion_real){
+		$total_asignacion_teorica -=$total_asignacion_real;
+		echo "<h4>Cantidad de sacos sin adjudicar: ". $total_asignacion_teorica;
+	}
+	?>	
 	<div class='btabla'>
-<?php
-echo $this->Html->link(
-    ('<i class="fa fa-users" aria-hidden="true" fa-lg></i> Cambiar distribución'),
-    array(
-	'controller' => 'almacen_transportes',
-	'action' => 'distribucion',
-	$id
-    ), 
-    array(
-	'class' => 'boton',
-	'title' => 'Cambiar distribución sacos asociados',
-	'escape' => false
-    )
-);
-?>
+	<?php
+	echo $this->Html->link(
+	    ('<i class="fa fa-users" aria-hidden="true" fa-lg></i> Cambiar distribución'),
+	    array(
+		'controller' => 'almacen_transportes',
+		'action' => 'distribucion',
+		$id
+	    ), 
+	    array(
+		'class' => 'boton',
+		'title' => 'Cambiar distribución sacos asociados',
+		'escape' => false
+	    )
+	);
+	?>
+	</h4>
 	</div>
     </div>
 </div>
