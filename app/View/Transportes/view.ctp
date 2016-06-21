@@ -31,10 +31,10 @@ echo ' '.$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
 	<li>
 <?php
 //Contempar si hay retirada ya o no de esto.
-echo !empty($transporte['AlmacenTransporte'])? 
-	''
+echo //!empty($transporte['AlmacenTransporte'])? 
+	//''
 	//'<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay cuentas de almacén'
-	: 
+	//: 
 	$this->Button->edit('transportes', $id)
 	.' '.
 	$this->Button->delete('transportes',$transporte['Transporte']['id'],'la línea con BL/Matrícula '.$transporte['Transporte']['matricula']);

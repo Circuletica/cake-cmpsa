@@ -347,7 +347,7 @@ endforeach;
 	    'list',
 	    array(
 		'contain' => array('Pais'),
-		'conditions' => array( 'Pais.nombre' => 'España')
+		'conditions' => array( 'Pais.iso3166' => 'es')
 	    )
 	));		
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
@@ -389,52 +389,58 @@ endforeach;
 	if (!empty($id)) $this->Transporte->id = $id;
 
 	//if (!empty($this->request->data)) {//ES UN POST
-	if ($this->request->is(array('post', 'put'))) {//ES UN POST
-	    $this->request->data['Transporte']['id'] = $id;
-	    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
+		if ($this->request->is(array('post', 'put'))) {//ES UN POST
+		    $this->request->data['Transporte']['id'] = $id;
+		    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
 
-	    if($id == NULL){;
-		if($this->Transporte->save($this->request->data)){
-		    $this->Flash->set('Línea de transporte guardada correctamente');
-			$this->redirect(array(
-			'controller' => 'operaciones',
-			'action' => 'view_trafico',
-			$operacion_id
-		    ));
-		}else{
-		    $this->Flash->set('Línea de transporte NO guardada');
+		    if($id == NULL){
+			if($this->Transporte->save($this->request->data)){
+			    $this->Flash->set("Linea de transporte guardada correctamente");
+				$this->redirect(array(
+				'controller' => 'operaciones',
+				'action' => 'view_trafico',
+				$operacion_id
+			    ));
+			}else{
+			    $this->Flash->set('Linea de transporte NO guardada');
+			}
+		    }else{
+			if($this->Transporte->save($this->request->data)){
+			    $this->Flash->set('Linea de transporte modificada correctamente');
+			    $this->redirect(array(
+				'controller' => 'transportes',
+				'action' => 'view',
+				$id
+			    ));
+			}
+		    }		
+		}else{ //es un GET
+		    $this->request->data = $this->Transporte->read(null, $id);
 		}
-	    }else{
-		if($this->Transporte->save($this->request->data)){
-		    $this->Flash->set('Línea de transporte modificada');
-		    $this->redirect(array(
-			'controller' => 'transportes',
-			'action' => 'view',
-			$id
-		    ));
-		}
-	    }		
-	}else{ //es un GET
-	    $this->request->data = $this->Transporte->read(null, $id);
-	}
-
     }
 
     public function delete($id = null) {
-	if (!$id or $this->request->is('get')) :
+	if (!$id or $this->request->is('get')):
 	    throw new MethodNotAllowedException();
 	endif;
 
-	if ($this->Transporte->delete($id)):
-		$this->History->back(-1);
-	    $this->Flash->set('Línea de transporte borrada');
-	   // $this->History->back(-1);
-	  	$this->redirect(array(
-		    'controller' => 'operaciones',
-		    'action' => 'view_trafico',
-		    $this->params['named']['from_id']
-	));
-	endif;
+		if ($this->Transporte->delete($id)){
+			$this->Flash->set('Linea de transporte borrada');
+		   // $this->History->back(-1);
+		  	$this->redirect(array(
+			    'controller' => 'operaciones',
+			    'action' => 'view_trafico',
+			    $this->params['named']['from_id']
+			    )
+		  	);
+		}else{
+			$this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacén');
+		  	$this->redirect(array(
+			    'action' => 'view',
+			    $id
+			    )
+		  	);			
+		}
     }
 
     public function info_embarque() {

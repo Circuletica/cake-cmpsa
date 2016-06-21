@@ -10,11 +10,10 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
 ?>
 <div class="acciones">
     <div class="printdet">
-    <a href="javascript:window.print()">
-	<i class="fa fa-print fa-lg"></i>
-    </a>
+    <ul><li>
+ <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
 <?php // PARA VIEW
-echo " ".$this->Html->link(
+echo ' '.$this->Html->link(
     ('<i class="fa fa-file-pdf-o fa-lg"></i>'),
     array(
 	'action' => 'view_trafico',$id,'ext' => 'pdf',
@@ -31,7 +30,7 @@ echo " ".$this->Html->link(
 	    )
 	);
 ?>
-
+	</li></ul>
     </div>
 </div>
     <h2>Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>

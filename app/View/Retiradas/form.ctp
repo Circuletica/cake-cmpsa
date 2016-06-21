@@ -56,14 +56,16 @@ if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
    </fieldset>
    <fieldset>
 <?php
-        echo $this->Form->input('almacen_transporte_id',
+    echo $this->Form->input('almacen_transporte_id',
            array(
             'label'=>'Cuenta Almacén',
             'empty' =>array('' => 'Selecciona'),
             'class' => 'ui-widget',
-            'id' => 'almacen'
+            'id' => 'almacen',
+            'value'=> isset($almacen_transporte_id)?$almacen_transporte_id:null
             )
-           );
+           ); 
+  
 ?>
 <?php
   if(!empty($operacion['Embalaje']['nombre'])){
