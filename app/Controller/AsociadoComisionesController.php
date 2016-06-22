@@ -2,7 +2,7 @@
 class AsociadoComisionesController extends AppController {
     public function view($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado AsociadoComision/view');
+	    $this->Flash->set('URL mal formado AsociadoComision/view');
 	    $this->redirect(array(
 		'controller' => 'asociados',
 		'action'=>'index'
@@ -24,7 +24,7 @@ class AsociadoComisionesController extends AppController {
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL');
+	    $this->Flash->set('error en URL');
 	    $this->redirect(array(
 		'action' => 'index',
 		'controller' => 'asociados'
@@ -61,14 +61,14 @@ class AsociadoComisionesController extends AppController {
 	if (!empty($id)) $this->AsociadoComision->id = $id; 
 	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
 	    if($this->AsociadoComision->save($this->request->data)){
-		$this->Session->setFlash('Comisión guardada');
+		$this->Flash->set('Comisión guardada');
 		$this->redirect(array(
 		    'action' => 'view',
 		    'controller' => 'asociados',
 		    $this->params['named']['from_id']
 		));
 	    } else {
-		$this->Session->setFlash('Comisión NO guardada');
+		$this->Flash->set('Comisión NO guardada');
 	    }
 	} else { //es un edit, hay que pasar los datos ya existentes
 	    $this->request->data = $this->AsociadoComision->read(null, $id);
@@ -78,7 +78,7 @@ class AsociadoComisionesController extends AppController {
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
 	if ($this->AsociadoComision->delete($id)){
-	    $this->Session->setFlash('Comisión borrada');
+	    $this->Flash->set('Comisión borrada');
 	    $this->redirect(array(
 		'controller' => 'asociados',
 		'action'=>'view',

@@ -40,9 +40,10 @@ class AppController extends Controller {
 	'Form',
 	'Date',
 	'Button',
+	'Csv'
     );
 
-    public $components = array('DebugKit.Toolbar','Session','RequestHandler','Flash');
+    public $components = array('DebugKit.Toolbar','Session','RequestHandler','Flash','History');
 
     //cambia el 'hasOne' del Model por un 'belongsTo'
     //para que el LEFT JOIN de 3r nivel de la query se haga

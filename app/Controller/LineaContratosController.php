@@ -11,7 +11,7 @@ class LineaContratosController extends AppController {
 	public function add() {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$this->params['named']['from_id']) {
-			$this->Session->setFlash('URL mal formado lineaContrato/add '.$this->params['named']['from']);
+			$this->Flash->set('URL mal formado lineaContrato/add '.$this->params['named']['from']);
 			$this->redirect(array(
 				'controller' => $this->params['named']['from'],
 				'action' => 'index')
@@ -101,7 +101,7 @@ class LineaContratosController extends AppController {
 				//falta aquí guardar el peso total de la linea de contrato
 				//y el tipo de embalaje
 				//.....
-				$this->Session->setFlash('Linea de Contrato guardada');
+				$this->Flash->set('Linea de Contrato guardada');
 				//volvemos al contrato a la que pertenece la linea creada
 				$this->redirect(array(
 					'controller' => $this->params['named']['from_controller'],
@@ -113,7 +113,7 @@ class LineaContratosController extends AppController {
 	public function view($id = null) {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado Muestra/view');
+			$this->Flash->set('URL mal formado Muestra/view');
 			$this->redirect(array('action'=>'index'));
 		}
 		$linea_contrato = $this->LineaContrato->find(
@@ -143,7 +143,7 @@ class LineaContratosController extends AppController {
     			throw new MethodNotAllowedException();
 		endif;
 		if ($this->LineaContrato->delete($id)):
-			$this->Session->setFlash('Línea de contrato borrada');
+			$this->Flash->set('Línea de contrato borrada');
 		$this->redirect(array(
 			'controller' => $this->params['named']['from_controller'],
 			'action'=>'view',

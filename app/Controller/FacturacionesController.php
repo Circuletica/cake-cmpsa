@@ -53,7 +53,7 @@ class FacturacionesController extends AppController {
 
     public function view($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Facturación/view');
+	    $this->Flash->set('URL mal formado Facturación/view');
 	    $this->redirect(array('action'=>'index'));
 	}
 	$facturacion = $this->Facturacion->find(
@@ -145,7 +145,7 @@ class FacturacionesController extends AppController {
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL Facturación/edit');
+	    $this->Flash->set('error en URL Facturación/edit');
 	    $this->redirect(array(
 		'action' => 'index',
 		'controller' => 'facturaciones'
@@ -292,14 +292,14 @@ class FacturacionesController extends AppController {
 	if ($this->request->is(array('post', 'put'))) {//la vuelta de 'guardar' el formulario
 	    $this->request->data['Facturacion']['peso_medio_saco']= $this->request->data['Facturacion']['peso_facturacion']/$operacion['PesoOperacion']['cantidad_embalaje'];
 	    if($this->Facturacion->save($this->request->data)){
-		$this->Session->setFlash('Facturación guardada');
+		$this->Flash->set('Facturación guardada');
 		$this->redirect(array(
 		    'action' => 'view',
 		    'controller' => 'facturaciones',
 		    $id
 		));
 	    } else {
-		$this->Session->setFlash('Facturación NO guardada');
+		$this->Flash->set('Facturación NO guardada');
 	    }
 	} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
 	    $this->request->data = $this->Facturacion->read(null, $id);

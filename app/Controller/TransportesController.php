@@ -1,6 +1,7 @@
 <?php
 class TransportesController extends AppController {
 
+
     public function index() {
 
 	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
@@ -88,7 +89,7 @@ $this->set(compact('pdf'));
  ->send('Un mensaje');*/
 
 	/*if (!$id) {
-	    $this->Session->setFlash('URL mal formada Transporte/view ');
+	    $this->Flash->set('URL mal formada Transporte/view ');
 	    $this->redirect(array('action'=>'index_trafico'));
 	}*/
 	$transporte = $this->Transporte->find(
@@ -193,7 +194,7 @@ endforeach;
 
     public function add() {
 	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado transporte/add '.$this->params['named']['from_controller']);
+	    $this->Flash->set('URL mal formado transporte/add '.$this->params['named']['from_controller']);
 	    $this->redirect(array(
 		'controller' => $this->params['named']['from_controller'],
 		'action' => 'index')
@@ -205,7 +206,7 @@ endforeach;
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL');
+	    $this->Flash->set('error en URL');
 	    $this->redirect(array(
 		'action' => 'view_trafico',
 		'controller' => 'operaciones',
@@ -218,6 +219,7 @@ endforeach;
 
     public function form($id = null) { //esta acción vale tanto para edit como add
 	$this->set('action', $this->action);
+
 	//Listamos navieras
 	$this->loadModel('Naviera');	
 	$navieras = $this->Naviera->find(
@@ -288,7 +290,7 @@ endforeach;
 	}else{
 	    $operacion_id = $this->params['named']['from_id'];
 	}
-
+	
 	$operacion = $this->Transporte->Operacion->find(
 	    'first', 
 	    array(
@@ -345,7 +347,7 @@ endforeach;
 	    'list',
 	    array(
 		'contain' => array('Pais'),
-		'conditions' => array( 'Pais.nombre' => 'España')
+		'conditions' => array( 'Pais.iso3166' => 'es')
 	    )
 	));		
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
@@ -387,50 +389,58 @@ endforeach;
 	if (!empty($id)) $this->Transporte->id = $id;
 
 	//if (!empty($this->request->data)) {//ES UN POST
-	if ($this->request->is(array('post', 'put'))) {//ES UN POST
-	    $this->request->data['Transporte']['id'] = $id;
-	    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
+		if ($this->request->is(array('post', 'put'))) {//ES UN POST
+		    $this->request->data['Transporte']['id'] = $id;
+		    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
 
-	    if($id == NULL){;
-		if($this->Transporte->save($this->request->data)){
-		    $this->Session->setFlash('L�nea de transporte guardada');
-		    $this->redirect(array(
-			'controller' => 'operaciones',
-			'action' => 'view_trafico',
-			$operacion_id
-		    ));
-		}else{
-		    $this->Session->setFlash('L�nea de transporte NO guardada');
+		    if($id == NULL){
+			if($this->Transporte->save($this->request->data)){
+			    $this->Flash->set("Linea de transporte guardada correctamente");
+				$this->redirect(array(
+				'controller' => 'operaciones',
+				'action' => 'view_trafico',
+				$operacion_id
+			    ));
+			}else{
+			    $this->Flash->set('Linea de transporte NO guardada');
+			}
+		    }else{
+			if($this->Transporte->save($this->request->data)){
+			    $this->Flash->set('Linea de transporte modificada correctamente');
+			    $this->redirect(array(
+				'controller' => 'transportes',
+				'action' => 'view',
+				$id
+			    ));
+			}
+		    }		
+		}else{ //es un GET
+		    $this->request->data = $this->Transporte->read(null, $id);
 		}
-	    }else{
-		if($this->Transporte->save($this->request->data)){
-		    $this->Session->setFlash('L�nea de transporte modificada');
-		    $this->redirect(array(
-			'controller' => 'transportes',
-			'action' => 'view',
-			$id
-		    ));
-		}
-	    }		
-	}else{ //es un GET
-	    $this->request->data = $this->Transporte->read(null, $id);
-	}
-
     }
 
     public function delete($id = null) {
-	if (!$id or $this->request->is('get')) :
+	if (!$id or $this->request->is('get')):
 	    throw new MethodNotAllowedException();
 	endif;
 
-	if ($this->Transporte->delete($id)):
-	    $this->Session->setFlash('L�nea de transporte borrada');
-		$this->redirect(array(
-		    'controller' => 'operaciones',
-		    'action' => 'view_trafico',
-		    $this->params['named']['from_id']
-	));
-	endif;
+		if ($this->Transporte->delete($id)){
+			$this->Flash->set('Linea de transporte borrada');
+		   // $this->History->back(-1);
+		  	$this->redirect(array(
+			    'controller' => 'operaciones',
+			    'action' => 'view_trafico',
+			    $this->params['named']['from_id']
+			    )
+		  	);
+		}else{
+			$this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almac�n');
+		  	$this->redirect(array(
+			    'action' => 'view',
+			    $id
+			    )
+		  	);			
+		}
     }
 
     public function info_embarque() {
@@ -588,7 +598,7 @@ endforeach;
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
 		list($mes,$anyo) = explode('-',$fechadesde);
 	    } else {
-		$this->Session->setFlash('Error de fecha');
+		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
 	    //si se ha introducido un año, filtramos por el año
@@ -607,7 +617,7 @@ endforeach;
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
 		list($mes,$anyo) = explode('-',$fechahasta);
 	    } else {
-		$this->Session->setFlash('Error de fecha');
+		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
 	    //si se ha introducido un año, filtramos por el año
@@ -680,18 +690,6 @@ endforeach;
 	$mes=date('F');
 	$ano = date('Y');
 
-	//	    if ($mes=="1") $mes="Enero";
-	//	    if ($mes=="2") $mes="Febrero";
-	//	    if ($mes=="3") $mes="Marzo";
-	//	    if ($mes=="4") $mes="Abril";
-	//	    if ($mes=="5") $mes="Mayo";
-	//	    if ($mes=="6") $mes="Junio";
-	//	    if ($mes=="7") $mes="Julio";
-	//	    if ($mes=="8") $mes="Agosto";
-	//	    if ($mes=="9") $mes="Setiembre";
-	//	    if ($mes=="10") $mes="Octubre";
-	//	    if ($mes=="11") $mes="Noviembre";
-	//	    if ($mes=="12") $mes="Diciembre";
 	$this->set(compact('dia'));
 	$this->set(compact('mes'));
 	$this->set(compact('ano'));
@@ -720,8 +718,6 @@ endforeach;
     }	
 
     public function asegurar($id = null) {
-	// $this->reclamacion();
-	//$this->render('asegurar');
 
 	setlocale(LC_TIME, "es_ES.UTF-8");
 	$this->pdfConfig = array(
@@ -797,18 +793,6 @@ endforeach;
 	$mes=date('F');
 	$ano = date('Y');
 
-	//	    if ($mes=="1") $mes="Enero";
-	//	    if ($mes=="2") $mes="Febrero";
-	//	    if ($mes=="3") $mes="Marzo";
-	//	    if ($mes=="4") $mes="Abril";
-	//	    if ($mes=="5") $mes="Mayo";
-	//	    if ($mes=="6") $mes="Junio";
-	//	    if ($mes=="7") $mes="Julio";
-	//	    if ($mes=="8") $mes="Agosto";
-	//	    if ($mes=="9") $mes="Setiembre";
-	//	    if ($mes=="10") $mes="Octubre";
-	//	    if ($mes=="11") $mes="Noviembre";
-	//	    if ($mes=="12") $mes="Diciembre";
 	$this->set(compact('dia'));
 	$this->set(compact('mes'));
 	$this->set(compact('ano'));
@@ -834,5 +818,90 @@ endforeach;
 	    )
 	);
     }
+
+    public function export() {
+
+	$this->set('transportes', $this->Transporte->find(
+	    'all',
+	    array(
+	    	'conditions'=> array(
+	    		'Transporte.fecha_despacho_op' => NULL
+	    		),
+	    	'recursive' => 1,
+	    	'fields' => array(
+	    		'matricula',
+	    		'nombre_vehiculo',
+	    		'fecha_carga',
+	    		'fecha_llegada',
+	    		'fecha_prevista',
+	    		'observaciones'
+	    		),
+	    	'contain'=>array(
+	    		'Operacion'=>array(
+	    			'PesoOperacion',
+	    			'Contrato'=>array(
+	    				'fields'=>array(
+	    					'fecha_transporte'
+	    					),
+	    				'Proveedor' => array(
+	    					'fields'=>array(
+	    						'nombre_corto'
+	    						)
+	    					)
+	    				)
+	    			)
+	    		)
+	    	)
+
+	    )
+	
+    );
+	$this->layout = null;
+	$this->autoLayout = false;
+	Configure::write('debug', '0');
+	$this->response->download("export".date('Ymd').".csv");
+    }
+
+  /*  'Transporte.fecha_despacho_op'=> NULL
+	);
+	$this->paginate['contain'] = array(
+	    'Operacion' => array(
+		'fields'=> array(
+		    'id',
+		    'referencia',
+		    'contrato_id',
+		)				    				    	
+	    ),
+	    'PesoOperacion'=> array(
+		'fields' =>array(
+		    'id',
+		    'peso',
+		    'cantidad_embalaje'
+		)
+	    ),
+	    'Contrato'=>array(	
+		'fields'=> array(
+		    'id',
+		    'fecha_transporte',
+		    'si_entrega',
+		    'proveedor_id'
+		)
+	    ),
+	    'Proveedor'=>array(
+		'fields'=>array(
+		    'id',
+		    'nombre_corto'
+		)
+	    ),
+	    'PuertoDestino' => array(
+		'fields' => array(
+		    'id',
+		    'nombre'
+		)
+	    )
+	);
+*/
+
+
 }
 ?>

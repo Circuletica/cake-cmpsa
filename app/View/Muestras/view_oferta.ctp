@@ -80,18 +80,17 @@ echo $this->Html->tableHeaders(array('Registro', 'Sacos','Ref. Proveedor', 'Deta
 //mostramos todas las catas de esta muestra
 //hay que numerar las líneas
 $i = 1;
-foreach($muestra['LineaMuestra'] as $linea):
+foreach($muestra['LineaMuestra'] as $linea) {
     echo $this->Html->tableCells(array(
 	$muestra['Muestra']['tipo_registro'].'/'.$i,
 	$linea['sacos'],
-	//(!empty($linea['AlmacenTransporte']))? $linea['AlmacenTransporte']['cantidad_cuenta'] : '',
 	$linea['referencia_proveedor'],
-	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
+	$this->Button->view('linea_muestras',$linea['id'])
     )
 );
-//numero de la línea siguiente
-$i++;
-endforeach;
+    //numero de la línea siguiente
+    $i++;
+}
 echo "</table>";
 $this->end();
 ?>

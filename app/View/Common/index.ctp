@@ -1,5 +1,7 @@
 <?php
 $class = $this->fetch('class');
+$add_button = $this->fetch('add_button'); //Variable que se asignará en el index cuando no se quiera  ver el botón de añadir.
+
 //el controller se calcula por defecto a partir
 //de la clase
 $controller = Inflector::tableize($class);
@@ -20,7 +22,7 @@ $this->Html->addCrumb($object, array(
     <h3>Búsqueda</h3>
     <ul>
     <?php echo $this->fetch('filter');
-    echo"<hr>\n";
+    //echo"<hr>\n";
     //echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos ?>
     </ul>
 </div>
@@ -34,7 +36,13 @@ $this->Html->addCrumb($object, array(
 <div class='index'>
 	<?php echo $this->fetch('main'); ?>
 	<div class="btabla">
-		<?php echo $this->Button->add($controller,$object);?>
+		<?php
+        echo (
+        empty($add_button) ?
+        $this->Button->add($controller,$object):
+        ''
+        );
+        ?>
 	</div>
     <?php echo $this->element('paginador');?>
 </div>

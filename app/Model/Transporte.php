@@ -42,5 +42,21 @@ class Transporte extends AppModel {
 	    'className' => 'AlmacenTransporte',
 	    'foreignKey' => 'transporte_id')
 	);
+	public function beforeDelete($cascade = true) {
+			global $count;
+			$count = $this->AlmacenTransporte->find(
+	            "count",
+	            array(
+	                "recursive" => -1,
+	                "conditions" => array("transporte_id" => $this->id)
+	            )
+	        );
+			if ($count == 0) {
+				return true;
+			}
+				return false;		
+	}
+
+
 }
 ?>

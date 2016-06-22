@@ -115,7 +115,7 @@ class FletesController extends AppController {
 
     public function edit($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('error en URL/No id de flete para edit');
+	    $this->Flash->set('error en URL/No id de flete para edit');
 	    $this->redirect(
 		array(
 		    'action' => 'index',
@@ -175,7 +175,7 @@ class FletesController extends AppController {
 	}
 	if (!empty($this->request->data)){  //es un POST
 	    if($this->Flete->save($this->request->data)) {
-		$this->Session->setFlash('Flete guardado');
+		$this->Flash->set('Flete guardado');
 		$this->redirect(
 		    array(
 			'action' => 'view',
@@ -183,7 +183,7 @@ class FletesController extends AppController {
 		    )
 		);
 	    } else {
-		$this->Session->setFlash('Flete NO guardado');
+		$this->Flash->set('Flete NO guardado');
 	    }
 	} else { //es un GET
 	    $this->request->data= $this->Flete->read(null, $id);
@@ -192,9 +192,10 @@ class FletesController extends AppController {
 
     public function view($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Flete/view');
+	    $this->Flash->set('URL mal formado Flete/view');
 	    $this->redirect(array('action'=>'index'));
 	}
+    $this->set(compact('id'));
 	$flete = $this->Flete->find('first', array(
 	    'conditions' => array('Flete.id' => $id),
 	    'recursive' => 2));
@@ -216,7 +217,7 @@ class FletesController extends AppController {
     public function delete($id) {
 	if($this->request->is('post')):
 	    if($this->Flete->delete($id)):
-		$this->Session->setFlash('Flete borrado');
+		$this->Flash->set('Flete borrado');
 	$this->redirect(array(
 	    'controller' => 'fletes',
 	    'action' => 'index'

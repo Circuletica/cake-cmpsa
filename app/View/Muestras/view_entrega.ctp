@@ -93,7 +93,7 @@ foreach($muestra['LineaMuestra'] as $linea):
 	(isset($linea['Operacion']['referencia']) ?
 		$linea['Operacion']['referencia'] : ''
 	),
-	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
+	$this->Button->view('linea_muestras',$linea['id'])
     )
 );
 //numero de la línea siguiente

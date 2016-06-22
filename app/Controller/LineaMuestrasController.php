@@ -9,9 +9,8 @@ class LineaMuestrasController extends AppController {
     }
 
     public function view($id = null) {
-
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Muestra/view');
+	    $this->Flash->set('URL mal formado Muestra/view');
 	    $this->redirect(array('action'=>'index'));
 	}
 
@@ -53,7 +52,7 @@ class LineaMuestrasController extends AppController {
     public function add() {
 	//el id y la clase de la entidad de origen vienen en la URL
 	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado lineaMuestra/add '.$this->params['named']['from_controller']);
+	    $this->Flash->set('URL mal formado lineaMuestra/add '.$this->params['named']['from_controller']);
 	    $this->redirect(array(
 		'controller' => $this->params['named']['from_controller'],
 		'action' => 'index')
@@ -65,7 +64,7 @@ class LineaMuestrasController extends AppController {
 
     public function edit($id = null) {
 	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL');
+	    $this->Flash->set('error en URL');
 	    $this->redirect(array(
 		'action' => 'view',
 		'controller' => $this->params['named']['from_controller'],
@@ -223,17 +222,17 @@ class LineaMuestrasController extends AppController {
 		$this->request->data['LineaMuestra']['criba13']+
 		$this->request->data['LineaMuestra']['criba12'];
 	    if(number_format($suma_criba,2) != 100){
-		$this->Session->setFlash('Linea de Muestra no guardada, la suma de criba no es 100%');
+		$this->Flash->set('Linea de Muestra no guardada, la suma de criba no es 100%');
 	    } else {
 		if ($this->LineaMuestra->save($this->request->data)) {
-		    $this->Session->setFlash('Línea de muestra guardada');
+		    $this->Flash->set('Línea de muestra guardada');
 		    $this->redirect(array(
 			'action' => 'view',
 			'controller' => 'linea_muestras',
 			$this->LineaMuestra->id
 		    ));
 		} else {
-		    $this->Session->setFlash('Línea de muestra NO guardada');
+		    $this->Flash->set('Línea de muestra NO guardada');
 		}
 	    }
 	} else { //es un GET
@@ -246,12 +245,13 @@ class LineaMuestrasController extends AppController {
 	    throw new MethodNotAllowedException();
 
 	if ($this->LineaMuestra->delete($id)) {
-	    $this->Session->setFlash('Línea de muestra borrada');
-	    $this->redirect(array(
-		'controller' => $this->params['named']['from_controller'],
-		'action'=>'view',
-		$this->params['named']['from_id']
-	    ));
+	    $this->Flash->set('Línea de muestra borrada');
+	    //$this->redirect(array(
+	    //    'controller' => $this->params['named']['from_controller'],
+	    //    'action'=>'view',
+	    //    $this->params['named']['from_id']
+	    //));
+	    $this->History->Back(-1);
 	}
     }
 
@@ -292,7 +292,40 @@ class LineaMuestrasController extends AppController {
     }
 
  public function info_envio ($id) {
-	$muestra = $this->LineaMuestra->find(
+ 	
+//Necesario para volcar los datos en el PDF
+ 	$linea = $this->LineaMuestra->findById($id);
+	$this->set('tipos', $this->tipoMuestras);
+	$this->set('linea',$linea);
+	$suma_linea = $linea['LineaMuestra']['criba20'] +
+	    $linea['LineaMuestra']['criba19'] +
+	    $linea['LineaMuestra']['criba13p'] +
+	    $linea['LineaMuestra']['criba18'] +
+	    $linea['LineaMuestra']['criba12p'] +
+	    $linea['LineaMuestra']['criba17'] +
+	    $linea['LineaMuestra']['criba11p'] +
+	    $linea['LineaMuestra']['criba16'] +
+	    $linea['LineaMuestra']['criba10p'] +
+	    $linea['LineaMuestra']['criba15'] +
+	    $linea['LineaMuestra']['criba9p'] +
+	    $linea['LineaMuestra']['criba14'] +
+	    $linea['LineaMuestra']['criba8p'] +
+	    $linea['LineaMuestra']['criba13'] +
+	    $linea['LineaMuestra']['criba12'];
+	$suma_ponderada = $linea['CribaPonderada']['criba20'] +
+	    $linea['CribaPonderada']['criba19'] +
+	    $linea['CribaPonderada']['criba18'] +
+	    $linea['CribaPonderada']['criba17'] +
+	    $linea['CribaPonderada']['criba16'] +
+	    $linea['CribaPonderada']['criba15'] +
+	    $linea['CribaPonderada']['criba14'] +
+	    $linea['CribaPonderada']['criba13'] +
+	    $linea['CribaPonderada']['criba12'];
+	$this->set('suma_linea',$suma_linea);
+	$this->set('suma_ponderada',$suma_ponderada);
+
+
+	$linea_muestra = $this->LineaMuestra->find(
 		'first',
 		array(
 			'conditions' => array(
@@ -314,13 +347,14 @@ class LineaMuestrasController extends AppController {
 			)
 		)
 	 );
-	$this->set('muestra',$muestra);
-	$muestra += $muestra['Muestra'];
-	unset($muestra['Muestra']);
+	//$this->set('linea_muestra',$linea_muestra);
+	$linea_muestra += $linea_muestra['Muestra'];
+	unset($linea_muestra['Muestra']);
 	//legado a este punto, vengamos de add o edit
-	//$muestra tiene el mismo valor
-	$this->set('muestra',$muestra);
+	//$linea_muestra tiene el mismo valor
+	$this->set('linea_muestra',$linea_muestra);
 
+//Contactos de los asociados
 	$this->loadModel('Contacto');
 	$contactos = $this->Contacto->find(
 	    'all',
@@ -333,6 +367,25 @@ class LineaMuestrasController extends AppController {
 	    );
 	$this->set('contactos',$contactos);	
 
+//Usuarios de la CMPSA
+	$this->loadModel('Usuario');
+	$usuarios = $this->Usuario->find(
+	    'all',
+	    array(
+	    	 'conditions' =>array(
+	    	 	'departamento_id' => array(2,4)
+	    	 	),
+	    	 'contain'=>array(
+	    	 	'Departamento'=>array(
+	    	 		'fields'=>array(
+	    	 			'nombre'
+	    	 			)
+	    	 		)	    	 	
+	    	 	)
+	    	 )
+	    );
+	$this->set('usuarios',$usuarios);		
+
 
 if (!empty($id)) $this->LineaMuestra->id = $id; 
 	if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
@@ -340,9 +393,9 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 	}else{//es un POST	
 		if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
 			$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra			
-			$this->Session->setFlash('<i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i> Los datos del informe han sido guardados.');
+			$this->Flash->set('Los datos del informe han sido guardados.');
 		}elseif(empty($this->request->data['email'])){
-			$this->Session->setFlash('<i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i> Los datos del informe NO fueron enviados. Faltan destinatarios');
+			$this->Flash->set('Los datos del informe NO fueron enviados. Faltan destinatarios');
 		}else{	
 		    $this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos		    
 
@@ -359,37 +412,35 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 		   		$lista_bcc[]= $email;
 		   	}
 		}
-		   	debug($lista_bcc);
-			$Email = new CakeEmail(); //Llamamos la instancia de email     
-			$Email->config('calidad'); //Plantilla de email.php
-			$Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
-			$Email->to($lista_email);
-		if(!empty($lista_bcc)){
-			$Email->bcc($lista_bcc);
-		}
-			$Email->subject('PRUEBAS//PRUEBAS//Informe de calidad '.$muestra['tipo_registro'].' / operación '.$muestra['Operacion']['referencia']);
-			$Email->send('Adjuntamos informe de calidad '.$muestra['tipo_registro'].' de la operación '.$muestra['Operacion']['referencia']);
-
-			//$this->autoRender = false; // tell CakePHP that we don't need any view rendering in this case
-			//$this->response->file('Informes/' . $muestra['id'].'.pdf', array('download' => true, 'name' => 'casa.pdf'));
-
+//GENERAMOS EL PDF
 			App::uses('CakePdf', 'CakePdf.Pdf');
 		    require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
 		    $CakePdf = new CakePdf();
 		    $CakePdf->template('info_calidad');
-		    $CakePdf->viewVars($this->viewVars);
+		    $CakePdf->viewVars(array('linea'=>$linea));
 		    // Get the PDF string returned
 		    //$pdf = $CakePdf->output();
 		    // Or write it to file directly
-		    $pdf = $CakePdf->write(APP.'Informes' . DS . $muestra['tipo_registro'].date('DMY').'pdf');
+		    $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 
-			// $Email->attachments('home/circuletica/informes_calidad/'.$muestra['tipo_registro']);
-			//$Email->attachments(APP.'//informes_calidad/'.$muestra['tipo_registro'].'.pdf');
-		    $this->Session->setFlash('<i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i> ¡Informe de calidad enviado¡');
+//ENVIAMOS EL CORREO CON EL INFORME
+			$Email = new CakeEmail(); //Llamamos la instancia de email     
+			$Email->config('calidad'); //Plantilla de email.php
+			$Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
+			$Email->to($lista_email);
+			//$Email->readReceipt($lista_bcc); //Acuse de recibo
+		if(!empty($lista_bcc)){
+			$Email->bcc($lista_bcc);
+		}
+			$Email->subject('NUEVO - Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
+			$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
+			$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
+
+		    $this->Flash->set('¡Informe de calidad enviado!');
 	  		$this->redirect(array(
 	  			'action'=>'view',
 	  			'controller' =>'LineaMuestras',
-	  			$muestra['LineaMuestra']['id']
+	  			$linea_muestra['LineaMuestra']['id']
 	  			)
 	  		);
 		}

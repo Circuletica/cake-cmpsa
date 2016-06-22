@@ -117,7 +117,8 @@ echo $this->Form->input(
 	'label' => 'Puerto embarque',
 	'class' => 'precioFijo',
 	'default' => $puerto_carga_contrato_id,
-	'empty' => array('' => '')
+	'empty' => array('' => ''),
+	'onchange' => 'pesoAsociado()'
     )
 );
 echo $this->Form->input(
@@ -142,7 +143,8 @@ echo $this->Form->input(
 	'label' => 'Puerto destino',
 	'class' => 'precioFijo',
 	'default' => $puerto_destino_contrato_id,
-	'empty' => array('' => '')
+	'empty' => array('' => ''),
+	'onchange' => 'pesoAsociado()'
     )
 );
 echo $this->Form->input(

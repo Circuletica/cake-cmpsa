@@ -82,7 +82,7 @@ foreach($muestra['LineaMuestra'] as $linea):
 	$muestra['Muestra']['tipo_registro'].'/'.$i,
 	'ref. operacion',
 	'cantidad_sacos',
-	$this->Button->viewLine('linea_muestras',$linea['id'],'muestras',$linea['muestra_id'])
+	$this->Button->view('linea_muestras',$linea['id'])
     )
 );
 //numero de la línea siguiente
