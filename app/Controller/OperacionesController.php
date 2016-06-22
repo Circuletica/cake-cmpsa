@@ -283,13 +283,13 @@ class OperacionesController extends AppController {
     //// AQUI EMPIEZA EL FORM ()   
 
     public function add() {
-	if (!$this->params['named']['from_id']) {
-	    $this->Flash->set('URL mal formado operaciones/add: falta from_id ');
-	    $this->redirect(
-            array(
-                'controller' => $this->params['named']['from_controller'],
-                'action' => 'index')
-            );
+	if (!isset($this->params['named']['from_id'])) {
+	    $this->Flash->set('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
+	    //$this->redirect(array(
+        //    'controller' => $this->params['named']['from_controller'],
+        //    'action' => 'index')
+	    //);
+        $this->History->Back(0);
 	}
 	$this->form();
 	$this->render('form');

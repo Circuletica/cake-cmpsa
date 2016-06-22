@@ -19,23 +19,23 @@ class ButtonHelper extends AppHelper {
     }
     //la versión pequeña, solo el botón sin texto, con retorno
     //a la página 'padre'. Se usa en los listados dentro de una vista
-    public function viewLine($controller,$id,$from_controller,$from_id) {
-	return $this->Html->link(
-	    '<i class="fa fa-info-circle"></i> ',
-	    array(
-		'controller' => $controller,
-		'action' => 'view',
-		$id,
-		'from_controller' => $from_controller,
-		'from_id' => $from_id
-	    ),
-	    array(
-		'class' => 'boton',
-		'title' => 'Detalle línea',
-		'escape' => false
-	    )
-	);
-    }
+//    public function viewLine($controller,$id,$from_controller,$from_id) {
+//	return $this->Html->link(
+//	    '<i class="fa fa-info-circle"></i> ',
+//	    array(
+//		'controller' => $controller,
+//		'action' => 'view',
+//		$id,
+//		'from_controller' => $from_controller,
+//		'from_id' => $from_id
+//	    ),
+//	    array(
+//		'class' => 'boton',
+//		'title' => 'Detalle línea',
+//		'escape' => false
+//	    )
+//	);
+//    }
 
     //la versión especifica para vistas mixtas de diferentes tablas, se usa
     //para en concreto desde un index a una vista compleja
@@ -112,15 +112,14 @@ class ButtonHelper extends AppHelper {
 	    )
 	);
     }
-    public function deleteLine($controller,$id,$from_controller,$from_id,$object) {
+    //public function deleteLine($controller,$id,$from_controller,$from_id,$object) {
+    public function deleteLine($controller,$id,$object) {
 	return $this->Form->postLink(
 	    '<i class="fa fa-trash"></i>',
 	    array(
 		'controller' => $controller,
 		'action' => 'delete',
 		$id,
-		'from_controller' => $from_controller,
-		'from_id' => $from_id
 	    ),
 	    array(
 		'class' => 'botond',

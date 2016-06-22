@@ -388,7 +388,6 @@ endforeach;
 
 	if (!empty($id)) $this->Transporte->id = $id;
 
-	//if (!empty($this->request->data)) {//ES UN POST
 		if ($this->request->is(array('post', 'put'))) {//ES UN POST
 		    $this->request->data['Transporte']['id'] = $id;
 		    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
@@ -417,30 +416,27 @@ endforeach;
 		}else{ //es un GET
 		    $this->request->data = $this->Transporte->read(null, $id);
 		}
-    }
+	}
 
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')):
 	    throw new MethodNotAllowedException();
 	endif;
 
-		if ($this->Transporte->delete($id)){
-			$this->Flash->set('Linea de transporte borrada');
-		   // $this->History->back(-1);
-		  	$this->redirect(array(
-			    'controller' => 'operaciones',
-			    'action' => 'view_trafico',
-			    $this->params['named']['from_id']
-			    )
-		  	);
-		}else{
-			$this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacén');
-		  	$this->redirect(array(
-			    'action' => 'view',
-			    $id
-			    )
-		  	);			
-		}
+	if ($this->Transporte->delete($id)){
+	    $this->Flash->set('Linea de transporte borrada');
+	    $this->redirect(array(
+		'controller' => 'operaciones',
+		'action' => 'view_trafico',
+		$this->params['named']['from_id']
+	    ));
+	}else{
+	    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacén');
+	    $this->redirect(array(
+		'action' => 'view',
+		$id
+	    ));			
+	}
     }
 
     public function info_embarque() {
