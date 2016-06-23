@@ -46,11 +46,16 @@ echo ' '.$this->Html->link(
 	    </li>
 	    <li>
 <?php
-//Contempar si hay retirada ya o no de esto.
-echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas': 
+//Contempar si hay retirada o muestras del almacén no de esto.
+if(empty($almacentransportes['Retirada']) && empty($lineamuestra['LineaMuestra'])){
+echo $this->Button->edit('almacen_transportes',$id)
+	.' '.
+    $this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
+}
+/*echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas': 
     $this->Button->edit('almacen_transportes',$id)
     .' '.
-    $this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
+    $this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);*/
 
 ?>
 	    </li>
@@ -211,7 +216,11 @@ echo $this->html->tablecells(array(
 	<?php
 	if($total_asignacion_teorica !=$total_asignacion_real){
 		$total_asignacion_teorica -=$total_asignacion_real;
-		echo "<h4>Cantidad de sacos sin adjudicar: ". $total_asignacion_teorica;
+		if ($total_asignacion_teorica > 0){
+			echo "<h4>Cantidad de sacos sin adjudicar: ". $total_asignacion_teorica;
+		}else{
+			echo "<h4><span style=color:#c43c35;>Cantidad sacos asignados superior cuenta: ". $total_asignacion_teorica."</span>";
+		}
 	}
 	?>	
 	<div class='btabla'>

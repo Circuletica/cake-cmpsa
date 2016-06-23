@@ -73,6 +73,20 @@ class AlmacenTransportesController extends AppController {
 	    )
 	);
 	$this->set(compact('almacentransportes'));
+	
+	//Necesario para controlar si hay alguna muestra hecha en la cuenta de almacén
+	$this->loadModel('LineaMuestra');		
+	$lineamuestra = $this->LineaMuestra->find('first', array(
+	    'fields' => array(
+			'LineaMuestra.id',
+			'LineaMuestra.almacen_transporte_id'
+	    ),
+	    'recursive'=>-1,
+	    'conditions' => array(
+			'LineaMuestra.almacen_transporte_id'=> $id
+		)
+	));	
+	$this->set(compact('lineamuestra'));
 
 	//Necesario para exportar en PDf
 	$this->set(compact('id'));
