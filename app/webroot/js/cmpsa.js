@@ -322,19 +322,12 @@ function operacionesRetirada(){
 		var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
 		cuentaBox.options.length = opt2;
 
-<<<<<<< HEAD
-		for (var i=0; i<opt2; i++){
-			cuentaBox.options[i].value = almacenesOperacion[i].id;
-			cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
-		}
-=======
 	for (var i=0; i<opt2; i++){
 	    cuentaBox.options[i].value = almacenesOperacion[i].id;
 	    cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
 	   	if(cuentaBox.options[i].value == cuentaId){
-		cuentaBox.options[i].selected = true;
+			cuentaBox.options[i].selected = true;
 	    }
->>>>>>> 5157834110a4750b0fe78f27e8242851e8297b4e
 	}
 }
 
@@ -343,7 +336,6 @@ function operacionAlmacen() {
 	var operacionId = document.getElementById('LineaMuestraOperacionId');
 	var almacenId = document.getElementById('LineaMuestraAlmacenTransporteId');
 	var sacos = document.getElementById('LineaMuestraSacos');
-	//console.log(sacos);
 
 	//el almacen seleccionado (si edit)
 	var almacenIndex = almacenId.selectedIndex;

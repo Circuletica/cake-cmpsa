@@ -364,6 +364,7 @@ class OperacionesController extends AppController {
             'contain' => array(
                 'Calidad',
                 'CanalCompra',
+                'FleteContrato',
                 'Incoterm',
                 'Proveedor',
                 'RestoContrato',
@@ -459,7 +460,8 @@ class OperacionesController extends AppController {
 	$this->request->data['Operacion']['flete'] = 0;
 
 	//Queremos la lista de costes de fletes
-	$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find(
+	//$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find(
+	$precio_fletes = $this->Operacion->Contrato->FleteContrato->find(
         'all',
         array(
             'recursive' => 3,
@@ -488,7 +490,8 @@ class OperacionesController extends AppController {
                 )
             ),
             'conditions' => array(
-                'PrecioFleteContrato.contrato_id' => $contrato_id,
+                //'PrecioFleteContrato.contrato_id' => $contrato_id,
+                'FleteContrato.contrato_id' => $contrato_id,
             )
         )
     );
@@ -506,18 +509,22 @@ class OperacionesController extends AppController {
 		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
 		.$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
 		.(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
-		.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
-		'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
+		//.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
+		.($precio_flete['FleteContrato']['precio_flete'] ?: '??').'$/Tm',
+		//'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
+		'value' => $precio_flete['FleteContrato']['precio_flete'] ?: ''
 	    );
 	    //vamos a tener otro array para un js que modifique la lista de fletes disponibles
 	    //segun se elija uno u otro puerto embarque/puerto destino/embalaje
-	    $precio_flete['Flete']['value']=$precio_flete['PrecioFleteContrato']['precio_flete'];
+	    //$precio_flete['Flete']['value']=$precio_flete['PrecioFleteContrato']['precio_flete'];
+	    $precio_flete['Flete']['value']=$precio_flete['FleteContrato']['precio_flete'];
 	    $precio_flete['Flete']['name']=end($fletes)['name'];
 	    unset($precio_flete['Flete']['Naviera']);
 	    unset($precio_flete['Flete']['PuertoCarga']);
 	    unset($precio_flete['Flete']['PuertoDestino']);
 	    unset($precio_flete['Flete']['Embalaje']);
-	    unset($precio_flete['PrecioFleteContrato']);
+	    //unset($precio_flete['PrecioFleteContrato']);
+	    unset($precio_flete['FleteContrato']);
 	}
 	$this->set(compact('fletes'));
 	$this->set(compact('precio_fletes'));
@@ -529,28 +536,18 @@ class OperacionesController extends AppController {
 	    $data = &$this->request->data;
 	    //al guardar la linea, se incluye a qué contrato pertenece
 	    $this->request->data['Operacion']['contrato_id'] = $contrato_id;
-	    //si es de precio fijo, quitamos los números que sobran
-	    //realmente no hace falta, porque si el campo es 'disabled' en 
-	    //el formulario, no devuelve valor.
-	    //if ($this->request->data['Operacion']['si_precio_fijo']) {
-	    //    $data['Operacion']['opciones'] = NULL;
-	    //    $data['Operacion']['forfait'] = NULL;
-	    //    $data['Operacion']['seguro'] = NULL;
-	    //    $data['Operacion']['flete'] = NULL;
-	    //}
 	    if($id == NULL){
 		//primero guardamos los datos de Operacion
 		if($this->Operacion->save($this->request->data)){
 		    //luego las cantidades de cada asociado en AsociadoOperacion
 		    foreach ($data['CantidadAsociado'] as $asociado_id => $cantidad) {
-			if ($cantidad != NULL) {
-			    $data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
-			    $data['AsociadoOperacion']['asociado_id'] = $asociado_id;
-			    $data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
-			    //$cantidad_embalaje_operacion += $cantidad;
-			    if (!$this->Operacion->AsociadoOperacion->saveAll($data['AsociadoOperacion']))
-				throw New Exception('error en guardar AsociadoOperacion');
-			}
+                if ($cantidad != NULL) {
+                    $data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
+                    $data['AsociadoOperacion']['asociado_id'] = $asociado_id;
+                    $data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
+                    if (!$this->Operacion->AsociadoOperacion->saveAll($data['AsociadoOperacion']))
+                    throw New Exception('error en guardar AsociadoOperacion');
+                }
 		    }
 		    //falta aquí guardar el peso total de la linea de contrato
 		    //y el tipo de embalaje
