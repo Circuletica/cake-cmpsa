@@ -321,20 +321,13 @@ function operacionesRetirada(){
 		var almacenesOperacion = cuentas[operacionId].AlmacenTransporte;
 		var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
 		cuentaBox.options.length = opt2;
-
-<<<<<<< HEAD
 		for (var i=0; i<opt2; i++){
-			cuentaBox.options[i].value = almacenesOperacion[i].id;
-			cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
+		    cuentaBox.options[i].value = almacenesOperacion[i].id;
+		    cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
+		   	if(cuentaBox.options[i].value == cuentaId){
+			cuentaBox.options[i].selected = true;
+		    }
 		}
-=======
-	for (var i=0; i<opt2; i++){
-	    cuentaBox.options[i].value = almacenesOperacion[i].id;
-	    cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
-	   	if(cuentaBox.options[i].value == cuentaId){
-		cuentaBox.options[i].selected = true;
-	    }
->>>>>>> 5157834110a4750b0fe78f27e8242851e8297b4e
 	}
 }
 
@@ -364,6 +357,7 @@ function operacionAlmacen() {
 			almacenId.options[0].text = '';
 			almacenId.options[0].selected = true;
 		}
+
 		for (var i=0; i<opts; i++){
 			almacenId.options[i].value = almacenes[i].id;
 			almacenId.options[i].text = almacenes[i].cuenta_marca;
