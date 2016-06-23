@@ -62,6 +62,7 @@ class Contrato extends AppModel {
 	    'className' => 'ContratoEmbalaje',
 	    'foreignKey' => 'contrato_id'
 	),
+    'FleteContrato',
 	'PrecioFleteContrato',
 	'Muestra'
     );
