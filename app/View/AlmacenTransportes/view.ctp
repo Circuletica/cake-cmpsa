@@ -65,6 +65,18 @@ echo $this->Button->edit('almacen_transportes',$id)
 <h2>Cuenta corriente <?php echo $almacentransportes['AlmacenTransporte']['cuenta_almacen'] ?></h2>
 <div class="actions">
 <?php
+echo $this->Html->link(
+				'<i class="fa fa-ship"></i> Línea: '.$almacentransportes['Transporte']['nombre_vehiculo'],array(
+					'controller' => 'transportes',
+					'action' => 'view',
+					$almacentransportes['Transporte']['id']
+					),
+					array(
+						'class' => 'botond',
+						'title' => 'Visualizar línea transporte '. $almacentransportes['Transporte']['nombre_vehiculo'],
+						'escape' => false
+						)
+					);
 	echo $this->Html->link(
 				'<i class="fa fa-plus"></i> Añadir retirada en almacén',array(
 					'controller' => 'retiradas',
