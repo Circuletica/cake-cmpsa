@@ -425,17 +425,18 @@ endforeach;
 
 	if ($this->Transporte->delete($id)){
 	    $this->Flash->set('Linea de transporte borrada');
-	    $this->redirect(array(
+	    $this->History->Back(-1);
+	    /*$this->redirect(array(
 		'controller' => 'operaciones',
 		'action' => 'view_trafico',
 		$this->params['named']['from_id']
-	    ));
+	    ));*/
 	}else{
 	    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacén');
 	    $this->redirect(array(
 		'action' => 'view',
 		$id
-	    ));			
+	    ));
 	}
     }
 

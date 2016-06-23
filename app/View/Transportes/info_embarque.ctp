@@ -80,10 +80,14 @@
 		   // $this->Date->format($transporte['Transporte']['fecha_prevista']),
 		    $transporte['Transporte']['observaciones'], 
       		$this->Html->link('<i class="fa fa-info-circle"></i>',array(
-      			'action'=>'view',$transporte['Transporte']['id']), array(
-      			'class'=>'boton','escape' => false,'title'=>'Detalle'
+      			'action'=>'view',
+      			$transporte['Transporte']['id']),
+      			array(
+      				'class'=>'boton',
+      				'escape' => false,
+      				'title'=>'Detalle'
       			)
-      			)		
+      		)		
 		));
 		}
 ?>
