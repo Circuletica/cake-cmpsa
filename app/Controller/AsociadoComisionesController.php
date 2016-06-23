@@ -8,9 +8,15 @@ class AsociadoComisionesController extends AppController {
 		'action'=>'index'
 	    ));
 	}
-	$asociado = $this->AsociadoComision->Asociado->find('first', array(
-	    'conditions' => array('Asociado.id' => $id),
-	    'recursive' => 2));
+	$asociado = $this->AsociadoComision->Asociado->find(
+        'first', array(
+            'conditions' => array('Asociado.id' => $id),
+            'recursive' => 2)
+    );
+    if (empty($asociado)) {
+        $this->Flash->set('No existe asociado con id: '.$id);
+        $this->History->Back(0);
+    }
 	$this->set(compact('asociado'));
 	$this->set('referencia','Comisiones '.$asociado['Empresa']['nombre_corto']);
 	$this->set('comisiones', $asociado['AsociadoComision']);

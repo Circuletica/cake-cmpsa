@@ -20,11 +20,6 @@ class AnticiposController extends AppController {
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 			$this->Flash->set('error en URL Anticipos::edit()');
-			//$this->redirect(array(
-			//    'action' => 'view',
-			//    'controller' => $this->params['named']['from_controller'],
-			//    $this->params['from_id']
-			//));
 			$this->History->Back(-1);
 		}
 		$this->form($id);
