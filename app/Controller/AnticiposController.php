@@ -19,8 +19,7 @@ class AnticiposController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Flash->set('error en URL Anticipos::edit()');
-			$this->History->Back(-1);
+            throw new NotFoundException(__('URL mal formado Anticipos/edit'));
 		}
 		$this->form($id);
 		$this->render('form');
@@ -81,7 +80,7 @@ class AnticiposController extends AppController {
 			$this->Anticipo->id = $id;
 		} 
 
-		if ($this->request->is(array('post', 'put'))){  //es un POST
+		if ($this->request->is(array('post', 'put'))){
 			$asociado_operacion = $this->Anticipo->AsociadoOperacion->find(
 				'first',
 				array(
@@ -105,14 +104,13 @@ class AnticiposController extends AppController {
 	}
 
 	public function delete($id) {
-		if($this->request->is('post')) {
-			if($this->Anticipo->delete($id)) {
-				$this->Flash->set('Anticipo borrado');
-				$this->History->Back(0);
-			}
-		} else {
-			throw new MethodNotAllowedException();
-		}
+        if (!$id or $this->request->is('get')){
+            throw new MethodNotAllowedException('URL mal formada o incompleta');
+        }
+        if($this->Anticipo->delete($id)) {
+            $this->Flash->set('Anticipo borrado');
+            $this->History->Back(0);
+        }
 	}
 }
 ?>
