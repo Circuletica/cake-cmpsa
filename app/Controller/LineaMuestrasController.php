@@ -433,7 +433,7 @@ if (!empty($id)) $this->LineaMuestra->id = $id;
 		if(!empty($lista_bcc)){
 			$Email->bcc($lista_bcc);
 		}
-			$Email->subject('NUEVO - Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
+			$Email->subject('Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
 			$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 			$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
 

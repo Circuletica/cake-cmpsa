@@ -86,7 +86,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 		<div class="menufooter">
 			<ul class="tabs">
 		<!--	<li><?php echo $this->Html->link('<i class="fa fa-calendar"></i> CALENDARIO','/pages/calendario',array('escape' => false));?></li>	-->		
-				<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/highcharts/highcharts_demo',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/pages/home',array('escape' => false));?></li>
 		<!--		<li ><?php echo $this->Html->link('<i class="fa fa-cog"></i> PREFERENCIAS','/pages/preferencias',array('escape' => false));?></li>-->
 
 				<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?></li>

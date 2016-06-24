@@ -171,7 +171,7 @@ $this->set(compact('pdf'));
 	    )
 	);
 	$this->set('transporte',$transporte);
-	//Calculamos la cantidad de sacos almacenados en la línea
+	//Calculamos la cantidad de sacos almacenados en la linea
 	if(!empty($transporte['Transporte']['id'])){
 	    $suma = 0;
 	    $almacenado=0;
@@ -366,18 +366,18 @@ endforeach;
 
 	$this->set(compact('operacion'));
 	$this->set(compact('transportado'));
-	//CALCULAMOS EL NÚMERO DE LÍNEA DE TRANSPORTE
-	//Saco el número del array para numerar las líneas de transporte
+	//CALCULAMOS EL NÚMERO DE LINEA DE TRANSPORTE
+	//Saco el número del array para numerar las lineas de transporte
 
-	//Línea primera para comenzar desde el array que es 0. Si $clave es 5, $num será 6.
-	//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva línea.
-	//Este proceso genera la línea de nuevo siempre para que el contador lo haga desde el principio
+	//Linea primera para comenzar desde el array que es 0. Si $clave es 5, $num será 6.
+	//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva linea.
+	//Este proceso genera la linea de nuevo siempre para que el contador lo haga desde el principio
 	$num = 0;	
 	foreach ($operacion['Transporte'] as $clave=>$transporte){
 	    $num++;
 	}
 	if (empty($id)){ //En el ADD
-	    if(empty($operacion['Transporte'])){ //Primera línea
+	    if(empty($operacion['Transporte'])){ //Primera linea
 		$num = 1;
 	    }else{ //A partir de la primera
 		$num = $num+1;
@@ -432,7 +432,7 @@ endforeach;
 		$this->params['named']['from_id']
 	    ));*/
 	}else{
-	    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almac�n');
+	    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacen');
 	    $this->redirect(array(
 		'action' => 'view',
 		$id

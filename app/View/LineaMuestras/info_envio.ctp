@@ -1,4 +1,21 @@
 <?php
+$this->Html->addCrumb(
+    'Muestras de '.$linea['Muestra']['tipo_nombre'],
+    array(
+	'controller'=>'muestras',
+	'action'=>'index',
+	'Search.tipo_id' => $linea['Muestra']['tipo_id']
+    )
+);
+$this->Html->addCrumb(
+    'Muestra '.$linea['Muestra']['tipo_registro'],
+    array(
+	'controller'=>'muestras',
+	'action'=>'view',
+	$linea['Muestra']['id']
+    )
+);
+
 
 //echo $this->Form->create('EnvioCalidad');
 echo $this->Form->create('LineaMuestra');
@@ -16,7 +33,7 @@ foreach($contactos as $contacto){
 		$opciones[$contacto['Contacto']['email']] = $contacto['Empresa']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 		}
 }
-	$opciones['info@circuletica.org'] = 'info@circuletica.org';
+	//$opciones['info@circuletica.org'] = 'info@circuletica.org';
 
 	echo $this->Form->input('', array(
 		'name'=>'email',

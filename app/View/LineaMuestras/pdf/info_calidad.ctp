@@ -41,7 +41,9 @@ if ($linea['Muestra']['tipo_id'] != 1) {
 
 
 }
-
+//Tabla de criba medida y ponderada (con los caracoles)
+//Antes de todo, necesitamos saber que criba corresponde al fondo.
+$fondo=11; //Se asigna en caso de que no haya criba que lo genere.
 for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){
     $fondo = $i;
 }
