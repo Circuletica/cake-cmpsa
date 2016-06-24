@@ -122,6 +122,10 @@ class ContratosController extends AppController {
 	$contrato = $this->Contrato->find('first', array(
 	    'conditions' => array('Contrato.id' => $id),
 	    'recursive' => 2));
+    if (empty($contrato)) {
+        $this->Flash->set('No existe contrato con id: '.$id);
+        $this->History->Back(-1);
+    }
 	$this->set('contrato', $contrato);
 
 	//La suma del peso de todas las operaciones de un contrato

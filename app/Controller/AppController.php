@@ -78,6 +78,10 @@ class AppController extends Controller {
     public function viewCompany($class,$id) {
 	$this->{$this->class}->recursive = 3;
 	$empresa = $this->{$this->class}->findById($id);
+    if (empty($empresa)) {
+        $this->Flash->set('No existe empresa con id: '.$id);
+        $this->History->Back(-1);
+    }
 	$this->set('empresa',$empresa);
 	$this->set('referencia', $empresa['Empresa']['nombre_corto']);
 	$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
