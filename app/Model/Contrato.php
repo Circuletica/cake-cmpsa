@@ -62,6 +62,7 @@ class Contrato extends AppModel {
 	    'className' => 'ContratoEmbalaje',
 	    'foreignKey' => 'contrato_id'
 	),
+    'FleteContrato',
 	'PrecioFleteContrato',
 	'Muestra'
     );
@@ -87,5 +88,18 @@ class Contrato extends AppModel {
 	    'className' => 'Calidad',
 	    'foreignKey' => 'calidad_id')
 	);
+	public function beforeDelete($cascade = true) {
+		$count = $this->Operacion->find(
+            "count",
+            array(
+                "recursive" => -1,
+                "conditions" => array("contrato_id" => $this->id)
+            )
+        );
+		if ($count == 0) {
+			return true;
+		}
+		return false;
+	}
 }
 ?>

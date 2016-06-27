@@ -4,12 +4,21 @@ $this->assign('object', $this->fetch('object'));
 $this->assign('line_object', 'contacto');
 $this->assign('id',$empresa['Empresa']['id']);
 $this->assign('class',$this->fetch('class'));
-$this->assign('controller',$this->fetch('controller'));
+$this->assign('controller',Inflector::tableize($this->fetch('class')));
 $this->assign('line_controller','contactos');
 $this->assign('line_add', '1');
 
+$this->start('breadcrumb');
+$this->Html->addCrumb(
+    Inflector::pluralize($this->fetch('class')),
+    array(
+	'controller' => Inflector::tableize($this->fetch('class')),
+	'action' => 'index'
+    )
+);
+$this->end();
+
 $this->start('filter');
-//echo $this->element('filtroflete');
 echo 'Aquí va el filtro';
 $this->end();
 
@@ -62,9 +71,18 @@ $this->end();
 
 $this->start('lines');
 echo "<table>";
-echo $this->Html->tableHeaders(array('Nombre', 'Departamento', 'Función',
-    'Teléfono 1', 'Teléfono 2', 'Email','Detalle'));
-foreach($empresa['Empresa']['Contacto'] as $contacto):
+echo $this->Html->tableHeaders(
+    array(
+	'Nombre',
+	'Departamento',
+	'Función',
+	'Teléfono 1',
+	'Teléfono 2',
+	'Email',
+	'Detalle'
+    )
+);
+foreach($empresa['Empresa']['Contacto'] as $contacto) {
     echo $this->Html->tableCells(array(
 	$contacto['nombre'],
 	isset($contacto['Departamento']['nombre']) ? $contacto['Departamento']['nombre'] : '',
@@ -72,33 +90,33 @@ foreach($empresa['Empresa']['Contacto'] as $contacto):
 	$contacto['telefono1'],
 	$contacto['telefono2'],
 	$this->Text->autoLinkEmails($contacto['email']),
-    $this->Button->editLine('contactos',$contacto['id'],$this->fetch('controller'),$contacto['empresa_id'])
-	.' '.$this->Button->deleteLine('contactos',$contacto['id'],$this->fetch('controller'),$contacto['empresa_id'],$contacto['nombre'])
-	)
-    );
-endforeach;
+	$this->Button->editLine('contactos',$contacto['id'],$this->fetch('controller'),$contacto['empresa_id'])
+	.' '.$this->Button->deleteLine('contactos',$contacto['id'],$contacto['nombre'])
+    ));
+}
 echo "</table>";
 $this->end();
-if ($this->fetch('class') == 'Asociado'):
+
+if ($this->fetch('class') == 'Asociado') {
     $this->assign('line2_object', 'comisión');
     $this->assign('line2_controller','asociado_comisiones');
     $this->start('lines2');
-//la tabla con el historial de comisiones
+    //la tabla con el historial de comisiones
     echo "<table>";
     echo $this->Html->tableHeaders(array(
-    'válido desde','válido hasta','comisión',''));
-    foreach ($comisiones as $comision):
+	'válido desde','válido hasta','comisión',''));
+    foreach ($comisiones as $comision) {
 	$fecha_inicio = $this->Date->format($comision['fecha_inicio']);
 	$fecha_fin = $this->Date->format($comision['fecha_fin']);
 	echo $this->Html->tableCells(array(
-	$fecha_inicio,
-	$fecha_fin,
-	$comision['Comision']['valor'],
-	$this->Button->editLine('asociado_comisiones',$comision['id'],'asociados',$comision['asociado_id'])
-	.' '.$this->Button->deleteLine('asociado_comisiones',$comision['id'],'asociados',$comision['asociado_id'],$comision['Comision']['valor'])
+	    $fecha_inicio,
+	    $fecha_fin,
+	    $comision['Comision']['valor'],
+	    $this->Button->editLine('asociado_comisiones',$comision['id'],'asociados',$comision['asociado_id'])
+	    .' '.$this->Button->deleteLine('asociado_comisiones',$comision['id'],$comision['Comision']['valor'])
 	));
-    endforeach;
+    }
     echo "</table>";
     $this->end();
-endif;
+}
 ?>

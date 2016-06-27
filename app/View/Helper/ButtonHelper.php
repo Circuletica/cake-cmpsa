@@ -3,57 +3,58 @@ App::uses('AppHelper', 'View/Helper');
 class ButtonHelper extends AppHelper {
     public $helpers = array('Html','Form');
     public function view($controller,$id) {
-	    return $this->Html->link(
-		 '<i class="fa fa-info-circle"></i> ',
-			array(
-			'controller' => $controller,
-			'action' => 'view',
-			$id,
-			),
-		    array(
-			'class' => 'boton',
-			'title' => 'Detalle',
-			'escape' => false
-		    )
-		);
+	return $this->Html->link(
+	    '<i class="fa fa-info-circle"></i> ',
+	    array(
+		'controller' => $controller,
+		'action' => 'view',
+		$id,
+	    ),
+	    array(
+		'class' => 'boton',
+		'title' => 'Detalle',
+		'escape' => false
+	    )
+	);
     }
-     //la versión pequeña, solo el botón sin texto, con retorno
+    //la versión pequeña, solo el botón sin texto, con retorno
     //a la página 'padre'. Se usa en los listados dentro de una vista
-    public function viewLine($controller,$id,$from_controller,$from_id) {
-	    return $this->Html->link(
-		 '<i class="fa fa-info-circle"></i> ',
-			array(
-			'controller' => $controller,
-			'action' => 'view',
-			$id,
-			'from_controller' => $from_controller,
-			'from_id' => $from_id
-		    ),
-		    array(
-			'class' => 'boton',
-			'title' => 'Detalle línea',
-			'escape' => false
-		    )
-		);
-    }    
-     //la versión especifica para vistas mixtas de diferentes tablas, se usa
-     //para en concreto desde un index a una vista compleja
+//    public function viewLine($controller,$id,$from_controller,$from_id) {
+//	return $this->Html->link(
+//	    '<i class="fa fa-info-circle"></i> ',
+//	    array(
+//		'controller' => $controller,
+//		'action' => 'view',
+//		$id,
+//		'from_controller' => $from_controller,
+//		'from_id' => $from_id
+//	    ),
+//	    array(
+//		'class' => 'boton',
+//		'title' => 'Detalle línea',
+//		'escape' => false
+//	    )
+//	);
+//    }
+
+    //la versión especifica para vistas mixtas de diferentes tablas, se usa
+    //para en concreto desde un index a una vista compleja
     public function viewCrossed($vista,$controller,$linked_id,$id,$from_controller,$from_id){
-	    return $this->Html->link(
-		 '<i class="fa fa-info-circle"></i> ',
-			array(
-			'controller' => $controller,
-			'action' => 'view_'.$vista,
-			$linked_id=>$id,
-			'from_controller' => $from_controller,
-			'from_id' => $from_id
-		    ),
-		    array(
-			'class' => 'boton',
-			'title' => 'Detalle línea',
-			'escape' => false
-		    )
-		);
+	return $this->Html->link(
+	    '<i class="fa fa-info-circle"></i> ',
+	    array(
+		'controller' => $controller,
+		'action' => 'view_'.$vista,
+		$linked_id=>$id,
+		'from_controller' => $from_controller,
+		'from_id' => $from_id
+	    ),
+	    array(
+		'class' => 'boton',
+		'title' => 'Detalle línea',
+		'escape' => false
+	    )
+	);
     }    
 
     //dibujar un boton de 'editar', el tipico que aparece
@@ -61,39 +62,39 @@ class ButtonHelper extends AppHelper {
     //$controller: el contralador de la clase del objeto a modificar
     //$id: el id del objeto que editamos
     public function edit($controller,$id) {
-	    return $this->Html->link(
-		    '<i class="fa fa-pencil-square-o"></i> Modificar',
-		    array(
-			'controller' => $controller,
-			'action' => 'edit',
-			$id,
-		    ),
-		    array(
-			'class' => 'botond',
-			'title' => 'Modificar',
-			'escape' => false
-		    )
-		);
-	}
+	return $this->Html->link(
+	    '<i class="fa fa-pencil-square-o"></i> Modificar',
+	    array(
+		'controller' => $controller,
+		'action' => 'edit',
+		$id,
+	    ),
+	    array(
+		'class' => 'botond',
+		'title' => 'Modificar',
+		'escape' => false
+	    )
+	);
+    }
     //la versión pequeña, solo el botón sin texto, con retorno
     //a la página 'padre'. Se usa en los listados dentro de una vista
     public function editLine($controller,$id,$from_controller,$from_id) {
-	    return $this->Html->link(
-		    '<i class="fa fa-pencil-square-o"></i>',
-		    array(
-			'controller' => $controller,
-			'action' => 'edit',
-			$id,
-			'from_controller' => $from_controller,
-			'from_id' => $from_id
-		    ),
-		    array(
-			'class' => 'botond',
-			'title' => 'Modificar línea',
-			'escape' => false
-		    )
-		);
-	}
+	return $this->Html->link(
+	    '<i class="fa fa-pencil-square-o"></i>',
+	    array(
+		'controller' => $controller,
+		'action' => 'edit',
+		$id,
+		'from_controller' => $from_controller,
+		'from_id' => $from_id
+	    ),
+	    array(
+		'class' => 'botond',
+		'title' => 'Modificar línea',
+		'escape' => false
+	    )
+	);
+    }
     //identico a los anteriores, pero para borrar
     public function delete($controller,$id,$object) {
 	return $this->Form->postLink(
@@ -108,25 +109,24 @@ class ButtonHelper extends AppHelper {
 		'escape' => false,
 		'title' => 'Borrar',
 		'confirm' => '¿Seguro que quieres borrar '.$object.'?'
-		)
+	    )
 	);
     }
-    public function deleteLine($controller,$id,$from_controller,$from_id,$object) {
+    //public function deleteLine($controller,$id,$from_controller,$from_id,$object) {
+    public function deleteLine($controller,$id,$object) {
 	return $this->Form->postLink(
 	    '<i class="fa fa-trash"></i>',
 	    array(
 		'controller' => $controller,
 		'action' => 'delete',
 		$id,
-		'from_controller' => $from_controller,
-		'from_id' => $from_id
 	    ),
 	    array(
 		'class' => 'botond',
 		'escape' => false,
 		'title' => 'Borrar',
 		'confirm' => '¿Seguro que quieres borrar '.$object.'?'
-		)
+	    )
 	);
     }
     public function add($controller,$object) {

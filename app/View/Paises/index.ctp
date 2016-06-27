@@ -19,7 +19,7 @@
     <th><?php echo $this->Paginator->sort('nombre')?></th>
     <th><?php echo $this->Paginator->sort('iso3166')?></th>
     <th>Prefijo Telefónico</th>
-    <th>Acciones</th>
+    <th>Detalle</th>
   </tr>
 <?php foreach($paises as $pais):?>
   <tr>

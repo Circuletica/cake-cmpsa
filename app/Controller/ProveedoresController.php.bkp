@@ -14,7 +14,7 @@ var $name = 'Proveedores';
     //$this->set('paises', $paises);
     if($this->request->is('post')):
       if($this->Proveedor->save($this->request->data) ):
-        $this->Session->setFlash('Proveedor guardado');
+        $this->Flash->set('Proveedor guardado');
         $this->redirect(array('action' => 'index'));
       endif;
     endif;

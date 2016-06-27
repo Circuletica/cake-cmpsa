@@ -11,9 +11,8 @@ $line_add = $this->fetch('line_add');
 $line2_add = $this->fetch('line2_add');
 $from_controller = $this->fetch('from_controller');
 $from_id = $this->fetch('from_id');
-
-$this->fetch('breadcrumb');
 ?>
+
 <h2><?php echo $object; ?></h2>
 
 <div class="actions">
@@ -42,8 +41,9 @@ echo $this->Button->edit($controller,$id)
     //si no es el caso, volvemos al index del controller del
     //borrado
     (empty($from_controller) ? 
-    $this->Button->delete($controller,$id,$object):
-    $this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object)
+    $this->Button->delete($controller,$id,$object)
+    //:$this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object)
+    :$this->Button->deleteLine($controller,$id,$object)
 );
 ?>
 	</li>

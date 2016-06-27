@@ -10,7 +10,7 @@ class PaisesController extends AppController {
     public function add() {
 	if($this->request->is('post')):
 	    if($this->Pais->save($this->request->data) ):
-		$this->Session->setFlash('Pais guardado');
+		$this->Flash->set('Pais guardado');
 	$this->redirect(array(
 	    'controller' => $this->params['named']['from_controller'],
 	    'action' => $this->params['named']['from_action']));
@@ -20,7 +20,7 @@ endif;
     public function addPopup() {
 	if($this->request->is('post')):
 	    if($this->Pais->save($this->request->data) ):
-		$this->Session->setFlash('Pais guardado');
+		$this->Flash->set('Pais guardado');
 	$this->redirect(array(
 	    'controller' => $this->params['named']['from_controller'],
 	    'action' => $this->params['named']['from_action']));
@@ -33,10 +33,10 @@ endif;
 	    $this->request->data = $this->Pais->read();
 	else:
 	    if($this->Pais->save($this->request->data)):
-		$this->Session->setFlash('Pais '.$this->request->data['Pais']['nombre'].' guardado');
+		$this->Flash->set('Pais '.$this->request->data['Pais']['nombre'].' guardado');
 	$this->redirect(array('action' => 'index'));
 	    else:
-		$this->Session->setFlash('Pais no guardado');
+		$this->Flash->set('Pais no guardado');
 endif;
 endif;
     }
@@ -45,7 +45,7 @@ endif;
 	    throw new MethodNotAllowedException();
 	else:
 	    if($this->Pais->delete($id)):
-		$this->Session->setFlash('Pais borrado');
+		$this->Flash->set('Pais borrado');
 	$this->redirect(array('action' => 'index'));
 endif;
 endif;

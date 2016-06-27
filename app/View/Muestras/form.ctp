@@ -130,11 +130,11 @@ echo $this->Form->input(
 echo $this->Form->input(
     'proveedor_id',
     array(
-	'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
-	'empty' => array('' => 'Selecciona'),
-	'class' => 'ui-widget',
-	//si no es oferta, solo se introduce la referencia de contrato
-	'disabled' => $tipo_id != 1
+        'label' => 'Proveedor ('.$enlace_anyadir_proveedor.')',
+        'empty' => array('' => 'Selecciona'),
+        'class' => 'ui-widget',
+        //si no es oferta, solo se introduce la referencia de contrato
+        'disabled' => $tipo_id != 1
     )
 );
 echo '<label>Transporte: </label><var id="transporte_contrato"></var>';

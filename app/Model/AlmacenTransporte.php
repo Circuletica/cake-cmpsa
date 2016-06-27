@@ -30,5 +30,18 @@ class AlmacenTransporte extends AppModel {
      		'message' => 'La referencia no puede estar vacía'
       		)
     );
+	public function beforeDelete($cascade = true) {
+		$count = $this->Retirada->find(
+            "count",
+            array(
+                "recursive" => -1,
+                "conditions" => array("almacen_transporte_id" => $this->id)
+            )
+        );
+		if ($count == 0) {
+			return true;
+		}
+		return false;
+	}
 }
 ?>

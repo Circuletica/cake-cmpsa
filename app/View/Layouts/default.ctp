@@ -54,7 +54,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','#', array('escape' => false));?>
 				<ul>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
-				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> CUENTAS ALMACÉN','/almacen_transportes',array('escape' => false));?></li>				    
+				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> CUENTAS ALMACÉN','/almacen_transportes',array('escape' => false));?></li>		    
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> RETIRADAS','/retiradas',array('escape' => false));?></li>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> FLETES','/fletes',array('escape' => false));?></li>
 				</ul>
@@ -65,6 +65,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones',array('escape' => false));?></li>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> FINANCIACIÓN','/financiaciones',array('escape' => false));?></li>
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> FACTURACIÓN','/facturaciones',array('escape' => false));?></li>
+				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> RETIRADAS','/retiradas/index_conta',array('escape' => false));?></li>				    
 				</ul>
 			</li>
 		</ul>	
@@ -85,7 +86,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 		<div class="menufooter">
 			<ul class="tabs">
 		<!--	<li><?php echo $this->Html->link('<i class="fa fa-calendar"></i> CALENDARIO','/pages/calendario',array('escape' => false));?></li>	-->		
-				<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/highcharts/highcharts_demo',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/pages/home',array('escape' => false));?></li>
 		<!--		<li ><?php echo $this->Html->link('<i class="fa fa-cog"></i> PREFERENCIAS','/pages/preferencias',array('escape' => false));?></li>-->
 
 				<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?></li>

@@ -15,7 +15,7 @@ class IncotermsController extends AppController {
 	public function add() {
 		if($this->request->is('post')):
 			if($this->Incoterms->save($this->request->data) ):
-				$this->Session->setFlash('Incoterm guardado');
+				$this->Flash->set('Incoterm guardado');
 				$this->redirect(array(
 					'controller' => $this->params['named']['from_controller'],
 					'action' => $this->params['named']['from_action']));
@@ -28,10 +28,10 @@ class IncotermsController extends AppController {
 			$this->request->data = $this->Incoterms->read();
 		else:
 			if($this->Incoterms->save($this->request->data)):
-				$this->Session->setFlash('Incoterms '.$this->request->data['Incoterms']['nombre'].' guardado');
+				$this->Flash->set('Incoterms '.$this->request->data['Incoterms']['nombre'].' guardado');
 		$this->redirect(array('action' => 'index'));
 			else:
-				$this->Session->setFlash('Incoterms no guardado');
+				$this->Flash->set('Incoterms no guardado');
 endif;
 endif;
 	}
@@ -40,7 +40,7 @@ endif;
 			throw new MethodNotAllowedException();
 		else:
 			if($this->Incoterms->delete($id)):
-				$this->Session->setFlash('Inconterms borrado');
+				$this->Flash->set('Inconterms borrado');
 		$this->redirect(array('action' => 'index'));
 endif;
 endif;

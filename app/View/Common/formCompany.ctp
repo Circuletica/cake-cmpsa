@@ -6,10 +6,14 @@ $controller = Inflector::tableize($class);
 //la vista padre, se calcula uno por defecto a partir
 //de la clase
 $object = $this->fetch('object');
-if ($object == '') $object = Inflector::humanize(Inflector::singularize($controller));
-
-if ($this->action == 'add') { echo "<h2>Añadir <em>".$class."</em></h2>\n"; }
-if ($this->action == 'edit') { echo "<h2>Modificar <em>".$object."</em></h2>\n"; }
+if ($object == '')
+    $object = Inflector::humanize(Inflector::singularize($controller));
+if ($this->action == 'add') {
+    echo "<h2>Añadir <em>".$class."</em></h2>\n";
+}
+if ($this->action == 'edit') {
+    echo "<h2>Modificar <em>".$object."</em></h2>\n";
+}
 
 $this->Html->addCrumb(Inflector::pluralize($class), array( 'controller' => $controller, 'action' => 'index'));
 
@@ -17,17 +21,34 @@ echo $this->Form->create($class);
 ?>
 	<fieldset>
 <?php
-echo $this->Form->input('Empresa.nombre_corto', array(
-	'label' => 'Nombre',
-    'autofocus' => 'autofocus'
+echo $this->Form->input(
+    'Empresa.nombre_corto',
+    array(
+	    'label' => 'Nombre',
+        'autofocus' => 'autofocus'
     )
 );
-echo $this->Form->input('Empresa.nombre', array('label'=>'Denominacion legal'));
-echo $this->Form->input('Empresa.direccion', array('label'=>'Dirección'));
+echo $this->Form->input(
+    'Empresa.nombre',
+    array(
+        'label'=>'Denominacion legal'
+    )
+);
+echo $this->Form->input(
+    'Empresa.direccion',
+    array(
+        'label'=>'Dirección'
+    )
+);
 ?>
 <div class='col2'>
 <?php
-echo $this->Form->input('Empresa.cp', array('label'=>'Código Postal'));
+echo $this->Form->input(
+    'Empresa.cp',
+    array(
+        'label'=>'Código Postal'
+    )
+);
 echo $this->Form->input('Empresa.municipio');
 ?>
 </div>
@@ -38,18 +59,27 @@ echo $this->Form->input('Empresa.municipio');
 		<ul>
 		    <li>
 <?php
-echo $this->Form->input('Empresa.pais_id', array('label'=>'País'));
+echo $this->Form->input(
+    'Empresa.pais_id',
+    array(
+        'label'=>'País'
+    )
+);
 ?>
 		    </li>
 		    <li>
 			<div class="enlinea">
 <?php            
-echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País', array(
-    'controller'=>'paises',
-    'action'=>'add'
-),array(
-    "class"=>"botond",
-    'escape' => false)
+echo $this->Html->link(
+    '<i class="fa fa-plus"></i> Añadir País',
+    array(
+        'controller'=>'paises',
+        'action'=>'add'
+    ),
+    array(
+        "class"=>"botond",
+        'escape' => false
+    )
 );
 ?>
 			 </div>
@@ -57,7 +87,12 @@ echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País', array(
 		</ul>
 	    </div>
 <?php
-echo $this->Form->input('Empresa.telefono', array('label'=>'Teléfono'));
+echo $this->Form->input(
+    'Empresa.telefono',
+    array(
+        'label'=>'Teléfono'
+    )
+);
 ?>
 <?php
 echo $this->Form->input('Empresa.cif', array('label'=>'CIF'));

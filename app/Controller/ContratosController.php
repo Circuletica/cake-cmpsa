@@ -1,43 +1,30 @@
 <?php
 class ContratosController extends AppController {
     var $displayField = 'referencia';
+
     public function index() {
 	$this->paginate['order'] = array('Contrato.posicion_bolsa' => 'asc');
 	$this->Contrato->virtualFields['calidad']=$this->Contrato->Calidad->virtualFields['nombre'];
-	//	$this->paginate['fields'] = array(
-	//	    'id',
-	//	    'proveedor_id',
-	//	    'calidad_id',
-	//	    'calidad',
-	//	    'incoterm_id',
-	//	    'canal_compra_id',
-	//	    'referencia',
-	//	    'posicion_bolsa',
-	//	    'peso_comprado',
-	//	    'lotes_contrato',
-	//	    'si_muestra_emb_aprob',
-	//	    'si_muestra_entr_aprob'
-	//	);
 	$this->paginate['contain'] = array(
 	    'Proveedor' => array(
-		'fields' => array(
-		    'nombre_corto'
-		)
+			'fields' => array(
+				'nombre_corto'
+			)
 	    ),
 	    'Incoterm' => array(
-		'fields' => array(
-		    'nombre'
-		)
+			'fields' => array(
+				'nombre'
+			)
 	    ),
 	    'Calidad' => array(
-		'fields' => array(
-		    'nombre'
-		)
+			'fields' => array(
+				'nombre'
+			)
 	    ),
 	    'CanalCompra' => array(
-		'fields' => array(
-		    'nombre'
-		)
+			'fields' => array(
+				'nombre'
+			)
 	    )
 	);
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
@@ -46,9 +33,9 @@ class ContratosController extends AppController {
 	$proveedores = $this->Proveedor->find(
 	    'list',
 	    array(
-		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-		'order' => array('Empresa.nombre_corto' => 'asc'),
-		'recursive' => 1
+			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+			'order' => array('Empresa.nombre_corto' => 'asc'),
+			'recursive' => 1
 	    )
 	);
 	$this->set('proveedores',$proveedores);
@@ -60,23 +47,23 @@ class ContratosController extends AppController {
 
 	$titulo = $this->filtroPaginador(
 	    array(
-		'Contrato' => array(
-		    'Referencia' => array(
-			'columna' => 'referencia',
-			'exacto' => false,
-			'lista' => '',
-		    ),
-		    'Proveedor' => array(
-			'columna' => 'proveedor_id',
-			'exacto' => true,
-			'lista' => $proveedores
-		    ),
-		    'Calidad' => array(
-			'columna' => 'calidad',
-			'exacto' => false,
-			'lista' => ''
-		    )
-		)
+			'Contrato' => array(
+				'Referencia' => array(
+					'columna' => 'referencia',
+					'exacto' => false,
+					'lista' => '',
+				),
+				'Proveedor' => array(
+					'columna' => 'proveedor_id',
+					'exacto' => true,
+					'lista' => $proveedores
+				),
+				'Calidad' => array(
+					'columna' => 'calidad',
+					'exacto' => false,
+					'lista' => ''
+				)
+			)
 	    )
 	);
 	//filtramos por fecha
@@ -88,8 +75,8 @@ class ContratosController extends AppController {
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
 		list($mes,$anyo) = explode('-',$criterio);
 	    } else {
-		$this->Session->setFlash('Error de fecha');
-		$this->redirect(array('action' => 'index'));
+			$this->Flash->set('Error de fecha');
+			$this->redirect(array('action' => 'index'));
 	    }
 	    //si se ha introducido un año, filtramos por el año
 	    if($anyo) { $this->paginate['conditions']['YEAR(Contrato.posicion_bolsa) ='] = $anyo;};
@@ -116,12 +103,18 @@ class ContratosController extends AppController {
 
     public function view($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado Contrato/view');
-	    $this->redirect(array('action'=>'index'));
+        throw new NotFoundException(__('URL mal formado Contrato/view'));
 	}
-	$contrato = $this->Contrato->find('first', array(
-	    'conditions' => array('Contrato.id' => $id),
-	    'recursive' => 2));
+	$contrato = $this->Contrato->find(
+        'first',
+        array(
+            'conditions' => array('Contrato.id' => $id),
+            'recursive' => 2
+        )
+    );
+    if (!$contrato) {
+        throw new NotFoundException(__('No existe ese contrato'));
+    }
 	$this->set('contrato', $contrato);
 
 	//La suma del peso de todas las operaciones de un contrato
@@ -266,7 +259,7 @@ class ContratosController extends AppController {
 			$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
 		    }
 		}
-		$this->Session->setFlash('Contrato guardado');
+		$this->Flash->set('Contrato guardado');
 		$this->redirect(array('action' => 'index'));
 	    }
 	}
@@ -274,8 +267,7 @@ class ContratosController extends AppController {
 
     public function edit($id = null) {
 	if (!$id) {
-	    $this->Session->setFlash('URL mal formado');
-	    $this->redirect(array('action'=>'index'));
+        throw new NotFoundException(__('URL mal formado Contrato/edit'));
 	}
 	//necesitamos la lista de proveedor_id/nombre para rellenar el select
 	//del formulario de busqueda
@@ -372,14 +364,14 @@ class ContratosController extends AppController {
 			$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
 		    }
 		}
-		$this->Session->setFlash('Contrato '.$this->request->data['Contrato']['referencia'].' modificada con éxito');
+		$this->Flash->set('Contrato '.$this->request->data['Contrato']['referencia'].' modificada con éxito');
 		$this->redirect(array(
 		    'action' => 'view',
 		    $id
 		    )
 		);
 	    } else {
-		$this->Session->setFlash('Contrato NO guardado');
+		$this->Flash->set('Contrato NO guardado');
 	    }
 	}
     }
@@ -392,7 +384,7 @@ class ContratosController extends AppController {
 		//que lo necesitan (entre otros la referencia que es UNIQUE)
 
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado');
+			$this->Flash->set('URL mal formado');
 			$this->redirect(array('action'=>'index'));
 		}
 
@@ -462,23 +454,23 @@ class ContratosController extends AppController {
 	}
 
     public function delete($id = null) {
-	if (!$id or $this->request->is('get')){
-	    throw new MethodNotAllowedException();
-	}
-	if ($this->Contrato->delete($id)) {
-	    //$this->Session->setFlash('Contrato borrado');
-	    $this->Flash->set(
-		'El contrato ha sido borrado',
-		array(
-		    'element' => 'success',
-		    'key' => 'positive',
-		    'params' => array(
-			'referencia' => $id
-		    )
-		)
-	    );
-	    $this->redirect(array('action'=>'index'));
-	}
+        if (!$id or $this->request->is('get')){
+            throw new MethodNotAllowedException('URL mal formada o incompleta');
+        }
+        if ($this->Contrato->delete($id)) {
+            $this->Flash->set('Contrato borrado');
+            $this->History->Back(-1);
+        } else {
+            $this->Flash->set('El contrato NO se ha borrado');
+            $this->History->Back(0);
+        }
+//        try { $this->Contrato->delete($id);
+//        } catch (ForeignKey $e) {
+//            echo 'Error en base de datos: ', $e->getMessage(), "\n";
+//            $this->History->Back(0);
+//        } finally {
+//            $this->Flash->set('Contrato borrado');
+//        }
     }
 }
 ?>

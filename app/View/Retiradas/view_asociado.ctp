@@ -44,7 +44,7 @@ foreach($retiradas as $retirada):
 				$retirada['Retirada']['embalaje_retirado'],
 				$retirada['Retirada']['peso_retirado'],
 				$this->Html->link(
-						'<i class="fa fa-pencil-square-o"></i> ',array(
+						'<i class="fa fa-pencil-square-o"></i>',array(
 							'controller' => 'retiradas',
 							'action' => 'edit',
 							$retirada['Retirada']['id'],

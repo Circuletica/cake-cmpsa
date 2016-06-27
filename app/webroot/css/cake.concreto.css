@@ -615,39 +615,6 @@ input[type=submit],
 	margin: 0px 10px 0px 0px;
 }
 
-/** CRIBA **/
-/*div.cribai {
-	border-right:0;
-	clear: both;
-	color: #333;
-	margin-bottom: 10px;
-	width: 100%;
-	font-weight: normal;
-	font-size: 125%;
-}
-.cribai table{
-	width:55%;
-}
-.cribai tr td {
-	padding: 0.5% 1% 0.5% 1%;
-	text-align: right;
-	vertical-align: top;
-	border-bottom:1px solid #ddd;
-}
-.cribai tr:nth-child(even) {
-	background: #F6F9FA;
-}
-.cribai th{
-	width: 150px;
-}
-.cribai .negrita{
-	float:right;
-	font-weight: bold;
-}
-.cribai .total{
-	font-weight: bold;
-	color: #CE443E;
-}*/
 /* LATERAL DERECHA */
 div.laterald {
 	float:right;
@@ -734,14 +701,14 @@ div.laterali {
 }
 .portada ul li a {
 	font-weight:800;
-	padding: 2.5% 10%;
+	padding: 2.5% 16%;
 	background: #42B4D6;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#42B4D6), to(#3F8EC1));
-	background-image: -webkit-linear-gradient(top, #42B4D6, #3F8EC1);
-	background-image: -moz-linear-gradient(top, #42B4D6, #3F8EC1);
-	background-image: -ms-linear-gradient(top, #42B4D6,#3F8EC1);
-	background-image: -o-linear-gradient(top, #42B4D6,#3F8EC1);
-	background-image: linear-gradient(top, #42B4D6, #3F8EC1);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#42B4D6), to(#637A91));
+	background-image: -webkit-linear-gradient(top, #42B4D6, #637A91);
+	background-image: -moz-linear-gradient(top, #42B4D6, #637A91);
+	background-image: -ms-linear-gradient(top, #42B4D6,#637A91);
+	background-image: -o-linear-gradient(top, #42B4D6,#637A91);
+	background-image: linear-gradient(top, #42B4D6, #637A91);
 	color:#fff;
 	border:1px solid #bbb;
 	-webkit-border-radius: 3px;
@@ -758,6 +725,7 @@ div.laterali {
 }
 .portada li ul li {
 	position:relative;
+	margin: 5% 20% 5% 5%;
 }
 
 .portada a:hover {
@@ -770,9 +738,9 @@ text-decoration: none;
 background: #5FCF80;
 color: #fff;
 }
-.portada ul, li {
+/*.portada ul, li {
     margin: 2% 2.5%;
-}
+}*/
 /* Cuadrando las cajas de texto*/
 .pruebatabla{
 	text-align: right;

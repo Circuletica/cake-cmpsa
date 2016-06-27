@@ -121,5 +121,5 @@ echo "</dl>";
 echo "<dl>";
 echo "  <dt>Observaciones</dt><dd>variable que recoge un texto</dd>\n";
 echo "</dl>";
-$this->end();
+$this->end()
 ?>

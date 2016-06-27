@@ -37,5 +37,6 @@ echo $this->Form->input('asociado_id', array(
     'type' => 'hidden',
     'value' => $asociado_id
 ));
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar comisión');
 ?>
