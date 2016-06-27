@@ -469,7 +469,11 @@ class ContratosController extends AppController {
             $this->History->Back(-1);
         } else {
             $this->Flash->set('El contrato NO se ha borrado');
-            $this->History->Back(0);
+			$this->redirect(array(
+				'action'=>'view',
+				$id
+				)
+			);
         }
 //        try { $this->Contrato->delete($id);
 //        } catch (ForeignKey $e) {
