@@ -44,12 +44,12 @@ echo "<div class='linea'>\n";
 echo $this->Form->input(
     'fecha_vencimiento',
     array(
-	'label' => 'Fecha de vencimiento',
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y')-1,
-	'maxYear' => date('Y')+5,
-	'orderYear' => 'asc',
-	'autofocus' => 'autofocus'
+        'label' => 'Fecha de vencimiento',
+        'dateFormat' => 'DMY',
+        'minYear' => date('Y')-1,
+        'maxYear' => date('Y')+5,
+        'orderYear' => 'asc',
+        'autofocus' => 'autofocus'
     )
 );
 echo "</div>\n";

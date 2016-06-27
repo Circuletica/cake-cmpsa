@@ -52,14 +52,14 @@ echo $this->Form->input('observaciones');
 echo $this->Form->input(
     'referencia',
     array(
-	'autofocus' => 'autofocus'
+		'autofocus' => 'autofocus'
     )
 );
 echo $this->Form->input(
     'embalaje_id',
     array(
-	'after' => '(quedan ????? sin fijar)',
-	'onchange' => 'pesoAsociado()'
+		'after' => '(quedan ????? sin fijar)',
+		'onchange' => 'pesoAsociado()'
     )
 );
 ?>
@@ -68,8 +68,8 @@ echo $this->Form->input(
 echo $this->Form->input(
     'lotes_operacion',
     array(
-	'label'=> 'Lotes',	
-	'after' => 'Quedan por fijar '.$contrato['RestoLotesContrato']['lotes_restantes'].' lotes'
+		'label'=> 'Lotes',	
+		'after' => 'Quedan por fijar '.$contrato['RestoLotesContrato']['lotes_restantes'].' lotes'
     )
 );
 ?>
@@ -77,18 +77,19 @@ echo $this->Form->input(
 echo $this->Form->input(
     'si_precio_fijo',
     array(
-	'label' => 'Precio fijo ?',
-	'type' => 'checkbox',
-	'id' => 'siPrecioFijo',
-	'onchange' => 'precioF()'
+		'label' => 'Precio fijo ?',
+		'type' => 'checkbox',
+		'id' => 'siPrecioFijo',
+		'onchange' => 'precioF()'
     )
 );
 
 echo $this->Form->input(
-    'precio_directo_euro', array(
-	'label' => 'Precio fijo',
-	'id' => 'precioFijoEuro',
-	'between' => '(€/kg)'
+    'precio_directo_euro',
+	array(
+		'label' => 'Precio fijo',
+		'id' => 'precioFijoEuro',
+		'between' => '(€/kg)'
     )
 );
 ?>
@@ -97,13 +98,13 @@ echo $this->Form->input(
 echo $this->Form->input(
     'fecha_pos_fijacion',
     array(
-	'label' => 'Fecha de fijación',
-	'class' => 'precioFijo',
-	'dateFormat' => 'DMY',
-	'minYear' => date('Y'),
-	'maxYear' => date('Y')+5,
-	'orderYear' => 'asc',
-	'selected' => date('Y-m-1')
+		'label' => 'Fecha de fijación',
+		'class' => 'precioFijo',
+		'dateFormat' => 'DMY',
+		'minYear' => date('Y'),
+		'maxYear' => date('Y')+5,
+		'orderYear' => 'asc',
+		'selected' => date('Y-m-1')
     )
 );
 ?>
@@ -114,45 +115,45 @@ echo $this->Form->input(
 echo $this->Form->input(
     'puerto_carga_id',
     array(
-	'label' => 'Puerto embarque',
-	'class' => 'precioFijo',
-	'default' => $puerto_carga_contrato_id,
-	'empty' => array('' => ''),
-	'onchange' => 'pesoAsociado()'
-    )
+		'label' => 'Puerto embarque',
+		'class' => 'precioFijo',
+		'default' => $puerto_carga_contrato_id,
+		'empty' => array('' => ''),
+		'onchange' => 'pesoAsociado()'
+	)
 );
 echo $this->Form->input(
     'precio_fijacion',
     array(
-	'label' => 'Precio fijación',	
-	'class' => 'precioFijo',
-	'between' => '('.$divisa.')'
+		'label' => 'Precio fijación',	
+		'class' => 'precioFijo',
+		'between' => '('.$divisa.')'
     )
 );
 echo $this->Form->input(
     'precio_compra',
     array(
-	'between' => '('.$divisa.')',
-	'class' => 'precioFijo',
-	'label' => 'Precio factura'
+		'between' => '('.$divisa.')',
+		'class' => 'precioFijo',
+		'label' => 'Precio factura'
     )
 );
 echo $this->Form->input(
     'puerto_destino_id',
     array(
-	'label' => 'Puerto destino',
-	'class' => 'precioFijo',
-	'default' => $puerto_destino_contrato_id,
-	'empty' => array('' => ''),
-	'onchange' => 'pesoAsociado()'
-    )
+		'label' => 'Puerto destino',
+		'class' => 'precioFijo',
+		'default' => $puerto_destino_contrato_id,
+		'empty' => array('' => ''),
+		'onchange' => 'pesoAsociado()'
+	)
 );
 echo $this->Form->input(
     'opciones',
     array(
-	'label' => 'Opciones',
-	'class' => 'precioFijo',
-	'between' => '('.$divisa.')'
+		'label' => 'Opciones',
+		'class' => 'precioFijo',
+		'between' => '('.$divisa.')'
     )
 );
 ?>
@@ -161,27 +162,27 @@ echo $this->Form->input(
 <?php
 if ($contrato['Incoterm']['si_flete']) {
     echo $this->Form->input(
-	'flete',
-	array(
-	    'label' => 'Opciones',
-	    'class' => 'precioFijo',
-	    'type' => 'select',
-	    'options' => $fletes,
-	    'empty' => true,
-	    'between' => '($/Tm)',
-	    'label' => 'Flete'
-	)
+		'flete',
+		array(
+			'label' => 'Opciones',
+			'class' => 'precioFijo',
+			'type' => 'select',
+			'options' => $fletes,
+			'empty' => true,
+			'between' => '($/Tm)',
+			'label' => 'Flete'
+		)
     );
 }
 
 if ($contrato['Incoterm']['si_seguro']) {
     echo $this->Form->input(
-	'seguro',
-	array(
-	    'label' => 'Seguro',
-	    'class' => 'precioFijo',
-	    'between' => '(%)'
-	)
+		'seguro',
+		array(
+			'label' => 'Seguro',
+			'class' => 'precioFijo',
+			'between' => '(%)'
+		)
     );
 }
 ?>
@@ -190,17 +191,18 @@ if ($contrato['Incoterm']['si_seguro']) {
 echo $this->Form->input(
     'forfait',
     array(
-	'label' => 'Forfait',
-	'class' => 'precioFijo',
-	'between' => '(€/Tm)'
+		'label' => 'Forfait',
+		'class' => 'precioFijo',
+		'between' => '(€/Tm)'
     )
 );
 
 echo $this->Form->input(
-    'cambio_dolar_euro', array(
-	'label' => 'Cambio',
-	'class' => 'precioFijo',
-	'between' => '($/€)'
+    'cambio_dolar_euro',
+	array(
+		'label' => 'Cambio',
+		'class' => 'precioFijo',
+		'between' => '($/€)'
     )
 );
 

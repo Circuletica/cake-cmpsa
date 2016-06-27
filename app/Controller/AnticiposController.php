@@ -110,6 +110,9 @@ class AnticiposController extends AppController {
         if($this->Anticipo->delete($id)) {
             $this->Flash->set('Anticipo borrado');
             $this->History->Back(0);
+        } else {
+            $this->Flash->set('Anticipo NO borrado');
+            $this->History->Back(0);
         }
 	}
 }

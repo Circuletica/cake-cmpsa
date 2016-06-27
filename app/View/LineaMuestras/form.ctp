@@ -25,50 +25,50 @@ $this->Html->addCrumb('Muestra '.$muestra['tipo_registro'],'/muestras/view/'.$mu
 
 echo $this->Html->tableCells(
     array(
-	$this->Form->input(
-	    'humedad',
-	    array('autofocus' => 'autofocus')
-	),
-	$this->Form->input('tueste'),
-	$this->Form->input(
-	    'referencia_proveedor',
-	    array(
-		'label' => 'Referencia Proveedor'
-	    )
-	),
-	isset($operaciones) && $muestra['tipo_id']!='1' ?
-	$this->Form->input(
-	    'operacion_id',
-	    array(
-		'empty' => true,
-		'label' => 'Operación',
-		'onchange' => 'operacionAlmacen()'
-	    )
-	)
-	: '',
-	isset($operacion_almacenes) && $muestra['tipo_id']!='1' ?
-	$this->Form->input(
-	    'almacen_transporte_id',
-	    array(
-		'empty' => true,
-		'label' => 'Cuenta almacén',
-		'onchange' => 'operacionAlmacen()'
-	    )
-	)
-	: '',
-	$this->Form->input('sacos'),
-	$this->Form->input(
-	    'si_facturado',
-	    array(
-		'label' => 'Facturado'
-	    ) 
-	),
-	$this->Form->input(
-	    'dato_factura',
-	    array(
-		'label' => 'Datos de factura'
-	    )
-	)
+        $this->Form->input(
+            'humedad',
+            array('autofocus' => 'autofocus')
+        ),
+        $this->Form->input('tueste'),
+        $this->Form->input(
+            'referencia_proveedor',
+            array(
+                'label' => 'Referencia Proveedor'
+            )
+        ),
+        isset($operaciones) && $muestra['tipo_id']!='1' ?
+        $this->Form->input(
+            'operacion_id',
+            array(
+                'empty' => true,
+                'label' => 'Operación',
+                'onchange' => 'operacionAlmacen()'
+            )
+        )
+        : '',
+        isset($operacion_almacenes) && $muestra['tipo_id']!='1' ?
+        $this->Form->input(
+            'almacen_transporte_id',
+            array(
+                'empty' => true,
+                'label' => 'Cuenta almacén',
+                'onchange' => 'operacionAlmacen()'
+            )
+        )
+        : '',
+        $this->Form->input('sacos'),
+        $this->Form->input(
+            'si_facturado',
+            array(
+                'label' => 'Facturado'
+            ) 
+        ),
+        $this->Form->input(
+            'dato_factura',
+            array(
+                'label' => 'Datos de factura'
+            )
+        )
     )
 );
 ?>
@@ -76,8 +76,11 @@ echo $this->Html->tableCells(
 <fieldset>
 <br>
 <?php
-echo $this->Form->input('apreciacion_bebida', array(
-    'label' => 'Bebida')
+echo $this->Form->input(
+    'apreciacion_bebida',
+    array(
+        'label' => 'Bebida'
+    )
 );
 
 echo $this->Form->input('defecto');
@@ -91,10 +94,13 @@ echo $this->Form->input('observaciones');
 <?php
 
 echo $this->Html->tableCells(array(
-    $this->Form->input('criba20', array(
-	'label' => 'Criba 20',
-	'class' => 'criba',
-	'oninput' => 'totalCriba()')
+    $this->Form->input(
+        'criba20',
+        array(
+            'label' => 'Criba 20',
+        	'class' => 'criba',
+        	'oninput' => 'totalCriba()'
+        )
     ),
     $this->Form->input('criba19', array(
 	'label' => 'Criba 19',
@@ -190,9 +196,9 @@ echo $this->Html->tableCells(array(
 	)."\n";
 echo $this->Html->tableCells(array(
     $this->Form->input('criba12', array(
-	'label' => 'Criba 12',
-	'class' => 'criba',
-	'oninput' => 'totalCriba()')
+        'label' => 'Criba 12',
+        'class' => 'criba',
+        'oninput' => 'totalCriba()')
     ),
     '<br><b><div id="total">TOTAL: </div></b>'
 )

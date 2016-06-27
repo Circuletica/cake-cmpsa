@@ -21,26 +21,29 @@ class FinanciacionesController extends AppController {
 	$financiacion = $this->Financiacion->find(
 	    'first',
 	    array(
-		'contain' => array(
-		    'Banco',
-		    'Operacion' => array(
-			'Contrato' => array(
-			    'Calidad',
-			    'Incoterm',
-			    'Proveedor'
-			),
-			'AsociadoOperacion' => array(
-			    'Asociado'
-			)
-		    ),
-		    'ValorIvaFinanciacion',
-		    'ValorIvaComision',
-		),
-		'conditions' => array('Financiacion.id' => $id),
-		'recursive' => 4
-	    )
-	);
-	$this->set(compact('financiacion'));
+            'contain' => array(
+                'Banco',
+                'Operacion' => array(
+                    'Contrato' => array(
+                        'Calidad',
+                        'Incoterm',
+                        'Proveedor'
+                    ),
+                    'AsociadoOperacion' => array(
+                        'Asociado'
+                    )
+                ),
+                'ValorIvaFinanciacion',
+                'ValorIvaComision',
+            ),
+            'conditions' => array('Financiacion.id' => $id),
+            'recursive' => 4
+        )
+    );
+    if (!$financiacion) {
+        throw new NotFoundException(__('No existe esa financiación'));
+    }
+    $this->set(compact('financiacion'));
 
 	//calculamos el total de cada línea de reparto como campo virtual del modelo
 	//Si metemos el campo nuevo directamente en el 'contain' del find, sale

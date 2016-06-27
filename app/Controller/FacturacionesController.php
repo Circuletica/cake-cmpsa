@@ -5,97 +5,99 @@ class FacturacionesController extends AppController {
     );
 
     public function index() {
-	$this->paginate['order'] = array('Operacion.referencia' => 'asc');
-	$this->paginate['recursive'] = 3;
-	$this->paginate['contain'] = array(
-	    'Operacion' => array(
-		'fields' => array(
-		    'referencia',
-		    'contrato_id'
-		)
-	    ),
-	    'Calidad' => array(
-		'fields' => array(
-		    'nombre'
-		)
-	    ),
-	    'Proveedor' => array(
-		'fields' => array(
-		    'nombre_corto'
-		)
-	    ),
-	    'Contrato' => array(
-		'calidad_id',
-		'proveedor_id'
-	    )
-	);
-	$this->Facturacion->bindModel(
-	    array(
-            'belongsTo' => array(
-                'Contrato' => array(
-                    'foreignKey' => false,
-                    'conditions' => array('Contrato.id = Operacion.contrato_id')
-                ),
-                'Calidad' => array(
-                    'foreignKey' => false,
-                    'conditions' => array('Contrato.calidad_id = Calidad.id')
-                ),
-                'Proveedor' => array(
-                    'className' => 'Empresa',
-                    'foreignKey' => false,
-                    'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+        $this->paginate['order'] = array('Operacion.referencia' => 'asc');
+        $this->paginate['recursive'] = 3;
+        $this->paginate['contain'] = array(
+            'Operacion' => array(
+            'fields' => array(
+                'referencia',
+                'contrato_id'
+            )
+            ),
+            'Calidad' => array(
+            'fields' => array(
+                'nombre'
+            )
+            ),
+            'Proveedor' => array(
+            'fields' => array(
+                'nombre_corto'
+            )
+            ),
+            'Contrato' => array(
+            'calidad_id',
+            'proveedor_id'
+            )
+        );
+        $this->Facturacion->bindModel(
+            array(
+                'belongsTo' => array(
+                    'Contrato' => array(
+                        'foreignKey' => false,
+                        'conditions' => array('Contrato.id = Operacion.contrato_id')
+                    ),
+                    'Calidad' => array(
+                        'foreignKey' => false,
+                        'conditions' => array('Contrato.calidad_id = Calidad.id')
+                    ),
+                    'Proveedor' => array(
+                        'className' => 'Empresa',
+                        'foreignKey' => false,
+                        'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+                    )
                 )
             )
-	    )
-	);
-	$this->set('facturaciones', $this->paginate());
+        );
+        $this->set('facturaciones', $this->paginate());
     }
 
     public function view($id = null) {
-	if (!$id) {
-	    $this->Flash->set('URL mal formado Facturación/view');
-	    $this->redirect(array('action'=>'index'));
-	}
-	$facturacion = $this->Facturacion->find(
-	    'first',
-	    array(
-            'conditions' => array('Facturacion.id' => $id),
-            'contain' => array(
-                'Operacion' => array(
-                    'Contrato' => array(
-                        'Calidad',
-                        'Incoterm',
-                        'Proveedor'
+        if (!$id) {
+            //$this->Flash->set('URL mal formado Facturación/view');
+            //$this->redirect(array('action'=>'index'));
+            throw new NotFoundException('No existe tal facturación');
+        }
+        $facturacion = $this->Facturacion->find(
+            'first',
+            array(
+                'conditions' => array('Facturacion.id' => $id),
+                'contain' => array(
+                    'Operacion' => array(
+                        'Contrato' => array(
+                            'Calidad',
+                            'Incoterm',
+                            'Proveedor'
+                        ),
+                        'Transporte' => array(
+                            'Naviera',
+                            'Agente',
+                        ),
+                        'PrecioTotalOperacion',
+                        'PesoOperacion'
                     ),
-                    'Transporte' => array(
-                        'Naviera',
-                        'Agente',
-                    ),
-                    'PrecioTotalOperacion',
-                    'PesoOperacion'
+                    'Factura' => array(
+                        'Empresa'
+                    )
                 ),
-                'Factura' => array(
-                    'Empresa'
-                )
-            ),
-            'recursive' => 3
-	    )
-	);
-    if (empty($facturacion)) {
-        $this->Flash->set('URL mal formada: No existe facturacion con id: '.$id);
-        $this->History->Back(0);
-    }
-	$this->set(compact('facturacion'));
-	$this->set('facturacion_id',$id);
-	$this->set('referencia',$facturacion['Operacion']['referencia']);
-	$this->set('proveedor',$facturacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
-	$this->set('proveedor_id',$facturacion['Operacion']['Contrato']['Proveedor']['id']);
-	$this->set('calidad',$facturacion['Operacion']['Contrato']['Calidad']['nombre']);
-	$this->set('condicion',$facturacion['Operacion']['Contrato']['condicion']);
-	$this->set('precio_estimado', $facturacion['Operacion']['PrecioTotalOperacion']['precio_euro_kilo_total']);
-	$this->set('cambio_teorico', $facturacion['Operacion']['cambio_dolar_euro']);
-	$this->set('precio_cafe', $facturacion['Facturacion']['precio_dolar_tm']);
-	$this->set('cambio_real', $facturacion['Facturacion']['cambio_dolar_euro']);
+                'recursive' => 3
+            )
+        );
+        if (!$facturacion) {
+            //$this->Flash->set('URL mal formada: No existe facturacion con id: '.$id);
+            //$this->History->Back(0);
+            throw new NotFoundException('No existe tal facturación');
+        }
+        $this->set(compact('facturacion'));
+        $this->set('facturacion_id',$id);
+        $this->set('referencia',$facturacion['Operacion']['referencia']);
+        $this->set('proveedor',$facturacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
+        $this->set('proveedor_id',$facturacion['Operacion']['Contrato']['Proveedor']['id']);
+        $this->set('calidad',$facturacion['Operacion']['Contrato']['Calidad']['nombre']);
+        $this->set('condicion',$facturacion['Operacion']['Contrato']['condicion']);
+        $this->set('precio_estimado', $facturacion['Operacion']['PrecioTotalOperacion']['precio_euro_kilo_total']);
+        $this->set('cambio_teorico', $facturacion['Operacion']['cambio_dolar_euro']);
+        $this->set('precio_cafe', $facturacion['Facturacion']['precio_dolar_tm']);
+        $this->set('cambio_real', $facturacion['Facturacion']['cambio_dolar_euro']);
 	$this->set('gastos_bancarios', $facturacion['Facturacion']['gastos_bancarios_pagados']);
 	$this->set('despacho', $facturacion['Facturacion']['despacho_pagado']);
 	$this->set('seguro', $facturacion['Facturacion']['seguro_pagado']);
@@ -142,6 +144,9 @@ class FacturacionesController extends AppController {
     }
 
     public function add() {
+        if (!isset($this->params['named']['from_id'])) {
+            throw new MethodNotAllowedException('URL mal formada: from_id ausente');
+        }
         $this->form($this->params['named']['from_id']);
         $this->render('form');
     }
@@ -292,14 +297,15 @@ class FacturacionesController extends AppController {
         if ($this->request->is(array('post', 'put'))) {//la vuelta de 'guardar' el formulario
             $this->request->data['Facturacion']['peso_medio_saco']= $this->request->data['Facturacion']['peso_facturacion']/$operacion['PesoOperacion']['cantidad_embalaje'];
             if($this->Facturacion->save($this->request->data)){
-            $this->Flash->set('Facturación guardada');
-            $this->redirect(array(
-                'action' => 'view',
-                'controller' => 'facturaciones',
-                $id
-            ));
+                $this->Flash->set('Facturación guardada');
+                $this->redirect(array(
+                    'action' => 'view',
+                    'controller' => 'facturaciones',
+                    $id
+                ));
             } else {
-            $this->Flash->set('Facturación NO guardada');
+                $this->Flash->set('Facturación NO guardada');
+                //$this->History->Back(0);
             }
         } else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
             $this->request->data = $this->Facturacion->read(null, $id);

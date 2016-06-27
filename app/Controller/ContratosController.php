@@ -104,8 +104,6 @@ class ContratosController extends AppController {
     public function view($id = null) {
 	if (!$id) {
         throw new NotFoundException(__('URL mal formado Contrato/view'));
-//	    $this->Flash->set('URL mal formado Contrato/view');
-//	    $this->redirect(array('action'=>'index'));
 	}
 	$contrato = $this->Contrato->find(
         'first',

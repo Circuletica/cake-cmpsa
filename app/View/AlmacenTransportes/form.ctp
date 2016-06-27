@@ -83,19 +83,23 @@ echo "</dl>";
 </fieldset>
   <br>
 <fieldset>
-    <?php
-    echo $this->Form->input('peso_bruto',array(
-      'label'=>'Peso bruto (Kg)'
-      )
+<?php
+    echo $this->Form->input(
+        'peso_bruto',
+        array(
+          'label'=>'Peso bruto (Kg)'
+          )
     );
 
-		echo $this->Form->input('marca_almacen',array(
-      'label'=>'Marca almacenada'
-      )
+	echo $this->Form->input(
+        'marca_almacen',
+        array(
+			'label'=>'Marca almacenada'
+        )
     );
 if ($action == 'edit') {
 }
-  echo $this->element('cancelarform');
+    echo $this->element('cancelarform');
 	echo $this->Form->end('Guardar Cuenta Almacén');
-	?> 
+?> 
 </fieldset>

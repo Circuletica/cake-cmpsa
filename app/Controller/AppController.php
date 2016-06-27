@@ -79,7 +79,7 @@ class AppController extends Controller {
         $this->{$this->class}->recursive = 3;
         $empresa = $this->{$this->class}->findById($id);
         if (!$empresa) {
-            throw new NotFoundException(__('No existe ese '.$class));
+            throw new NotFoundException(__('No existe '.$class.' con tal id'));
         }
         $this->set('empresa',$empresa);
         $this->set('referencia', $empresa['Empresa']['nombre_corto']);

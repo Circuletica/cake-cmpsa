@@ -9,8 +9,8 @@ echo '	<fieldset>';
 echo "<table>";
 echo"<tr>";
 echo"<td>";
-  echo "<div class='linea'>\n";
-    echo $this->Form->input('fecha_inicio', array(
+echo "<div class='linea'>\n";
+echo $this->Form->input('fecha_inicio', array(
 	  'label'=>'Fecha de Validez',
 	  'dateFormat' => 'DMY',
 	  'minYear' => date('Y')-1,
@@ -18,7 +18,7 @@ echo"<td>";
 	  'orderYear' => 'asc'
 	  )
     );
-  echo "</div>\n";
+echo "</div>\n";
 echo"</td>";
 echo"<td>";
   echo "<div class='linea'>\n";
@@ -34,11 +34,11 @@ echo"<td>";
 echo"</td>";
 echo"</tr>";
 echo "</table>";
-  echo $this->Form->input('coste_contenedor_dolar', array(
-      'label' => 'Coste de flete ($/contenedor)'
+echo $this->Form->input('coste_contenedor_dolar', array(
+    'label' => 'Coste de flete ($/contenedor)'
   )
 );
-  echo $this->element('cancelarform');
-	echo $this->Form->end('Guardar Precio');
+echo $this->element('cancelarform');
+echo $this->Form->end('Guardar Precio');
 echo'	</fieldset>';
 ?>
