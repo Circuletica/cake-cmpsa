@@ -195,6 +195,7 @@ class FletesController extends AppController {
 	    $this->Flash->set('URL mal formado Flete/view');
 	    $this->redirect(array('action'=>'index'));
 	}
+    $this->set(compact('id'));
 	$flete = $this->Flete->find('first', array(
 	    'conditions' => array('Flete.id' => $id),
 	    'recursive' => 2));

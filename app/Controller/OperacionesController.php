@@ -25,34 +25,34 @@ class OperacionesController extends AppController {
 	$proveedores = $this->Proveedor->find(
 	    'list',
 	    array(
-		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-		'order' => array('Empresa.nombre_corto' => 'asc'),
-		'recursive' => 1
+            'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+            'order' => array('Empresa.nombre_corto' => 'asc'),
+            'recursive' => 1
 	    )
 	);
 	$this->set('proveedores',$proveedores);
 
 	$titulo = $this->filtroPaginador(
 	    array(
-		'Operacion' =>array(
-		    'Referencia' => array(
-			'columna' => 'referencia',
-			'exacto' => false,
-			'lista' => ''
-		    ),
-		    'Calidad' => array(
-			'columna' => 'calidad',
-			'exacto' => false,
-			'lista' => ''
-		    )
-		),
-		'Contrato' => array(
-		    'Proveedor' => array(
-			'columna' => 'proveedor_id',
-			'exacto' => true,
-			'lista' => $proveedores
-		    )
-		)
+            'Operacion' =>array(
+                'Referencia' => array(
+                'columna' => 'referencia',
+                'exacto' => false,
+                'lista' => ''
+                ),
+                'Calidad' => array(
+                'columna' => 'calidad',
+                'exacto' => false,
+                'lista' => ''
+                )
+            ),
+            'Contrato' => array(
+                'Proveedor' => array(
+                'columna' => 'proveedor_id',
+                'exacto' => true,
+                'lista' => $proveedores
+                )
+            )
 	    )
 	);
 
@@ -70,13 +70,13 @@ class OperacionesController extends AppController {
 	    array(
 		'belongsTo' => array(
 		    'Calidad' => array(
-			'foreignKey' => false,
-			'conditions' => array('Contrato.calidad_id = Calidad.id')
+                'foreignKey' => false,
+                'conditions' => array('Contrato.calidad_id = Calidad.id')
 		    ),
 		    'Proveedor' => array(
-			'className' => 'Empresa',
-			'foreignKey' => false,
-			'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+                'className' => 'Empresa',
+                'foreignKey' => false,
+                'conditions' => array('Proveedor.id = Contrato.proveedor_id')
 		    )
 		)
 	    )
@@ -284,11 +284,12 @@ class OperacionesController extends AppController {
 
     public function add() {
 	if (!$this->params['named']['from_id']) {
-	    $this->Flash->set('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
-	    $this->redirect(array(
-		'controller' => $this->params['named']['from_controller'],
-		'action' => 'index')
-	    );
+	    $this->Flash->set('URL mal formado operaciones/add: falta from_id ');
+	    $this->redirect(
+            array(
+                'controller' => $this->params['named']['from_controller'],
+                'action' => 'index')
+            );
 	}
 	$this->form();
 	$this->render('form');
@@ -358,31 +359,32 @@ class OperacionesController extends AppController {
 	$contrato = $this->Operacion->Contrato->find(
 	    'first',
 	    array(
-		'conditions' => array('Contrato.id' => $contrato_id),
-		'recursive' => 2,
-		'contain' => array(
-		    'Calidad',
-		    'CanalCompra',
-		    'Incoterm',
-		    'Proveedor',
-		    'RestoContrato',
-		    'RestoLotesContrato'
-		),
-		'fields' => array(
-		    'Contrato.id',
-		    'Contrato.referencia',
-		    'Contrato.proveedor_id',
-		    'Contrato.peso_comprado',
-		    'Contrato.puerto_carga_id',
-		    'Contrato.puerto_destino_id',
-		    'Contrato.calidad',
-		    'CanalCompra.nombre',
-		    'CanalCompra.divisa',
-		    'Incoterm.nombre',
-		    'Incoterm.si_flete',
-		    'Incoterm.si_seguro',
-		    'Proveedor.nombre_corto'
-		)
+            'conditions' => array('Contrato.id' => $contrato_id),
+            'recursive' => 2,
+            'contain' => array(
+                'Calidad',
+                'CanalCompra',
+                'FleteContrato',
+                'Incoterm',
+                'Proveedor',
+                'RestoContrato',
+                'RestoLotesContrato'
+            ),
+            'fields' => array(
+                'Contrato.id',
+                'Contrato.referencia',
+                'Contrato.proveedor_id',
+                'Contrato.peso_comprado',
+                'Contrato.puerto_carga_id',
+                'Contrato.puerto_destino_id',
+                'Contrato.calidad',
+                'CanalCompra.nombre',
+                'CanalCompra.divisa',
+                'Incoterm.nombre',
+                'Incoterm.si_flete',
+                'Incoterm.si_seguro',
+                'Proveedor.nombre_corto'
+            )
 	    )
 	);
 
@@ -390,17 +392,19 @@ class OperacionesController extends AppController {
 	$this->set('puerto_carga_contrato_id', $contrato['Contrato']['puerto_carga_id']);
 	$this->set('puerto_destino_contrato_id', $contrato['Contrato']['puerto_destino_id']);
 	$this->set('divisa', $contrato['CanalCompra']['divisa']);
-	$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find('all', array(
-	    'conditions' => array(
-		'ContratoEmbalaje.contrato_id' => $contrato_id
-	    ),
-	    'fields' => array(
-		'Embalaje.id',
-		'Embalaje.nombre',
-		'ContratoEmbalaje.cantidad_embalaje',
-		'ContratoEmbalaje.peso_embalaje_real'
-	    )
-	)
+	$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find(
+        'all',
+        array(
+            'conditions' => array(
+                'ContratoEmbalaje.contrato_id' => $contrato_id
+            ),
+            'fields' => array(
+                'Embalaje.id',
+                'Embalaje.nombre',
+                'ContratoEmbalaje.cantidad_embalaje',
+                'ContratoEmbalaje.peso_embalaje_real'
+            )
+        )
     );
 	//hace falta para el desplegable de 'Embalaje'
 	//recombinamos el array anterior que quedaba asi:
@@ -444,8 +448,8 @@ class OperacionesController extends AppController {
 	    'list',
 	    #el café solo llega a puerto españoles
 	    array(
-		'contain' => array('Pais'),
-		'conditions' => array( 'Pais.nombre' => 'España')
+            'contain' => array('Pais'),
+            'conditions' => array( 'Pais.nombre' => 'España')
 	    )
 	));
 
@@ -456,37 +460,41 @@ class OperacionesController extends AppController {
 	$this->request->data['Operacion']['flete'] = 0;
 
 	//Queremos la lista de costes de fletes
-	$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find('all', array(
-	    'recursive' => 3,
-	    'contain' => array(
-		'Flete' => array(
-		    'PuertoCarga' => array(
-			'fields' => array(
-			    'nombre'
-			)
-		    ),
-		    'PuertoDestino' => array(
-			'fields' => array(
-			    'nombre'
-			)
-		    ),
-		    'Naviera' => array(
-			'fields' => array(
-			    'nombre_corto'
-			)
-		    ),
-		    'Embalaje' => array(
-			'fields' => array(
-			    'nombre'
-			)
-		    )
-		)
-	    ),
-	    'conditions' => array(
-		'PrecioFleteContrato.contrato_id' => $contrato_id,
-		//'PrecioFleteContrato.precio_flete is not null'
-	    )
-	));
+	//$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find(
+	$precio_fletes = $this->Operacion->Contrato->FleteContrato->find(
+        'all',
+        array(
+            'recursive' => 3,
+            'contain' => array(
+                'Flete' => array(
+                    'PuertoCarga' => array(
+                        'fields' => array(
+                            'nombre'
+                        )
+                    ),
+                    'PuertoDestino' => array(
+                        'fields' => array(
+                            'nombre'
+                        )
+                    ),
+                    'Naviera' => array(
+                        'fields' => array(
+                            'nombre_corto'
+                        )
+                    ),
+                    'Embalaje' => array(
+                        'fields' => array(
+                            'nombre'
+                        )
+                    )
+                )
+            ),
+            'conditions' => array(
+                //'PrecioFleteContrato.contrato_id' => $contrato_id,
+                'FleteContrato.contrato_id' => $contrato_id,
+            )
+        )
+    );
 	//el desplegable con los costes de flete según los puertos de
 	//carga/destino asociados con el contrato.
 	//Tenemos que hacer un array con name =>, value => para poder
@@ -501,18 +509,22 @@ class OperacionesController extends AppController {
 		.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
 		.$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
 		.(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
-		.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
-		'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
+		//.($precio_flete['PrecioFleteContrato']['precio_flete'] ?: '??').'$/Tm',
+		.($precio_flete['FleteContrato']['precio_flete'] ?: '??').'$/Tm',
+		//'value' => $precio_flete['PrecioFleteContrato']['precio_flete'] ?: ''
+		'value' => $precio_flete['FleteContrato']['precio_flete'] ?: ''
 	    );
 	    //vamos a tener otro array para un js que modifique la lista de fletes disponibles
 	    //segun se elija uno u otro puerto embarque/puerto destino/embalaje
-	    $precio_flete['Flete']['value']=$precio_flete['PrecioFleteContrato']['precio_flete'];
+	    //$precio_flete['Flete']['value']=$precio_flete['PrecioFleteContrato']['precio_flete'];
+	    $precio_flete['Flete']['value']=$precio_flete['FleteContrato']['precio_flete'];
 	    $precio_flete['Flete']['name']=end($fletes)['name'];
 	    unset($precio_flete['Flete']['Naviera']);
 	    unset($precio_flete['Flete']['PuertoCarga']);
 	    unset($precio_flete['Flete']['PuertoDestino']);
 	    unset($precio_flete['Flete']['Embalaje']);
-	    unset($precio_flete['PrecioFleteContrato']);
+	    //unset($precio_flete['PrecioFleteContrato']);
+	    unset($precio_flete['FleteContrato']);
 	}
 	$this->set(compact('fletes'));
 	$this->set(compact('precio_fletes'));
@@ -524,28 +536,18 @@ class OperacionesController extends AppController {
 	    $data = &$this->request->data;
 	    //al guardar la linea, se incluye a qué contrato pertenece
 	    $this->request->data['Operacion']['contrato_id'] = $contrato_id;
-	    //si es de precio fijo, quitamos los números que sobran
-	    //realmente no hace falta, porque si el campo es 'disabled' en 
-	    //el formulario, no devuelve valor.
-	    //if ($this->request->data['Operacion']['si_precio_fijo']) {
-	    //    $data['Operacion']['opciones'] = NULL;
-	    //    $data['Operacion']['forfait'] = NULL;
-	    //    $data['Operacion']['seguro'] = NULL;
-	    //    $data['Operacion']['flete'] = NULL;
-	    //}
 	    if($id == NULL){
 		//primero guardamos los datos de Operacion
 		if($this->Operacion->save($this->request->data)){
 		    //luego las cantidades de cada asociado en AsociadoOperacion
 		    foreach ($data['CantidadAsociado'] as $asociado_id => $cantidad) {
-			if ($cantidad != NULL) {
-			    $data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
-			    $data['AsociadoOperacion']['asociado_id'] = $asociado_id;
-			    $data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
-			    //$cantidad_embalaje_operacion += $cantidad;
-			    if (!$this->Operacion->AsociadoOperacion->saveAll($data['AsociadoOperacion']))
-				throw New Exception('error en guardar AsociadoOperacion');
-			}
+                if ($cantidad != NULL) {
+                    $data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
+                    $data['AsociadoOperacion']['asociado_id'] = $asociado_id;
+                    $data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
+                    if (!$this->Operacion->AsociadoOperacion->saveAll($data['AsociadoOperacion']))
+                    throw New Exception('error en guardar AsociadoOperacion');
+                }
 		    }
 		    //falta aquí guardar el peso total de la linea de contrato
 		    //y el tipo de embalaje
