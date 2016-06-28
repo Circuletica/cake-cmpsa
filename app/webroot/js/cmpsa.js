@@ -398,12 +398,18 @@ function sacosAsignados(){
 	var cantidadCuenta = window.app.cantidadCuenta;
 	//un array con las cantidades de cada socio
 	var cantidades = document.getElementsByClassName('cantidad');
+    var porcentajes = document.getElementsByClassName('porcentajeAsociado');
+	//totalCantidad asignada
+	var textototalCantidad = document.getElementById('totalCantidad');
+	var textototalPorcentaje = document.getElementById('totalPorcentaje');
+
+	var totalCantidad = 0;
+	var totalPorcentaje = 0;
 
 	var totalCantidad = 0;
 	for(var i=0;i<cantidades.length;i++){
 		totalCantidad += parseInt(cantidades[i].value);
 	}
-	console.log(totalCantidad);
 	for(var i=0;i<cantidades.length;i++){
 		//el id del socio
 		var id = cantidades[i].id;
@@ -415,7 +421,10 @@ function sacosAsignados(){
 		var textoporcentajeAsociado = document.getElementById('porcentajeAsociado' + id);
 		//escribimos el peso
 		textoporcentajeAsociado.innerHTML = porcentajeAsociado.toFixed(2) + "%";
+		totalPorcentaje +=porcentajeAsociado; 
 	}
+    textototalCantidad.innerHTML = totalCantidad;
+    textototalPorcentaje.innerHTML = totalPorcentaje.toFixed(2) + "%";
 }
 
 function precioF(){
