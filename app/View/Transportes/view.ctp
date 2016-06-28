@@ -111,14 +111,16 @@ echo "  <dt>Nombre del transporte</dt>\n";
 echo "<dd>";
 echo $transporte['Transporte']['nombre_vehiculo'].'&nbsp;';
 echo "</dd>";
-echo "  <dt>BL/Matrícula</dt>\n";
-echo "<dd>";
-echo $transporte['Transporte']['matricula'].'&nbsp;';
-echo "</dd>";
-echo "  <dt>Puerto de Embarque</dt>\n";
-echo "<dd>";
-echo  $transporte['PuertoCarga']['nombre'].'&nbsp;';
-echo "</dd>";
+if($transporte['Operacion']['Contrato']['Incoterm']['nombre'] !='IN STORE DESPACHADO' && $transporte['Operacion']['Contrato']['Incoterm']['nombre'] !='IN STORE'){
+	echo "<dt>BL/Matrícula</dt>\n";
+	echo "<dd>";
+	echo $transporte['Transporte']['matricula'].'&nbsp;';
+	echo "</dd>";
+	echo "  <dt>Puerto de Embarque</dt>\n";
+	echo "<dd>";
+	echo  $transporte['PuertoCarga']['nombre'].'&nbsp;';
+	echo "</dd>";
+}
 echo "  <dt>Puerto de Destino</dt>\n";
 echo "<dd>";
 echo  $transporte['PuertoDestino']['nombre'].'&nbsp;';

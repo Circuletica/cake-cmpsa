@@ -58,4 +58,24 @@ class Operacion extends AppModel {
 		'LineaMuestra',
 		'Retirada'
 	);
+	public function beforeDelete($cascade = true) {
+		$count_asociado = $this->AsociadoOperacion->find(
+            "count",
+            array(
+                "recursive" => -1,
+                "conditions" => array("operacion_id" => $this->id)
+            )
+        );
+		$count_retirada = $this->Retirada->find(
+            "count",
+            array(
+                "recursive" => -1,
+                "conditions" => array("operacion_id" => $this->id)
+            )
+        );
+		if ($count_asociado == 0 && $count_retirada == 0) {
+			return true;
+		}
+		return false;
+	}
 }

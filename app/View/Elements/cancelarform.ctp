@@ -1,10 +1,3 @@
- <?php   
- 	echo $this->Html->Link(
- 		'<i class="fa fa-arrow-left"></i> Cancelar',
- 		$this->request->referer(''), array(
- 			'class' => 'botond',
- 			'escape'=>false,
- 			)
- 		);
- ?>
-
+<?php
+echo '<button class="botond" onclick="history.go(-1);"><i class="fa fa-arrow-left"></i> Cancelar</button>';
+?>

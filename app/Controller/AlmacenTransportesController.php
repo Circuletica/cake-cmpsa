@@ -1,141 +1,149 @@
 
 <?php
 class AlmacenTransportesController extends AppController {
-		public $paginate = array(
-		'order' => array('cuenta_almacen' => 'asc')
-	);
 
-	public function index() {
-	
-		$this->paginate['order'] = array('AlmacenTransporte.cuenta_almacen' => 'asc');
-		//$this->paginate['recursive'] = 3;
-		$this->paginate['contain'] = array(
-			'Almacen'=>array(
-			    'id',
-			    'nombre_corto'
-			)
-		);
+    public $paginate = array(
+	'order' => array('cuenta_almacen' => 'asc')
+    );
 
-		$this->set('almacentransportes', $this->paginate());
-	}
+    public function index() {
 
-public function view($id = null) {
+        $this->paginate['order'] = array('AlmacenTransporte.cuenta_almacen' => 'asc');
+        //$this->paginate['recursive'] = 3;
+        $this->paginate['contain'] = array(
+            'Almacen'=>array(
+            'id',
+            'nombre_corto'
+            )
+        );
 
-	if (!$id) {
-	    $this->Session->setFlash('URL mal formada AlmacenTransporte/view ');
-	    $this->redirect(array('action'=>'index'));
-	}
+        $this->set('almacentransportes', $this->paginate());
+    }
 
-	$this->AlmacenTransporte->AlmacenTransporteAsociado->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
-										
-	$almacentransportes = $this->AlmacenTransporte->find(
-		'first',
-		array(
-			'conditions' => array(
-				'AlmacenTransporte.id' => $id
-				),
-			//'recursive' => 2,
-			'contain' => array(
-				'AlmacenTransporteAsociado' =>array(
-					'Asociado'=> array(
-								'fields'=> array(
-									'id',
-									//'nombre_corto'
-									),
-								'Retirada'=>array(
-									'conditions' => array(
-										'Retirada.almacen_transporte_id' => $id
-										)
-									),
-								'Empresa',
-								'AlmacenReparto'=> array(
-									'conditions'=> array(
-										'AlmacenReparto.id' => $id
-										)
-									)
-								)	
-				),
-				'Retirada',
-				'Transporte'=> array(
-					'fields'=> array(
-						'linea',
-						'matricula',
-						'nombre_vehiculo',
-						'operacion_id'
-						)
-					),
-					'Almacen' => array(
-						'fields' => (
-							'nombre_corto'
-							)
-						)
-					)
-			)
-		);
-	$this->set(compact('almacentransportes'));
-	
-	//Necesario para exportar en PDf
-	$this->set(compact('id'));
-	
+    public function view($id = null) {
+        if (!$id) {
+            throw new NotFoundException(__('URL mal formada: falta id'));
+        }
 
+        $this->AlmacenTransporte->AlmacenTransporteAsociado->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
+
+        $almacentransportes = $this->AlmacenTransporte->find(
+            'first',
+            array(
+                'conditions' => array(
+                    'AlmacenTransporte.id' => $id
+                ),
+                'contain' => array(
+                    'AlmacenTransporteAsociado' =>array(
+                        'Asociado'=> array(
+                            'fields'=> array(
+                                'id',
+                            ),
+                            'Retirada'=>array(
+                                'conditions' => array(
+                                    'Retirada.almacen_transporte_id' => $id
+                                )
+                            ),
+                            'Empresa',
+                            'AlmacenReparto'=> array(
+                                'conditions'=> array(
+                                    'AlmacenReparto.id' => $id
+                                )
+                            )
+                        )
+                    ),
+                    'Retirada',
+                    'Transporte'=> array(
+                        'fields'=> array(
+                            'id',
+                            'linea',
+                            'matricula',
+                            'nombre_vehiculo',
+                            'operacion_id'
+                        )
+                    ),
+                    'Almacen' => array(
+                        'fields' => (
+                            'nombre_corto'
+                        )
+                    )
+                )
+            )
+        );
+        if (!$almacentransportes) {
+            throw new NotFoundException(__('No existe esa cuenta'));
+        }
+        $this->set(compact('almacentransportes'));
+        
+        //Necesario para controlar si hay alguna muestra hecha en la cuenta de almacén
+        $this->loadModel('LineaMuestra');		
+        $lineamuestra = $this->LineaMuestra->find('first', array(
+            'fields' => array(
+                'LineaMuestra.id',
+                'LineaMuestra.almacen_transporte_id'
+            ),
+            'recursive'=>-1,
+            'conditions' => array(
+                'LineaMuestra.almacen_transporte_id'=> $id
+            )
+        ));	
+        $this->set(compact('lineamuestra'));
+
+        //Necesario para exportar en PDf
+        $this->set(compact('id'));
     }
 
     public function add() {
-    		//el id y la clase de la entidad de origen vienen en la URL
-	if (!$this->params['named']['from_id']) {
-	    $this->Session->setFlash('URL mal formado almacentransportes/add '.$this->params['named']['from_controller']);
-	    $this->redirect(array(
-		'controller' => $this->params['named']['from_controller'],
-		'action' => 'index')
-	    );
-	}
-	$this->form();
-	$this->render('form');
+        //el id y la clase de la entidad de origen vienen en la URL
+        if (!$this->params['named']['from_id']) {
+            $this->Flash->set('URL mal formado almacentransportes/add '.$this->params['named']['from_controller']);
+            $this->redirect(array(
+                'controller' => $this->params['named']['from_controller'],
+                'action' => 'index')
+            );
+        }
+        $this->form();
+        $this->render('form');
     }
 
     public function edit($id = null) {
-	if (!$id && empty($this->request->data)) {
-	    $this->Session->setFlash('error en URL');
-	    $this->redirect(array(
-		'action' => 'view',
-		'controller' => $this->params['named']['from_controller'],
-		$this->params['from_id']
-	    ));
-	}
-	$this->form($id);
-	$this->render('form');
+        if (!$id && empty($this->request->data)) {
+            throw new NotFoundException(__('URL mal formado AlmacenTransporte/edit'));
+        }
+        $this->form($id);
+        $this->render('form');
     }
 
- public function form ($id = null) { //esta accion vale tanto para edit como add
+public function form ($id = null) { //esta accion vale tanto para edit como add
 	$this->set('action', $this->action);
  	$this->loadModel('Almacen');		
 	$almacenes = $this->Almacen->find('list', array(
-		'fields' => array(
-			'Almacen.id',
-			'Empresa.nombre_corto'
-			),
-		'order' => array(
-			'Empresa.nombre_corto' => 'asc'
-			),
-		'recursive' => 1
-		)
-	);	
+	    'fields' => array(
+            'Almacen.id',
+            'Empresa.nombre_corto'
+	    ),
+	    'order' => array(
+            'Empresa.nombre_corto' => 'asc'
+	    ),
+	    'recursive' => 1
+	)
+    );	
 	$this->set(compact('almacenes'));
 
 	if($this->action == 'edit'){
-		$transporte_id = $this->AlmacenTransporte->find(
-			'first',
-			array(
-				'conditions' => array(
-					'AlmacenTransporte.id' => $id
-					),
-				'fields'=> array(
-					'id',
-					'transporte_id'
-					)
-				)
-			);
-		$transporte_id = $transporte_id['AlmacenTransporte']['transporte_id'];
+	    $transporte_id = $this->AlmacenTransporte->find(
+            'first',
+            array(
+                'conditions' => array(
+                    'AlmacenTransporte.id' => $id
+                ),
+                'fields'=> array(
+                    'id',
+                    'transporte_id'
+                )
+            )
+	    );
+	    $transporte_id = $transporte_id['AlmacenTransporte']['transporte_id'];
 	}else{
 		$transporte_id=$this->params['named']['from_id'];
 	}
@@ -143,30 +151,31 @@ public function view($id = null) {
 	//$this->set('cantidadcuenta',$cantidadcuenta);
 	//Calculamos la cantidad de sacos almacenados en la línea	
 	$transporte = $this->AlmacenTransporte->Transporte->find(
-			'first', array(
-			'conditions' => array(
-				'Transporte.id' => $transporte_id
-				),
-			'recursive' => 3,
-			'fields' => array(
-				'id',
-				'matricula',
-				'cantidad_embalaje'
-				),
-			'contain'=> array(
-				'AlmacenTransporte',
-				'Operacion' => array(
-					'fields'=>array(
-						'embalaje_id'
-						),
-					'Embalaje' => array(
-						'fields' => array(
-							'nombre'
-							)
-						)
-					)
-			)
-		)
+	    'first',
+        array(
+            'conditions' => array(
+                'Transporte.id' => $transporte_id
+            ),
+            'recursive' => 3,
+            'fields' => array(
+                'id',
+                'matricula',
+                'cantidad_embalaje'
+            ),
+            'contain'=> array(
+                'AlmacenTransporte',
+                'Operacion' => array(
+                    'fields'=>array(
+                        'embalaje_id'
+                    ),
+                    'Embalaje' => array(
+                        'fields' => array(
+                            'nombre'
+                        )
+                    )
+                )
+            )
+	    )
 	);
 	$this->set('transporte',$transporte);
 	
@@ -187,159 +196,149 @@ public function view($id = null) {
 	$cantidadcuenta = $this->AlmacenTransporte->find(
 		'first',
 		array(
-			'conditions' =>array(
-				'AlmacenTransporte.id' => $id	
-				),
-			'fields' => array(
-				'cantidad_cuenta'
-				)
+		    'conditions' =>array(
+                'AlmacenTransporte.id' => $id	
+		    ),
+		    'fields' => array(
+                'cantidad_cuenta'
+		    )
 		)
 	);
 	$cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
 
 	}elseif( $id == NULL && $almacenado != 0){
-		$cantidadcuenta = $this->AlmacenTransporte->find(
-		'first',
-		array(
-			'conditions' =>array(
-				'AlmacenTransporte.transporte_id' => $this->params['named']['from_id']	
-				),
-			'fields' => array(
-				'AlmacenTransporte.cantidad_cuenta',
-				'AlmacenTransporte.transporte_id'
-				)
-		)
-		);
-		$cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
+	    $cantidadcuenta = $this->AlmacenTransporte->find(
+            'first',
+            array(
+                'conditions' =>array(
+                    'AlmacenTransporte.transporte_id' => $this->params['named']['from_id']	
+                ),
+                'fields' => array(
+                    'AlmacenTransporte.cantidad_cuenta',
+                    'AlmacenTransporte.transporte_id'
+                )
+            )
+	    );
+	    $cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
 	}else{
 		//En caso que se agregue al principio sin sacos guardados
 		$cantidadcuenta = 0;
 	}
-
+	$this->set(compact('cantidadcuenta')); //Para borrar después!!
+	$this->set(compact('id'));
 	//si es un edit, hay que rellenar el id, ya que si no se hace, al guardar el edit,
 	// se va a crear un _nuevo_ registro, como si fuera un add
 	if (!empty($id))$this->AlmacenTransporte->id = $id;
 
-	if (!empty($this->request->data)) {//ES UN POST
-			$this->request->data['AlmacenTransporte']['id'] = $id;
-			$this->request->data['AlmacenTransporte']['transporte_id'] = $transporte_id;
-			if($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado && $id == NULL) {
-					if($this->AlmacenTransporte->save($this->request->data)){
-						$nuevoId = $this->AlmacenTransporte->id;
-						$this->Session->setFlash('Cuenta almacén guardada');
-						$this->redirect(array(
-							'controller' => 'almacen_transportes',
-							'action' => 'distribucion',
-							$nuevoId	
-							)
-						);
-					}else{
-						$this->Session->setFlash('Cuenta de almacén NO guardada');
-					}
-			}elseif ($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado){
-				debug($this->AlmacenTransporte->save);
-					if($this->AlmacenTransporte->save($this->request->data)){
-							$nuevoId = $this->AlmacenTransporte->id;
-							$this->Session->setFlash('Cuenta almacén guardada');
-							$this->redirect(array(
-								'controller' => 'almacen_transportes',
-								'action' => 'distribucion',
-								$nuevoId	
-								)
-							);
-					}	
-			}elseif ($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta xor (
-					 $this->request->data['AlmacenTransporte']['cantidad_cuenta'] > $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] - $cantidadcuenta <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado) xor
-					($transporte['Transporte']['cantidad_embalaje'] == NULL)){
-					if($this->AlmacenTransporte->save($this->request->data)){
-							$this->Session->setFlash('Cuenta almacén modificada');
-							$this->redirect(array(
-								'controller' => 'almacen_transportes',
-								'action' => 'view',
-								$id	
-								)
-							);
-					}	
-			}else{
-				$this->Session->setFlash('La cantidad de bultos debe ser inferior');
+		if ($this->request->is(array('post', 'put'))) {
+		    $this->request->data['AlmacenTransporte']['id'] = $id;
+		    $this->request->data['AlmacenTransporte']['transporte_id'] = $transporte_id;
+		    if($id == NULL && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado) {
+		    	 if($this->AlmacenTransporte->save($this->request->data)){
+				    $nuevoId = $this->AlmacenTransporte->id;
+				    $this->Flash->set('Cuenta almacén guardada');
+				    $this->redirect(array(
+                        'controller' => 'almacen_transportes',
+                        'action' => 'distribucion',
+                        $nuevoId	
+				    ));
+				}else{
+				    $this->Flash->set('Cuenta de almacén NO guardada');
+				}
+		}elseif ($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta && $this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado){
+			if($this->AlmacenTransporte->save($this->request->data)){
+			    $nuevoId = $this->AlmacenTransporte->id;
+			    $this->Flash->set('Cuenta almacén guardada');
+			    $this->redirect(array(
+                    'controller' => 'almacen_transportes',
+                    'action' => 'distribucion',
+                    $nuevoId	
+			    ));
 			}
-	}else{ //es un GET
-	    $this->request->data = $this->AlmacenTransporte->read(null, $id);
-	}
-}
-
-
- 	public function delete($id = null) {
- 		if (!$id or $this->request->is('get')) :
-			    throw new MethodNotAllowedException();
-		endif;
-			$transporte_id = $this->AlmacenTransporte->find(
-				'first',
-				array(
-					'conditions'=> array(
-						'AlmacenTransporte.id' => $id
-					)
-				)
-			);
-			$transporte_id = $transporte_id['AlmacenTransporte']['transporte_id'];
-		if ($this->AlmacenTransporte->delete($id)){
-			$this->Session->setFlash('Cuenta corriente almacén borrada');
-			$this->redirect(array(
-				'controller'=>'transportes',
-				'action'=>'view',
-				$transporte_id
-				)
-			);
+		}elseif ($this->request->data['AlmacenTransporte']['id']!=NULL){
+            if($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta xor ($this->request->data['AlmacenTransporte']['cantidad_cuenta'] > $cantidadcuenta &&
+			 	$this->request->data['AlmacenTransporte']['cantidad_cuenta'] - $cantidadcuenta <= $transporte['Transporte']['cantidad_embalaje'] - $almacenado) xor($transporte['Transporte']['cantidad_embalaje'] == NULL)){
+                if($this->AlmacenTransporte->save($this->request->data)){
+                    $this->Flash->set('Cuenta almacén modificada');
+                    $this->redirect(array(
+                        'controller' => 'almacen_transportes',
+                        'action' => 'view',
+                        $id	
+                    ));
+					}
+				}else{
+					$this->Flash->set('La cantidad de bultos debe ser inferior');
+				}
+		    }else{
+                $this->Flash->set('La cantidad de bultos debe ser inferior');
+		    }
+		}else{ //es un GET
+		    $this->request->data = $this->AlmacenTransporte->read(null, $id);
 		}
+    }
+
+    public function delete($id = null) {
+        if (!$id or $this->request->is('get')) {
+            throw new MethodNotAllowedException('Falta el id de cuenta');
+        }
+        if ($this->AlmacenTransporte->delete($id)){
+            $this->Flash->set('Cuenta corriente almacén borrada');
+            $this->History->Back(-1);
+        }else{
+            $this->Flash->set('Cuenta corriente almacén NO borrada. Hay retiradas');
+            $this->History->Back(0);
+        }
 	}
 	
 	public function distribucion($id){
 	$this->AlmacenTransporte->AlmacenTransporteAsociado->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
 										
 	$almacentransportes = $this->AlmacenTransporte->find(
-		'first',
-		array(
-			'conditions' => array(
-				'AlmacenTransporte.id' => $id
-				),
-			//'recursive' => 2,
-			'contain' => array(
-				'AlmacenTransporteAsociado' =>array(
-					'Asociado'=> array(
-								'fields'=> array(
-									'id',
-									//'nombre_corto'
-									),
-								'Retirada'=>array(
-									'conditions' => array(
-										'Retirada.almacen_transporte_id' => $id
-										)
-									),
-								'Empresa',
-								'AlmacenReparto'=> array(
-									'conditions'=> array(
-										'AlmacenReparto.id' => $id
-										)
-									)
-								)	
-				),
-				
-				'Transporte'=> array(
-					'fields'=> array(
-						'linea',
-						'matricula',
-						'nombre_vehiculo',
-						'operacion_id'
-						)
-					),
-					'Almacen' => array(
-						'fields' => (
-							'nombre_corto'
-							)
-						)
-					)
-			)
-		);
+	    'first',
+	    array(
+            'conditions' => array(
+                'AlmacenTransporte.id' => $id
+            ),
+            'contain' => array(
+                'AlmacenTransporteAsociado' =>array(
+                    'Asociado'=> array(
+                        'fields'=> array(
+                            'id',
+                        ),
+                        'Retirada'=>array(
+                            'conditions' => array(
+                                'Retirada.almacen_transporte_id' => $id
+                            )
+                        ),
+                        'Empresa',
+                        'AlmacenReparto'=> array(
+                            'conditions'=> array(
+                                'AlmacenReparto.id' => $id
+                            )
+                        )
+                    )	
+                ),
+                'Transporte'=> array(
+                    'fields'=> array(
+                        'linea',
+                        'matricula',
+                        'nombre_vehiculo',
+                        'operacion_id'
+                    )
+                ),
+                'Almacen' => array(
+                    'fields' => (
+                        'nombre_corto'
+                    )
+                )
+            )
+	    )
+	);
+    if (empty($almacentransportes)) {
+        $this->Flash->set('No existe cuenta con id: '.$id);
+        $this->History->Back(0);
+    }
+
 	$this->set(compact('almacentransportes'));
 
 		/*$this->set(compact($total_asignacion_teorica));
@@ -355,8 +354,8 @@ public function view($id = null) {
 
 //GUARDAR LA DISTRIBUCIÓN DE LOS ASOCIADOS
 	if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
-	    //$this->request->data = $this->AlmacenTransporte->AlmacenTransporteAsociado->read();
-	   	$this->request->data = $this->AlmacenTransporte->read();
+	    $this->request->data = $this->AlmacenTransporte->read();
+
 	    foreach ($asociados_distribucion as $asociado_id => $asociado) {
 			$this->request->data['CantidadAsociado'][$asociado_id] = $asociado['sacos_asignados'];
 	    }

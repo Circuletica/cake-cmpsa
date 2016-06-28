@@ -32,66 +32,65 @@ if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
         )
     );
     
-      ?>
+?>
       </div>
-      <?php
-        echo $this->Form->input('operacion_id',
-          array(
-                    'label'=>'Ref. Operación',
-                    'empty' => array('' => 'Selecciona'),
-                    'onchange' => 'operacionesRetirada()',
-                    'value' => $operacion_id
-                  )
-                );
-          echo $this->Form->input('asociado_id',
-               array(
-                    'label'=>'Asociado',
-                    'empty' =>array('' => 'Selecciona'),
-                    'class' => 'ui-widget',
-                    'id' => 'asociado', 
-                    'value'=> isset($asociado_id)?$asociado_id:null  
-                     )
-               );  
+<?php
+echo $this->Form->input('operacion_id',
+	array(
+		'label'=>'Ref. Operación',
+		'empty' => array('' => 'Selecciona'),
+		'onchange' => 'operacionesRetirada()',
+		'value' => $operacion_id
+	)
+);
+echo $this->Form->input('asociado_id',
+	array(
+		'label'=>'Asociado',
+		'empty' =>array('' => 'Selecciona'),
+		'class' => 'ui-widget',
+		'id' => 'asociado', 
+	'value'=> isset($asociado_id)?$asociado_id:null  
+	 )
+);  
 ?>
    </fieldset>
    <fieldset>
 <?php
-    echo $this->Form->input('almacen_transporte_id',
-           array(
-            'label'=>'Cuenta Almacén',
-            'empty' =>array('' => 'Selecciona'),
-            'class' => 'ui-widget',
-            'id' => 'almacen',
-            'value'=> isset($almacen_transporte_id)?$almacen_transporte_id:null
-            )
-           ); 
+echo $this->Form->input('almacen_transporte_id',
+	array(
+		'label'=>'Cuenta Almacén',
+		'empty' =>array('' => 'Selecciona'),
+		'class' => 'ui-widget',
+		'id' => 'almacen',
+		'value'=> isset($almacen_transporte_id)?$almacen_transporte_id:null
+	)
+); 
   
 ?>
 <?php
-  if(!empty($operacion['Embalaje']['nombre'])){
-   echo $this->Form->input('embalaje_retirado',
-         array(
-              'label'=>'Cantidad en '.$operacion['Embalaje']['nombre']
-              )
-         );
-  }else{
-     echo $this->Form->input('embalaje_retirado',
-         array(
-              'label'=>'Sacos retirados'
-              )
-         );
-  }
-   echo $this->Form->input('peso_retirado',
-         array(
-              'label'=>'Peso retirado
-               (Kg)'
-              )
-          );
+if(!empty($operacion['Embalaje']['nombre'])){
+	echo $this->Form->input('embalaje_retirado',
+		array(
+			'label'=>'Cantidad en '.$operacion['Embalaje']['nombre']
+		)
+	);
+}else{
+	echo $this->Form->input('embalaje_retirado',
+		array(
+			'label'=>'Sacos retirados'
+		)
+	);
+}
+echo $this->Form->input('peso_retirado',
+	array(
+		'label'=>'Peso retirado (Kg)'
+	)
+);
 ?>
 
 <?php
-  echo $this->element('cancelarform');
-  echo $this->Form->end('Guardar Retirada');
+echo $this->element('cancelarform');
+echo $this->Form->end('Guardar Retirada');
 ?>
 
 </fieldset>
@@ -99,4 +98,3 @@ if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
 <script type="text/javascript">
 window.onload = operacionesRetirada();
 </script>
-

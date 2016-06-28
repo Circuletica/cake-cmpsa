@@ -20,4 +20,17 @@ class Asociado extends AppModel {
 		),
 		'AlmacenReparto'		
 	);
+	public function beforeDelete($cascade = true) {
+		$count = $this->AsociadoOperacion->find(
+            "count",
+            array(
+                "recursive" => -1,
+                "conditions" => array("asociado_id" => $this->id)
+            )
+        );
+		if ($count == 0) {
+			return true;
+		}
+		return false;
+	}
 }

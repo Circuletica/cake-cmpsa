@@ -27,7 +27,7 @@ echo '<h2>Situación de líneas transporte despachadas a día '.date("d-m-Y").'<
   <?php echo $this->element('filtrodespacho');?>
 </div>
 <div class='index'>
-    <table>
+    <table class="tr2 tr4 tr5">
 <?php    
 
 echo $this->Html->tableHeaders(array(

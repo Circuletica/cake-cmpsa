@@ -171,7 +171,7 @@ $this->set(compact('pdf'));
 	    )
 	);
 	$this->set('transporte',$transporte);
-	//Calculamos la cantidad de sacos almacenados en la línea
+	//Calculamos la cantidad de sacos almacenados en la linea
 	if(!empty($transporte['Transporte']['id'])){
 	    $suma = 0;
 	    $almacenado=0;
@@ -366,18 +366,18 @@ endforeach;
 
 	$this->set(compact('operacion'));
 	$this->set(compact('transportado'));
-	//CALCULAMOS EL NÚMERO DE LÍNEA DE TRANSPORTE
-	//Saco el número del array para numerar las líneas de transporte
+	//CALCULAMOS EL NÚMERO DE LINEA DE TRANSPORTE
+	//Saco el número del array para numerar las lineas de transporte
 
-	//Línea primera para comenzar desde el array que es 0. Si $clave es 5, $num será 6.
-	//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva línea.
-	//Este proceso genera la línea de nuevo siempre para que el contador lo haga desde el principio
+	//Linea primera para comenzar desde el array que es 0. Si $clave es 5, $num será 6.
+	//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva linea.
+	//Este proceso genera la linea de nuevo siempre para que el contador lo haga desde el principio
 	$num = 0;	
 	foreach ($operacion['Transporte'] as $clave=>$transporte){
 	    $num++;
 	}
 	if (empty($id)){ //En el ADD
-	    if(empty($operacion['Transporte'])){ //Primera línea
+	    if(empty($operacion['Transporte'])){ //Primera linea
 		$num = 1;
 	    }else{ //A partir de la primera
 		$num = $num+1;
@@ -388,7 +388,6 @@ endforeach;
 
 	if (!empty($id)) $this->Transporte->id = $id;
 
-	//if (!empty($this->request->data)) {//ES UN POST
 		if ($this->request->is(array('post', 'put'))) {//ES UN POST
 		    $this->request->data['Transporte']['id'] = $id;
 		    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
@@ -417,30 +416,28 @@ endforeach;
 		}else{ //es un GET
 		    $this->request->data = $this->Transporte->read(null, $id);
 		}
-    }
+	}
 
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')):
 	    throw new MethodNotAllowedException();
 	endif;
 
-		if ($this->Transporte->delete($id)){
-			$this->Flash->set('Linea de transporte borrada');
-		   // $this->History->back(-1);
-		  	$this->redirect(array(
-			    'controller' => 'operaciones',
-			    'action' => 'view_trafico',
-			    $this->params['named']['from_id']
-			    )
-		  	);
-		}else{
-			$this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almac�n');
-		  	$this->redirect(array(
-			    'action' => 'view',
-			    $id
-			    )
-		  	);			
-		}
+	if ($this->Transporte->delete($id)){
+	    $this->Flash->set('Linea de transporte borrada');
+	    $this->History->Back(-1);
+	    /*$this->redirect(array(
+		'controller' => 'operaciones',
+		'action' => 'view_trafico',
+		$this->params['named']['from_id']
+	    ));*/
+	}else{
+	    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacen');
+	    $this->redirect(array(
+		'action' => 'view',
+		$id
+	    ));
+	}
     }
 
     public function info_embarque() {

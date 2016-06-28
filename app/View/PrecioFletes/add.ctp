@@ -32,6 +32,6 @@
   )
 );
 echo $this->element('cancelarform');  
-  echo $this->Form->end('Guardar precio');
-  ?>
+echo $this->Form->end('Guardar precio');
+?>
 </fieldset>

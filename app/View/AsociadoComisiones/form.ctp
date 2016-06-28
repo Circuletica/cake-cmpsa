@@ -16,7 +16,8 @@ echo $this->Form->input('fecha_inicio', array(
     'dateFormat' => 'DMY',
     'minYear' => date('Y')-1,
     'maxYear' => date('Y')+5,
-    'orderYear' => 'asc'
+    'orderYear' => 'asc',
+    'selected' => ($action == 'add' ? date('Y-1-1') : '')
     )
 );
 echo $this->Form->input('fecha_fin', array(
@@ -24,7 +25,8 @@ echo $this->Form->input('fecha_fin', array(
     'dateFormat' => 'DMY',
     'minYear' => date('Y')-1,
     'maxYear' => date('Y')+5,
-    'orderYear' => 'asc'
+    'orderYear' => 'asc',
+    'selected' => ($action == 'add' ? date('Y-12-31') : '')
     )
 );
 echo "</div>\n";
@@ -37,5 +39,6 @@ echo $this->Form->input('asociado_id', array(
     'type' => 'hidden',
     'value' => $asociado_id
 ));
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar comisión');
 ?>
