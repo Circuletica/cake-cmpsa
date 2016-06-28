@@ -7,6 +7,7 @@ $this->assign('class',$this->fetch('class'));
 $this->assign('controller',Inflector::tableize($this->fetch('class')));
 $this->assign('line_controller','contactos');
 $this->assign('line_add', '1');
+$this->assign('line2_add', '1');
 
 $this->start('breadcrumb');
 $this->Html->addCrumb(

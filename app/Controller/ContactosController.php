@@ -46,7 +46,7 @@ class ContactosController extends AppController {
             $contacto = $this->Contacto->findById($id);
             $this->set('referencia', $contacto['Contacto']['nombre']);
         }
-        if ($this->request->is('post','put'){  //es un POST
+        if ($this->request->is('post','put')){  //es un POST
             $this->request->data['Contacto']['empresa_id'] = $empresa_id;
             if($this->Contacto->save($this->request->data)) {
                 $this->Flash->set('Contacto guardado');
