@@ -32,15 +32,15 @@ class AppController extends Controller {
     var $scaffold = 'admin';
 
     public $paginate = array(
-	'limit' => 20
+		'limit' => 20
     );
 
     public $helpers = array(
-	'Html',
-	'Form',
-	'Date',
-	'Button',
-	'Csv'
+		'Html',
+		'Form',
+		'Date',
+		'Button',
+		'Csv'
     );
 
     public $components = array('DebugKit.Toolbar','Session','RequestHandler','Flash','History');
@@ -210,22 +210,22 @@ class AppController extends Controller {
 	//$passedArgs['Search.id'] = 3
 	foreach ($criterios as $tabla => $campos) {
 	    foreach ($campos as $nombre => $elementos) {
-		$columna = $elementos['columna'];
-		if (isset($this->passedArgs['Search.'.$columna])) {
-		    //en la URL (filtroListado()) sustituimos '_' por '/' ahora, al revés
-		    $valor = strtr($this->passedArgs['Search.'.$columna],'_','/');
-		    if ($elementos['exacto']) {
-			$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = $valor;
-		    } else {
-			$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = "%".$valor."%";
-		    }
-		    $this->request->data['Search'][$columna] = $valor;
-		    if (!empty($elementos['lista'])) {
-			$titulo[] = $nombre.': '.$elementos['lista'][$valor];
-		    } else {
-			$titulo[] = $nombre.': '.$valor;
-		    }
-		}
+			$columna = $elementos['columna'];
+			if (isset($this->passedArgs['Search.'.$columna])) {
+				//en la URL (filtroListado()) sustituimos '_' por '/' ahora, al revés
+				$valor = strtr($this->passedArgs['Search.'.$columna],'_','/');
+				if ($elementos['exacto']) {
+					$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = $valor;
+				} else {
+					$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = "%".$valor."%";
+				}
+				$this->request->data['Search'][$columna] = $valor;
+				if (!empty($elementos['lista'])) {
+					$titulo[] = $nombre.': '.$elementos['lista'][$valor];
+				} else {
+					$titulo[] = $nombre.': '.$valor;
+				}
+			}
 	    }
 	}
 	if (isset($titulo)) {
