@@ -15,7 +15,7 @@ if ($action == 'add') {
 if ($action == 'edit') {
     echo "<h2>Modificar Transporte de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
 }
-echo $this->Form->create('Transporte',
+echo $this->Form->create('Transporte',array(
     'inputDefaults' => array(
         'dateFormat' => 'DMY',
         'minYear' => date('Y')-1,
@@ -23,7 +23,7 @@ echo $this->Form->create('Transporte',
         'orderYear' => 'asc',
         'timeFormat' => null
     )
-);
+));
 echo "<fieldset>";
 echo "<legend>Info</legend>";
 echo "<dl>";
