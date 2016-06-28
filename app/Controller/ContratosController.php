@@ -157,37 +157,37 @@ class ContratosController extends AppController {
 		$proveedores = $this->Proveedor->find(
 			'list',
 			array(
-			'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-			'order' => array('Empresa.nombre_corto' => 'asc'),
-			'recursive' => 1
+				'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+				'order' => array('Empresa.nombre_corto' => 'asc'),
+				'recursive' => 1
 			)
 		);
 		$this->set('proveedores',$proveedores);
 		$this->set(
 			'puertoCargas',
 			$this->Contrato->PuertoCarga->find(
-			'list',
-			array(
-				'order' => array('PuertoCarga.nombre' => 'ASC')
-			)
+				'list',
+				array(
+					'order' => array('PuertoCarga.nombre' => 'ASC')
+				)
 			)
 		);
 		$this->set(
 			'puertoDestinos',
 			$this->Contrato->PuertoDestino->find(
-			'list',
-			array(
-				'order' => array('PuertoDestino.nombre' => 'ASC')
-			)
+				'list',
+				array(
+					'order' => array('PuertoDestino.nombre' => 'ASC')
+				)
 			)
 		);
 		$this->set(
 			'incoterms',
 			$this->Contrato->Incoterm->find(
-			'list',
-			array(
-				'order' => array('Incoterm.nombre' => 'ASC')
-			)
+				'list',
+				array(
+					'order' => array('Incoterm.nombre' => 'ASC')
+				)
 			)
 		);
 		$this->set(

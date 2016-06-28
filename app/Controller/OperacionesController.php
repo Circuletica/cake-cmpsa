@@ -555,9 +555,12 @@ class OperacionesController extends AppController {
 		    $this->Flash->set('Operación guardada');
 		    //volvemos al contrato a la que pertenece la linea creada
 		    $this->redirect(array(
-			'controller' => 'contratos',
-			'action' => 'view',
-			$contrato_id));
+				//'controller' => 'contratos',
+				'controller' => 'operaciones',
+				'action' => 'view',
+				//$contrato_id
+				$this->Operacion->id
+			));
 		}else{
 		    $this->Flash->set('Operación NO guardada');
 		} 
