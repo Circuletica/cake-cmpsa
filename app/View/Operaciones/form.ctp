@@ -101,7 +101,7 @@ echo $this->Form->input(
 		'label' => 'Fecha de fijación',
 		'class' => 'precioFijo',
 		'dateFormat' => 'DMY',
-		'minYear' => date('Y'),
+		'minYear' => date('Y')-1,
 		'maxYear' => date('Y')+5,
 		'orderYear' => 'asc',
 		'selected' => date('Y-m-1')

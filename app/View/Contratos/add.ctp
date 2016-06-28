@@ -270,9 +270,7 @@ echo $this->Form->input(
 		'dateFormat' => 'MY',
 		'minYear' => date('Y'),
 		'maxYear' => date('Y')+5,
-		'orderYear' => 'asc',
-		//'selected' => date('Y-m'),
-		//'div' => false
+		'orderYear' => 'asc'
 	    )
 	);
 	?>
