@@ -102,8 +102,10 @@ class ContratosController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id)
-			throw new NotFoundException(__('URL mal formado Contrato/view'));
+        $this->Contrato->id = $id;
+        if (!$this->Contrato->exists()) {
+            throw new NotFoundException(__('Contrato inexistente'));
+        }
 		$contrato = $this->Contrato->find(
 			'first',
 			array(
@@ -111,8 +113,6 @@ class ContratosController extends AppController {
 				'recursive' => 2
 			)
 		);
-		if (!$contrato)
-			throw new NotFoundException(__('No existe ese contrato'));
 		$this->set('contrato', $contrato);
 
 		//La suma del peso de todas las operaciones de un contrato
@@ -236,7 +236,7 @@ class ContratosController extends AppController {
 		//se sobreescribe lo que tenía
 		if (!isset($this->request->data['Contrato']['posicion_bolsa']['day']))
 			$this->request->data['Contrato']['posicion_bolsa']['day'] = date('Y-m');
-		if($this->request->is('post')) {
+		if ($this->request->is('post')) {
 			//Hay que meter un dia si no queremos que mysql meta una fecha NULL
 			//lo suyo seria tener 0, pero el cakephp parece que no quiere
 			$this->request->data['Contrato']['posicion_bolsa']['day'] = 1;
@@ -244,6 +244,7 @@ class ContratosController extends AppController {
 			//hay que borrar el diferencial que existía antes
 			$canal_compra = $this->Contrato->CanalCompra->findById($this->request->data['Contrato']['canal_compra_id']);
 			if (!$canal_compra['CanalCompra']['si_diferencial']) $this->request->data['Contrato']['diferencial'] = 0;
+			$this->Contrato->create();
 			if($this->Contrato->save($this->request->data)) {
 				//Las claves del array data['Embalaje'] no son secuenciales,
 				//son realmente el embalaje_id
@@ -257,14 +258,17 @@ class ContratosController extends AppController {
 						$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
 					}
 				}
-				$this->Flash->set('Contrato guardado');
-				$this->redirect(
+				$this->Flash->success(__('Contrato guardado'));
+				return $this->redirect(
 					array(
 						'action' => 'view',
 						$this->Contrato->id
 					)
 				);
 			}
+            $this->Flash->error(
+                __('El contrato NO se ha guardado.')
+            );
 		}
 	}
 
@@ -473,13 +477,6 @@ class ContratosController extends AppController {
 				)
 			);
 		}
-//        try { $this->Contrato->delete($id);
-//        } catch (ForeignKey $e) {
-//            echo 'Error en base de datos: ', $e->getMessage(), "\n";
-//            $this->History->Back(0);
-//        } finally {
-//            $this->Flash->set('Contrato borrado');
-//        }
 	}
 }
 ?>

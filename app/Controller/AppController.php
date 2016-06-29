@@ -43,7 +43,34 @@ class AppController extends Controller {
         'Csv'
     );
 
-    public $components = array('DebugKit.Toolbar','Session','RequestHandler','Flash','History');
+    public $components = array(
+        'DebugKit.Toolbar',
+        'Session',
+        'RequestHandler',
+        'Flash',
+        'History',
+        'Auth' => array(
+            'loginRedirect' => array(
+                'controller' => 'operaciones',
+                'action' => 'index'
+            ),
+            'logoutRedirect' => array(
+                'controller' => 'pages',
+                'action' => 'display',
+                'home'
+            ),
+            'authenticate' => array(
+                'Form' => array(
+                    'passwordHasher' => 'Blowfish'
+                )
+            )
+        )
+    );
+
+    public function beforeFilter() {
+//        $this->Auth->allow('index');
+        $this->Auth->allow('display');
+    }
 
     //cambia el 'hasOne' del Model por un 'belongsTo'
     //para que el LEFT JOIN de 3r nivel de la query se haga
