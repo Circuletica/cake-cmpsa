@@ -1,48 +1,37 @@
-<?php $this->Html->addCrumb('Operaciones', array(
-    'controller'=>'operaciones',
-    'action'=>'index_trafico'
-));
+
+<?php
+$this->extend('/Common/view');
+$this->assign('object', 'Operación '.$operacion['Operacion']['referencia']);
+$this->assign('line_object', 'Líneas de transporte');
+$this->assign('line_object2', 'Resumen retiradas');
+$this->assign('id',$operacion['Operacion']['id']);
+$this->assign('class','Operacion');
+$this->assign('controller','operaciones');
+$this->assign('line_controller','transportes');
+$this->assign('line_controller','retiradas');
+$this->assign('line_add','0');
+$this->assign('line_add2','1');
+
+$this->start('breadcrumb');
+$this->Html->addCrumb(
+    'Operaciones',
+    array(
+	'controller' => 'operaciones',
+	'action' => 'index_trafico'
+    )
+);
 $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
     'controller'=>'operaciones',
     'action'=>'view_trafico',
     $operacion['Operacion']['id']
 ));
-echo $this->Flash->render();
-?>
-<div class="acciones">
-    <div class="printdet">
-    <ul><li>
- <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
-<?php // PARA VIEW
-echo ' '.$this->Html->link(
-    ('<i class="fa fa-file-pdf-o fa-lg"></i>'),
-    array(
-	'action' => 'view_trafico',$id,'ext' => 'pdf',
-    ), 
-    array(
-	'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
-	$this->Html->link(
-	    '<i class="fa fa-envelope-o fa-lg"></i>',
-	    'mailto:',
-	    array(
-		'escape'=>false,
-		'target' => '_blank',
-		'title'=>'Enviar e-mail'
-	    )
-	);
-?>
-	</li></ul>
-    </div>
-</div>
-    <h2>Operación <?php echo $operacion['Operacion']['referencia']//.' / Contrato'.$contrato['Contrato']['referencia'] ?></h2>
-<div class="actions">
-<?php
-echo $this->element('filtrooperacion');
-?>
-</div>
+$this->end();
 
-<div class='view'>
-<?php
+$this->start('filter');
+	echo $this->element('filtrooperacion');
+$this->end();
+
+$this->start('main');
 echo "<dl>";
 echo "  <dt>Ref. operación</dt>\n";
 echo "<dd>";
@@ -110,14 +99,10 @@ if ($operacion['Contrato']['Incoterm']['si_flete']) {
 echo "  <dt>Observaciones</dt>\n";
 echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
 echo "</dl>";
-?>
-	<!--Se hace un index de la Linea de contratos-->
+$this->end();
 
-	<!--Se listan los asociados que forman parte de la operación-->
-<div class="detallado">
-	<h3>Líneas de transporte</h3>
-	<table class="tc1 tc6 tc7">
-<?php
+$this->start('lines');
+echo '<table class="tc1 tc6 tc7">';
 echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
     'Fecha Carga','Bultos','Asegurado','Detalle'));
 //hay que numerar las líneas
@@ -136,9 +121,8 @@ foreach($operacion['Transporte'] as $linea) {
     //numero de la línea siguiente
     //	$i++;
 }
-?>	</table>
-<?php		
-echo '<div class="btabla">';
+echo "</table>\n";
+echo "<div class='btabla'>\n";
 echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
 echo '</div>';
 if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
@@ -151,12 +135,13 @@ if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
 
 ?>
     </div>
-	<br><br>		<!--Se listan los asociados que forman parte de la operación-->
-
-	<div class="detallado">
-	<h3>Resumen retiradas</h3>
-	<table>
-<?php
+	<br><br>
+	<!--Se listan los asociados que forman parte de la operación-->
+<?php	
+$this->end();
+$this->start('lines');
+echo "<h3>Resumen retiradas</h3>";
+echo "<table>\n";
 //Se calcula la cantidad total de bultos retirados
 
 echo $this->Html->tableHeaders(array('Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)','Detalle'));
@@ -335,6 +320,9 @@ if ($cuenta_almacen['cuenta_almacen'] != NULL ){
 ?>	
 	    </div>
 	</div>
+	<?php
+	$this->end();
+	?>
     </div>
 </div>
 
