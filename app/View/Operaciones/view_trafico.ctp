@@ -44,11 +44,11 @@ echo $this->element('filtrooperacion');
 <div class='view'>
 <?php
 echo "<dl>";
-echo "  <dt>Operación</dt>\n";
+echo "  <dt>Ref. operación</dt>\n";
 echo "<dd>";
 echo $operacion['Operacion']['referencia'].'&nbsp;';
 echo "</dd>";
-echo "  <dt>Contrato</dt>\n";
+echo "  <dt>Ref. contrato</dt>\n";
 echo "<dd>";
 echo $this->html->link(
     $operacion['Contrato']['referencia'],

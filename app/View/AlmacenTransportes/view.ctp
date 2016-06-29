@@ -111,6 +111,17 @@ echo $this->Button->edit('almacen_transportes',$id)
 <div class='view'>
 <?php
 echo "<dl>";
+echo "  <dt>Ref. operación </dt>\n";
+echo "<dd>";
+echo $this->html->link(
+	 $almacentransportes['Transporte']['Operacion']['referencia'],
+	 array(
+	'controller' => 'operaciones',
+	'action' => 'view_trafico',
+	$almacentransportes['Transporte']['operacion_id']
+    )
+).'&nbsp;';
+echo "</dd>";
 echo "  <dt>Nº de linea </dt>\n";
 echo "<dd>";
 echo $almacentransportes['Transporte']['linea'].'&nbsp;';
