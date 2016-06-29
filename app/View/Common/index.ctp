@@ -21,9 +21,7 @@ $this->Html->addCrumb($object, array(
 <div class="actions">
     <h3>Búsqueda</h3>
     <ul>
-    <?php echo $this->fetch('filter');
-    //echo"<hr>\n";
-    //echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos ?>
+    <?php echo $this->fetch('filter');?>
     </ul>
 </div>
 <div class="acciones">
@@ -38,7 +36,7 @@ $this->Html->addCrumb($object, array(
 	<div class="btabla">
 		<?php
         echo (
-        empty($add_button) ?
+        ($add_button) ?
         $this->Button->add($controller,$object):
         ''
         );

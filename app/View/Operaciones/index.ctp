@@ -3,8 +3,7 @@ $this->extend('/Common/index');
 $this->assign('object', 'Operaciones');
 $this->assign('controller', 'operaciones');
 $this->assign('class', 'Operacion');
-$this->assign('add_button', 'no');
-
+$this->assign('add_button', 0);
 
 $this->start('filter');
 		echo $this->element('filtrooperacion'); //Elemento del Filtro de operaciones
