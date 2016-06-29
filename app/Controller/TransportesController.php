@@ -423,7 +423,7 @@ endforeach;
 	endif;
 
 	if ($this->Transporte->delete($id)){
-	    $this->Flash->set('Linea de transporte borrada');
+	    $this->Flash->set('Linea de transporte borrada correctamente');
 	    $this->History->Back(-1);
 	    /*$this->redirect(array(
 		'controller' => 'operaciones',
