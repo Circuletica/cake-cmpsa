@@ -68,6 +68,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 				    <li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> RETIRADAS','/retiradas/index_conta',array('escape' => false));?></li>				    
 				</ul>
 			</li>
+			<?php echo $this->Html->link('Salir','/users/logout',array('escape' => false));?>
 		</ul>	
 	</div>
 </div>
