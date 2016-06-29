@@ -1,8 +1,8 @@
 <?php
 class ContratosController extends AppController {
-    var $displayField = 'referencia';
+	var $displayField = 'referencia';
 
-    public function index() {
+	public function index() {
 		$this->paginate['order'] = array('Contrato.posicion_bolsa' => 'asc');
 		$this->Contrato->virtualFields['calidad']=$this->Contrato->Calidad->virtualFields['nombre'];
 		$this->paginate['contain'] = array(
@@ -99,32 +99,30 @@ class ContratosController extends AppController {
 
 		//pasamos los datos a la vista
 		$this->set(compact('contratos','title'));
-    }
-
-    public function view($id = null) {
-	if (!$id) {
-        throw new NotFoundException(__('URL mal formado Contrato/view'));
 	}
-	$contrato = $this->Contrato->find(
-        'first',
-        array(
-            'conditions' => array('Contrato.id' => $id),
-            'recursive' => 2
-        )
-    );
-    if (!$contrato) {
-        throw new NotFoundException(__('No existe ese contrato'));
-    }
-	$this->set('contrato', $contrato);
 
-	//La suma del peso de todas las operaciones de un contrato
-	$peso_fijado = $this->Contrato->query(
-	    "SELECT
-	    SUM(p.peso) as peso_fijado
-	    FROM peso_operaciones p
-	    LEFT JOIN contratos c ON (p.contrato_id = c.id)
-	    WHERE c.id = $id;
-	"
+	public function view($id = null) {
+		if (!$id)
+			throw new NotFoundException(__('URL mal formado Contrato/view'));
+		$contrato = $this->Contrato->find(
+			'first',
+			array(
+				'conditions' => array('Contrato.id' => $id),
+				'recursive' => 2
+			)
+		);
+		if (!$contrato)
+			throw new NotFoundException(__('No existe ese contrato'));
+		$this->set('contrato', $contrato);
+
+		//La suma del peso de todas las operaciones de un contrato
+		$peso_fijado = $this->Contrato->query(
+			"SELECT
+			SUM(p.peso) as peso_fijado
+			FROM peso_operaciones p
+			LEFT JOIN contratos c ON (p.contrato_id = c.id)
+			WHERE c.id = $id;
+		"
 		);
 		//el sql devuelve un array, solo queremos el campo de peso sin decimales
 		$peso_fijado = intval($peso_fijado[0][0]['peso_fijado']);
@@ -148,9 +146,9 @@ class ContratosController extends AppController {
 		$this->set('posicion_bolsa', $mes.' '.$anyo);
 		//Se declara para acceder al PDF
 		$this->set(compact('id'));
-    }
+	}
 
-    public function add() {
+	public function add() {
 		//necesitamos la lista de proveedor_id/nombre para rellenar el select
 		//del formulario de busqueda
 		$this->loadModel('Proveedor');
@@ -268,9 +266,9 @@ class ContratosController extends AppController {
 				);
 			}
 		}
-    }
+	}
 
-    public function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id) {
 			throw new NotFoundException(__('URL mal formado Contrato/edit'));
 		}
@@ -379,9 +377,9 @@ class ContratosController extends AppController {
 				$this->Flash->set('Contrato NO guardado');
 			}
 		}
-    }
+	}
 
-    public function copy($id = null) {
+	public function copy($id = null) {
 		//para duplicar un registro, se hace una copia del mismo con
 		//los registros relacionados en otras tablas, teniendo cuidado
 		//de usar una clave primaria nueva (id) y se hace un redirect
@@ -460,21 +458,21 @@ class ContratosController extends AppController {
 		);
 	}
 
-    public function delete($id = null) {
-        if (!$id or $this->request->is('get')){
-            throw new MethodNotAllowedException('URL mal formada o incompleta');
-        }
-        if ($this->Contrato->delete($id)) {
-            $this->Flash->set('Contrato borrado');
-            $this->History->Back(-1);
-        } else {
-            $this->Flash->set('El contrato NO se ha borrado');
+	public function delete($id = null) {
+		if (!$id or $this->request->is('get')){
+			throw new MethodNotAllowedException('URL mal formada o incompleta');
+		}
+		if ($this->Contrato->delete($id)) {
+			$this->Flash->set('Contrato borrado');
+			$this->History->Back(-1);
+		} else {
+			$this->Flash->set('El contrato NO se ha borrado');
 			$this->redirect(array(
 				'action'=>'view',
 				$id
 				)
 			);
-        }
+		}
 //        try { $this->Contrato->delete($id);
 //        } catch (ForeignKey $e) {
 //            echo 'Error en base de datos: ', $e->getMessage(), "\n";
@@ -482,6 +480,6 @@ class ContratosController extends AppController {
 //        } finally {
 //            $this->Flash->set('Contrato borrado');
 //        }
-    }
+	}
 }
 ?>

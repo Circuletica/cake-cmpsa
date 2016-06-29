@@ -21,29 +21,29 @@ class FinanciacionesController extends AppController {
 	$financiacion = $this->Financiacion->find(
 	    'first',
 	    array(
-            'contain' => array(
-                'Banco',
-                'Operacion' => array(
-                    'Contrato' => array(
-                        'Calidad',
-                        'Incoterm',
-                        'Proveedor'
-                    ),
-                    'AsociadoOperacion' => array(
-                        'Asociado'
-                    )
-                ),
-                'ValorIvaFinanciacion',
-                'ValorIvaComision',
-            ),
-            'conditions' => array('Financiacion.id' => $id),
-            'recursive' => 4
-        )
-    );
-    if (!$financiacion) {
-        throw new NotFoundException(__('No existe esa financiación'));
-    }
-    $this->set(compact('financiacion'));
+		'contain' => array(
+		    'Banco',
+		    'Operacion' => array(
+			'Contrato' => array(
+			    'Calidad',
+			    'Incoterm',
+			    'Proveedor'
+			),
+			'AsociadoOperacion' => array(
+			    'Asociado'
+			)
+		    ),
+		    'ValorIvaFinanciacion',
+		    'ValorIvaComision',
+		),
+		'conditions' => array('Financiacion.id' => $id),
+		'recursive' => 4
+	    )
+	);
+	if (!$financiacion) {
+	    throw new NotFoundException(__('No existe esa financiación'));
+	}
+	$this->set(compact('financiacion'));
 
 	//calculamos el total de cada línea de reparto como campo virtual del modelo
 	//Si metemos el campo nuevo directamente en el 'contain' del find, sale
@@ -133,15 +133,15 @@ class FinanciacionesController extends AppController {
 	$this->set('precio_euro_kilo', $financiacion['Financiacion']['precio_euro_kilo']);
 	$this->set('iva',$financiacion['ValorIvaFinanciacion']['valor']);
 	$this->set('iva_comision',$financiacion['ValorIvaComision']['valor']);
-	
+
 	//Se declara para acceder al PDF
 	$this->set(compact('id'));
 
 	$this->pdfConfig = array(
-		'filename' => 'financiacion',
-		'paperSize' => 'A4',
-    	'orientation' => 'landscape'
-    	);	
+	    'filename' => 'financiacion',
+	    'paperSize' => 'A4',
+	    'orientation' => 'landscape'
+	);	
 
 
 

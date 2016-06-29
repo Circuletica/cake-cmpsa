@@ -1,8 +1,5 @@
 <?php
 class TipoIvasController extends AppController {
-    public $paginate = array(
-	'limit' => 20,
-    );
 
     public function index() {
 	$this->paginate['contain'] = array(
@@ -53,17 +50,12 @@ endif;
     }
 
     public function view($id = null) {
+	if (!$id)
+	    throw new NotFoundException(__('URL mal formado Contrato/view'));
 	//el id y la clase del tipo de iva vienen en la URL
-	if (!$id) {
-	    $this->Flash->set('URL mal formado TipoIva/view');
-	    $this->redirect(array('action'=>'index'));
-	}
-	$tipo_iva = $this->TipoIva->find(
-	    'first',
-	    array(
-		'conditions' => array('TipoIva.id' => $id)
-	    )
-	);
+	$tipo_iva = $this->TipoIva->findById($id);
+	if (!$tipo_iva)
+	    throw new NotFoundException(__('No existe ese tipo de iva'));
 	$this->set(compact('tipo_iva'));
     }
 

@@ -52,46 +52,12 @@ class TransportesController extends AppController {
     }
 
     public function view($id = null) {
+	if (!$id)
+	    throw new NotFoundException(__('URL mal formado Transporte/view'));
 	$this->pdfConfig = array(
 	    'filename' => 'linea'.date('Ymd'),
-	    //'output'=> 'files/Report.pdf'  
-	    //'download' => (bool)$this->request->query('download')
-	);
-	$linea = $this->Transporte->find(
-	    'first',
-	    array(
-		'conditions' => array(
-		    'Transporte.id' => $id
-		)
-	    )
 	);
 
-	/*$pdf = $CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
-	$this->set(compact('pdf'));*/
-	//$CakePdf = new CakePdf();
-	//  $CakePdf->template('default');
-	//$CakePdf->viewVars($this->viewVars);
-	// Get the PDF string returned
-	//$pdf = $CakePdf->output();
-	// Or write it to file directly
- /*   $pdf = $this->write(APP . 'files' . DS . 'newsletter.pdf');
-$this->set(compact('pdf'));
-  */
-
- /*$Email = new CakeEmail();
- $Email->config('smtp')
-	->template('default')
-    ->emailFormat('html')
-    ->subject('AVISO PREVISIÓN LLEGADA')
-    ->to('info@circuletica.org')
-    ->from('rodolgl@gmail.com')
-    ->cc('rodolgl@gmail.com')
- ->send('Un mensaje');*/
-
-	/*if (!$id) {
-	    $this->Flash->set('URL mal formada Transporte/view ');
-	    $this->redirect(array('action'=>'index_trafico'));
-	}*/
 	$transporte = $this->Transporte->find(
 	    'first',
 	    array(
@@ -170,16 +136,18 @@ $this->set(compact('pdf'));
 		)
 	    )
 	);
+	if (!$transporte)
+	    throw new NotFoundException(__('No existe ese transporte'));
 	$this->set('transporte',$transporte);
 	//Calculamos la cantidad de sacos almacenados en la linea
 	if(!empty($transporte['Transporte']['id'])){
 	    $suma = 0;
 	    $almacenado=0;
-	    foreach ($transporte['AlmacenTransporte'] as $suma):
-		if ($almacenTransporte['transporte_id'] = $transporte['Transporte']['id']):
+	    foreach ($transporte['AlmacenTransporte'] as $suma) {
+		if ($almacenTransporte['transporte_id'] = $transporte['Transporte']['id']) {
 		    $almacenado = $almacenado + $suma['cantidad_cuenta'];
-endif;
-endforeach;
+		}
+	    }
 	}
 	$restan = $transporte['Transporte']['cantidad_embalaje'] - $almacenado; 
 	$this->set(compact('restan'));
@@ -290,7 +258,7 @@ endforeach;
 	}else{
 	    $operacion_id = $this->params['named']['from_id'];
 	}
-	
+
 	$operacion = $this->Transporte->Operacion->find(
 	    'first', 
 	    array(
@@ -359,7 +327,6 @@ endforeach;
 	    foreach ($operacion['Transporte'] as $suma){
 		if ($transporte['operacion_id']=$operacion['Operacion']['id']) {
 		    $transportado = $transportado + $suma['cantidad_embalaje'];
-
 		}
 	    }
 	}
@@ -388,56 +355,56 @@ endforeach;
 
 	if (!empty($id)) $this->Transporte->id = $id;
 
-		if ($this->request->is(array('post', 'put'))) {//ES UN POST
-		    $this->request->data['Transporte']['id'] = $id;
-		    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
+	if ($this->request->is(array('post', 'put'))) {//ES UN POST
+	    $this->request->data['Transporte']['id'] = $id;
+	    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
 
-		    if($id == NULL){
-			if($this->Transporte->save($this->request->data)){
-			    $this->Flash->set("Linea de transporte guardada correctamente");
-				$this->redirect(array(
-				'controller' => 'operaciones',
-				'action' => 'view_trafico',
-				$operacion_id
-			    ));
-			}else{
-			    $this->Flash->set('Linea de transporte NO guardada');
-			}
-		    }else{
-			if($this->Transporte->save($this->request->data)){
-			    $this->Flash->set('Linea de transporte modificada correctamente');
-			    $this->redirect(array(
-				'controller' => 'transportes',
-				'action' => 'view',
-				$id
-			    ));
-			}
-		    }		
-		}else{ //es un GET
-		    $this->request->data = $this->Transporte->read(null, $id);
+	    if($id == NULL){
+		if($this->Transporte->save($this->request->data)){
+		    $this->Flash->set("Linea de transporte guardada correctamente");
+		    $this->redirect(array(
+			'controller' => 'operaciones',
+			'action' => 'view_trafico',
+			$operacion_id
+		    ));
+		}else{
+		    $this->Flash->set('Linea de transporte NO guardada');
 		}
+	    }else{
+		if($this->Transporte->save($this->request->data)){
+		    $this->Flash->set('Linea de transporte modificada correctamente');
+		    $this->redirect(array(
+			'controller' => 'transportes',
+			'action' => 'view',
+			$id
+		    ));
+		}
+	    }		
+	}else{ //es un GET
+	    $this->request->data = $this->Transporte->read(null, $id);
 	}
+    }
 
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')):
 	    throw new MethodNotAllowedException();
-	endif;
+endif;
 
-	if ($this->Transporte->delete($id)){
-	    $this->Flash->set('Linea de transporte borrada');
-	    $this->History->Back(-1);
+if ($this->Transporte->delete($id)){
+    $this->Flash->set('Linea de transporte borrada');
+    $this->History->Back(-1);
 	    /*$this->redirect(array(
 		'controller' => 'operaciones',
 		'action' => 'view_trafico',
 		$this->params['named']['from_id']
 	    ));*/
-	}else{
-	    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacen');
-	    $this->redirect(array(
-		'action' => 'view',
-		$id
-	    ));
-	}
+}else{
+    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacen');
+    $this->redirect(array(
+	'action' => 'view',
+	$id
+    ));
+}
     }
 
     public function info_embarque() {
@@ -821,37 +788,37 @@ endforeach;
 	$this->set('transportes', $this->Transporte->find(
 	    'all',
 	    array(
-	    	'conditions'=> array(
-	    		'Transporte.fecha_despacho_op' => NULL
-	    		),
-	    	'recursive' => 1,
-	    	'fields' => array(
-	    		'matricula',
-	    		'nombre_vehiculo',
-	    		'fecha_carga',
-	    		'fecha_llegada',
-	    		'fecha_prevista',
-	    		'observaciones'
-	    		),
-	    	'contain'=>array(
-	    		'Operacion'=>array(
-	    			'PesoOperacion',
-	    			'Contrato'=>array(
-	    				'fields'=>array(
-	    					'fecha_transporte'
-	    					),
-	    				'Proveedor' => array(
-	    					'fields'=>array(
-	    						'nombre_corto'
-	    						)
-	    					)
-	    				)
-	    			)
-	    		)
-	    	)
-
+		'conditions'=> array(
+		    'Transporte.fecha_despacho_op' => NULL
+		),
+		'recursive' => 1,
+		'fields' => array(
+		    'matricula',
+		    'nombre_vehiculo',
+		    'fecha_carga',
+		    'fecha_llegada',
+		    'fecha_prevista',
+		    'observaciones'
+		),
+		'contain'=>array(
+		    'Operacion'=>array(
+			'PesoOperacion',
+			'Contrato'=>array(
+			    'fields'=>array(
+				'fecha_transporte'
+			    ),
+			    'Proveedor' => array(
+				'fields'=>array(
+				    'nombre_corto'
+				)
+			    )
+			)
+		    )
+		)
 	    )
-	
+
+	)
+
     );
 	$this->layout = null;
 	$this->autoLayout = false;
@@ -897,7 +864,7 @@ endforeach;
 		)
 	    )
 	);
-*/
+   */
 
 
 }

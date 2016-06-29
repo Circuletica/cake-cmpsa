@@ -1,7 +1,7 @@
 <?php
 class BancosController extends AppController {
 
-public $class = 'Banco';
+    public $class = 'Banco';
 
     public function index() {
 	$this->bindCompany($this->class);
@@ -9,13 +9,13 @@ public $class = 'Banco';
     }
 
     public function view($id = null) {
-		if (!$id) {
-		    $this->Flash->set('URL mal formado '.$this->class.'/view ');
-		    $this->redirect(array('action'=>'index'));
-		}
-		$this->viewCompany($this->class, $id);
-		$this->set(compact('id'));
+	if (!$id) {
+	    $this->Flash->set('URL mal formado '.$this->class.'/view ');
+	    $this->redirect(array('action'=>'index'));
 	}
+	$this->viewCompany($this->class, $id);
+	$this->set(compact('id'));
+    }
 
     public function add() {
 	$this->form();
@@ -41,15 +41,15 @@ public $class = 'Banco';
     public function delete( $id = null) {
 	$this->deleteCompany($this->class, $id);
     }
-public function view_pdf($id = null) {
-    $this->Banco->id = $id;
-    if (!$this->Banco->exists()) {
-        throw new NotFoundException(__('Invalid Banco'));
+    public function view_pdf($id = null) {
+	$this->Banco->id = $id;
+	if (!$this->Banco->exists()) {
+	    throw new NotFoundException(__('Invalid Banco'));
+	}
+	// increase memory limit in PHP 
+	ini_set('memory_limit', '512M');
+	$this->set('banco', $this->Banco->read(null, $id));
     }
-    // increase memory limit in PHP 
-    ini_set('memory_limit', '512M');
-    $this->set('banco', $this->Banco->read(null, $id));
-}
 
 
 }

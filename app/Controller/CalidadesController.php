@@ -1,31 +1,31 @@
 <?php
 class CalidadesController extends AppController {
     public $paginate = array(
-	'order' => array(
-	    'Pais.nombre' => 'asc',
-	    'Calidad.descripcion' => 'asc'
-	)
+        'order' => array(
+            'Pais.nombre' => 'asc',
+            'Calidad.descripcion' => 'asc'
+        )
     );
 
     public function index() {
-	$this->paginate['contain'] = array(
-	    'Pais'
-	);
-	$this->set('calidades', $this->paginate());
+        $this->paginate['contain'] = array(
+            'Pais'
+        );
+        $this->set('calidades', $this->paginate());
     }
 
     public function add() {
-	$this->form();
-	$this->render('form');
+        $this->form();
+        $this->render('form');
     }
 
     public function edit( $id = null) {
-	if (!$id) {
-	    $this->Flash->set('URL mal formado');
-	    $this->redirect(array('action'=>'index'));
-	}
-	$this->form($id);
-	$this->render('form');
+        if (!$id) {
+            $this->Flash->set('URL mal formado');
+            $this->redirect(array('action'=>'index'));
+        }
+        $this->form($id);
+        $this->render('form');
     }
 
     public function form($id = null) {
@@ -40,20 +40,20 @@ class CalidadesController extends AppController {
                 $this->Flash->set('Calidad guardada');
                 $this->redirect(
                     array(
-                    'action' =>
+                        'action' =>
                         isset($this->params['named']['from_action']) ?
                         $this->params['named']['from_action'] : 'index',
-                    'controller' =>
+                        'controller' =>
                         isset($this->params['named']['from_controller']) ? 
                         $this->params['named']['from_controller'] : 'calidades',
-                    //si venimos de Muestras::add()
-                    'tipo_id' =>
+                        //si venimos de Muestras::add()
+                        'tipo_id' =>
                         isset($this->params['named']['from_type']) ?
                         $this->params['named']['from_type'] : ''
                     )
                 );
             } else {
-            $this->Flash->set('Calidad NO guardada');
+                $this->Flash->set('Calidad NO guardada');
             }
         } else { //es un GET
             $this->request->data= $this->Calidad->read(null, $id);

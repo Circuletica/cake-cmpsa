@@ -35,7 +35,7 @@ class AsociadosController extends AppController {
 	{
 	    $this->set('comision', 'comisión no definida');
 	}
-		$this->set(compact('id'));
+	$this->set(compact('id'));
     }
 
     public function add() {

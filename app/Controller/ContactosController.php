@@ -52,9 +52,9 @@ class ContactosController extends AppController {
                 $this->Flash->set('Contacto guardado');
                 $this->redirect(
                     array(
-                    'action' => 'view',
-                    'controller' => $this->params['named']['from_controller'],
-                    $empresa_id,
+                        'action' => 'view',
+                        'controller' => $this->params['named']['from_controller'],
+                        $empresa_id,
                     )
                 );
             } else {

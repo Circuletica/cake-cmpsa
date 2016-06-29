@@ -22,10 +22,10 @@ class FletesController extends AppController {
 				'fields' => array(
 					'Naviera.id',
 					'Empresa.nombre_corto'
-					),
+				),
 				'recursive' => 1,
 				'order' => array('Empresa.nombre_corto' => 'ASC')
-				)
+			)
 		);
 		$this->set(compact('navieras'));
 
@@ -131,40 +131,40 @@ class FletesController extends AppController {
 		$this->set('action', $this->action);
 		$this->loadModel('Naviera');
 		$this->set(
-				'navieras',
-				$this->Naviera->find(
-					'list',
-					array(
-						'fields' => array(
-							'Naviera.id',
-							'Empresa.nombre_corto'
-							),
-						'recursive' => 1,
-						'order' => array('Empresa.nombre_corto' => 'ASC')
-						)
-					)
-				);
+			'navieras',
+			$this->Naviera->find(
+				'list',
+				array(
+					'fields' => array(
+						'Naviera.id',
+						'Empresa.nombre_corto'
+					),
+					'recursive' => 1,
+					'order' => array('Empresa.nombre_corto' => 'ASC')
+				)
+			)
+		);
 
 		$puerto_cargas = $this->Flete->PuertoCarga->find(
-				'list', array(
-					'order' => array('PuertoCarga.nombre' => 'ASC')
-					)
-				);
+			'list', array(
+				'order' => array('PuertoCarga.nombre' => 'ASC')
+			)
+		);
 		$this->set(compact('puerto_cargas'));
 		$puerto_destinos = $this->Flete->PuertoDestino->find(
-				'list', array(
-					'order' => array('PuertoDestino.nombre' => 'ASC'),
-					//solo puertos de destino en España.
-					//No mola naaaaada el tener el pais_id hard-codeado...
-					'conditions' => array('PuertoDestino.pais_id' => 3)
-					)
-				);
+			'list', array(
+				'order' => array('PuertoDestino.nombre' => 'ASC'),
+				//solo puertos de destino en España.
+				//No mola naaaaada el tener el pais_id hard-codeado...
+				'conditions' => array('PuertoDestino.pais_id' => 3)
+			)
+		);
 		$this->set(compact('puerto_destinos'));
 		$embalajes = $this->Flete->Embalaje->find(
-				'list', array(
-					'order' => array('Embalaje.nombre' => 'ASC')
-					)
-				);
+			'list', array(
+				'order' => array('Embalaje.nombre' => 'ASC')
+			)
+		);
 		$this->set('embalajes', $embalajes);
 
 		if (!empty($id)) { //es un edit
@@ -177,11 +177,11 @@ class FletesController extends AppController {
 			if($this->Flete->save($this->request->data)) {
 				$this->Flash->set('Flete guardado');
 				$this->redirect(
-						array(
-							'action' => 'view',
-							$this->Flete->id
-							)
-						);
+					array(
+						'action' => 'view',
+						$this->Flete->id
+					)
+				);
 			} else {
 				$this->Flash->set('Flete NO guardado');
 			}
@@ -197,42 +197,42 @@ class FletesController extends AppController {
 		}
 		$this->set(compact('id'));
 		$flete = $this->Flete->find(
-				'first',
-				array(
-					'conditions' => array('Flete.id' => $id),
-					'recursive' => 2
-					)
-				);
+			'first',
+			array(
+				'conditions' => array('Flete.id' => $id),
+				'recursive' => 2
+			)
+		);
 		if (!$flete) {
 			throw new NotFoundException(__('No existe ese flete'));
 		}
 		$this->set('flete',$flete);
 		$this->set('referencia',
-				$flete['PuertoCarga']['nombre']
-				.' ('.$flete['PuertoCarga']['Pais']['nombre'].')'
-					.' - '.$flete['PuertoDestino']['nombre']);
-				$costes = $this->Flete->PrecioFleteTonelada->find(
-					'all',
-					array(
-						'conditions' => array('PrecioFleteTonelada.flete_id' => $id),
-						'order' => array('PrecioFleteTonelada.fecha_inicio' => 'ASC')
-						)
-					);
-				$this->set('costes',$costes);
-				}
+			$flete['PuertoCarga']['nombre']
+			.' ('.$flete['PuertoCarga']['Pais']['nombre'].')'
+			.' - '.$flete['PuertoDestino']['nombre']);
+		$costes = $this->Flete->PrecioFleteTonelada->find(
+			'all',
+			array(
+				'conditions' => array('PrecioFleteTonelada.flete_id' => $id),
+				'order' => array('PrecioFleteTonelada.fecha_inicio' => 'ASC')
+			)
+		);
+		$this->set('costes',$costes);
+	}
 
-				public function delete($id) {
-				if($this->request->is('post')):
-				if($this->Flete->delete($id)):
+	public function delete($id) {
+		if($this->request->is('post')):
+			if($this->Flete->delete($id)):
 				$this->Flash->set('Flete borrado');
-				$this->redirect(array(
-							'controller' => 'fletes',
-							'action' => 'index'
-							));
-				endif;
+		$this->redirect(array(
+			'controller' => 'fletes',
+			'action' => 'index'
+		));
+endif;
 else:
-				throw new MethodNotAllowedException();
-				endif;    
-				}
+	throw new MethodNotAllowedException();
+endif;    
+	}
 }
 ?>
