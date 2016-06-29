@@ -60,9 +60,18 @@ echo $this->html->link(
 echo "</dd>";
 echo "  <dt>".$tipo_fecha_transporte."</dt>\n";
 echo "  <dd>".$fecha_transporte."</dd>";
+echo "  <dt>Muestra embarque aprobada</dt>\n";
+echo "<dd>";
+echo $operacion['Contrato']['si_muestra_emb_aprob']?'&#10004;':'&nbsp;';
+echo "</dd>";
+echo "  <dt>Muestra entrada aprobada</dt>\n";
+echo "<dd>";
+echo $operacion['Contrato']['si_muestra_entr_aprob'] ?'&#10004;':'&nbsp';
+echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
 echo $operacion['Contrato']['Calidad']['nombre'].'&nbsp;';
+echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
 echo $this->html->link(
@@ -107,7 +116,7 @@ echo "</dl>";
 	<!--Se listan los asociados que forman parte de la operación-->
 <div class="detallado">
 	<h3>Líneas de transporte</h3>
-	<table>
+	<table class="tc1 tc6 tc7">
 <?php
 echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
     'Fecha Carga','Bultos','Asegurado','Detalle'));
