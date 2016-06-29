@@ -138,7 +138,8 @@ echo $this->Form->input(
     'fecha_prevista', 
 	array(
 		'label' => 'Fecha prevista llegada',
-		'empty' => ' '
+		'empty' => ' ',
+        'disabled'=> $mostrar
 	)
 );
 echo $this->Form->input(

@@ -1,7 +1,6 @@
 <?php
 class TransportesController extends AppController {
 
-
     public function index() {
 
 	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
