@@ -692,7 +692,9 @@ class OperacionesController extends AppController {
 							'id',
 							'referencia',
 							'si_entrega',
-							'fecha_transporte'
+							'fecha_transporte',
+							'si_muestra_emb_aprob',
+							'si_muestra_entr_aprob'
 						),
 						'Proveedor'=>array(
 							'id',

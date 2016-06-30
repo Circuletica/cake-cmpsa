@@ -3,14 +3,14 @@
 $this->extend('/Common/view');
 $this->assign('object', 'Operación '.$operacion['Operacion']['referencia']);
 $this->assign('line_object', 'Líneas de transporte');
-$this->assign('line_object2', 'Resumen retiradas');
+$this->assign('line2_object', 'Resumen retiradas');
 $this->assign('id',$operacion['Operacion']['id']);
 $this->assign('class','Operacion');
 $this->assign('controller','operaciones');
 $this->assign('line_controller','transportes');
-$this->assign('line_controller','retiradas');
-$this->assign('line_add','0');
-$this->assign('line_add2','1');
+$this->assign('line2_controller','retiradas');
+$this->assign('line_add',0);
+$this->assign('line2_add',0);
 
 $this->start('breadcrumb');
 $this->Html->addCrumb(
@@ -102,45 +102,39 @@ echo "</dl>";
 $this->end();
 
 $this->start('lines');
-echo '<table class="tc1 tc6 tc7">';
-echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
-    'Fecha Carga','Bultos','Asegurado','Detalle'));
-//hay que numerar las líneas
-$i = 1;
-foreach($operacion['Transporte'] as $linea) {
-    echo $this->Html->tableCells(array(
-	$linea['linea'],
-	$linea['nombre_vehiculo'],
-	$linea['matricula'],
-	//Nos da el formato DD-MM-YYYY
-	$this->Date->format($linea['fecha_carga']),
-	$linea['cantidad_embalaje'],
-	$this->Date->format($linea['fecha_seguro']),
-	$this->Button->view('transportes',$linea['id'])
-    ));
-    //numero de la línea siguiente
-    //	$i++;
-}
-echo "</table>\n";
-echo "<div class='btabla'>\n";
-echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
-echo '</div>';
-if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
-    echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
-}elseif($transportado > $operacion['PesoOperacion']['cantidad_embalaje']){
-    echo "<h4>Transportados: ".$transportado.' / <span style=color:#c43c35;>Restan: '.$restan."   ¡ATENCIÓN! La cantidad de Bultos son mayores a los establecidos en contrato</span></h4>";
-}else{ 
-    echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan." - "."<span style=color:#c43c35;>Todos los bultos han sido registrados</span></h4>";
-}
-
-?>
-    </div>
-	<br><br>
-	<!--Se listan los asociados que forman parte de la operación-->
-<?php	
+	echo '<table class="tc1 tc6 tc7">';
+	echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
+	    'Fecha Carga','Bultos','Asegurado','Detalle'));
+	//hay que numerar las líneas
+	$i = 1;
+	foreach($operacion['Transporte'] as $linea) {
+	    echo $this->Html->tableCells(array(
+		$linea['linea'],
+		$linea['nombre_vehiculo'],
+		$linea['matricula'],
+		//Nos da el formato DD-MM-YYYY
+		$this->Date->format($linea['fecha_carga']),
+		$linea['cantidad_embalaje'],
+		$this->Date->format($linea['fecha_seguro']),
+		$this->Button->view('transportes',$linea['id'])
+	    ));
+	    //numero de la línea siguiente
+	    //	$i++;
+	}
+	echo "</table>\n";
+	echo "<div class='btabla'>\n";
+	echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
+	echo '</div>';
+	if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
+	    echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
+	}elseif($transportado > $operacion['PesoOperacion']['cantidad_embalaje']){
+	    echo "<h4>Transportados: ".$transportado.' / <span style=color:#c43c35;>Restan: '.$restan."   ¡ATENCIÓN! La cantidad de Bultos son mayores a los establecidos en contrato</span></h4>";
+	}else{ 
+	    echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan." - "."<span style=color:#c43c35;>Todos los bultos han sido registrados</span></h4>";
+	}	
 $this->end();
-$this->start('lines');
-echo "<h3>Resumen retiradas</h3>";
+
+$this->start('lines2');
 echo "<table>\n";
 //Se calcula la cantidad total de bultos retirados
 
