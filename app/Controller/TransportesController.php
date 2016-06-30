@@ -1,7 +1,6 @@
 <?php
 class TransportesController extends AppController {
 
-
     public function index() {
 
 	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
@@ -287,7 +286,9 @@ class TransportesController extends AppController {
 		),
 		'Contrato' => array(
 		    'fields' => array(
-			'id'
+			'id',
+			'puerto_carga_id',
+			'puerto_destino_id'
 		    ),
 		    'Incoterm'=>array(
 			'fields'=> array(
@@ -310,7 +311,8 @@ class TransportesController extends AppController {
 		)
 	    )
 	));
-	//Puertos de destino espaÃ±oles
+
+	//Puertos de destino españoles
 	$this->set('puertoDestinos', $this->Transporte->PuertoDestino->find(
 	    'list',
 	    array(
@@ -318,6 +320,7 @@ class TransportesController extends AppController {
 		'conditions' => array( 'Pais.iso3166' => 'es')
 	    )
 	));		
+
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
 
 	//Calculo la cantidad de bultos transportados
@@ -345,10 +348,11 @@ class TransportesController extends AppController {
 	}
 	if (empty($id)){ //En el ADD
 	    if(empty($operacion['Transporte'])){ //Primera linea
-		$num = 1;
-	    }else{ //A partir de la primera
-		$num = $num+1;
-	    };
+			$num = 1;
+	    }else{
+	    	$num = $num+1;
+	    }
+
 	}
 	$this->set(compact('num'));
 
@@ -388,23 +392,22 @@ class TransportesController extends AppController {
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')):
 	    throw new MethodNotAllowedException();
-endif;
+	endif;
 
-if ($this->Transporte->delete($id)){
-    $this->Flash->set('Linea de transporte borrada');
-    $this->History->Back(-1);
-	    /*$this->redirect(array(
+	if ($this->Transporte->delete($id)){
+	    $this->Flash->set('Linea de transporte borrada correctamente');
+	    $this->redirect(array(
 		'controller' => 'operaciones',
 		'action' => 'view_trafico',
 		$this->params['named']['from_id']
-	    ));*/
-}else{
-    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacen');
-    $this->redirect(array(
-	'action' => 'view',
-	$id
-    ));
-}
+	    ));//No usar History aquí
+	}else{
+	    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacen');
+	    $this->redirect(array(
+		'action' => 'view',
+		$id
+	    ));
+	}
     }
 
     public function info_embarque() {
@@ -554,18 +557,18 @@ if ($this->Transporte->delete($id)){
 	//filtramos por fecha
 	if(isset($this->passedArgs['Search.fechadesde'])) {
 	    $fechadesde = $this->passedArgs['Search.fechadesde'];
-	    //Si solo se ha introducido un aÃ±o (aaaa)
+	    //Si solo se ha introducido un año (aaaa)
 	    if (preg_match('/^\d{4}$/',$fechadesde)) {
 		$anyo = $fechadesde;
 	    }
-	    //la otra posibilidad es que se haya introducido mes y aÃ±o (mm-aaaa)
+	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
 		list($mes,$anyo) = explode('-',$fechadesde);
 	    } else {
 		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
-	    //si se ha introducido un aÃ±o, filtramos por el aÃ±o
+	    //si se ha introducido un año, filtramos por el año
 	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
 	    //si se ha introducido un mes, filtramos por el mes
 	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
@@ -575,16 +578,16 @@ if ($this->Transporte->delete($id)){
 	}
 	if(isset($this->passedArgs['Search.fechahasta'])) {
 	    $fecha = $this->passedArgs['Search.fechasta'];
-	    //Si solo se ha introducido un aÃ±o (aaaa)
+	    //Si solo se ha introducido un año (aaaa)
 	    if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fechahasta; }
-	    //la otra posibilidad es que se haya introducido mes y aÃ±o (mm-aaaa)
+	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
 		list($mes,$anyo) = explode('-',$fechahasta);
 	    } else {
 		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
-	    //si se ha introducido un aÃ±o, filtramos por el aÃ±o
+	    //si se ha introducido un año, filtramos por el año
 	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
 	    //si se ha introducido un mes, filtramos por el mes
 	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};

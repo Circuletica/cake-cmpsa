@@ -1,6 +1,7 @@
 
 <?php
 class AlmacenTransportesController extends AppController {
+
     public $paginate = array(
         'order' => array('cuenta_almacen' => 'asc')
     );
@@ -57,6 +58,11 @@ class AlmacenTransportesController extends AppController {
                             'matricula',
                             'nombre_vehiculo',
                             'operacion_id'
+                        ),
+                        'Operacion' => array(
+                            'fields'=> array(
+                                'referencia'
+                            )
                         )
                     ),
                     'Almacen' => array(
@@ -371,4 +377,5 @@ class AlmacenTransportesController extends AppController {
             );
         }
     }
+
 }
