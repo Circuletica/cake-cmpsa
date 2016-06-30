@@ -56,13 +56,16 @@ echo "</dl>";
 
     <div class="col2"> 
 <?php
+if (!empty($this->request->data['Transporte']['linea'])){
+    $num = $this->request->data['Transporte']['linea'];
+}
 echo $this->Form->input(
 	'linea',
     array(
         'label' => 'Número de línea',
         'value'=>$num
 	)
-); 
+);
 
 echo $this->Form->input(
 	'nombre_vehiculo',
@@ -93,14 +96,16 @@ echo $this->Form->input(
 	array('
 		label'=>'Puerto de embarque',
 		'empty' =>array('' => 'Sin Asignar'),
-		'disabled'=> $mostrar
+		'disabled'=> $mostrar,
+        'value'=>$operacion['Contrato']['puerto_carga_id']
 	)
 );
 echo $this->Form->input(
 	'puerto_destino_id',
 	array('
 		label'=>'Puerto de destino',
-		'empty' =>array('' => 'Sin Asignar')
+		'empty' =>array('' => 'Sin Asignar'),
+        'value'=>$operacion['Contrato']['puerto_destino_id']        
 	)
 );
 echo $this->Form->input(
