@@ -60,15 +60,16 @@ class AppController extends Controller {
                 'home'
             ),
             'authenticate' => array(
+                //AuthComponent::ALL => ['userModel' => 'Usuarios'],
                 'Form' => array(
-                    'passwordHasher' => 'Blowfish'
+                    'passwordHasher' => 'Blowfish',
+                    'userModel' => 'Usuarios'
                 )
             )
         )
     );
 
     public function beforeFilter() {
-//        $this->Auth->allow('index');
         $this->Auth->allow('display');
     }
 
