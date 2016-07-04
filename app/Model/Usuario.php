@@ -6,7 +6,7 @@ class Usuario extends AppModel {
 	public $belongsTo = array(
 		'Departamento'
 	);
-	public $displayField = 'nombre';
+	public $displayField = 'username';
 	public $validate = array(
 		'nombre' => array(
 			'rule' => 'notBlank',

@@ -50,6 +50,10 @@ class AppController extends Controller {
         'Flash',
         'History',
         'Auth' => array(
+            'loginAction' => array(
+                'controller' => 'usuarios',
+                'action' => 'login'
+            ),
             'loginRedirect' => array(
                 'controller' => 'operaciones',
                 'action' => 'index'
@@ -59,17 +63,22 @@ class AppController extends Controller {
                 'action' => 'display',
                 'home'
             ),
+            'authError' => 'De verdad, piensa que tiene permisos
+                para ver esto ?',
             'authenticate' => array(
                 //AuthComponent::ALL => ['userModel' => 'Usuarios'],
+                //'all' => array('userModel' => 'Usuario'),
+                //'Basic' => array('userModel' => 'Usuario'),
                 'Form' => array(
                     'passwordHasher' => 'Blowfish',
-                    'userModel' => 'Usuarios'
+                    //'userModel' => 'Usuario'
                 )
             )
         )
     );
 
     public function beforeFilter() {
+        //$this->Auth->allow('display','add');
         $this->Auth->allow('display');
     }
 

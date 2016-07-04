@@ -22,6 +22,15 @@ function totalDesglose(){
 	}
 }
 
+function precioFactura(){
+	var diferencial = parseFloat(window.app.diferencial);
+	var precioFijacionBox = document.getElementById('OperacionPrecioFijacion');
+	var precioFacturaBox = document.getElementById('OperacionPrecioCompra');
+	precio = parseFloat(precioFijacionBox.value) + diferencial;
+	console.log(precio);
+	precioFacturaBox.value = precio;
+}
+
 function pesoAsociado(){
 	//la tabla con el peso de los embalajes del contrato que nos viene de la View
 	var embalajes = window.app.embalajesCompleto;

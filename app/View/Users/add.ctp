@@ -2,7 +2,8 @@
 <?php echo $this->Form->create('User'); ?>
 	<fieldset>
 		<legend><?php echo __('Añadir usuario'); ?></legend>
-<?php echo $this->Form->input(
+<?php
+echo $this->Form->input(
 	'username',
 	array(
 		'label' => 'Usuario'

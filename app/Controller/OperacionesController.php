@@ -373,6 +373,7 @@ class OperacionesController extends AppController {
 					'Contrato.referencia',
 					'Contrato.proveedor_id',
 					'Contrato.peso_comprado',
+					'Contrato.diferencial',
 					'Contrato.puerto_carga_id',
 					'Contrato.puerto_destino_id',
 					'Contrato.calidad',
