@@ -12,6 +12,7 @@ if ($action == 'edit') {
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 $this->Js->set('embalajesCompleto', $embalajes_completo);
 $this->Js->set('precioFletes', $precio_fletes);
+$this->Js->set('diferencial', $contrato['Contrato']['diferencial']);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
 echo $this->Form->create('Operacion');
