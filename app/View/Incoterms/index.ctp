@@ -3,7 +3,7 @@
 <div class="printdet">
 <ul><li>
   <?php 
-  echo $this->element('imprimir');
+  echo $this->element('imprimirI');
   ?>
   </li>
   <li>
@@ -23,14 +23,14 @@
 <?php foreach($incoterms as $incoterm):?>
   <tr>
     <td>
-      <?php echo $incoterms['Incoterm']['id']?>
+      <?php echo $incoterm['Incoterm']['id']?>
     </td>
     <td>
-      <?php echo $incoterms['Incoterm']['nombre']?>
+      <?php echo $incoterm['Incoterm']['nombre']?>
     </td>
     <td>
-      <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',array('action'=>'edit',$incoterms['Incoterm']['id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar Incoterm'))
-      .' '.$this->Form->postLink('<i class="fa fa-trash"></i>',array('action'=>'delete',$incoterms['Pais']['id']), array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$incoterms['Incoterm']['nombre'].'?'))?>
+      <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',array('action'=>'edit',$incoterm['Incoterm']['id']), array('class'=>'botond','escape'=>false, 'title'=>'Modificar Incoterm'))
+      .' '.$this->Form->postLink('<i class="fa fa-trash"></i>',array('action'=>'delete',$incoterm['Incoterm']['id']), array('class'=>'botond', 'escape'=>false, 'title'=> 'Borrar','confirm'=>'¿Realmente quiere borrar '.$incoterm['Incoterm']['nombre'].'?'))?>
     </td>
   </tr>
 <?php endforeach;?>

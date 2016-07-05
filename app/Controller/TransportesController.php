@@ -1,7 +1,6 @@
 <?php
 class TransportesController extends AppController {
 
-
     public function index() {
 
 	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
@@ -52,46 +51,12 @@ class TransportesController extends AppController {
     }
 
     public function view($id = null) {
+	if (!$id)
+	    throw new NotFoundException(__('URL mal formado Transporte/view'));
 	$this->pdfConfig = array(
 	    'filename' => 'linea'.date('Ymd'),
-	    //'output'=> 'files/Report.pdf'  
-	    //'download' => (bool)$this->request->query('download')
-	);
-	$linea = $this->Transporte->find(
-	    'first',
-	    array(
-		'conditions' => array(
-		    'Transporte.id' => $id
-		)
-	    )
 	);
 
-	/*$pdf = $CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
-	$this->set(compact('pdf'));*/
-	//$CakePdf = new CakePdf();
-	//  $CakePdf->template('default');
-	//$CakePdf->viewVars($this->viewVars);
-	// Get the PDF string returned
-	//$pdf = $CakePdf->output();
-	// Or write it to file directly
- /*   $pdf = $this->write(APP . 'files' . DS . 'newsletter.pdf');
-$this->set(compact('pdf'));
-  */
-
- /*$Email = new CakeEmail();
- $Email->config('smtp')
-	->template('default')
-    ->emailFormat('html')
-    ->subject('AVISO PREVISIÃ“N LLEGADA')
-    ->to('info@circuletica.org')
-    ->from('rodolgl@gmail.com')
-    ->cc('rodolgl@gmail.com')
- ->send('Un mensaje');*/
-
-	/*if (!$id) {
-	    $this->Flash->set('URL mal formada Transporte/view ');
-	    $this->redirect(array('action'=>'index_trafico'));
-	}*/
 	$transporte = $this->Transporte->find(
 	    'first',
 	    array(
@@ -170,16 +135,18 @@ $this->set(compact('pdf'));
 		)
 	    )
 	);
+	if (!$transporte)
+	    throw new NotFoundException(__('No existe ese transporte'));
 	$this->set('transporte',$transporte);
 	//Calculamos la cantidad de sacos almacenados en la linea
 	if(!empty($transporte['Transporte']['id'])){
 	    $suma = 0;
 	    $almacenado=0;
-	    foreach ($transporte['AlmacenTransporte'] as $suma):
-		if ($almacenTransporte['transporte_id'] = $transporte['Transporte']['id']):
+	    foreach ($transporte['AlmacenTransporte'] as $suma) {
+		if ($almacenTransporte['transporte_id'] = $transporte['Transporte']['id']) {
 		    $almacenado = $almacenado + $suma['cantidad_cuenta'];
-endif;
-endforeach;
+		}
+	    }
 	}
 	$restan = $transporte['Transporte']['cantidad_embalaje'] - $almacenado; 
 	$this->set(compact('restan'));
@@ -290,7 +257,7 @@ endforeach;
 	}else{
 	    $operacion_id = $this->params['named']['from_id'];
 	}
-	
+
 	$operacion = $this->Transporte->Operacion->find(
 	    'first', 
 	    array(
@@ -319,7 +286,9 @@ endforeach;
 		),
 		'Contrato' => array(
 		    'fields' => array(
-			'id'
+			'id',
+			'puerto_carga_id',
+			'puerto_destino_id'
 		    ),
 		    'Incoterm'=>array(
 			'fields'=> array(
@@ -342,7 +311,8 @@ endforeach;
 		)
 	    )
 	));
-	//Puertos de destino espaÃ±oles
+
+	//Puertos de destino españoles
 	$this->set('puertoDestinos', $this->Transporte->PuertoDestino->find(
 	    'list',
 	    array(
@@ -350,6 +320,7 @@ endforeach;
 		'conditions' => array( 'Pais.iso3166' => 'es')
 	    )
 	));		
+
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
 
 	//Calculo la cantidad de bultos transportados
@@ -359,7 +330,6 @@ endforeach;
 	    foreach ($operacion['Transporte'] as $suma){
 		if ($transporte['operacion_id']=$operacion['Operacion']['id']) {
 		    $transportado = $transportado + $suma['cantidad_embalaje'];
-
 		}
 	    }
 	}
@@ -378,45 +348,46 @@ endforeach;
 	}
 	if (empty($id)){ //En el ADD
 	    if(empty($operacion['Transporte'])){ //Primera linea
-		$num = 1;
-	    }else{ //A partir de la primera
-		$num = $num+1;
-	    };
+			$num = 1;
+	    }else{
+	    	$num = $num+1;
+	    }
+
 	}
 	$this->set(compact('num'));
 
 
 	if (!empty($id)) $this->Transporte->id = $id;
 
-		if ($this->request->is(array('post', 'put'))) {//ES UN POST
-		    $this->request->data['Transporte']['id'] = $id;
-		    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
+	if ($this->request->is(array('post', 'put'))) {//ES UN POST
+	    $this->request->data['Transporte']['id'] = $id;
+	    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
 
-		    if($id == NULL){
-			if($this->Transporte->save($this->request->data)){
-			    $this->Flash->set("Linea de transporte guardada correctamente");
-				$this->redirect(array(
-				'controller' => 'operaciones',
-				'action' => 'view_trafico',
-				$operacion_id
-			    ));
-			}else{
-			    $this->Flash->set('Linea de transporte NO guardada');
-			}
-		    }else{
-			if($this->Transporte->save($this->request->data)){
-			    $this->Flash->set('Linea de transporte modificada correctamente');
-			    $this->redirect(array(
-				'controller' => 'transportes',
-				'action' => 'view',
-				$id
-			    ));
-			}
-		    }		
-		}else{ //es un GET
-		    $this->request->data = $this->Transporte->read(null, $id);
+	    if($id == NULL){
+		if($this->Transporte->save($this->request->data)){
+		    $this->Flash->set("Linea de transporte guardada correctamente");
+		    $this->redirect(array(
+			'controller' => 'operaciones',
+			'action' => 'view_trafico',
+			$operacion_id
+		    ));
+		}else{
+		    $this->Flash->set('Linea de transporte NO guardada');
 		}
+	    }else{
+		if($this->Transporte->save($this->request->data)){
+		    $this->Flash->set('Linea de transporte modificada correctamente');
+		    $this->redirect(array(
+			'controller' => 'transportes',
+			'action' => 'view',
+			$id
+		    ));
+		}
+	    }		
+	}else{ //es un GET
+	    $this->request->data = $this->Transporte->read(null, $id);
 	}
+    }
 
     public function delete($id = null) {
 	if (!$id or $this->request->is('get')):
@@ -424,13 +395,12 @@ endforeach;
 	endif;
 
 	if ($this->Transporte->delete($id)){
-	    $this->Flash->set('Linea de transporte borrada');
-	    $this->History->Back(-1);
-	    /*$this->redirect(array(
+	    $this->Flash->set('Linea de transporte borrada correctamente');
+	    $this->redirect(array(
 		'controller' => 'operaciones',
 		'action' => 'view_trafico',
 		$this->params['named']['from_id']
-	    ));*/
+	    ));//No usar History aquí
 	}else{
 	    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacen');
 	    $this->redirect(array(
@@ -587,18 +557,18 @@ endforeach;
 	//filtramos por fecha
 	if(isset($this->passedArgs['Search.fechadesde'])) {
 	    $fechadesde = $this->passedArgs['Search.fechadesde'];
-	    //Si solo se ha introducido un aÃ±o (aaaa)
+	    //Si solo se ha introducido un año (aaaa)
 	    if (preg_match('/^\d{4}$/',$fechadesde)) {
 		$anyo = $fechadesde;
 	    }
-	    //la otra posibilidad es que se haya introducido mes y aÃ±o (mm-aaaa)
+	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
 		list($mes,$anyo) = explode('-',$fechadesde);
 	    } else {
 		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
-	    //si se ha introducido un aÃ±o, filtramos por el aÃ±o
+	    //si se ha introducido un año, filtramos por el año
 	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
 	    //si se ha introducido un mes, filtramos por el mes
 	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
@@ -608,16 +578,16 @@ endforeach;
 	}
 	if(isset($this->passedArgs['Search.fechahasta'])) {
 	    $fecha = $this->passedArgs['Search.fechasta'];
-	    //Si solo se ha introducido un aÃ±o (aaaa)
+	    //Si solo se ha introducido un año (aaaa)
 	    if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fechahasta; }
-	    //la otra posibilidad es que se haya introducido mes y aÃ±o (mm-aaaa)
+	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
 		list($mes,$anyo) = explode('-',$fechahasta);
 	    } else {
 		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
-	    //si se ha introducido un aÃ±o, filtramos por el aÃ±o
+	    //si se ha introducido un año, filtramos por el año
 	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
 	    //si se ha introducido un mes, filtramos por el mes
 	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
@@ -821,37 +791,37 @@ endforeach;
 	$this->set('transportes', $this->Transporte->find(
 	    'all',
 	    array(
-	    	'conditions'=> array(
-	    		'Transporte.fecha_despacho_op' => NULL
-	    		),
-	    	'recursive' => 1,
-	    	'fields' => array(
-	    		'matricula',
-	    		'nombre_vehiculo',
-	    		'fecha_carga',
-	    		'fecha_llegada',
-	    		'fecha_prevista',
-	    		'observaciones'
-	    		),
-	    	'contain'=>array(
-	    		'Operacion'=>array(
-	    			'PesoOperacion',
-	    			'Contrato'=>array(
-	    				'fields'=>array(
-	    					'fecha_transporte'
-	    					),
-	    				'Proveedor' => array(
-	    					'fields'=>array(
-	    						'nombre_corto'
-	    						)
-	    					)
-	    				)
-	    			)
-	    		)
-	    	)
-
+		'conditions'=> array(
+		    'Transporte.fecha_despacho_op' => NULL
+		),
+		'recursive' => 1,
+		'fields' => array(
+		    'matricula',
+		    'nombre_vehiculo',
+		    'fecha_carga',
+		    'fecha_llegada',
+		    'fecha_prevista',
+		    'observaciones'
+		),
+		'contain'=>array(
+		    'Operacion'=>array(
+			'PesoOperacion',
+			'Contrato'=>array(
+			    'fields'=>array(
+				'fecha_transporte'
+			    ),
+			    'Proveedor' => array(
+				'fields'=>array(
+				    'nombre_corto'
+				)
+			    )
+			)
+		    )
+		)
 	    )
-	
+
+	)
+
     );
 	$this->layout = null;
 	$this->autoLayout = false;
@@ -897,7 +867,7 @@ endforeach;
 		)
 	    )
 	);
-*/
+   */
 
 
 }

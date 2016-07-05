@@ -13,6 +13,17 @@ $this->assign('line2_add', '1'); //si se muestra el botón de añadir 'line2'
 
 $this->start('filter');
 //echo $this->element('filtrofinanciacion');
+echo  $this->Html->link(
+    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío financiación',
+    array(
+	'action' =>'info_envio',
+	$financiacion_id
+    ),
+    array(
+	'escape'=>false,
+	'title'=>'Envío financiación a asociados',
+    )
+);
 $this->end();
 
 $this->start('main');
@@ -153,9 +164,9 @@ echo"</table><br>\n";
 $this->end();
 
 $this->start('lines2');
-echo "<table>\n";
+echo "<table class='tc5'>\n";
 echo $this->Html->tableHeaders(array(
-    'Asociado','fecha','importe','Banco',''));
+    'Asociado','Fecha','Importe','Banco','Detalle'));
 foreach ($anticipos as $anticipo):
     echo $this->Html->tableCells(array(
 	$anticipo['AsociadoOperacion']['Asociado']['nombre'],

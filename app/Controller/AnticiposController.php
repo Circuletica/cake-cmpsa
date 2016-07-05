@@ -1,14 +1,14 @@
 <?php
 class AnticiposController extends AppController {
 	public $paginate = array(
-			'order' => array('Anticipo.fecha_conta' => 'asc')
-			);
+		'order' => array('Anticipo.fecha_conta' => 'asc')
+	);
 
 	public function index() {
 		$this->paginate['contain'] = array(
-				'Asociado',
-				'Financiacion'
-				);
+			'Asociado',
+			'Financiacion'
+		);
 		$this->set('anticipos', $this->paginate());
 	}
 
@@ -19,7 +19,7 @@ class AnticiposController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-            throw new NotFoundException(__('URL mal formado Anticipos/edit'));
+			throw new NotFoundException(__('URL mal formado Anticipos/edit'));
 		}
 		$this->form($id);
 		$this->render('form');
@@ -27,7 +27,7 @@ class AnticiposController extends AppController {
 
 	public function form ($id = null) { //esta accion vale tanto para edit como add
 		$operacion_id = $this->params['named']['from_id'];
-        $this->set('action', $this->action);
+		$this->set('action', $this->action);
 		$bancos = $this->Anticipo->Banco->find(
 			'list',
 			array(
@@ -104,16 +104,16 @@ class AnticiposController extends AppController {
 	}
 
 	public function delete($id) {
-        if (!$id or $this->request->is('get')){
-            throw new MethodNotAllowedException('URL mal formada o incompleta');
-        }
-        if($this->Anticipo->delete($id)) {
-            $this->Flash->set('Anticipo borrado');
-            $this->History->Back(0);
-        } else {
-            $this->Flash->set('Anticipo NO borrado');
-            $this->History->Back(0);
-        }
+		if (!$id or $this->request->is('get')){
+			throw new MethodNotAllowedException('URL mal formada o incompleta');
+		}
+		if($this->Anticipo->delete($id)) {
+			$this->Flash->set('Anticipo borrado');
+			$this->History->Back(0);
+		} else {
+			$this->Flash->set('Anticipo NO borrado');
+			$this->History->Back(0);
+		}
 	}
 }
 ?>

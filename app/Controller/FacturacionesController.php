@@ -1,7 +1,7 @@
 <?php
 class FacturacionesController extends AppController {
     public $paginate = array(
-	'order' => array('Operacion.referencia' => 'asc')
+        'order' => array('Operacion.referencia' => 'asc')
     );
 
     public function index() {
@@ -9,24 +9,24 @@ class FacturacionesController extends AppController {
         $this->paginate['recursive'] = 3;
         $this->paginate['contain'] = array(
             'Operacion' => array(
-            'fields' => array(
-                'referencia',
-                'contrato_id'
-            )
+                'fields' => array(
+                    'referencia',
+                    'contrato_id'
+                )
             ),
             'Calidad' => array(
-            'fields' => array(
-                'nombre'
-            )
+                'fields' => array(
+                    'nombre'
+                )
             ),
             'Proveedor' => array(
-            'fields' => array(
-                'nombre_corto'
-            )
+                'fields' => array(
+                    'nombre_corto'
+                )
             ),
             'Contrato' => array(
-            'calidad_id',
-            'proveedor_id'
+                'calidad_id',
+                'proveedor_id'
             )
         );
         $this->Facturacion->bindModel(
@@ -98,49 +98,49 @@ class FacturacionesController extends AppController {
         $this->set('cambio_teorico', $facturacion['Operacion']['cambio_dolar_euro']);
         $this->set('precio_cafe', $facturacion['Facturacion']['precio_dolar_tm']);
         $this->set('cambio_real', $facturacion['Facturacion']['cambio_dolar_euro']);
-	$this->set('gastos_bancarios', $facturacion['Facturacion']['gastos_bancarios_pagados']);
-	$this->set('despacho', $facturacion['Facturacion']['despacho_pagado']);
-	$this->set('seguro', $facturacion['Facturacion']['seguro_pagado']);
-	$this->set('flete', $facturacion['Facturacion']['flete_pagado']);
-	$this->set('total_cafe', round($facturacion['Facturacion']['total_cafe'],2));
-	$this->set('total_gastos', $facturacion['Facturacion']['total_gastos']);
-	$this->set('peso_facturacion', $facturacion['Facturacion']['peso_facturacion']);
-	$peso_medio_saco = $facturacion['Facturacion']['peso_facturacion']/$facturacion['Operacion']['PesoOperacion']['cantidad_embalaje'];
-	$this->set(compact('peso_medio_saco'));
-	$this->set(
-	    'precio_real',
-	    round(($facturacion['Facturacion']['total_gastos']+$facturacion['Facturacion']['total_cafe'])/$facturacion['Facturacion']['peso_facturacion'],6)
-	);
+        $this->set('gastos_bancarios', $facturacion['Facturacion']['gastos_bancarios_pagados']);
+        $this->set('despacho', $facturacion['Facturacion']['despacho_pagado']);
+        $this->set('seguro', $facturacion['Facturacion']['seguro_pagado']);
+        $this->set('flete', $facturacion['Facturacion']['flete_pagado']);
+        $this->set('total_cafe', round($facturacion['Facturacion']['total_cafe'],2));
+        $this->set('total_gastos', $facturacion['Facturacion']['total_gastos']);
+        $this->set('peso_facturacion', $facturacion['Facturacion']['peso_facturacion']);
+        $peso_medio_saco = $facturacion['Facturacion']['peso_facturacion']/$facturacion['Operacion']['PesoOperacion']['cantidad_embalaje'];
+        $this->set(compact('peso_medio_saco'));
+        $this->set(
+            'precio_real',
+            round(($facturacion['Facturacion']['total_gastos']+$facturacion['Facturacion']['total_cafe'])/$facturacion['Facturacion']['peso_facturacion'],6)
+        );
 
-	//ahora el precio que facturamos por asociado
-	$this->loadModel('PesoFacturacion');
-	$peso_asociados = $this->PesoFacturacion->find(
-	    'all',
-	    array(
-            'conditions' => array(
-                'operacion_id' => $id
+        //ahora el precio que facturamos por asociado
+        $this->loadModel('PesoFacturacion');
+        $peso_asociados = $this->PesoFacturacion->find(
+            'all',
+            array(
+                'conditions' => array(
+                    'operacion_id' => $id
+                )
             )
-	    )
-	);
-	$this->set(compact('peso_asociados'));
-	$this->PesoFacturacion->virtualFields = array(
-	    'total_peso_retirado' => 'sum(total_peso_retirado)',
-	    'total_sacos_pendientes' => 'sum(sacos_pendientes)',
-	    'total_peso_pendiente' => 'sum(peso_pendiente)',
-	    'total_peso_total' => 'sum(peso_total)'
-	);
-	$totales = $this->PesoFacturacion->find(
-	    'first',
-	    array(
-            'conditions' => array(
-                'PesoFacturacion.operacion_id' => $id
+        );
+        $this->set(compact('peso_asociados'));
+        $this->PesoFacturacion->virtualFields = array(
+            'total_peso_retirado' => 'sum(total_peso_retirado)',
+            'total_sacos_pendientes' => 'sum(sacos_pendientes)',
+            'total_peso_pendiente' => 'sum(peso_pendiente)',
+            'total_peso_total' => 'sum(peso_total)'
+        );
+        $totales = $this->PesoFacturacion->find(
+            'first',
+            array(
+                'conditions' => array(
+                    'PesoFacturacion.operacion_id' => $id
+                )
             )
-	    )
-	);
-	$this->set('totales',$totales['PesoFacturacion']);
+        );
+        $this->set('totales',$totales['PesoFacturacion']);
 
-	//Se declara para acceder al PDF
-	$this->set(compact('id'));
+        //Se declara para acceder al PDF
+        $this->set(compact('id'));
     }
 
     public function add() {
@@ -192,7 +192,7 @@ class FacturacionesController extends AppController {
                 'fields' => array(
                     'max(fecha_despacho_op) AS ultimo'
                 ),
-            'recursive' => -1
+                'recursive' => -1
             )
         );
         $bultos_despachados = $this->Facturacion->Operacion->Transporte->AlmacenTransporte->find(
@@ -238,7 +238,7 @@ class FacturacionesController extends AppController {
         $this->set('cambio_teorico', $operacion['Operacion']['cambio_dolar_euro']);
         foreach($operacion['Transporte'] as $transporte) {
             $transportes[] = (empty($transporte['Naviera'])?'pendiente':$transporte['Naviera']['nombre_corto'])
-            .'/'.(empty($transporte['Agente'])?'pendiente':$transporte['Agente']['nombre_corto']);
+                .'/'.(empty($transporte['Agente'])?'pendiente':$transporte['Agente']['nombre_corto']);
         }
         $this->set(compact('transportes'));
         $this->set(
@@ -251,7 +251,7 @@ class FacturacionesController extends AppController {
                 'list',
                 array(
                     'conditions' => array(
-                    'CuentaVenta.tipo' => 'venta'
+                        'CuentaVenta.tipo' => 'venta'
                     )
                 )
             )
@@ -262,7 +262,7 @@ class FacturacionesController extends AppController {
                 'list',
                 array(
                     'conditions' => array(
-                    'CuentaIva.tipo' => 'iva'
+                        'CuentaIva.tipo' => 'iva'
                     )
                 )
             )

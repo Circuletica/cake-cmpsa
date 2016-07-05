@@ -2,6 +2,7 @@
 $this->extend('/Common/index');
 $this->assign('object','Facturación');
 $this->assign('class','Facturacion');
+$this->assign('add_button',0);
 
 $this->start('filter');
 $this->end();

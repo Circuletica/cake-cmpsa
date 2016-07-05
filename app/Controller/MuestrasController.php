@@ -4,31 +4,31 @@ class MuestrasController extends AppController {
     public function index() {
         $this->Muestra->virtualFields['calidad']=$this->Muestra->Calidad->virtualFields['nombre'];
         $this->paginate['contain'] = array(
+            'Proveedor',
+            'Calidad',
+            'Contrato' => array(
+                'fields' => array(
+                    'id',
+                    'referencia',
+                    'proveedor_id',
+                    'calidad_id'
+                ),
                 'Proveedor',
-                'Calidad',
-                'Contrato' => array(
+                'Operacion' => array(
                     'fields' => array(
                         'id',
-                        'referencia',
-                        'proveedor_id',
-                        'calidad_id'
-                        ),
-                    'Proveedor',
-                    'Operacion' => array(
-                        'fields' => array(
-                            'id',
-                            'referencia'
-                            )
-                        )
-                    ),
-                'MuestraEmbarque' => array(
-                    'Calidad',
-                    'Proveedor'
+                        'referencia'
                     )
-                    );
+                )
+            ),
+            'MuestraEmbarque' => array(
+                'Calidad',
+                'Proveedor'
+            )
+        );
         $this->paginate['order'] =  array(
-                'Muestra.registro' => 'DESC'
-                );
+            'Muestra.registro' => 'DESC'
+        );
         $this->paginate['recursive'] = 1;
 
         $this->set('tipos', $this->tipoMuestras);
@@ -38,41 +38,41 @@ class MuestrasController extends AppController {
         //del formulario de busqueda
         $this->loadModel('Proveedor');
         $proveedores = $this->Proveedor->find(
-                'list',
-                array(
-                    'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-                    'order' => array('Empresa.nombre_corto' => 'asc'),
-                    'recursive' => 1
-                    )
-                );
+            'list',
+            array(
+                'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+                'order' => array('Empresa.nombre_corto' => 'asc'),
+                'recursive' => 1
+            )
+        );
         $this->set('proveedores',$proveedores);
 
         $title = $this->filtroPaginador(
-                array(
-                    'Muestra' => array(
-                        'Tipo' => array(
-                            'columna' =>'tipo_id',
-                            'exacto' => true,
-                            'lista' => $this->tipoMuestras
-                            ),
-                        'Registro' => array(
-                            'columna' => 'tipo_registro',
-                            'exacto' => false,
-                            'lista' => ''
-                            ),
-                        'Proveedor' => array(
-                            'columna' => 'proveedor_id',
-                            'exacto' => true,
-                            'lista' => $proveedores
-                            ),
-                        'Calidad' => array(
-                            'columna' => 'calidad',
-                            'exacto' => false,
-                            'lista' => ''
-                            )
-                            )
-                            )
-                            );
+            array(
+                'Muestra' => array(
+                    'Tipo' => array(
+                        'columna' =>'tipo_id',
+                        'exacto' => true,
+                        'lista' => $this->tipoMuestras
+                    ),
+                    'Registro' => array(
+                        'columna' => 'tipo_registro',
+                        'exacto' => false,
+                        'lista' => ''
+                    ),
+                    'Proveedor' => array(
+                        'columna' => 'proveedor_id',
+                        'exacto' => true,
+                        'lista' => $proveedores
+                    ),
+                    'Calidad' => array(
+                        'columna' => 'calidad',
+                        'exacto' => false,
+                        'lista' => ''
+                    )
+                )
+            )
+        );
 
         //filtramos por fecha
         if(isset($this->passedArgs['Search.fecha'])) {
@@ -104,28 +104,30 @@ class MuestrasController extends AppController {
 
     public function view($id = null) {
         if (!$id) {
-            $this->Flash->set('URL mal formada Muestra/view');
-            $this->redirect(array('action'=>'index'));
+			throw new NotFoundException(__('URL mal formado Muestra/view'));
         }
         $muestra = $this->Muestra->find(
-                'first',
-                array(
-                    'conditions' => array('Muestra.id' => $id),
-                    'contain' => array(
-                        'Proveedor',
-                        'Calidad',
-                        'Contrato',
-                        'LineaMuestra'=>array(
-                            'AlmacenTransporte',
-                            'Operacion'=>array(
-                                'fields'=>array(
-                                    'referencia'
-                                    )
-                                )
+            'first',
+            array(
+                'conditions' => array('Muestra.id' => $id),
+                'contain' => array(
+                    'Proveedor',
+                    'Calidad',
+                    'Contrato',
+                    'LineaMuestra'=>array(
+                        'AlmacenTransporte',
+                        'Operacion'=>array(
+                            'fields'=>array(
+                                'referencia'
                             )
-                        ),
+                        )
                     )
-                );
+                ),
+            )
+        );
+		if (!$muestra) {
+			throw new NotFoundException(__('No existe esa muestra'));
+		}
         $this->set('muestra',$muestra);
 
         //Exportar PDF
@@ -136,23 +138,23 @@ class MuestrasController extends AppController {
             throw new NotFoundException(__('Informe inválido'));
         }
         $this->pdfConfig = array(
-                'orientation'=>'portrait',
-                'filename'=>'INFORME-'.$id.'pdf'
-                );
+            'orientation'=>'portrait',
+            'filename'=>'INFORME-'.$id.'pdf'
+        );
         $this->set(compact('id'));
         //hay una view distinta para cada
         //tipo de muestra, ya que los campos
         //no son iguales
         switch ($muestra['Muestra']['tipo_id']) {
-            case 1:
-                $this->render('view_oferta');
-                break;
-            case 2:
-                $this->render('view_embarque');
-                break;
-            case 3:
-                $this->render('view_entrega');
-                break;
+        case 1:
+            $this->render('view_oferta');
+            break;
+        case 2:
+            $this->render('view_embarque');
+            break;
+        case 3:
+            $this->render('view_entrega');
+            break;
         }
     }
 
@@ -165,11 +167,11 @@ class MuestrasController extends AppController {
         if ($this->Muestra->delete($id)) {
             $this->Flash->set('Muestra borrada');
             $this->redirect(
-                    array(
-                        'action'=>'index',
-                        'Search.tipo_id' => $tipo
-                        )
-                    );
+                array(
+                    'action'=>'index',
+                    'Search.tipo_id' => $tipo
+                )
+            );
         }
     }
 
@@ -177,11 +179,11 @@ class MuestrasController extends AppController {
         if(!isset($this->passedArgs['tipo_id'])) {
             $this->Flash->set('Error en URL, falta tipo muestra');
             $this->redirect(
-                    array(
-                        'action' => 'index',
-                        'Search.tipo_id' => 1
-                        )
-                    );
+                array(
+                    'action' => 'index',
+                    'Search.tipo_id' => 1
+                )
+            );
         }
         $this->form();
         $this->render('form');
@@ -191,9 +193,9 @@ class MuestrasController extends AppController {
         if (!$id && empty($this->request->data)) {
             $this->Flash->set('error en URL');
             $this->redirect(array(
-                        'action' => 'index',
-                        'controller' => 'financiaciones'
-                        ));
+                'action' => 'index',
+                'controller' => 'financiaciones'
+            ));
         }
         $this->form($id);
         $this->render('form');
@@ -205,19 +207,19 @@ class MuestrasController extends AppController {
         //$this->set('tipos', $tipos);
         $this->loadModel('Proveedor');
         $this->set(
-                'proveedores',
-                $this->Proveedor->find(
-                    'list',
-                    array(
-                        'fields' => array(
-                            'Proveedor.id',
-                            'Empresa.nombre_corto'
-                            ),
-                        'recursive' => 1,
-                        'order' => array('Empresa.nombre_corto' => 'ASC')
-                        )
-                    )
-                );
+            'proveedores',
+            $this->Proveedor->find(
+                'list',
+                array(
+                    'fields' => array(
+                        'Proveedor.id',
+                        'Empresa.nombre_corto'
+                    ),
+                    'recursive' => 1,
+                    'order' => array('Empresa.nombre_corto' => 'ASC')
+                )
+            )
+        );
 
         //si es un edit, hay que rellenar el id, ya que
         //si no se hace, al guardar el edit, se va a crear
@@ -234,19 +236,19 @@ class MuestrasController extends AppController {
             $tipo_id = $this->passedArgs['tipo_id'];
             $tipo_nombre = $tipos[$tipo_id];
             $this->Muestra->virtualFields += array(
-                    'ultimoRegistro' => 'MAX(Muestra.registro)'
-                    );
+                'ultimoRegistro' => 'MAX(Muestra.registro)'
+            );
             $ultimo_registro = $this->Muestra->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Muestra.tipo_id' => $tipo_id
-                            ),
-                        'fields' => array(
-                            'ultimoRegistro'
-                            )
-                        )
-                    );
+                'first',
+                array(
+                    'conditions' => array(
+                        'Muestra.tipo_id' => $tipo_id
+                    ),
+                    'fields' => array(
+                        'ultimoRegistro'
+                    )
+                )
+            );
             $nuevo_registro = $ultimo_registro['Muestra']['ultimoRegistro'] + 1;
             $this->set(compact('nuevo_registro'));
         }
@@ -258,26 +260,26 @@ class MuestrasController extends AppController {
         $calidades = $this->Muestra->Calidad->find('list');
         $this->set('calidades',$calidades);
         $this->set(
-                'contratos',
-                $this->Muestra->Contrato->find('list')
-                );
+            'contratos',
+            $this->Muestra->Contrato->find('list')
+        );
         //el array que se pasa al javascript para cambiar
         //calidad y proveedor automaticamente
         //cuando se cambia el contrato
         $contratosMuestra = $this->Muestra->Contrato->find(
-                'all',
-                array(
-                    'contain' => array(
-                        'Proveedor' => array(
-                            'fields' =>array(
-                                'id',
-                                'nombre_corto'
-                                )
-                            ),
-                        'Calidad'
-                        ),
-                    )
-                );
+            'all',
+            array(
+                'contain' => array(
+                    'Proveedor' => array(
+                        'fields' =>array(
+                            'id',
+                            'nombre_corto'
+                        )
+                    ),
+                    'Calidad'
+                ),
+            )
+        );
         //queremos el id del contrato como index del array
         $contratosMuestra = Hash::combine($contratosMuestra, '{n}.Contrato.id','{n}');
         $this->set(compact('contratosMuestra'));
@@ -289,24 +291,24 @@ class MuestrasController extends AppController {
         //pero no saldran las muestras que no son de embarque :|
         //http://book.cakephp.org/2.0/en/core-libraries/behaviors/containable.html#containing-deeper-associations
         $contratosEmbarque = $this->Muestra->Contrato->find(
-                'all',
-                array(
-                    'contain' => array(
-                        'Muestra' => array(
-                            'conditions' => array(
-                                'Muestra.tipo_id' => 2
-                                ),
-                            'fields' => array(
-                                'id',
-                                'tipo_registro'
-                                )
-                            )
+            'all',
+            array(
+                'contain' => array(
+                    'Muestra' => array(
+                        'conditions' => array(
+                            'Muestra.tipo_id' => 2
                         ),
-                    'fields' => array(
-                        'Contrato.id'
+                        'fields' => array(
+                            'id',
+                            'tipo_registro'
                         )
                     )
-                );
+                ),
+                'fields' => array(
+                    'Contrato.id'
+                )
+            )
+        );
         //queremos el id del contrato como index del array
         $contratosEmbarque = Hash::combine($contratosEmbarque, '{n}.Contrato.id','{n}');
         //repasamos cada contrato para poner bien las muestras de embarque
@@ -325,31 +327,31 @@ class MuestrasController extends AppController {
         //cuando se cambia la muestra de embarque en
         //muestras de entrega
         $muestrasEmbarque = $this->Muestra->find(
-                'all',
-                array(
-                    'contain' => array(
-                        'Contrato' => array(
-                            )
-                        ),
-                    'fields' => array(
-                        'Muestra.id',
-                        'Muestra.tipo_registro',
-                        'Contrato.id',
-                        'Contrato.proveedor_id',
-                        'Contrato.calidad_id'
-                        ),
-                    'conditions' => array(
-                        'tipo_id' =>2 // solo las muestras de embarque
-                        )
+            'all',
+            array(
+                'contain' => array(
+                    'Contrato' => array(
                     )
-                );
+                ),
+                'fields' => array(
+                    'Muestra.id',
+                    'Muestra.tipo_registro',
+                    'Contrato.id',
+                    'Contrato.proveedor_id',
+                    'Contrato.calidad_id'
+                ),
+                'conditions' => array(
+                    'tipo_id' =>2 // solo las muestras de embarque
+                )
+            )
+        );
         //queremos el id de la muestra como index del array
         //por una parte, un array para el js que permite rellenar
         //los demás campos cuando se selecciona una muestra de embarque
         $this->set (
-                'muestraEmbarques',
-                Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.tipo_registro')
-                );
+            'muestraEmbarques',
+            Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}.Muestra.tipo_registro')
+        );
         //por otra parte la lista del desplegable de muestras de embarque
         //para el formulario
         $muestrasEmbarque = Hash::combine($muestrasEmbarque, '{n}.Muestra.id','{n}');
@@ -378,11 +380,11 @@ class MuestrasController extends AppController {
             if($this->Muestra->save($this->request->data)) {
                 $this->Flash->set('Muestra guardada');
                 $this->redirect(
-                        array(
-                            'action' => 'view',
-                            $this->Muestra->id
-                            )
-                        );
+                    array(
+                        'action' => 'view',
+                        $this->Muestra->id
+                    )
+                );
             } else {
                 $this->Flash->set('Muestra NO guardada');
             }

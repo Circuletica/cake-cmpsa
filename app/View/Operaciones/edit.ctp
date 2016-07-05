@@ -13,26 +13,33 @@ echo $this->Form->create('Operacion');
 <fieldset>
 <legend>Info</legend>
 <?php
-echo 'Contrato: '.$contrato['referencia']."\n";
-echo "<p>\n";
-echo 'Proveedor: '.$contrato['Proveedor']['nombre_corto']."\n";
-echo "<p>\n";
-echo 'Calidad: '.$contrato['Calidad']['nombre']."\n";
-echo "<p>\n";
-echo 'Bolsa: '.$contrato['CanalCompra']['nombre'].
-    ' ('.$contrato['Incoterm']['nombre'].")\n";
-echo "<p>\n";
-echo 'Peso total del contrato: '.$contrato['peso_comprado']."kg\n";
-echo "<p>\n";
-echo 'Embalaje: '.$operacion['Embalaje']['nombre']."\n";
-echo "<p>\n";
+echo "<dl>";
+echo "<dt style=width:30%;>Contrato</dt>";
+echo "<dd style=margin-left:30%;>";
+echo $contrato['referencia'].'&nbsp;';
+echo "</dd>";
+echo "<dt style=width:30%;>Proveedor</dt>\n";
+echo "<dd style=margin-left:30%;>";
+echo $proveedor.'&nbsp;';
+echo "</dd>";
+echo "<dt style=width:30%;>Calidad</dt>\n";
+echo "<dd style=margin-left:30%;>";
+echo $contrato['Calidad']['nombre'].'&nbsp;';
+echo "</dd>";
+echo "<dt style=width:30%;>Bolsa</dt>\n";
+echo "<dd style=margin-left:30%;>";
+echo $contrato['CanalCompra']['nombre'].' ('.$contrato['Incoterm']['nombre'].' )'.'&nbsp;';
+echo "</dd>";
+echo "<dt style=width:30%;>Peso total</dt>\n";
+echo "<dd style=margin-left:30%;>";
+echo $contrato['peso_comprado'].'kg&nbsp;';
+echo "</dd>";
+echo "<dt style=width:30%;>Embalaje</dt>\n";
+echo "<dd style=margin-left:30%;>";
+echo $operacion['Embalaje']['nombre'].'&nbsp;';
+echo "</dd>";
 echo "</dl><br><hr style=border-width:2px><br>";
-echo $this->Form->input(
-    'observaciones',
-    array(
-    'label' => 'Comentarios'
-    )
-);
+echo $this->Form->input('observaciones');
 ?>
 </fieldset>
 <fieldset>

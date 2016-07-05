@@ -8,46 +8,47 @@ class PaisesController extends AppController {
     }
 
     public function add() {
-	if($this->request->is('post')):
-	    if($this->Pais->save($this->request->data) ):
+	if($this->request->is('post')){
+	    if($this->Pais->save($this->request->data) ) {
 		$this->Flash->set('Pais guardado');
-	$this->redirect(array(
-	    'controller' => $this->params['named']['from_controller'],
-	    'action' => $this->params['named']['from_action']));
-endif;
-endif;
+		$this->History->Back(-1);
+	    }
+	}
     }
+
     public function addPopup() {
-	if($this->request->is('post')):
-	    if($this->Pais->save($this->request->data) ):
+	if($this->request->is('post')) {
+	    if($this->Pais->save($this->request->data) ) {
 		$this->Flash->set('Pais guardado');
-	$this->redirect(array(
-	    'controller' => $this->params['named']['from_controller'],
-	    'action' => $this->params['named']['from_action']));
-endif;
-endif;
+		$this->redirect(array(
+		    'controller' => $this->params['named']['from_controller'],
+		    'action' => $this->params['named']['from_action']
+		));
+	    }
+	}
     }
+
     public function edit($id = null) {
 	$this->Pais->id = $id;
-	if($this->request->is('get')):
+	if($this->request->is('get')) {
 	    $this->request->data = $this->Pais->read();
-	else:
-	    if($this->Pais->save($this->request->data)):
+	} else {
+	    if($this->Pais->save($this->request->data)) {
 		$this->Flash->set('Pais '.$this->request->data['Pais']['nombre'].' guardado');
-	$this->redirect(array('action' => 'index'));
-	    else:
+		$this->redirect(array('action' => 'index'));
+	    } else {
 		$this->Flash->set('Pais no guardado');
-endif;
-endif;
+	    }
+	}
     }
+
     public function delete($id) {
-	if($this->request->is('get')):
+	if($this->request->is('get')) {
 	    throw new MethodNotAllowedException();
-	else:
-	    if($this->Pais->delete($id)):
-		$this->Flash->set('Pais borrado');
-	$this->redirect(array('action' => 'index'));
-endif;
-endif;
+	}
+	if($this->Pais->delete($id)) {
+	    $this->Flash->set('Pais borrado');
+	    $this->redirect(array('action' => 'index'));
+	}
     }
 }

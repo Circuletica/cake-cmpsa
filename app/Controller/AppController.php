@@ -32,18 +32,45 @@ class AppController extends Controller {
     var $scaffold = 'admin';
 
     public $paginate = array(
-		'limit' => 20
+        'limit' => 15
     );
 
     public $helpers = array(
-		'Html',
-		'Form',
-		'Date',
-		'Button',
-		'Csv'
+        'Html',
+        'Form',
+        'Date',
+        'Button',
+        'Csv'
     );
 
-    public $components = array('DebugKit.Toolbar','Session','RequestHandler','Flash','History');
+    public $components = array(
+        'DebugKit.Toolbar',
+        'Session',
+        'RequestHandler',
+        'Flash',
+        'History',
+        'Auth' => array(
+            'loginRedirect' => array(
+                'controller' => 'operaciones',
+                'action' => 'index'
+            ),
+            'logoutRedirect' => array(
+                'controller' => 'pages',
+                'action' => 'display',
+                'home'
+            ),
+            'authenticate' => array(
+                'Form' => array(
+                    'passwordHasher' => 'Blowfish'
+                )
+            )
+        )
+    );
+
+    public function beforeFilter() {
+//        $this->Auth->allow('index');
+        $this->Auth->allow('display');
+    }
 
     //cambia el 'hasOne' del Model por un 'belongsTo'
     //para que el LEFT JOIN de 3r nivel de la query se haga
@@ -67,8 +94,8 @@ class AppController extends Controller {
         ));
         $this->paginate = array(
             'contain' => array(
-            'Empresa',
-            'Pais.nombre',
+                'Empresa',
+                'Pais.nombre',
             ),
             'recursive' => 1,
             'order' => array('Empresa.nombre_corto' => 'ASC')
@@ -103,8 +130,8 @@ class AppController extends Controller {
             $empresa = $this->$class->Empresa->find(
                 'first',
                 array(
-            		'conditions' => array( 'Empresa.id' => $id)
-        	    )
+                    'conditions' => array( 'Empresa.id' => $id)
+                )
             );
             $this->set('object', $empresa['Empresa']['nombre_corto']);
         }
@@ -137,36 +164,36 @@ class AppController extends Controller {
     }
 
     public function iban($codigoPais,$ccc){
-	$pesos = array('A' => '10',
-	    'B' => '11',
-	    'C' => '12',
-	    'D' => '13',
-	    'E' => '14',
-	    'F' => '15',
-	    'G' => '16',
-	    'H' => '17',
-	    'I' => '18',
-	    'J' => '19',
-	    'K' => '20',
-	    'L' => '21',
-	    'M' => '22',
-	    'N' => '23',
-	    'O' => '24',
-	    'P' => '25',
-	    'Q' => '26',
-	    'R' => '27',
-	    'S' => '28',
-	    'T' => '29',
-	    'U' => '30',
-	    'V' => '31',
-	    'W' => '32',
-	    'X' => '33',
-	    'Y' => '34',
-	    'Z' => '35' );
-	$dividendo = $ccc.$pesos[substr($codigoPais, 0 , 1)].$pesos[substr($codigoPais, 1 , 1)].'00';	
-	$digitoControl =  98 - bcmod($dividendo, '97');
-	if(strlen($digitoControl)==1) $digitoControl = '0'.$digitoControl;
-	return $codigoPais.$digitoControl.$ccc;
+        $pesos = array('A' => '10',
+            'B' => '11',
+            'C' => '12',
+            'D' => '13',
+            'E' => '14',
+            'F' => '15',
+            'G' => '16',
+            'H' => '17',
+            'I' => '18',
+            'J' => '19',
+            'K' => '20',
+            'L' => '21',
+            'M' => '22',
+            'N' => '23',
+            'O' => '24',
+            'P' => '25',
+            'Q' => '26',
+            'R' => '27',
+            'S' => '28',
+            'T' => '29',
+            'U' => '30',
+            'V' => '31',
+            'W' => '32',
+            'X' => '33',
+            'Y' => '34',
+            'Z' => '35' );
+        $dividendo = $ccc.$pesos[substr($codigoPais, 0 , 1)].$pesos[substr($codigoPais, 1 , 1)].'00';	
+        $digitoControl =  98 - bcmod($dividendo, '97');
+        if(strlen($digitoControl)==1) $digitoControl = '0'.$digitoControl;
+        return $codigoPais.$digitoControl.$ccc;
     }
 
     //el tipo de muestra puede ser:
@@ -174,63 +201,63 @@ class AppController extends Controller {
     //2 - embarque
     //3 - entrega
     public $tipoMuestras =  array(
-	1 => 'Oferta',
-	2 => 'Embarque',
-	3 => 'Entrega'
+        1 => 'Oferta',
+        2 => 'Embarque',
+        3 => 'Entrega'
     );	
 
     public function filtroListado() { //FILTRO-BUSCADOR
-	//la página a la que redirigimos después de mandar  el formulario de filtro
-	$url['action'] = 'index';
-	//construimos una URL con los elementos de filtro, que luego se usan en el paginator
-	//la URL final tiene ese aspecto:
-	//http://gestion.gargantilla.net/controller/index/Search.referencia:mireferencia/Search.id:3
-	foreach ($this->data as $k=>$v){ 
-	    foreach ($v as $kk=>$vv){ 
-		//sustituimos '_' por '/' en los criterios de búsqueda
-		if ($vv) {$url[$k.'.'.$kk]=strtr($vv,'/','_');} 
-	    } 
-	}
-	$this->redirect($url,null,true);
+        //la página a la que redirigimos después de mandar  el formulario de filtro
+        $url['action'] = 'index';
+        //construimos una URL con los elementos de filtro, que luego se usan en el paginator
+        //la URL final tiene ese aspecto:
+        //http://gestion.gargantilla.net/controller/index/Search.referencia:mireferencia/Search.id:3
+        foreach ($this->data as $k=>$v){ 
+            foreach ($v as $kk=>$vv){ 
+                //sustituimos '_' por '/' en los criterios de búsqueda
+                if ($vv) {$url[$k.'.'.$kk]=strtr($vv,'/','_');} 
+            } 
+        }
+        $this->redirect($url,null,true);
     }
 
     public function filtroPaginador($criterios) {
-	//$criterios es un array como
-	//'Naviera' => array(
-	//	"Registro" => "registro",
-	//	"Proveedor" => "proveedor_id",
-	//	"Marca" => "marca_almacen"
-	//	),
-	//'Proveedor' => array(
-	//	'Nombre' => 'nombre_corto',
-	//)
-	//los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
-	//por ej.
-	//$passedArgs['Search.palabras'] = mipalabra
-	//$passedArgs['Search.id'] = 3
-	foreach ($criterios as $tabla => $campos) {
-	    foreach ($campos as $nombre => $elementos) {
-			$columna = $elementos['columna'];
-			if (isset($this->passedArgs['Search.'.$columna])) {
-				//en la URL (filtroListado()) sustituimos '_' por '/' ahora, al revés
-				$valor = strtr($this->passedArgs['Search.'.$columna],'_','/');
-				if ($elementos['exacto']) {
-					$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = $valor;
-				} else {
-					$this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = "%".$valor."%";
-				}
-				$this->request->data['Search'][$columna] = $valor;
-				if (!empty($elementos['lista'])) {
-					$titulo[] = $nombre.': '.$elementos['lista'][$valor];
-				} else {
-					$titulo[] = $nombre.': '.$valor;
-				}
-			}
-	    }
-	}
-	if (isset($titulo)) {
-	    $titulo = implode(' | ', $titulo);
-	    return $titulo;
-	}
+        //$criterios es un array como
+        //'Naviera' => array(
+        //	"Registro" => "registro",
+        //	"Proveedor" => "proveedor_id",
+        //	"Marca" => "marca_almacen"
+        //	),
+        //'Proveedor' => array(
+        //	'Nombre' => 'nombre_corto',
+        //)
+        //los elementos de la URL pasados como Search.* son almacenados por cake en $this->passedArgs[]
+        //por ej.
+        //$passedArgs['Search.palabras'] = mipalabra
+        //$passedArgs['Search.id'] = 3
+        foreach ($criterios as $tabla => $campos) {
+            foreach ($campos as $nombre => $elementos) {
+                $columna = $elementos['columna'];
+                if (isset($this->passedArgs['Search.'.$columna])) {
+                    //en la URL (filtroListado()) sustituimos '_' por '/' ahora, al revés
+                    $valor = strtr($this->passedArgs['Search.'.$columna],'_','/');
+                    if ($elementos['exacto']) {
+                        $this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = $valor;
+                    } else {
+                        $this->paginate['conditions'][$tabla.'.'.$columna.' LIKE'] = "%".$valor."%";
+                    }
+                    $this->request->data['Search'][$columna] = $valor;
+                    if (!empty($elementos['lista'])) {
+                        $titulo[] = $nombre.': '.$elementos['lista'][$valor];
+                    } else {
+                        $titulo[] = $nombre.': '.$valor;
+                    }
+                }
+            }
+        }
+        if (isset($titulo)) {
+            $titulo = implode(' | ', $titulo);
+            return $titulo;
+        }
     }
 }
