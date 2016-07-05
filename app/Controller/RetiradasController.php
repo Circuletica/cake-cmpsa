@@ -513,31 +513,16 @@ $this->set(compact('operaciones_almacen'));*/
 	}
     }
 
-
-
     public function delete($id = null) {
 
 	if (!$id or $this->request->is('get')){
 	    throw new MethodNotAllowedException();
 	}
-	$asociado_id = $this->Retirada->find(
-	    'first',
-	    array(
-		'conditions' => array(
-		    'Retirada.id' => $id
-		)
-	    )
-	);
-	$asociado_id = $asociado_id['Retirada']['asociado_id'];
-	if ($this->Retirada->delete($id))	{
-	    $this->Flash->set('Retirada borrada');
-	    $this->redirect(array(
-		'action'=>'view_asociado',
-		'controller' =>'retiradas',
-		'asociado_id'=> $asociado_id,
-		'from_controller'=> $this->params['named']['from_controller'],
-		'from_id'=>$this->params['named']['from_id']
-	    ));
+
+	if ($this->Retirada->delete($id)){
+		$this->Flash->set('Retirada borrada correctamente');
+		$this->History->Back(0);
 	}
+
     }
 }

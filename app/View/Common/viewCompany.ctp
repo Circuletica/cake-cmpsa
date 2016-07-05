@@ -103,9 +103,9 @@ if ($this->fetch('class') == 'Asociado') {
     $this->assign('line2_controller','asociado_comisiones');
     $this->start('lines2');
     //la tabla con el historial de comisiones
-    echo "<table>";
+    echo "<table class='tc4'>";
     echo $this->Html->tableHeaders(array(
-	'válido desde','válido hasta','comisión',''));
+	'Válido desde','Válido hasta','Comisión','Detalle'));
     foreach ($comisiones as $comision) {
 	$fecha_inicio = $this->Date->format($comision['fecha_inicio']);
 	$fecha_fin = $this->Date->format($comision['fecha_fin']);

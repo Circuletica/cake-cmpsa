@@ -31,11 +31,14 @@ if (empty($existe_financiacion)) {
 	    'escape' => false)
 	); 
 } else {
-    echo $this->Html->link('Ver financiación', array(
+    echo $this->Html->link('<i class="fa fa-list-alt fa-lg" aria-hidden="true"></i>
+Ver financiación', array(
 	'controller' => 'financiaciones',
 	'action' => 'view',
 	$operacion['Operacion']['id']
-    )); 
+    ),
+    array('escape' => false)
+    ); 
 }
 if (empty($existe_facturacion)) {
     echo $this->Html->link('<i class="fa fa-file-text fa-lg" aria-hidden="true"></i>

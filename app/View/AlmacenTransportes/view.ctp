@@ -65,7 +65,7 @@ echo $this->Button->edit('almacen_transportes',$id)
 <h2>Cuenta corriente <?php echo $almacentransportes['AlmacenTransporte']['cuenta_almacen'] ?></h2>
 <div class="actions">
 <?php
-echo $this->Html->link(
+	echo $this->Html->link(
 				'<i class="fa fa-ship"></i> Línea: '.$almacentransportes['Transporte']['nombre_vehiculo'],array(
 					'controller' => 'transportes',
 					'action' => 'view',
@@ -77,6 +77,21 @@ echo $this->Html->link(
 						'escape' => false
 						)
 					);
+	echo $this->Html->link(
+				'<i class="fa fa-plus"></i> Añadir ref. almacén',array(
+					'controller' => 'almacen_transportes',
+					'action' => 'add',
+					'from_controller' => 'transportes',
+					'from_id' => $almacentransportes['AlmacenTransporte']['transporte_id']
+					),
+					array(
+						'class' => 'botond',
+						'title' => 'Añadir cuenta almacén',
+						'escape' => false
+						)
+					);
+
+
 	echo $this->Html->link(
 				'<i class="fa fa-plus"></i> Añadir retirada en almacén',array(
 					'controller' => 'retiradas',
@@ -96,6 +111,17 @@ echo $this->Html->link(
 <div class='view'>
 <?php
 echo "<dl>";
+echo "  <dt>Ref. operación </dt>\n";
+echo "<dd>";
+echo $this->html->link(
+	 $almacentransportes['Transporte']['Operacion']['referencia'],
+	 array(
+	'controller' => 'operaciones',
+	'action' => 'view_trafico',
+	$almacentransportes['Transporte']['operacion_id']
+    )
+).'&nbsp;';
+echo "</dd>";
 echo "  <dt>Nº de linea </dt>\n";
 echo "<dd>";
 echo $almacentransportes['Transporte']['linea'].'&nbsp;';

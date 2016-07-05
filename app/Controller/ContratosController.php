@@ -467,10 +467,10 @@ class ContratosController extends AppController {
 			throw new MethodNotAllowedException('URL mal formada o incompleta');
 		}
 		if ($this->Contrato->delete($id)) {
-			$this->Flash->set('Contrato borrado');
+			$this->Flash->success(h('Contrato borrado'));
 			$this->History->Back(-1);
 		} else {
-			$this->Flash->set('El contrato NO se ha borrado');
+			$this->Flash->error(h('El contrato NO se ha borrado'));
 			$this->redirect(array(
 				'action'=>'view',
 				$id
