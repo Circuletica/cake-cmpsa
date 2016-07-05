@@ -14,10 +14,10 @@ class Financiacion extends AppModel {
 		'Operacion' => array(
 			'className' => 'Operacion',
 			'foreignKey' => 'id')
-	);
+		);
 	public $hasOne = array(
-	    'ValorIvaFinanciacion',
-	    'ValorIvaComision'
+		'ValorIvaFinanciacion',
+		'ValorIvaComision'
 	);
 	public $hasMany = array(
 		'RepartoOperacionAsociado' => array(
