@@ -136,7 +136,7 @@ class AppController extends Controller {
             $this->set('object', $empresa['Empresa']['nombre_corto']);
         }
 
-        if ($this->request->is('post')) {
+        if ($this->request->is('post','put')) {
             if ($this->$class->Empresa->save($this->request->data)) {
                 $this->request->data[$class]['id'] = $this->$class->Empresa->id;
                 if($this->$class->save($this->request->data)) {

@@ -52,6 +52,10 @@ if (empty($retiradas)){
       </tr>
     <?php endforeach;?>
     </table>
+    <div class="btabla">
+    <?php  echo $this->Button->add('retiradas', 'retirada');
+    ?>
+    </div>    
     <?php
   }elseif ($action == 'index_conta') { //Departamento de contabilidad
     ?>

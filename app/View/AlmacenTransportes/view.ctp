@@ -1,4 +1,4 @@
-<?php 
+	<?php 
 $this->Html->addCrumb(
     'Operación',
     array(
@@ -156,6 +156,8 @@ echo "  <dt>Cantidad</dt>\n";
 echo "  <dd>".$almacentransportes['AlmacenTransporte']['cantidad_cuenta'].'&nbsp;'."</dd>";
 echo "  <dt>Peso bruto</dt>\n";
 echo "  <dd>".$almacentransportes['AlmacenTransporte']['peso_bruto'].' kg&nbsp;'."</dd>";
+echo "  <dt>Marca</dt>\n";
+echo "  <dd>".$almacentransportes['AlmacenTransporte']['marca_almacen'].'&nbsp;'."</dd>";
 
 echo "</dl>";
 ?>	
