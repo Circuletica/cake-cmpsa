@@ -14,7 +14,7 @@ echo $this->Html->tableHeaders(array(
 	$this->Paginator->sort('Financiacion.fecha_vencimiento','F. Vencimiento'),
 	'Detalle'
 ));
-foreach($anticipos as $anticipo) {
+foreach($financiaciones as $financiacion) {
 	//mysql almacena la fecha en formato ymd
 	$fecha = $financiacion['Financiacion']['fecha_vencimiento'];
 	//sacamos el nombre del mes en castellano

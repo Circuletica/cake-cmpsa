@@ -109,7 +109,7 @@ class FinanciacionesController extends AppController {
 			'Asociado' => array(
 			    'fields' => array(
 				'id',
-				'nombre'
+				'nombre_corto'
 			    ),
 			)
 		    )
