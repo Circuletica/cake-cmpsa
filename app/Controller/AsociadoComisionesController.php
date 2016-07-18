@@ -64,7 +64,7 @@ class AsociadoComisionesController extends AppController {
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
 	//un _nuevo_ registro, como si fuera un add
-	if (!empty($id)) $this->AsociadoComision->id = $id; 
+	if (!empty($id)) $this->AsociadoComision->id = $id;
 	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
 	    if($this->AsociadoComision->save($this->request->data)){
 		$this->Flash->set('Comisión guardada');

@@ -7,7 +7,7 @@ class TransportesController extends AppController {
 	$this->paginate['recursive'] = 2;
 	$this->paginate['condition'] = array(
 	    'Transporte.fecha_despacho_op'=> NULL
-	);	
+	);
 	$this->paginate['contain'] = array(
 	    'Operacion' => array(
 		'fields'=> array(
@@ -20,8 +20,8 @@ class TransportesController extends AppController {
 			'peso',
 			'cantidad_embalaje'
 		    )
-		),	
-		'Contrato'=>array(	
+		),
+		'Contrato'=>array(
 		    'fields'=> array(
 			'id',
 			'fecha_transporte',
@@ -131,7 +131,7 @@ class TransportesController extends AppController {
 				'id'
 			    )
 			)
-		    )	
+		    )
 		)
 	    )
 	);
@@ -148,11 +148,11 @@ class TransportesController extends AppController {
 		}
 	    }
 	}
-	$restan = $transporte['Transporte']['cantidad_embalaje'] - $almacenado; 
+	$restan = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
 	$this->set(compact('restan'));
 	$this->set('almacenado',$almacenado);
 
-	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];	
+	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];
 	$this->set('embalaje',$embalaje);
 
 	//Necesario para exportar en PDf
@@ -188,7 +188,7 @@ class TransportesController extends AppController {
 	$this->set('action', $this->action);
 
 	//Listamos navieras
-	$this->loadModel('Naviera');	
+	$this->loadModel('Naviera');
 	$navieras = $this->Naviera->find(
 	    'list',
 	    array(
@@ -259,7 +259,7 @@ class TransportesController extends AppController {
 	}
 
 	$operacion = $this->Transporte->Operacion->find(
-	    'first', 
+	    'first',
 	    array(
 		'conditions' => array(
 		    'Operacion.id' => $operacion_id
@@ -300,7 +300,7 @@ class TransportesController extends AppController {
 	);
 
 
-	$embalaje = $operacion['Embalaje']['nombre'];		
+	$embalaje = $operacion['Embalaje']['nombre'];
 	$this->set('embalaje',$embalaje); //Tipo de bulto para la cantidad en el titulo.
 
 	$this->set('puertoCargas', $this->Transporte->PuertoCarga->find(
@@ -319,7 +319,7 @@ class TransportesController extends AppController {
 		'contain' => array('Pais'),
 		'conditions' => array( 'Pais.iso3166' => 'es')
 	    )
-	));		
+	));
 
 	//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
 
@@ -342,7 +342,7 @@ class TransportesController extends AppController {
 	//Linea primera para comenzar desde el array que es 0. Si $clave es 5, $num será 6.
 	//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva linea.
 	//Este proceso genera la linea de nuevo siempre para que el contador lo haga desde el principio
-	$num = 0;	
+	$num = 0;
 	foreach ($operacion['Transporte'] as $clave=>$transporte){
 	    $num++;
 	}
@@ -383,7 +383,7 @@ class TransportesController extends AppController {
 			$id
 		    ));
 		}
-	    }		
+	    }
 	}else{ //es un GET
 	    $this->request->data = $this->Transporte->read(null, $id);
 	}
@@ -431,7 +431,7 @@ class TransportesController extends AppController {
 		    'id',
 		    'referencia',
 		    'contrato_id',
-		)				    				    	
+		)
 	    ),
 	    'PesoOperacion'=> array(
 		'fields' =>array(
@@ -440,7 +440,7 @@ class TransportesController extends AppController {
 		    'cantidad_embalaje'
 		)
 	    ),
-	    'Contrato'=>array(	
+	    'Contrato'=>array(
 		'fields'=> array(
 		    'id',
 		    'fecha_transporte',
@@ -468,7 +468,7 @@ class TransportesController extends AppController {
 		    'Contrato' => array(
 			'foreignKey' => false,
 			'conditions' => array('Operacion.contrato_id = Contrato.id')
-		    ),	  
+		    ),
 		    'Proveedor' => array(
 			'className' => 'Empresa',
 			'foreignKey' => false,
@@ -611,7 +611,7 @@ class TransportesController extends AppController {
 	    'paperSize' => 'A4',
 	    'orientation' => 'portrait',
 	    'layout' =>'facturas'
-	);	
+	);
 
 	$transporte = $this->Transporte->find(
 	    'first',
@@ -647,7 +647,7 @@ class TransportesController extends AppController {
 			    'nombre'
 			)
 		    )
-		)	
+		)
 	    )
 	);
 	$this->set('transporte',$transporte);
@@ -671,7 +671,7 @@ class TransportesController extends AppController {
 		'recursive' => -1,
 		'fields' => array(
 		    'id'
-		),	
+		),
 		'contain' => array(
 		    'Transporte' => array(
 			'fields' => array(
@@ -682,7 +682,7 @@ class TransportesController extends AppController {
 		)
 	    )
 	);
-    }	
+    }
 
     public function asegurar($id = null) {
 
@@ -691,7 +691,7 @@ class TransportesController extends AppController {
 	    'filename' => 'asegurar',
 	    'paperSize' => 'A4',
 	    'orientation' => 'portrait'
-	);	
+	);
 
 	$transporte = $this->Transporte->find(
 	    'first',
@@ -717,7 +717,7 @@ class TransportesController extends AppController {
 				    'id',
 				    'nombre'
 				)
-			    )			   		
+			    )
 			),
 			'PrecioTotalOperacion',
 			'Embalaje' => array(
@@ -731,7 +731,7 @@ class TransportesController extends AppController {
 			    'id',
 			    'nombre'
 			)
-		    ),				
+		    ),
 		    'PuertoDestino' => array(
 			'fields' => array(
 			    'id',
@@ -773,7 +773,7 @@ class TransportesController extends AppController {
 		'recursive' => -1,
 		'fields' => array(
 		    'id'
-		),	
+		),
 		'contain' => array(
 		    'Transporte' => array(
 			'fields' => array(
@@ -837,7 +837,7 @@ class TransportesController extends AppController {
 		    'id',
 		    'referencia',
 		    'contrato_id',
-		)				    				    	
+		)
 	    ),
 	    'PesoOperacion'=> array(
 		'fields' =>array(
@@ -846,7 +846,7 @@ class TransportesController extends AppController {
 		    'cantidad_embalaje'
 		)
 	    ),
-	    'Contrato'=>array(	
+	    'Contrato'=>array(
 		'fields'=> array(
 		    'id',
 		    'fecha_transporte',

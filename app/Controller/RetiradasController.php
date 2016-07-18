@@ -26,11 +26,11 @@ class RetiradasController extends AppController {
 		    'Operacion' => array(
 			'foreignKey' => false,
 			'conditions' => array('Retirada.operacion_id = Operacion.id')
-		    ),		    
+		    ),
 		    'Almacen' => array(
 			'className' => 'Empresa',
 			'foreignKey' => false,
-			'conditions' => array('Almacen.id = AlmacenTransporte.almacen_id')	 
+			'conditions' => array('Almacen.id = AlmacenTransporte.almacen_id')
 		    )
 		)
 	    )
@@ -119,7 +119,7 @@ class RetiradasController extends AppController {
 			    'id',
 			    'nombre_corto'
 			)
-		    ),				
+		    ),
 		    'Operacion' => array(
 			'fields' => array(
 			    'id',
@@ -146,7 +146,7 @@ class RetiradasController extends AppController {
 		)
 	    );
 
-	$this->set(compact('asociado_nombre'));	
+	$this->set(compact('asociado_nombre'));
 
 
 	$asociado_op = $this->Retirada->Operacion->AsociadoOperacion->find(
@@ -179,7 +179,7 @@ class RetiradasController extends AppController {
 		}
 	    }
 	}
-	$restan = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] - $retirado; 
+	$restan = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] - $retirado;
 	$this->set(compact('restan'));
 	$this->set('retirado',$retirado);
 
@@ -282,9 +282,9 @@ $this->set(compact('operaciones_almacen'));*/
     public function form($id = null) { //esta acción vale tanto para edit como add
 	$this->set('action', $this->action);
 	//Listamos el nombre de asociados
-	$this->loadModel('Asociado');	
+	$this->loadModel('Asociado');
 	$asociados = $this->Asociado->find(
-	    'list',		
+	    'list',
 	    array(
 		'fields' => array(
 		    'Asociado.id',
@@ -424,8 +424,8 @@ $this->set(compact('operaciones_almacen'));*/
 	$this->set('operacion',$operacion);
 
 	//Se declara para asignar el valor del array del asociado
-	//$asociado_valor = NULL; 
-	$a=0;	
+	//$asociado_valor = NULL;
+	$a=0;
 	if(!empty($this->params['named']['asociado_id'])){
 	    foreach ($operacion['AsociadoOperacion'] as $valor){
 		if($valor['asociado_id'] == $this->params['named']['asociado_id']){
@@ -436,7 +436,7 @@ $this->set(compact('operaciones_almacen'));*/
 		$a++; //Contador recorrido array
 	    }
 	}
-	$this->set(compact('asociado_id'));	
+	$this->set(compact('asociado_id'));
 	$this->set(compact('asociado_nombre'));
 	// Saco la referencia de la operación para usar en el form excepto en un add() desde index
 	$operacion_ref = NULL;
@@ -450,7 +450,7 @@ $this->set(compact('operaciones_almacen'));*/
 	//si no se hace, al guardar el edit, se va a crear
 	//un _nuevo_ registro, como si fuera un add
 
-	if (!empty($id)) $this->Retirada->id = $id; 
+	if (!empty($id)) $this->Retirada->id = $id;
 
 	if(!empty($this->request->data)) { //ES UN POST
 	    $this->request->data['Retirada']['id'] = $id;
@@ -469,7 +469,7 @@ $this->set(compact('operaciones_almacen'));*/
 		}
 	    }elseif(($id == NULL) && !empty($this->params['named']['asociado_id'])){
 		if($this->Retirada->save($this->request->data)) {
-		    //Accedemos al form desde view_asociados	
+		    //Accedemos al form desde view_asociados
 		    $this->Flash->set('Retirada guardada');
 		    $this->redirect(array(
 			'action'=>'view_asociado',
@@ -494,7 +494,7 @@ $this->set(compact('operaciones_almacen'));*/
 		}
 	    }elseif($id == NULL && empty($this->params['named']['asociado_id']) && empty($this->params['named']['from_controller'])){
 		if($this->Retirada->save($this->request->data)){
-		    //Accedemos al form desde el index	
+		    //Accedemos al form desde el index
 		    $this->Flash->set('Retirada guardada');
 		    $this->redirect(array(
 			'action'=>'index',
