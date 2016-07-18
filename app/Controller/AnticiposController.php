@@ -29,7 +29,8 @@ class AnticiposController extends AppController {
 	}
 
 	public function form ($id = null) { //esta accion vale tanto para edit como add
-		$operacion_id = $this->params['named']['from_id'];
+		$operacion_id = isset($this->params['named']['from_id'])?
+			$this->params['named']['from_id']:null;
 		$this->set('action', $this->action);
 		$this->loadModel('Banco');
 		$bancos = $this->Banco->find(
@@ -75,13 +76,40 @@ class AnticiposController extends AppController {
 		);
 		$this->set(compact('asociados'));
 
-		$this->set('financiacion_id', $operacion_id);
+		$operaciones = $this->Anticipo->AsociadoOperacion->Operacion->find(
+			'list',
+			array(
+				'order' => array('Operacion.referencia' => 'ASC')
+			)
+		);
+		$this->set(compact('operaciones'));
+
+		$lista_operaciones = $this->Anticipo->AsociadoOperacion->Operacion->find(
+			'all',
+			array(
+				'contain' => array(
+					'AsociadoOperacion' => array(
+						'Asociado'
+					)
+				)
+			)
+		);
+		$lista_operaciones = Hash::combine($lista_operaciones, '{n}.Operacion.id','{n}');
+		foreach ($lista_operaciones as &$operacion) {
+			unset($operacion['Operacion']);
+			foreach ($operacion['AsociadoOperacion'] as $asociado) {
+				$operacion[$asociado['asociado_id']] = $asociado['Asociado']['nombre_corto'];
+			}
+			unset($operacion['AsociadoOperacion']);
+		}
+		$this->set(compact('lista_operaciones'));
 
 		//si es un edit, hay que rellenar el id, ya que
 		//si no se hace, al guardar el edit, se va a crear
 		//un _nuevo_ registro, como si fuera un add
 		if (!empty($id)) {
 			$this->Anticipo->id = $id;
+			//$this->request->data['Anticipo']['operacion_id'] = $operacion_id;
 		}
 
 		if ($this->request->is(array('post', 'put'))){
@@ -104,6 +132,7 @@ class AnticiposController extends AppController {
 			}
 		} else { //es un GET
 			$this->request->data = $this->Anticipo->read(null, $id);
+			$this->request->data['AsociadoOperacion']['operacion_id'] = $operacion_id;
 		}
 	}
 
