@@ -169,7 +169,7 @@ echo $this->Html->tableHeaders(array(
     'Asociado','Fecha','Importe','Banco','Detalle'));
 foreach ($anticipos as $anticipo):
     echo $this->Html->tableCells(array(
-	$anticipo['AsociadoOperacion']['Asociado']['nombre'],
+	$anticipo['AsociadoOperacion']['Asociado']['nombre_corto'],
 	$this->Date->format($anticipo['Anticipo']['fecha_conta']),
 	$anticipo['Anticipo']['importe'],
 	$anticipo['Banco']['nombre_corto'],

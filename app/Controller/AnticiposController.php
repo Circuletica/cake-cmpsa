@@ -6,8 +6,11 @@ class AnticiposController extends AppController {
 
 	public function index() {
 		$this->paginate['contain'] = array(
-			'Asociado',
-			'Financiacion'
+			'Banco',
+			'AsociadoOperacion' => array(
+				'Asociado',
+				'Operacion'
+			)
 		);
 		$this->set('anticipos', $this->paginate());
 	}

@@ -102,10 +102,10 @@ class ContratosController extends AppController {
 	}
 
 	public function view($id = null) {
-        $this->Contrato->id = $id;
-        if (!$this->Contrato->exists()) {
-            throw new NotFoundException(__('Contrato inexistente'));
-        }
+		$this->Contrato->id = $id;
+		if (!$this->Contrato->exists()) {
+			throw new NotFoundException(__('Contrato inexistente'));
+		}
 		$contrato = $this->Contrato->find(
 			'first',
 			array(
@@ -127,7 +127,31 @@ class ContratosController extends AppController {
 		//el sql devuelve un array, solo queremos el campo de peso sin decimales
 		$peso_fijado = intval($peso_fijado[0][0]['peso_fijado']);
 		$this->set(compact('peso_fijado'));
-		$this->set('peso_por_fijar', $contrato['Contrato']['peso_comprado'] - $peso_fijado);
+		$peso_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado;
+		$this->set(compact('peso_por_fijar'));
+
+		//si no esta distribuido todo el peso del contrato
+		//calcular la cantidad de cada embalaje pendiente
+		$sacos_por_fijar='';
+		if ($peso_por_fijar > 0) {
+			//recombinar el array con todos los embalajes del contrato
+			//y ordenar por embalaje_id
+			$embalajes_pendientes = Hash::combine($contrato['ContratoEmbalaje'],'{n}.embalaje_id','{n}.Embalaje.nombre');
+			$sacos_pendientes = Hash::combine($contrato['ContratoEmbalaje'],'{n}.embalaje_id','{n}.cantidad_embalaje');
+			//miramos la cantidad de embalajes de cada operacion del contrato
+			//y la restamos de la cantidad de embalajes contratada
+			foreach ($contrato['Operacion'] as $operacion) {
+				$cantidad_embalaje_operacion = $operacion['PesoOperacion']['cantidad_embalaje'];
+				$sacos_pendientes[$operacion['embalaje_id']] -= $cantidad_embalaje_operacion;
+			}
+			foreach ($sacos_pendientes as $id => $cantidad) {
+				if ($cantidad > 0) {
+					if ($sacos_por_fijar != '') $sacos_por_fijar .= ' + ';
+					$sacos_por_fijar .= $cantidad.' '.$embalajes_pendientes[$id]; 
+				}
+			}
+		}
+		$this->set(compact('sacos_por_fijar'));
 
 		$this->set('referencia', $contrato['Contrato']['referencia']);
 		//si embarque o entrega
@@ -266,9 +290,9 @@ class ContratosController extends AppController {
 					)
 				);
 			}
-            $this->Flash->error(
-                __('El contrato NO se ha guardado.')
-            );
+			$this->Flash->error(
+				__('El contrato NO se ha guardado.')
+			);
 		}
 	}
 

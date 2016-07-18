@@ -1,11 +1,11 @@
 <?php
 class AlmacenTransporteAsociado extends AppModel {
-    public $belongsTo = array(
-	'AlmacenTransporte',
-	'Asociado',
+	public $belongsTo = array(
+		'AlmacenTransporte',
+		'Asociado',
 	);
-    public $virtualFields = array(
-	//'suma_reparto' => 'sum(sacos_asignados)'
+	public $virtualFields = array(
+		//'suma_reparto' => 'sum(sacos_asignados)'
 	);
 
 }
