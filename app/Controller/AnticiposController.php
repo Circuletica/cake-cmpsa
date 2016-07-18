@@ -31,7 +31,8 @@ class AnticiposController extends AppController {
 	public function form ($id = null) { //esta accion vale tanto para edit como add
 		$operacion_id = $this->params['named']['from_id'];
 		$this->set('action', $this->action);
-		$bancos = $this->Anticipo->Banco->find(
+		$this->loadModel('Banco');
+		$bancos = $this->Banco->find(
 			'list',
 			array(
 				'fields' => array(
@@ -81,7 +82,7 @@ class AnticiposController extends AppController {
 		//un _nuevo_ registro, como si fuera un add
 		if (!empty($id)) {
 			$this->Anticipo->id = $id;
-		} 
+		}
 
 		if ($this->request->is(array('post', 'put'))){
 			$asociado_operacion = $this->Anticipo->AsociadoOperacion->find(
