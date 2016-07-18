@@ -4,7 +4,7 @@ class AlmacenTransportesController extends AppController {
 
     public $paginate = array(
         'order' => array('cuenta_almacen' => 'asc')
-    );
+        );
 
     public function index() {
         $this->paginate['order'] = array('AlmacenTransporte.cuenta_almacen' => 'asc');
@@ -13,8 +13,8 @@ class AlmacenTransportesController extends AppController {
             'Almacen'=>array(
                 'id',
                 'nombre_corto'
-            )
-        );
+                )
+            );
         $this->set('almacentransportes', $this->paginate());
     }
 
@@ -22,7 +22,7 @@ class AlmacenTransportesController extends AppController {
         if (!$id) {
             throw new NotFoundException(__('URL mal formada: falta id'));
         }
-
+        
         $this->AlmacenTransporte->AlmacenTransporteAsociado->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
 
         $almacentransportes = $this->AlmacenTransporte->find(
@@ -30,26 +30,26 @@ class AlmacenTransportesController extends AppController {
             array(
                 'conditions' => array(
                     'AlmacenTransporte.id' => $id
-                ),
+                    ),
                 'contain' => array(
                     'AlmacenTransporteAsociado' =>array(
                         'Asociado'=> array(
                             'fields'=> array(
                                 'id',
-                            ),
+                                ),
                             'Retirada'=>array(
                                 'conditions' => array(
                                     'Retirada.almacen_transporte_id' => $id
-                                )
-                            ),
+                                    )
+                                ),
                             'Empresa',
                             'AlmacenReparto'=> array(
                                 'conditions'=> array(
                                     'AlmacenReparto.id' => $id
+                                    )
                                 )
                             )
-                        )
-                    ),
+                        ),
                     'Retirada',
                     'Transporte'=> array(
                         'fields'=> array(
@@ -58,21 +58,21 @@ class AlmacenTransportesController extends AppController {
                             'matricula',
                             'nombre_vehiculo',
                             'operacion_id'
-                        ),
+                            ),
                         'Operacion' => array(
                             'fields'=> array(
                                 'referencia'
+                                )
                             )
-                        )
-                    ),
+                        ),
                     'Almacen' => array(
                         'fields' => (
                             'nombre_corto'
+                            )
                         )
                     )
                 )
-            )
-        );
+            );
         if (!$almacentransportes) {
             throw new NotFoundException(__('No existe esa cuenta'));
         }
@@ -84,12 +84,12 @@ class AlmacenTransportesController extends AppController {
             'fields' => array(
                 'LineaMuestra.id',
                 'LineaMuestra.almacen_transporte_id'
-            ),
+                ),
             'recursive'=>-1,
             'conditions' => array(
                 'LineaMuestra.almacen_transporte_id'=> $id
-            )
-        ));	
+                )
+            ));	
         $this->set(compact('lineamuestra'));
 
         //Necesario para exportar en PDf
@@ -124,13 +124,13 @@ class AlmacenTransportesController extends AppController {
             'fields' => array(
                 'Almacen.id',
                 'Empresa.nombre_corto'
-            ),
+                ),
             'order' => array(
                 'Empresa.nombre_corto' => 'asc'
-            ),
+                ),
             'recursive' => 1
-        )
-    );	
+            )
+        );	
         $this->set(compact('almacenes'));
 
         if($this->action == 'edit'){
@@ -139,13 +139,13 @@ class AlmacenTransportesController extends AppController {
                 array(
                     'conditions' => array(
                         'AlmacenTransporte.id' => $id
-                    ),
+                        ),
                     'fields'=> array(
                         'id',
                         'transporte_id'
+                        )
                     )
-                )
-            );
+                );
             $transporte_id = $transporte_id['AlmacenTransporte']['transporte_id'];
         }else{
             $transporte_id=$this->params['named']['from_id'];
@@ -158,28 +158,28 @@ class AlmacenTransportesController extends AppController {
             array(
                 'conditions' => array(
                     'Transporte.id' => $transporte_id
-                ),
+                    ),
                 'recursive' => 3,
                 'fields' => array(
                     'id',
                     'matricula',
                     'cantidad_embalaje'
-                ),
+                    ),
                 'contain'=> array(
                     'AlmacenTransporte',
                     'Operacion' => array(
                         'fields'=>array(
                             'embalaje_id'
-                        ),
+                            ),
                         'Embalaje' => array(
                             'fields' => array(
                                 'nombre'
+                                )
                             )
                         )
                     )
                 )
-            )
-        );
+            );
         $this->set('transporte',$transporte);
 
 
@@ -201,12 +201,12 @@ class AlmacenTransportesController extends AppController {
                 array(
                     'conditions' =>array(
                         'AlmacenTransporte.id' => $id	
-                    ),
+                        ),
                     'fields' => array(
                         'cantidad_cuenta'
+                        )
                     )
-                )
-            );
+                );
             $cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
 
         }elseif( $id == NULL && $almacenado != 0){
@@ -215,13 +215,13 @@ class AlmacenTransportesController extends AppController {
                 array(
                     'conditions' =>array(
                         'AlmacenTransporte.transporte_id' => $this->params['named']['from_id']	
-                    ),
+                        ),
                     'fields' => array(
                         'AlmacenTransporte.cantidad_cuenta',
                         'AlmacenTransporte.transporte_id'
+                        )
                     )
-                )
-            );
+                );
             $cantidadcuenta = $cantidadcuenta['AlmacenTransporte']['cantidad_cuenta'];
         }else{
             //En caso que se agregue al principio sin sacos guardados
@@ -243,7 +243,7 @@ class AlmacenTransportesController extends AppController {
                         'controller' => 'almacen_transportes',
                         'action' => 'distribucion',
                         $nuevoId	
-                    ));
+                        ));
                 }else{
                     $this->Flash->set('Cuenta de almacén NO guardada');
                 }
@@ -255,7 +255,7 @@ class AlmacenTransportesController extends AppController {
                         'controller' => 'almacen_transportes',
                         'action' => 'distribucion',
                         $nuevoId	
-                    ));
+                        ));
                 }
             }elseif ($this->request->data['AlmacenTransporte']['id']!=NULL){
                 if($this->request->data['AlmacenTransporte']['cantidad_cuenta'] <= $cantidadcuenta xor ($this->request->data['AlmacenTransporte']['cantidad_cuenta'] > $cantidadcuenta &&
@@ -266,7 +266,7 @@ class AlmacenTransportesController extends AppController {
                             'controller' => 'almacen_transportes',
                             'action' => 'view',
                             $id	
-                        ));
+                            ));
                     }
                 }else{
                     $this->Flash->set('La cantidad de bultos debe ser inferior');
@@ -300,42 +300,42 @@ class AlmacenTransportesController extends AppController {
             array(
                 'conditions' => array(
                     'AlmacenTransporte.id' => $id
-                ),
+                    ),
                 'contain' => array(
                     'AlmacenTransporteAsociado' =>array(
                         'Asociado'=> array(
                             'fields'=> array(
                                 'id',
-                            ),
+                                ),
                             'Retirada'=>array(
                                 'conditions' => array(
                                     'Retirada.almacen_transporte_id' => $id
-                                )
-                            ),
+                                    )
+                                ),
                             'Empresa',
                             'AlmacenReparto'=> array(
                                 'conditions'=> array(
                                     'AlmacenReparto.id' => $id
+                                    )
                                 )
-                            )
-                        )	
-                    ),
+                            )	
+                        ),
                     'Transporte'=> array(
                         'fields'=> array(
                             'linea',
                             'matricula',
                             'nombre_vehiculo',
                             'operacion_id'
-                        )
-                    ),
+                            )
+                        ),
                     'Almacen' => array(
                         'fields' => (
                             'nombre_corto'
+                            )
                         )
                     )
                 )
-            )
-        );
+            );
         if (empty($almacentransportes)) {
             $this->Flash->set('No existe cuenta con id: '.$id);
             $this->History->Back(0);
@@ -357,8 +357,8 @@ class AlmacenTransportesController extends AppController {
             $this->AlmacenTransporte->AlmacenTransporteAsociado->deleteAll(
                 array(
                     'AlmacenTransporteAsociado.almacen_transporte_id' => $id
-                )
-            );
+                    )
+                );
             foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
                 if ($cantidad != NULL) {
                     $this->request->data['AlmacenTransporteAsociado']['almacen_transporte_id'] = $id;
@@ -373,8 +373,8 @@ class AlmacenTransportesController extends AppController {
                     'controller' => 'almacen_transportes',
                     'action' => 'view',
                     $id
-                )
-            );
+                    )
+                );
         }
     }
 
