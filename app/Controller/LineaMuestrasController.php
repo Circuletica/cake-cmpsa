@@ -244,7 +244,7 @@ class LineaMuestrasController extends AppController {
     }
 
     public function delete( $id = null) {
-        if (!$id or $this->request->is('get')) 
+        if (!$id or $this->request->is('get'))
             throw new MethodNotAllowedException();
 
         if ($this->LineaMuestra->delete($id)) {
@@ -366,7 +366,7 @@ class LineaMuestrasController extends AppController {
                 'order' => array('Empresa.nombre_corto' => 'asc')
             )
         );
-        $this->set('contactos',$contactos);	
+        $this->set('contactos',$contactos);
 
         //Usuarios de la CMPSA
         $this->loadModel('Usuario');
@@ -381,24 +381,24 @@ class LineaMuestrasController extends AppController {
                         'fields'=>array(
                             'nombre'
                         )
-                    )	    	 	
+                    )
                 )
             )
         );
-        $this->set('usuarios',$usuarios);		
+        $this->set('usuarios',$usuarios);
 
 
-        if (!empty($id)) $this->LineaMuestra->id = $id; 
+        if (!empty($id)) $this->LineaMuestra->id = $id;
         if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
             $this->request->data = $this->LineaMuestra->read();//Cargo los datos
-        }else{//es un POST	
+        }else{//es un POST
             if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
-                $this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra			
+                $this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra
                 $this->Flash->set('Los datos del informe han sido guardados.');
             }elseif(empty($this->request->data['email'])){
                 $this->Flash->set('Los datos del informe NO fueron enviados. Faltan destinatarios');
-            }else{	
-                $this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos		    
+            }else{
+                $this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos
 
                 foreach ($this->data['email'] as $email){
                     $lista_email[]= $email;
@@ -406,7 +406,7 @@ class LineaMuestrasController extends AppController {
                 if(!empty($this->data['trafico'])){
                     foreach ($this->data['trafico'] as $email){
                         $lista_bcc[]= $email;
-                    }	
+                    }
                 }
                 if(!empty($this->data['calidad'])){
                     foreach ($this->data['calidad'] as $email){
@@ -425,7 +425,7 @@ class LineaMuestrasController extends AppController {
                 $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 
                 //ENVIAMOS EL CORREO CON EL INFORME
-                $Email = new CakeEmail(); //Llamamos la instancia de email     
+                $Email = new CakeEmail(); //Llamamos la instancia de email
                 $Email->config('calidad'); //Plantilla de email.php
                 $Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
                 $Email->to($lista_email);
