@@ -1,15 +1,29 @@
 <?php
 class AnticiposController extends AppController {
-	public $paginate = array(
-		'order' => array('Anticipo.fecha_conta' => 'asc')
-	);
 
 	public function index() {
+		$this->paginate['order'] = array(
+			'Anticipo.fecha_conta' => 'asc'
+		);
 		$this->paginate['contain'] = array(
 			'Banco',
-			'AsociadoOperacion' => array(
-				'Asociado',
-				'Operacion'
+			'AsociadoOperacion',
+			'Asociado',
+			'Operacion'
+		);
+		$this->Anticipo->bindModel(
+			array(
+				'belongsTo' => array(
+					'Asociado' => array(
+						'className' => 'Empresa',
+						'foreignKey' => false,
+						'conditions' => array('AsociadoOperacion.asociado_id = Asociado.id')
+					),
+					'Operacion' => array(
+						'foreignKey' => false,
+						'conditions' => array('AsociadoOperacion.operacion_id = Operacion.id')
+					)
+				)
 			)
 		);
 		$this->set('anticipos', $this->paginate());
