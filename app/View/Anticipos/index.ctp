@@ -10,7 +10,7 @@ $this->start('main');
 echo "<table>\n";
 echo $this->Html->tableHeaders(array(
     $this->Paginator->sort('Anticipo.fecha_conta','Fecha'),
-    $this->Paginator->sort('Operacion.referencia','Operacion'),
+    $this->Paginator->sort('Operacion.referencia','Operación'),
     $this->Paginator->sort('Asociado.nombre_corto','Asociado'),
     $this->Paginator->sort('Banco.nombre_corto','Banco'),
     $this->Paginator->sort('Anticipo.importe','Importe'),
