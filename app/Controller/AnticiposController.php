@@ -131,8 +131,8 @@ class AnticiposController extends AppController {
 				'first',
 				array(
 					'conditions' => array(
-						'AsociadoOperacion.asociado_id' => $this->request->data['Anticipo']['asociado_id'],
-						'AsociadoOperacion.operacion_id' => $operacion_id
+						'AsociadoOperacion.asociado_id' => $this->request->data['AsociadoOperacion']['asociado_id'],
+						'AsociadoOperacion.operacion_id' => $this->request->data['AsociadoOperacion']['operacion_id'],
 					)
 				)
 			);
