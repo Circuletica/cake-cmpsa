@@ -190,7 +190,7 @@ class AppController extends Controller {
             'X' => '33',
             'Y' => '34',
             'Z' => '35' );
-        $dividendo = $ccc.$pesos[substr($codigoPais, 0 , 1)].$pesos[substr($codigoPais, 1 , 1)].'00';	
+        $dividendo = $ccc.$pesos[substr($codigoPais, 0 , 1)].$pesos[substr($codigoPais, 1 , 1)].'00';
         $digitoControl =  98 - bcmod($dividendo, '97');
         if(strlen($digitoControl)==1) $digitoControl = '0'.$digitoControl;
         return $codigoPais.$digitoControl.$ccc;
@@ -204,7 +204,7 @@ class AppController extends Controller {
         1 => 'Oferta',
         2 => 'Embarque',
         3 => 'Entrega'
-    );	
+    );
 
     public function filtroListado() { //FILTRO-BUSCADOR
         //la página a la que redirigimos después de mandar  el formulario de filtro
@@ -212,11 +212,11 @@ class AppController extends Controller {
         //construimos una URL con los elementos de filtro, que luego se usan en el paginator
         //la URL final tiene ese aspecto:
         //http://gestion.gargantilla.net/controller/index/Search.referencia:mireferencia/Search.id:3
-        foreach ($this->data as $k=>$v){ 
-            foreach ($v as $kk=>$vv){ 
+        foreach ($this->data as $k=>$v){
+            foreach ($v as $kk=>$vv){
                 //sustituimos '_' por '/' en los criterios de búsqueda
-                if ($vv) {$url[$k.'.'.$kk]=strtr($vv,'/','_');} 
-            } 
+                if ($vv) {$url[$k.'.'.$kk]=strtr($vv,'/','_');}
+            }
         }
         $this->redirect($url,null,true);
     }

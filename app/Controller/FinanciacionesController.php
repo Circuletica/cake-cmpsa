@@ -141,7 +141,7 @@ class FinanciacionesController extends AppController {
 	    'filename' => 'financiacion',
 	    'paperSize' => 'A4',
 	    'orientation' => 'landscape'
-	);	
+	);
 
 
 
@@ -221,7 +221,7 @@ class FinanciacionesController extends AppController {
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
 	//un _nuevo_ registro, como si fuera un add
-	if (!empty($id)) $this->Financiacion->id = $id; 
+	if (!empty($id)) $this->Financiacion->id = $id;
 	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
 	    if($this->Financiacion->save($this->request->data)){
 		$this->Flash->set('Financiación guardada');
@@ -251,7 +251,7 @@ class FinanciacionesController extends AppController {
 
     public function financion_envio ($id) {
         //Necesario para volcar los datos en el PDF
- 
+
     //Contactos de los asociados
         $this->loadModel('Contacto');
         $contactos = $this->Contacto->find(
@@ -263,7 +263,7 @@ class FinanciacionesController extends AppController {
                     'order' => array('Empresa.nombre_corto' => 'asc')
                  )
             );
-        $this->set('contactos',$contactos);	
+        $this->set('contactos',$contactos);
 
     //Usuarios de la CMPSA
         $this->loadModel('Usuario');
@@ -278,24 +278,24 @@ class FinanciacionesController extends AppController {
                         'fields'=>array(
                             'nombre'
                             )
-                        )	    	 	
+                        )
                     )
                  )
             );
-        $this->set('usuarios',$usuarios);		
+        $this->set('usuarios',$usuarios);
 
 
-    if (!empty($id)) $this->LineaMuestra->id = $id; 
+    if (!empty($id)) $this->LineaMuestra->id = $id;
         if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
             $this->request->data = $this->LineaMuestra->read();//Cargo los datos
-        }else{//es un POST	
+        }else{//es un POST
             if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
-                $this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra			
+                $this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra
                 $this->Flash->set('Los datos de la financiación han sido guardados.');
             }elseif(empty($this->request->data['email'])){
                 $this->Flash->set('Los datos de la financiación NO fueron enviados. Faltan destinatarios');
-            }else{	
-                $this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos		    
+            }else{
+                $this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos
 
                 foreach ($this->data['email'] as $email){
                     $lista_email[]= $email;
@@ -303,7 +303,7 @@ class FinanciacionesController extends AppController {
             if(!empty($this->data['trafico'])){
                 foreach ($this->data['trafico'] as $email){
                     $lista_bcc[]= $email;
-                }	
+                }
              }
             if(!empty($this->data['calidad'])){
                 foreach ($this->data['calidad'] as $email){
@@ -322,7 +322,7 @@ class FinanciacionesController extends AppController {
                 $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS . 'financiacion_'.$financiacion['Operacion']['referencia'].'_'.date('Ymd').'.pdf');
 
     //ENVIAMOS EL CORREO CON EL INFORME
-                $Email = new CakeEmail(); //Llamamos la instancia de email     
+                $Email = new CakeEmail(); //Llamamos la instancia de email
                 $Email->config('financiacion'); //Plantilla de email.php
                 $Email->from(array('financiacion@cmpsa.com' => 'Financiación CMPSA'));
                 $Email->to($lista_email);

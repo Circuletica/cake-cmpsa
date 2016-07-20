@@ -44,9 +44,9 @@ class BancosController extends AppController {
     public function view_pdf($id = null) {
 	$this->Banco->id = $id;
 	if (!$this->Banco->exists()) {
-	    throw new NotFoundException(__('Invalid Banco'));
+	    throw new NotFoundException(__('No existe banco con tal id'));
 	}
-	// increase memory limit in PHP 
+	// increase memory limit in PHP
 	ini_set('memory_limit', '512M');
 	$this->set('banco', $this->Banco->read(null, $id));
     }

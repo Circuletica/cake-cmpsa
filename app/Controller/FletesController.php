@@ -61,12 +61,12 @@ class FletesController extends AppController {
 			),
 			'recursive' => 2
 		);
-		//a la vez que definimos las condiciones del 
+		//a la vez que definimos las condiciones del
 		//paginador AppController.php,
 		//sacamos un titulo con los criterios de filtro
 		//	$titulo = $this->filtroPaginador(
 		//	    array(
-		//		'Flete' => array( 
+		//		'Flete' => array(
 		//			'Naviera' => 'naviera_id',
 		//			'Puerto de Carga' => 'puerto_carga_id',
 		//			'Puerto de Destino' => 'puerto_destino_id'
@@ -222,17 +222,17 @@ class FletesController extends AppController {
 	}
 
 	public function delete($id) {
-		if($this->request->is('post')):
-			if($this->Flete->delete($id)):
+		if($this->request->is('post')) {
+			if($this->Flete->delete($id)) {
 				$this->Flash->set('Flete borrado');
-		$this->redirect(array(
-			'controller' => 'fletes',
-			'action' => 'index'
-		));
-endif;
-else:
-	throw new MethodNotAllowedException();
-endif;    
+				$this->redirect(array(
+					'controller' => 'fletes',
+					'action' => 'index'
+				));
+			}
+		} else {
+			throw new MethodNotAllowedException();
+		}
 	}
 }
 ?>

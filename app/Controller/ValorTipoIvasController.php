@@ -39,7 +39,7 @@ class ValorTipoIvasController extends AppController {
 	//si es un edit, hay que rellenar el id, ya que
 	//si no se hace, al guardar el edit, se va a crear
 	//un _nuevo_ registro, como si fuera un add
-	if (!empty($id)) $this->ValorTipoIva->id = $id; 
+	if (!empty($id)) $this->ValorTipoIva->id = $id;
 	if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
 	    $this->request->data['ValorTipoIva']['tipo_iva_id'] = $this->params['named']['from_id'];
 	    if($this->ValorTipoIva->save($this->request->data)){
@@ -57,7 +57,7 @@ class ValorTipoIvasController extends AppController {
 	}
     }
 
-    public function delete($id = null) { 
+    public function delete($id = null) {
 	if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
 	if ($this->ValorTipoIva->delete($id)){
 	    $this->Session->setFlash('Valor borrado');

@@ -279,7 +279,7 @@ class OperacionesController extends AppController {
 		//	$this->render('form');
 	}
 
-	//// AQUI EMPIEZA EL FORM ()   
+	//// AQUI EMPIEZA EL FORM ()
 
 	public function add() {
 		if (!isset($this->params['named']['from_id'])) {
@@ -311,7 +311,7 @@ class OperacionesController extends AppController {
 				),
 				'recursive' => 1
 			)
-		);	
+		);
 		//reindexamos los asociados por codigo contable
 		$asociados = Hash::combine($asociados, '{n}.Empresa.codigo_contable', '{n}');
 		ksort($asociados);
@@ -500,11 +500,11 @@ class OperacionesController extends AppController {
 		//Tenemos que hacer un array con name =>, value => para poder
 		//usar el mismo valor para varias opciones del select.
 		//Con un array simple no funciona, no se puede usar la misma clave
-		//varias veces. 
+		//varias veces.
 		//si $precio_fletes == null evitar acabar con una variable null en el form.ctp
 		$fletes = array();
 		foreach($precio_fletes as &$precio_flete) { //usar &$ para que funcione el unset
-			$fletes[] = array( 
+			$fletes[] = array(
 				'name' => $precio_flete['Flete']['Naviera']['nombre_corto'].'('
 				.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
 				.$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
@@ -560,7 +560,7 @@ class OperacionesController extends AppController {
 					));
 				}else{
 					$this->Flash->set('Operación NO guardada');
-				} 
+				}
 			}else{
 			/*	if($this->Operacion->save($this->request->data)){
 					$this->Flash->set('Operación modificada');
@@ -575,7 +575,7 @@ class OperacionesController extends AppController {
 		}else{//es un GET
 			$this->request->data = $this->Operacion->read(null, $id);
 		}
-	} 
+	}
 
 	public function view($id = null) {
 		//el id y la clase de la entidad de origen vienen en la URL
@@ -621,7 +621,7 @@ class OperacionesController extends AppController {
 
 		$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
 		$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
-		$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);	
+		$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);
 
 		//Líneas de reparto
 		if (!empty($operacion['AsociadoOperacion'])) {
@@ -633,7 +633,7 @@ class OperacionesController extends AppController {
 					'Nombre' => $linea['Asociado']['nombre_corto'],
 					'Cantidad' => $linea['cantidad_embalaje_asociado'],
 					'Peso' => $peso
-				);	
+				);
 			}
 			$columnas_reparto = array_keys($lineas_reparto[0]);
 			//indexamos el array por el codigo de asociado
@@ -660,7 +660,7 @@ class OperacionesController extends AppController {
 
 	public function index_trafico() {
 		$this->index();
-		$this->set('action', $this->action);	
+		$this->set('action', $this->action);
 		$this->render('index');
 	}
 
@@ -791,7 +791,7 @@ class OperacionesController extends AppController {
 		$dia = substr($fecha,8,2);
 		$mes = substr($fecha,5,2);
 		$anyo = substr($fecha,0,4);
-		$this->set('fecha_transporte', $dia.'-'.$mes.'-'.$anyo);		
+		$this->set('fecha_transporte', $dia.'-'.$mes.'-'.$anyo);
 		$this->set('embalaje', $embalaje);
 		$this->loadModel('Calidad');
 		//mysql almacena la fecha en formato ymd
@@ -817,7 +817,7 @@ class OperacionesController extends AppController {
 					)
 				)
 			)
-		);	
+		);
 
 		//ahora el precio que facturamos por asociado
 /*  MIRAR ATENTAMENTE PARA CAMBIAR EL CóDIGO POR ESTO SOLO
@@ -882,7 +882,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 
 			$total_sacos += $linea['cantidad_embalaje_asociado'];
 			$total_peso += $peso;
-			$total_sacos_retirados += $cantidad_retirado; 
+			$total_sacos_retirados += $cantidad_retirado;
 			$total_peso_retirado += $peso_retirado;
 			$total_pendiente += $pendiente;
 		}
@@ -890,7 +890,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		ksort($lineas_retirada);
 		$this->set('lineas_retirada',$lineas_retirada);
 		$this->set('total_sacos',$total_sacos);
-		$this->set('total_peso',$total_peso);	
+		$this->set('total_peso',$total_peso);
 		$this->set('total_sacos_retirados',$total_sacos_retirados);
 		$this->set('total_peso_retirado',$total_peso_retirado);
 		$this->set('total_pendiente',$total_pendiente);
