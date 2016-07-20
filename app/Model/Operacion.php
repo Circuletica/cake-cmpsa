@@ -1,6 +1,8 @@
 <?php
 class Operacion extends AppModel {
 	public $recursive = 2;
+	
+	public $action_view;
 
 	public $displayField = 'referencia';
 

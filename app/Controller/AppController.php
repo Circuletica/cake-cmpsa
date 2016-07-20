@@ -208,7 +208,11 @@ class AppController extends Controller {
 
     public function filtroListado() { //FILTRO-BUSCADOR
         //la página a la que redirigimos después de mandar  el formulario de filtro
-        $url['action'] = 'index';
+        //global $action_view;
+       
+        debug($this->action_view);
+        //$url['action'] = $action_view;
+        //$url['action']= 'index';
         //construimos una URL con los elementos de filtro, que luego se usan en el paginator
         //la URL final tiene ese aspecto:
         //http://gestion.gargantilla.net/controller/index/Search.referencia:mireferencia/Search.id:3
@@ -218,7 +222,7 @@ class AppController extends Controller {
                 if ($vv) {$url[$k.'.'.$kk]=strtr($vv,'/','_');}
             }
         }
-        $this->redirect($url,null,true);
+       // $this->redirect($url,null,true);
     }
 
     public function filtroPaginador($criterios) {

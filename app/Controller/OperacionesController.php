@@ -1,9 +1,15 @@
 <?php
 class OperacionesController extends AppController {
+	 
+	//var $action_view = '';
+
 
 	public function index() {
 		$this->set('action', $this->action);	//Se usa para tener la misma vista
-
+	
+		$this->Operacion->action_view = 'hola';
+		debug($this->action_view);
+		
 		$this->Operacion->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
 		$this->paginate['order'] = array('Operacion.referencia' => 'asc');
 		$this->paginate['recursive'] = 2;

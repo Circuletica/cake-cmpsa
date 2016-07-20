@@ -1,6 +1,6 @@
-  <?php echo $this->Form->create('Operacion', array('action'=>'filtroListado'));?>
+  <?php 
+  echo $this->Form->create('Operacion', array('action'=>'filtroListado'));?>
   <?php
-
   echo $this->Form->input('Search.referencia');
   echo $this->Form->input('Search.contrato_referencia', array(
 	  'label' => 'Contrato',
@@ -17,7 +17,7 @@
   <div class="formuboton">
     <ul>
       <li><?php
-    echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>'index'), array('escape'=>false));
+    echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>$action), array('escape'=>false));
   ?>
       </li>
       <li style="margin: 0">
