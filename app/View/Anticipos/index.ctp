@@ -23,7 +23,8 @@ foreach($anticipos as $anticipo) {
 	$anticipo['Asociado']['nombre_corto'],
 	$anticipo['Banco']['nombre_corto'],
 	$anticipo['Anticipo']['importe'],
-	$this->Button->view('anticipos',$anticipo['Anticipo']['id'])
+	//$this->Button->view('anticipos',$anticipo['Anticipo']['id'])
+	$this->Button->view('financiaciones',$anticipo['Operacion']['id'])
     ));
 }
 echo "</table>\n";

@@ -93,7 +93,17 @@ class AnticiposController extends AppController {
 		$operaciones = $this->Anticipo->AsociadoOperacion->Operacion->find(
 			'list',
 			array(
-				'order' => array('Operacion.referencia' => 'ASC')
+				'order' => array('Operacion.referencia' => 'ASC'),
+				'joins' => array( // solo las operaciones que tienen financiacion
+					array(
+						'table' => 'financiaciones',
+						'alias' => 'Financiacion',
+						'type' => 'RIGHT',
+						'conditions' => array(
+							'Operacion.id = Financiacion.id'
+						)
+					)
+				)
 			)
 		);
 		$this->set(compact('operaciones'));
@@ -112,7 +122,10 @@ class AnticiposController extends AppController {
 		foreach ($lista_operaciones as &$operacion) {
 			unset($operacion['Operacion']);
 			foreach ($operacion['AsociadoOperacion'] as $asociado) {
-				$operacion[$asociado['asociado_id']] = $asociado['Asociado']['nombre_corto'];
+				$operacion['Asociado'][] = array(
+					'id' => $asociado['asociado_id'],
+					'nombre_corto' => $asociado['Asociado']['nombre_corto']
+				);
 			}
 			unset($operacion['AsociadoOperacion']);
 		}
@@ -139,10 +152,10 @@ class AnticiposController extends AppController {
 			$asociado_operacion_id = $asociado_operacion['AsociadoOperacion']['id'];
 			$this->request->data['Anticipo']['asociado_operacion_id'] = $asociado_operacion_id;
 			if ($this->Anticipo->save($this->request->data)) {
-				$this->Flash->set('Anticipo guardado');
+				$this->Flash->success('Anticipo guardado');
 				$this->History->Back(-1);
 			} else {
-				$this->Flash->set('Anticipo NO guardado');
+				$this->Flash->error('Anticipo NO guardado');
 			}
 		} else { //es un GET
 			$this->request->data = $this->Anticipo->read(null, $id);
@@ -155,10 +168,10 @@ class AnticiposController extends AppController {
 			throw new MethodNotAllowedException('URL mal formada o incompleta');
 		}
 		if($this->Anticipo->delete($id)) {
-			$this->Flash->set('Anticipo borrado');
+			$this->Flash->success('Anticipo borrado');
 			$this->History->Back(0);
 		} else {
-			$this->Flash->set('Anticipo NO borrado');
+			$this->Flash->error('Anticipo NO borrado');
 			$this->History->Back(0);
 		}
 	}
