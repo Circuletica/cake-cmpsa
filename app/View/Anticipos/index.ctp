@@ -4,6 +4,7 @@ $this->assign('class', 'Anticipo');
 $this->assign('add_button', 1);
 
 $this->start('filter');
+echo $this->element('filtroanticipo');
 $this->end();
 
 $this->start('main');
@@ -23,7 +24,6 @@ foreach($anticipos as $anticipo) {
 	$anticipo['Asociado']['nombre_corto'],
 	$anticipo['Banco']['nombre_corto'],
 	$anticipo['Anticipo']['importe'],
-	//$this->Button->view('anticipos',$anticipo['Anticipo']['id'])
 	$this->Button->view('financiaciones',$anticipo['Operacion']['id'])
     ));
 }

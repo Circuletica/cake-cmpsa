@@ -236,7 +236,7 @@ class AppController extends Controller {
         //$passedArgs['Search.palabras'] = mipalabra
         //$passedArgs['Search.id'] = 3
         foreach ($criterios as $tabla => $campos) {
-            foreach ($campos as $nombre => $elementos) {
+            foreach ($campos as $campo => $elementos) {
                 $columna = $elementos['columna'];
                 if (isset($this->passedArgs['Search.'.$columna])) {
                     //en la URL (filtroListado()) sustituimos '_' por '/' ahora, al revés
@@ -248,9 +248,9 @@ class AppController extends Controller {
                     }
                     $this->request->data['Search'][$columna] = $valor;
                     if (!empty($elementos['lista'])) {
-                        $titulo[] = $nombre.': '.$elementos['lista'][$valor];
+                        $titulo[] = $campo.': '.$elementos['lista'][$valor];
                     } else {
-                        $titulo[] = $nombre.': '.$valor;
+                        $titulo[] = $campo.': '.$valor;
                     }
                 }
             }

@@ -13,7 +13,6 @@
     echo $this->element('filtrocontrato'); //Elemento del buscador de contrato
     echo "<p>\n";
     echo "<hr>\n";
-    echo $this->element('desplegabledatos'); //Elemento del Desplegable Datos
 ?>
 	</div>
 	<div class='index'>
