@@ -425,7 +425,7 @@ input, textarea {
 	font-size: 110%;
 	font-family: "frutiger linotype", "verdana", sans-serif;
 	padding: 0.1%;
-	width:98%;
+	width:90%;
 	display:inline; /*Formulario visto en línea*/
 }
 select {

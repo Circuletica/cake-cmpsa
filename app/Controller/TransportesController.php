@@ -2,52 +2,83 @@
 class TransportesController extends AppController {
 
     public function index() {
-
+    $this->set('action', $this->action);	//Se usa para tener la misma vista	
+   	$this->pdfConfig = array(
+   		'filename' => 'info_embarque',
+   		'paperSize' => 'A4',
+   		'orientation' => 'landscape'
+  	);
+   	if($this->action == 'index'){
+		$this->paginate['conditions'] = array(
+	   	 'Transporte.fecha_despacho_op IS NOT NULL'
+		);
+	}elseif ($this->action == 'suplemento'){
+		$this->paginate['conditions'] = array(
+	   	 'Transporte.suplemento_seguro IS NOT NULL',
+	   	 'Transporte.fecha_reclamacion IS NULL'
+		);
+	}
 	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
-	$this->paginate['recursive'] = 2;
-	$this->paginate['condition'] = array(
-	    'Transporte.fecha_despacho_op'=> NULL
-	);
+	$this->paginate['recursive'] = 3;
+	//$this->paginate['condition'] = array(
+	//    'Transporte.fecha_despacho_op'=> NULL
+	//);
 	$this->paginate['contain'] = array(
-	    'Operacion' => array(
-		'fields'=> array(
-		    'id',
-		    'referencia',
-		    'contrato_id'
+		'Calidad',
+		'Operacion' => array(
+			'fields'=> array(
+			    'id',
+			    'referencia',
+			    'contrato_id'
+			)
 		),
-		'PesoOperacion'=> array(
-		    'fields' =>array(
-			'peso',
-			'cantidad_embalaje'
-		    )
-		),
+		/*'PesoOperacion',*/
 		'Contrato'=>array(
 		    'fields'=> array(
 			'id',
+			'referencia',
 			'fecha_transporte',
 			'si_entrega',
-		    ),
-		    'Proveedor'=>array(
-			'id',
-			'nombre_corto'
-		    ),
-		    'Calidad' => array(
-			'fields' =>(
+			'proveedor_id',
+			'calidad_id'
+		    )
+		),
+		'Proveedor',
+	    'PuertoDestino' => array(
+			'fields' => array(
+			    'id',
 			    'nombre'
 			)
-		    )
-		)
-	    ),
-	    'PuertoDestino' => array(
-		'fields' => array(
-		    'id',
-		    'nombre'
+	    )
+	);
+
+	$this->Transporte->bindModel(
+	    array(
+		'belongsTo' => array(
+		    'Contrato' => array(
+				'foreignKey' => false,
+				'conditions' => array('Operacion.contrato_id = Contrato.id')
+		    ),
+		    'Calidad' => array(
+				'foreignKey' => false,
+				'conditions' => array('Contrato.calidad_id = Calidad.id')
+			),
+			/*'PesoOperacion' => array(
+				'foreignKey' => false,
+				'conditions' => array('Contrato.id = Operacion.contrato_id')
+			),*/
+			'Proveedor' => array(
+				'className' => 'Empresa',
+				'foreignKey' => false,
+				'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+			)			
 		)
 	    )
 	);
 
 	$transportes = $this->paginate();
 	$this->set(compact('transportes'));
+
     }
 
     public function view($id = null) {
@@ -410,9 +441,9 @@ class TransportesController extends AppController {
 	}
     }
 
-    public function info_embarque() {
+    public function embarque() {
 	$this->pdfConfig = array(
-	    'filename' => 'info_embarque',
+	    'filename' => 'embarque',
 	    'paperSize' => 'A4',
 	    'orientation' => 'landscape',
 	);
@@ -427,38 +458,38 @@ class TransportesController extends AppController {
 	);
 	$this->paginate['contain'] = array(
 	    'Operacion' => array(
-		'fields'=> array(
-		    'id',
-		    'referencia',
-		    'contrato_id',
-		)
+			'fields'=> array(
+			    'id',
+			    'referencia',
+			    'contrato_id',
+			)
 	    ),
 	    'PesoOperacion'=> array(
-		'fields' =>array(
-		    'id',
-		    'peso',
-		    'cantidad_embalaje'
-		)
+			'fields' =>array(
+			    'id',
+			    'peso',
+			    'cantidad_embalaje'
+			)
 	    ),
 	    'Contrato'=>array(
-		'fields'=> array(
-		    'id',
-		    'fecha_transporte',
-		    'si_entrega',
-		    'proveedor_id'
-		)
+			'fields'=> array(
+			    'id',
+			    'fecha_transporte',
+			    'si_entrega',
+			    'proveedor_id'
+			)
 	    ),
 	    'Proveedor'=>array(
-		'fields'=>array(
-		    'id',
-		    'nombre_corto'
-		)
+			'fields'=>array(
+			    'id',
+			    'nombre_corto'
+			)
 	    ),
 	    'PuertoDestino' => array(
-		'fields' => array(
-		    'id',
-		    'nombre'
-		)
+			'fields' => array(
+			    'id',
+			    'nombre'
+			)
 	    )
 	);
 
@@ -487,19 +518,22 @@ class TransportesController extends AppController {
 	$this->set('transportes',$this->paginate());
 
     }
-    public function info_despacho() {
-	//	$this ->info_embarque();
-	//	$this ->render('info_despacho');
-	$this->pdfConfig = array(
+   /* public function info_despacho() {
+    $this->index();
+	$this->set('action', $this->action);
+	$this->render('index');
+	debug($action);
+
+	/*$this->pdfConfig = array(
 	    'filename' => 'info_embarque',
 	    'paperSize' => 'A4',
 	    'orientation' => 'landscape',
-	);
+	);*/
 
 	//$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
 	//$this->paginate['recursive'] = 3;
 	//$this->Transporte->virtualFields['calidad']=$this->Transporte->Operacion->Contrato->Calidad->virtualFields['nombre'];
-	$this->paginate['conditions'] = array(
+	/*$this->paginate['conditions'] = array(
 	    'Transporte.fecha_despacho_op IS NOT NULL'
 	);
 
@@ -603,6 +637,18 @@ class TransportesController extends AppController {
 
 	//pasamos los datos a la vista
 	$this->set(compact('despachos','title'));
+    }*/
+
+    public function suplemento() {
+    	$this->index();
+    	$this->set('action', $this->action);
+    	$this->render('index');
+    }
+
+    public function pendiente() {
+    	$this->index();
+    	$this->set('action', $this->action);
+    	$this->render('index');
     }
 
     public function reclamacion($id = null) {

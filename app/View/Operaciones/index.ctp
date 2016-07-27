@@ -8,7 +8,18 @@ $this->assign('add_button', 0);
 $this->start('filter');
 		echo $this->element('filtrooperacion'); //Elemento del Filtro de operaciones
 		if ($action == 'index_trafico') {  //Departamento de tráfico
-			echo '<br>';
+			echo '<br><br>';
+			echo '<h3>Informes</h3>';
+			echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Despachos',
+		  		array(
+		  			'action' =>'index',
+		  			'controller' => 'transportes'
+		  			),
+		  		array(
+		  			'escape'=>false,
+		  			'title'=>'Informe de despachos'
+		  			)
+		  		);			
 		 	echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info embarques',
 		 		array(
 		 			'action' =>'info_embarque',
@@ -18,17 +29,7 @@ $this->start('filter');
 		 			'escape'=>false,
 		 			'title'=>'Informe de situación'
 		 			)
-		 		);
-		  	echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info despachos',
-		  		array(
-		  			'action' =>'info_despacho',
-		  			'controller' => 'transportes'
-		  			),
-		  		array(
-		  			'escape'=>false,
-		  			'title'=>'Informe de despachos'
-		  			)
-		  		);
+		 		);		  	
 		  	echo  $this->Html->link('<i class="fa fa-chevron-right fa-lg"></i> Info suplemento sin recl.',
 		  		array(
 		  			'action' =>'situacion',

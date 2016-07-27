@@ -17,7 +17,7 @@
   <div class="formuboton">
     <ul>
       <li><?php
-    echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>$action), array('escape'=>false));
+    echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>'index'), array('escape'=>false));
   ?>
       </li>
       <li style="margin: 0">

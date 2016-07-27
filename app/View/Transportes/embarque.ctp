@@ -9,14 +9,14 @@
  <?php //PARA INDEX
  echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
     array(
-      'action' => 'info_embarque',
+      'action' => 'embarque',
       'ext' => 'pdf'),
     array(
       'escape'=>false,
       'target' => '_blank',
       'title'=>'Exportar a PDF')
   );
- echo " ".$this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i>',array(
+ /*echo " ".$this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i>',array(
     'controller'=>'transportes',
     'action'=>'export'
     ),
@@ -25,7 +25,7 @@
       'escape'=>false,
       'title'=>'Descargar la información a un archivo CSV'
       )
-    );  
+    );  */
 ?>
 </div>
 <?php
