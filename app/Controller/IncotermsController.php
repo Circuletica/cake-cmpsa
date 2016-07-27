@@ -16,11 +16,11 @@ class IncotermsController extends AppController {
 		if($this->request->is('post')):
 			if($this->Incoterms->save($this->request->data) ):
 				$this->Session->setFlash('Incoterm guardado');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => $this->params['named']['from_action']));
-			endif;
-		endif;
+		$this->redirect(array(
+			'controller' => $this->params['named']['from_controller'],
+			'action' => $this->params['named']['from_action']));
+endif;
+endif;
 	}
 	public function edit($id = null) {
 		$this->Incoterms->id = $id;

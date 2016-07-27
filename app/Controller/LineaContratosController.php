@@ -30,7 +30,7 @@ class LineaContratosController extends AppController {
 				'CanalCompra.nombre',
 				'CanalCompra.divisa',
 				'Calidad.nombre')
-		));
+			));
 		$this->set('contrato',$contrato);
 		$embalajes_contrato = $this->LineaContrato->Contrato->ContratoEmbalaje->find('all', array(
 			'conditions' => array('ContratoEmbalaje.contrato_id' => $this->params['named']['from_id']),
@@ -39,9 +39,9 @@ class LineaContratosController extends AppController {
 				'Embalaje.nombre',
 				'ContratoEmbalaje.cantidad_embalaje',
 				'ContratoEmbalaje.peso_embalaje_real'
-				)
 			)
-		);
+		)
+	);
 		//hace falta para el desplegable de 'Embalaje'
 		//recombinamos el array anterior que quedaba asi:
 		//Array
@@ -78,37 +78,37 @@ class LineaContratosController extends AppController {
 		$asociados = $this->LineaContrato->AsociadoLineaContrato->Asociado->find('list', array(
 			'fields' => array('Asociado.id','Empresa.nombre_corto'),
 			'recursive' => 1
-			)
-		);
+		)
+	);
 		$this->set('asociados', $asociados);
 
 		if($this->request->is('post')):
 			//al guardar la linea, se incluye a qué contrato pertenece
 			$this->request->data['LineaContrato']['contrato_id'] = $this->params['named']['from_id'];
-			//primero guardamos los datos de LineaContrato
-			if($this->LineaContrato->save($this->request->data)):
-				//luego las cantidades de cada asociado en AsociadoLineaContrato
-				foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
-					if ($cantidad != NULL) {
-						$this->request->data['AsociadoLineaContrato']['linea_contrato_id'] = $this->LineaContrato->id;
-						$this->request->data['AsociadoLineaContrato']['asociado_id'] = $asociado_id;
-						$this->request->data['AsociadoLineaContrato']['cantidad_embalaje_asociado'] = $cantidad;
-						//$cantidad_embalaje_linea_contrato += $cantidad;
-						if (!$this->LineaContrato->AsociadoLineaContrato->saveAll($this->request->data['AsociadoLineaContrato']))
-							throw New Exception('error en guardar AsociadoLineaContrato');
-					}
+		//primero guardamos los datos de LineaContrato
+		if($this->LineaContrato->save($this->request->data)):
+			//luego las cantidades de cada asociado en AsociadoLineaContrato
+			foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
+				if ($cantidad != NULL) {
+					$this->request->data['AsociadoLineaContrato']['linea_contrato_id'] = $this->LineaContrato->id;
+					$this->request->data['AsociadoLineaContrato']['asociado_id'] = $asociado_id;
+					$this->request->data['AsociadoLineaContrato']['cantidad_embalaje_asociado'] = $cantidad;
+					//$cantidad_embalaje_linea_contrato += $cantidad;
+					if (!$this->LineaContrato->AsociadoLineaContrato->saveAll($this->request->data['AsociadoLineaContrato']))
+						throw New Exception('error en guardar AsociadoLineaContrato');
 				}
-				//falta aquí guardar el peso total de la linea de contrato
-				//y el tipo de embalaje
-				//.....
-				$this->Session->setFlash('Linea de Contrato guardada');
-				//volvemos al contrato a la que pertenece la linea creada
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => 'view',
-					$this->params['named']['from_id']));
-			endif;
-		endif;
+			}
+		//falta aquí guardar el peso total de la linea de contrato
+		//y el tipo de embalaje
+		//.....
+		$this->Session->setFlash('Linea de Contrato guardada');
+		//volvemos al contrato a la que pertenece la linea creada
+		$this->redirect(array(
+			'controller' => $this->params['named']['from_controller'],
+			'action' => 'view',
+			$this->params['named']['from_id']));
+endif;
+endif;
 	}
 	public function view($id = null) {
 		//el id y la clase de la entidad de origen vienen en la URL
@@ -136,20 +136,20 @@ class LineaContratosController extends AppController {
 			)
 		);
 		$this->set('embalaje', $embalaje);
-	
+
 	}
 	public function delete($id = null) {
 		if (!$id or $this->request->is('get')) :
-    			throw new MethodNotAllowedException();
-		endif;
-		if ($this->LineaContrato->delete($id)):
-			$this->Session->setFlash('Línea de contrato borrada');
-		$this->redirect(array(
-			'controller' => $this->params['named']['from_controller'],
-			'action'=>'view',
-			$this->params['named']['from_id']
-		));
-		endif;
+			throw new MethodNotAllowedException();
+endif;
+if ($this->LineaContrato->delete($id)):
+	$this->Session->setFlash('Línea de contrato borrada');
+$this->redirect(array(
+	'controller' => $this->params['named']['from_controller'],
+	'action'=>'view',
+	$this->params['named']['from_id']
+));
+endif;
 	}
 }
 ?>

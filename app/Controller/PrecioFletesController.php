@@ -20,19 +20,19 @@ class PrecioFletesController extends AppController {
 			array(
 				'conditions' => array('Flete.id' => $from_id),
 				'recursive' => -1
-		));
+			));
 		$this->set('flete',$flete);
 		if($this->request->is('post')):
 			$this->request->data['PrecioFlete']['flete_id'] = $from_id;
-			if($this->PrecioFlete->save($this->request->data) ):
-				$this->Session->setFlash('Precio de flete guardado');
-				$this->redirect(array(
-					'controller' => $from_controller,
-					'action' => 'view',
-					$from_id
-				));
-			endif;
-		endif;
+		if($this->PrecioFlete->save($this->request->data) ):
+			$this->Session->setFlash('Precio de flete guardado');
+		$this->redirect(array(
+			'controller' => $from_controller,
+			'action' => 'view',
+			$from_id
+		));
+endif;
+endif;
 	}
 
 	//el $id es del precio del flete
@@ -40,15 +40,15 @@ class PrecioFletesController extends AppController {
 		if($this->request->is('post')):
 			if($this->PrecioFlete->delete($id)):
 				$this->Session->setFlash('Precio de flete borrado');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => 'view',
-					$this->params['named']['from_id']
-				));
-			endif;
-		else:
-			throw new MethodNotAllowedException();
-		endif;
+		$this->redirect(array(
+			'controller' => $this->params['named']['from_controller'],
+			'action' => 'view',
+			$this->params['named']['from_id']
+		));
+endif;
+else:
+	throw new MethodNotAllowedException();
+endif;
 	}
 
 	public function edit($id = null) {
@@ -65,7 +65,7 @@ class PrecioFletesController extends AppController {
 			array(
 				'conditions' => array('Flete.id' => $from_id),
 				'recursive' => -1
-		));
+			));
 		$this->set('flete',$flete);
 		$this->PrecioFlete->id = $id;
 		if($this->request->is('get')):
@@ -73,14 +73,14 @@ class PrecioFletesController extends AppController {
 		else:
 			if($this->PrecioFlete->save($this->request->data)):
 				$this->Session->setFlash('Precio de flete modificado');
-				$this->redirect(array(
-					'controller' => $from_controller,
-					'action' => 'view',
-					$from_id));
+		$this->redirect(array(
+			'controller' => $from_controller,
+			'action' => 'view',
+			$from_id));
 			else:
 				$this->Session->setFlash('No se ha podido guardar!');
-			endif;
-		endif;
+endif;
+endif;
 	}
 }
 ?>
