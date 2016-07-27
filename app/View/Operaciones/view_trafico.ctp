@@ -29,6 +29,19 @@ $this->end();
 
 $this->start('filter');
 	echo $this->element('filtrooperacion');
+	echo '<br><br>';
+	echo  $this->Html->link(
+	    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío distribución',
+	    array(
+		'action' =>'envio_asociados',
+		$operacion['Operacion']['id']
+	    ),
+	    array(
+		'escape'=>false,
+		'title'=>'Envío distribución asociados',
+	    )
+	);
+
 $this->end();
 
 $this->start('main');

@@ -1050,6 +1050,97 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		//pasamos los datos a la vista
 		$this->set(compact('operaciones','title'));
 	}
+	    public function envio_asociados ($id) {
+        //Necesario para volcar los datos en el PDF
+        
+        //Contactos de los asociados
+        $this->loadModel('Contacto');
+        $contactos = $this->Contacto->find(
+            'all',
+            array(
+                'conditions' =>array(
+                    'departamento_id' => array(2,4)
+                ),
+                'order' => array('Empresa.nombre_corto' => 'asc')
+            )
+        );
+        $this->set('contactos',$contactos);
+
+        //Usuarios de la CMPSA
+        $this->loadModel('Usuario');
+        $usuarios = $this->Usuario->find(
+            'all',
+            array(
+                'conditions' =>array(
+                    'departamento_id' => array(2,4)
+                ),
+                'contain'=>array(
+                    'Departamento'=>array(
+                        'fields'=>array(
+                            'nombre'
+                        )
+                    )
+                )
+            )
+        );
+        $this->set('usuarios',$usuarios);
+
+
+        if (!empty($id)) $this->LineaMuestra->id = $id;
+        if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
+            $this->request->data = $this->LineaMuestra->read();//Cargo los datos
+        }else{//es un POST
+            if(empty($this->request->data['email'])){
+                $this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
+            }else{
+                $this->LineaMuestra->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
+
+                foreach ($this->data['email'] as $email){
+                    $lista_email[]= $email;
+                }
+                if(!empty($this->data['trafico'])){
+                    foreach ($this->data['trafico'] as $email){
+                        $lista_bcc[]= $email;
+                    }
+                }
+                //GENERAMOS EL PDF
+                App::uses('CakePdf', 'CakePdf.Pdf');
+                require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+                $CakePdf = new CakePdf();
+                $CakePdf->template('distrubucion');
+                $CakePdf->viewVars(array('operacion'=>$operacion));
+                // Get the PDF string returned
+                //$pdf = $CakePdf->output();
+                // Or write it to file directly
+                $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS . $operacion['referencia'].'_'.date('Ymd').'.pdf');
+
+                //ENVIAMOS EL CORREO CON EL INFORME
+                $Email = new CakeEmail(); //Llamamos la instancia de email
+                $Email->config('trafico'); //Plantilla de email.php
+                $Email->from(array('trafico@cmpsa.com' => 'Tráfico CMPSA'));
+                $Email->bcc($lista_email);
+                //$Email->readReceipt($lista_bcc); //Acuse de recibo
+                if(!empty($lista_bcc)){
+                    $Email->bcc($lista_bcc);
+                }
+                $Email->subject('Distrubución sacos asociados '.$operacion['referencia'].' / ficha '.$linea_muestra['Operacion']['referencia']);
+                $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS . $operacion['referencia'].'_'.date('Ymd').'.pdf');
+                $Email->send('Adjuntamos la distribución de la operación '.$operacion['referencia']);
+                $this->Flash->set('Distribición a los asociados enviado con éxito.');
+                $this->redirect(array(
+                    'action'=>'view_trafico',
+                    'controller' =>'Operaciones',
+                    $operacion['Operacion']['id']
+                )
+            );
+            }
+        }
+
+
+
+
+
+
 
 }
 
