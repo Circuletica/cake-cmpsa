@@ -10,7 +10,7 @@ class AsociadosController extends AppController {
 
 	public function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado Asociado/view ');
+			$this->Flash->error('URL mal formado Asociado/view ');
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->viewCompany($this->class,$id);
@@ -45,7 +45,7 @@ class AsociadosController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Session->setFlash('error en URL');
+			$this->Flash->error('error en URL');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => Inflector::tableize($this->class)

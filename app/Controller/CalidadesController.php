@@ -21,7 +21,7 @@ class CalidadesController extends AppController {
 
 	public function edit( $id = null) {
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado');
+			$this->Flash->set('URL mal formado');
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->form($id);
@@ -37,7 +37,7 @@ class CalidadesController extends AppController {
 		}
 		if (!empty($this->request->data)){  //es un POST
 			if($this->Calidad->save($this->request->data)) {
-				$this->Session->setFlash('Calidad guardada');
+				$this->Flash->success('Calidad guardada');
 				$this->redirect(
 					array(
 						'action' =>
@@ -53,7 +53,7 @@ class CalidadesController extends AppController {
 					)
 				);
 			} else {
-				$this->Session->setFlash('Calidad NO guardada');
+				$this->Flash->error('Calidad NO guardada');
 			}
 		} else { //es un GET
 			$this->request->data= $this->Calidad->read(null, $id);
@@ -61,13 +61,18 @@ class CalidadesController extends AppController {
 	}
 
 	public function delete($id = null) {
-		if (!$id or $this->request->is('get')) {
-			throw new MethodNotAllowedException();
+		$this->request->allowMethod('post');
+
+		$this->Calidad->id = $id;
+		if (!$this->Calidad->exists()) {
+			throw new NotFoundException(__('Calidad inválida'));
 		}
 		if ($this->Calidad->delete($id)) {
-			$this->Session->setFlash('Calidad borrada');
-			$this->redirect(array('action'=>'index'));
+			$this->Flash->success('Calidad borrada');
+			return $this->History->Back(0);
 		}
+		$this->Flash->error('Calidad NO borrada');
+		return $this->History->Back(0);
 	}
 }
 ?>

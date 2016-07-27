@@ -32,7 +32,7 @@ class AppController extends Controller {
 	var $scaffold = 'admin';
 
 	public $paginate = array(
-		'limit' => 20
+		'limit' => 15
 	);
 
 	public $helpers = array(
@@ -40,9 +40,37 @@ class AppController extends Controller {
 		'Form',
 		'Date',
 		'Button',
+		'Csv'
 	);
 
-	public $components = array('DebugKit.Toolbar','Session','RequestHandler','Flash');
+	public $components = array(
+		'DebugKit.Toolbar',
+		'Session',
+		'RequestHandler',
+		'Flash',
+		'History',
+		'Auth' => array(
+			'loginRedirect' => array(
+				'controller' => 'operaciones',
+				'action' => 'index'
+			),
+			'logoutRedirect' => array(
+				'controller' => 'pages',
+				'action' => 'display',
+				'home'
+			),
+			'authenticate' => array(
+				'Form' => array(
+					'passwordHasher' => 'Blowfish'
+				)
+			)
+		)
+	);
+
+	public function beforeFilter() {
+		//        $this->Auth->allow('index');
+		$this->Auth->allow('display');
+	}
 
 	//cambia el 'hasOne' del Model por un 'belongsTo'
 	//para que el LEFT JOIN de 3r nivel de la query se haga
@@ -77,6 +105,9 @@ class AppController extends Controller {
 	public function viewCompany($class,$id) {
 		$this->{$this->class}->recursive = 3;
 		$empresa = $this->{$this->class}->findById($id);
+		if (!$empresa) {
+			throw new NotFoundException(__('No existe '.$class.' con tal id'));
+		}
 		$this->set('empresa',$empresa);
 		$this->set('referencia', $empresa['Empresa']['nombre_corto']);
 		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
@@ -96,13 +127,16 @@ class AppController extends Controller {
 		if (!empty($id)) {
 			$this->$class->id = $id;
 			$this->$class->Empresa->id = $id;
-			$empresa = $this->$class->Empresa->find('first',array(
-				'conditions' => array( 'Empresa.id' => $id)
-			));
+			$empresa = $this->$class->Empresa->find(
+				'first',
+				array(
+					'conditions' => array( 'Empresa.id' => $id)
+				)
+			);
 			$this->set('object', $empresa['Empresa']['nombre_corto']);
 		}
 
-		if (!empty($this->request->data)) { //es un POST
+		if ($this->request->is('post')) {
 			if ($this->$class->Empresa->save($this->request->data)) {
 				$this->request->data[$class]['id'] = $this->$class->Empresa->id;
 				if($this->$class->save($this->request->data)) {
@@ -119,14 +153,18 @@ class AppController extends Controller {
 	}
 
 	public function deleteCompany($class, $id) {
-		if (!$id or $this->request->is('get')) {
-			throw new MethodNotAllowedException();
+		$this->request->allowMethod('post');
+
+		$this->$class->id = $id;
+		if (!$this->$class->exists()) {
+			throw new notFoundException(__($class.' inválida'));
 		}
-		if ($this->$class->delete($id)) {
-			$this->Session->setFlash($class.' borrado');
+		if ($this->$class->delete()) {
+			$this->Flash->success(__($class.' borrado'));
 			$this->$class->Empresa->delete($id);
-			$this->redirect(array('action'=>'index'));
+			return $this->History->Back(-1);
 		}
+		$this->Flash->error(__($class.' no borrado'));
 	}
 
 	public function iban($codigoPais,$ccc){
@@ -156,7 +194,7 @@ class AppController extends Controller {
 			'X' => '33',
 			'Y' => '34',
 			'Z' => '35' );
-		$dividendo = $ccc.$pesos[substr($codigoPais, 0 , 1)].$pesos[substr($codigoPais, 1 , 1)].'00';	
+		$dividendo = $ccc.$pesos[substr($codigoPais, 0 , 1)].$pesos[substr($codigoPais, 1 , 1)].'00';
 		$digitoControl =  98 - bcmod($dividendo, '97');
 		if(strlen($digitoControl)==1) $digitoControl = '0'.$digitoControl;
 		return $codigoPais.$digitoControl.$ccc;
@@ -170,7 +208,7 @@ class AppController extends Controller {
 		1 => 'Oferta',
 		2 => 'Embarque',
 		3 => 'Entrega'
-	);	
+	);
 
 	public function filtroListado() { //FILTRO-BUSCADOR
 		//la página a la que redirigimos después de mandar  el formulario de filtro
@@ -178,11 +216,11 @@ class AppController extends Controller {
 		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
 		//la URL final tiene ese aspecto:
 		//http://gestion.gargantilla.net/controller/index/Search.referencia:mireferencia/Search.id:3
-		foreach ($this->data as $k=>$v){ 
-			foreach ($v as $kk=>$vv){ 
+		foreach ($this->data as $k=>$v){
+			foreach ($v as $kk=>$vv){
 				//sustituimos '_' por '/' en los criterios de búsqueda
-				if ($vv) {$url[$k.'.'.$kk]=strtr($vv,'/','_');} 
-			} 
+				if ($vv) {$url[$k.'.'.$kk]=strtr($vv,'/','_');}
+			}
 		}
 		$this->redirect($url,null,true);
 	}
@@ -226,5 +264,5 @@ class AppController extends Controller {
 			return $titulo;
 		}
 	}
-
+	>>>>>>> Stashed changes
 }

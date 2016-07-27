@@ -5,9 +5,7 @@ class TransportesController extends AppController {
 
 		$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
 		$this->paginate['recursive'] = 2;
-		$this->paginate['condition'] = array(
-			'Transporte.fecha_despacho_op'=> NULL
-		);	
+		$this->paginate['condition'] = array('Transporte.fecha_despacho_op'=> NULL);	
 		$this->paginate['contain'] = array(
 			'Operacion' => array(
 				'fields'=> array(

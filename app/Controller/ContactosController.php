@@ -9,10 +9,11 @@ class ContactosController extends AppController {
 	public function add() {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$this->params['named']['from_id']) {
-			$this->Session->setFlash('URL mal formado Contactos/add '.$this->params['named']['from_controller']);
+			$this->Flash->error('URL mal formado Contactos/add '.$this->params['named']['from_controller']);
 			$this->redirect(array(
 				'controller' => $this->params['named']['from_controller'],
-				'action' => 'index'));
+				'action' => 'index'
+			));
 		}
 		$this->form();
 		$this->render('form');
@@ -20,7 +21,7 @@ class ContactosController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Session->setFlash('error en URL Contactos/edit');
+			$this->Flash->set('error en URL Contactos/edit');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => $this->params['named']['from_controller'],
@@ -45,10 +46,10 @@ class ContactosController extends AppController {
 			$contacto = $this->Contacto->findById($id);
 			$this->set('referencia', $contacto['Contacto']['nombre']);
 		}
-		if (!empty($this->request->data)){  //es un POST
+		if ($this->request->is('post','put')){  //es un POST
 			$this->request->data['Contacto']['empresa_id'] = $empresa_id;
 			if($this->Contacto->save($this->request->data)) {
-				$this->Session->setFlash('Contacto guardado');
+				$this->Flash->success('Contacto guardado');
 				$this->redirect(
 					array(
 						'action' => 'view',
@@ -57,27 +58,25 @@ class ContactosController extends AppController {
 					)
 				);
 			} else {
-				$this->Session->setFlash('Contacto NO guardado');
+				$this->Flash->error('Contacto NO guardado');
+				$this->History->Back(-1);
 			}
 		} else { //es un GET
 			$this->request->data= $this->Contacto->read(null, $id);
 		}
 	}
 
-	public function delete($id) {
+	public function delete($id = null) {
+		$this->request->allowMethod('post');
 		//el $id es del contacto, sacamos el id y la clase de empresa de la URL
-		if($this->request->is('post')){
-			if($this->Contacto->delete($id)) {
-				$this->Session->setFlash('Contacto borrado');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => 'view',
-					$this->params['named']['from_id']
-				));
-			} else {
-				throw new MethodNotAllowedException();
-			}
+		$this->Contacto->id = $id;
+		if(!$this->Contacto->exists()) throw new NotFoundException(__('Contacto inválido'));;
+		if($this->Contacto->delete()) {
+			$this->Flash->success('Contacto borrado');
+			return $this->History->Back(0);
 		}
+		$this->Flash->error('Contacto NO borrado');
+		return $this->History->Back(0);
 	}
 }
 ?>

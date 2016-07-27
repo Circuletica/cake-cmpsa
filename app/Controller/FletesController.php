@@ -175,7 +175,7 @@ class FletesController extends AppController {
 		}
 		if (!empty($this->request->data)){  //es un POST
 			if($this->Flete->save($this->request->data)) {
-				$this->Session->setFlash('Flete guardado');
+				$this->Flash->success('Flete guardado');
 				$this->redirect(
 					array(
 						'action' => 'view',
@@ -183,7 +183,7 @@ class FletesController extends AppController {
 					)
 				);
 			} else {
-				$this->Session->setFlash('Flete NO guardado');
+				$this->Flash->error('Flete NO guardado');
 			}
 		} else { //es un GET
 			$this->request->data= $this->Flete->read(null, $id);
@@ -213,18 +213,19 @@ class FletesController extends AppController {
 		$this->set('costes',$costes);
 	}
 
-	public function delete($id) {
-		if($this->request->is('post')):
-			if($this->Flete->delete($id)):
-				$this->Session->setFlash('Flete borrado');
-		$this->redirect(array(
-			'controller' => 'fletes',
-			'action' => 'index'
-		));
-endif;
-else:
-	throw new MethodNotAllowedException();
-endif;    
+	public function delete($id = null) {
+		$this->request->allowMethod('post');
+
+		$this->Flete->id = $id;
+		if($this->Flete->delete()) {
+			$this->Flash->success('Flete borrado');
+			return $this->redirect(array(
+				'controller' => 'fletes',
+				'action' => 'index'
+			));
+		}
+		$this->Flash->error(__('Flete NO borrado'));
+		return $this->History->back(0);
 	}
 }
 ?>

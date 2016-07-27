@@ -16,6 +16,11 @@ foreach($contactos as $contacto){
 		$opciones[$contacto['Contacto']['email']] = $contacto['Empresa']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 		}
 }
+<<<<<<< Updated upstream
+=======
+	$opciones['circuletica@gmail.com'] = 'circuletica@gmail.com';
+
+>>>>>>> Stashed changes
 
 	echo $this->Form->input('', array(
 		'name'=>'email',

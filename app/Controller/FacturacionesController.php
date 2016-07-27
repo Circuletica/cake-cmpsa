@@ -53,8 +53,9 @@ class FacturacionesController extends AppController {
 
 	public function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado Facturación/view');
-			$this->redirect(array('action'=>'index'));
+			//$this->Flash->set('URL mal formado Facturación/view');
+			//$this->redirect(array('action'=>'index'));
+			throw new NotFoundException('No existe tal facturación');
 		}
 		$facturacion = $this->Facturacion->find(
 			'first',
@@ -81,6 +82,11 @@ class FacturacionesController extends AppController {
 				'recursive' => 3
 			)
 		);
+		if (!$facturacion) {
+			//$this->Flash->set('URL mal formada: No existe facturacion con id: '.$id);
+			//$this->History->Back(0);
+			throw new NotFoundException('No existe tal facturación');
+		}
 		$this->set(compact('facturacion'));
 		$this->set('facturacion_id',$id);
 		$this->set('referencia',$facturacion['Operacion']['referencia']);
@@ -135,17 +141,19 @@ class FacturacionesController extends AppController {
 
 		//Se declara para acceder al PDF
 		$this->set(compact('id'));
-
 	}
 
 	public function add() {
+		if (!isset($this->params['named']['from_id'])) {
+			throw new MethodNotAllowedException('URL mal formada: from_id ausente');
+		}
 		$this->form($this->params['named']['from_id']);
 		$this->render('form');
 	}
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Session->setFlash('error en URL Facturación/edit');
+			$this->Flash->set('error en URL Facturación/edit');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => 'facturaciones'
@@ -286,20 +294,17 @@ class FacturacionesController extends AppController {
 		//un _nuevo_ registro, como si fuera un add
 		if (!empty($id)) $this->Facturacion->id = $id;
 
-		//if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
-		//http://www.dereuromark.de/2010/06/23/working-with-forms
-		//segun dicen mejor hacerlo así:
 		if ($this->request->is(array('post', 'put'))) {//la vuelta de 'guardar' el formulario
 			$this->request->data['Facturacion']['peso_medio_saco']= $this->request->data['Facturacion']['peso_facturacion']/$operacion['PesoOperacion']['cantidad_embalaje'];
 			if($this->Facturacion->save($this->request->data)){
-				$this->Session->setFlash('Facturación guardada');
+				$this->Flash->success('Facturación guardada');
 				$this->redirect(array(
 					'action' => 'view',
 					'controller' => 'facturaciones',
 					$id
 				));
 			} else {
-				$this->Session->setFlash('Facturación NO guardada');
+				$this->Flash->error('Facturación NO guardada');
 			}
 		} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
 			$this->request->data = $this->Facturacion->read(null, $id);

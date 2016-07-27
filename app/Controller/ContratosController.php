@@ -462,23 +462,22 @@ class ContratosController extends AppController {
 	}
 
 	public function delete($id = null) {
-	if (!$id or $this->request->is('get')){
-		throw new MethodNotAllowedException();
-	}
-	if ($this->Contrato->delete($id)) {
-		//$this->Session->setFlash('Contrato borrado');
-		$this->Flash->set(
-		'El contrato ha sido borrado',
-		array(
-			'element' => 'success',
-			'key' => 'positive',
-			'params' => array(
-			'referencia' => $id
+		$this->request->allowMethod('post');
+
+		$this->Contrato->id = $id;
+		if (!$this->Contrato->exists()){
+			throw new NotFoundException(__('Contrato inválido'));
+		}
+		if ($this->Contrato->delete($id)) {
+			$this->Flash->success(h('Contrato borrado'));
+			return $this->History->Back(-1);
+		}
+		$this->Flash->error(h('El contrato NO se ha borrado'));
+		return $this->redirect(array(
+			'action'=>'view',
+			$id
 			)
-		)
 		);
-		$this->redirect(array('action'=>'index'));
-	}
 	}
 }
 ?>

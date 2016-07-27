@@ -107,19 +107,19 @@ class AnticiposController extends AppController {
 		}
 	}
 
-	public function delete($id) {
-		if($this->request->is('post')):
-			if($this->Anticipo->delete($id)):
-				$this->Session->setFlash('Anticipo borrado');
-		$this->redirect(array(
-			'controller' => $this->params['named']['from_controller'],
-			'action' => 'view',
-			$this->params['named']['from_id']
-		));
-endif;
-else:
-	throw new MethodNotAllowedException();
-endif;
+	public function delete($id = null) {
+		$this->request->allowMethod('post');
+
+		$this->Anticipo->id = $id;
+		if (!$this->Anticipo->exists()){
+			throw new NotFoundException(__('Anticipo inválido'));
+		}
+		if($this->Anticipo->delete()) {
+			$this->Flash->success('Anticipo borrado');
+			return $this->History->Back(0);
+		}
+		$this->Flash->error('Anticipo NO borrado');
+		return $this->History->Back(0);
 	}
 }
 ?>

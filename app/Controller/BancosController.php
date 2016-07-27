@@ -10,7 +10,7 @@ class BancosController extends AppController {
 
 	public function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado '.$this->class.'/view ');
+			$this->Flash->set('URL mal formado '.$this->class.'/view ');
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->viewCompany($this->class, $id);
@@ -24,7 +24,7 @@ class BancosController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Session->setFlash('error en URL');
+			$this->Flash->set('error en URL');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => Inflector::tableize($this->class)
@@ -41,16 +41,15 @@ class BancosController extends AppController {
 	public function delete( $id = null) {
 		$this->deleteCompany($this->class, $id);
 	}
+
 	public function view_pdf($id = null) {
 		$this->Banco->id = $id;
 		if (!$this->Banco->exists()) {
-			throw new NotFoundException(__('Invalid Banco'));
+			throw new NotFoundException(__('No existe banco con tal id'));
 		}
-		// increase memory limit in PHP 
+		// increase memory limit in PHP
 		ini_set('memory_limit', '512M');
 		$this->set('banco', $this->Banco->read(null, $id));
 	}
-
-
 }
 ?>

@@ -83,7 +83,7 @@ class MuestrasController extends AppController {
 			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fecha)) {
 				list($mes,$anyo) = explode('-',$fecha);
 			} else {
-				$this->Session->setFlash('Error de fecha');
+				$this->Flash->error('Error de fecha');
 				$this->redirect(array('action' => 'index'));
 			}
 			//si se ha introducido un año, filtramos por el año
@@ -104,8 +104,7 @@ class MuestrasController extends AppController {
 
 	public function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('URL mal formada Muestra/view');
-			$this->redirect(array('action'=>'index'));
+			throw new NotFoundException(__('URL mal formado Muestra/view'));
 		}
 		$muestra = $this->Muestra->find(
 			'first',
@@ -126,6 +125,9 @@ class MuestrasController extends AppController {
 				),
 			)
 		);
+		if (!$muestra) {
+			throw new NotFoundException(__('No existe esa muestra'));
+		}
 		$this->set('muestra',$muestra);
 
 		//Exportar PDF
@@ -156,19 +158,31 @@ class MuestrasController extends AppController {
 		}
 	}
 
-	public function delete( $id = null) {
-		if (!$id or $this->request->is('get')){
-			throw new MethodNotAllowedException();
+	public function delete($id = null) {
+		$this->request->allowMethod('post');
+
+		$this->Muestra->id = $id;
+		if (!$this->Muestra->exists()){
+			throw new NotFoundException(__('Muestra inválida'));
 		}
-		if ($this->Muestra->delete($id)) {
-			$this->Session->setFlash('Muestra borrada');
-			$this->redirect(array('action'=>'index'));
+		$muestra = $this->Muestra->findById($id);
+		$tipo = $muestra['Muestra']['tipo_id'];
+		if ($this->Muestra->delete()) {
+			$this->Flash->success('Muestra borrada');
+			return $this->redirect(
+				array(
+					'action'=>'index',
+					'Search.tipo_id' => $tipo
+				)
+			);
 		}
+		$this->Flash->error(__('Muestra NO borrada'));
+		return $this->History->back(0);
 	}
 
 	public function add() {
 		if(!isset($this->passedArgs['tipo_id'])) {
-			$this->Session->setFlash('Error en URL, falta tipo muestra');
+			$this->Flash->error('Error en URL, falta tipo muestra');
 			$this->redirect(
 				array(
 					'action' => 'index',
@@ -182,7 +196,7 @@ class MuestrasController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Session->setFlash('error en URL');
+			$this->Flash->error('error en URL');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => 'financiaciones'
@@ -369,7 +383,7 @@ class MuestrasController extends AppController {
 				}
 			}
 			if($this->Muestra->save($this->request->data)) {
-				$this->Session->setFlash('Muestra guardada');
+				$this->Flash->success('Muestra guardada');
 				$this->redirect(
 					array(
 						'action' => 'view',
@@ -377,7 +391,7 @@ class MuestrasController extends AppController {
 					)
 				);
 			} else {
-				$this->Session->setFlash('Muestra NO guardada');
+				$this->Flash->error('Muestra NO guardada');
 			}
 		} else { //es un GET
 			$this->request->data= $this->Muestra->read(null, $id);

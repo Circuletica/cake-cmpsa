@@ -270,27 +270,17 @@ class AlmacenTransportesController extends AppController {
 
 
 	public function delete($id = null) {
-		if (!$id or $this->request->is('get')) :
-			throw new MethodNotAllowedException();
-endif;
-$transporte_id = $this->AlmacenTransporte->find(
-	'first',
-	array(
-		'conditions'=> array(
-			'AlmacenTransporte.id' => $id
-		)
-	)
-);
-$transporte_id = $transporte_id['AlmacenTransporte']['transporte_id'];
-if ($this->AlmacenTransporte->delete($id)){
-	$this->Session->setFlash('Cuenta corriente almacén borrada');
-	$this->redirect(array(
-		'controller'=>'transportes',
-		'action'=>'view',
-		$transporte_id
-	)
-);
-}
+		$this->request->allowMethod('post');
+		$this->AlmacenTransporte->id = $id;
+		if (!$this->AlmacenTransporte->exists()) {
+			throw new NotFoundException('Cuenta corriente inválida');
+		}
+		if ($this->AlmacenTransporte->delete()){
+			$this->Flash->success('Cuenta corriente almacén borrada');
+			return $this->History->Back(-1);
+		}
+		$this->Flash->error('Cuenta corriente almacén NO borrada. Hay retiradas');
+		$this->History->Back(0);
 	}
 
 	public function distribucion($id){
