@@ -428,15 +428,15 @@ class LineaMuestrasController extends AppController {
                 $Email = new CakeEmail(); //Llamamos la instancia de email
                 $Email->config('calidad'); //Plantilla de email.php
                 $Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
-                $Email->to($lista_email);
+                $Email->bcc($lista_email);
                 //$Email->readReceipt($lista_bcc); //Acuse de recibo
                 if(!empty($lista_bcc)){
                     $Email->bcc($lista_bcc);
                 }
-                $Email->subject('NUEVO - Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
+                $Email->subject('Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
                 $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
                 $Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
-                $this->Flash->set('¡Informe de calidad enviado!');
+                $this->Flash->set('Informe de calidad enviado.');
                 $this->redirect(array(
                     'action'=>'view',
                     'controller' =>'LineaMuestras',
