@@ -5,7 +5,7 @@ $this->layout = 'trafico';
 	echo '<h1>Faltan campos del seguro por rellenar para generar la carta</h1>';
   }else{*/
 ?>
-	<div style="margin-left: 390px;">
+	<div style="text-align:right;">
 	<br>
 	<b><?php echo $transporte['Aseguradora']['nombre'] ?></b>
 <br><br>

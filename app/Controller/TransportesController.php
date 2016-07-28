@@ -33,6 +33,10 @@ class TransportesController extends AppController {
 			)
 		),
 		/*'PesoOperacion',*/
+		'Incoterm',
+		'AsociadoOperacion'=>array(
+			'Asociado'
+		),
 		'Contrato'=>array(
 		    'fields'=> array(
 			'id',
@@ -71,6 +75,14 @@ class TransportesController extends AppController {
 				'className' => 'Empresa',
 				'foreignKey' => false,
 				'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+			),
+			'AsociadoOperacion' => array(
+				'foreignKey' => false,
+				'conditions' => array('AsociadoOperacion.operacion_id = Operacion.id')
+			),			
+			'Incoterm'=> array(
+				'foreignKey' => false,
+				'conditions' => array('Contrato.incoterm_id = Incoterm.id')
 			)			
 		)
 	    )
@@ -639,19 +651,31 @@ class TransportesController extends AppController {
 	$this->set(compact('despachos','title'));
     }*/
 
-    public function suplemento() {
+    public function suplemento() { // Informe suplemento sin reclamación
     	$this->index();
     	$this->set('action', $this->action);
     	$this->render('index');
     }
 
-    public function pendiente() {
+    public function pendiente() { //Informes de sacos pendientes por adjudicar
     	$this->index();
     	$this->set('action', $this->action);
     	$this->render('index');
     }
 
-    public function reclamacion($id = null) {
+    public function reclamacion_factura() { //Informes de operaciones sin fecha de reclamación factura final
+    	$this->index();
+    	$this->set('action', $this->action);
+    	$this->render('index');
+    }
+    public function prorrogas_pendientes() { //Informes de operaciones sin fecha de reclamación factura final
+    	$this->index();
+    	$this->set('action', $this->action);
+    	$this->render('index');
+    }
+
+
+    public function reclamacion($id = null) { // Carta reclamación seguro
 	$this->pdfConfig = array(
 	    'filename' => 'reclamacion',
 	    'paperSize' => 'A4',
@@ -802,7 +826,6 @@ class TransportesController extends AppController {
 	$this->set('transporte',$transporte);
 
 	$dia = date ('d');
-	//$mes=date('m');
 	$mes=date('F');
 	$ano = date('Y');
 

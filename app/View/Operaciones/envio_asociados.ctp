@@ -16,10 +16,10 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
 //echo $this->Form->create('EnvioCalidad');
 echo $this->Form->create('Operacion');
 
-echo "<h2>Envío de distribución a los asociados de la operación <em>".$operacion['referencia']."</em></h2>\n";
+echo "<h2>Envío de distribución a los asociados de la operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
 
 ?>
-<fieldset style=width:44%;>
+<fieldset style=width:65%;>
 <legend>Contactos asociados</legend>
 <?php
 
@@ -40,28 +40,11 @@ foreach($contactos as $contacto){
 	echo "<hr><br>";
 	echo "<legend>Contactos CMPSA</legend>";
 	foreach($usuarios as $usuario){
-		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 2){//Controlo que no haya contactos sin email
-		$calidad[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
-		}
-	}
-
-	echo $this->Form->input('', array(
-		'name'=>'calidad',
-		'type' => 'select',
-		'multiple' => 'checkbox',
-		'selected' => array(
-			'cerausquinr@cmpsa.com',
-			//'marfernandez@cmpsa.com'
-			),
-		'options'=>$calidad
-		)
-	);	
-	foreach($usuarios as $usuario){
 		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 4){//Controlo que no haya usuarios sin email
 		$trafico[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
 		}
 	}
-		/*echo $this->Form->input('', array(
+		echo $this->Form->input('', array(
 		'name'=>'trafico',
 		'type' => 'select',
 		'selected'=> array(
@@ -71,7 +54,7 @@ foreach($contactos as $contacto){
 		'multiple' => 'checkbox',
 		'options'=>$trafico
 		)
-		);	*/
+		);	
 ?>
 </fieldset>
 <fieldset style=width:25%;>

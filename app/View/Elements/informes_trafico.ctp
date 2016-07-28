@@ -44,7 +44,7 @@
     );
     echo  $this->Html->link('<i class="fa fa-info fa-lg"></i> Sin reclamación pendientes',
       array(
-        'action' =>'situacion',
+        'action' =>'reclamacion_factura',
         'controller' => 'transportes'
         ),
       array(
@@ -52,6 +52,16 @@
         'title'=>'Informe de operaciones sin reclamacion pendientes de facturar'
       )
     );
+    echo  $this->Html->link('<i class="fa fa-info fa-lg"></i> Prórrogas pendientes',
+      array(
+        'action' =>'prorrogas_pendientes',
+        'controller' => 'transportes'
+        ),
+      array(
+        'escape'=>false,
+        'title'=>'Informe de prórrogas pendientes'
+      )
+    );    
 
     /*echo $this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> Descargar a CSV',
       array(
