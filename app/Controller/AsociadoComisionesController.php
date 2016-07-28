@@ -2,7 +2,7 @@
 class AsociadoComisionesController extends AppController {
 	public function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado AsociadoComision/view');
+			$this->Flash->set('URL mal formado AsociadoComision/view');
 			$this->redirect(array(
 				'controller' => 'asociados',
 				'action'=>'index'

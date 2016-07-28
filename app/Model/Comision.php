@@ -1,6 +1,4 @@
 <?php
 class Comision extends AppModel {
-    var $displayField = 'valor';
-    public $hasMany = array('AsociadoComision');
+    public $displayField = 'valor';
 }
-

@@ -10,7 +10,7 @@ class NavierasController extends AppController {
 
 	public function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado '.$this->class.'/view ');
+			$this->Flash->set('URL mal formado '.$this->class.'/view ');
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->viewCompany($this->class, $id);
@@ -23,7 +23,7 @@ class NavierasController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Session->setFlash('error en URL');
+			$this->Flash->set('error en URL');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => Inflector::tableize($this->class)

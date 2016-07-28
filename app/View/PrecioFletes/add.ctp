@@ -17,6 +17,10 @@
 	  )
     );
   echo "</div>\n";
+  ?>
+</fieldset>
+<fieldset>
+<?php
   echo "<div class='linea'>\n";
     echo $this->Form->input('fecha_fin', array(
 	  'label'=>'Fecha de Caducidad',
@@ -27,11 +31,15 @@
 	  )
     );
   echo "</div>\n";
+?>
+</fieldset>
+<fieldset>
+<?php
   echo $this->Form->input('coste_contenedor_dolar', array(
       'label' => 'Coste de flete ($/contenedor)'
   )
 );
 echo $this->element('cancelarform');  
-  echo $this->Form->end('Guardar precio');
-  ?>
+echo $this->Form->end('Guardar precio');
+?>
 </fieldset>

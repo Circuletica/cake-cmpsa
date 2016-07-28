@@ -5,12 +5,11 @@ $this->Html->addCrumb('Fletes','/fletes');
 $this->Html->addCrumb('Fletes','/'.$this->params['named']['from_controller']);
 $this->Html->addCrumb('Flete '.$flete['Flete']['id'],'/fletes/view/'.$flete['Flete']['id']);
 echo $this->Form->create('PrecioFlete');
-echo '	<fieldset>';
-echo "<table>";
-echo"<tr>";
-echo"<td>";
-  echo "<div class='linea'>\n";
-    echo $this->Form->input('fecha_inicio', array(
+?>
+<fieldset>
+<?php
+echo "<div class='linea'>\n";
+echo $this->Form->input('fecha_inicio', array(
 	  'label'=>'Fecha de Validez',
 	  'dateFormat' => 'DMY',
 	  'minYear' => date('Y')-1,
@@ -18,9 +17,11 @@ echo"<td>";
 	  'orderYear' => 'asc'
 	  )
     );
-  echo "</div>\n";
-echo"</td>";
-echo"<td>";
+echo "</div>\n";
+?>
+</fieldset>
+<fieldset>
+<?php
   echo "<div class='linea'>\n";
     echo $this->Form->input('fecha_fin', array(
 	  'label'=>'Fecha de Caducidad',
@@ -31,14 +32,15 @@ echo"<td>";
 	  )
     );
   echo "</div>\n";
-echo"</td>";
-echo"</tr>";
-echo "</table>";
-  echo $this->Form->input('coste_contenedor_dolar', array(
-      'label' => 'Coste de flete ($/contenedor)'
+?>
+</fieldset>
+<fieldset>
+<?php
+echo $this->Form->input('coste_contenedor_dolar', array(
+    'label' => 'Coste de flete ($/contenedor)'
   )
 );
-  echo $this->element('cancelarform');
-	echo $this->Form->end('Guardar Precio');
-echo'	</fieldset>';
+echo $this->element('cancelarform');
+echo $this->Form->end('Guardar Precio');
 ?>
+</fieldset>

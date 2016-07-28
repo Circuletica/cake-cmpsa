@@ -186,6 +186,7 @@ echo $this->Form->input('posicion_bolsa', array(
 echo "</div>\n";
 echo $this->Form->input('comentario');
 echo $this->Form->input('id', array('type'=>'hidden'));
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Contrato');
 ?>
 </div>

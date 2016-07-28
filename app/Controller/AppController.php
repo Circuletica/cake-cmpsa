@@ -264,5 +264,4 @@ class AppController extends Controller {
 			return $titulo;
 		}
 	}
-	>>>>>>> Stashed changes
 }

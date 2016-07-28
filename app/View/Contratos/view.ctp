@@ -10,26 +10,26 @@ $this->assign('line_add','1');
 
 $this->start('breadcrumb');
 $this->Html->addCrumb(
-    'Contratos',
-    array(
-	'controller' => 'contratos',
-	'action' => 'index'
-    )
+	'Contratos',
+	array(
+		'controller' => 'contratos',
+		'action' => 'index'
+	)
 );
 $this->end();
 
 $this->start('filter');
 echo $this->Html->link('<i class="fa fa-clone fa-lg" aria-hidden="true"></i> Duplicar contrato',
-    array(
-	'controller' => 'contratos',
-	'action' => 'copy',
-	$contrato['Contrato']['id'],
-    ),
-    array(
-	'class' => 'boton',
-	'title' => 'Duplicar contrato',
-	'escape' => false
-    )
+	array(
+		'controller' => 'contratos',
+		'action' => 'copy',
+		$contrato['Contrato']['id'],
+	),
+	array(
+		'class' => 'boton',
+		'title' => 'Duplicar contrato',
+		'escape' => false
+	)
 );
 //echo $this->element('filtrocontrato');
 $this->end();
@@ -40,10 +40,13 @@ echo "  <dt>Referencia</dt>\n";
 echo "  <dd>".$referencia.'&nbsp;'."</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
-echo $this->html->link($contrato['Proveedor']['nombre_corto'], array(
-    'controller' => 'proveedores',
-    'action' => 'view',
-    $contrato['Proveedor']['id'])
+echo $this->html->link(
+	$contrato['Proveedor']['nombre_corto'],
+	array(
+		'controller' => 'proveedores',
+		'action' => 'view',
+		$contrato['Proveedor']['id']
+	)
 );
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
@@ -54,8 +57,10 @@ echo "  <dt>Peso comprado</dt>\n";
 echo "  <dd>".$contrato['Contrato']['peso_comprado'].' kg&nbsp;'."</dd>";
 echo "  <dt>Peso distribuido</dt>\n";
 echo "  <dd>".$peso_fijado." kg&nbsp;</dd>";
-echo "  <dt>Peso no distribuido</dt>\n";
-echo "  <dd>".$peso_por_fijar." kg&nbsp;</dd>";
+if ($peso_por_fijar != 0) {
+	echo "  <dt>Peso no distribuido</dt>\n";
+	echo "  <dd style='color:red'>".$peso_por_fijar." kg (".$sacos_por_fijar.")&nbsp;</dd>";
+}
 ?>
 	</dl>
 <div class="detallado">
@@ -63,16 +68,16 @@ echo "  <dd>".$peso_por_fijar." kg&nbsp;</dd>";
 <?php
 echo $this->html->tableheaders(array('Cantidad','Embalaje', 'Peso ud.', 'Peso'));
 $peso_total = 0;
-foreach($contrato['ContratoEmbalaje'] as $embalaje):
-    $peso_embalaje = $embalaje['cantidad_embalaje'] * $embalaje['peso_embalaje_real'];
-echo $this->html->tablecells(array(
-    $embalaje['cantidad_embalaje'],
-    $embalaje['Embalaje']['nombre'],
-    $embalaje['peso_embalaje_real']." kg",
-    $peso_embalaje." kg",
-));
-$peso_total += $peso_embalaje;
-endforeach;
+foreach($contrato['ContratoEmbalaje'] as $embalaje) {
+	$peso_embalaje = $embalaje['cantidad_embalaje'] * $embalaje['peso_embalaje_real'];
+	echo $this->html->tablecells(array(
+		$embalaje['cantidad_embalaje'],
+		$embalaje['Embalaje']['nombre'],
+		$embalaje['peso_embalaje_real']." kg",
+		$peso_embalaje." kg",
+	));
+	$peso_total += $peso_embalaje;
+}
 ?>
 	</table>
 </div>
@@ -80,8 +85,6 @@ endforeach;
 echo "<dl>";
 echo "  <dt>$tipo_fecha_transporte</dt>\n";
 echo "  <dd>".$this->Date->format($fecha_transporte)."</dd>";
-//	echo "  <dt>$tipo_puerto</dt>\n";
-//	echo "  <dd>".$puerto."&nbsp;</dd>";
 echo "  <dt>Puerto de embarque</dt>\n";
 echo "  <dd>".$puerto_carga."&nbsp;</dd>";
 echo "  <dt>Puerto de destino</dt>\n";
@@ -102,22 +105,22 @@ $this->start('lines');
 	<table>
 <?php
 echo $this->html->tableheaders(array('Referencia','Peso','Fecha de fijación', 'Precio de fijación', 'Precio de factura','Detalle'));
-foreach($contrato['Operacion'] as $linea):
-    echo $this->html->tablecells(array(
-	$linea['referencia'],
-	$linea['PesoOperacion']['peso']." kg",
-	$linea['fecha_pos_fijacion'],
-	$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
-	$linea['precio_compra']." ".$contrato['CanalCompra']['divisa'],
-	$this->Button->view('operaciones',$linea['id'])
-    ));
-endforeach;
+foreach($contrato['Operacion'] as $linea) {
+	echo $this->html->tablecells(array(
+		$linea['referencia'],
+		$linea['PesoOperacion']['peso']." kg",
+		$linea['fecha_pos_fijacion'],
+		$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
+		$linea['precio_compra']." ".$contrato['CanalCompra']['divisa'],
+		$this->Button->view('operaciones',$linea['id'])
+	));
+}
 ?>
 	</table>
 <?php
 //lotes que quedan por fijar
 echo "<h4>Quedan por fijar ".$contrato['RestoLotesContrato']['lotes_restantes']
-." lotes</h4>";
+	." lotes</h4>";
 $this->end();
 ?>
 	</div>

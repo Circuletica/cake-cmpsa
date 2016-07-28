@@ -305,6 +305,7 @@ class FacturacionesController extends AppController {
 				));
 			} else {
 				$this->Flash->error('Facturación NO guardada');
+				//$this->History->Back(0);
 			}
 		} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
 			$this->request->data = $this->Facturacion->read(null, $id);

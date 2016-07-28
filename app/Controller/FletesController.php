@@ -61,12 +61,12 @@ class FletesController extends AppController {
 			),
 			'recursive' => 2
 		);
-		//a la vez que definimos las condiciones del 
+		//a la vez que definimos las condiciones del
 		//paginador AppController.php,
 		//sacamos un titulo con los criterios de filtro
 		//	$titulo = $this->filtroPaginador(
 		//	    array(
-		//		'Flete' => array( 
+		//		'Flete' => array(
 		//			'Naviera' => 'naviera_id',
 		//			'Puerto de Carga' => 'puerto_carga_id',
 		//			'Puerto de Destino' => 'puerto_destino_id'
@@ -115,7 +115,7 @@ class FletesController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('error en URL/No id de flete para edit');
+			$this->Flash->set('error en URL/No id de flete para edit');
 			$this->redirect(
 				array(
 					'action' => 'index',
@@ -192,12 +192,20 @@ class FletesController extends AppController {
 
 	public function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado Flete/view');
+			$this->Flash->set('URL mal formado Flete/view');
 			$this->redirect(array('action'=>'index'));
 		}
-		$flete = $this->Flete->find('first', array(
-			'conditions' => array('Flete.id' => $id),
-			'recursive' => 2));
+		$this->set(compact('id'));
+		$flete = $this->Flete->find(
+			'first',
+			array(
+				'conditions' => array('Flete.id' => $id),
+				'recursive' => 2
+			)
+		);
+		if (!$flete) {
+			throw new NotFoundException(__('No existe ese flete'));
+		}
 		$this->set('flete',$flete);
 		$this->set('referencia',
 			$flete['PuertoCarga']['nombre']

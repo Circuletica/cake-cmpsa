@@ -142,16 +142,6 @@ class FinanciacionesController extends AppController {
 			'paperSize' => 'A4',
 			'orientation' => 'landscape'
 		);
-
-		//Se declara para acceder al PDF
-		$this->set(compact('id'));
-
-		$this->pdfConfig = array(
-			'filename' => 'financiacion',
-			'paperSize' => 'A4',
-			'orientation' => 'landscape'
-		);	
-
 	}
 
 	public function add() {

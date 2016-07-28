@@ -2,10 +2,11 @@
 class IncotermsController extends AppController {
 
 	public function index() {
+		$paginate['order'] = array('Incoterm.nombre' => 'asc');
 		$params = array('order' => 'nombre asc');
-		//$this->set('Incoterms', $this->Incoterms->find('all', $params));
 		$this->set('incoterms', $this->paginate());
 	}
+
 	public function add() {
 		if($this->request->is('post')):
 			if($this->Incoterms->save($this->request->data) ):

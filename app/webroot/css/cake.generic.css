@@ -53,9 +53,9 @@ h1 {
 }
 h2 {
 	/*background:#fff;*/
-	color: #e73827;
+	color: #7D3100;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 145%;
+	font-size: 155%;
 	font-weight: bold;
 
 
@@ -599,6 +599,8 @@ p.error em {
 }
 .success {
 	color: #fff;
+	font-size: 130%;
+	font-weight: bold;
 }
 
 /**  Actions  **/

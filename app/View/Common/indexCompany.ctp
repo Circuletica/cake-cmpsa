@@ -27,6 +27,10 @@ echo $this->element('desplegabledatos');
 echo "<h2>".ucfirst($controller)."</h2>\n";
 if (empty($empresas)):
     echo "No hay ".$controller." en esta lista";
+	?><br><div class="btabla">
+		<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir '.$class,array('action'=>'add'),array('title'=>'Añadir '.$class,'escape' => false)); ?>
+	</div>
+	<?php
 else:
     echo "<table>\n";
 echo $this->Html->tableHeaders(array(

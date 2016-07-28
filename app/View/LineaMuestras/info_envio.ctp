@@ -1,9 +1,26 @@
 <?php
+$this->Html->addCrumb(
+    'Muestras de '.$linea['Muestra']['tipo_nombre'],
+    array(
+	'controller'=>'muestras',
+	'action'=>'index',
+	'Search.tipo_id' => $linea['Muestra']['tipo_id']
+    )
+);
+$this->Html->addCrumb(
+    'Muestra '.$linea['Muestra']['tipo_registro'],
+    array(
+	'controller'=>'muestras',
+	'action'=>'view',
+	$linea['Muestra']['id']
+    )
+);
+
 
 //echo $this->Form->create('EnvioCalidad');
 echo $this->Form->create('LineaMuestra');
 
-echo "<h2>Informe de calidad de la línea de muestra <em>".$muestra['tipo_registro']."</em></h2>\n";
+echo "<h2>Informe de calidad de la línea de muestra <em>".$linea_muestra['tipo_registro']."</em></h2>\n";
 
 
 ?>
@@ -16,11 +33,7 @@ foreach($contactos as $contacto){
 		$opciones[$contacto['Contacto']['email']] = $contacto['Empresa']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 		}
 }
-<<<<<<< Updated upstream
-=======
 	$opciones['circuletica@gmail.com'] = 'circuletica@gmail.com';
-
->>>>>>> Stashed changes
 
 	echo $this->Form->input('', array(
 		'name'=>'email',
@@ -31,11 +44,12 @@ foreach($contactos as $contacto){
 	);
 	echo "<hr><br>";
 	echo "<legend>Contactos CMPSA</legend>";
-	foreach($contactos as $contacto){
-		if(!empty($contacto['Contacto']['email']) &&  $contacto['Empresa']['nombre_corto']== 'CMPSA' && $contacto['Contacto']['departamento_id'] == 2){//Controlo que no haya contactos sin email
-		$calidad[$contacto['Contacto']['email']] = $contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
+	foreach($usuarios as $usuario){
+		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 2){//Controlo que no haya contactos sin email
+		$calidad[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
 		}
 	}
+
 	echo $this->Form->input('', array(
 		'name'=>'calidad',
 		'type' => 'select',
@@ -47,9 +61,9 @@ foreach($contactos as $contacto){
 		'options'=>$calidad
 		)
 	);	
-	foreach($contactos as $contacto){
-		if(!empty($contacto['Contacto']['email']) &&  $contacto['Empresa']['nombre_corto']== 'CMPSA' && $contacto['Contacto']['departamento_id'] == 4){//Controlo que no haya contactos sin email
-		$trafico[$contacto['Contacto']['email']] = $contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
+	foreach($usuarios as $usuario){
+		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 4){//Controlo que no haya usuarios sin email
+		$trafico[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
 		}
 	}
 		echo $this->Form->input('', array(
@@ -115,13 +129,14 @@ echo $this->element('cancelarform');
 		'onclick' => "var openWin = window.open('".$this->Html->url(
         	array(
         	'action' => 'info_calidad',
-			$muestra['LineaMuestra']['id'],
+			$linea_muestra['LineaMuestra']['id'],
 			'ext' => 'pdf',
-		    $muestra['tipo_registro']))
+		    $linea_muestra['tipo_registro']))
 		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"	    
 	)
 );
 	echo $this->Form->end('Enviar informe',array('name' =>'enviar'));
+	
 ?>
 
 </fieldset>

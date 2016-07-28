@@ -2,6 +2,7 @@
 class RetiradasController extends AppController {
 
 	public function index() {
+		$this->set('action', $this->action);	//Se usa para tener la misma vista
 		$this->paginate['order'] = array('Retirada.fecha_retirada' => 'desc');
 		$this->paginate['contain'] = array(
 			'Asociado',
@@ -25,19 +26,23 @@ class RetiradasController extends AppController {
 					'Operacion' => array(
 						'foreignKey' => false,
 						'conditions' => array('Retirada.operacion_id = Operacion.id')
-					),		    
+					),
 					'Almacen' => array(
 						'className' => 'Empresa',
 						'foreignKey' => false,
-						'conditions' => array('Almacen.id = AlmacenTransporte.almacen_id')	 
+						'conditions' => array('Almacen.id = AlmacenTransporte.almacen_id')
 					)
 				)
 			)
 		);
-
-
 		$this->set('retiradas',$this->paginate());
 
+	}
+
+	public function index_conta(){
+		$this->index();
+		$this->set('action', $this->action);
+		$this->render('index');
 	}
 
 	public function view_asociado($id = null) {
@@ -114,7 +119,7 @@ class RetiradasController extends AppController {
 							'id',
 							'nombre_corto'
 						)
-					),				
+					),
 					'Operacion' => array(
 						'fields' => array(
 							'id',
@@ -141,8 +146,7 @@ class RetiradasController extends AppController {
 				)
 			);
 
-		$this->set(compact('asociado_nombre'));	
-
+		$this->set(compact('asociado_nombre'));
 
 		$asociado_op = $this->Retirada->Operacion->AsociadoOperacion->find(
 			'first',
@@ -174,7 +178,7 @@ class RetiradasController extends AppController {
 				}
 			}
 		}
-		$restan = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] - $retirado; 
+		$restan = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] - $retirado;
 		$this->set(compact('restan'));
 		$this->set('retirado',$retirado);
 
@@ -264,7 +268,7 @@ $this->set(compact('operaciones_almacen'));*/
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Session->setFlash('error en URL');
+			$this->Flash->set('error en URL');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => 'retiradas'
@@ -277,9 +281,9 @@ $this->set(compact('operaciones_almacen'));*/
 	public function form($id = null) { //esta acción vale tanto para edit como add
 		$this->set('action', $this->action);
 		//Listamos el nombre de asociados
-		$this->loadModel('Asociado');	
+		$this->loadModel('Asociado');
 		$asociados = $this->Asociado->find(
-			'list',		
+			'list',
 			array(
 				'fields' => array(
 					'Asociado.id',
@@ -310,6 +314,12 @@ $this->set(compact('operaciones_almacen'));*/
 			$operacion_id = $this->passedArgs['from_id'];
 		}
 		$this->set(compact('operacion_id'));
+
+		if(empty($this->passedArgs['almacen_transporte_id'])){
+			$almacen_transporte_id = NULL;
+		}else{
+			$this->set('almacen_transporte_id', $this->passedArgs['almacen_transporte_id']);
+		}
 
 		$operaciones_asociados = $this->Retirada->Operacion->find(
 			'all',
@@ -413,8 +423,8 @@ $this->set(compact('operaciones_almacen'));*/
 		$this->set('operacion',$operacion);
 
 		//Se declara para asignar el valor del array del asociado
-		//$asociado_valor = NULL; 
-		$a=0;	
+		//$asociado_valor = NULL;
+		$a=0;
 		if(!empty($this->params['named']['asociado_id'])){
 			foreach ($operacion['AsociadoOperacion'] as $valor){
 				if($valor['asociado_id'] == $this->params['named']['asociado_id']){
@@ -425,7 +435,7 @@ $this->set(compact('operaciones_almacen'));*/
 				$a++; //Contador recorrido array
 			}
 		}
-		$this->set(compact('asociado_id'));	
+		$this->set(compact('asociado_id'));
 		$this->set(compact('asociado_nombre'));
 		// Saco la referencia de la operación para usar en el form excepto en un add() desde index
 		$operacion_ref = NULL;
@@ -439,78 +449,78 @@ $this->set(compact('operaciones_almacen'));*/
 		//si no se hace, al guardar el edit, se va a crear
 		//un _nuevo_ registro, como si fuera un add
 
-		if (!empty($id)) $this->Retirada->id = $id; 
+		if (!empty($id)) $this->Retirada->id = $id;
 
 		if(!empty($this->request->data)) { //ES UN POST
 			$this->request->data['Retirada']['id'] = $id;
 
-			if($id == NULL && $this->Retirada->save($this->request->data) && empty($this->params['named']['asociado_id'])){
-				$this->Session->setFlash('Retirada guardada');
-				$this->redirect(array(
+			if($id == NULL && empty($this->params['named']['asociado_id']) && !empty($this->params['named']['from_controller'])) {
+				if ($this->Retirada->save($this->request->data)){
+					//Accedemos al form desde el index
+					$this->Flash->set('Retirada guardada');
+					$this->History->back(-1);
+				/*$this->redirect(array(
 					'action'=>'view_trafico',
-					'controller' => 'operaciones',
-					$this->params['named']['from_id']
+				'controller' => 'operaciones',
+				$this->params['named']['from_id']
 				)
-			);
-			}elseif($id == NULL && $this->Retirada->save($this->request->data) && !empty($this->params['named']['asociado_id'])){
-				$this->Session->setFlash('Retirada guardada');
-				$this->redirect(array(
-					'action'=>'view_asociado',
-					'controller' => 'retiradas',
-					'asociado_id'=> $this->params['named']['asociado_id'],
-					'from_controller'=> $this->params['named']['from_controller'],
-					'from_id'=>$this->params['named']['from_id']
-				)
-			);
-			}elseif($id != NULL && !empty($this->params['named']['from_id']) && $this->Retirada->save($this->request->data)){
-				$this->Session->setFlash('Retirada modificada');
-				$this->redirect(array(
-					'action'=>'view_asociado',
-					'controller' => 'retiradas',
-					'asociado_id'=> $this->params['named']['asociado_id'],
-					'from_controller'=> $this->params['named']['from_controller'],
-					'from_id'=>$this->params['named']['from_id']
-				)
-			);
-			}elseif($id == NULL && $this->Retirada->save($this->request->data)){
-				//Retirada desde index retiradas	
-				$this->Session->setFlash('Retirada guardada');
-				$this->redirect(array(
-					'action'=>'index',
-					'controller' => 'retiradas',
-					//	'asociado_id'=> $this->params['named']['asociado_id'],
-					//	'from_controller'=> $this->params['named']['from_controller'],
-					//	 'from_id'=>$this->params['named']['from_id']
-				)
-			);
+				);*/
+				}
+			}elseif(($id == NULL) && !empty($this->params['named']['asociado_id'])){
+				if($this->Retirada->save($this->request->data)) {
+					//Accedemos al form desde view_asociados
+					$this->Flash->set('Retirada guardada');
+					$this->redirect(array(
+						'action'=>'view_asociado',
+						'controller' => 'retiradas',
+						'asociado_id'=> $this->params['named']['asociado_id'],
+						'from_controller'=> $this->params['named']['from_controller'],
+						'from_id'=>$this->params['named']['from_id']
+					)
+				);
+				}
+			}elseif($id != NULL && !empty($this->params['named']['from_id'])){
+				if($this->Retirada->save($this->request->data)) {
+					$this->Flash->set('Retirada modificada');
+					$this->redirect(array(
+						'action'=>'view_asociado',
+						'controller' => 'retiradas',
+						'asociado_id'=> $this->params['named']['asociado_id'],
+						'from_controller'=> $this->params['named']['from_controller'],
+						'from_id'=>$this->params['named']['from_id']
+					)
+				);
+				}
+			}elseif($id == NULL && empty($this->params['named']['asociado_id']) && empty($this->params['named']['from_controller'])){
+				if($this->Retirada->save($this->request->data)){
+					//Accedemos al form desde el index
+					$this->Flash->set('Retirada guardada');
+					$this->redirect(array(
+						'action'=>'index',
+						'controller' => 'retiradas',
+						//	'asociado_id'=> $this->params['named']['asociado_id'],
+						//	'from_controller'=> $this->params['named']['from_controller'],
+						//	 'from_id'=>$this->params['named']['from_id']
+					)
+				);
+				}
 			}else{
-				$this->Session->setFlash('Retirada NO guardada');
+				$this->Flash->set('Retirada NO guardada');
 			}
 		}else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
 			$this->request->data = $this->Retirada->read(null, $id);
 		}
 	}
 
-
-
 	public function delete($id = null) {
 
 		if (!$id or $this->request->is('get')){
 			throw new MethodNotAllowedException();
 		}
-		if ($this->Retirada->delete($id))	{
-			//	$this ->view_asociado();
-			//	$this ->render('view_asociado');
-			$this->Session->setFlash('Retirada borrada');
-			$this->redirect(array(
-				'action'=>'view_asociado',
-				'controller' =>'retiradas',
-				'asociado_id'=> $this->params['named']['asociado_id'],
-				'from_controller'=> $this->params['named']['from_controller'],
-				'from_id'=>$this->params['named']['from_id']
-			)
-		);
-		}
 
+		if ($this->Retirada->delete($id)){
+			$this->Flash->set('Retirada borrada correctamente');
+			$this->History->Back(0);
+		}
 	}
 }

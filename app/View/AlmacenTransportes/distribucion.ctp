@@ -86,7 +86,7 @@ echo $this->Form->create('AlmacenTransporteAsociado');
 
 		echo $this->Html->tableCells(array(
 			$almacentransporte['Asociado']['Empresa']['nombre_corto'],
-			$almacentransporte['sacos_asignados'],
+			$almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'],
 			$this->Form->input('CantidadAsociado.'.$almacentransporte['asociado_id'], array(
 			    'label' => '',
 			    'class' => 'cantidad',
@@ -96,50 +96,61 @@ echo $this->Form->create('AlmacenTransporteAsociado');
 			),
 			$pendiente,
 			$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),
-			'<div id=porcentajeAsociado'.$almacentransporte['asociado_id'].'>'." %".'</div>',
+			'<div id=porcentajeAsociado'.$almacentransporte['asociado_id'].' class=porcentajeAsociado>'." %".'</div>',
 			)
 		);
-	$total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['sacos_asignados'];
+	$total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
 	$total_asignacion_real = $total_asignacion_real + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
 	$total_pendiente = $total_pendiente + $pendiente;
 	$total_porcentaje_teorico = $total_porcentaje_teorico + $almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'];
-	$total_porcentaje_real = $total_porcentaje_real +$almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'];
+	//$total_porcentaje_real = $total_porcentaje_real +$almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'];
 
 	}
 echo $this->html->tablecells(array(
 	array(
-    array(
-    	'TOTALES',
- 	array(
-		'style' => 'font-weight: bold; text-align:center'
-		)
-	),
-
-	array(
-	$total_asignacion_teorica,
-	array(
-		'style' => 'font-weight: bold;',
-		'bgcolor' => '#5FCF80'
-		)
-	),
-	'<div id=totalCantidad></div>'
-	,
-	array(
-    $total_pendiente,
-	array(
-		'style' => 'font-weight: bold;',
-		'bgcolor' => '#5FCF80'
-		)
-	),
-	array(
-    $total_porcentaje_teorico,
-	array(
-		'style' => 'font-weight: bold;',
-		'bgcolor' => '#5FCF80'
+		array(
+			'TOTALES',
+			array(
+				'style' => 'font-weight: bold; text-align:center'
+			)
+		),
+		array(
+			$total_asignacion_teorica,
+			array(
+				'style' => 'font-weight: bold;',
+				'bgcolor' => '#5FCF80'
+			)
+		),
+		array(
+			'<div id=totalCantidad></div>',
+			array(
+				'style' => 'font-weight: bold;',
+				'bgcolor' => '#5FCF80'
+			)
+		),
+		array(
+			$total_pendiente,
+			array(
+				'style' => 'font-weight: bold;',
+				'bgcolor' => '#5FCF80'
+			)
+		),
+		array(
+			$total_porcentaje_teorico.'%',
+			array(
+				'style' => 'font-weight: bold;',
+				'bgcolor' => '#5FCF80'
+			)
+		),
+		array(
+			'<div id=totalPorcentaje></div>',
+			array(	
+				'style' => 'font-weight: bold;',
+				'bgcolor' => '#5FCF80'
+			)
 		)
 	)
-	))
-	);
+));
 ?>	</table>
 	<?php
 	echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Cancelar', 

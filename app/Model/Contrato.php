@@ -38,10 +38,10 @@ class Contrato extends AppModel {
 	'
     );
     public $validate = array(
-	'incoterm_id' => array('rule' => 'notEmpty'),
-	'proveedor_id' => array('rule' => 'notEmpty'),
-	'calidad_id' => array('rule' => 'notEmpty'),
-	'referencia' => array('rule' => 'notEmpty')
+	'incoterm_id' => array('rule' => 'notBlank'),
+	'proveedor_id' => array('rule' => 'notBlank'),
+	'calidad_id' => array('rule' => 'notBlank'),
+	'referencia' => array('rule' => 'notBlank')
     );
     public $hasOne = array(
 	'RestoContrato' => array(
@@ -62,6 +62,7 @@ class Contrato extends AppModel {
 	    'className' => 'ContratoEmbalaje',
 	    'foreignKey' => 'contrato_id'
 	),
+    'FleteContrato',
 	'PrecioFleteContrato',
 	'Muestra'
     );
@@ -87,5 +88,18 @@ class Contrato extends AppModel {
 	    'className' => 'Calidad',
 	    'foreignKey' => 'calidad_id')
 	);
+	public function beforeDelete($cascade = true) {
+		$count = $this->Operacion->find(
+            "count",
+            array(
+                "recursive" => -1,
+                "conditions" => array("contrato_id" => $this->id)
+            )
+        );
+		if ($count == 0) {
+			return true;
+		}
+		return false;
+	}
 }
 ?>

@@ -98,36 +98,36 @@ echo '<div id=totalCafe>'."Total café: ???€".'</div>';
 echo $this->Form->input(
     'gastos_bancarios_pagados',
     array(
-	'label' => 'Gastos bancarios',
-	'value' => ($action == 'add')?0:$this->request->data['Facturacion']['gastos_bancarios_pagados'],
-	'oninput' => 'pesoFacturacion()'
+        'label' => 'Gastos bancarios',
+        'value' =>
+            ($action == 'add')?
+                0
+                :$this->request->data['Facturacion']['gastos_bancarios_pagados'],
+        'oninput' => 'pesoFacturacion()'
     )
 );
 echo $this->Form->input(
     'flete_pagado',
     array(
-	'label' => 'Flete',
-	//'value' => 0,
-	'value' => ($action == 'add')?0:$this->request->data['Facturacion']['flete_pagado'],
-	'oninput' => 'pesoFacturacion()'
+        'label' => 'Flete',
+        'value' => ($action == 'add')?0:$this->request->data['Facturacion']['flete_pagado'],
+        'oninput' => 'pesoFacturacion()'
     )
 );
 echo $this->Form->input(
     'despacho_pagado',
     array(
-	'label' => 'Despacho',
-	//'value' => 0,
-	'value' => ($action == 'add')?0:$this->request->data['Facturacion']['despacho_pagado'],
-	'oninput' => 'pesoFacturacion()'
+        'label' => 'Despacho',
+        'value' => ($action == 'add')?0:$this->request->data['Facturacion']['despacho_pagado'],
+        'oninput' => 'pesoFacturacion()'
     )
 );
 echo $this->Form->input(
     'seguro_pagado',
     array(
-	'label' => 'Seguro',
-	//'value' => 0,
-	'value' => ($action == 'add')?0:$this->request->data['Facturacion']['seguro_pagado'],
-	'oninput' => 'pesoFacturacion()'
+        'label' => 'Seguro',
+        'value' => ($action == 'add')?0:$this->request->data['Facturacion']['seguro_pagado'],
+        'oninput' => 'pesoFacturacion()'
     )
 );
 echo '<div id=totalGastos>'."Total gastos: ???€".'</div>';
@@ -135,7 +135,7 @@ echo '<div id=totalOperacion>'."Precio real operacion: ???€/kg".'</div>';
 echo $this->Form->input('cuenta_venta_id');
 echo $this->Form->input('cuenta_iva_id');
 echo $this->Form->input('cuenta_comision_id');
-  echo $this->element('cancelarform');
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar facturación');
 ?>
 <script type="text/javascript">

@@ -9,24 +9,24 @@ $this->assign('line_controller','retiradas');
 
 $this->start('main');
 echo "<dl>";
-	echo "  <dt>Operación:</dt>\n";
+	echo "  <dt>Ref. operación</dt>\n";
 	echo "<dd>";
 	echo $this->html->link($operacion['Operacion']['referencia'], array(
 	    'controller' => 'operaciones',
 	    'action'  => 'view_trafico',
 	    $operacion_id)
-	);
+	).'&nbsp;';
 	echo "</dd>";
-	echo "<dt>Sacos solicitados:</dt>\n";
+	echo "<dt>Sacos solicitados</dt>\n";
 	echo "<dd>".$asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' x '.$embalaje['nombre'].'&nbsp';
 		"</dd>";
-	echo "<dt>Peso solicitado:</dt>\n";
+	echo "<dt>Peso solicitado</dt>\n";
 	echo "<dd>".$peso.' Kg &nbsp;'."</dd>";
 echo "</dl>";
 
 $this->end();
 $this->start('lines');
-echo "<table class='tc1 tc2 tr5 tr6'>\n";
+echo "<table class='tc1 tc2 tr5 tr6 tc7'>\n";
 echo $this->Html->tableHeaders(array('Fecha retirada','Cuenta almacén','Almacén','Marca','Sacos retirados','Peso retirado', 'Detalle'));
 
 foreach($retiradas as $retirada):
@@ -44,7 +44,7 @@ foreach($retiradas as $retirada):
 				$retirada['Retirada']['embalaje_retirado'],
 				$retirada['Retirada']['peso_retirado'],
 				$this->Html->link(
-						'<i class="fa fa-pencil-square-o"></i> ',array(
+						'<i class="fa fa-pencil-square-o"></i>',array(
 							'controller' => 'retiradas',
 							'action' => 'edit',
 							$retirada['Retirada']['id'],

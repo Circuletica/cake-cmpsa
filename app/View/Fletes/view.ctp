@@ -44,9 +44,9 @@ echo "</dl>";
 $this->end();
 $this->start('lines');
 //la tabla con los costes de flete
-echo "<table>";
+echo "<table class='tc1 tc2 tc5'>";
 echo $this->Html->tableHeaders(array(
-    'válido desde','válido hasta','coste contenedor','coste $/Tm', ''));
+    'Válido desde','Válido hasta','Coste contenedor','Coste $/Tm', 'Detalle'));
 foreach ($costes as $coste):
     $fecha_inicio = $this->Date->format($coste['PrecioFleteTonelada']['fecha_inicio']);
     $fecha_fin = $this->Date->format($coste['PrecioFleteTonelada']['fecha_fin']);

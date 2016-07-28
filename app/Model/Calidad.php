@@ -5,14 +5,9 @@ class Calidad extends AppModel {
 	public $hasMany = 'Contrato';
 	public $belongsTo = array(
 		'Pais',
-//		'CalidadNombre' =>array(
-//			'class' => 'CalidadNombre',
-//			'foreignKey' => 'id'
-//		)
 	);
 	public $actsAs = array('Containable');
 	public $virtualFields = array(
-	    //(case when isnull(`c`.`pais_id`) then concat(replace(replace(`c`.`descafeinado`,0,''),1,'Descafeinado '),'Blend','-',`c`.`descripcion`) else concat(replace(replace(`c`.`descafeinado`,0,''),1,'Descafeinado '),`p`.`nombre`,'-',`c`.`descripcion`) end)
 	    'nombre' => 'CONCAT(
 		REPLACE(REPLACE(Calidad.descafeinado,0,""),1,"Descafeinado "),
 		    CASE WHEN ISNULL(Calidad.pais_id) THEN "Blend"
@@ -30,4 +25,17 @@ class Calidad extends AppModel {
 			'allowEmpty' => true,
 			'empty' => 'Blend')
 		);
+	public function beforeDelete($cascade = true) {
+		$count = $this->Contrato->find(
+            "count",
+            array(
+                "recursive" => -1,
+                "conditions" => array("calidad_id" => $this->id)
+            )
+        );
+		if ($count == 0) {
+			return true;
+		}
+		return false;
+	}
 }

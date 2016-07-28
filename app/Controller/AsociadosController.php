@@ -62,6 +62,5 @@ class AsociadosController extends AppController {
 	public function delete( $id = null) {
 		$this->deleteCompany('Asociado', $id);
 	}
-
 }
 ?>

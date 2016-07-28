@@ -5,6 +5,7 @@
 /app/tmp
 /app/Plugin/Highcharts/*
 /app/Vendor/*
+/app/webroot/files/Informes
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
 /vendors

@@ -50,6 +50,7 @@ echo $enlace_anyadir_origen;
 <fieldset>
 <?php
 echo $this->Form->input('descripcion',array("label"=>'Descripción'));
+echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Calidad');
 ?>
 </fieldset>

@@ -89,15 +89,13 @@ CakePlugin::load('CakePdf',array(
 	'routes'=> true
 	)
 );
-//Esto lo ponian como altamente recomendado pero a mi me ha estado dando problemas.Es para generar las imágenes y colores
-//define('DOMPDF_ENABLE_REMOTE', false);
 
 Configure::write('CakePdf', array(
    	'engine' => 'CakePdf.WkHtmlToPdf',    //El que mejor funciona
 	//'binary'=>'C:\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',   //Servidor Windows
 	//Instalar sudo apt-get install xvfb wkhtmltopdf
-	//'binary'=> '/usr/bin/wkhtmltopdf', //Este es el bueno para ACER
-	'binary'=> '/usr/local/bin/wkhtmltox/bin/wkhtmltopdf',
+	'binary'=> '/usr/bin/wkhtmltopdf', //Este es el bueno para ACER
+	//'binary'=> '/usr/local/bin/wkhtmltox/bin/wkhtmltopdf',
         'margin' => array(
             'bottom' => 10,
             'left' => 15,

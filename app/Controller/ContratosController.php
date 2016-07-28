@@ -1,23 +1,10 @@
 <?php
 class ContratosController extends AppController {
 	var $displayField = 'referencia';
+
 	public function index() {
 		$this->paginate['order'] = array('Contrato.posicion_bolsa' => 'asc');
 		$this->Contrato->virtualFields['calidad']=$this->Contrato->Calidad->virtualFields['nombre'];
-		//	$this->paginate['fields'] = array(
-		//	    'id',
-		//	    'proveedor_id',
-		//	    'calidad_id',
-		//	    'calidad',
-		//	    'incoterm_id',
-		//	    'canal_compra_id',
-		//	    'referencia',
-		//	    'posicion_bolsa',
-		//	    'peso_comprado',
-		//	    'lotes_contrato',
-		//	    'si_muestra_emb_aprob',
-		//	    'si_muestra_entr_aprob'
-		//	);
 		$this->paginate['contain'] = array(
 			'Proveedor' => array(
 				'fields' => array(
@@ -88,7 +75,7 @@ class ContratosController extends AppController {
 			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
 				list($mes,$anyo) = explode('-',$criterio);
 			} else {
-				$this->Session->setFlash('Error de fecha');
+				$this->Flash->set('Error de fecha');
 				$this->redirect(array('action' => 'index'));
 			}
 			//si se ha introducido un año, filtramos por el año
@@ -115,13 +102,17 @@ class ContratosController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash('URL mal formado Contrato/view');
-			$this->redirect(array('action'=>'index'));
+		$this->Contrato->id = $id;
+		if (!$this->Contrato->exists()) {
+			throw new NotFoundException(__('Contrato inexistente'));
 		}
-		$contrato = $this->Contrato->find('first', array(
-			'conditions' => array('Contrato.id' => $id),
-			'recursive' => 2));
+		$contrato = $this->Contrato->find(
+			'first',
+			array(
+				'conditions' => array('Contrato.id' => $id),
+				'recursive' => 2
+			)
+		);
 		$this->set('contrato', $contrato);
 
 		//La suma del peso de todas las operaciones de un contrato
@@ -136,7 +127,31 @@ class ContratosController extends AppController {
 		//el sql devuelve un array, solo queremos el campo de peso sin decimales
 		$peso_fijado = intval($peso_fijado[0][0]['peso_fijado']);
 		$this->set(compact('peso_fijado'));
-		$this->set('peso_por_fijar', $contrato['Contrato']['peso_comprado'] - $peso_fijado);
+		$peso_por_fijar = $contrato['Contrato']['peso_comprado'] - $peso_fijado;
+		$this->set(compact('peso_por_fijar'));
+
+		//si no esta distribuido todo el peso del contrato
+		//calcular la cantidad de cada embalaje pendiente
+		$sacos_por_fijar='';
+		if ($peso_por_fijar > 0) {
+			//recombinar el array con todos los embalajes del contrato
+			//y ordenar por embalaje_id
+			$embalajes_pendientes = Hash::combine($contrato['ContratoEmbalaje'],'{n}.embalaje_id','{n}.Embalaje.nombre');
+			$sacos_pendientes = Hash::combine($contrato['ContratoEmbalaje'],'{n}.embalaje_id','{n}.cantidad_embalaje');
+			//miramos la cantidad de embalajes de cada operacion del contrato
+			//y la restamos de la cantidad de embalajes contratada
+			foreach ($contrato['Operacion'] as $operacion) {
+				$cantidad_embalaje_operacion = $operacion['PesoOperacion']['cantidad_embalaje'];
+				$sacos_pendientes[$operacion['embalaje_id']] -= $cantidad_embalaje_operacion;
+			}
+			foreach ($sacos_pendientes as $id => $cantidad) {
+				if ($cantidad > 0) {
+					if ($sacos_por_fijar != '') $sacos_por_fijar .= ' + ';
+					$sacos_por_fijar .= $cantidad.' '.$embalajes_pendientes[$id]; 
+				}
+			}
+		}
+		$this->set(compact('sacos_por_fijar'));
 
 		$this->set('referencia', $contrato['Contrato']['referencia']);
 		//si embarque o entrega
@@ -158,230 +173,238 @@ class ContratosController extends AppController {
 	}
 
 	public function add() {
-	//necesitamos la lista de proveedor_id/nombre para rellenar el select
-	//del formulario de busqueda
-	$this->loadModel('Proveedor');
-	$proveedores = $this->Proveedor->find(
-		'list',
-		array(
-		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-		'order' => array('Empresa.nombre_corto' => 'asc'),
-		'recursive' => 1
-		)
-	);
-	$this->set('proveedores',$proveedores);
-	$this->set(
-		'puertoCargas',
-		$this->Contrato->PuertoCarga->find(
-		'list',
-		array(
-			'order' => array('PuertoCarga.nombre' => 'ASC')
-		)
-		)
-	);
-	$this->set(
-		'puertoDestinos',
-		$this->Contrato->PuertoDestino->find(
-		'list',
-		array(
-			'order' => array('PuertoDestino.nombre' => 'ASC')
-		)
-		)
-	);
-	$this->set(
-		'incoterms',
-		$this->Contrato->Incoterm->find(
-		'list',
-		array(
-			'order' => array('Incoterm.nombre' => 'ASC')
-		)
-		)
-	);
-	$this->set(
-		'canal_compras_divisa',
-		$this->Contrato->CanalCompra->find('all')
-	);
-	$this->set(
-		'canal_compras',
-		$this->Contrato->CanalCompra->find(
-		'list',
-		array(
-			'fields' => array('id','nombre')
-		)
-		)
-	);
-	//En la vista se muestra la lista de todos los embalajes existentes
-	$this->set(
-		'embalajes',
-		$this->Contrato->ContratoEmbalaje->Embalaje->find(
-		'all',
-		array(
-			'order' => array('Embalaje.nombre' => 'asc')
-		)
-		)
-	);
-	//desplegable con las calidades de café
-	$this->set(
-		'calidades',
-		$this->Contrato->Calidad->find(
-		'list',
-		array(
-			'order' => array('Calidad.nombre' => 'ASC')
-		)
-		)
-	);
-	//El tipo de fecha: embarque o entrega
-	$this->set(
-		'tipos_fecha_transporte',
-		array(
-		'0'=>'embarque',
-		'1'=>'entrega'
-		)
-	);
-	//Rellenamos la fecha de posicion con el mes/año de hoy sólo si esta vacío,
-	//si ya tenía valor y que el usuario vuelve al formulario, se guarda lo que
-	//habia metido antes.
-	//Si usaramos un 'selected' en la View, cuando vuelve el usuario al formulario
-	//se sobreescribe lo que tenía
-	if (!isset($this->request->data['Contrato']['posicion_bolsa']['day']))
-		$this->request->data['Contrato']['posicion_bolsa']['day'] = date('Y-m');
-	if($this->request->is('post')) {
-		//Hay que meter un dia si no queremos que mysql meta una fecha NULL
-		//lo suyo seria tener 0, pero el cakephp parece que no quiere
-		$this->request->data['Contrato']['posicion_bolsa']['day'] = 1;
-		//si se ha cambiado el canalCompra a uno sin diferencial,
-		//hay que borrar el diferencial que existía antes
-		$canal_compra = $this->Contrato->CanalCompra->findById($this->request->data['Contrato']['canal_compra_id']);
-		if (!$canal_compra['CanalCompra']['si_diferencial']) $this->request->data['Contrato']['diferencial'] = 0;
-		if($this->Contrato->save($this->request->data)) {
-		//Las claves del array data['Embalaje'] no son secuenciales,
-		//son realmente el embalaje_id
-		foreach ($this->request->data['Embalaje'] as $embalaje_id => $valor) {
-			//no interesa guardar lineas vacías
-			if ($valor['cantidad_embalaje'] != NULL) {
-			$this->request->data['ContratoEmbalaje']['contrato_id'] = $this->Contrato->id;
-			$this->request->data['ContratoEmbalaje']['embalaje_id'] = $embalaje_id;
-			$this->request->data['ContratoEmbalaje']['cantidad_embalaje'] = $valor['cantidad_embalaje'];
-			$this->request->data['ContratoEmbalaje']['peso_embalaje_real'] = $valor['peso_embalaje_real'];
-			$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
+		//necesitamos la lista de proveedor_id/nombre para rellenar el select
+		//del formulario de busqueda
+		$this->loadModel('Proveedor');
+		$proveedores = $this->Proveedor->find(
+			'list',
+			array(
+				'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+				'order' => array('Empresa.nombre_corto' => 'asc'),
+				'recursive' => 1
+			)
+		);
+		$this->set('proveedores',$proveedores);
+		$this->set(
+			'puertoCargas',
+			$this->Contrato->PuertoCarga->find(
+				'list',
+				array(
+					'order' => array('PuertoCarga.nombre' => 'ASC')
+				)
+			)
+		);
+		$this->set(
+			'puertoDestinos',
+			$this->Contrato->PuertoDestino->find(
+				'list',
+				array(
+					'order' => array('PuertoDestino.nombre' => 'ASC')
+				)
+			)
+		);
+		$this->set(
+			'incoterms',
+			$this->Contrato->Incoterm->find(
+				'list',
+				array(
+					'order' => array('Incoterm.nombre' => 'ASC')
+				)
+			)
+		);
+		$this->set(
+			'canal_compras_divisa',
+			$this->Contrato->CanalCompra->find('all')
+		);
+		$this->set(
+			'canal_compras',
+			$this->Contrato->CanalCompra->find(
+				'list',
+				array(
+					'fields' => array('id','nombre')
+				)
+			)
+		);
+		//En la vista se muestra la lista de todos los embalajes existentes
+		$this->set(
+			'embalajes',
+			$this->Contrato->ContratoEmbalaje->Embalaje->find(
+				'all',
+				array(
+					'order' => array('Embalaje.nombre' => 'asc')
+				)
+			)
+		);
+		//desplegable con las calidades de café
+		$this->set(
+			'calidades',
+			$this->Contrato->Calidad->find(
+				'list',
+				array(
+					'order' => array('Calidad.nombre' => 'ASC')
+				)
+			)
+		);
+		//El tipo de fecha: embarque o entrega
+		$this->set(
+			'tipos_fecha_transporte',
+			array(
+				'0'=>'embarque',
+				'1'=>'entrega'
+			)
+		);
+		//Rellenamos la fecha de posicion con el mes/año de hoy sólo si esta vacío,
+		//si ya tenía valor y que el usuario vuelve al formulario, se guarda lo que
+		//habia metido antes.
+		//Si usaramos un 'selected' en la View, cuando vuelve el usuario al formulario
+		//se sobreescribe lo que tenía
+		if (!isset($this->request->data['Contrato']['posicion_bolsa']['day']))
+			$this->request->data['Contrato']['posicion_bolsa']['day'] = date('Y-m');
+		if ($this->request->is('post')) {
+			//Hay que meter un dia si no queremos que mysql meta una fecha NULL
+			//lo suyo seria tener 0, pero el cakephp parece que no quiere
+			$this->request->data['Contrato']['posicion_bolsa']['day'] = 1;
+			//si se ha cambiado el canalCompra a uno sin diferencial,
+			//hay que borrar el diferencial que existía antes
+			$canal_compra = $this->Contrato->CanalCompra->findById($this->request->data['Contrato']['canal_compra_id']);
+			if (!$canal_compra['CanalCompra']['si_diferencial']) $this->request->data['Contrato']['diferencial'] = 0;
+			$this->Contrato->create();
+			if($this->Contrato->save($this->request->data)) {
+				//Las claves del array data['Embalaje'] no son secuenciales,
+				//son realmente el embalaje_id
+				foreach ($this->request->data['Embalaje'] as $embalaje_id => $valor) {
+					//no interesa guardar lineas vacías
+					if ($valor['cantidad_embalaje'] != NULL) {
+						$this->request->data['ContratoEmbalaje']['contrato_id'] = $this->Contrato->id;
+						$this->request->data['ContratoEmbalaje']['embalaje_id'] = $embalaje_id;
+						$this->request->data['ContratoEmbalaje']['cantidad_embalaje'] = $valor['cantidad_embalaje'];
+						$this->request->data['ContratoEmbalaje']['peso_embalaje_real'] = $valor['peso_embalaje_real'];
+						$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
+					}
+				}
+				$this->Flash->success(__('Contrato guardado'));
+				return $this->redirect(
+					array(
+						'action' => 'view',
+						$this->Contrato->id
+					)
+				);
 			}
+			$this->Flash->error(
+				__('El contrato NO se ha guardado.')
+			);
 		}
-		$this->Session->setFlash('Contrato guardado');
-		$this->redirect(array('action' => 'index'));
-		}
-	}
 	}
 
 	public function edit($id = null) {
-	if (!$id) {
-		$this->Session->setFlash('URL mal formado');
-		$this->redirect(array('action'=>'index'));
-	}
-	//necesitamos la lista de proveedor_id/nombre para rellenar el select
-	//del formulario de busqueda
-	$this->loadModel('Proveedor');
-	$proveedores = $this->Proveedor->find(
-		'list',
-		array(
-		'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-		'order' => array('Empresa.nombre_corto' => 'asc'),
-		'recursive' => 1
-		)
-	);
-	$this->set('proveedores',$proveedores);
-	$this->Contrato->id = $id;
-	$contrato = $this->Contrato->findById($id);
-	$this->set('contrato',$contrato);
-	//el titulado completo de la Calidad sale de una vista
-	//de MySQL que concatena descafeinado, pais y descripcion
-	$this->set('calidades',$this->Contrato->Calidad->find('list', array(
-			'order' => array('Calidad.nombre' => 'ASC')
-			)
-		));
-	$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
-			'order' => array('Incoterm.nombre' => 'ASC')
-			)
-		));
-	$this->set('puertoCargas', $this->Contrato->PuertoCarga->find('list', array(
-			'order' => array('PuertoCarga.nombre' => 'ASC')
-			))
-		);
-	$this->set('puertoDestinos', $this->Contrato->PuertoDestino->find('list', array(
-			'order' => array('PuertoDestino.nombre' => 'ASC')
-			))
-		);
-	//Donde se compra el café (London, New-York, ...)
-	$canal_compras = $this->Contrato->CanalCompra->find('list', array(
-		'fields' => array('id','nombre')
-			)
-		);
-	$this->set('canalCompras', $canal_compras);
-	$canal_compras_divisa = $this->Contrato->CanalCompra->find('all');
-	$this->set('canal_compras_divisa', $canal_compras_divisa);
-	//En la vista se muestra la lista de todos los embalajes existentes
-	$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
-		'order' => array('Embalaje.nombre' => 'asc')
-		)
-	);
-	$this->set('embalajes', $embalajes);
-	//El tipo de fecha: embarque o entrega
-	$this->set(
-		'tipos_fecha_transporte',
-		array(
-		'0'=>'embarque',
-		'1'=>'entrega'
-		)
-	);
-	//la fecha de transporte (embarque o entrega)
-	$this->set('si_entrega', $contrato['Contrato']['si_entrega']);
-
-	if($this->request->is('get')) { //pantalla de modificación
-		$this->request->data = $this->Contrato->read();
-		//algo de magia con los arrays de embalaje
-		foreach($contrato['ContratoEmbalaje'] as $embalaje) {
-		$this->request->data['Embalaje'][$embalaje['embalaje_id']]['cantidad_embalaje'] = $embalaje['cantidad_embalaje'];
-		$this->request->data['Embalaje'][$embalaje['embalaje_id']]['peso_embalaje_real'] = $embalaje['peso_embalaje_real'];
+		if (!$id) {
+			throw new NotFoundException(__('URL mal formado Contrato/edit'));
 		}
-	} else { //después de pulsar 'Guardar'
-		//Hay que meter un dia si no queremos que mysql meta una fecha NULL
-		//lo suyo seria tener 0, pero el cakephp parece que no quiere
-		$this->request->data['Contrato']['posicion_bolsa']['day'] = 1;
-		//si se ha cambiado el canalCompra a uno sin diferencial,
-		//hay que borrar el diferencial que existía antes
-		$canal_compra = $this->Contrato->CanalCompra->findById($this->request->data['Contrato']['canal_compra_id']);
-		if (!$canal_compra['CanalCompra']['si_diferencial']) $this->request->data['Contrato']['diferencial'] = 0;
-		if ($this->Contrato->save($this->request->data)) {
-		//Los registros de ContratoEmbalaje se van sumando
-		//entonces hay que borrarlos todos porque el saveAll()
-		//los volverá a crear y no queremos duplicados
-		$this->Contrato->ContratoEmbalaje->deleteAll(array(
-			'ContratoEmbalaje.contrato_id' => $this->Contrato->id
+		//necesitamos la lista de proveedor_id/nombre para rellenar el select
+		//del formulario de busqueda
+		$this->loadModel('Proveedor');
+		$proveedores = $this->Proveedor->find(
+			'list',
+			array(
+				'fields' => array('Proveedor.id','Empresa.nombre_corto'),
+				'order' => array('Empresa.nombre_corto' => 'asc'),
+				'recursive' => 1
 			)
 		);
-		//sacamos los datos del formulario en edit.ctp para crear nuevos
-		//registros en la tabla de join
-		//Las claves del array data['Embalaje'] no son secuenciales,
-		//son realmente el embalaje_id
-		foreach ($this->request->data['Embalaje'] as $embalaje_id => $valor) {
-			//no interesa guardar lineas vacías
-			if ($valor['cantidad_embalaje'] != NULL) {
-			$this->request->data['ContratoEmbalaje']['contrato_id'] = $this->Contrato->id;
-			$this->request->data['ContratoEmbalaje']['embalaje_id'] = $embalaje_id;
-			$this->request->data['ContratoEmbalaje']['cantidad_embalaje'] = $valor['cantidad_embalaje'];
-			$this->request->data['ContratoEmbalaje']['peso_embalaje_real'] = $valor['peso_embalaje_real'];
-			$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
+		$this->set('proveedores',$proveedores);
+		$this->Contrato->id = $id;
+		$contrato = $this->Contrato->findById($id);
+		$this->set('contrato',$contrato);
+		//el titulado completo de la Calidad sale de una vista
+		//de MySQL que concatena descafeinado, pais y descripcion
+		$this->set('calidades',$this->Contrato->Calidad->find('list', array(
+				'order' => array('Calidad.nombre' => 'ASC')
+				)
+			));
+		$this->set('incoterms', $this->Contrato->Incoterm->find('list', array(
+				'order' => array('Incoterm.nombre' => 'ASC')
+				)
+			));
+		$this->set('puertoCargas', $this->Contrato->PuertoCarga->find('list', array(
+				'order' => array('PuertoCarga.nombre' => 'ASC')
+				))
+			);
+		$this->set('puertoDestinos', $this->Contrato->PuertoDestino->find('list', array(
+				'order' => array('PuertoDestino.nombre' => 'ASC')
+				))
+			);
+		//Donde se compra el café (London, New-York, ...)
+		$canal_compras = $this->Contrato->CanalCompra->find('list', array(
+			'fields' => array('id','nombre')
+				)
+			);
+		$this->set('canalCompras', $canal_compras);
+		$canal_compras_divisa = $this->Contrato->CanalCompra->find('all');
+		$this->set('canal_compras_divisa', $canal_compras_divisa);
+		//En la vista se muestra la lista de todos los embalajes existentes
+		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
+			'order' => array('Embalaje.nombre' => 'asc')
+			)
+		);
+		$this->set('embalajes', $embalajes);
+		//El tipo de fecha: embarque o entrega
+		$this->set(
+			'tipos_fecha_transporte',
+			array(
+			'0'=>'embarque',
+			'1'=>'entrega'
+			)
+		);
+		//la fecha de transporte (embarque o entrega)
+		$this->set('si_entrega', $contrato['Contrato']['si_entrega']);
+
+		if($this->request->is('get')) { //pantalla de modificación
+			$this->request->data = $this->Contrato->read();
+			//algo de magia con los arrays de embalaje
+			foreach($contrato['ContratoEmbalaje'] as $embalaje) {
+			$this->request->data['Embalaje'][$embalaje['embalaje_id']]['cantidad_embalaje'] = $embalaje['cantidad_embalaje'];
+			$this->request->data['Embalaje'][$embalaje['embalaje_id']]['peso_embalaje_real'] = $embalaje['peso_embalaje_real'];
+			}
+		} else { //después de pulsar 'Guardar'
+			//Hay que meter un dia si no queremos que mysql meta una fecha NULL
+			//lo suyo seria tener 0, pero el cakephp parece que no quiere
+			$this->request->data['Contrato']['posicion_bolsa']['day'] = 1;
+			//si se ha cambiado el canalCompra a uno sin diferencial,
+			//hay que borrar el diferencial que existía antes
+			$canal_compra = $this->Contrato->CanalCompra->findById($this->request->data['Contrato']['canal_compra_id']);
+			if (!$canal_compra['CanalCompra']['si_diferencial']) $this->request->data['Contrato']['diferencial'] = 0;
+			if ($this->Contrato->save($this->request->data)) {
+			//Los registros de ContratoEmbalaje se van sumando
+			//entonces hay que borrarlos todos porque el saveAll()
+			//los volverá a crear y no queremos duplicados
+			$this->Contrato->ContratoEmbalaje->deleteAll(array(
+				'ContratoEmbalaje.contrato_id' => $this->Contrato->id
+				)
+			);
+			//sacamos los datos del formulario en edit.ctp para crear nuevos
+			//registros en la tabla de join
+			//Las claves del array data['Embalaje'] no son secuenciales,
+			//son realmente el embalaje_id
+			foreach ($this->request->data['Embalaje'] as $embalaje_id => $valor) {
+				//no interesa guardar lineas vacías
+				if ($valor['cantidad_embalaje'] != NULL) {
+				$this->request->data['ContratoEmbalaje']['contrato_id'] = $this->Contrato->id;
+				$this->request->data['ContratoEmbalaje']['embalaje_id'] = $embalaje_id;
+				$this->request->data['ContratoEmbalaje']['cantidad_embalaje'] = $valor['cantidad_embalaje'];
+				$this->request->data['ContratoEmbalaje']['peso_embalaje_real'] = $valor['peso_embalaje_real'];
+				$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
+				}
+			}
+			$this->Flash->set('Contrato '.$this->request->data['Contrato']['referencia'].' modificada con éxito');
+			$this->redirect(array(
+				'action' => 'view',
+				$id
+				)
+			);
+			} else {
+				$this->Flash->set('Contrato NO guardado');
 			}
 		}
-		$this->Session->setFlash('Contrato '.$this->request->data['Contrato']['referencia'].' modificada con éxito');
-		$this->redirect(array(
-			'action' => 'view',
-			$id
-			)
-		);
-		} else {
-		$this->Session->setFlash('Contrato NO guardado');
-		}
-	}
 	}
 
 	public function copy($id = null) {
@@ -392,7 +415,7 @@ class ContratosController extends AppController {
 		//que lo necesitan (entre otros la referencia que es UNIQUE)
 
 		if (!$id) {
-			$this->Session->setFlash('URL mal formado');
+			$this->Flash->set('URL mal formado');
 			$this->redirect(array('action'=>'index'));
 		}
 
@@ -421,8 +444,10 @@ class ContratosController extends AppController {
 		}
 
 		//recuperar las operaciones asociadas al contrato
-		$operaciones = $this->Contrato->Operacion->find('all', array(
-			'conditions' => array('Operacion.contrato_id' => $id)
+		$operaciones = $this->Contrato->Operacion->find(
+			'all',
+			array(
+				'conditions' => array('Operacion.contrato_id' => $id)
 			)
 		);
 		//y copiarlas con el id del nuevo contrato y una nueva referencia
