@@ -1,7 +1,5 @@
 <?php
 class IncotermsController extends AppController {
-	public $helpers = array('Html', 'Form');
-	public $components = array('Session');
 
 	public function index() {
 		$paginate['order'] = array('Incoterm.nombre' => 'asc');
@@ -10,16 +8,15 @@ class IncotermsController extends AppController {
 	}
 
 	public function add() {
-		if($this->request->is('post')) {
-			if($this->Incoterm->save($this->request->data) ) {
-				$this->Flash->success('Incoterm guardado');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => $this->params['named']['from_action']));
-			}
-		}
+		if($this->request->is('post')):
+			if($this->Incoterms->save($this->request->data) ):
+				$this->Session->setFlash('Incoterm guardado');
+		$this->redirect(array(
+			'controller' => $this->params['named']['from_controller'],
+			'action' => $this->params['named']['from_action']));
+endif;
+endif;
 	}
-
 	public function edit($id = null) {
 		$this->Incoterm->id = $id;
 		if($this->request->is('get')) {
@@ -29,20 +26,24 @@ class IncotermsController extends AppController {
 				$this->Flash->success('Incoterm '.$this->request->data['Incoterm']['nombre'].' guardado');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Flash->set('Incoterm no guardado');
+				$this->Flash->error('Incoterm no guardado');
 			}
 		}
 	}
 
-	public function delete($id) {
-		if($this->request->is('get')) {
-			throw new MethodNotAllowedException();
-		} else {
-			if($this->Incoterm->delete($id)) {
-				$this->Flash->set('Inconterm borrado');
-				$this->redirect(array('action' => 'index'));
-			}
+	public function delete($id = null) {
+		$this->request->allowMethod('post');
+
+		$this->Incoterm->id = $id;
+		if (!$this->Incoterm->exists()) {
+			throw new NotFoundException(__('Incoterm inválido'));
 		}
+		if($this->Incoterm->delete($id)) {
+			$this->Flash->success('Inconterm borrado');
+			return $this->redirect(array('action' => 'index'));
+		}
+		$this->Flash->error(__('Incoterm NO borrado'));
+		return $this->History->back(0);
 	}
 }
 ?>

@@ -1232,3 +1232,4 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
    		}
    	}
 }
+?>

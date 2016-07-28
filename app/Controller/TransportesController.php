@@ -355,7 +355,7 @@ class TransportesController extends AppController {
 	    )
 	));
 
-	//Puertos de destino españoles
+	//Puertos de destino espaÃ±oles
 	$this->set('puertoDestinos', $this->Transporte->PuertoDestino->find(
 	    'list',
 	    array(
@@ -382,7 +382,7 @@ class TransportesController extends AppController {
 	//CALCULAMOS EL NÃšMERO DE LINEA DE TRANSPORTE
 	//Saco el nÃºmero del array para numerar las lineas de transporte
 
-	//Linea primera para comenzar desde el array que es 0. Si $clave es 5, $num serÃ¡ 6.
+	//Linea primera para comenzar desde el array que es 0. Si $clave es 5, $num serÃ­a 6.
 	//Sumamos 2 para saltar el 0 y agregar el nÃºmero que corresponde como nueva linea.
 	//Este proceso genera la linea de nuevo siempre para que el contador lo haga desde el principio
 	$num = 0;
@@ -443,7 +443,7 @@ class TransportesController extends AppController {
 		'controller' => 'operaciones',
 		'action' => 'view_trafico',
 		$this->params['named']['from_id']
-	    ));//No usar History aquí
+	    ));//No usar History aquÃ­
 	}else{
 	    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacen');
 	    $this->redirect(array(
@@ -584,7 +584,7 @@ class TransportesController extends AppController {
 	$title = $this->filtroPaginador(
 	    array(
 		'Transporte' => array(
-		    'OperaciÃn' => array(
+		    'OperaciÃƒn' => array(
 			'columna' => 'referencia',
 			'exacto' => false,
 			'lista' => ''
@@ -603,18 +603,18 @@ class TransportesController extends AppController {
 	//filtramos por fecha
 	if(isset($this->passedArgs['Search.fechadesde'])) {
 	    $fechadesde = $this->passedArgs['Search.fechadesde'];
-	    //Si solo se ha introducido un año (aaaa)
+	    //Si solo se ha introducido un aÃ±o (aaaa)
 	    if (preg_match('/^\d{4}$/',$fechadesde)) {
 		$anyo = $fechadesde;
 	    }
-	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
+	    //la otra posibilidad es que se haya introducido mes y aÃ±o (mm-aaaa)
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
 		list($mes,$anyo) = explode('-',$fechadesde);
 	    } else {
 		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
-	    //si se ha introducido un año, filtramos por el año
+	    //si se ha introducido un aÃ±o, filtramos por el aÃ±o
 	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
 	    //si se ha introducido un mes, filtramos por el mes
 	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
@@ -624,16 +624,16 @@ class TransportesController extends AppController {
 	}
 	if(isset($this->passedArgs['Search.fechahasta'])) {
 	    $fecha = $this->passedArgs['Search.fechasta'];
-	    //Si solo se ha introducido un año (aaaa)
+	    //Si solo se ha introducido un aÃ±o (aaaa)
 	    if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fechahasta; }
-	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
+	    //la otra posibilidad es que se haya introducido mes y aÃ±o (mm-aaaa)
 	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
 		list($mes,$anyo) = explode('-',$fechahasta);
 	    } else {
 		$this->Flash->set('Error de fecha');
 		$this->redirect(array('action' => 'index'));
 	    }
-	    //si se ha introducido un año, filtramos por el año
+	    //si se ha introducido un aÃ±o, filtramos por el aÃ±o
 	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
 	    //si se ha introducido un mes, filtramos por el mes
 	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
@@ -642,8 +642,6 @@ class TransportesController extends AppController {
 	    $title .= '|Fecha: '.$fechahasta;
 	}
 
-
-
 	$despachos =  $this->paginate();
 	$title = 'Despachos | '.$title;
 
@@ -651,7 +649,7 @@ class TransportesController extends AppController {
 	$this->set(compact('despachos','title'));
     }*/
 
-    public function suplemento() { // Informe suplemento sin reclamación
+    public function suplemento() { // Informe suplemento sin reclamaciÃ³n
     	$this->index();
     	$this->set('action', $this->action);
     	$this->render('index');
@@ -663,19 +661,18 @@ class TransportesController extends AppController {
     	$this->render('index');
     }
 
-    public function reclamacion_factura() { //Informes de operaciones sin fecha de reclamación factura final
+    public function reclamacion_factura() { //Informes de operaciones sin fecha de reclamaciÃ³n factura final
     	$this->index();
     	$this->set('action', $this->action);
     	$this->render('index');
     }
-    public function prorrogas_pendientes() { //Informes de operaciones sin fecha de reclamación factura final
+    public function prorrogas_pendientes() { //Informes de operaciones sin fecha de reclamaciÃ³n factura final
     	$this->index();
     	$this->set('action', $this->action);
     	$this->render('index');
     }
 
-
-    public function reclamacion($id = null) { // Carta reclamación seguro
+    public function reclamacion($id = null) { // Carta reclamaciÃ³n seguro
 	$this->pdfConfig = array(
 	    'filename' => 'reclamacion',
 	    'paperSize' => 'A4',

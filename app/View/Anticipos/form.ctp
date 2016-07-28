@@ -1,7 +1,9 @@
 <?php
+$this->Js->set('lista_operaciones', $lista_operaciones);
+echo $this->Js->writeBuffer(array('onDomReady' => false));
 switch ($action) {
 case 'add':
-	echo "<h2>Añadir anticipo</h2>";
+	echo "<h2>AÃ±adir anticipo</h2>";
 	break;
 case 'edit':
 	$asociado_id = $this->request->data['AsociadoOperacion']['asociado_id'];
@@ -17,6 +19,7 @@ echo $this->Form->input(
 	'AsociadoOperacion.operacion_id',
 	array(
 		'autofocus' => 'autofocus',
+		'oninput' => 'anticipoAsociado()'
 	)
 );
 echo $this->Form->input(

@@ -11,17 +11,91 @@ class AnticiposController extends AppController {
 			'Asociado',
 			'Operacion'
 		);
+		$this->loadModel('Banco');
+		$bancos = $this->Banco->find(
+			'list',
+			array(
+				'fields' => array('Banco.id','Empresa.nombre_corto'),
+				'order' => array('Empresa.nombre_corto' => 'asc'),
+				'recursive' => 1,
+			)
+		);
+		$this->set(compact('bancos'));
+
+		//necesitamos la lista de proveedor_id/nombre para rellenar el select
+		//del formulario de busqueda
+		$this->loadModel('Asociado');
+		$asociados = $this->Asociado->find(
+			'list',
+			array(
+				'fields' => array('Asociado.id','Empresa.nombre_corto'),
+				'order' => array('Empresa.nombre_corto' => 'asc'),
+				'recursive' => 1
+			)
+		);
+		$this->set(compact('asociados'));
+
+		$titulo = $this->filtroPaginador(
+			array(
+				'Anticipo' => array(
+					'Banco' => array(
+						'columna' => 'banco_id',
+						'exacto' => true,
+						'lista' => $bancos
+					)
+				),
+				//				'Operacion' => array(
+				//					'Operación' => array(
+				//						'columna' => 'referencia',
+				//						'exacto' => false,
+				//						'lista' => '',
+				//					),
+				//				),
+				'AsociadoOperacion' => array(
+					'Asociado' => array(
+						'columna' => 'asociado_id',
+						'exacto' => true,
+						'lista' => $asociados
+					)
+				)
+			)
+		);
+		//filtramos por fecha
+		if(isset($this->passedArgs['Search.fecha'])) {
+			$criterio = $this->passedArgs['Search.fecha'];
+			//Si solo se ha introducido un año (aaaa)
+			if (preg_match('/^\d{4}$/',$criterio)) { $anyo = $criterio; }
+			//la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
+			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
+				list($mes,$anyo) = explode('-',$criterio);
+			} else {
+				$this->Flash->set('Error de fecha');
+				$this->redirect(array('action' => 'index'));
+			}
+			//si se ha introducido un año, filtramos por el año
+			if($anyo) { $this->paginate['conditions']['YEAR(Anticipo.fecha_conta) ='] = $anyo;};
+			//si se ha introducido un mes, filtramos por el mes
+			if(isset($mes)) { $this->paginate['conditions']['MONTH(Anticipo.fecha_conta) ='] = $mes;};
+			$this->request->data['Search']['fecha'] = $criterio;
+			//completamos el titulo
+			$titulo[] = 'Fecha: '.$criterio;
+		}
+
 		$this->Anticipo->bindModel(
 			array(
 				'belongsTo' => array(
 					'Asociado' => array(
 						'className' => 'Empresa',
 						'foreignKey' => false,
-						'conditions' => array('AsociadoOperacion.asociado_id = Asociado.id')
+						'conditions' => array(
+							'AsociadoOperacion.asociado_id = Asociado.id'
+						)
 					),
 					'Operacion' => array(
 						'foreignKey' => false,
-						'conditions' => array('AsociadoOperacion.operacion_id = Operacion.id')
+						'conditions' => array(
+							'AsociadoOperacion.operacion_id = Operacion.id'
+						)
 					)
 				)
 			)
@@ -93,7 +167,17 @@ class AnticiposController extends AppController {
 		$operaciones = $this->Anticipo->AsociadoOperacion->Operacion->find(
 			'list',
 			array(
-				'order' => array('Operacion.referencia' => 'ASC')
+				'order' => array('Operacion.referencia' => 'ASC'),
+				'joins' => array( // solo las operaciones que tienen financiacion
+					array(
+						'table' => 'financiaciones',
+						'alias' => 'Financiacion',
+						'type' => 'RIGHT',
+						'conditions' => array(
+							'Operacion.id = Financiacion.id'
+						)
+					)
+				)
 			)
 		);
 		$this->set(compact('operaciones'));
@@ -112,7 +196,10 @@ class AnticiposController extends AppController {
 		foreach ($lista_operaciones as &$operacion) {
 			unset($operacion['Operacion']);
 			foreach ($operacion['AsociadoOperacion'] as $asociado) {
-				$operacion[$asociado['asociado_id']] = $asociado['Asociado']['nombre_corto'];
+				$operacion['Asociado'][] = array(
+					'id' => $asociado['asociado_id'],
+					'nombre_corto' => $asociado['Asociado']['nombre_corto']
+				);
 			}
 			unset($operacion['AsociadoOperacion']);
 		}
@@ -139,10 +226,10 @@ class AnticiposController extends AppController {
 			$asociado_operacion_id = $asociado_operacion['AsociadoOperacion']['id'];
 			$this->request->data['Anticipo']['asociado_operacion_id'] = $asociado_operacion_id;
 			if ($this->Anticipo->save($this->request->data)) {
-				$this->Flash->set('Anticipo guardado');
+				$this->Flash->success('Anticipo guardado');
 				$this->History->Back(-1);
 			} else {
-				$this->Flash->set('Anticipo NO guardado');
+				$this->Flash->error('Anticipo NO guardado');
 			}
 		} else { //es un GET
 			$this->request->data = $this->Anticipo->read(null, $id);
@@ -155,10 +242,10 @@ class AnticiposController extends AppController {
 			throw new MethodNotAllowedException('URL mal formada o incompleta');
 		}
 		if($this->Anticipo->delete($id)) {
-			$this->Flash->set('Anticipo borrado');
+			$this->Flash->success('Anticipo borrado');
 			$this->History->Back(0);
 		} else {
-			$this->Flash->set('Anticipo NO borrado');
+			$this->Flash->error('Anticipo NO borrado');
 			$this->History->Back(0);
 		}
 	}
