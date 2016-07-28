@@ -69,7 +69,7 @@ class AnticiposController extends AppController {
 			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
 				list($mes,$anyo) = explode('-',$criterio);
 			} else {
-				$this->Flash->set('Error de fecha');
+				$this->Flash->error('Error de fecha');
 				$this->redirect(array('action' => 'index'));
 			}
 			//si se ha introducido un año, filtramos por el año

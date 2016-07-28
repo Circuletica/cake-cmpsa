@@ -141,13 +141,13 @@ class AppController extends Controller {
 			if ($this->$class->Empresa->save($this->request->data)) {
 				$this->request->data[$class]['id'] = $this->$class->Empresa->id;
 				if($this->$class->save($this->request->data)) {
-					$this->Session->setFlash($class.' guardado');
+					$this->Flash->success($class.' guardado');
 					$this->redirect(array(
 						'action' => 'view',
 						$this->$class->Empresa->id
 					));
-				} else { $this->Session->setFlash($class.' NO guardado'); }
-			} else { $this->Session->setFlash('Empresa NO guardada'); }
+				} else { $this->Flash->error($class.' NO guardado'); }
+			} else { $this->Flash->error('Empresa NO guardada'); }
 		} else { //es un GET
 			$this->request->data = $this->$class->read(null, $id);
 		}

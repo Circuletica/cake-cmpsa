@@ -10,7 +10,7 @@ class IncotermsController extends AppController {
 	public function add() {
 		if($this->request->is('post')):
 			if($this->Incoterms->save($this->request->data) ):
-				$this->Session->setFlash('Incoterm guardado');
+				$this->Flash->success('Incoterm guardado');
 		$this->redirect(array(
 			'controller' => $this->params['named']['from_controller'],
 			'action' => $this->params['named']['from_action']));

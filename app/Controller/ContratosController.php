@@ -75,7 +75,7 @@ class ContratosController extends AppController {
 			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
 				list($mes,$anyo) = explode('-',$criterio);
 			} else {
-				$this->Flash->set('Error de fecha');
+				$this->Flash->error('Error de fecha');
 				$this->redirect(array('action' => 'index'));
 			}
 			//si se ha introducido un año, filtramos por el año
@@ -395,14 +395,14 @@ class ContratosController extends AppController {
 				$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
 				}
 			}
-			$this->Flash->set('Contrato '.$this->request->data['Contrato']['referencia'].' modificada con éxito');
+			$this->Flash->success('Contrato '.$this->request->data['Contrato']['referencia'].' modificada con éxito');
 			$this->redirect(array(
 				'action' => 'view',
 				$id
 				)
 			);
 			} else {
-				$this->Flash->set('Contrato NO guardado');
+				$this->Flash->error('Contrato NO guardado');
 			}
 		}
 	}
@@ -415,7 +415,7 @@ class ContratosController extends AppController {
 		//que lo necesitan (entre otros la referencia que es UNIQUE)
 
 		if (!$id) {
-			$this->Flash->set('URL mal formado');
+			$this->Flash->error('URL mal formado');
 			$this->redirect(array('action'=>'index'));
 		}
 

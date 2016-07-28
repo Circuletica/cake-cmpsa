@@ -20,7 +20,7 @@ class BancosController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Flash->set('error en URL');
+			$this->Flash->error('error en URL');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => Inflector::tableize($this->class)
