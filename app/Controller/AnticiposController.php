@@ -238,16 +238,17 @@ class AnticiposController extends AppController {
 	}
 
 	public function delete($id) {
-		if (!$id or $this->request->is('get')){
-			throw new MethodNotAllowedException('URL mal formada o incompleta');
+		$this->request->allowMethod('post');
+		$this->Anticipo->id = $id;
+		if (!$this->Anticipo->exists()) {
+			throw new NotFoundException('Cuenta corriente inválida');
 		}
-		if($this->Anticipo->delete($id)) {
-			$this->Flash->success('Anticipo borrado');
-			$this->History->Back(0);
-		} else {
-			$this->Flash->error('Anticipo NO borrado');
-			$this->History->Back(0);
+		if ($this->Anticipo->delete()){
+			$this->Flash->success('Cuenta corriente almacén borrada');
+			return $this->History->Back(-1);
 		}
+		$this->Flash->error('Anticipo NO borrado');
+		return $this->History->Back(0);
 	}
 }
 ?>

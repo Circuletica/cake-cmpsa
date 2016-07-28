@@ -9,10 +9,6 @@ class AseguradorasController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id) {
-			$this->Flash->set('URL mal formado '.$this->class.'/view ');
-			$this->redirect(array('action'=>'index'));
-		}
 		$this->viewCompany($this->class, $id);
 		$this->set(compact('id'));
 	}
@@ -24,7 +20,7 @@ class AseguradorasController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Flash->set('error en URL');
+			$this->Flash->error('error en URL');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => Inflector::tableize($this->class)

@@ -9,10 +9,6 @@ class BancosController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id) {
-			$this->Flash->set('URL mal formado '.$this->class.'/view ');
-			$this->redirect(array('action'=>'index'));
-		}
 		$this->viewCompany($this->class, $id);
 		$this->set(compact('id'));
 	}

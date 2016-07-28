@@ -20,13 +20,18 @@ class ContactosController extends AppController {
 	}
 
 	public function edit($id = null) {
+		//		$this->Contacto->id = $id;
+		//		if (!$this->Contacto->exists()) {
+		//			throw new NotFoundException(__('Contacto inválido'));
+		//		}
 		if (!$id && empty($this->request->data)) {
-			$this->Flash->set('error en URL Contactos/edit');
+			$this->Flash->error('error en URL Contactos/edit');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => $this->params['named']['from_controller'],
 			));
 		}
+		debug('url correcta');
 		$this->form($id);
 		$this->render('form');
 	}
@@ -50,17 +55,10 @@ class ContactosController extends AppController {
 			$this->request->data['Contacto']['empresa_id'] = $empresa_id;
 			if($this->Contacto->save($this->request->data)) {
 				$this->Flash->success('Contacto guardado');
-				$this->redirect(
-					array(
-						'action' => 'view',
-						'controller' => $this->params['named']['from_controller'],
-						$empresa_id,
-					)
-				);
-			} else {
-				$this->Flash->error('Contacto NO guardado');
-				$this->History->Back(-1);
-			}
+				return $this->History->back(-1);
+			} 
+			$this->Flash->error('Contacto NO guardado');
+			return $this->History->Back(0);
 		} else { //es un GET
 			$this->request->data= $this->Contacto->read(null, $id);
 		}
