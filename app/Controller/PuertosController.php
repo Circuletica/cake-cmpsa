@@ -34,9 +34,9 @@ class PuertosController extends AppController {
 		} else {
 			if ($this->Puerto->save($this->request->data)) {
 				$this->Flash->success('Puerto '.
-				$this->request->data['Puerto']['nombre'].
-				' modificado con éxito');
-		$this->redirect(array('action' => 'index', $id));
+					$this->request->data['Puerto']['nombre'].
+					' modificado con éxito');
+				$this->redirect(array('action' => 'index', $id));
 			} else {
 				$this->Flash->error('Puerto NO guardado');
 			}
