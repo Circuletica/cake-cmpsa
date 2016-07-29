@@ -1070,7 +1070,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 								'calidad_id'
 							),
 							'Calidad' => array(
-								'fields' =>(
+								'fields' =>array(
 									'nombre'
 								)
 							)
@@ -1078,13 +1078,8 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 					),
 					'Asociado'=>array(
 						'fields'=> array(
+							'id',
 							'nombre_corto'
-						),
-						'Contacto'=>array(
-							'fields'=>array(
-								'nombre',
-								'email'
-							)
 						)
 					)
 				)
@@ -1124,19 +1119,18 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 
        //Necesario para volcar los datos en el PDF
         //Contactos de los asociados
-		/*$this->loadModel('Contacto');
-		/*$contactos = $this->Contacto->find(
+		$this->loadModel('Contacto');
+		$contactos = $this->Contacto->find(
 			'all',
 			array(
 				'conditions' =>array(
 					'departamento_id' => array(4),
-					'empresa_id'=> $asociado_id
-
 					),
 				'order' => array('Empresa.nombre_corto' => 'asc')
 			)
 		);
-		$this->set('contactos',$contactos);*/
+		$this->set('contactos',$contactos);
+
         //Usuarios de la CMPSA
 		$this->loadModel('Usuario');
 		$usuarios = $this->Usuario->find(

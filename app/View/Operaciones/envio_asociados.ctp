@@ -22,17 +22,25 @@ echo "<h2>Envío de distribución a los asociados de la operación <em>".$operac
 <fieldset style=width:65%;>
 <legend>Contactos asociados</legend>
 <?php
-
-foreach($asociados_operacion as $clave1=>$asociado_operacion){
-	foreach($asociado_operacion['Asociado'] as $clave2 => $contacto){
-			echo $contacto['Contacto']['nombre'];
-	}
+/*
+foreach($asociados_operacion as $asociado_operacion){
+	foreach($asociado_operacion['Asociado'] as $asociado){
+    	foreach($asociado['Contacto'] as $contacto){
+    		echo $contacto['nombre'];
+    	}
+    }
 	$opciones[$asociado_operacion['Asociado']['nombre_corto']] =
 	 $asociado_operacion['Asociado']['nombre_corto'].' / '.$asociado_operacion['AsociadoOperacion']['cantidad_embalaje_asociado'].' sacos / ';
+}*/
+
+foreach($asociados_operacion as $asociado_operacion){
+	foreach($contactos as $contacto){
+		if($asociado_operacion['Asociado']['id'] == $contacto['Contacto']['empresa_id']){
+    	$opciones[$contacto['Contacto']['email']] = $asociado_operacion['Asociado']['nombre_corto'].' / '.$asociado_operacion['AsociadoOperacion']['cantidad_embalaje_asociado'].' sacos / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
+		}
+    }
+	
 }
-
-
-
 
 /*foreach($contactos as $contacto){
 		if(!empty($contacto['Contacto']['email']) &&  $contacto['Empresa']['nombre_corto']!= 'CMPSA' && $contacto['Contacto']['departamento_id'] == 4){//Controlo que no haya contactos sin email
