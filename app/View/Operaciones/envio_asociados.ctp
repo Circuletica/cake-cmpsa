@@ -23,17 +23,29 @@ echo "<h2>Envío de distribución a los asociados de la operación <em>".$operac
 <legend>Contactos asociados</legend>
 <?php
 
-foreach($contactos as $contacto){
+foreach($asociados_operacion as $clave1=>$asociado_operacion){
+	foreach($asociado_operacion['Asociado'] as $clave2 => $contacto){
+			echo $contacto['Contacto']['nombre'];
+	}
+	$opciones[$asociado_operacion['Asociado']['nombre_corto']] =
+	 $asociado_operacion['Asociado']['nombre_corto'].' / '.$asociado_operacion['AsociadoOperacion']['cantidad_embalaje_asociado'].' sacos / ';
+}
+
+
+
+
+/*foreach($contactos as $contacto){
 		if(!empty($contacto['Contacto']['email']) &&  $contacto['Empresa']['nombre_corto']!= 'CMPSA' && $contacto['Contacto']['departamento_id'] == 4){//Controlo que no haya contactos sin email
 		$opciones[$contacto['Contacto']['email']] = $contacto['Empresa']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 		}
-}
-	$opciones['circuletica@gmail.com'] = 'circuletica@gmail.com';
+}*/
+	$opciones['circuletica@gmail.com'] = 'Circulética';
 
 	echo $this->Form->input('', array(
 		'name'=>'email',
 		'type' => 'select',
 		'multiple' => 'checkbox',
+		'selected' =>$opciones,
 		'options'=>$opciones
 		)
 	);

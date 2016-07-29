@@ -1052,61 +1052,62 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	}
 
 	public function envio_asociados ($id) {
+		$asociados_operacion = $this->Operacion->AsociadoOperacion->find(
+			'all',
+			array(
+				'conditions' => array(
+					'AsociadoOperacion.operacion_id' => $id
+				),
+			//	'recursive' => 4,
+				'contain' => array(
+					'Operacion'=>array(
+						'fields'=>array(
+							'contrato_id'
+						),
+						'Contrato'=>array(
+							'fields'=> array(
+								'id',
+								'calidad_id'
+							),
+							'Calidad' => array(
+								'fields' =>(
+									'nombre'
+								)
+							)
+						)
+					),
+					'Asociado'=>array(
+						'fields'=> array(
+							'nombre_corto'
+						),
+						'Contacto'=>array(
+							'fields'=>array(
+								'nombre',
+								'email'
+							)
+						)
+					)
+				)
+			)
+		);
+		$this->set('asociados_operacion', $asociados_operacion);
+
+
 		$operacion = $this->Operacion->find(
 			'first',
 			array(
 				'conditions' => array(
 					'Operacion.id' => $id
 				),
-				'recursive' => 2,
-				'contain' => array(
-					'Contrato'=>array(
-						'fields'=> array(
-							'id',
-							'referencia',
-							'si_entrega',
-							'fecha_transporte',
-							'si_muestra_emb_aprob',
-							'si_muestra_entr_aprob'
-						),
-						'Proveedor'=>array(
-							'id',
-							'nombre_corto'
-						),
-						'Incoterm' => array(
-							'fields'=> array(
-								'nombre',
-								'si_flete'
-							)
-						),
-						'Calidad' => array(
-							'fields' =>(
-								'nombre'
-							)
-						)
-					),
-					'PesoOperacion'=> array(
-						'fields' =>array(
-							'peso',
-							'cantidad_embalaje'
-						)
-					),
-					'AsociadoOperacion'=>array(
-						'Asociado'=>array(
-							'fields'=>array(
-								'id',
-								'nombre'
-								)
-							)
-					)
+				'contain'=>array(
+					'Contrato'
 				)
-
 			)
 		);
 		$this->set('operacion', $operacion);
-
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$this->loadModel('ContratoEmbalaje');
+	
 		$embalaje = $this->ContratoEmbalaje->find(
 			'first',
 			array(
@@ -1121,20 +1122,21 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 			)
 		);
 
-
        //Necesario para volcar los datos en el PDF
         //Contactos de los asociados
-		$this->loadModel('Contacto');
-		$contactos = $this->Contacto->find(
+		/*$this->loadModel('Contacto');
+		/*$contactos = $this->Contacto->find(
 			'all',
 			array(
 				'conditions' =>array(
-					'departamento_id' => array(2,4)
+					'departamento_id' => array(4),
+					'empresa_id'=> $asociado_id
+
 					),
 				'order' => array('Empresa.nombre_corto' => 'asc')
 			)
 		);
-		$this->set('contactos',$contactos);
+		$this->set('contactos',$contactos);*/
         //Usuarios de la CMPSA
 		$this->loadModel('Usuario');
 		$usuarios = $this->Usuario->find(
@@ -1153,33 +1155,6 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 			)
 		);
 		$this->set('usuarios',$usuarios);
-
-		foreach ($operacion['AsociadoOperacion'] as $linea) {
-			$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-
-			foreach ($operacion_retiradas as $clave => $operacion_retirada){
-				$retirada = $operacion_retirada['Retirada'];
-				if($retirada['asociado_id'] == $linea['Asociado']['id']){
-					$cantidad_retirado += $retirada['embalaje_retirado'];
-					$peso_retirado += $retirada['peso_retirado'];
-				}
-				$pendiente = $linea['cantidad_embalaje_asociado'] - $cantidad_retirado;
-			}
-
-			$lineas_retirada[] = array(
-				'asociado_id' => $linea['Asociado']['id'],
-				'Nombre' => $linea['Asociado']['nombre_corto'],
-				'Cantidad' => $linea['cantidad_embalaje_asociado'],
-				'Peso' => $peso
-			);
-
-			$total_sacos += $linea['cantidad_embalaje_asociado'];
-			$total_peso += $peso;
-		}
-
-		ksort($lineas_retirada);
-		$this->set('lineas_retirada',$lineas_retirada);
-
 
 		if (!empty($id)) $this->Operacion->id = $id;
       	if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras

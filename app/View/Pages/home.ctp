@@ -21,6 +21,7 @@
 			<li>&nbsp;&nbsp;<i class="fa fa-ship fa-3x"></i> <b>TRÁFICO</b><br>
 				<ul>
 				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('ALMACENES','/almacen_transportes',array('escape' => false));?></li>		
 				<li><?php echo $this->Html->link('RETIRADAS','/retiradas',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('FLETES','/fletes',array('escape' => false));?></li>				
 				</ul>
