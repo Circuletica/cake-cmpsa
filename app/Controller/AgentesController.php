@@ -9,8 +9,6 @@ class AgentesController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id)
-			throw new NotFoundException(__('URL mal formado Agentes/view'));
 		$this->viewCompany($this->class, $id);
 		$this->set(compact('id'));
 	}

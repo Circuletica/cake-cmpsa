@@ -1,15 +1,13 @@
 <?php
 class CalidadesController extends AppController {
-	public $paginate = array(
-		'order' => array(
-			'Pais.nombre' => 'asc',
-			'Calidad.descripcion' => 'asc'
-		)
-	);
 
 	public function index() {
 		$this->paginate['contain'] = array(
 			'Pais'
+		);
+		$this->paginate['order'] = array(
+			'Pais.nombre' => 'asc',
+			'Calidad.descripcion' => 'asc'
 		);
 		$this->set('calidades', $this->paginate());
 	}
@@ -20,9 +18,9 @@ class CalidadesController extends AppController {
 	}
 
 	public function edit( $id = null) {
-		if (!$id) {
-			$this->Flash->set('URL mal formado');
-			$this->redirect(array('action'=>'index'));
+		$this->Calidad->id = $id;
+		if (!$this->Calidad->exists()) {
+			throw new NotFoundException(__('Calidad inválida'));
 		}
 		$this->form($id);
 		$this->render('form');

@@ -9,30 +9,30 @@ class AsociadosController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id) {
-			$this->Flash->error('URL mal formado Asociado/view ');
-			$this->redirect(array('action'=>'index'));
-		}
 		$this->viewCompany($this->class,$id);
 		$empresa = $this->{$this->class}->findById($id);
 		$this->set('comisiones', $empresa['AsociadoComision']);
-		$asociado_comision = $this->Asociado->AsociadoComision->find('first', array(
-			'conditions' => array(
-				'AND' => array(
-					array("AsociadoComision.fecha_inicio <=" => date('Y-m-d')),
-					'OR' => array(
-						"AsociadoComision.fecha_fin >" => date('Y-m-d'),
-						"AsociadoComision.fecha_fin " => NULL,
-					),
-					array('Asociado.id' => $id)
-				))
+		$asociado_comision = $this->Asociado->AsociadoComision->find(
+			'first',
+			array(
+				'conditions' => array(
+					'AND' => array(
+						array(
+							"AsociadoComision.fecha_inicio <=" => date('Y-m-d')
+						),
+						'OR' => array(
+							"AsociadoComision.fecha_fin >" => date('Y-m-d'),
+							"AsociadoComision.fecha_fin " => NULL,
+						),
+						array('Asociado.id' => $id)
+					)
+				)
 			)
 		);
 		//si no hay comisión válida a día de hoy, avisar.
 		if (!empty($asociado_comision)) {
 			$this->set('comision', $asociado_comision['Comision']['valor']);
-		} else
-		{
+		} else {
 			$this->set('comision', 'comisión no definida');
 		}
 		$this->set(compact('id'));
