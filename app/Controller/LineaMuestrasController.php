@@ -1,22 +1,13 @@
 <?php
 class LineaMuestrasController extends AppController {
-	public $paginate = array(
-		'order' => array('marca' => 'asc')
-	);
 
 	public function index() {
 		$this->set('lineas', $this->paginate());
 	}
 
 	public function view($id = null) {
-		if (!$id) {
-			$this->Flash->set('URL mal formado Muestra/view');
-			$this->redirect(array('action'=>'index'));
-		}
+		$this->checkId($id);
 		$linea = $this->LineaMuestra->findById($id);
-		if (!$linea) {
-			throw new NotFoundException('No existe esa línea');
-		}
 		$this->set('tipos', $this->tipoMuestras);
 		$this->set('linea',$linea);
 		$suma_linea = $linea['LineaMuestra']['criba20'] +
@@ -54,7 +45,7 @@ class LineaMuestrasController extends AppController {
 	public function add() {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$this->params['named']['from_id']) {
-			$this->Flash->set('URL mal formado lineaMuestra/add '.$this->params['named']['from_controller']);
+			$this->Flash->error('URL mal formado lineaMuestra/add '.$this->params['named']['from_controller']);
 			//$this->redirect(array(
 			//'controller' => $this->params['named']['from_controller'],
 			//'action' => 'index')
@@ -67,7 +58,7 @@ class LineaMuestrasController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Flash->set('error en URL');
+			$this->Flash->error('error en URL');
 			$this->redirect(array(
 				'action' => 'view',
 				'controller' => $this->params['named']['from_controller'],
@@ -225,17 +216,17 @@ class LineaMuestrasController extends AppController {
 				$this->request->data['LineaMuestra']['criba13']+
 				$this->request->data['LineaMuestra']['criba12'];
 			if(number_format($suma_criba,2) != 100){
-				$this->Flash->set('Linea de Muestra no guardada, la suma de criba no es 100%');
+				$this->Flash->error('Linea de Muestra no guardada, la suma de criba no es 100%');
 			} else {
 				if ($this->LineaMuestra->save($this->request->data)) {
-					$this->Flash->set('Línea de muestra guardada');
+					$this->Flash->success('Línea de muestra guardada');
 					$this->redirect(array(
 						'action' => 'view',
 						'controller' => 'linea_muestras',
 						$this->LineaMuestra->id
 					));
 				} else {
-					$this->Flash->set('Línea de muestra NO guardada');
+					$this->Flash->error('Línea de muestra NO guardada');
 				}
 			}
 		} else { //es un GET
@@ -250,7 +241,7 @@ class LineaMuestrasController extends AppController {
 		if (!$this->LineaMuestra->exists())
 			throw new NotFoundException(__('Línea de muestra inválida'));
 		if ($this->LineaMuestra->delete($id)) {
-			$this->Flash->set('Línea de muestra borrada');
+			$this->Flash->success('Línea de muestra borrada');
 			$this->History->back(-1);
 		}
 		$this->Flash->error(__('Línea de muestra NO borrada'));
@@ -385,16 +376,15 @@ class LineaMuestrasController extends AppController {
 		);
 		$this->set('usuarios',$usuarios);
 
-
 		if (!empty($id)) $this->LineaMuestra->id = $id;
 		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
 			$this->request->data = $this->LineaMuestra->read();//Cargo los datos
 		}else{//es un POST
 			if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
 				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra
-				$this->Flash->set('Los datos del informe han sido guardados.');
+				$this->Flash->success('Los datos del informe han sido guardados.');
 			}elseif(empty($this->request->data['email'])){
-				$this->Flash->set('Los datos del informe NO fueron enviados. Faltan destinatarios');
+				$this->Flash->error('Los datos del informe NO fueron enviados. Faltan destinatarios');
 			}else{
 				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos
 
@@ -434,7 +424,7 @@ class LineaMuestrasController extends AppController {
 				$Email->subject('NUEVO - Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
 				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 				$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
-				$this->Flash->set('¡Informe de calidad enviado!');
+				$this->Flash->success('¡Informe de calidad enviado!');
 				$this->redirect(array(
 					'action'=>'view',
 					'controller' =>'LineaMuestras',

@@ -1,23 +1,23 @@
 <?php
 class FinanciacionesController extends AppController {
-	public $paginate = array(
-		'order' => array('Operacion.referencia' => 'asc')
-	);
 
 	public function index() {
 		$this->paginate['contain'] = array(
 			'Banco',
 			'Operacion'
 		);
+		$this->paginate['order'] = array(
+			'Operacion.referencia' => 'asc'
+		);
 		$this->set('financiaciones', $this->paginate());
 	}
 
 	public function view($id = null) {
-		//el id y la clase de la financiación de origen vienen en la URL
-		if (!$id) {
-			$this->Flash->set('URL mal formado Financiación/view');
-			$this->redirect(array('action'=>'index'));
+		$this->Financiacion->id = $id;
+		if (!$this->Financiacion->exists()) {
+			throw new NotFoundException(__('Financiación inválida'));
 		}
+
 		$financiacion = $this->Financiacion->find(
 			'first',
 			array(
@@ -40,9 +40,6 @@ class FinanciacionesController extends AppController {
 				'recursive' => 4
 			)
 		);
-		if (!$financiacion) {
-			throw new NotFoundException(__('No existe esa financiación'));
-		}
 		$this->set(compact('financiacion'));
 
 		//calculamos el total de cada línea de reparto como campo virtual del modelo
@@ -151,7 +148,7 @@ class FinanciacionesController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Flash->set('error en URL');
+			$this->Flash->error('error en URL');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => 'financiaciones'
@@ -221,14 +218,14 @@ class FinanciacionesController extends AppController {
 		if (!empty($id)) $this->Financiacion->id = $id;
 		if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
 			if($this->Financiacion->save($this->request->data)){
-				$this->Flash->set('Financiación guardada');
+				$this->Flash->success('Financiación guardada');
 				$this->redirect(array(
 					'action' => 'view',
 					'controller' => 'financiaciones',
 					$id
 				));
 			} else {
-				$this->Flash->set('Financiación NO guardada');
+				$this->Flash->error('Financiación NO guardada');
 			}
 		} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
 			$this->request->data = $this->Financiacion->read(null, $id);
@@ -293,9 +290,9 @@ class FinanciacionesController extends AppController {
 		}else{//es un POST
 			if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
 				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra
-				$this->Flash->set('Los datos de la financiación han sido guardados.');
+				$this->Flash->success('Los datos de la financiación han sido guardados.');
 			}elseif(empty($this->request->data['email'])){
-				$this->Flash->set('Los datos de la financiación NO fueron enviados. Faltan destinatarios');
+				$this->Flash->error('Los datos de la financiación NO fueron enviados. Faltan destinatarios');
 			}else{
 				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos
 
@@ -335,7 +332,7 @@ class FinanciacionesController extends AppController {
 				$Email->subject('Financiación de operación '.$financiacion['Operacion']['referencia'].' / Fecha '.date('Ymd'));
 				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS .'financiacion_'.$financiacion['Operacion']['referencia'].'_'.date('Ymd').'.pdf');
 				$Email->send('Adjuntamos financiación de la operación '.$financiacion['Operacion']['referencia']);
-				$this->Flash->set('¡Las financiaciones han sido enviadas a los asociados correctamente!');
+				$this->Flash->success('¡Las financiaciones han sido enviadas a los asociados correctamente!');
 				$this->redirect(array(
 					'action'=>'view',
 					'controller' =>'financiaciones',

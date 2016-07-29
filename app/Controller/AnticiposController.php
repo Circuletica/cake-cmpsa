@@ -241,10 +241,10 @@ class AnticiposController extends AppController {
 		$this->request->allowMethod('post');
 		$this->Anticipo->id = $id;
 		if (!$this->Anticipo->exists()) {
-			throw new NotFoundException('Cuenta corriente inválida');
+			throw new NotFoundException('Anticipo inválido');
 		}
 		if ($this->Anticipo->delete()){
-			$this->Flash->success('Cuenta corriente almacén borrada');
+			$this->Flash->success('Anticipo borrado');
 			return $this->History->Back(-1);
 		}
 		$this->Flash->error('Anticipo NO borrado');

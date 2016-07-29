@@ -52,10 +52,9 @@ class FacturacionesController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id) {
-			//$this->Flash->set('URL mal formado Facturación/view');
-			//$this->redirect(array('action'=>'index'));
-			throw new NotFoundException('No existe tal facturación');
+		$this->Facturacion->id = $id;
+		if (!$this->Facturacion->exists()) {
+			throw new NotFoundException(__('Facturación inválida'));
 		}
 		$facturacion = $this->Facturacion->find(
 			'first',
@@ -82,12 +81,8 @@ class FacturacionesController extends AppController {
 				'recursive' => 3
 			)
 		);
-		if (!$facturacion) {
-			//$this->Flash->set('URL mal formada: No existe facturacion con id: '.$id);
-			//$this->History->Back(0);
-			throw new NotFoundException('No existe tal facturación');
-		}
 		$this->set(compact('facturacion'));
+
 		$this->set('facturacion_id',$id);
 		$this->set('referencia',$facturacion['Operacion']['referencia']);
 		$this->set('proveedor',$facturacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
@@ -153,7 +148,7 @@ class FacturacionesController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Flash->set('error en URL Facturación/edit');
+			$this->Flash->error('error en URL Facturación/edit');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => 'facturaciones'

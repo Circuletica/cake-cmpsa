@@ -7,4 +7,3 @@ class Proveedor extends AppModel {
 		'foreignKey' => 'id')
 	);
 }
-

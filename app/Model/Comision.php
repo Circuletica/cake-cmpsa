@@ -1,4 +1,4 @@
 <?php
 class Comision extends AppModel {
-    public $displayField = 'valor';
+	public $displayField = 'valor';
 }

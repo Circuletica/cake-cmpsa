@@ -1,16 +1,22 @@
 <?php
 class AsociadosController extends AppController {
 
-	public $class = 'Asociado';
-
-	public function index() {
-		$this->bindCompany($this->class);
-		$this->set('empresas', $this->paginate());
-	}
-
 	public function view($id = null) {
-		$this->viewCompany($this->class,$id);
-		$empresa = $this->{$this->class}->findById($id);
+		$this->Asociado->id = $id;
+		if (!$this->Asociado->exists()) {
+			throw new NotFoundException(__('Asociado inválido'));
+		}
+		$this->Asociado->recursive = 3;
+		$empresa = $this->Asociado->findById($id);
+		$this->set('empresa',$empresa);
+		$this->set('referencia', $empresa['Empresa']['nombre_corto']);
+		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
+		//el método iban() definido en AppController necesita
+		//como parametro un 'string'
+		settype($cuenta_bancaria,"string");
+		$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
+		$this->set('iban_bancaria',$iban_bancaria);
+
 		$this->set('comisiones', $empresa['AsociadoComision']);
 		$asociado_comision = $this->Asociado->AsociadoComision->find(
 			'first',
@@ -38,29 +44,8 @@ class AsociadosController extends AppController {
 		$this->set(compact('id'));
 	}
 
-	public function add() {
-		$this->form();
-		$this->render('form');
-	}
-
-	public function edit($id = null) {
-		if (!$id && empty($this->request->data)) {
-			$this->Flash->error('error en URL');
-			$this->redirect(array(
-				'action' => 'index',
-				'controller' => Inflector::tableize($this->class)
-			));
-		}
-		$this->form($id);
-		$this->render('form');
-	}
-
-	public function form($id = null) {
-		$this->formCompany($this->class, $id);
-	}
-
 	public function delete( $id = null) {
-		$this->deleteCompany('Asociado', $id);
+		$this->deleteCompany($id);
 	}
 }
 ?>

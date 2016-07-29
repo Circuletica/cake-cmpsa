@@ -5,10 +5,10 @@ class Operacion extends AppModel {
 	public $displayField = 'referencia';
 
 	public $validate = array(
-      'referencia' => array(
-      'rule' => 'notBlank',
-      'message' => 'La referencia no puede estar vacía')
-    );
+		'referencia' => array(
+			'rule' => 'notBlank',
+			'message' => 'La referencia no puede estar vacía')
+		);
 
 	public $belongsTo = array(
 		'PuertoCarga' => array(
@@ -25,7 +25,7 @@ class Operacion extends AppModel {
 		'Embalaje' => array(
 			'className' => 'Embalaje',
 			'foreignKey' => 'embalaje_id')
-	);
+		);
 	public $hasOne = array(
 		'PrecioOperacion' => array(
 			'className' => 'PrecioOperacion',
@@ -60,19 +60,19 @@ class Operacion extends AppModel {
 	);
 	public function beforeDelete($cascade = true) {
 		$count_asociado = $this->AsociadoOperacion->find(
-            "count",
-            array(
-                "recursive" => -1,
-                "conditions" => array("operacion_id" => $this->id)
-            )
-        );
+			"count",
+			array(
+				"recursive" => -1,
+				"conditions" => array("operacion_id" => $this->id)
+			)
+		);
 		$count_retirada = $this->Retirada->find(
-            "count",
-            array(
-                "recursive" => -1,
-                "conditions" => array("operacion_id" => $this->id)
-            )
-        );
+			"count",
+			array(
+				"recursive" => -1,
+				"conditions" => array("operacion_id" => $this->id)
+			)
+		);
 		if ($count_asociado == 0 && $count_retirada == 0) {
 			return true;
 		}

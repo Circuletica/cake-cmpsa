@@ -22,12 +22,12 @@ class Asociado extends AppModel {
 	);
 	public function beforeDelete($cascade = true) {
 		$count = $this->AsociadoOperacion->find(
-            "count",
-            array(
-                "recursive" => -1,
-                "conditions" => array("asociado_id" => $this->id)
-            )
-        );
+			"count",
+			array(
+				"recursive" => -1,
+				"conditions" => array("asociado_id" => $this->id)
+			)
+		);
 		if ($count == 0) {
 			return true;
 		}

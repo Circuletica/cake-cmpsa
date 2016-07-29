@@ -115,7 +115,7 @@ class FletesController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id) {
-			$this->Flash->set('error en URL/No id de flete para edit');
+			$this->Flash->error('error en URL/No id de flete para edit');
 			$this->redirect(
 				array(
 					'action' => 'index',
@@ -191,8 +191,12 @@ class FletesController extends AppController {
 	}
 
 	public function view($id = null) {
+		$this->Flete->id = $id;
+		if (!$this->Flete->exists()) {
+			throw new NotFoundException(__('Flete inválido'));
+		}
 		if (!$id) {
-			$this->Flash->set('URL mal formado Flete/view');
+			$this->Flash->error('URL mal formado Flete/view');
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set(compact('id'));
@@ -203,10 +207,8 @@ class FletesController extends AppController {
 				'recursive' => 2
 			)
 		);
-		if (!$flete) {
-			throw new NotFoundException(__('No existe ese flete'));
-		}
 		$this->set('flete',$flete);
+
 		$this->set('referencia',
 			$flete['PuertoCarga']['nombre']
 			.' ('.$flete['PuertoCarga']['Pais']['nombre'].')'
