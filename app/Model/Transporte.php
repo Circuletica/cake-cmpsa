@@ -1,5 +1,7 @@
 <?php
 class Transporte extends AppModel {
+	public $name = 'Línea de transporte';
+	public $useTable = 'transportes';
 	public $recursive = 3;
 	public $validate = array(
 		'nombre_vehiculo' => array(

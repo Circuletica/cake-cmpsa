@@ -161,7 +161,7 @@ class TransportesController extends AppController {
 
 	public function add() {
 		if (!$this->params['named']['from_id']) {
-			$this->Flash->set('URL mal formado transporte/add '.$this->params['named']['from_controller']);
+			$this->Flash->error('URL mal formado transporte/add '.$this->params['named']['from_controller']);
 			$this->redirect(array(
 				'controller' => $this->params['named']['from_controller'],
 				'action' => 'index')
@@ -173,7 +173,7 @@ class TransportesController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Flash->set('error en URL');
+			$this->Flash->error('error en URL');
 			$this->redirect(array(
 				'action' => 'view_trafico',
 				'controller' => 'operaciones',
@@ -365,18 +365,18 @@ class TransportesController extends AppController {
 
 			if($id == NULL){
 				if($this->Transporte->save($this->request->data)){
-					$this->Flash->set("Linea de transporte guardada correctamente");
+					$this->Flash->success("Linea de transporte guardada correctamente");
 					$this->redirect(array(
 						'controller' => 'operaciones',
 						'action' => 'view_trafico',
 						$operacion_id
 					));
 				}else{
-					$this->Flash->set('Linea de transporte NO guardada');
+					$this->Flash->error('Linea de transporte NO guardada');
 				}
 			}else{
 				if($this->Transporte->save($this->request->data)){
-					$this->Flash->set('Linea de transporte modificada correctamente');
+					$this->Flash->success('Linea de transporte modificada correctamente');
 					$this->redirect(array(
 						'controller' => 'transportes',
 						'action' => 'view',
@@ -390,24 +390,24 @@ class TransportesController extends AppController {
 	}
 
 	public function delete($id = null) {
-		if (!$id or $this->request->is('get')):
+		if (!$id or $this->request->is('get')) {
 			throw new MethodNotAllowedException();
-endif;
+		}
 
-if ($this->Transporte->delete($id)){
-	$this->Flash->set('Linea de transporte borrada correctamente');
-	$this->redirect(array(
-		'controller' => 'operaciones',
-		'action' => 'view_trafico',
-		$this->params['named']['from_id']
-	));//No usar History aquí
-}else{
-	$this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacen');
-	$this->redirect(array(
-		'action' => 'view',
-		$id
-	));
-}
+		if ($this->Transporte->delete($id)){
+			$this->Flash->success('Linea de transporte borrada correctamente');
+			$this->redirect(array(
+				'controller' => 'operaciones',
+				'action' => 'view_trafico',
+				$this->params['named']['from_id']
+			));//No usar History aquí
+		}else{
+			$this->Flash->error('Linea de transporte NO borrada. Hay cuenta de almacen');
+			$this->redirect(array(
+				'action' => 'view',
+				$id
+			));
+		}
 	}
 
 	public function info_embarque() {
@@ -565,7 +565,7 @@ if ($this->Transporte->delete($id)){
 			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
 				list($mes,$anyo) = explode('-',$fechadesde);
 			} else {
-				$this->Flash->set('Error de fecha');
+				$this->Flash->error('Error de fecha');
 				$this->redirect(array('action' => 'index'));
 			}
 			//si se ha introducido un año, filtramos por el año
@@ -584,7 +584,7 @@ if ($this->Transporte->delete($id)){
 			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
 				list($mes,$anyo) = explode('-',$fechahasta);
 			} else {
-				$this->Flash->set('Error de fecha');
+				$this->Flash->error('Error de fecha');
 				$this->redirect(array('action' => 'index'));
 			}
 			//si se ha introducido un año, filtramos por el año

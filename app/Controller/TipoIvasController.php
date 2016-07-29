@@ -37,21 +37,19 @@ class TipoIvasController extends AppController {
 	}
 
 	public function add() {
-		if($this->request->is('post')):
-			if($this->TipoIva->save($this->request->data) ):
-				$this->Flash->set('Tipo de IVA guardado');
-		$this->redirect(array(
-			'controller' => 'tipo_ivas',
-			'action' => 'index'
-		)
-	);
-endif;
-endif;
+		if($this->request->is('post')) {
+			if($this->TipoIva->save($this->request->data) ) {
+				$this->Flash->success('Tipo de IVA guardado');
+				$this->redirect(array(
+					'controller' => 'tipo_ivas',
+					'action' => 'index'
+				));
+			}
+		}
 	}
 
 	public function view($id = null) {
-		if (!$id)
-			throw new NotFoundException(__('URL mal formado Contrato/view'));
+		$this->checkId($id);
 		//el id y la clase del tipo de iva vienen en la URL
 		$tipo_iva = $this->TipoIva->findById($id);
 		if (!$tipo_iva)
@@ -61,32 +59,28 @@ endif;
 
 	public function edit($id = null) {
 		$this->TipoIva->id = $id;
-		if($this->request->is('get')):
-			$iva = $this->TipoIva->find('first', array(
-				'conditions' => array(
-					'id' => $id
-				)
-			)
-		);
-		$this->set('referencia', 'IVA '.$iva['TipoIva']['nombre']);
-		$this->request->data = $this->TipoIva->read();
-		else:
-			if($this->TipoIva->save($this->request->data)):
-				$this->Flash->set(' Tipo de IVA '.$this->request->data['Iva']['nombre'].' guardado');
-		$this->redirect(array('action' => 'index'));
-			else:
-				$this->Flash->set('Tipo de IVA no guardado');
-endif;
-endif;
+		if($this->request->is('get')) {
+			$iva = $this->TipoIva->findById($id);
+			$this->set('referencia', 'IVA '.$iva['TipoIva']['nombre']);
+			$this->request->data = $this->TipoIva->read();
+		} else {
+			if($this->TipoIva->save($this->request->data)) {
+				$this->Flash->success(' Tipo de IVA '.$this->request->data['Iva']['nombre'].' guardado');
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Flash->error('Tipo de IVA no guardado');
+			}
+		}
 	}
-	public function delete($id) {
-		if($this->request->is('get')):
-			throw new MethodNotAllowedException();
-		else:
-			if($this->TipoIva->delete($id)):
-				$this->Flash->set('Tipo de IVA borrado');
-		$this->redirect(array('action' => 'index'));
-endif;
-endif;
-	}
+
+	//	public function delete($id) {
+	//		if($this->request->is('get')):
+	//			throw new MethodNotAllowedException();
+	//		else:
+	//			if($this->TipoIva->delete($id)):
+	//				$this->Flash->success('Tipo de IVA borrado');
+	//		$this->redirect(array('action' => 'index'));
+	//endif;
+	//endif;
+	//	}
 }
