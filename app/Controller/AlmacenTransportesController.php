@@ -17,7 +17,7 @@ class AlmacenTransportesController extends AppController {
 		);
 
 
-		$this->AlmacenTransporte->bindModel(
+		$this->AlmacenTransporte->Transporte->bindModel(
 		    array(
 			'belongsTo' => array(
 				'Operacion' => array(

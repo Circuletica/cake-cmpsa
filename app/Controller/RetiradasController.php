@@ -3,6 +3,7 @@ class RetiradasController extends AppController {
 
 	public function index() {
 		$this->set('action', $this->action);	//Se usa para tener la misma vista
+
 		$this->paginate['order'] = array('Retirada.fecha_retirada' => 'desc');
 		$this->paginate['contain'] = array(
 			'Asociado',
@@ -16,10 +17,41 @@ class RetiradasController extends AppController {
 			'Operacion' => array (
 				'fields' => array(
 					'id',
-					'referencia'
+					'referencia',
+
 				)
 			)
 		);
+
+		$titulo = $this->filtroPaginador(
+			array(
+				'Operacion' =>array(
+					'Referencia' => array(
+						'columna' => 'referencia',
+						'exacto' => false,
+						'lista' => ''
+					)				
+				)
+			)
+		);
+
+		if(isset($this->passedArgs['Search.desde'])) {
+			$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
+			$this->paginate['conditions']['Retirada.fecha_retirada >'] = $criterio;
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['desde'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Retirada: '.$criterio;
+		}
+		if(isset($this->passedArgs['Search.hasta']) and $this->passedArgs['Search.hasta'] != '--') {
+			$criterio = strtr($this->passedArgs['Search.hasta'],'_','/');
+			$this->paginate['conditions']['Retirada.fecha_retirada <'] = $criterio;
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['hasta'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Retirada: '.$criterio;
+		}		
+
 		$this->Retirada->bindModel(
 			array(
 				'belongsTo' => array(
@@ -35,7 +67,9 @@ class RetiradasController extends AppController {
 				)
 			)
 		);
-		$this->set('retiradas',$this->paginate());
+		$retiradas = $this->paginate();
+		//pasamos los datos a la vista
+		$this->set(compact('retiradas','title'));
 
 	}
 

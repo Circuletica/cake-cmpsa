@@ -6,7 +6,7 @@ $this->assign('class', 'Retirada');
 
 $this->start('filter');
   echo $this->element('filtroretiradas');
-  echo '<br>';
+  /*echo '<br>';
   echo $this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> Descargar a CSV',array(
     'controller'=>'retiradas',
     'action'=>'export'
@@ -16,7 +16,7 @@ $this->start('filter');
       'escape'=>false,
       'title'=>'Descargar la información a un archivo CSV'
       )
-  ); 
+  ); */
 $this->end();
 
 $this->start('main');
