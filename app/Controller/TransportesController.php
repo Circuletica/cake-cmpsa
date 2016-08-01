@@ -18,8 +18,9 @@ class TransportesController extends AppController {
 	   	 'Transporte.fecha_reclamacion IS NULL'
 		);
 	}
+
 	$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
-	$this->paginate['recursive'] = 3;
+	$this->paginate['recursive'] = 2;
 	//$this->paginate['condition'] = array(
 	//    'Transporte.fecha_despacho_op'=> NULL
 	//);
@@ -33,10 +34,17 @@ class TransportesController extends AppController {
 			)
 		),
 		/*'PesoOperacion',*/
-		'Incoterm',
-		'AsociadoOperacion'=>array(
-			'Asociado'
+		'Incoterm'=>array(
+			'fields' => array(
+				'nombre'
+			)
 		),
+		'Asociado'=> array(
+			'fields' => array(
+				'nombre_corto'
+			)
+		),
+		'AsociadoOperacion',
 		'Contrato'=>array(
 		    'fields'=> array(
 			'id',
@@ -47,7 +55,11 @@ class TransportesController extends AppController {
 			'calidad_id'
 		    )
 		),
-		'Proveedor',
+		'Proveedor'=>array(
+		    'fields'=> array(
+		    	'nombre_corto'
+		    )
+		),
 	    'PuertoDestino' => array(
 			'fields' => array(
 			    'id',
@@ -61,7 +73,15 @@ class TransportesController extends AppController {
 		'belongsTo' => array(
 		    'Contrato' => array(
 				'foreignKey' => false,
-				'conditions' => array('Operacion.contrato_id = Contrato.id')
+				'conditions' => array('Operacion.contrato_id = Contrato.id'),
+				'fields'=> array(
+					'id',
+					'referencia',
+					'fecha_transporte',
+					'si_entrega',
+					'proveedor_id',
+					'calidad_id'
+				)
 		    ),
 		    'Calidad' => array(
 				'foreignKey' => false,
@@ -79,7 +99,12 @@ class TransportesController extends AppController {
 			'AsociadoOperacion' => array(
 				'foreignKey' => false,
 				'conditions' => array('AsociadoOperacion.operacion_id = Operacion.id')
-			),			
+			),
+			'Asociado'=> array(
+				'className' => 'Empresa',
+				'foreignKey'=> false,
+				'conditions' => array( 'Asociado.id = AsociadoOperacion.asociado_id')
+			),	
 			'Incoterm'=> array(
 				'foreignKey' => false,
 				'conditions' => array('Contrato.incoterm_id = Incoterm.id')
@@ -650,12 +675,6 @@ class TransportesController extends AppController {
     }*/
 
     public function suplemento() { // Informe suplemento sin reclamación
-    	$this->index();
-    	$this->set('action', $this->action);
-    	$this->render('index');
-    }
-
-    public function pendiente() { //Informes de sacos pendientes por adjudicar
     	$this->index();
     	$this->set('action', $this->action);
     	$this->render('index');

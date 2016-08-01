@@ -2,16 +2,49 @@
 class AlmacenTransportesController extends AppController {
 
 	public function index() {
+		$this->set('action', $this->action);	//Se usa para tener la misma vista	
+
 		$this->paginate['order'] = array('AlmacenTransporte.cuenta_almacen' => 'asc');
 		//$this->paginate['recursive'] = 3;
 		$this->paginate['contain'] = array(
 			'Almacen'=>array(
-				'id',
 				'nombre_corto'
+			),
+			'Operacion',
+			'Contrato',
+			'Calidad',
+			'Transporte'
+		);
+
+
+		$this->AlmacenTransporte->bindModel(
+		    array(
+			'belongsTo' => array(
+				'Operacion' => array(
+					'foreignKey' => false,
+					'conditions' => array('Transporte.operacion_id = Operacion.id')
+					)					
+				),
+			    'Contrato' => array(
+					'foreignKey' => false,
+					'conditions' => array('Operacion.contrato_id = Contrato.id')
+			    ),
+			    'Calidad' => array(
+					'foreignKey' => false,
+					'conditions' => array('Contrato.calidad_id = Calidad.id')
+				)
 			)
 		);
+
 		$this->set('almacentransportes', $this->paginate());
 	}
+
+	public function pendiente() { //Informes de sacos pendientes por adjudicar
+    	$this->index();
+    	$this->set('action', $this->action);
+    	$this->render('index');
+    }
+
 
 	public function view($id = null) {
 		if (!$id) {

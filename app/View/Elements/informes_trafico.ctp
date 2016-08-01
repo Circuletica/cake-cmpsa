@@ -35,7 +35,7 @@
     echo  $this->Html->link('<i class="fa fa-info fa-lg"></i> Pedientes de adjudicar',
       array(
         'action' =>'pendiente',
-        'controller' => 'transportes'
+        'controller' => 'almacen_transportes'
         ),
       array(
         'escape'=>false,
