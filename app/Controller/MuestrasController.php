@@ -103,9 +103,7 @@ class MuestrasController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id) {
-			throw new NotFoundException(__('URL mal formado Muestra/view'));
-		}
+		$this->checkId($id);
 		$muestra = $this->Muestra->find(
 			'first',
 			array(
@@ -125,9 +123,6 @@ class MuestrasController extends AppController {
 				),
 			)
 		);
-		if (!$muestra) {
-			throw new NotFoundException(__('No existe esa muestra'));
-		}
 		$this->set('muestra',$muestra);
 
 		//Exportar PDF

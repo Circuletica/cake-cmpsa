@@ -51,8 +51,7 @@ class TransportesController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id)
-			throw new NotFoundException(__('URL mal formado Transporte/view'));
+		$this->checkId($id);
 		$this->pdfConfig = array(
 			'filename' => 'linea'.date('Ymd'),
 		);
@@ -135,8 +134,6 @@ class TransportesController extends AppController {
 				)
 			)
 		);
-		if (!$transporte)
-			throw new NotFoundException(__('No existe ese transporte'));
 		$this->set('transporte',$transporte);
 		//Calculamos la cantidad de sacos almacenados en la linea
 		if(!empty($transporte['Transporte']['id'])){

@@ -15,10 +15,7 @@ class AlmacenTransportesController extends AppController {
 	}
 
 	public function view($id = null) {
-		$this->AlmacenTransporte->id = $id;
-		if (!$this->AlmacenTransporte->exists()) {
-			throw new NotFoundException(__('Cuenta de almacén inválida'));
-		}
+		$this->checkId($id);
 
 		$this->AlmacenTransporte->AlmacenTransporteAsociado->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
 

@@ -191,15 +191,7 @@ class FletesController extends AppController {
 	}
 
 	public function view($id = null) {
-		$this->Flete->id = $id;
-		if (!$this->Flete->exists()) {
-			throw new NotFoundException(__('Flete inválido'));
-		}
-		if (!$id) {
-			$this->Flash->error('URL mal formado Flete/view');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->set(compact('id'));
+		$this->checkId($id);
 		$flete = $this->Flete->find(
 			'first',
 			array(
@@ -221,21 +213,22 @@ class FletesController extends AppController {
 			)
 		);
 		$this->set('costes',$costes);
+		$this->set(compact('id'));
 	}
 
-	public function delete($id = null) {
-		$this->request->allowMethod('post');
-
-		$this->Flete->id = $id;
-		if($this->Flete->delete()) {
-			$this->Flash->success('Flete borrado');
-			return $this->redirect(array(
-				'controller' => 'fletes',
-				'action' => 'index'
-			));
-		}
-		$this->Flash->error(__('Flete NO borrado'));
-		return $this->History->back(0);
-	}
+//	public function delete($id = null) {
+//		$this->request->allowMethod('post');
+//
+//		$this->Flete->id = $id;
+//		if($this->Flete->delete()) {
+//			$this->Flash->success('Flete borrado');
+//			return $this->redirect(array(
+//				'controller' => 'fletes',
+//				'action' => 'index'
+//			));
+//		}
+//		$this->Flash->error(__('Flete NO borrado'));
+//		return $this->History->back(0);
+//	}
 }
 ?>

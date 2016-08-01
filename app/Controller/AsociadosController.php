@@ -2,10 +2,7 @@
 class AsociadosController extends AppController {
 
 	public function view($id = null) {
-		$this->Asociado->id = $id;
-		if (!$this->Asociado->exists()) {
-			throw new NotFoundException(__('Asociado inválido'));
-		}
+		$this->checkId($id);
 		$this->Asociado->recursive = 3;
 		$empresa = $this->Asociado->findById($id);
 		$this->set('empresa',$empresa);
