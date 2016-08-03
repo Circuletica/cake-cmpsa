@@ -237,7 +237,7 @@ class AnticiposController extends AppController {
 		}
 	}
 
-	public function delete($id) {
+	public function delete($id = $null) {
 		$this->request->allowMethod('post');
 		$this->Anticipo->id = $id;
 		if (!$this->Anticipo->exists()) {
