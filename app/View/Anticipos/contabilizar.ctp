@@ -2,6 +2,16 @@
 echo $this->Form->create('Anticipo', array('action'=>'contabilizar'));
 echo "<table>\n";
 echo $this->Html->tableHeaders(array(
+//	$this->Form->input(
+//		'checkbox',
+//		array(
+//			'type' => 'checkbox',
+//			'label' => false,
+//			'name' => 'selectAll',
+//			'id' => 'selectAll',
+//			'hiddenField' => false
+//		)
+//	),
 	'Contabilizar',
 	$this->Paginator->sort('Anticipo.fecha_conta','Fecha'),
 	$this->Paginator->sort('Operacion.referencia','Operación'),
@@ -11,10 +21,13 @@ echo $this->Html->tableHeaders(array(
 ));
 foreach($anticipos as $anticipo) {
 	echo $this->Html->tableCells(array(
-		$this->Form->input(
-			'si_contabilizado',
+		$this->Form->checkbox(
+			'contabilizar',
 			array(
-				'label' => ''
+				'name' => 'data[Anticipo][]',
+				'value' => $anticipo['Anticipo']['id'],
+				'hiddenField' => false,
+				'checked' => true
 			)
 		),
 		$this->Date->format($anticipo['Anticipo']['fecha_conta']),
@@ -25,17 +38,6 @@ foreach($anticipos as $anticipo) {
 	));
 }
 echo "</table>\n";
-//echo $this->Form->input(
-//	'incluir',
-//	array(
-//		'type' =>'select',
-//		'multiple' => 'checkbox',
-//		'label' => 'A contabilizar',
-//		'options' => array(
-//			'title...' => array($anticipos)
-//		)
-//	)
-//);
 echo $this->Form->end('Contabilizar');
 ?>
 		</li>

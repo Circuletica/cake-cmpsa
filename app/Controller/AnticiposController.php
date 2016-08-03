@@ -252,47 +252,53 @@ class AnticiposController extends AppController {
 	}
 
 	public function contabilizar() {
-		$this->paginate['order'] = array(
-			'Anticipo.fecha_conta' => 'asc'
-		);
-		$this->paginate['contain'] = array(
-			'Banco',
-			'AsociadoOperacion',
-			'Asociado',
-			'Operacion'
-		);
-		$this->paginate['conditions'] = array(
-			"COALESCE(si_contabilizado, 'false') <>" => 'true'
-		);
-		$this->Anticipo->bindModel(
-			array(
-				'belongsTo' => array(
-					'Asociado' => array(
-						'className' => 'Empresa',
-						'foreignKey' => false,
-						'conditions' => array(
-							'AsociadoOperacion.asociado_id = Asociado.id'
-						)
-					),
-					'Operacion' => array(
-						'foreignKey' => false,
-						'conditions' => array(
-							'AsociadoOperacion.operacion_id = Operacion.id'
+		if ($this->request->is(array('post','put'))) {
+			debug($this->request->data);
+			throw new notFoundException;
+		//	return $this->request->data;
+		} else {
+			$this->paginate['order'] = array(
+				'Anticipo.fecha_conta' => 'asc'
+			);
+			$this->paginate['contain'] = array(
+				'Banco',
+				'AsociadoOperacion',
+				'Asociado',
+				'Operacion'
+			);
+			$this->paginate['conditions'] = array(
+				"COALESCE(si_contabilizado, 'false') <>" => 'true'
+			);
+			$this->Anticipo->bindModel(
+				array(
+					'belongsTo' => array(
+						'Asociado' => array(
+							'className' => 'Empresa',
+							'foreignKey' => false,
+							'conditions' => array(
+								'AsociadoOperacion.asociado_id = Asociado.id'
+							)
+						),
+						'Operacion' => array(
+							'foreignKey' => false,
+							'conditions' => array(
+								'AsociadoOperacion.operacion_id = Operacion.id'
+							)
 						)
 					)
 				)
-			)
-		);
-		//		$anticipos = $this->Anticipo->find(
-		//			'all',
-		//			array(
-		//				'conditions' => array(
-		//					"COALESCE(si_contabilizado, 'false') <>" => 'true'
-		//				)
-		//			)
-		//		);
-		//$this->set(compact('anticipos'));
-		$this->set('anticipos', $this->paginate());
+			);
+			//		$anticipos = $this->Anticipo->find(
+			//			'all',
+			//			array(
+			//				'conditions' => array(
+			//					"COALESCE(si_contabilizado, 'false') <>" => 'true'
+			//				)
+			//			)
+			//		);
+			//$this->set(compact('anticipos'));
+			$this->set('anticipos', $this->paginate());
+		}
 	}
 }
 ?>
