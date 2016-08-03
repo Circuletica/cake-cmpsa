@@ -41,7 +41,7 @@ class PaisesController extends AppController {
 		}
 	}
 
-	public function delete($id) {
+	public function delete($id = null) {
 		if($this->request->is('get')) {
 			throw new MethodNotAllowedException();
 		} else {
