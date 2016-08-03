@@ -23,9 +23,8 @@ class AlmacenTransportesController extends AppController {
 				'Operacion' => array(
 					'foreignKey' => false,
 					'conditions' => array('Transporte.operacion_id = Operacion.id')
-					)					
-				),
-			    'Contrato' => array(
+				),				
+				'Contrato' => array(
 					'foreignKey' => false,
 					'conditions' => array('Operacion.contrato_id = Contrato.id')
 			    ),
@@ -33,6 +32,7 @@ class AlmacenTransportesController extends AppController {
 					'foreignKey' => false,
 					'conditions' => array('Contrato.calidad_id = Calidad.id')
 				)
+			)
 			)
 		);
 

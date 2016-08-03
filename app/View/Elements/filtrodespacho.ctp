@@ -1,20 +1,4 @@
 <?php echo $this->Form->create('Transporte', array('action'=>'filtroListado'));?>
-  <div class="radiomuestra">
-  </div>
-<?php
-  echo $this->Form->input(
-      'Search.referencia',
-      array(
-	  'label' => 'Ref. Operación'
-      )
-  );
-  echo $this->Form->input(
-      'Search.nombre',
-      array(
-	  'label' => 'Calidad'
-      )
-  );  
-?>
   <div class="linea">
 <?php
   echo $this->Form->input(

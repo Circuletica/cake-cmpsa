@@ -1051,6 +1051,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		$this->set(compact('operaciones','title'));
 	}
 
+
 	public function envio_asociados ($id) {
 		$asociados_operacion = $this->Operacion->AsociadoOperacion->find(
 			'all',

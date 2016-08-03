@@ -1,55 +1,48 @@
-<?php echo $this->Form->create('Transportes', array('action'=>'filtroListado'));?>
-  <div class="radiomuestra">
-  </div>
+  <?php
+   echo $this->Form->create('Transporte', array('action'=>'filtroListado'));?>
   <div class="linea">
-<?php
-  echo $this->Form->input(
-      'Search.fechadesde',
+    <?php
+    echo $this->Form->input('Search.referencia',
       array(
-    'type'=>'date',
-    'dateFormat' => 'DMY',
-    'minYear' => date('Y')-4,
-    'maxYear' => date('Y'),
-    'orderYear' => 'asc',
-    'label'=> 'Despachado desde'
-      )
-  );
-  echo $this->Form->input(
-      'Search.fechahasta',
-      array(
-    'type'=>'date',
-    'dateFormat' => 'DMY',
-    'minYear' => date('Y')-4,
-    'maxYear' => date('Y'),
-    'orderYear' => 'asc',
-    'label'=> 'Despachado hasta'
-      )
-  );    
-?>
-  </div>
-<?php
-
-?>
-  <div class="formuboton">
-    <ul>
-    <li><?php
-  if(isset($this->request->data['Search']['tipo_id'])){
-      echo $this->Html->Link(
-    '<i class="fa fa-refresh"></i> Resetear',
-    array(
-        'action'=>'index'
-    ),
-    array('escape'=>false)
+        'label' => 'Ref. operación'
+        )
       );
-  } else {
-      echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>'index'), array('escape'=>false));
-  }
-?>
-      </li>
-      <li style="margin: 0">
-<?php           
-  echo $this->Form->end('Buscar');
-?>
-      </li>
-    </ul>
-  </div>
+    echo $this->Form->input('Search.desde', 
+      array(
+        'type'=>'date',
+        'dateFormat' => 'DMY',
+        'minYear' => date('Y')-4,
+        'maxYear' => date('Y'),
+        'orderYear' => 'asc',
+        'label'=> 'Retirada desde',
+        'empty' => true
+        )
+      );  
+    echo $this->Form->input('Search.hasta',
+      array(
+        'type'=>'date',
+        'dateFormat' => 'DMY',
+        'minYear' => date('Y')-4,
+        'maxYear' => date('Y'),
+        'orderYear' => 'asc',
+        'label'=> 'Retirada hasta',
+        'empty' => true
+ 
+        )
+      );  
+      ?>
+    </div>
+    <div class="formuboton">
+      <ul>
+        <li><?php
+          echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array(
+            'action'=>'index'), array('escape'=>false));
+            ?>
+          </li>
+          <li style="margin: 0">
+            <?php           
+            echo $this->Form->end('Buscar');
+            ?>
+          </li>
+        </ul>
+      </div>

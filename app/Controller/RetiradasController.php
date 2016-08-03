@@ -37,7 +37,9 @@ class RetiradasController extends AppController {
 
 		if(isset($this->passedArgs['Search.desde'])) {
 			$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
-			$this->paginate['conditions']['Retirada.fecha_retirada >'] = $criterio;
+			$this->paginate['conditions'] = array(
+				'Retirada.fecha_retirada >= ' => $criterio
+			);
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['desde'] = $criterio;
 			//completamos el titulo
@@ -45,13 +47,15 @@ class RetiradasController extends AppController {
 		}
 		if(isset($this->passedArgs['Search.hasta']) and $this->passedArgs['Search.hasta'] != '--') {
 			$criterio = strtr($this->passedArgs['Search.hasta'],'_','/');
-			$this->paginate['conditions']['Retirada.fecha_retirada <'] = $criterio;
+			$this->paginate['conditions'] += array(
+				'Retirada.fecha_retirada <= ' => $criterio
+			);
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['hasta'] = $criterio;
 			//completamos el titulo
 			$title[] = 'Retirada: '.$criterio;
-		}		
-
+		}
+		
 		$this->Retirada->bindModel(
 			array(
 				'belongsTo' => array(

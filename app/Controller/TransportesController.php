@@ -44,7 +44,7 @@ class TransportesController extends AppController {
 				'nombre_corto'
 			)
 		),
-		'AsociadoOperacion',
+		//'AsociadoOperacion',
 		'Contrato'=>array(
 		    'fields'=> array(
 			'id',
@@ -96,7 +96,7 @@ class TransportesController extends AppController {
 				'foreignKey' => false,
 				'conditions' => array('Proveedor.id = Contrato.proveedor_id')
 			),
-			'AsociadoOperacion' => array(
+		/*	'AsociadoOperacion' => array(
 				'foreignKey' => false,
 				'conditions' => array('AsociadoOperacion.operacion_id = Operacion.id')
 			),
@@ -104,7 +104,7 @@ class TransportesController extends AppController {
 				'className' => 'Empresa',
 				'foreignKey'=> false,
 				'conditions' => array( 'Asociado.id = AsociadoOperacion.asociado_id')
-			),	
+			),	*/
 			'Incoterm'=> array(
 				'foreignKey' => false,
 				'conditions' => array('Contrato.incoterm_id = Incoterm.id')

@@ -1,7 +1,15 @@
 <?php
 $this->extend('/Common/index_reports');
 $this->assign('object', 'Transportes');
-$this->assign('title', 'Informe de despachos a día '.date("d-m-Y"));
+if ($action == 'index'){
+  $this->assign('title', 'Informe de despachos a día '.date("d-m-Y"));
+}elseif($action == 'suplemento'){
+  $this->assign('title', 'Informe sobre operaciones con suplemento sin fecha de reclamación');
+}elseif ($action == 'reclamacion_factura') {
+   $this->assign('title', 'Informe sobre operaciones sin fecha de reclamación - Factura final');
+}elseif ($action == 'prorrogas_pendientes') {
+  $this->assign('title', 'Informe de prórrogas pendientes');
+}
 $this->assign('controller', 'transportes');
 $this->assign('class', 'Transporte');
 $this->assign('add_button', 0);
@@ -13,8 +21,12 @@ $this->Html->addCrumb('Línea de Transportes', array(
 //INDEX ES INFORME DE DESPACHOS
 
 $this->start('filter');
-    echo $this->element('filtrodespacho'); //Elemento del filtro despacho
-    echo $this->element('informes_trafico'); //Elemento de informes de tráfico
+if ($action == 'index'){
+  echo $this->element('filtrodespacho'); //Elemento del filtro despacho
+}elseif ($action == 'prorrogas_pendientes') {
+  echo $this->element('filtrodespacho');
+}
+  echo $this->element('informes_trafico'); //Elemento de informes de tráfico
 $this->end();    
 $this->start('main');
   if (empty($transportes)){

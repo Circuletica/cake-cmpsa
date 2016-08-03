@@ -28,13 +28,25 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
 $this->end();
 
 $this->start('filter');
-	echo $this->element('filtrooperacion');
-	echo '<br><br>';
+	/*echo  $this->Html->link(
+	    '<i class="fa fa-file-o fa-lg aria-hidden="true"></i> Ficha operación',
+	    array(
+			'action' =>'ficha_operacion',
+			$id,
+			'ext' => 'pdf'
+	    ),
+	    array(
+	    	'target' => '_blank',
+			'escape'=>false,
+			'title'=>'Ficha de compras',
+	    )
+	);*/
+
 	echo  $this->Html->link(
 	    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío distribución',
 	    array(
 		'action' =>'envio_asociados',
-		$operacion['Operacion']['id']
+		$id
 	    ),
 	    array(
 		'escape'=>false,

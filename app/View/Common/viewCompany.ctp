@@ -71,7 +71,7 @@ echo '</dl>';
 $this->end();
 
 $this->start('lines');
-echo "<table>";
+echo "<table clas='tc7'>";
 echo $this->Html->tableHeaders(
     array(
 	'Nombre',

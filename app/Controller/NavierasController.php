@@ -14,6 +14,8 @@ class NavierasController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->viewCompany($this->class, $id);
+		//Se declara para acceder al PDF
+		$this->set(compact('id'));
 	}
 
 	public function add() {
