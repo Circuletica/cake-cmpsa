@@ -237,7 +237,7 @@ class AnticiposController extends AppController {
 		}
 	}
 
-	public function delete($id = $null) {
+	public function delete($id = null) {
 		$this->request->allowMethod('post');
 		$this->Anticipo->id = $id;
 		if (!$this->Anticipo->exists()) {
@@ -249,6 +249,50 @@ class AnticiposController extends AppController {
 		}
 		$this->Flash->error('Anticipo NO borrado');
 		return $this->History->Back(0);
+	}
+
+	public function contabilizar() {
+		$this->paginate['order'] = array(
+			'Anticipo.fecha_conta' => 'asc'
+		);
+		$this->paginate['contain'] = array(
+			'Banco',
+			'AsociadoOperacion',
+			'Asociado',
+			'Operacion'
+		);
+		$this->paginate['conditions'] = array(
+			"COALESCE(si_contabilizado, 'false') <>" => 'true'
+		);
+		$this->Anticipo->bindModel(
+			array(
+				'belongsTo' => array(
+					'Asociado' => array(
+						'className' => 'Empresa',
+						'foreignKey' => false,
+						'conditions' => array(
+							'AsociadoOperacion.asociado_id = Asociado.id'
+						)
+					),
+					'Operacion' => array(
+						'foreignKey' => false,
+						'conditions' => array(
+							'AsociadoOperacion.operacion_id = Operacion.id'
+						)
+					)
+				)
+			)
+		);
+		//		$anticipos = $this->Anticipo->find(
+		//			'all',
+		//			array(
+		//				'conditions' => array(
+		//					"COALESCE(si_contabilizado, 'false') <>" => 'true'
+		//				)
+		//			)
+		//		);
+		//$this->set(compact('anticipos'));
+		$this->set('anticipos', $this->paginate());
 	}
 }
 ?>
