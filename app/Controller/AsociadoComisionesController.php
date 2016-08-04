@@ -38,7 +38,7 @@ class AsociadoComisionesController extends AppController {
 		$this->render('form');
 	}
 
-	public function form($id) { //esta acción vale tanto para edit como add
+	public function form($id = null) { //esta acción vale tanto para edit como add
 		$asociado = $this->AsociadoComision->Asociado->Empresa->find(
 			'first', array(
 				'conditions' => array(
