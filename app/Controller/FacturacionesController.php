@@ -158,7 +158,7 @@ class FacturacionesController extends AppController {
 		$this->render('form');
 	}
 
-	public function form($id) {
+	public function form($id = null) {
 		$this->set('action', $this->action);
 		$operacion = $this->Facturacion->Operacion->find(
 			'first',

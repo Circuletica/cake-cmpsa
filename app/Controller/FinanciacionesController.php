@@ -158,7 +158,7 @@ class FinanciacionesController extends AppController {
 		$this->render('form');
 	}
 
-	public function form($id) { //esta acción vale tanto para edit como add
+	public function form($id = null) { //esta acción vale tanto para edit como add
 		//en el desplegable de bancos quieren que aparezca los dos últimos
 		//digitos del codigo contable, seguido por el nombre del banco
 		//Podemos crear un campo virtual de Empresa y luego pasarlo
