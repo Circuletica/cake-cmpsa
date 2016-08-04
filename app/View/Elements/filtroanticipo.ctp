@@ -1,12 +1,35 @@
 <?php
 echo $this->Form->create('Anticipo', array('action'=>'filtroListado'));
-echo $this->Form->input(
-	'Search.fecha',
+//echo $this->Form->input(
+//	'Search.fecha',
+//	array(
+//		'label' => 'Fecha contable',
+//		'after'=>'aaaa o mm-aaaa'
+//	)
+//);
+echo $this->Form->input('Search.desde',
 	array(
-		'label' => 'Fecha contable',
-		'after'=>'aaaa o mm-aaaa'
+		'type'=>'date',
+		'dateFormat' => 'DMY',
+		'minYear' => date('Y')-1,
+		'maxYear' => date('Y'),
+		'orderYear' => 'asc',
+		'label'=> 'Anticipo desde',
+		'empty' => true
 	)
 );
+echo $this->Form->input('Search.hasta',
+	array(
+		'type'=>'date',
+		'dateFormat' => 'DMY',
+		'minYear' => date('Y')-1,
+		'maxYear' => date('Y'),
+		'orderYear' => 'asc',
+		'label'=> 'Anticipo hasta',
+		'empty' => true
+	)
+); 
+
 echo $this->Form->input(
 	'Search.referencia',
 	array(
