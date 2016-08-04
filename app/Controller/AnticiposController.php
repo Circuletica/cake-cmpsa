@@ -45,13 +45,13 @@ class AnticiposController extends AppController {
 						'lista' => $bancos
 					)
 				),
-				//				'Operacion' => array(
-				//					'Operación' => array(
-				//						'columna' => 'referencia',
-				//						'exacto' => false,
-				//						'lista' => '',
-				//					),
-				//				),
+				'Operacion' => array(
+					'Operación' => array(
+						'columna' => 'referencia',
+						'exacto' => false,
+						'lista' => '',
+					),
+				),
 				'AsociadoOperacion' => array(
 					'Asociado' => array(
 						'columna' => 'asociado_id',
@@ -62,7 +62,7 @@ class AnticiposController extends AppController {
 			)
 		);
 		//filtramos por fecha
-		if(isset($this->passedArgs['Search.desde'])) {
+		if(isset($this->passedArgs['Search.desde']) && $this->passedArgs['Search.hasta'] != '--') {
 			$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
 			$this->paginate['conditions'] += array(
 				'Anticipo.fecha_conta >= ' => $criterio
@@ -70,7 +70,7 @@ class AnticiposController extends AppController {
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['desde'] = $criterio;
 			//completamos el titulo
-			$titulo += '| Inicio: '.$criterio;
+			$titulo .= '| Inicio: '.$criterio;
 		}
 		if(isset($this->passedArgs['Search.hasta']) and $this->passedArgs['Search.hasta'] != '--') {
 			$criterio = strtr($this->passedArgs['Search.hasta'],'_','/');
@@ -80,7 +80,7 @@ class AnticiposController extends AppController {
 			//guardamos el criterio para el formulario de vuelta
 			$this->request->data['Search']['hasta'] = $criterio;
 			//completamos el titulo
-			$titulo += '| Fin: '.$criterio;
+			$titulo .= '| Fin: '.$criterio;
 		}
 		//		if(isset($this->passedArgs['Search.fecha'])) {
 		//			$criterio = $this->passedArgs['Search.fecha'];
@@ -121,6 +121,7 @@ class AnticiposController extends AppController {
 				)
 			)
 		);
+		$this->set(compact('titulo'));
 		$this->set('anticipos', $this->paginate());
 	}
 
@@ -272,11 +273,11 @@ class AnticiposController extends AppController {
 		return $this->History->Back(0);
 	}
 
-	public function contabilizar() {
+	public function exportar() {
 		if ($this->request->is(array('post','put'))) {
 			debug($this->request->data);
 			throw new notFoundException;
-		//	return $this->request->data;
+			//	return $this->request->data;
 		} else {
 			$this->paginate['order'] = array(
 				'Anticipo.fecha_conta' => 'asc'
@@ -309,15 +310,6 @@ class AnticiposController extends AppController {
 					)
 				)
 			);
-			//		$anticipos = $this->Anticipo->find(
-			//			'all',
-			//			array(
-			//				'conditions' => array(
-			//					"COALESCE(si_contabilizado, 'false') <>" => 'true'
-			//				)
-			//			)
-			//		);
-			//$this->set(compact('anticipos'));
 			$this->set('anticipos', $this->paginate());
 		}
 	}

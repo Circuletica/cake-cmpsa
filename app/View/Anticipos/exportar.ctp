@@ -1,5 +1,5 @@
 <?php
-echo $this->Form->create('Anticipo', array('action'=>'contabilizar'));
+echo $this->Form->create('Anticipo', array('action'=>'exportar'));
 echo "<table>\n";
 echo $this->Html->tableHeaders(array(
 //	$this->Form->input(
@@ -12,7 +12,7 @@ echo $this->Html->tableHeaders(array(
 //			'hiddenField' => false
 //		)
 //	),
-	'Importar',
+	'Exportar',
 	$this->Paginator->sort('Anticipo.fecha_conta','Fecha'),
 	$this->Paginator->sort('Operacion.referencia','Operación'),
 	$this->Paginator->sort('Asociado.nombre_corto','Asociado'),
@@ -22,7 +22,7 @@ echo $this->Html->tableHeaders(array(
 foreach($anticipos as $anticipo) {
 	echo $this->Html->tableCells(array(
 		$this->Form->checkbox(
-			'contabilizar',
+			'exportar',
 			array(
 				'name' => 'data[Anticipo][]',
 				'value' => $anticipo['Anticipo']['id'],
@@ -38,7 +38,7 @@ foreach($anticipos as $anticipo) {
 	));
 }
 echo "</table>\n";
-echo $this->Form->end('Contabilizar');
+echo $this->Form->end('Exportar(CSV)');
 ?>
 		</li>
 	</ul>

@@ -1,6 +1,7 @@
 <?php
 $this->extend('/Common/index');
 $this->assign('class', 'Anticipo');
+$this->assign('titulo', $titulo);
 $this->assign('add_button', 1);
 
 $this->start('filter');
@@ -9,6 +10,7 @@ $this->end();
 
 $this->start('main');
 echo "<table>\n";
+echo $titulo;
 echo $this->Html->tableHeaders(array(
 	$this->Paginator->sort('Anticipo.fecha_conta','Fecha'),
 	$this->Paginator->sort('Operacion.referencia','Operación'),
