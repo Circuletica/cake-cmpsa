@@ -12,7 +12,7 @@ echo $this->Html->tableHeaders(array(
 //			'hiddenField' => false
 //		)
 //	),
-	'Contabilizar',
+	'Importar',
 	$this->Paginator->sort('Anticipo.fecha_conta','Fecha'),
 	$this->Paginator->sort('Operacion.referencia','Operación'),
 	$this->Paginator->sort('Asociado.nombre_corto','Asociado'),

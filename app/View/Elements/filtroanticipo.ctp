@@ -38,7 +38,7 @@ echo $this->Html->Link('<i class="fa fa-refresh"></i> Resetear',array('action'=>
 		<li style="margin: 0">
 <?php           
 echo $this->Form->end('Buscar');
-echo $this->Html->Link('Contabilizar',array('action'=>'contabilizar'), array('escape'=>false));
+echo $this->Html->Link('Importar',array('action'=>'contabilizar'), array('escape'=>false));
 ?>
 		</li>
 	</ul>
