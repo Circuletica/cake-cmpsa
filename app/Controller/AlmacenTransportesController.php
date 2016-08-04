@@ -8,16 +8,57 @@ class AlmacenTransportesController extends AppController {
 		//$this->paginate['recursive'] = 3;
 		$this->paginate['contain'] = array(
 			'Almacen'=>array(
-				'nombre_corto'
+				'fields'=>array(
+					'nombre_corto'
+				)
 			),
-			'Operacion',
-			'Contrato',
-			'Calidad',
-			'Transporte'
+			'Operacion' => array(
+				'fields' => array(
+					'referencia',
+					'contrato_id'
+				)
+			),
+			'Contrato'=> array(
+				'fields' => array(
+					'calidad_id'
+				)
+			),
+			'Calidad'=> array(
+				'fields'=> array(
+					'nombre'
+				)
+			),
+			'Transporte'=>array(
+				'fields'=> array(
+					'linea',
+					'operacion_id'
+				)
+			),
+			'AlmacenTransporteAsociado'
 		);
+		if(isset($this->passedArgs['Search.desde'])) {
+			$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
+			$this->paginate['conditions'] = array(
+				'AlmacenTransporte.fecha_despacho_op >= ' => $criterio
+			);
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['desde'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Transporte: '.$criterio;
+		}
+		if(isset($this->passedArgs['Search.hasta']) and $this->passedArgs['Search.hasta'] != '--') {
+			$criterio = strtr($this->passedArgs['Search.hasta'],'_','/');
+			$this->paginate['conditions'] += array(
+				'AlmacenTransporte.fecha_despacho_op <= ' => $criterio
+			);
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['hasta'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Transporte: '.$criterio;
+		}		
 
 
-		$this->AlmacenTransporte->Transporte->bindModel(
+		$this->AlmacenTransporte->bindModel(
 		    array(
 			'belongsTo' => array(
 				'Operacion' => array(
@@ -37,6 +78,35 @@ class AlmacenTransportesController extends AppController {
 		);
 
 		$this->set('almacentransportes', $this->paginate());
+		$almacentransporteasociados = $this->AlmacenTransporte->AlmacenTransporteAsociado->find(
+			'all',
+			array(
+				'contain' => array(
+					'AlmacenTransporte'=>array(
+						'fields' => array(
+							'cantidad_cuenta'
+						)
+					)
+				)
+			)
+		);
+		$total_sacos_asignados=0;
+		//$almacentransporteasociados = Hash::combine($almacentransporteasociados, '{n}.AlmacenTransporteAsociado.almacen_transporte_id','{n}');
+		foreach ($almacentransporteasociados as $clave=>$almacentransporteasociado){
+			if($clave==0){
+				$almacentransporte_id = $almacentransporteasociado['AlmacenTransporteAsociado']['almacen_transporte_id'];
+			}elseif($almacentransporte_id == $almacentransporteasociado['AlmacenTransporteAsociado']['almacen_transporte_id']){
+				$total_sacos_asignados +=$almacentransporteasociado['AlmacenTransporteAsociado']['sacos_asignados'];
+			}else{
+				$almacentransporte_id = $almacentransporteasociado['AlmacenTransporteAsociado']['almacen_transporte_id'];
+			}
+			unset($almacentransporteasociados[$clave]['Asociado']);
+
+		}
+		$this->set(compact('almacentransporteasociados'));
+				$this->set(compact('total_sacos_asignados'));
+
+
 	}
 
 	public function pendiente() { //Informes de sacos pendientes por adjudicar

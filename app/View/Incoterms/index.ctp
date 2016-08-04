@@ -14,11 +14,11 @@
 </ul>
 </div>
 <h2>Listado de Incoterms</h2>
-<table>
+<table class="tc3">
   <tr>
     <th>Id</th>
     <th><?php echo $this->Paginator->sort('nombre')?></th>
-    <th>Acciones</th>
+    <th>Detalle</th>
   </tr>
 <?php foreach($incoterms as $incoterm):?>
   <tr>

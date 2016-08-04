@@ -1,5 +1,5 @@
   <?php
-   echo $this->Form->create('Transporte', array('action'=>'filtroListado'));?>
+   echo $this->Form->create('AlmacenTransporte', array('action'=>'filtroListado'));?>
   <div class="linea">
     <?php
     echo $this->Form->input('Search.desde', 

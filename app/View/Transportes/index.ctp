@@ -22,9 +22,7 @@ $this->Html->addCrumb('Línea de Transportes', array(
 
 $this->start('filter');
 if ($action == 'index'){
-  echo $this->element('filtrodespacho'); //Elemento del filtro despacho
-}elseif ($action == 'prorrogas_pendientes') {
-  echo $this->element('filtrodespacho');
+  echo $this->element('filtrotransporte'); //Elemento del filtro despacho
 }
   echo $this->element('informes_trafico'); //Elemento de informes de tráfico
 $this->end();    

@@ -39,12 +39,6 @@ class TransportesController extends AppController {
 				'nombre'
 			)
 		),
-		'Asociado'=> array(
-			'fields' => array(
-				'nombre_corto'
-			)
-		),
-		//'AsociadoOperacion',
 		'Contrato'=>array(
 		    'fields'=> array(
 			'id',
@@ -67,6 +61,28 @@ class TransportesController extends AppController {
 			)
 	    )
 	);
+
+	if(isset($this->passedArgs['Search.desde'])) {
+		$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
+		$this->paginate['conditions'] = array(
+			'Transporte.fecha_despacho_op >= ' => $criterio
+		);
+		//guardamos el criterio para el formulario de vuelta
+		$this->request->data['Search']['desde'] = $criterio;
+		//completamos el titulo
+		$title[] = 'Transporte: '.$criterio;
+	}
+	if(isset($this->passedArgs['Search.hasta']) and $this->passedArgs['Search.hasta'] != '--') {
+		$criterio = strtr($this->passedArgs['Search.hasta'],'_','/');
+		$this->paginate['conditions'] += array(
+			'Transporte.fecha_despacho_op <= ' => $criterio
+		);
+		//guardamos el criterio para el formulario de vuelta
+		$this->request->data['Search']['hasta'] = $criterio;
+		//completamos el titulo
+		$title[] = 'Transporte: '.$criterio;
+	}
+
 
 	$this->Transporte->bindModel(
 	    array(
@@ -96,15 +112,6 @@ class TransportesController extends AppController {
 				'foreignKey' => false,
 				'conditions' => array('Proveedor.id = Contrato.proveedor_id')
 			),
-		/*	'AsociadoOperacion' => array(
-				'foreignKey' => false,
-				'conditions' => array('AsociadoOperacion.operacion_id = Operacion.id')
-			),
-			'Asociado'=> array(
-				'className' => 'Empresa',
-				'foreignKey'=> false,
-				'conditions' => array( 'Asociado.id = AsociadoOperacion.asociado_id')
-			),	*/
 			'Incoterm'=> array(
 				'foreignKey' => false,
 				'conditions' => array('Contrato.incoterm_id = Incoterm.id')

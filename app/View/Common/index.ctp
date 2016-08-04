@@ -21,10 +21,11 @@ $this->Html->addCrumb($object, array(
 <h2><?php echo 'Listado de '.$object; ?></h2>
 
 <div class="actions">
-    <h3>Búsqueda</h3>
-    <ul>
+<!--    <h3>Búsqueda</h3>
+    <ul>-->
     <?php echo $this->fetch('filter');?>
-    </ul>
+<!--    </ul>
+-->
 </div>
 <div class="acciones">
 	<div class="printdet">

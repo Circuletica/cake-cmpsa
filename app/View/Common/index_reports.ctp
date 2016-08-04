@@ -21,7 +21,6 @@ $title = $this->fetch('title');
 <h2><?php echo $title; ?></h2>
 
 <div class="actions">
-    <h3>Búsqueda</h3>
     <ul>
     <?php echo $this->fetch('filter');?>
     </ul>

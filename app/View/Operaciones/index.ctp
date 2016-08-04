@@ -6,6 +6,7 @@ $this->assign('class', 'Operacion');
 $this->assign('add_button', 0);
 
 $this->start('filter');
+	echo "<h3>Búsqueda</h3>\n";
 	echo $this->element('filtrooperacion'); //Elemento del Filtro de operaciones
 	if ($action == 'index_trafico') {  //Departamento de tráfico
   			 echo $this->element('informes_trafico'); //Elemento de informes de tráfico
