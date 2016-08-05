@@ -259,19 +259,19 @@ class AnticiposController extends AppController {
 		}
 	}
 
-	public function delete($id = null) {
-		$this->request->allowMethod('post');
-		$this->Anticipo->id = $id;
-		if (!$this->Anticipo->exists()) {
-			throw new NotFoundException('Anticipo inválido');
-		}
-		if ($this->Anticipo->delete()){
-			$this->Flash->success('Anticipo borrado');
-			return $this->History->Back(-1);
-		}
-		$this->Flash->error('Anticipo NO borrado');
-		return $this->History->Back(0);
-	}
+	//	public function delete($id = null) {
+	//		$this->request->allowMethod('post');
+	//		$this->Anticipo->id = $id;
+	//		if (!$this->Anticipo->exists()) {
+	//			throw new NotFoundException('Anticipo inválido');
+	//		}
+	//		if ($this->Anticipo->delete()){
+	//			$this->Flash->success('Anticipo borrado');
+	//			return $this->History->Back(-1);
+	//		}
+	//		$this->Flash->error('Anticipo NO borrado');
+	//		return $this->History->Back(0);
+	//	}
 
 	public function exportar() {
 		if ($this->request->is(array('post','put'))) {
@@ -312,6 +312,61 @@ class AnticiposController extends AppController {
 			);
 			$this->set('anticipos', $this->paginate());
 		}
+	}
+
+	public function csv() {
+		$lista_ids = $this->request->data['Anticipo'];
+		$this->Anticipo->bindModel(
+			array(
+				'belongsTo' => array(
+					'Asociado' => array(
+						'className' => 'Empresa',
+						'foreignKey' => false,
+						'conditions' => array(
+							'AsociadoOperacion.asociado_id = Asociado.id'
+						)
+					),
+					'Operacion' => array(
+						'foreignKey' => false,
+						'conditions' => array(
+							'AsociadoOperacion.operacion_id = Operacion.id'
+						)
+					)
+				)
+			)
+		);
+		$anticipos = $this->Anticipo->find(
+			'all',
+			array(
+				'recursive' => 1,
+				'fields' => array(
+					'id',
+					'importe',
+					'fecha_conta'
+				),
+				'contain' => array(
+					'Banco' => array(
+						'codigo_contable'
+					),
+					'AsociadoOperacion',
+					'Asociado' => array(
+						'codigo_contable'
+					),
+					'Operacion' => array(
+						'referencia'
+					),
+				),
+				'conditions' => array(
+					'Anticipo.id' => $lista_ids
+				)
+			)
+		);
+		$this->set(compact('anticipos'));
+
+		$this->layout = null;
+		$this->autoLayout = false;
+		Configure::write('debug', '0');
+		$this->response->download("anticipos_".date('Ymd').".csv");
 	}
 }
 ?>

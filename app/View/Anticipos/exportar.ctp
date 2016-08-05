@@ -1,5 +1,5 @@
 <?php
-echo $this->Form->create('Anticipo', array('action'=>'exportar'));
+echo $this->Form->create('Anticipo', array('action'=>'csv'));
 echo "<table>\n";
 echo $this->Html->tableHeaders(array(
 //	$this->Form->input(
