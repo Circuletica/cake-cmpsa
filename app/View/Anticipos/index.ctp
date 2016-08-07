@@ -29,7 +29,14 @@ foreach($anticipos as $anticipo) {
 		$anticipo['Anticipo']['importe'],
 		($anticipo['Anticipo']['si_contabilizado'] ?
 		'&#10004;' :''),
-		$this->Button->view('financiaciones',$anticipo['Operacion']['id'])
+		$this->Button->view(
+			'financiaciones',
+			$anticipo['Operacion']['id']
+		)."\n".
+		$this->Button->edit(
+			'anticipos',
+			$anticipo['Anticipo']['id']
+		)
 	));
 }
 echo "</table>\n";

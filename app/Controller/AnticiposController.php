@@ -131,6 +131,7 @@ class AnticiposController extends AppController {
 	}
 
 	public function edit($id = null) {
+		$this->checkId($id);
 		if (!$id && empty($this->request->data)) {
 			throw new NotFoundException(__('URL mal formado Anticipos/edit'));
 		}
@@ -139,9 +140,8 @@ class AnticiposController extends AppController {
 	}
 
 	public function form ($id = null) { //esta accion vale tanto para edit como add
-		$operacion_id = isset($this->params['named']['from_id'])?
-			$this->params['named']['from_id']:null;
 		$this->set('action', $this->action);
+
 		$this->loadModel('Banco');
 		$bancos = $this->Banco->find(
 			'list',
@@ -155,6 +155,18 @@ class AnticiposController extends AppController {
 			)
 		);
 		$this->set(compact('bancos'));
+		//si es un edit, hay que rellenar el id, ya que
+		//si no se hace, al guardar el edit, se va a crear
+		//un _nuevo_ registro, como si fuera un add
+		if (!empty($id)) {
+			$this->Anticipo->id = $id;
+			$anticipo = $this->Anticipo->findById($id);
+			$operacion_id = $anticipo['AsociadoOperacion']['operacion_id'];
+			//$this->request->data['Anticipo']['operacion_id'] = $operacion_id;
+		} else {
+			$operacion_id = isset($this->params['named']['from_id'])?
+			$this->params['named']['from_id']:null;
+		}
 
 		$this->Anticipo->AsociadoOperacion->unbindModel(array(
 			'belongsTo' => array('Asociado')
@@ -226,14 +238,6 @@ class AnticiposController extends AppController {
 			unset($operacion['AsociadoOperacion']);
 		}
 		$this->set(compact('lista_operaciones'));
-
-		//si es un edit, hay que rellenar el id, ya que
-		//si no se hace, al guardar el edit, se va a crear
-		//un _nuevo_ registro, como si fuera un add
-		if (!empty($id)) {
-			$this->Anticipo->id = $id;
-			//$this->request->data['Anticipo']['operacion_id'] = $operacion_id;
-		}
 
 		if ($this->request->is(array('post', 'put'))){
 			$asociado_operacion = $this->Anticipo->AsociadoOperacion->find(
