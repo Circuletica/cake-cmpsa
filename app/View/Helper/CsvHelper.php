@@ -32,6 +32,7 @@ class CsvHelper extends AppHelper
         header('Content-Type: text/csv');
         header("Content-type:application/vnd.ms-excel");
         header("Content-disposition:attachment;filename=".$this->filename);
+        header('Set-Cookie: fileLoading=true');
     }
 
     function setFilename($filename) {

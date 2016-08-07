@@ -17,6 +17,7 @@ echo $this->Html->tableHeaders(array(
 	$this->Paginator->sort('Asociado.nombre_corto','Asociado'),
 	$this->Paginator->sort('Banco.nombre_corto','Banco'),
 	$this->Paginator->sort('Anticipo.importe','Importe'),
+	$this->Paginator->sort('Anticipo.si_contabilizado','Importado'),
 	'Detalle'
 ));
 foreach($anticipos as $anticipo) {
@@ -26,6 +27,8 @@ foreach($anticipos as $anticipo) {
 		$anticipo['Asociado']['nombre_corto'],
 		$anticipo['Banco']['nombre_corto'],
 		$anticipo['Anticipo']['importe'],
+		($anticipo['Anticipo']['si_contabilizado'] ?
+		'&#10004;' :''),
 		$this->Button->view('financiaciones',$anticipo['Operacion']['id'])
 	));
 }

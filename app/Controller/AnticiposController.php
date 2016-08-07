@@ -289,7 +289,7 @@ class AnticiposController extends AppController {
 				'Operacion'
 			);
 			$this->paginate['conditions'] = array(
-				"COALESCE(si_contabilizado, 'false') <>" => 'true'
+				"COALESCE(si_contabilizado, 'false') <>" => true
 			);
 			$this->Anticipo->bindModel(
 				array(
@@ -367,6 +367,15 @@ class AnticiposController extends AppController {
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
 		$this->response->download("anticipos_".date('Ymd').".csv");
+
+		$this->Anticipo->updateAll(
+			array(
+				'si_contabilizado' => true
+			),
+			array(
+				'Anticipo.id' => $lista_ids
+			)
+		);
 	}
 }
 ?>
