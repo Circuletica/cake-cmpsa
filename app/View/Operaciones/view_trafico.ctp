@@ -9,6 +9,7 @@ $this->assign('class','Operacion');
 $this->assign('controller','operaciones');
 $this->assign('line_controller','transportes');
 $this->assign('line2_controller','retiradas');
+$this->assign('button_edit_delete',0);
 $this->assign('line_add',0);
 $this->assign('line2_add',0);
 

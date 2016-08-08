@@ -1,11 +1,13 @@
 <?php
-$this->extend('/Common/view_withoutbuttons');
+$this->extend('/Common/view');
 $this->assign('object', 'Retirada del asociado '.$asociado_nombre['Asociado']['nombre_corto']);
 //$this->assign('line_object', 'precio');
 //$this->assign('id',$flete['Retirada']['id']);
 $this->assign('class','Retirada');
 $this->assign('controller','retiradas');
 $this->assign('line_controller','retiradas');
+$this->assign('button_edit_delete',0);
+$this->assign('print_pdf',0);
 
 $this->start('main');
 echo "<dl>";

@@ -10,7 +10,7 @@ $this->start('filter');
 	echo $this->element('filtrooperacion'); //Elemento del Filtro de operaciones
 	if ($action == 'index_trafico') {  //Departamento de tráfico
   			 echo $this->element('informes_trafico'); //Elemento de informes de tráfico
-  			 echo $this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> Descargar a CSV',
+  			/* echo $this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> Descargar a CSV',
 		array(
 			'controller'=>'operaciones',
 			'action'=>'export'
@@ -20,7 +20,7 @@ $this->start('filter');
 			'escape'=>false,
 			'title'=>'Descargar la información a un archivo CSV'
 		)
-	); 
+	);*/ 
 	}
 $this->end();
 
