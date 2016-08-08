@@ -9,7 +9,7 @@
 body {
 	color: #000000;
 	font-family:verdana,helvetica,arial,sans-serif;
-	font-size:100%;
+	font-size:110%;
 	margin: 0;
 	font-weight: 500;
 }
@@ -20,29 +20,29 @@ h1, h2, h3, h4 {
 h1 {
 	color: #000000;
 	text-align:center;
-	font-size: 140%;
+	font-size: 150%;
 	margin-bottom: 0.5em;
 }
 h2 {
 	color:#990033;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 120%;
+	font-size: 130%;
 	font-weight: bold;
 }
 h3 {
 	color:  #2c6877;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
-	font-size: 110%;
+	font-size: 120%;
 	font-weight: bold;
 }
 h4 {
 	color: #000;
-	font-size: 100%;
+	font-size: 110%;
 	font-weight: bold;
 }
 h5 {
 	color: #000;
-	font-size: 90%;
+	font-size: 100%;
 	font-weight: bold;
 }
 ul, li {
@@ -65,10 +65,11 @@ p {
 	color: #333;
 }
 #footer {
-    position:fixed;
-    left: 50px;
-    bottom:0;
-}
+   position:absolute;
+   bottom:0;
+   width:100%;
+   height:160px;   /* Height of the footer */
+ }
 /** containers **/
 div.menuheader{
 float: right;
@@ -119,7 +120,7 @@ th a.desc:after {
 	content: ' ⇡';
 }
 table tr td {
-	padding: 0.2% 0.5% 0.2% 1%;
+	padding: 0.5% 0.5% 0.5% 1%;
 	text-align: justify;
 	vertical-align: top;
 	border-bottom:1px solid #ddd;
@@ -136,30 +137,10 @@ table td.actions a {
 	padding:2px 5px;
 }
 
-/* Alinear las columnas de las tablas según interese (numérico o texto)*/
-.tr1 td:nth-child(1), .tr1 th:nth-child(1),
-.tr2 td:nth-child(2), .tr2 th:nth-child(2),
-.tr3 td:nth-child(3), .tr3 th:nth-child(3),
-.tr4 td:nth-child(4), .tr4 th:nth-child(4),
-.tr5 td:nth-child(5), .tr5 th:nth-child(5),
-.tr6 td:nth-child(6), .tr6 th:nth-child(6),
-.tr7 td:nth-child(7), .tr7 th:nth-child(7),
-.tr8 td:nth-child(8), .tr8 th:nth-child(8),
-.tr9 td:nth-child(9), .tr9 th:nth-child(9) { text-align:right }
-
-.tc1 td:nth-child(1), .tc1 th:nth-child(1),
-.tc2 td:nth-child(2), .tc2 th:nth-child(2),
-.tc3 td:nth-child(3), .tc3 th:nth-child(3),
-.tc4 td:nth-child(4), .tc4 th:nth-child(4),
-.tc5 td:nth-child(5), .tc5 th:nth-child(5),
-.tc6 td:nth-child(6), .tc6 th:nth-child(6),
-.tc7 td:nth-child(7), .tc7 th:nth-child(7),
-.tc8 td:nth-child(8), .tc8 th:nth-child(8),
-.tc9 td:nth-child(9), .tc9 th:nth-child(9) { text-align:center }
 
 /** Scaffold View **/
 dl {
-	line-height: 1.7em;
+	line-height: 2em;
 	margin: 0em 0em;
 	font-size: 78%;
 	/*width: 90%;*/
