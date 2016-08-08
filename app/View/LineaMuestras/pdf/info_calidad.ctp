@@ -49,7 +49,7 @@ for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['crib
 }
 $fondo++;
 echo "<dt>Criba</dt>";
-echo "<dl style=width:50%;margin-left:10%>\n";
+echo "<dl style=width:50%;margin-left:12%>\n";
 //solo mostramos la línea si tiene algún valor
 if ($linea['LineaMuestra']['criba20'] || $linea['CribaPonderada']['criba20']) {
 	 echo "  <dt>".($fondo == 20 ? 'Fondo' : 'Criba 20')."</dt><dd>".+$linea['LineaMuestra']['criba20']."</dd>\n";
