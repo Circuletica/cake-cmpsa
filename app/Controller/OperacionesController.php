@@ -87,12 +87,8 @@ class OperacionesController extends AppController {
 	}
 
 
-	public function edit($id) {
-		if (!$id) {
-			$this->Flash->set('URL mal formado');
-			$this->redirect(array('action'=>'index'));
-
-		}
+	public function edit($id = null) {
+		$this->checkId($id);
 		$this->Operacion->id = $id;
 		$this->loadModel('Asociado');
 		$asociados = $this->Asociado->find(
@@ -265,14 +261,14 @@ class OperacionesController extends AppController {
 						$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']);
 					}
 				}
-				$this->Flash->set(
+				$this->Flash->success(
 					'Operacion '.
 					$this->request->data['Operacion']['referencia'].
 					' modificada con éxito'
 				);
 				$this->redirect(array('action' => 'view', $id));
 			} else {
-				$this->Flash->set('Operacion NO guardada');
+				$this->Flash->error('Operacion NO guardada');
 			}
 		}
 		//	$this->set('action', $this->action);
@@ -283,7 +279,7 @@ class OperacionesController extends AppController {
 
 	public function add() {
 		if (!isset($this->params['named']['from_id'])) {
-			$this->Flash->set('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
+			$this->Flash->error('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
 			//$this->redirect(array(
 			//    'controller' => $this->params['named']['from_controller'],
 			//    'action' => 'index')
@@ -549,7 +545,7 @@ class OperacionesController extends AppController {
 					//falta aquí guardar el peso total de la linea de contrato
 					//y el tipo de embalaje
 					//.....
-					$this->Flash->set('Operación guardada');
+					$this->Flash->success('Operación guardada');
 					//volvemos al contrato a la que pertenece la linea creada
 					$this->redirect(array(
 						//'controller' => 'contratos',
@@ -559,11 +555,11 @@ class OperacionesController extends AppController {
 						$this->Operacion->id
 					));
 				}else{
-					$this->Flash->set('Operación NO guardada');
+					$this->Flash->error('Operación NO guardada');
 				}
 			}else{
 			/*	if($this->Operacion->save($this->request->data)){
-					$this->Flash->set('Operación modificada');
+					$this->Flash->success('Operación modificada');
 					$this->redirect(array(
 						'controller' => 'operaciones',
 						'action' => 'view',
@@ -578,11 +574,7 @@ class OperacionesController extends AppController {
 	}
 
 	public function view($id = null) {
-		//el id y la clase de la entidad de origen vienen en la URL
-		if (!$id) {
-			$this->Flash->set('URL mal formado Operacion/view');
-			$this->redirect(array('action'=>'index'));
-		}
+		$this->checkId($id);
 		$operacion = $this->Operacion->find(
 			'first',
 			array(
@@ -665,10 +657,7 @@ class OperacionesController extends AppController {
 	}
 
 	public function view_trafico($id = null){
-		if (!$id) {
-			$this->Flash->set('URL mal formada Operación/view_trafico ');
-			$this->redirect(array('action'=>'index_trafico'));
-		}
+		$this->checkId($id);
 		$operacion = $this->Operacion->find(
 			'first',
 			array(
@@ -904,22 +893,18 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	}
 
 
-	public function delete($id = null) {
-		if (!$id or $this->request->is('get')) {
-			throw new MethodNotAllowedException();
-		}
-		if ($this->Operacion->delete($id)) {
-			$this->Flash->set('Línea de contrato borrada');
-			$this->History->back(-1);
-		}
-	}
+	//	public function delete($id = null) {
+	//		if (!$id or $this->request->is('get')) {
+	//			throw new MethodNotAllowedException();
+	//		}
+	//		if ($this->Operacion->delete($id)) {
+	//			$this->Flash->success('Línea de contrato borrada');
+	//			$this->History->back(-1);
+	//		}
+	//	}
 
 	public function generarFinanciacion($id = null) {
-		//el id y la clase de la entidad de origen vienen en la URL
-		if (!$id) {
-			$this->Flash->set('URL mal formado Operacion/generarFinanciacion');
-			$this->redirect(array('action'=>'index'));
-		}
+		$this->checkId($id);
 		//vamos al add de la nueva financiacion
 		$this->redirect(
 			array(
@@ -933,11 +918,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	}
 
 	public function generarFacturacion($id = null) {
-		//el id y la clase de la entidad de origen vienen en la URL
-		if (!$id) {
-			$this->Flash->set('URL mal formado Operacion/generarFacturacion');
-			$this->redirect(array('action'=>'index'));
-		}
+		$this->checkId($id);
 		//vamos al add de la nueva facturación
 		$this->redirect(
 			array(

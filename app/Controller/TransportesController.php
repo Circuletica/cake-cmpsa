@@ -120,17 +120,16 @@ class TransportesController extends AppController {
 	    )
 	);
 
-	$transportes = $this->paginate();
-	$this->set(compact('transportes'));
-
+		$transportes = $this->paginate();
+		$this->set(compact('transportes'));
     }
 
-    public function view($id = null) {
-	if (!$id)
-	    throw new NotFoundException(__('URL mal formado Transporte/view'));
-	$this->pdfConfig = array(
-	    'filename' => 'linea'.date('Ymd'),
-	);
+	public function view($id = null) {
+		$this->checkId($id);
+		$this->pdfConfig = array(
+			'filename' => 'linea'.date('Ymd'),
+		);
+
 
 	$transporte = $this->Transporte->find(
 	    'first',
@@ -214,47 +213,45 @@ class TransportesController extends AppController {
 	    throw new NotFoundException(__('No existe ese transporte'));
 	$this->set('transporte',$transporte);
 	//Calculamos la cantidad de sacos almacenados en la linea
-	if(!empty($transporte['Transporte']['id'])){
-	    $suma = 0;
-	    $almacenado=0;
-	    foreach ($transporte['AlmacenTransporte'] as $suma) {
-		if ($almacenTransporte['transporte_id'] = $transporte['Transporte']['id']) {
-		    $almacenado = $almacenado + $suma['cantidad_cuenta'];
+		if(!empty($transporte['Transporte']['id'])){
+		    $suma = 0;
+		    $almacenado=0;
+		    foreach ($transporte['AlmacenTransporte'] as $suma) {
+			if ($almacenTransporte['transporte_id'] = $transporte['Transporte']['id']) {
+			    $almacenado = $almacenado + $suma['cantidad_cuenta'];
+			}
+		    }
 		}
-	    }
-	}
-	$restan = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
-	$this->set(compact('restan'));
-	$this->set('almacenado',$almacenado);
-
-	$embalaje = $transporte['Operacion']['Embalaje']['nombre'];
-	$this->set('embalaje',$embalaje);
-
-	//Necesario para exportar en PDf
-	$this->set(compact('id'));
+		$restan = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
+		$this->set(compact('restan'));
+		$this->set('almacenado',$almacenado);
+		$embalaje = $transporte['Operacion']['Embalaje']['nombre'];
+		$this->set('embalaje',$embalaje);
+		//Necesario para exportar en PDf
+		$this->set(compact('id'));
     }
 
-    public function add() {
-	if (!$this->params['named']['from_id']) {
-	    $this->Flash->set('URL mal formado transporte/add '.$this->params['named']['from_controller']);
-	    $this->redirect(array(
-		'controller' => $this->params['named']['from_controller'],
-		'action' => 'index')
-	    );
+	public function add() {
+		if (!$this->params['named']['from_id']) {
+			$this->Flash->error('URL mal formado transporte/add '.$this->params['named']['from_controller']);
+			$this->redirect(array(
+				'controller' => $this->params['named']['from_controller'],
+				'action' => 'index')
+			);
+		}
+		$this->form();
+		$this->render('form');
 	}
-	$this->form();
-	$this->render('form');
-    }
 
-    public function edit($id = null) {
-	if (!$id && empty($this->request->data)) {
-	    $this->Flash->set('error en URL');
-	    $this->redirect(array(
-		'action' => 'view_trafico',
-		'controller' => 'operaciones',
-		$this->params['from_id']
-	    ));
-	}
+	public function edit($id = null) {
+		if (!$id && empty($this->request->data)) {
+			$this->Flash->error('error en URL');
+			$this->redirect(array(
+				'action' => 'view_trafico',
+				'controller' => 'operaciones',
+				$this->params['from_id']
+			));
+		}
 	$this->form($id);
 	$this->render('form');
     }
@@ -429,61 +426,62 @@ class TransportesController extends AppController {
 	    }
 
 	}
-	$this->set(compact('num'));
+		$this->set(compact('num'));
 
+		if (!empty($id)) $this->Transporte->id = $id;
 
-	if (!empty($id)) $this->Transporte->id = $id;
+		if ($this->request->is(array('post', 'put'))) {//ES UN POST
+			$this->request->data['Transporte']['id'] = $id;
+			$this->request->data['Transporte']['operacion_id'] = $operacion_id;
 
-	if ($this->request->is(array('post', 'put'))) {//ES UN POST
-	    $this->request->data['Transporte']['id'] = $id;
-	    $this->request->data['Transporte']['operacion_id'] = $operacion_id;
+			if($id == NULL){
+				if($this->Transporte->save($this->request->data)){
+					$this->Flash->success("Linea de transporte guardada correctamente");
+					$this->redirect(array(
+						'controller' => 'operaciones',
+						'action' => 'view_trafico',
+						$operacion_id
+					));
+				}else{
+					$this->Flash->error('Linea de transporte NO guardada');
+				}
+			}else{
+				if($this->Transporte->save($this->request->data)){
+					$this->Flash->success('Linea de transporte modificada correctamente');
+					$this->redirect(array(
+						'controller' => 'transportes',
+						'action' => 'view',
+						$id
+					));
+				}
+			}
+	   	}else{ //es un GET
+			$this->request->data = $this->Transporte->read(null, $id);
+		}
+	}
 
-	    if($id == NULL){
-		if($this->Transporte->save($this->request->data)){
-		    $this->Flash->set("Linea de transporte guardada correctamente");
-		    $this->redirect(array(
-			'controller' => 'operaciones',
-			'action' => 'view_trafico',
-			$operacion_id
-		    ));
+	public function delete($id = null) {
+		if (!$id or $this->request->is('get')) {
+			throw new MethodNotAllowedException();
+		}
+
+		if ($this->Transporte->delete($id)){
+			$this->Flash->success('Linea de transporte borrada correctamente');
+			$this->redirect(array(
+				'controller' => 'operaciones',
+				'action' => 'view_trafico',
+				$this->params['named']['from_id']
+			));//No usar History aquí
 		}else{
-		    $this->Flash->set('Linea de transporte NO guardada');
+			$this->Flash->error('Linea de transporte NO borrada. Hay cuenta de almacen');
+			$this->redirect(array(
+				'action' => 'view',
+				$id
+			));
 		}
-	    }else{
-		if($this->Transporte->save($this->request->data)){
-		    $this->Flash->set('Linea de transporte modificada correctamente');
-		    $this->redirect(array(
-			'controller' => 'transportes',
-			'action' => 'view',
-			$id
-		    ));
-		}
-	    }
-	}else{ //es un GET
-	    $this->request->data = $this->Transporte->read(null, $id);
-	}
-    }
 
-    public function delete($id = null) {
-	if (!$id or $this->request->is('get')):
-	    throw new MethodNotAllowedException();
-	endif;
-
-	if ($this->Transporte->delete($id)){
-	    $this->Flash->set('Linea de transporte borrada correctamente');
-	    $this->redirect(array(
-		'controller' => 'operaciones',
-		'action' => 'view_trafico',
-		$this->params['named']['from_id']
-	    ));//No usar History aquí
-	}else{
-	    $this->Flash->set('Linea de transporte NO borrada. Hay cuenta de almacen');
-	    $this->redirect(array(
-		'action' => 'view',
-		$id
-	    ));
 	}
-    }
+    
 
     public function embarque() {
 	$this->pdfConfig = array(
@@ -537,6 +535,7 @@ class TransportesController extends AppController {
 	    )
 	);
 
+
 	$this->Transporte->bindModel(
 	    array(
 		'belongsTo' => array(
@@ -562,124 +561,6 @@ class TransportesController extends AppController {
 	$this->set('transportes',$this->paginate());
 
     }
-   /* public function info_despacho() {
-    $this->index();
-	$this->set('action', $this->action);
-	$this->render('index');
-	debug($action);
-
-	/*$this->pdfConfig = array(
-	    'filename' => 'info_embarque',
-	    'paperSize' => 'A4',
-	    'orientation' => 'landscape',
-	);*/
-
-	//$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
-	//$this->paginate['recursive'] = 3;
-	//$this->Transporte->virtualFields['calidad']=$this->Transporte->Operacion->Contrato->Calidad->virtualFields['nombre'];
-	/*$this->paginate['conditions'] = array(
-	    'Transporte.fecha_despacho_op IS NOT NULL'
-	);
-
-	$this->paginate['contain'] = array(
-	    'Calidad',
-	    'Contrato' => array(
-		'fields' => array(
-		    'referencia',
-		    'calidad_id'
-		)
-	    ),
-	    'Operacion' =>array(
-		'fields'=> array(
-		    'id',
-		    'referencia',
-		    'contrato_id'
-		)
-	    )
-	);
-
-	$this->Transporte->bindModel(
-	    array(
-		'belongsTo' => array(
-		    'Contrato' => array(
-			'foreignKey' => false,
-			'conditions' => array('Operacion.contrato_id = Contrato.id')
-		    ),
-		    'Calidad' => array(
-			'foreignKey' => false,
-			'conditions' => array('Contrato.calidad_id = Calidad.id')
-		    )
-		)
-	    )
-	);
-
-	$title = $this->filtroPaginador(
-	    array(
-		'Transporte' => array(
-		    'OperaciÃn' => array(
-			'columna' => 'referencia',
-			'exacto' => false,
-			'lista' => ''
-		    )
-		),
-		'Calidad' => array(
-		    'Calidad' => array(
-			'columna' => 'nombre',
-			'exacto' => false,
-			'lista' => ''
-		    )
-		)
-	    )
-	);
-
-	//filtramos por fecha
-	if(isset($this->passedArgs['Search.fechadesde'])) {
-	    $fechadesde = $this->passedArgs['Search.fechadesde'];
-	    //Si solo se ha introducido un año (aaaa)
-	    if (preg_match('/^\d{4}$/',$fechadesde)) {
-		$anyo = $fechadesde;
-	    }
-	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
-	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
-		list($mes,$anyo) = explode('-',$fechadesde);
-	    } else {
-		$this->Flash->set('Error de fecha');
-		$this->redirect(array('action' => 'index'));
-	    }
-	    //si se ha introducido un año, filtramos por el año
-	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
-	    //si se ha introducido un mes, filtramos por el mes
-	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
-	    $this->request->data['Search']['fecha'] = $fechadesd;
-	    //completamos el titulo
-	    $title .= '|Fecha: '.$fechadesde;
-	}
-	if(isset($this->passedArgs['Search.fechahasta'])) {
-	    $fecha = $this->passedArgs['Search.fechasta'];
-	    //Si solo se ha introducido un año (aaaa)
-	    if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fechahasta; }
-	    //la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
-	    elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
-		list($mes,$anyo) = explode('-',$fechahasta);
-	    } else {
-		$this->Flash->set('Error de fecha');
-		$this->redirect(array('action' => 'index'));
-	    }
-	    //si se ha introducido un año, filtramos por el año
-	    if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
-	    //si se ha introducido un mes, filtramos por el mes
-	    if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
-	    $this->request->data['Search']['fecha'] = $fechahasta;
-	    //completamos el titulo
-	    $title .= '|Fecha: '.$fechahasta;
-	}
-
-	$despachos =  $this->paginate();
-	$title = 'Despachos | '.$title;
-
-	//pasamos los datos a la vista
-	$this->set(compact('despachos','title'));
-    }*/
 
     public function suplemento() { // Informe suplemento sin reclamación
     	$this->index();

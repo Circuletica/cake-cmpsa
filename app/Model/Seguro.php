@@ -8,12 +8,12 @@ class Seguro extends AppModel {
 		'Aseguradora' => array(
 			'className' => 'Empresa',
 			'foreignKey' => 'aseguradora_id')
-	);
-  	public $validate = array(
-    'referencia' => array(
-      'rule' => 'notBlank',
-      'message' => 'La referencia no puede estar vacía')
-    );
+		);
+	public $validate = array(
+		'referencia' => array(
+			'rule' => 'notBlank',
+			'message' => 'La referencia no puede estar vacía')
+		);
 
 }
 

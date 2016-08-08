@@ -8,7 +8,7 @@ if ($action == 'edit') {
 }
 $this->Html->addCrumb('Entidades','/'.$this->params['named']['from_controller']);
 $this->Html->addCrumb($empresa['Empresa']['nombre'], '/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
-echo $this->Form->create();
+echo $this->Form->create('Contacto');
 ?>
 <fieldset>
 <?php

@@ -1,13 +1,12 @@
 <?php
 class AsociadoComisionesController extends AppController {
 	public function view($id = null) {
-		if (!$id) {
-			$this->Flash->set('URL mal formado AsociadoComision/view');
-			$this->redirect(array(
-				'controller' => 'asociados',
-				'action'=>'index'
-			));
+		//ojo aqui el id es del asociado, no de la comisión
+		$this->AsociadoComision->Asociado->id = $id;
+		if (!$this->AsociadoComision->Asociado->exists()) {
+			throw new NotFoundException(__('Asociado inválido'));
 		}
+
 		$asociado = $this->AsociadoComision->Asociado->find(
 			'first',
 			array(
@@ -15,11 +14,8 @@ class AsociadoComisionesController extends AppController {
 				'recursive' => 2
 			)
 		);
-		if (empty($asociado)) {
-			$this->Flash->error('No existe asociado con id: '.$id);
-			$this->History->Back(0);
-		}
 		$this->set(compact('asociado'));
+
 		$this->set('referencia','Comisiones '.$asociado['Empresa']['nombre_corto']);
 		$this->set('comisiones', $asociado['AsociadoComision']);
 		$this->set(compact('id'));
@@ -42,7 +38,7 @@ class AsociadoComisionesController extends AppController {
 		$this->render('form');
 	}
 
-	public function form($id) { //esta acción vale tanto para edit como add
+	public function form($id = null) { //esta acción vale tanto para edit como add
 		$asociado = $this->AsociadoComision->Asociado->Empresa->find(
 			'first', array(
 				'conditions' => array(
@@ -87,7 +83,8 @@ class AsociadoComisionesController extends AppController {
 		$this->request->allowMethod('post');
 
 		$this->AsociadoComision->id = $id;
-		if (!$this->AsociadoComision->exists()) throw new NotFoundException(__('Comisión inválida'));
+		if (!$this->AsociadoComision->exists())
+			throw new NotFoundException(__('Comisión inválida'));
 		if ($this->AsociadoComision->delete()){
 			$this->Flash->success('Comisión borrada');
 			return $this->redirect(array(

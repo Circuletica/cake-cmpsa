@@ -34,28 +34,27 @@ class PuertosController extends AppController {
 		} else {
 			if ($this->Puerto->save($this->request->data)) {
 				$this->Flash->success('Puerto '.
-				$this->request->data['Puerto']['nombre'].
-				' modificado con éxito');
-		$this->redirect(array('action' => 'index', $id));
+					$this->request->data['Puerto']['nombre'].
+					' modificado con éxito');
+				$this->redirect(array('action' => 'index', $id));
 			} else {
 				$this->Flash->error('Puerto NO guardado');
 			}
 		}
 	}
 
-	public function delete($id) {
-		if($this->request->is('post')):
-			if($this->Puerto->delete($id)):
-				$this->Flash->success('Puerto borrado');
-		$this->redirect(array(
-			'controller' => $this->params['named']['from_controller'],
-			'action' => 'view',
-			$this->params['named']['from_id']
-		));
-endif;
-else:
-	throw new MethodNotAllowedException();
-endif;
+	public function delete($id = null) {
+		$this->request->allowMethod('post');
+		$this->Puerto->id = $id;
+		if (!$this->Puerto->exists()) {
+			throw new NotFoundException('Puerto inválido');
+		}
+		if ($this->Puerto->delete()){
+			$this->Flash->success('Puerto borrado');
+			return $this->History->Back(-1);
+		}
+		$this->Flash->error('Puerto NO borrado');
+		return $this->History->Back(0);
 	}
 }
 ?>

@@ -72,11 +72,21 @@ class AppController extends Controller {
 		$this->Auth->allow('display');
 	}
 
+	public function checkId($id) {
+		$class = $this->modelClass;
+		$this->$class->id = $id;
+		if (!$this->$class->exists()) {
+			throw new NotFoundException(__('No existe '.$class.' con id '.$id));
+		}
+	}
+
 	//cambia el 'hasOne' del Model por un 'belongsTo'
 	//para que el LEFT JOIN de 3r nivel de la query se haga
 	//después del de 2o nivel, es decir primero el JOIN con Empresa,
 	//luego el JOIN con Pais si no queremos errores de SQL
-	public function bindCompany($class) {
+	//public function bindCompany($class) {
+	public function index() {
+		$class = $this->modelClass;
 		$this->$class->unbindModel(array(
 			'hasOne' => array('Empresa')
 		));
@@ -93,21 +103,28 @@ class AppController extends Controller {
 			)
 		));
 		$this->paginate = array(
+			//lo siguiente es mejor, porque no pisa la
+			//declaración de arriba (en cuanto al limit).
+			//ver https://github.com/Circuletica/cake-cmpsa/issues/417
+			//$this->paginate += array(
 			'contain' => array(
 				'Empresa',
 				'Pais.nombre',
 			),
 			'recursive' => 1,
-			'order' => array('Empresa.nombre_corto' => 'ASC')
+			'order' => array('Empresa.nombre_corto' => 'ASC'),
 		);
+		$this->set('empresas', $this->paginate());
 	}
 
-	public function viewCompany($class,$id) {
-		$this->{$this->class}->recursive = 3;
-		$empresa = $this->{$this->class}->findById($id);
-		if (!$empresa) {
+	public function view($id) {
+		$class = $this->modelClass;
+		$this->$class->id = $id;
+		if (!$this->$class->exists()) {
 			throw new NotFoundException(__('No existe '.$class.' con tal id'));
 		}
+		$this->$class->recursive = 3;
+		$empresa = $this->$class->findById($id);
 		$this->set('empresa',$empresa);
 		$this->set('referencia', $empresa['Empresa']['nombre_corto']);
 		$cuenta_bancaria = $empresa['Empresa']['cuenta_bancaria'];
@@ -116,9 +133,29 @@ class AppController extends Controller {
 		settype($cuenta_bancaria,"string");
 		$iban_bancaria = $this->iban("ES",$cuenta_bancaria);
 		$this->set('iban_bancaria',$iban_bancaria);
+		$this->set(compact('id'));
 	}
 
-	public function formCompany($class, $id) {
+	public function add() {
+		$this->form();
+		$this->render('form');
+	}
+
+	public function edit($id = null) {
+		if (!$id && empty($this->request->data)) {
+			$this->Flash->error('error en URL');
+			//$this->redirect(array(
+			//	'action' => 'index',
+			//	'controller' => Inflector::tableize($class)
+			//));
+			return $this->History->Back(0);
+		}
+		$this->form($id);
+		$this->render('form');
+	}
+
+	public function form($id = null) {
+		$class = $this->modelClass;
 		$this->set('paises', $this->$class->Empresa->Pais->find('list'));
 		$this->set('action', $this->action);
 		//si es un edit, hay que rellenar el id, ya que
@@ -136,35 +173,49 @@ class AppController extends Controller {
 			$this->set('object', $empresa['Empresa']['nombre_corto']);
 		}
 
-		if ($this->request->is('post')) {
+		if ($this->request->is(array('post','put'))) {
 			if ($this->$class->Empresa->save($this->request->data)) {
 				$this->request->data[$class]['id'] = $this->$class->Empresa->id;
 				if($this->$class->save($this->request->data)) {
-					$this->Session->setFlash($class.' guardado');
+					$this->Flash->success($class.' guardado');
 					$this->redirect(array(
 						'action' => 'view',
 						$this->$class->Empresa->id
 					));
-				} else { $this->Session->setFlash($class.' NO guardado'); }
-			} else { $this->Session->setFlash('Empresa NO guardada'); }
+				} else { $this->Flash->error($class.' NO guardado'); }
+			} else { $this->Flash->error('Empresa NO guardada'); }
 		} else { //es un GET
 			$this->request->data = $this->$class->read(null, $id);
 		}
 	}
 
-	public function deleteCompany($class, $id) {
+	public function delete($id = null) {
+		$class = $this->modelClass;
 		$this->request->allowMethod('post');
-
 		$this->$class->id = $id;
-		if (!$this->$class->exists()) {
-			throw new notFoundException(__($class.' inválida'));
-		}
+		if (!$this->$class->exists())
+			throw new notFoundException(__($this->$class->name.' inválid@'));
 		if ($this->$class->delete()) {
-			$this->Flash->success(__($class.' borrado'));
-			$this->$class->Empresa->delete($id);
-			return $this->History->Back(-1);
+			$this->Flash->success(__($this->$class->name.' borrad@'));
+			return $this->redirect(array('action' => 'index'));
 		}
-		$this->Flash->error(__($class.' no borrado'));
+		$this->Flash->error(__($this->$class->name.' no borrad@'));
+		return $this->History->Back(0);
+	}
+
+	public function deleteCompany($id = null) {
+		$class = $this->modelClass;
+		$this->request->allowMethod('post');
+		$this->$class->id = $id;
+		if (!$this->$class->exists())
+			throw new notFoundException(__($class.' inválid@'));
+		if ($this->$class->delete()) {
+			$this->Flash->success(__($class.' borrad@'));
+			$this->$class->Empresa->delete($id);
+			return $this->redirect(array('action' => 'index'));
+		}
+		$this->Flash->error(__($class.' no borrad@'));
+		return $this->History->Back(0);
 	}
 
 	public function iban($codigoPais,$ccc){

@@ -115,7 +115,7 @@ class FletesController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id) {
-			$this->Flash->set('error en URL/No id de flete para edit');
+			$this->Flash->error('error en URL/No id de flete para edit');
 			$this->redirect(
 				array(
 					'action' => 'index',
@@ -191,11 +191,7 @@ class FletesController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id) {
-			$this->Flash->set('URL mal formado Flete/view');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->set(compact('id'));
+		$this->checkId($id);
 		$flete = $this->Flete->find(
 			'first',
 			array(
@@ -203,10 +199,8 @@ class FletesController extends AppController {
 				'recursive' => 2
 			)
 		);
-		if (!$flete) {
-			throw new NotFoundException(__('No existe ese flete'));
-		}
 		$this->set('flete',$flete);
+
 		$this->set('referencia',
 			$flete['PuertoCarga']['nombre']
 			.' ('.$flete['PuertoCarga']['Pais']['nombre'].')'
@@ -219,21 +213,22 @@ class FletesController extends AppController {
 			)
 		);
 		$this->set('costes',$costes);
+		$this->set(compact('id'));
 	}
 
-	public function delete($id = null) {
-		$this->request->allowMethod('post');
-
-		$this->Flete->id = $id;
-		if($this->Flete->delete()) {
-			$this->Flash->success('Flete borrado');
-			return $this->redirect(array(
-				'controller' => 'fletes',
-				'action' => 'index'
-			));
-		}
-		$this->Flash->error(__('Flete NO borrado'));
-		return $this->History->back(0);
-	}
+//	public function delete($id = null) {
+//		$this->request->allowMethod('post');
+//
+//		$this->Flete->id = $id;
+//		if($this->Flete->delete()) {
+//			$this->Flash->success('Flete borrado');
+//			return $this->redirect(array(
+//				'controller' => 'fletes',
+//				'action' => 'index'
+//			));
+//		}
+//		$this->Flash->error(__('Flete NO borrado'));
+//		return $this->History->back(0);
+//	}
 }
 ?>

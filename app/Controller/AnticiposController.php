@@ -69,7 +69,7 @@ class AnticiposController extends AppController {
 			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
 				list($mes,$anyo) = explode('-',$criterio);
 			} else {
-				$this->Flash->set('Error de fecha');
+				$this->Flash->error('Error de fecha');
 				$this->redirect(array('action' => 'index'));
 			}
 			//si se ha introducido un año, filtramos por el año
@@ -237,17 +237,18 @@ class AnticiposController extends AppController {
 		}
 	}
 
-	public function delete($id) {
-		if (!$id or $this->request->is('get')){
-			throw new MethodNotAllowedException('URL mal formada o incompleta');
+	public function delete($id = $null) {
+		$this->request->allowMethod('post');
+		$this->Anticipo->id = $id;
+		if (!$this->Anticipo->exists()) {
+			throw new NotFoundException('Anticipo inválido');
 		}
-		if($this->Anticipo->delete($id)) {
+		if ($this->Anticipo->delete()){
 			$this->Flash->success('Anticipo borrado');
-			$this->History->Back(0);
-		} else {
-			$this->Flash->error('Anticipo NO borrado');
-			$this->History->Back(0);
+			return $this->History->Back(-1);
 		}
+		$this->Flash->error('Anticipo NO borrado');
+		return $this->History->Back(0);
 	}
 }
 ?>
