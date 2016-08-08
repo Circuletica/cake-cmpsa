@@ -10,7 +10,7 @@ case 'edit':
 	echo "<h2>Modificar anticipo ".$asociados[$asociado_id]."</h2>";
 	break;
 }
-if ($this->request->data['Anticipo']['si_contabilizado']) {
+if (isset($this->request->data['Anticipo']) && $this->request->data['Anticipo']['si_contabilizado']) {
 	echo "<em>Este anticipo ya ha sido exportado.\n
 		Si se modifica, se generará un asiento inverso y\n
 		otro asiento nuevo con los datos corregidos.</em>";
@@ -19,6 +19,7 @@ echo $this->Form->create('Anticipo');
 ?>
 <fieldset>
 <?php
+echo $this->Form->hidden('si_contabilizado');
 echo $this->Form->input(
 	'AsociadoOperacion.operacion_id',
 	array(

@@ -159,13 +159,18 @@ class AnticiposController extends AppController {
 		//si no se hace, al guardar el edit, se va a crear
 		//un _nuevo_ registro, como si fuera un add
 		if (!empty($id)) {
-			$this->Anticipo->id = $id;
 			$anticipo = $this->Anticipo->findById($id);
+			$si_contablilizado = $anticipo['Anticipo']['si_contabilizado'];
+			//pero si el anticipo ya ha sido contabilizado,
+			//se tiene que generar uno nuevo, sin borrar el antiguo
+			//			if ($anticipo['Anticipo']['si_contabilizado'] != true) {
+			//				$this->Anticipo->id = $id;
+			//			}
 			$operacion_id = $anticipo['AsociadoOperacion']['operacion_id'];
 			//$this->request->data['Anticipo']['operacion_id'] = $operacion_id;
 		} else {
 			$operacion_id = isset($this->params['named']['from_id'])?
-			$this->params['named']['from_id']:null;
+				$this->params['named']['from_id']:null;
 		}
 
 		$this->Anticipo->AsociadoOperacion->unbindModel(array(
@@ -251,31 +256,51 @@ class AnticiposController extends AppController {
 			);
 			$asociado_operacion_id = $asociado_operacion['AsociadoOperacion']['id'];
 			$this->request->data['Anticipo']['asociado_operacion_id'] = $asociado_operacion_id;
-			if ($this->Anticipo->save($this->request->data)) {
-				$this->Flash->success('Anticipo guardado');
-				$this->History->Back(-1);
-			} else {
-				$this->Flash->error('Anticipo NO guardado');
+
+			//Si estamos editando un anticipo ya exportado, en lugar
+			//de hacer un UPDATE de Mysql, hacemos un INSERT de DOS
+			//registros, primero un asiento inverso restando el importe
+			//equivocado, luego otro asiento con el importe correcto.
+			if ($this->request->data['Anticipo']['si_contabilizado'] == true) {
+				$anticipo_inverso = $this->Anticipo->findById($id); // el asiento inverso
+				$anticipo_inverso['Anticipo']['importe'] = -$anticipo_inverso['Anticipo']['importe'];
+				unset($anticipo_inverso['Anticipo']['id']); // va a tener nuevo id
+				$anticipo_inverso['Anticipo']['anticipo_padre_id'] = $id;
+				$anticipo_inverso['Anticipo']['si_contabilizado'] = false;
+				$this->Anticipo->create(); //el asiento de importe correcto
+				$this->request->data['Anticipo']['anticipo_padre_id'] = $id;
+				$this->request->data['Anticipo']['si_contabilizado'] = false;
 			}
+			$data = array();
+			if (isset($anticipo_inverso)) {
+				array_push($data,$anticipo_inverso);
+			}
+			array_push($data,$this->request->data);
+			//saveMany es atómico, se guardan los dos o ninguno.
+			if ($this->Anticipo->saveMany($data)) {
+				$this->Flash->success('Anticipo(s) guardado(s)');
+				return $this->History->Back(-1);
+			}
+			$this->Flash->error('Anticipo(s) NO guardado(s)');
 		} else { //es un GET
 			$this->request->data = $this->Anticipo->read(null, $id);
 			$this->request->data['AsociadoOperacion']['operacion_id'] = $operacion_id;
 		}
 	}
 
-	//	public function delete($id = null) {
-	//		$this->request->allowMethod('post');
-	//		$this->Anticipo->id = $id;
-	//		if (!$this->Anticipo->exists()) {
-	//			throw new NotFoundException('Anticipo inválido');
-	//		}
-	//		if ($this->Anticipo->delete()){
-	//			$this->Flash->success('Anticipo borrado');
-	//			return $this->History->Back(-1);
-	//		}
-	//		$this->Flash->error('Anticipo NO borrado');
-	//		return $this->History->Back(0);
-	//	}
+	public function delete($id = null) {
+		$this->request->allowMethod('post');
+		$this->Anticipo->id = $id;
+		if (!$this->Anticipo->exists()) {
+			throw new NotFoundException('Anticipo inválido');
+		}
+		if ($this->Anticipo->delete()){
+			$this->Flash->success('Anticipo borrado');
+			return $this->History->Back(0);
+		}
+		$this->Flash->error('Anticipo NO borrado');
+		return $this->History->Back(0);
+	}
 
 	public function exportar() {
 		if ($this->request->is(array('post','put'))) {
