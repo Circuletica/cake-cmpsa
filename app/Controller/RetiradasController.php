@@ -30,7 +30,7 @@ class RetiradasController extends AppController {
 						'columna' => 'referencia',
 						'exacto' => false,
 						'lista' => ''
-					)				
+					)
 				)
 			)
 		);
@@ -55,7 +55,7 @@ class RetiradasController extends AppController {
 			//completamos el titulo
 			$title[] = 'Retirada: '.$criterio;
 		}
-		
+
 		$this->Retirada->bindModel(
 			array(
 				'belongsTo' => array(
@@ -84,7 +84,7 @@ class RetiradasController extends AppController {
 	}
 
 	public function view_asociado($id = null) {
-		$this->checkId($id);
+		//$this->checkId($id); NO PUEDE ESTAR ACTIVADO PORQUE GENERA ERRORES EN ESTA VISTA
 		//el id y la clase de la entidad de origen vienen en la URL
 
 		$operacion_id = $this->params['named']['from_id'];

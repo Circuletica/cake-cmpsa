@@ -260,13 +260,13 @@ endforeach;
     );
 ?></table>
 <?php
-if ($cuenta_almacen['cuenta_almacen'] != NULL ){
-    echo '<div class="btabla">';
-    echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
-    echo '</div>';
-}else{
-    echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
-}
+    if(is_array($cuenta_almacen)){
+        echo '<div class="btabla">';
+        echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
+        echo '</div>';
+    }else{
+        echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
+    }
 
 //NUEVA VISUALIZACIÓN PERO CONTROLANDO LA CANTIDAD DE SACOS QUE HAY ALMACENADOS PARA LOS ASOCIADOS.
 echo '<h3>Resumen retiradas en base a las cuentas de almacén</h3>';
@@ -274,7 +274,7 @@ echo "<table>\n";
 //Se calcula la cantidad total de bultos retirados
 
 echo $this->Html->tableHeaders(array(
-    'Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)','Detalle'
+    'Asociado','Sacos','Peso (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)','Detalle'
 ));
 
 foreach ($lineas_retirada as $linea_retirada):
@@ -383,13 +383,13 @@ endforeach;
     );
 ?></table>
 <?php
-if ($cuenta_almacen['cuenta_almacen'] != NULL ){
+/*if ($cuenta_almacen['cuenta_almacen'] != NULL ){
     echo '<div class="btabla">';
     echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
     echo '</div>';
 }else{
     echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
-}
+}*/
 
 		/*	if($asociados_error !=0){
 			echo "<h4><span style=color:#c43c35;>Hay retiradas que no se encuentra en la operación asignada, por favor, corriga el error eliminando las retiradas o agregando el asociado a la operación correspondientes</span></h4>";

@@ -3,7 +3,7 @@ class AlmacenTransportesController extends AppController {
 
 	public function index() {
 
-		$this->set('action', $this->action);	//Se usa para tener la misma vista	
+		$this->set('action', $this->action);	//Se usa para tener la misma vista
 
 		$this->paginate['order'] = array('AlmacenTransporte.cuenta_almacen' => 'asc');
 		//$this->paginate['recursive'] = 3;
@@ -57,7 +57,7 @@ class AlmacenTransportesController extends AppController {
 			$this->request->data['Search']['hasta'] = $criterio;
 			//completamos el titulo
 			$title[] = 'Transporte: '.$criterio;
-		}		
+		}
 
 
 		$this->AlmacenTransporte->bindModel(
@@ -66,7 +66,7 @@ class AlmacenTransportesController extends AppController {
 				'Operacion' => array(
 					'foreignKey' => false,
 					'conditions' => array('Transporte.operacion_id = Operacion.id')
-				),				
+				),
 				'Contrato' => array(
 					'foreignKey' => false,
 					'conditions' => array('Operacion.contrato_id = Contrato.id')
@@ -298,7 +298,7 @@ class AlmacenTransportesController extends AppController {
 				'first',
 				array(
 					'conditions' =>array(
-						'AlmacenTransporte.id' => $id	
+						'AlmacenTransporte.id' => $id
 					),
 					'fields' => array(
 						'cantidad_cuenta'

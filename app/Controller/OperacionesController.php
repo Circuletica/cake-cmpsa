@@ -1,9 +1,9 @@
 <?php
 class OperacionesController extends AppController {
-	 
+
 	public function index() {
 		$this->set('action', $this->action);	//Se usa para tener la misma vista
-		
+
 		$this->Operacion->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
 		$this->paginate['order'] = array('Operacion.referencia' => 'asc');
 		$this->paginate['recursive'] = 2;
@@ -725,21 +725,24 @@ class OperacionesController extends AppController {
 		$this ->set(compact('operacion'));
 		//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
 		$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
-			'first',
+			'all',
 			array(
 				'conditions' => array(
 					'Transporte.operacion_id' => $id
 				),
 				'recursive' => 2,
 				'fields' => array(
-					'cuenta_almacen'
+					'id',
+					'cuenta_almacen',
+					'cantidad_cuenta'
 				)
 			)
 		);
-		if(empty($cuenta_almacen['AlmacenTransporte'])){
-			$cuenta_almacen = NULL;
-		}else{
-			$cuenta_almacen = $cuenta_almacen['AlmacenTransporte'];
+
+		if(empty($cuenta_almacen[0]['AlmacenTransporte']['id'])){
+			//unset($cuenta_almacen);
+			$cuenta_almacen = 'NULL';
+			//debug($cuenta_almacen);
 		}
 		$this->set(compact('cuenta_almacen'));
 
@@ -890,6 +893,24 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 
 		//Se declara para acceder al PDF
 		$this->set(compact('id'));
+
+		$this->loadModel('AlmacenTransporteAsociado');
+		$sacos_asignados = $this-> AlmacenTransporteAsociado->find(
+		    'all',
+		    array(
+		        'contain' => array(
+		            'AlmacenTransporte' => array(
+		                'Transporte'=> array(
+		                    'conditions' => array(
+		                        'Transporte.operacion_id' => $id
+		                    )
+		                )
+		            )
+		        )
+		    )
+		);
+
+		$this->set(compact('sacos_asignados'));
 	}
 
 
@@ -1084,7 +1105,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		$this->set('operacion', $operacion);
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$this->loadModel('ContratoEmbalaje');
-	
+
 		$embalaje = $this->ContratoEmbalaje->find(
 			'first',
 			array(
@@ -1140,7 +1161,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	       		$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
 	       	}else{
                $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
-               
+
                foreach ($this->data['email'] as $email){
                	$lista_email[]= $email;
                }
