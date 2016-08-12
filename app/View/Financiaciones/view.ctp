@@ -167,7 +167,7 @@ $this->start('lines2');
 echo "<table class='tc5'>\n";
 echo $this->Html->tableHeaders(array(
 	'Asociado','Fecha','Importe','Banco','Importado','Detalle'));
-foreach ($anticipos as $anticipo):
+foreach ($anticipos as $anticipo) {
 	echo $this->Html->tableCells(array(
 		$anticipo['AsociadoOperacion']['Asociado']['nombre_corto'],
 		$this->Date->format($anticipo['Anticipo']['fecha_conta']),
@@ -175,10 +175,26 @@ foreach ($anticipos as $anticipo):
 		$anticipo['Banco']['nombre_corto'],
 		($anticipo['Anticipo']['si_contabilizado'] ?
 		'&#10004;' :''),
-		$this->Button->editLine('anticipos',$anticipo['Anticipo']['id'],'financiaciones',$anticipo['AsociadoOperacion']['operacion_id'])
-		.' '.$this->Button->deleteLine('anticipos',$anticipo['Anticipo']['id'],'el anticipo de '.$anticipo['Anticipo']['importe'].'€')
-	));
-endforeach;
+		$this->Button->editLine(
+			'anticipos',
+			$anticipo['Anticipo']['id'],
+			'financiaciones',
+			$anticipo['AsociadoOperacion']['operacion_id']
+		)
+		//		.' '.$this->Button->deleteLine(
+		//			'anticipos',
+		//			$anticipo['Anticipo']['id'],
+		//			'el anticipo de '.$anticipo['Anticipo']['importe'].'€'
+		.' '.
+		($anticipo['Anticipo']['si_contabilizado'] ? '':$this->Button->deleteLine(
+			'anticipos',
+			$anticipo['Anticipo']['id'],
+			'el anticipo de '.$anticipo['Anticipo']['importe'].'€'
+		)
+	)
+)
+	);
+}
 echo"</table>\n";
 $this->end();
 ?>
