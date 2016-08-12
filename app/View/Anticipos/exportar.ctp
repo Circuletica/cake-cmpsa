@@ -16,6 +16,14 @@ setInterval(function(){
 },1000);
 </script-->
 <?php
+$this->Html->addCrumb(
+    'Anticipos',
+    array(
+         'controller' => 'anticipos',
+         'action' => 'index'
+    )
+);
+
 echo $this->Form->create('Anticipo', array('action'=>'csv'));
 echo "<table>\n";
 echo $this->Html->tableHeaders(array(
