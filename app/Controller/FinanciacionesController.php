@@ -248,7 +248,7 @@ class FinanciacionesController extends AppController {
 		return $this->History->Back(0);
 	}
 
-	public function financion_envio ($id) {
+	public function financiacion_envio ($id) {
 		//Necesario para volcar los datos en el PDF
 
 		//Contactos de los asociados
@@ -282,7 +282,6 @@ class FinanciacionesController extends AppController {
 			)
 		);
 		$this->set('usuarios',$usuarios);
-
 
 		if (!empty($id)) $this->LineaMuestra->id = $id;
 		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras

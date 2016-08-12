@@ -123,6 +123,18 @@ class AnticiposController extends AppController {
 		);
 		$this->set(compact('titulo'));
 		$this->set('anticipos', $this->paginate());
+
+		//si venimos de exportar, generar el csv
+//		if ($this->referer() == Router::url(
+//			array(
+//				'controller' => 'anticipos',
+//				'action' => 'exportar'
+//			),
+//			true
+//		)) {
+//			debug('csv');
+//			$this->csv();
+//		}
 	}
 
 	public function add() {

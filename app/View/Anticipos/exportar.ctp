@@ -2,7 +2,7 @@
 //echo $this->Html->script('jquery')."\n"; // Include jQuery library
 echo $this->Html->script('js-cookie')."\n"; // Include j-cookie library
 ?>
-<script>
+<!--script>
 setInterval(function(){
 	var loading = false;
 	loading = Cookies.get("fileLoading");
@@ -10,10 +10,11 @@ setInterval(function(){
 		// clean the cookie for future downoads
 		Cookies.remove("fileLoading", {path: "/anticipos"});
 		//redirect
+		console.log(loading);
 		location.href = "/anticipos";
 	}
 },1000);
-</script>
+</script-->
 <?php
 echo $this->Form->create('Anticipo', array('action'=>'csv'));
 echo "<table>\n";
@@ -43,7 +44,7 @@ foreach($anticipos as $anticipo) {
 				'name' => 'data[Anticipo][]',
 				'value' => $anticipo['Anticipo']['id'],
 				'hiddenField' => false,
-				'checked' => true
+				//'checked' => true
 			)
 		),
 		$this->Date->format($anticipo['Anticipo']['fecha_conta']),

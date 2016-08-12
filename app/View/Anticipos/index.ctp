@@ -32,11 +32,11 @@ foreach($anticipos as $anticipo) {
 		$this->Button->view(
 			'financiaciones',
 			$anticipo['Operacion']['id']
-		)."\n".
+		)/*."\n".
 		$this->Button->edit(
 			'anticipos',
 			$anticipo['Anticipo']['id']
-		)
+		)*/
 	));
 }
 echo "</table>\n";
