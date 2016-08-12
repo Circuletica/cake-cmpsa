@@ -8,6 +8,17 @@ $this->assign('object', 'IVA '.$tipo_iva['TipoIva']['nombre']);
 $this->assign('line_object', 'valor');
 $this->assign('line_add', '1'); // si se muestra el botón de añadir 'line'
 
+$this->start('breadcrumb');
+$this->Html->addCrumb(
+	'Tipo IVA',
+	array(
+		'controller' => 'tipo_ivas',
+		'action' => 'index'
+	)
+);
+$this->end();
+
+
 $this->start('main');
 echo "<dl>";
 echo "  <dt>Nombre:</dt>\n";

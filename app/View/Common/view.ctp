@@ -16,9 +16,9 @@ $from_id = $this->fetch('from_id');
 <h2><?php echo $object; ?></h2>
 
 <div class="actions">
-    <ul>
-    <?php echo $this->fetch('filter'); ?>
-    </ul>
+	<ul>
+	<?php echo $this->fetch('filter'); ?>
+	</ul>
 </div>
 <div class="acciones">
 	<div class="printdet">
@@ -35,15 +35,15 @@ echo $this->element('imprimirV');
 //si no es el caso, volvemos al index del controller del
 //borrado
 echo $this->Button->edit($controller,$id)
-    .' '.
-    //si esta definido el $from_controller, ponemos un botón
-    //que devuelve al controller mencionado,
-    //si no es el caso, volvemos al index del controller del
-    //borrado
-    (empty($from_controller) ? 
-    $this->Button->delete($controller,$id,$object)
-    //:$this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object)
-    :$this->Button->deleteLine($controller,$id,$object)
+	.' '.
+	//si esta definido el $from_controller, ponemos un botón
+	//que devuelve al controller mencionado,
+	//si no es el caso, volvemos al index del controller del
+	//borrado
+	(empty($from_controller) ? 
+	$this->Button->delete($controller,$id,$object)
+	//:$this->Button->deleteLine($controller,$id,$from_controller,$from_id,$object)
+	:$this->Button->deleteLine($controller,$id,$object)
 );
 ?>
 	</li>
