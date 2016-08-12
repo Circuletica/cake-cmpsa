@@ -82,25 +82,6 @@ class AnticiposController extends AppController {
 			//completamos el titulo
 			$titulo .= '| Fin: '.$criterio;
 		}
-		//		if(isset($this->passedArgs['Search.fecha'])) {
-		//			$criterio = $this->passedArgs['Search.fecha'];
-		//			//Si solo se ha introducido un año (aaaa)
-		//			if (preg_match('/^\d{4}$/',$criterio)) { $anyo = $criterio; }
-		//			//la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
-		//			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
-		//				list($mes,$anyo) = explode('-',$criterio);
-		//			} else {
-		//				$this->Flash->set('Error de fecha');
-		//				$this->redirect(array('action' => 'index'));
-		//			}
-		//			//si se ha introducido un año, filtramos por el año
-		//			if($anyo) { $this->paginate['conditions']['YEAR(Anticipo.fecha_conta) ='] = $anyo;};
-		//			//si se ha introducido un mes, filtramos por el mes
-		//			if(isset($mes)) { $this->paginate['conditions']['MONTH(Anticipo.fecha_conta) ='] = $mes;};
-		//			$this->request->data['Search']['fecha'] = $criterio;
-		//			//completamos el titulo
-		//			$titulo[] = 'Fecha: '.$criterio;
-		//		}
 
 		$this->Anticipo->bindModel(
 			array(
@@ -175,11 +156,7 @@ class AnticiposController extends AppController {
 			$si_contablilizado = $anticipo['Anticipo']['si_contabilizado'];
 			//pero si el anticipo ya ha sido contabilizado,
 			//se tiene que generar uno nuevo, sin borrar el antiguo
-			//			if ($anticipo['Anticipo']['si_contabilizado'] != true) {
-			//				$this->Anticipo->id = $id;
-			//			}
 			$operacion_id = $anticipo['AsociadoOperacion']['operacion_id'];
-			//$this->request->data['Anticipo']['operacion_id'] = $operacion_id;
 		} else {
 			$operacion_id = isset($this->params['named']['from_id'])?
 				$this->params['named']['from_id']:null;
@@ -283,17 +260,20 @@ class AnticiposController extends AppController {
 				$this->request->data['Anticipo']['anticipo_padre_id'] = $id;
 				$this->request->data['Anticipo']['si_contabilizado'] = false;
 			}
-			$data = array();
 			if (isset($anticipo_inverso)) {
-				array_push($data,$anticipo_inverso);
-			}
-			array_push($data,$this->request->data);
-			//saveMany es atómico, se guardan los dos o ninguno.
-			if ($this->Anticipo->saveMany($data)) {
-				$this->Flash->success('Anticipo(s) guardado(s)');
+				//saveMany es atómico, se guardan los dos o ninguno.
+				if ($this->Anticipo->saveMany(array($anticipo_inverso,$this->request->data))) {
+					$this->Flash->success('Anticipos guardados');
+				} else
+					$this->Flash->error('Anticipo(s) NO guardado(s)');
+				return $this->History->Back(-1);
+			} else {
+				if ($this->Anticipo->save($this->request->data)) {
+					$this->Flash->success('Anticipo guardado');
+				} else
+					$this->Flash->error('Anticipo(s) NO guardado(s)');
 				return $this->History->Back(-1);
 			}
-			$this->Flash->error('Anticipo(s) NO guardado(s)');
 		} else { //es un GET
 			$this->request->data = $this->Anticipo->read(null, $id);
 			$this->request->data['AsociadoOperacion']['operacion_id'] = $operacion_id;
@@ -318,7 +298,6 @@ class AnticiposController extends AppController {
 		if ($this->request->is(array('post','put'))) {
 			debug($this->request->data);
 			throw new notFoundException;
-			//	return $this->request->data;
 		} else {
 			$this->paginate['order'] = array(
 				'Anticipo.fecha_conta' => 'asc'
