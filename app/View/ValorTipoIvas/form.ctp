@@ -19,7 +19,7 @@ echo $this->Form->input('fecha_inicio', array(
     'minYear' => date('Y')-25,
     'maxYear' => date('Y')+5,
     'orderYear' => 'asc'
-    ));
+));
 echo "</div>\n";
 echo "<div class='linea'>\n";
 echo $this->Form->input('fecha_fin', array(
@@ -29,7 +29,7 @@ echo $this->Form->input('fecha_fin', array(
     'maxYear' => date('Y')+5,
     'orderYear' => 'asc',
     'empty' => true
-    ));
+));
 echo "</div>\n";
 echo $this->Form->input('valor', array('label' => 'Valor'));
 echo $this->element('cancelarform');
