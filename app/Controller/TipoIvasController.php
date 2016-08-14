@@ -51,9 +51,21 @@ class TipoIvasController extends AppController {
 	public function view($id = null) {
 		$this->checkId($id);
 		//el id y la clase del tipo de iva vienen en la URL
-		$tipo_iva = $this->TipoIva->findById($id);
-		if (!$tipo_iva)
-			throw new NotFoundException(__('No existe ese tipo de iva'));
+		$tipo_iva = $this->TipoIva->find('first',
+			array(
+				'conditions' => array(
+					'TipoIva.id' => $id
+				),
+				'contain' => array(
+					'ValorTipoIva' => array(
+						'order' => array(
+							'ValorTipoIva.fecha_inicio' => 'asc'
+						)
+					)
+				)
+			)
+		);
+		$this->set(compact('id'));
 		$this->set(compact('tipo_iva'));
 	}
 

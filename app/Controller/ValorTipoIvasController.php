@@ -1,9 +1,9 @@
 <?php
 class ValorTipoIvasController extends AppController {
-	public $paginate['order'] = array('TipoIva.valor' => 'asc');
+
 
 	public function index() {
-		$params = array('order' => 'nombre asc');
+		$paginate['order'] = array('ValorTipoIva.valor' => 'asc');
 		$this->set('valor_tipo_ivas', $this->paginate());
 	}
 
@@ -57,16 +57,16 @@ class ValorTipoIvasController extends AppController {
 		}
 	}
 
-	public function delete($id = null) {
-		if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
-		if ($this->ValorTipoIva->delete($id)){
-			$this->Flash->success('Valor borrado');
-			$this->redirect(array(
-				'controller' => $this->params['named']['from_controller'],
-				'action'=>'view',
-				$this->params['named']['from_id']
-			));
-		}
-	}
+//	public function delete($id = null) {
+//		if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
+//		if ($this->ValorTipoIva->delete($id)){
+//			$this->Flash->success('Valor borrado');
+//			$this->redirect(array(
+//				'controller' => $this->params['named']['from_controller'],
+//				'action'=>'view',
+//				$this->params['named']['from_id']
+//			));
+//		}
+//	}
 }
 ?>
