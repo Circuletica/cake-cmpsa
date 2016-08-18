@@ -81,15 +81,26 @@ class AsociadoComisionesController extends AppController {
 	}
     }
 
-    public function delete($id = null) {
-	if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
-	if ($this->AsociadoComision->delete($id)){
-	    $this->Flash->set('Comisión borrada');
-	    $this->redirect(array(
-		'controller' => 'asociados',
-		'action'=>'view',
-		$this->params['named']['from_id']
-	    ));
+	public function delete($id = null) {
+		$this->request->allowMethod('post');
+
+		$this->AsociadoComision->id = $id;
+		if (!$this->AsociadoComision->exists())
+			throw new NotFoundException(__('Comisión inválida'));
+		if ($this->AsociadoComision->delete()){
+			$this->Flash->success('Comisión borrada');
+			return $this->redirect(array(
+				'controller' => 'asociados',
+				'action'=>'view',
+				$this->params['named']['from_id']
+			));
+		}
+		$this->Flash->error(__('Comisión NO borrada'));
+		return $this->redirect(array(
+			'controller' => 'asociados',
+			'action'=>'view',
+			$this->params['named']['from_id']
+		));
 	}
     }
 }
