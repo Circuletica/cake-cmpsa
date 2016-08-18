@@ -13,7 +13,7 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
 ));
 
 
-echo $this->Form->create('EnvioOperacion');
+echo $this->Form->create('Operacion');
 
 echo "<h2>Envío de distribución a los asociados de la operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
 ?>
@@ -49,7 +49,6 @@ foreach($asociados_operacion as $asociado_operacion){
 		'options'=>$opciones
 		)
 	);
-	echo "<hr><br>";
 ?>
 </fieldset>
 <fieldset style=width:35%;>
@@ -98,7 +97,7 @@ echo $this->element('cancelarform');
         	'action' => 'view_asociados',
 			$operacion['Operacion']['id'],
 			'ext' => 'pdf',
-		    $operacion['Operacion']['referencia']))
+		    'operacion_id'.$operacion['Operacion']['id'].'_'.date('Ymd')))
 		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"
 	)
 );
