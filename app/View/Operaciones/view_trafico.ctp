@@ -29,18 +29,6 @@ $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array
 $this->end();
 
 $this->start('filter');
-	echo  $this->Html->link(
-	    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío distribución',
-	    array(
-		'action' =>'envio_asociados',
-		$id
-	    ),
-	    array(
-		'escape'=>false,
-		'title'=>'Envío distribución asociados',
-	    )
-	);
-
 $this->end();
 
 $this->start('main');
@@ -260,7 +248,8 @@ endforeach;
     );
 ?></table>
 <?php
-    if(is_array($cuenta_almacen)){
+    //SE COMPRUEBA QUE HAY CUENTAS DE ALMACÉN PARA PERMITIR QUE SE AGREGEN RETIRADAS CON EL BOTÓN
+    if(is_array($cuentas_almacenes)){
         echo '<div class="btabla">';
         echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
         echo '</div>';

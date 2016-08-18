@@ -60,7 +60,7 @@ foreach($contactos as $contacto){
 			),
 		'options'=>$calidad
 		)
-	);	
+	);
 	foreach($usuarios as $usuario){
 		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 4){//Controlo que no haya usuarios sin email
 		$trafico[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
@@ -76,7 +76,7 @@ foreach($contactos as $contacto){
 		'multiple' => 'checkbox',
 		'options'=>$trafico
 		)
-	);	
+	);
 ?>
 </fieldset>
 <fieldset style=width:25%;>
@@ -132,11 +132,11 @@ echo $this->element('cancelarform');
 			$linea_muestra['LineaMuestra']['id'],
 			'ext' => 'pdf',
 		    $linea_muestra['tipo_registro']))
-		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"	    
+		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"
 	)
 );
 	echo $this->Form->end('Enviar informe',array('name' =>'enviar'));
-	
+
 ?>
 
 </fieldset>

@@ -1,4 +1,4 @@
-	<?php 
+	<?php
 	$this->Html->addCrumb(
 		'Operación',
 		array(
@@ -27,7 +27,7 @@ echo ' '.$this->Html->link(
 		'action' => 'view',
 		$id,
 		'ext' => 'pdf',
-		), 
+		),
 	array(
 		'escape'=>false,
 		'target' => '_blank',
@@ -52,7 +52,7 @@ echo ' '.$this->Html->link(
 		.' '.
 		$this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
 	}
-/*echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas': 
+/*echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas':
     $this->Button->edit('almacen_transportes',$id)
     .' '.
     $this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);*/
@@ -160,9 +160,9 @@ echo ' '.$this->Html->link(
 		echo "  <dd>".$almacentransportes['AlmacenTransporte']['marca_almacen'].'&nbsp;'."</dd>";
 
 		echo "</dl>";
-		?>	
+		?>
 		<div class="detallado">
-			<h3>Distribución asociados</h3>
+			<h3>Distribución asociados en cuenta</h3>
 			<table class='tr2 tr3 tr4 tr5 tr6'>
 				<?php
 				$total_asignacion_teorica=0;
@@ -194,7 +194,7 @@ echo ' '.$this->Html->link(
 							$almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'],
 							$almacentransporte['sacos_asignados'],
 							$pendiente,
-							$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),			
+							$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),
 							$sacos_asignados
 	//$this->Number->round($almacentransporte['sacos_asignados']*100/$total_asignacion_real ,2)
 							)
@@ -263,7 +263,7 @@ echo ' '.$this->Html->link(
 					echo "<h4><span style=color:#c43c35;>Cantidad sacos asignados superior cuenta: ". $total_asignacion_teorica."</span>";
 				}
 			}
-			?>	
+			?>
 			<div class='btabla'>
 				<?php
 				echo $this->Html->link(
@@ -272,7 +272,7 @@ echo ' '.$this->Html->link(
 						'controller' => 'almacen_transportes',
 						'action' => 'distribucion',
 						$id
-						), 
+						),
 					array(
 						'class' => 'boton',
 						'title' => 'Cambiar distribución sacos asociados',

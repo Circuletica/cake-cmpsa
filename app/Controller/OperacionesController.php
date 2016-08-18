@@ -724,13 +724,13 @@ class OperacionesController extends AppController {
 
 		$this ->set(compact('operacion'));
 		//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
-		$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
+		$cuentas_almacenes = $this->Operacion->Transporte->AlmacenTransporte->find(
 			'all',
 			array(
 				'conditions' => array(
 					'Transporte.operacion_id' => $id
 				),
-				'recursive' => 2,
+				//'recursive' => 2,
 				'fields' => array(
 					'id',
 					'cuenta_almacen',
@@ -738,13 +738,12 @@ class OperacionesController extends AppController {
 				)
 			)
 		);
+		$cuentas_almacenes = Hash::combine($cuentas_almacenes, '{n}.AlmacenTransporte.id', '{n}');
 
-		if(empty($cuenta_almacen[0]['AlmacenTransporte']['id'])){
-			//unset($cuenta_almacen);
-			$cuenta_almacen = 'NULL';
-			//debug($cuenta_almacen);
-		}
-		$this->set(compact('cuenta_almacen'));
+		/*if(empty($cuentas_almacenes[0]['AlmacenTransporte']['id'])){
+			$cuentas_almacenes = 'NULL';
+		}*/
+		$this->set(compact('cuentas_almacenes'));
 
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$this->loadModel('ContratoEmbalaje');
@@ -810,6 +809,15 @@ class OperacionesController extends AppController {
 				)
 			)
 		);
+
+	//Calculamos la cantidad de sacos asignados por asociado en el total de las cuentas de la operacion_id
+/*	foreach ($cuentas_almacenes as $almacen_transporte_id => $cuenta_almacen){//Recorro el array
+		if($almacen_transporte_id == $sacos_asignados['AlmacenTransporteAsociado']['almacen_transporte_id']){
+				foreach()
+		}
+	}*/
+
+
 
 		//ahora el precio que facturamos por asociado
 /*  MIRAR ATENTAMENTE PARA CAMBIAR EL CóDIGO POR ESTO SOLO
@@ -893,26 +901,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 
 		//Se declara para acceder al PDF
 		$this->set(compact('id'));
-
-		$this->loadModel('AlmacenTransporteAsociado');
-		$sacos_asignados = $this-> AlmacenTransporteAsociado->find(
-		    'all',
-		    array(
-		        'contain' => array(
-		            'AlmacenTransporte' => array(
-		                'Transporte'=> array(
-		                    'conditions' => array(
-		                        'Transporte.operacion_id' => $id
-		                    )
-		                )
-		            )
-		        )
-		    )
-		);
-
-		$this->set(compact('sacos_asignados'));
 	}
-
 
 	//	public function delete($id = null) {
 	//		if (!$id or $this->request->is('get')) {
@@ -1090,16 +1079,13 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		);
 		$this->set('asociados_operacion', $asociados_operacion);
 
-
 		$operacion = $this->Operacion->find(
 			'first',
 			array(
 				'conditions' => array(
 					'Operacion.id' => $id
 				),
-				'contain'=>array(
-					'Contrato'
-				)
+				'recursive'=> -1
 			)
 		);
 		$this->set('operacion', $operacion);
@@ -1127,9 +1113,15 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 			'all',
 			array(
 				'conditions' =>array(
-					'departamento_id' => array(4),
+					'departamento_id' => array(3),
 					),
-				'order' => array('Empresa.nombre_corto' => 'asc')
+				'order' => array('Empresa.nombre_corto' => 'asc'),
+				'fields'=> array(
+					'Contacto.departamento_id',
+					'Contacto.empresa_id',
+					'Contacto.nombre',
+					'Contacto.email'
+				)
 			)
 		);
 		$this->set('contactos',$contactos);
@@ -1140,7 +1132,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 			'all',
 			array(
 				'conditions' =>array(
-					'departamento_id' => array(2,4)
+					'departamento_id' => array(4,3) //Aquí indicamos el departamento de usuarios
 					),
 				'contain'=>array(
 					'Departamento'=>array(
@@ -1162,14 +1154,19 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	       	}else{
                $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
 
-               foreach ($this->data['email'] as $email){
-               	$lista_email[]= $email;
-               }
-	               if(!empty($this->data['trafico'])){
-	               		foreach ($this->data['trafico'] as $email){
-	               			$lista_bcc[]= $email;
-	              		}
-               		}
+            	foreach ($this->data['email'] as $email){
+					$lista_email[]= $email;
+               	}
+			   /*	if(!empty($this->data['trafico'])){
+					foreach ($this->data['trafico'] as $email){
+						$lista_bcc[]= $email;
+					}
+				}*/
+				if(!empty($this->data['compras'])){
+				 	foreach ($this->data['compras'] as $email){
+						$lista_bcc[]= $email;
+				 	}
+				}
 
                //GENERAMOS EL PDF
                App::uses('CakePdf', 'CakePdf.Pdf');
@@ -1180,19 +1177,19 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
                // Get the PDF string returned
                //$pdf = $CakePdf->output();
                // Or write it to file directly
-               $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS . $operacion['referencia'].'_'.date('Ymd').'.pdf');
+               $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS . $operacion['Operacion']['referencia'].'_'.date('Ymd').'.pdf');
                 //ENVIAMOS EL CORREO CON EL INFORME
                $Email = new CakeEmail(); //Llamamos la instancia de email
                $Email->config('trafico'); //Plantilla de email.php
-               $Email->from(array('trafico@cmpsa.com' => 'Tráfico CMPSA'));
+               $Email->from(array('cmpsa@cmpsa.com' => 'Compras CMPSA'));
                $Email->bcc($lista_email);
                //$Email->readReceipt($lista_bcc); //Acuse de recibo
                if(!empty($lista_bcc)){
                	$Email->bcc($lista_bcc);
                }
-               $Email->subject('Distrubución sacos asociados '.$operacion['referencia'].' / ficha '.$linea_muestra['Operacion']['referencia']);
-               $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS . $operacion['referencia'].'_'.date('Ymd').'.pdf');
-               $Email->send('Adjuntamos la distribución de la operación '.$operacion['referencia']);
+               $Email->subject('Distrubución sacos asociados '.$operacion['Operacion']['referencia'].' / ficha '.$operacion['Operacion']['referencia']);
+               $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS . $operacion['Operacion']['referencia'].'_'.date('Ymd').'.pdf');
+               $Email->send('Adjuntamos la distribución de la operación '.$operacion['Operacion']['referencia']);
                $this->Flash->set('Distribición a los asociados enviado con éxito.');
                $this->redirect(array(
                		'action'=>'view_trafico',

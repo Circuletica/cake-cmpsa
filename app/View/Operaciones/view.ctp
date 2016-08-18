@@ -19,6 +19,18 @@ $this->Html->addCrumb(
 $this->end();
 
 $this->start('filter');
+echo  $this->Html->link(
+    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío distribución',
+    array(
+    'action' =>'envio_asociados',
+    $id
+    ),
+    array(
+    'escape'=>false,
+    'title'=>'Envío distribución asociados',
+    )
+);
+echo "<br><hr>";
 //solo se puede generar una financiacion si aun no existe
 if (empty($existe_financiacion)) {
     echo $this->Html->link('<i class="fa fa-file-text-o fa-lg" aria-hidden="true"></i>
@@ -29,16 +41,16 @@ if (empty($existe_financiacion)) {
 	),
 	array(
 	    'escape' => false)
-	); 
+	);
 } else {
-    echo $this->Html->link('<i class="fa fa-list-alt fa-lg" aria-hidden="true"></i>
-Ver financiación', array(
+    echo $this->Html->link('<i class="fa fa-list-alt     fa-lg" aria-hidden="true"></i>
+    Ver financiación', array(
 	'controller' => 'financiaciones',
 	'action' => 'view',
 	$operacion['Operacion']['id']
     ),
     array('escape' => false)
-    ); 
+    );
 }
 if (empty($existe_facturacion)) {
     echo $this->Html->link('<i class="fa fa-file-text fa-lg" aria-hidden="true"></i>
@@ -48,13 +60,16 @@ if (empty($existe_facturacion)) {
 	    $operacion['Operacion']['id']
 	),
 	array('escape' => false)
-    ); 
+    );
 } else {
-    echo $this->Html->link('Ver facturación', array(
+    echo $this->Html->link('<i class="fa fa-list-ul fa-lg" aria-hidden="true"></i>
+    Ver facturación', array(
 	'controller' => 'facturaciones',
 	'action' => 'view',
 	$operacion['Operacion']['id']
-    )); 
+    ),
+    array('escape' => false)
+    );
 }
 $this->end();
 
