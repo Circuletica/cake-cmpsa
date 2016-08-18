@@ -54,19 +54,19 @@ $lotes_por_fijar = $contrato['RestoLotesContrato']['lotes_restantes'] + $this->r
 <?php
 echo $this->Form->input('referencia');
 echo $this->Form->input('lotes_operacion',
-    array(
-	'label' => 'Lotes',
-    'after' =>'Quedan por fijar <var id="lotes">'.$lotes_por_fijar.'</var> lotes',
-	'oninput' => 'lotesPorFijar()'
-    )
+	array(
+		'label' => 'Lotes',
+		'after' =>'Quedan por fijar <var id="lotes">'.$lotes_por_fijar.'</var> lotes',
+		'oninput' => 'lotesPorFijar()'
+	)
 );
 ?>
 </div>
 <div class='linea'>
 <?php
 echo $this->Form->input('fecha_pos_fijacion', array(
-    'label' => 'Fecha de fijación',
-    'dateFormat' => 'DMY',
+	'label' => 'Fecha de fijación',
+	'dateFormat' => 'DMY',
 )
 );
 echo "</div>\n";
@@ -74,31 +74,31 @@ echo "</div>\n";
 <div class='col2'>
 <?php
 echo $this->Form->input('puerto_carga_id', array(
-    'label' => 'Puerto de Carga',
-    'empty' => array('' => '')
+	'label' => 'Puerto de Carga',
+	'empty' => array('' => '')
 )
 );
 echo $this->Form->input('precio_fijacion', array(
-    'between' => '('.$divisa.')'
+	'between' => '('.$divisa.')'
 )
 );
 
 
 
 echo $this->Form->input('precio_compra', array(
-    'between' => '('.$divisa.')',
-    'label' => 'Precio factura'
+	'between' => '('.$divisa.')',
+	'label' => 'Precio factura'
 )
 );
 echo $this->Form->input('puerto_destino_id', array(
-    'label' => 'Puerto de Destino',
-    'empty' => array('' => '')
+	'label' => 'Puerto de Destino',
+	'empty' => array('' => '')
 )
 );
 
 echo $this->Form->input('opciones', array(
-    'between' => '('.$divisa.')',
-    'label' => 'Opciones'
+	'between' => '('.$divisa.')',
+	'label' => 'Opciones'
 )
 );
 ?>
@@ -106,35 +106,43 @@ echo $this->Form->input('opciones', array(
 </div>
 <?php
 if ($contrato['Incoterm']['si_flete']) {
-    echo $this->Form->input('flete', array(
-	'between' => '(€/Tm)',
-	'label' => 'Flete'
-    )
+	echo $this->Form->input('flete', array(
+		'between' => '(€/Tm)',
+		'label' => 'Flete'
+	)
 );
 }
 if ($contrato['Incoterm']['si_seguro']) {
-    echo $this->Form->input('seguro', array(
-	'between' => '(%)',
-	'label' => 'Seguro'
-    )
-);
+	echo $this->Form->input(
+		'seguro',
+		array(
+			'between' => '(%)',
+			'label' => 'Seguro'
+		)
+	);
 }
 ?>
-    <div class='col2'>
+	<div class='col2'>
 <?php
-echo $this->Form->input('forfait', array(
-    'between' => '(€/Tm)',
-    'label' => 'Forfait'
-)
+echo $this->Form->input(
+	'forfait',
+	array(
+		'between' => '(€/Tm)',
+		'label' => 'Forfait'
+	)
 );
-echo $this->Form->input('cambio_dolar_euro', array(
-    'label' => 'Cambio dolar/euro'
-)
+echo $this->Form->input(
+	'cambio_dolar_euro',
+	array(
+		'label' => 'Cambio dolar/euro'
+	)
 );
 echo '<br>';
-echo $this->Form->input('peso_pagado', array(
-    'label' => 'Peso factura'
-)
+echo $this->Form->input(
+	'peso_pagado',
+	array(
+		'label' => 'Peso factura'
+	)
 );
 
 ?>
@@ -147,24 +155,24 @@ echo $this->Form->input('peso_pagado', array(
 //necesitamos un array con la cantidad asignada a cada socio
 echo "<table>";
 foreach ($asociados as $codigo => $asociado) {
-    echo "<tr>";
-    echo "<td>";
-    echo substr($codigo,-2);
-    echo "</td>\n";
-    echo "<td>".$asociado['Empresa']['nombre_corto']."</td>\n";
-    echo "<td>";
-    echo $this->Form->input('CantidadAsociado.'.$asociado['Asociado']['id'], array(
-    'label' => '',
-    'class' => 'cantidad',
-    'id' => $asociado['Asociado']['id'],
-    'oninput' => 'pesoAsociadoEdit()'
-    )
+	echo "<tr>";
+	echo "<td>";
+	echo substr($codigo,-2);
+	echo "</td>\n";
+	echo "<td>".$asociado['Empresa']['nombre_corto']."</td>\n";
+	echo "<td>";
+	echo $this->Form->input('CantidadAsociado.'.$asociado['Asociado']['id'], array(
+		'label' => '',
+		'class' => 'cantidad',
+		'id' => $asociado['Asociado']['id'],
+		'oninput' => 'pesoAsociadoEdit()'
+	)
 );
-    echo "</td>";
-    echo "<td>";
-    echo '<div id=pesoAsociado'.$asociado['Asociado']['id'].'>'." = ??????kg".'</div>';
-    echo "</td>";
-    echo "</tr>";
+	echo "</td>";
+	echo "<td>";
+	echo '<div id=pesoAsociado'.$asociado['Asociado']['id'].'>'." = ??????kg".'</div>';
+	echo "</td>";
+	echo "</tr>";
 }
 echo "</table>";
 echo $this->element('cancelarform');
