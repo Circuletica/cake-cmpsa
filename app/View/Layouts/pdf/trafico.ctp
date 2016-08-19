@@ -1,12 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//ES">
 <html><head>
-<!--<link rel="stylesheet" type="text/css" href="app/webroot/css/cake.pdf.css">-->
-<?php
-echo $this->Html->css('cake.pdf');
-?>
+<?php //echo $this->Html->css('cake.pdf');//Esto no fucniona ?>
+<link rel="stylesheet" type="text/css" href="<?php echo APP.'webroot'.DS.'css'.DS.'cake.pdf.css'; ?>" media="all" />
+
 <title>COMERCIAL DE MATERIAS PRIMAS S.A.</title>
-
-
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"></head>
 <body><big><span style="font-weight: bold;">
 	COMERCIAL DE MATERIAS PRIMAS S.A.</span></big><br>

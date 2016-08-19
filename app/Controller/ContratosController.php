@@ -147,7 +147,7 @@ class ContratosController extends AppController {
 			foreach ($sacos_pendientes as $id => $cantidad) {
 				if ($cantidad > 0) {
 					if ($sacos_por_fijar != '') $sacos_por_fijar .= ' + ';
-					$sacos_por_fijar .= $cantidad.' '.$embalajes_pendientes[$id]; 
+					$sacos_por_fijar .= $cantidad.' '.$embalajes_pendientes[$id];
 				}
 			}
 		}
@@ -164,7 +164,6 @@ class ContratosController extends AppController {
 		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
 		$fecha = $contrato['Contrato']['posicion_bolsa'];
 		//sacamos el nombre del mes en castellano
-		setlocale(LC_TIME, "es_ES.UTF-8");
 		$mes = strftime("%B", strtotime($fecha));
 		$anyo = substr($fecha,0,4);
 		$this->set('posicion_bolsa', $mes.' '.$anyo);

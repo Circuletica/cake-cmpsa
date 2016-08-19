@@ -2,7 +2,7 @@
 class TransportesController extends AppController {
 
     public function index() {
-    $this->set('action', $this->action);	//Se usa para tener la misma vista	
+    $this->set('action', $this->action);	//Se usa para tener la misma vista
    	$this->pdfConfig = array(
    		'filename' => 'info_embarque',
    		'paperSize' => 'A4',
@@ -115,7 +115,7 @@ class TransportesController extends AppController {
 			'Incoterm'=> array(
 				'foreignKey' => false,
 				'conditions' => array('Contrato.incoterm_id = Incoterm.id')
-			)			
+			)
 		)
 	    )
 	);
@@ -481,7 +481,7 @@ class TransportesController extends AppController {
 		}
 
 	}
-    
+
 
     public function embarque() {
 	$this->pdfConfig = array(
@@ -627,8 +627,7 @@ class TransportesController extends AppController {
 	$this->set('transporte',$transporte);
 
 	$dia = date ('d');
-	//$mes=date('m');
-	$mes=date('F');
+    $mes=strftime('%B');
 	$ano = date('Y');
 
 	$this->set(compact('dia'));
@@ -659,8 +658,6 @@ class TransportesController extends AppController {
     }
 
     public function asegurar($id = null) {
-
-	setlocale(LC_TIME, "es_ES.UTF-8");
 	$this->pdfConfig = array(
 	    'filename' => 'asegurar',
 	    'paperSize' => 'A4',
@@ -730,7 +727,7 @@ class TransportesController extends AppController {
 	$this->set('transporte',$transporte);
 
 	$dia = date ('d');
-	$mes=date('F');
+	$mes=strftime('%B');
 	$ano = date('Y');
 
 	$this->set(compact('dia'));

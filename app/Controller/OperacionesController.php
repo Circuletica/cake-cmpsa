@@ -574,7 +574,7 @@ class OperacionesController extends AppController {
 	}
 
 	public function view($id = null) {
-		//$this->checkId($id);
+		$this->checkId($id);
 		$this->set('action', $this->action);	//Se usa para tener la misma info
 
 		$operacion = $this->Operacion->find(
@@ -1058,7 +1058,8 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 					'Contrato' => array(
 						'Proveedor',
 						'Incoterm',
-						'CanalCompra'
+						'CanalCompra',
+						'Calidad'
 					),
 					'AsociadoOperacion' => array(
 						'Asociado'
@@ -1068,7 +1069,8 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 				)
 			)
 		);
-		$this->set('operacion', $operacion);/*
+		$this->set('operacion', $operacion);
+
 		$this->set('referencia', $operacion['Operacion']['referencia']);
 		$this->loadModel('ContratoEmbalaje');
 		$embalaje = $this->ContratoEmbalaje->find(
@@ -1084,7 +1086,8 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		$this->set('embalaje', $embalaje);
 
 		$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
-		$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
+		$tipo_fecha_transporte = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
+		$this->set('tipo_fecha_transporte', $tipo_fecha_transporte);
 		$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);
 
 		//Líneas de reparto
@@ -1109,18 +1112,6 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		}
 
 		$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
-		//comprobamos si ya existe una financiacion para esta operación
-		if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
-			$this->set('existe_financiacion', 1);
-		}
-		//comprobamos si ya existe una facturación para esta operación
-		if ($this->Operacion->Facturacion->hasAny(array('Facturacion.id' => $id))) {
-			$this->set('existe_facturacion', 1);
-		}
-		//Se declara para acceder al PDF
-		$this->set(compact('id'));*/
-
-
 
 		$asociados_operacion = $this->Operacion->AsociadoOperacion->find(
 			'all',
@@ -1156,24 +1147,6 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 			)
 		);
 		$this->set('asociados_operacion', $asociados_operacion);
-
-		//el nombre de calidad concatenado esta en una view de MSQL
-		$this->loadModel('ContratoEmbalaje');
-
-		$embalaje = $this->ContratoEmbalaje->find(
-			'first',
-			array(
-				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
-				),
-				'fields' => array(
-					'Embalaje.nombre',
-					'ContratoEmbalaje.peso_embalaje_real'
-				)
-			)
-		);
-
        //Necesario para volcar los datos en el PDF
         //Contactos de los asociados
 		$this->loadModel('Contacto');
@@ -1220,8 +1193,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	       	if(empty($this->request->data['email'])){
 	       		$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
 	       	}else{
-               $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
-
+              // $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
             	foreach ($this->data['email'] as $email){
 					$lista_email[]= $email;
                	}
@@ -1245,7 +1217,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
                // Get the PDF string returned
                //$pdf = $CakePdf->output();
                // Or write it to file directly
-               $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS .'ficha_'.$operacion['Operacion']['id'].'_'.date('Ymd').'.pdf');
+               $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS .'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
                 //ENVIAMOS EL CORREO CON EL INFORME
                $Email = new CakeEmail(); //Llamamos la instancia de email
                $Email->config('compras'); //Plantilla de email.php
@@ -1256,8 +1228,8 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
                	$Email->bcc($lista_bcc);
                }
                $Email->subject('Ficha de compra '.$operacion['Operacion']['referencia']);
-               $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS . 'ficha_'.$operacion['Operacion']['id'].'_'.date('Ymd').'.pdf');
-               $Email->send('Adjuntamos la ficha de la operación '.$operacion['Operacion']['referencia'].' correspondiente a su '.$operacion['Contrato']['transporte']);
+               $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS . 'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+               $Email->send('Adjuntamos la ficha de la operación '.$operacion['Operacion']['referencia'].' correspondiente a su '.$tipo_fecha_transporte.' en '.strftime('%B',$operacion['Contrato']['fecha_transporte']).' de '.date('Y',$operacion['Contrato']['fecha_transporte']));
                $this->Flash->set('Distribución a los asociados enviado con éxito.');
                $this->redirect(array(
                		'action'=>'view',
@@ -1270,81 +1242,8 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
    	}
 
 	public function view_asociados ($id) {
-		$this->checkId($id);
-
-		$operacion = $this->Operacion->find(
-			'first',
-			array(
-				'conditions' => array('Operacion.id' => $id),
-				'recursive' => 3,
-				'contain' => array(
-					'PuertoCarga',
-					'PuertoDestino',
-					'Contrato' => array(
-						'Proveedor',
-						'Incoterm',
-						'CanalCompra',
-						'Calidad'
-					),
-					'AsociadoOperacion' => array(
-						'Asociado'
-					),
-					'PesoOperacion',
-					'PrecioTotalOperacion'
-				)
-			)
-		);
-		$this->set('operacion', $operacion);
-		$this->set('referencia', $operacion['Operacion']['referencia']);
-		$this->loadModel('ContratoEmbalaje');
-		$embalaje = $this->ContratoEmbalaje->find(
-			'first',
-			array(
-				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
-				),
-				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
-			)
-		);
-		$this->set('embalaje', $embalaje);
-
-		$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
-		$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
-		$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);
-
-		//Líneas de reparto
-		if (!empty($operacion['AsociadoOperacion'])) {
-			foreach ($operacion['AsociadoOperacion'] as $linea) {
-				$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
-				$codigo = substr($linea['Asociado']['codigo_contable'],-2);
-				$lineas_reparto[] = array(
-					'Código' => $codigo,
-					'Nombre' => $linea['Asociado']['nombre'],
-					'Cantidad' => $linea['cantidad_embalaje_asociado'],
-					'Peso' => $peso
-				);
-			}
-			$columnas_reparto = array_keys($lineas_reparto[0]);
-			//indexamos el array por el codigo de asociado
-			$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
-			//se ordena por codigo ascendente
-			ksort($lineas_reparto);
-			$this->set('columnas_reparto',$columnas_reparto);
-			$this->set('lineas_reparto',$lineas_reparto);
-		}
-
-		$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
-		//comprobamos si ya existe una financiacion para esta operación
-		if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
-			$this->set('existe_financiacion', 1);
-		}
-		//comprobamos si ya existe una facturación para esta operación
-		if ($this->Operacion->Facturacion->hasAny(array('Facturacion.id' => $id))) {
-			$this->set('existe_facturacion', 1);
-		}
-		//Se declara para acceder al PDF
-		$this->set(compact('id'));
+		$this->view($id);
+		$this->render(view);
 	}
 }
 ?>

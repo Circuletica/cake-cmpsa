@@ -29,10 +29,7 @@ echo "<dd>";
 echo $operacion['Contrato']['Calidad']['nombre'];
 echo "  </dd>";
 echo "  <dt>Cantidad:</dt>\n";
-echo "  <dd>".
-    $operacion['PesoOperacion']['cantidad_embalaje'].' x '.
-    $embalaje['Embalaje']['nombre'].
-    ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
+echo "  <dd>".$operacion['PesoOperacion']['cantidad_embalaje'].' x '.$embalaje['Embalaje']['nombre'].' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
 //echo "  <dt>Puerto de Destino:</dt>\n";
 //echo "  <dd>".$operacion['PuertoDestino']['nombre'].'&nbsp;'."</dd>";
 //mysql almacena la fecha en formato ymd
@@ -41,29 +38,25 @@ echo "  <dd>".$operacion['Operacion']['precio_fijacion']
     .' '.$divisa
     .'&nbsp;'."</dd>";
 echo "  <dt>Diferencial:</dt>\n";
-echo "  <dd>".$operacion['Contrato']['diferencial'].' '.$divisa.'&nbsp;'."</dd>";
+echo "  <dd>".$operacion['Contrato']['diferencial'].' '.$divisa.' '.$operacion['Contrato']['Incoterm']['nombre'].'&nbsp;'."</dd>";
 if ($operacion['Operacion']['opciones'] != 0){
     echo "  <dt>Opciones:</dt>\n";
     echo "  <dd>".$operacion['Operacion']['opciones'].$divisa.'&nbsp;'."</dd>";
 }
 echo "  <dt>Precio $/Tm:</dt>\n";
 echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].'$/Tm&nbsp;'."</dd>";
-if ($operacion['Contrato']['Incoterm']['si_flete']) {
-    echo "  <dt>Flete:</dt>\n";
-    echo "  <dd>".$operacion['Operacion']['flete'].'$/Tm&nbsp;'."</dd>";
-}
-echo "  <dt>Cambio dolar/euro:</dt>\n";
-echo "  <dd>Asegurado a ".$operacion['Operacion']['cambio_dolar_euro'].'$/€ &nbsp;'."</dd>";
+//echo "  <dt>Cambio dolar/euro:</dt>\n";
+//echo "  <dd>Asegurado a ".$operacion['Operacion']['cambio_dolar_euro'].'$/€ &nbsp;'."</dd>";
 echo "  <dt>Precio €/Tm:</dt>\n";
 echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_tonelada'].'€/Tm&nbsp;'."</dd>";
-if ($operacion['Contrato']['Incoterm']['si_seguro']) {
+/*if ($operacion['Contrato']['Incoterm']['si_seguro']) {
     echo "  <dt>Seguro:</dt>\n";
     echo "  <dd>".$operacion['Operacion']['seguro'].'%'
 	.' ('.$operacion['PrecioTotalOperacion']['seguro_euro_tonelada'].'€/Tm)'
 	.'&nbsp;'."</dd>";
 }
 echo "  <dt>Forfait:</dt>\n";
-echo "  <dd>".$operacion['Operacion']['forfait'].' €/Tm&nbsp;'."</dd>";
+echo "  <dd>".$operacion['Operacion']['forfait'].' €/Tm&nbsp;'."</dd>";*/
 echo "  <dt>Precio €/kg estimado:</dt>\n";
 echo "  <dd>".round($operacion['PrecioTotalOperacion']['precio_euro_kilo_total'],2).' €/kg&nbsp;'."</dd>";
 echo "  <dt>Observaciones:</dt>\n";

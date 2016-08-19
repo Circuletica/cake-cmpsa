@@ -68,6 +68,7 @@ class AppController extends Controller {
 	);
 
 	public function beforeFilter() {
+		setlocale(LC_TIME, "es_ES.UTF-8");
 		//        $this->Auth->allow('index');
 		$this->Auth->allow('display');
 	}
@@ -271,7 +272,7 @@ class AppController extends Controller {
 			foreach ($v as $kk=>$vv){
 				//sustituimos '_' por '/' en los criterios de búsqueda
 				if (is_array($vv)) {
-					$vv = $vv['year'].'-'.$vv['month'].'-'.$vv['day']; 
+					$vv = $vv['year'].'-'.$vv['month'].'-'.$vv['day'];
 				}
 				if ($vv) {$url[$k.'.'.$kk]=strtr($vv,'/','_');}
 			}
