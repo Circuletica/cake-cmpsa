@@ -1,4 +1,5 @@
 <?php
+$this->CSV->addRow(array(''));
 foreach ($anticipos as $key => $anticipo) {
 	//	$this->CSV->addRow(array(
 	//		'',
@@ -294,6 +295,6 @@ foreach ($anticipos as $key => $anticipo) {
 	));
 }
 $delimiter = ';';
-$filename='anticipos';
+$filename='anticipos_'.date('Ymd');
 echo $this->CSV->render($filename);
 ?>

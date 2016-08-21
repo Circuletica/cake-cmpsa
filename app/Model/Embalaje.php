@@ -5,7 +5,7 @@ class Embalaje extends AppModel{
 		'ContratoEmbalaje' => array(
 			'className' => 'ContratoEmbalaje',
 			'foreignKey' => 'contrato_id'
-		)    
+		)
 	);
 	public $validate = array(
 		'nombre' => array(
