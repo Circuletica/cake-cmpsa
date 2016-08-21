@@ -113,28 +113,36 @@ if ($contrato['Incoterm']['si_flete']) {
 );
 }
 if ($contrato['Incoterm']['si_seguro']) {
-	echo $this->Form->input('seguro', array(
-		'between' => '(%)',
-		'label' => 'Seguro'
-	)
-);
+	echo $this->Form->input(
+		'seguro',
+		array(
+			'between' => '(%)',
+			'label' => 'Seguro'
+		)
+	);
 }
 ?>
 	<div class='col2'>
 <?php
-echo $this->Form->input('forfait', array(
-	'between' => '(€/Tm)',
-	'label' => 'Forfait'
-)
+echo $this->Form->input(
+	'forfait',
+	array(
+		'between' => '(€/Tm)',
+		'label' => 'Forfait'
+	)
 );
-echo $this->Form->input('cambio_dolar_euro', array(
-	'label' => 'Cambio dolar/euro'
-)
+echo $this->Form->input(
+	'cambio_dolar_euro',
+	array(
+		'label' => 'Cambio dolar/euro'
+	)
 );
 echo '<br>';
-echo $this->Form->input('peso_pagado', array(
-	'label' => 'Peso factura'
-)
+echo $this->Form->input(
+	'peso_pagado',
+	array(
+		'label' => 'Peso factura'
+	)
 );
 
 ?>

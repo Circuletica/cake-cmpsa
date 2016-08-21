@@ -11,9 +11,10 @@ class PuertosController extends AppController {
 		if($this->request->is('post')) {
 			if($this->Puerto->save($this->request->data) ) {
 				$this->Flash->success('Puerto guardado');
-				$this->redirect(array(
-					'controller' => $this->params['named']['from_controller'],
-					'action' => $this->params['named']['from_action']));
+	//			$this->redirect(array(
+	//				'controller' => $this->params['named']['from_controller'],
+	//				'action' => $this->params['named']['from_action']));
+				return $this->History->back(-1);
 			}
 		}
 	}
