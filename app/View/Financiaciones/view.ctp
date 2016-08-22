@@ -164,7 +164,7 @@ echo"</table><br>\n";
 $this->end();
 
 $this->start('lines2');
-echo "<table class='tc5'>\n";
+echo "<table class='tc5 tc6'>\n";
 echo $this->Html->tableHeaders(array(
 	'Asociado','Fecha','Importe','Banco','Importado','Detalle'));
 foreach ($anticipos as $anticipo) {

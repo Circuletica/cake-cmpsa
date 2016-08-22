@@ -1210,12 +1210,21 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 				 	}
 				}
 
-               //GENERAMOS EL PDF
-               App::uses('CakePdf', 'CakePdf.Pdf');
-               require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
-               $CakePdf = new CakePdf();
-               $CakePdf->template('view_asociados');
-               $CakePdf->viewVars(array('operacion'=>$operacion));
+				//Asigamos variable previa porque al incluir la funcion en el texto del mensaje redirecciona posteriormente mal
+			//	$mes = strftime('%B',$operacion['Contrato']['fecha_transporte']);
+			//	$ano = strftime('%Y',$operacion['Contrato']['fecha_transporte']);
+
+               	//GENERAMOS EL PDF
+               	App::uses('CakePdf', 'CakePdf.Pdf');
+               	require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+               	$CakePdf = new CakePdf();
+               	$CakePdf->template('view_asociados');
+               	$CakePdf->viewVars(array(
+				   	'operacion'=>$operacion,
+				   	'embalaje' =>$embalaje,
+				   	'divisa' => $operacion['Contrato']['CanalCompra']['divisa'],
+			   		'columnas_reparto' => $columnas_reparto,
+					'lineas_reparto' => $lineas_reparto));
                // Get the PDF string returned
                //$pdf = $CakePdf->output();
                // Or write it to file directly
@@ -1231,7 +1240,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
                }
                $Email->subject('Ficha de compra '.$operacion['Operacion']['referencia']);
                $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS . 'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
-               $Email->send('Adjuntamos la ficha de la operación '.$operacion['Operacion']['referencia'].' correspondiente a su '.$tipo_fecha_transporte.' en '.strftime('%B',$operacion['Contrato']['fecha_transporte']).' de '.date('Y',$operacion['Contrato']['fecha_transporte']));
+               $Email->send('Adjuntamos la ficha de la operación '.$operacion['Operacion']['referencia'].' correspondiente a su '.$tipo_fecha_transporte.' en '.' de ');
                $this->Flash->set('Distribución a los asociados enviado con éxito.');
                $this->redirect(array(
                		'action'=>'view',
