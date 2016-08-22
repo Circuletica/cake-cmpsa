@@ -36,17 +36,17 @@ echo "<dl>";
 //echo $referencia.'&nbsp;';
 //echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
-echo "  <dd>".$calidad.'&nbsp;'."</dd>";
+echo "  <dd>".$financiacion['Operacion']['Contrato']['Calidad']['nombre'].'&nbsp;'."</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
 echo $financiacion['Operacion']['Contrato']['Proveedor']['nombre'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Condición</dt>\n";
-echo "<dd>".$condicion.'&nbsp;'."</dd>";
+echo "<dd>".$financiacion['Operacion']['Contrato']['condicion'].'&nbsp;'."</dd>";
 echo "  <dt>Cuenta bancaria</dt>\n";
 echo "<dd>".$cuenta.'&nbsp;'."</dd>";
 echo "  <dt>Fecha de vencimiento</dt>\n";
-echo "<dd style='font-weight:bold'>".$this->Date->format($fecha_vencimiento).'&nbsp;'."</dd>";
+echo "<dd style='font-weight:bold'>".$this->Date->format($financiacion['Financiacion']['fecha_vencimiento']).'&nbsp;'."</dd>";
 //echo "  <dt>Precio</dt>\n";
 //echo "<dd>".$precio_euro_kilo.' €/kg&nbsp;'."</dd>";
 //echo "</dl>";
@@ -65,11 +65,11 @@ echo $this->html->tableheaders(
 		//'Coste (€)',
 		'Café €',
 		//'IVA ('.$iva.'%)',
-		$iva.'%',
+		$financiacion['ValorIvaFinanciacion']['valor'].'%',
 		//'Comisión',
 		'Comisión €',
 		//'IVA ('.$iva_comision.'%)',
-		$iva_comision.'%',
+		$financiacion['ValorIvaComision']['valor'].'%',
 		//'Total anticipo',
 		'Total anticipo €',
 		//'Pendiente'
@@ -133,7 +133,7 @@ echo $this->html->tablecells(array(
 	array(
 		//$this->Number->round($totales['total_porcentaje_embalaje']),
 		round(
-			(float)$totales['total_porcentaje_embalaje'],
+			(float)$totales['RepartoOperacionAsociado']['total_porcentaje_embalaje'],
 			0,
 			PHP_ROUND_HALF_UP
 		),
@@ -143,42 +143,42 @@ echo $this->html->tablecells(array(
 		)
 	),
 	array(
-		$this->Number->round($totales['total_peso']),
+		$this->Number->round($totales['RepartoOperacionAsociado']['total_peso']),
 		array(
 			'style' => 'text-align:center',
 			'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
-		$this->Number->round($totales['total_precio']),
+		$this->Number->round($totales['RepartoOperacionAsociado']['total_precio']),
 		array(
 			'style' => 'text-align:center',
 			'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
-		$this->Number->round($totales['total_iva']),
+		$this->Number->round($totales['RepartoOperacionAsociado']['total_iva']),
 		array(
 			'style' => 'text-align:center',
 			'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
-		$this->Number->round($totales['total_comision']),
+		$this->Number->round($totales['RepartoOperacionAsociado']['total_comision']),
 		array(
 			'style' => 'text-align:center',
 			'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
-		$this->Number->round($totales['total_iva_comision']),
+		$this->Number->round($totales['RepartoOperacionAsociado']['total_iva_comision']),
 		array(
 			'style' => 'text-align:center',
 			'bgcolor' => '#5FCF80'
 		)
 	),
 	array(
-		$this->Number->round($totales['total_general']),
+		$this->Number->round($totales['RepartoOperacionAsociado']['total_general']),
 		array(
 			'style' => 'text-align:right; font-weight:bold',
 			'bgcolor' => '#5FCF80'
@@ -187,7 +187,7 @@ echo $this->html->tablecells(array(
 	)
 ));
 echo"</table><br>\n";
-echo "<h4 align='right'>".round($precio_euro_kilo,2).' €/kg comisión más IVA</h4>';
+echo "<h4 align='right'>".round($financiacion['Financiacion']['precio_euro_kilo'],2).' €/kg comisión más IVA</h4>';
 $this->end();
 
 $this->start('lines2');

@@ -588,7 +588,8 @@ class OperacionesController extends AppController {
 					'Contrato' => array(
 						'Proveedor',
 						'Incoterm',
-						'CanalCompra'
+						'CanalCompra',
+						'Calidad'
 					),
 					'AsociadoOperacion' => array(
 						'Asociado'
