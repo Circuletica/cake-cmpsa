@@ -6,8 +6,8 @@ $class = $this->fetch('class');
 $controller = Inflector::tableize($class);
 //$this->Html->getCrumbs(' > ');
 $this->Html->addCrumb(ucfirst($controller), array(
-    'controller' => $controller,
-    'action' => 'index')
+	'controller' => $controller,
+	'action' => 'index')
 ); ?>
 
 <div class="printdet">
@@ -26,35 +26,35 @@ echo $this->element('desplegabledatos');
 <?php
 echo "<h2>".ucfirst($controller)."</h2>\n";
 if (empty($empresas)):
-    echo "No hay ".$controller." en esta lista";
-	?><br><div class="btabla">
+	echo "No hay ".$controller." en esta lista";
+?><br><div class="btabla">
 		<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir '.$class,array('action'=>'add'),array('title'=>'Añadir '.$class,'escape' => false)); ?>
 	</div>
-	<?php
+<?php
 else:
-    echo "<table>\n";
+	echo "<table>\n";
 echo $this->Html->tableHeaders(array(
-    //'Id',
-    $this->Paginator->sort('Empresa.nombre_corto',$class),
-    $this->Paginator->sort('Empresa.codigo_contable','Código contable'),
-    'País',
-    'Teléfono',
-    'Detalle'));
+	//'Id',
+	$this->Paginator->sort('Empresa.nombre_corto',$class),
+	$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
+	'País',
+	'Teléfono',
+	'Detalle'));
 
 foreach($empresas as $empresa):
-    echo $this->Html->tableCells(array(
-	$empresa['Empresa']['nombre_corto'],
-	$empresa['Empresa']['codigo_contable'],
-	$empresa['Pais']['nombre'],
-	$empresa['Empresa']['telefono'],
-	$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$empresa[$class]['id']), array('class' =>'boton','escape' => false,'title'=>'Detalles' ))
-    ));
+	echo $this->Html->tableCells(array(
+		$empresa['Empresa']['nombre_corto'],
+		$empresa['Empresa']['codigo_contable'],
+		$empresa['Pais']['nombre'],
+		$empresa['Empresa']['telefono'],
+		$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view',$empresa[$class]['id']), array('class' =>'boton','escape' => false,'title'=>'Detalles' ))
+	));
 
 endforeach;?>
 	</table>
 <?php
 echo $this->Paginator->counter(
-    array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));
+	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));
 ?>
 	<div class="btabla">
 		<?php echo $this->Html->link('<i class="fa fa-plus"></i> Añadir '.$class,array('action'=>'add'),array('title'=>'Añadir '.$class,'escape' => false)); ?>
@@ -66,4 +66,3 @@ echo $this->Paginator->numbers(array('separator' => ''));
 echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled')); ?>
 	</div>
 	<?php endif; ?>
-

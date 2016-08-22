@@ -76,10 +76,10 @@ foreach($distribuciones as $linea):
 		$linea['Asociado']['nombre'],
 		array(
 			$this->Number->round($linea['RepartoOperacionAsociado']['porcentaje_embalaje_asociado']),
-			//			number_format(
-			//				(float)$linea['RepartoOperacionAsociado']['porcentaje_embalaje_asociado'],
-			//				4,',', ''
-			//			),
+//			number_format(
+//				(float)$linea['RepartoOperacionAsociado']['porcentaje_embalaje_asociado'],
+//				4,',', ''
+//			),
 			array(
 				'style' => 'text-align:right'
 			)
@@ -108,13 +108,13 @@ foreach($distribuciones as $linea):
 			$this->Number->round($linea['RepartoOperacionAsociado']['total']),
 			array('style' => 'text-align:right; font-weight:bold')
 		),
-		//		array(
-		//			$this->Number->round($linea['RepartoOperacionAsociado']['saldo_anticipo']),
-		//			array(
-		//				'style' => 'text-align:right;',
-		//				'bgcolor' => ((float)$linea['RepartoOperacionAsociado']['saldo_anticipo'] == 0) ? '#FFFFFF':'#00FFFF'
-		//			)
-		//		)
+//		array(
+//			$this->Number->round($linea['RepartoOperacionAsociado']['saldo_anticipo']),
+//			array(
+//				'style' => 'text-align:right;',
+//				'bgcolor' => ((float)$linea['RepartoOperacionAsociado']['saldo_anticipo'] == 0) ? '#FFFFFF':'#00FFFF'
+//			)
+//		)
 	));
 endforeach;
 

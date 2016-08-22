@@ -1,4 +1,3 @@
-
 <?php
 $this->extend('/Common/view');
 $this->assign('object', 'Operación '.$operacion['Operacion']['referencia']);
@@ -15,20 +14,21 @@ $this->assign('line2_add',0);
 
 $this->start('breadcrumb');
 $this->Html->addCrumb(
-    'Operaciones',
-    array(
-	'controller' => 'operaciones',
-	'action' => 'index_trafico'
-    )
+	'Operaciones',
+	array(
+		'controller' => 'operaciones',
+		'action' => 'index_trafico'
+	)
 );
 $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-    'controller'=>'operaciones',
-    'action'=>'view_trafico',
-    $operacion['Operacion']['id']
+	'controller'=>'operaciones',
+	'action'=>'view_trafico',
+	$operacion['Operacion']['id']
 ));
 $this->end();
 
 $this->start('filter');
+echo $this->element('filtrooperacion');
 $this->end();
 
 $this->start('main');
@@ -40,12 +40,12 @@ echo "</dd>";
 echo "  <dt>Ref. contrato</dt>\n";
 echo "<dd>";
 echo $this->html->link(
-    $operacion['Contrato']['referencia'],
-    array(
-	'controller' => 'contratos',
-	'action' => 'view',
-	$operacion['Operacion']['contrato_id'])
-    );
+	$operacion['Contrato']['referencia'],
+	array(
+		'controller' => 'contratos',
+		'action' => 'view',
+		$operacion['Operacion']['contrato_id'])
+	);
 echo "</dd>";
 echo "  <dt>".$tipo_fecha_transporte."</dt>\n";
 echo "  <dd>".$fecha_transporte."</dd>";
@@ -64,12 +64,12 @@ echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
 echo $this->html->link(
-    $operacion['Contrato']['Proveedor']['nombre_corto'],
-    array(
-	'controller' => 'proveedores',
-	'action' => 'view',
-	$operacion['Contrato']['Proveedor']['id']
-    )
+	$operacion['Contrato']['Proveedor']['nombre_corto'],
+	array(
+		'controller' => 'proveedores',
+		'action' => 'view',
+		$operacion['Contrato']['Proveedor']['id']
+	)
 );
 echo "</dd>";
 echo "  <dt>Incoterms</dt>\n";
@@ -80,21 +80,21 @@ echo "  <dt>Peso:</dt>\n";
 echo "  <dd>".$operacion['PesoOperacion']['peso'].'kg&nbsp;'."</dd>";
 echo "  <dt>Embalaje:</dt>\n";
 echo "  <dd>".
-    $operacion['PesoOperacion']['cantidad_embalaje'].' x '.
-    $embalaje['Embalaje']['nombre'].
-    ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."
-    </dd>";
-    echo "  <dt>Precio ".$operacion['PrecioTotalOperacion']['divisa']."/Tm:</dt>\n";
+	$operacion['PesoOperacion']['cantidad_embalaje'].' x '.
+	$embalaje['Embalaje']['nombre'].
+	' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."
+	</dd>";
+	echo "  <dt>Precio ".$operacion['PrecioTotalOperacion']['divisa']."/Tm:</dt>\n";
 echo "  <dd>".
-    $operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].
-    $operacion['PrecioTotalOperacion']['divisa'].
-    '/Tm&nbsp;'.
-    "</dd>";
+	$operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].
+	$operacion['PrecioTotalOperacion']['divisa'].
+	'/Tm&nbsp;'.
+	"</dd>";
 if ($operacion['Contrato']['Incoterm']['si_flete']) {
-    echo "  <dt>Flete:</dt>\n";
-    echo "  <dd>".
-	$operacion['Operacion']['flete'].
-	'$/Tm&nbsp;'."</dd>";
+	echo "  <dt>Flete:</dt>\n";
+	echo "  <dd>".
+		$operacion['Operacion']['flete'].
+		'$/Tm&nbsp;'."</dd>";
 }
 echo "  <dt>Observaciones</dt>\n";
 echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
@@ -102,13 +102,13 @@ echo "</dl>";
 $this->end();
 
 $this->start('lines');
-	echo '<table class="tc1 tc6 tc7">';
-	echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
-	    'Fecha Carga','Bultos','Asegurado','Detalle'));
-	//hay que numerar las líneas
-	$i = 1;
-	foreach($operacion['Transporte'] as $linea) {
-	    echo $this->Html->tableCells(array(
+echo '<table class="tc1 tc6 tc7">';
+echo $this->Html->tableHeaders(array('Nº Línea','Nombre Transporte', 'BL/Matrícula',
+	'Fecha Carga','Bultos','Asegurado','Detalle'));
+//hay que numerar las líneas
+$i = 1;
+foreach($operacion['Transporte'] as $linea) {
+	echo $this->Html->tableCells(array(
 		$linea['linea'],
 		$linea['nombre_vehiculo'],
 		$linea['matricula'],
@@ -132,6 +132,7 @@ $this->start('lines');
 	}else{
 	    echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan." - "."<span style=color:#c43c35;>Todos los bultos han sido registrados</span></h4>";
 	}
+
 $this->end();
 
 $this->start('lines2');
@@ -143,109 +144,109 @@ echo $this->Html->tableHeaders(array(
 ));
 
 foreach ($lineas_retirada as $linea_retirada):
-    echo $this->Html->tableCells(array(
-	$linea_retirada['Nombre'],
-	array(
-	    $linea_retirada['Cantidad'],
-	    array(
-		'style' => 'text-align:right'
-	    )
-	),
-	array(
-	    $linea_retirada['Peso'],
-	    array(
-		'style' => 'text-align:right'
-	    )
-	),
-	array(
-	    $linea_retirada['Cantidad_retirado'],
-	    array(
-		'style' => 'text-align:right'
-	    )
-	),
-	array(
-	    $linea_retirada['Peso_retirado'],
-	    array(
-		'style' => 'text-align:right'
-	    )
-	),
-	array(
-	    $linea_retirada['Pendiente'],
-	    array(
-		'style' => 'text-align:right'
-	    )
-	),
-	$this->Html->link(
-	    '<i class="fa fa-info-circle"></i> ',array(
-		'controller' => 'retiradas',
-		'action' => 'view_asociado',
-		'asociado_id'=>$linea_retirada['asociado_id'],
-		'from_controller' => 'operaciones',
-		'from_id' => $operacion['Operacion']['id']
-	    ),
-	    array(
-		'class' => 'boton',
-		'title' => 'Detalle asociado',
-		'escape' => false
-	    )
+	echo $this->Html->tableCells(array(
+		$linea_retirada['Nombre'],
+		array(
+			$linea_retirada['Cantidad'],
+			array(
+				'style' => 'text-align:right'
+			)
+		),
+		array(
+			$linea_retirada['Peso'],
+			array(
+				'style' => 'text-align:right'
+			)
+		),
+		array(
+			$linea_retirada['Cantidad_retirado'],
+			array(
+				'style' => 'text-align:right'
+			)
+		),
+		array(
+			$linea_retirada['Peso_retirado'],
+			array(
+				'style' => 'text-align:right'
+			)
+		),
+		array(
+			$linea_retirada['Pendiente'],
+			array(
+				'style' => 'text-align:right'
+			)
+		),
+		$this->Html->link(
+			'<i class="fa fa-info-circle"></i> ',array(
+				'controller' => 'retiradas',
+				'action' => 'view_asociado',
+				'asociado_id'=>$linea_retirada['asociado_id'],
+				'from_controller' => 'operaciones',
+				'from_id' => $operacion['Operacion']['id']
+			),
+			array(
+				'class' => 'boton',
+				'title' => 'Detalle asociado',
+				'escape' => false
+			)
+		)
 	)
-    )
 
 );
 endforeach;
-    echo $this->html->tablecells(array(
+echo $this->html->tablecells(array(
 	array(
-	    array(
-		'TOTALES',
 		array(
-		    'style' => 'font-weight: bold; text-align:center'
-		)
-	    ),
+			'TOTALES',
+			array(
+				'style' => 'font-weight: bold; text-align:center'
+			)
+		),
 
-	    array(
-		$total_sacos,
 		array(
-		    'style' => 'font-weight: bold; text-align:right',
-		    'bgcolor' => '#5FCF80'
-		)
-	    ),
-	    array(
-		$total_peso,
+			$total_sacos,
+			array(
+				'style' => 'font-weight: bold; text-align:right',
+				'bgcolor' => '#5FCF80'
+			)
+		),
 		array(
-		    'style' => 'font-weight: bold; text-align:right',
-		    'bgcolor' => '#5FCF80'
-		)
-	    ),
-	    array(
-		$total_sacos_retirados,
+			$total_peso,
+			array(
+				'style' => 'font-weight: bold; text-align:right',
+				'bgcolor' => '#5FCF80'
+			)
+		),
 		array(
-		    'style' => 'font-weight: bold; text-align:right',
-		    'bgcolor' => '#5FCF80'
-		)
-	    ),
-	    array(
-		$total_peso_retirado,
+			$total_sacos_retirados,
+			array(
+				'style' => 'font-weight: bold; text-align:right',
+				'bgcolor' => '#5FCF80'
+			)
+		),
 		array(
-		    'style' => 'font-weight: bold; text-align:right',
-		    'bgcolor' => '#5FCF80'
-		)
-	    ),
-	    array(
-		$total_pendiente,
+			$total_peso_retirado,
+			array(
+				'style' => 'font-weight: bold; text-align:right',
+				'bgcolor' => '#5FCF80'
+			)
+		),
 		array(
-		    'style' => 'font-weight: bold; text-align:right',
-		    'bgcolor' => '#5FCF80'
-		)
-	    ),
-	    array(
-		'<i class="fa fa-arrow-left fa-lg"></i>',
+			$total_pendiente,
+			array(
+				'style' => 'font-weight: bold; text-align:right',
+				'bgcolor' => '#5FCF80'
+			)
+		),
 		array(
-		    'style' => 'text-align:center',
-		    'escape' => false
+			'<i class="fa fa-arrow-left fa-lg"></i>',
+			array(
+				'style' => 'text-align:center',
+				'escape' => false
+			)
 		)
-	    )
 	))
-    );
+);
 ?></table>
 <?php
     //SE COMPRUEBA QUE HAY CUENTAS DE ALMACÉN PARA PERMITIR QUE SE AGREGEN RETIRADAS CON EL BOTÓN
@@ -380,6 +381,7 @@ endforeach;
     echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
 }*/
 
+
 		/*	if($asociados_error !=0){
 			echo "<h4><span style=color:#c43c35;>Hay retiradas que no se encuentra en la operación asignada, por favor, corriga el error eliminando las retiradas o agregando el asociado a la operación correspondientes</span></h4>";
 
@@ -438,10 +440,10 @@ endforeach;
 			<?php
 		}*/
 ?>
-	    </div>
+		</div>
 	</div>
-	<?php
-	$this->end();
-	?>
-    </div>
+<?php
+$this->end();
+?>
+	</div>
 </div>

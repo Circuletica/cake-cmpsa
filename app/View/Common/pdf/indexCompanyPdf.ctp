@@ -6,36 +6,35 @@ $class = $this->fetch('class');
 $controller = Inflector::tableize($class);
 //$this->Html->getCrumbs(' > ');
 $this->Html->addCrumb(ucfirst($controller), array(
-    'controller' => $controller,
-    'action' => 'index')
+	'controller' => $controller,
+	'action' => 'index')
 ); 
 
 echo "<h2>".ucfirst($controller)."</h2>\n";
 if (empty($empresas)):
-    echo "No hay ".$controller." en esta lista";
+	echo "No hay ".$controller." en esta lista";
 else:
-    echo "<table>\n";
+	echo "<table>\n";
 echo $this->Html->tableHeaders(array(
-     $this->Paginator->sort('Empresa.nombre_corto',$class),
-    $this->Paginator->sort('Empresa.codigo_contable','Código contable'),
-    'País',
-    'Teléfono'
-    )
+	$this->Paginator->sort('Empresa.nombre_corto',$class),
+	$this->Paginator->sort('Empresa.codigo_contable','Código contable'),
+	'País',
+	'Teléfono'
+)
 );
 
 foreach($empresas as $empresa):
-    echo $this->Html->tableCells(array(
-	$empresa['Empresa']['nombre_corto'],
-	$empresa['Empresa']['codigo_contable'],
-	$empresa['Pais']['nombre'],
-	$empresa['Empresa']['telefono']
-    ));
+	echo $this->Html->tableCells(array(
+		$empresa['Empresa']['nombre_corto'],
+		$empresa['Empresa']['codigo_contable'],
+		$empresa['Pais']['nombre'],
+		$empresa['Empresa']['telefono']
+	));
 
 endforeach;?>
 	</table>
 <?php
 echo $this->Paginator->counter(
-    array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));
+	array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}'));
 ?>
 <?php endif; ?>
-

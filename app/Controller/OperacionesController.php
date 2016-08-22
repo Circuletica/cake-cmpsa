@@ -943,17 +943,19 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 	}
 
 	public function export() {
-		$this->set('operaciones', $this->Operacion->find(
-			'all',
-			array(
-				'recursive' => 1,
-				'fields' => array(
-					'id',
-					'referencia'
+		$this->set(
+			'operaciones',
+			$this->Operacion->find(
+				'all',
+				array(
+					'recursive' => 1,
+					'fields' => array(
+						'id',
+						'referencia'
+					)
 				)
 			)
-		)
-	);
+		);
 		$this->layout = null;
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
