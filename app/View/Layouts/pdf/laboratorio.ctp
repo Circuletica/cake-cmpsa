@@ -10,12 +10,9 @@
  <?php echo "<h5 style='text-align: right;'>".date('d/m/Y')."</h5>";?>
  <h2 style="text-align: center;">	COMERCIAL DE MATERIAS PRIMAS S.A.</h2>
 <hr>
-
-
 	<?php
 		header("Content-type: application/pdf");
 		echo $content_for_layout;
-
 ?>
 </div>
 <div id="footer">

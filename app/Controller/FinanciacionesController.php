@@ -486,7 +486,7 @@ class FinanciacionesController extends AppController {
 				//$pdf = $CakePdf->output();
 				// Or write it to file directly
 				$pdf = $CakePdf->write(
-					APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS . 'financiacion_'.$financiacion['Operacion']['referencia'].'_'.date('Ymd').'.pdf',
+					APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS . 'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf',
 					array(
 					    'orientation' => 'landscape',
 					)
@@ -502,7 +502,7 @@ class FinanciacionesController extends AppController {
 					$Email->bcc($lista_bcc);
 				}
 				$Email->subject('Financiación de operación '.$financiacion['Operacion']['referencia'].' / Fecha '.date('Ymd'));
-				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS .'financiacion_'.$financiacion['Operacion']['referencia'].'_'.date('Ymd').'.pdf');
+				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS .'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
 				$Email->send('Adjuntamos financiación de la operación '.$financiacion['Operacion']['referencia']);
 				$this->Flash->success('¡Las financiaciones han sido enviadas a los asociados correctamente!');
 				$this->redirect(array(
