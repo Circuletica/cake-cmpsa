@@ -240,24 +240,25 @@ class FacturacionesController extends AppController {
 			'bultos_despachados',
 			$bultos_despachados[0]['cantidad_cuenta'].'/'.$operacion['PesoOperacion']['cantidad_embalaje']
 		);
+
 		$this->set(
 			'cuentaVentas',
 			$this->Facturacion->CuentaVenta->find(
 				'list',
 				array(
 					'conditions' => array(
-						'CuentaVenta.tipo' => 'venta'
+						'tipo' => 'venta'
 					)
 				)
 			)
 		);
 		$this->set(
-			'cuentaIvas',
-			$this->Facturacion->CuentaIva->find(
+			'cuentaIvaVentas',
+			$this->Facturacion->CuentaIvaVenta->find(
 				'list',
 				array(
 					'conditions' => array(
-						'CuentaIva.tipo' => 'iva'
+						'tipo' => 'iva'
 					)
 				)
 			)

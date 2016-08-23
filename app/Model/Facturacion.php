@@ -9,9 +9,17 @@ class Facturacion extends AppModel {
 			'className' => 'CuentaContable',
 			'foreignKey' => 'cuenta_venta_id'
 		),
-		'CuentaIva' => array(
+		'CuentaComision' => array(
 			'className' => 'CuentaContable',
-			'foreignKey' => 'cuenta_iva_id'
+			'foreignKey' => 'cuenta_comision_id'
+		),
+		'CuentaIvaVenta' => array(
+			'className' => 'CuentaContable',
+			'foreignKey' => 'cuenta_iva_venta_id'
+		),
+		'CuentaIvaComision' => array(
+			'className' => 'CuentaContable',
+			'foreignKey' => 'cuenta_iva_comision_id'
 		),
 		'Operacion' => array(
 			'foreignKey' => 'id'
