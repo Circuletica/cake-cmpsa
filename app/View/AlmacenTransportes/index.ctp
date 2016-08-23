@@ -22,6 +22,7 @@ $this->start('main');
 				$this->Paginator->sort('AlmacenTransporte.cantidad_cuenta','Cantidad'),
 				$this->Paginator->sort('AlmacenTransporte.peso_bruto','Peso bruto'),
 				$this->Paginator->sort('AlmacenTransporte.marca_almacen','Marca'),
+                $this->Paginator->sort('Operacion.referenciacuenta_almacen','Ref. operación'),
 				'Detalle')
 			);
 			foreach($almacentransportes as $almacentransporte):
@@ -31,6 +32,7 @@ $this->start('main');
 					$almacentransporte['AlmacenTransporte']['cantidad_cuenta'].' bultos',
 					$almacentransporte['AlmacenTransporte']['peso_bruto'].' kg',
 					$almacentransporte['AlmacenTransporte']['marca_almacen'],
+					$almacentransporte['Operacion']['referencia'],                    
 					$this->Button->view('almacen_transportes',$almacentransporte['AlmacenTransporte']['id'])
 				));
 			endforeach;
@@ -58,15 +60,15 @@ $this->start('main');
 			            $almacentransporte['Transporte']['linea'],
 			            $almacentransporte['Calidad']['nombre'],
 			            $almacentransporte['AlmacenTransporte']['cantidad_cuenta']. ' bultos',// SACOS PENDIENTES DE ADJUDICAR
-			           //$almacentransporte['AlmacenTransporteAsociado']['sacos_asignados'],	
+			           //$almacentransporte['AlmacenTransporteAsociado']['sacos_asignados'],
 			            $almacentransporte['AlmacenTransporte']['cuenta_almacen'],
 			        	$almacentransporte['Almacen']['nombre_corto'],
 						$this->Button->view('almacen_transportes',$almacentransporte['AlmacenTransporte']['id'])
 					));
 				}
 	        }
-	        echo "</table>\n"; 
+	        echo "</table>\n";
     	}
-	}    
+	}
 $this->end();
-?>	
+?>

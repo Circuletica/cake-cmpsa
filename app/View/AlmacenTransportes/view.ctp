@@ -65,6 +65,18 @@ echo ' '.$this->Html->link(
 <h2>Cuenta corriente <?php echo $almacentransportes['AlmacenTransporte']['cuenta_almacen'] ?></h2>
 <div class="actions">
 	<?php
+	echo  $this->Html->link(
+	    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío disposición',
+	    array(
+	    'action' =>'envio_disposicion',
+	    $id
+	    ),
+	    array(
+	    'escape'=>false,
+	    'title'=>'Envío disposición asociados',
+	    )
+	);
+	echo "<br><hr>";
 	echo $this->Html->link(
 		'<i class="fa fa-ship"></i> Línea: '.$almacentransportes['Transporte']['nombre_vehiculo'],array(
 			'controller' => 'transportes',
@@ -90,8 +102,6 @@ echo ' '.$this->Html->link(
 			'escape' => false
 			)
 		);
-
-
 	echo $this->Html->link(
 		'<i class="fa fa-plus"></i> Añadir retirada en almacén',array(
 			'controller' => 'retiradas',

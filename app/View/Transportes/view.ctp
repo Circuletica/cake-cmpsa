@@ -1,4 +1,4 @@
-<?php 
+<?php
 $this->Html->addCrumb('Operación '.$transporte['Operacion']['referencia'], array(
     'controller'=>'operaciones',
     'action'=>'view_trafico',
@@ -21,7 +21,7 @@ echo ' '.$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
 	'action' => 'view',
 	$id,
 	'ext' => 'pdf',
-    ), 
+    ),
     array(
 	'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
 	$this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array('escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'));
@@ -31,10 +31,10 @@ echo ' '.$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
 	<li>
 <?php
 //Contempar si hay retirada ya o no de esto.
-echo //!empty($transporte['AlmacenTransporte'])? 
+echo //!empty($transporte['AlmacenTransporte'])?
 	//''
 	//'<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay cuentas de almacén'
-	//: 
+	//:
 	$this->Button->edit('transportes', $id)
 	.' '.
 	$this->Button->delete('transportes',$transporte['Transporte']['id'],'la línea con BL/Matrícula '.$transporte['Transporte']['matricula']);
@@ -59,13 +59,13 @@ echo $this->Html->link(('<i class="fa fa-lock fa-lg"></i> Asegurar línea'),arra
 	'target' => '_blank',
 	'title'=>'Asegurar línea peso'
 	)
-	);	
+	);
 echo $this->Html->link(('<i class="fa fa-exclamation-circle fa-lg"></i> Reclamación seguro'),
 	array(
 		'action' => 'reclamacion',
 		$id,
 		'ext' => 'pdf',
-	), 
+	),
 	array(
 		'escape'=>false,
 		'target' => '_blank',
@@ -84,10 +84,24 @@ echo $this->Html->link(('<i class="fa fa-exclamation-circle fa-lg"></i> Solicitu
 	    'title'=>'Solicitud prorroga'
 	    )
 	);
-
 echo "<br><hr>";
+echo $this->Html->link(
+    '<i class="fa fa-plus"></i> Añadir retirada en almacén',array(
+        'controller' => 'retiradas',
+        'action' => 'add',
+        'almacen_transporte_id'=>$transporte['Transporte']['id'],
+        'from_controller' => 'operaciones',
+        'from_id' => $transporte['Transporte']['operacion_id']
+        ),
+    array(
+        'class' => 'botond',
+        'title' => 'Añadir retirada en cuenta de almacén',
+        'escape' => false
+        )
+    );
+/*
 //Control para las cuentas de almacén, si no hay, no puede haber distribución
-echo empty($transporte['AlmacenTransporte'])? 
+echo empty($transporte['AlmacenTransporte'])?
 	''
 	:
 	$this->Html->link(('<i class="fa fa-users" aria-hidden="true" fa-lg></i>
@@ -100,7 +114,7 @@ echo empty($transporte['AlmacenTransporte'])?
 	//'target' => '_blank',
 	'title'=>'Distribución asociados por cuenta almacén'
     )
-);
+);*/
 ?>	</div>
 
 	<div class='view'>
@@ -166,7 +180,7 @@ echo "</dd>";
 echo "  <dt>Tipo embalaje</dt>\n";
 echo "<dd>";
 echo $embalaje.'&nbsp;';
-echo "</dd>";				
+echo "</dd>";
 echo "  <dt>Bultos línea</dt>\n";
 echo "<dd>";
 echo $transporte['Transporte']['cantidad_embalaje'].'&nbsp;';
@@ -285,7 +299,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] !='FOB'){
     echo $fecha_reclamacion_factura.'&nbsp;';
     echo "</dd>";
 }
-?>	
+?>
 	</dl>
 	<br>
 <?php
@@ -349,7 +363,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 	    echo "<dd>";
 	    echo $transporte['Transporte']['peso_neto'].' Kg&nbsp;';
 	    echo "</dd>";
-	}	
+	}
 	echo '<br><h3>Reclamación</h3>';
 	if ($transporte['Transporte']['peritacion'] !=NULL){
 	    echo "  <dt>Peritación</dt>\n";
@@ -375,9 +389,9 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 	$fecha_reclamacion= $dia.'-'.$mes.'-'.$anyo;
 	echo $fecha_reclamacion.'&nbsp;';
 	echo "</dd>";
-    } 
+    }
 }
-?>		
+?>
 </dl>
 	<div class="detallado">
 
@@ -399,7 +413,7 @@ foreach($transporte['AlmacenTransporte'] as $linea) {
 	    array('style' => 'text-align:right')
 	),
 	$linea['marca_almacen'],
-	$this->Button->view('almacen_transportes',$linea['id'])						
+	$this->Button->view('almacen_transportes',$linea['id'])
     ));
 }
 ?>
