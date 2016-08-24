@@ -133,7 +133,7 @@ echo $this->Form->input(
 echo '<div id=totalGastos>'."Total gastos: ???€".'</div>';
 echo '<div id=totalOperacion>'."Precio real operacion: ???€/kg".'</div>';
 echo $this->Form->input('cuenta_venta_id');
-echo $this->Form->input('cuenta_iva_id');
+echo $this->Form->input('cuenta_iva_venta_id');
 echo $this->Form->input(
 	'cuenta_comision_id',
 	array(
