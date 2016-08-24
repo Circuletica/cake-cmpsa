@@ -52,10 +52,9 @@ class FacturacionesController extends AppController {
 	}
 
 	public function view($id = null) {
-		if (!$id) {
-			//$this->Flash->set('URL mal formado Facturación/view');
-			//$this->redirect(array('action'=>'index'));
-			throw new NotFoundException('No existe tal facturación');
+		$this->Facturacion->id = $id;
+		if (!$this->Facturacion->exists()) {
+			throw new NotFoundException(__('Facturación inválida'));
 		}
 		$facturacion = $this->Facturacion->find(
 			'first',
@@ -82,12 +81,8 @@ class FacturacionesController extends AppController {
 				'recursive' => 3
 			)
 		);
-		if (!$facturacion) {
-			//$this->Flash->set('URL mal formada: No existe facturacion con id: '.$id);
-			//$this->History->Back(0);
-			throw new NotFoundException('No existe tal facturación');
-		}
 		$this->set(compact('facturacion'));
+
 		$this->set('facturacion_id',$id);
 		$this->set('referencia',$facturacion['Operacion']['referencia']);
 		$this->set('proveedor',$facturacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
@@ -153,7 +148,7 @@ class FacturacionesController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Flash->set('error en URL Facturación/edit');
+			$this->Flash->error('error en URL Facturación/edit');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => 'facturaciones'
@@ -163,7 +158,7 @@ class FacturacionesController extends AppController {
 		$this->render('form');
 	}
 
-	public function form($id) {
+	public function form($id = null) {
 		$this->set('action', $this->action);
 		$operacion = $this->Facturacion->Operacion->find(
 			'first',
@@ -245,24 +240,25 @@ class FacturacionesController extends AppController {
 			'bultos_despachados',
 			$bultos_despachados[0]['cantidad_cuenta'].'/'.$operacion['PesoOperacion']['cantidad_embalaje']
 		);
+
 		$this->set(
 			'cuentaVentas',
 			$this->Facturacion->CuentaVenta->find(
 				'list',
 				array(
 					'conditions' => array(
-						'CuentaVenta.tipo' => 'venta'
+						'tipo' => 'venta'
 					)
 				)
 			)
 		);
 		$this->set(
-			'cuentaIvas',
-			$this->Facturacion->CuentaIva->find(
+			'cuentaIvaVentas',
+			$this->Facturacion->CuentaIvaVenta->find(
 				'list',
 				array(
 					'conditions' => array(
-						'CuentaIva.tipo' => 'iva'
+						'tipo' => 'iva'
 					)
 				)
 			)
@@ -297,14 +293,14 @@ class FacturacionesController extends AppController {
 		if ($this->request->is(array('post', 'put'))) {//la vuelta de 'guardar' el formulario
 			$this->request->data['Facturacion']['peso_medio_saco']= $this->request->data['Facturacion']['peso_facturacion']/$operacion['PesoOperacion']['cantidad_embalaje'];
 			if($this->Facturacion->save($this->request->data)){
-				$this->Flash->set('Facturación guardada');
+				$this->Flash->success('Facturación guardada');
 				$this->redirect(array(
 					'action' => 'view',
 					'controller' => 'facturaciones',
 					$id
 				));
 			} else {
-				$this->Flash->set('Facturación NO guardada');
+				$this->Flash->error('Facturación NO guardada');
 				//$this->History->Back(0);
 			}
 		} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes

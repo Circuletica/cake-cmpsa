@@ -1,5 +1,6 @@
 <?php
 $this->extend('/Common/index');
+$this->assign('add_button', 1);
 $this->assign('class', 'Puerto');
 
 $this->start('filter');

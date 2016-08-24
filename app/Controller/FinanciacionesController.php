@@ -1,23 +1,23 @@
 <?php
 class FinanciacionesController extends AppController {
-	public $paginate = array(
-		'order' => array('Operacion.referencia' => 'asc')
-	);
 
 	public function index() {
 		$this->paginate['contain'] = array(
 			'Banco',
 			'Operacion'
 		);
+		$this->paginate['order'] = array(
+			'Operacion.referencia' => 'asc'
+		);
 		$this->set('financiaciones', $this->paginate());
 	}
 
 	public function view($id = null) {
-		//el id y la clase de la financiación de origen vienen en la URL
-		if (!$id) {
-			$this->Flash->set('URL mal formado Financiación/view');
-			$this->redirect(array('action'=>'index'));
+		$this->Financiacion->id = $id;
+		if (!$this->Financiacion->exists()) {
+			throw new NotFoundException(__('Financiación inválida'));
 		}
+
 		$financiacion = $this->Financiacion->find(
 			'first',
 			array(
@@ -40,9 +40,6 @@ class FinanciacionesController extends AppController {
 				'recursive' => 4
 			)
 		);
-		if (!$financiacion) {
-			throw new NotFoundException(__('No existe esa financiación'));
-		}
 		$this->set(compact('financiacion'));
 
 		//calculamos el total de cada línea de reparto como campo virtual del modelo
@@ -142,9 +139,6 @@ class FinanciacionesController extends AppController {
 			'paperSize' => 'A4',
 			'orientation' => 'landscape'
 		);
-
-
-
 	}
 
 	public function add() {
@@ -154,7 +148,7 @@ class FinanciacionesController extends AppController {
 
 	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Flash->set('error en URL');
+			$this->Flash->error('error en URL');
 			$this->redirect(array(
 				'action' => 'index',
 				'controller' => 'financiaciones'
@@ -164,7 +158,7 @@ class FinanciacionesController extends AppController {
 		$this->render('form');
 	}
 
-	public function form($id) { //esta acción vale tanto para edit como add
+	public function form($id = null) { //esta acción vale tanto para edit como add
 		//en el desplegable de bancos quieren que aparezca los dos últimos
 		//digitos del codigo contable, seguido por el nombre del banco
 		//Podemos crear un campo virtual de Empresa y luego pasarlo
@@ -207,7 +201,36 @@ class FinanciacionesController extends AppController {
 		);
 		$this->set(compact('operacion'));
 
-		$tipoIvas = $this->Financiacion->TipoIva->find('list');
+		$this->Financiacion->TipoIva->virtualFields['nombre_valor'] =
+			"CONCAT(TipoIva.nombre,'(',ValorTipoIva.valor,'%)')";
+
+		$tipoIvas = $this->Financiacion->TipoIva->find(
+			'list',
+			array(
+				'fields' => array(
+					'TipoIva.id',
+					'TipoIva.nombre_valor'
+				),
+				'joins' => array(
+					array(
+						'table' => 'valor_tipo_ivas',
+						'alias' => 'ValorTipoIva',
+						'type' => 'LEFT',
+						'conditions' => array(
+							'AND' => array(
+								array("ValorTipoIva.fecha_inicio <=" => date('Y-m-d')),
+								'OR' => array(
+									"ValorTipoIva.fecha_fin >" => date('Y-m-d'),
+									"ValorTipoIva.fecha_fin" => NULL
+								),
+								array('TipoIva.id = ValorTipoIva.tipo_iva_id')
+							)
+						)
+					)
+				)
+			)
+		);
+		unset($this->Financiacion->TipoIva->virtualFields['nombre_valor']);
 		$this->set(compact('tipoIvas'));
 		$this->set('tipoIvaComisiones', $tipoIvas);
 		$this->set('referencia', $operacion['Operacion']['referencia']);
@@ -215,41 +238,54 @@ class FinanciacionesController extends AppController {
 		$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
 		$this->set('calidad', $operacion['Contrato']['Calidad']['nombre']);
 		$this->set('condicion', $operacion['Contrato']['condicion']);
-		$this->set('precio_euro_kilo', $operacion['PrecioTotalOperacion']['precio_euro_kilo_total']);
 		$this->set('action', $this->action);
 
 		//si es un edit, hay que rellenar el id, ya que
 		//si no se hace, al guardar el edit, se va a crear
 		//un _nuevo_ registro, como si fuera un add
 		if (!empty($id)) $this->Financiacion->id = $id;
-		if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
+		//if(!empty($this->request->data)) { //la vuelta de 'guardar' el formulario
+		if ($this->request->is(array('post', 'put'))) { //la vuelta de 'guardar' el formulario
 			if($this->Financiacion->save($this->request->data)){
-				$this->Flash->set('Financiación guardada');
+				$this->Flash->success('Financiación guardada');
 				$this->redirect(array(
 					'action' => 'view',
 					'controller' => 'financiaciones',
 					$id
 				));
 			} else {
-				$this->Flash->set('Financiación NO guardada');
+				$this->Flash->error('Financiación NO guardada');
 			}
 		} else { //es un GET (o sea un edit), hay que pasar los datos ya existentes
 			$this->request->data = $this->Financiacion->read(null, $id);
+			//valores por defecto para un nuevo registro
+			if ($this->action == 'add') {
+				$this->request->data['Financiacion']['banco_id'] = 3;
+				$this->request->data['Financiacion']['tipo_iva_id'] = 3;
+				$this->request->data['Financiacion']['tipo_iva_comision_id'] = 4;
+				$this->request->data['Financiacion']['precio_euro_kilo'] =
+					$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'];	
+			}
 		}
 	}
 
 	public function delete($id = null) {
-		if (!$id or $this->request->is('get')) throw new MethodNotAllowedException();
-		if ($this->Financiacion->delete($id)){
-			$this->Flash->set('Financiación borrada');
-			$this->redirect(array(
+		$this->request->allowMethod('post');
+
+		$this->Financiacion->id = $id;
+		if (!$this->Financiacion->exists()) throw new NotFoundException(__('Financiación inválida'));
+		if ($this->Financiacion->delete()){
+			$this->Flash->success('Financiación borrada');
+			return $this->redirect(array(
 				'controller' => 'financiaciones',
 				'action'=>'index',
 			));
 		}
+		$this->Flash->error(__('Financiación NO borrada'));
+		return $this->History->Back(0);
 	}
 
-	public function financion_envio ($id) {
+	public function financiacion_envio ($id) {
 		//Necesario para volcar los datos en el PDF
 
 		//Contactos de los asociados
@@ -284,16 +320,15 @@ class FinanciacionesController extends AppController {
 		);
 		$this->set('usuarios',$usuarios);
 
-
 		if (!empty($id)) $this->LineaMuestra->id = $id;
 		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
 			$this->request->data = $this->LineaMuestra->read();//Cargo los datos
 		}else{//es un POST
 			if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
 				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra
-				$this->Flash->set('Los datos de la financiación han sido guardados.');
+				$this->Flash->success('Los datos de la financiación han sido guardados.');
 			}elseif(empty($this->request->data['email'])){
-				$this->Flash->set('Los datos de la financiación NO fueron enviados. Faltan destinatarios');
+				$this->Flash->error('Los datos de la financiación NO fueron enviados. Faltan destinatarios');
 			}else{
 				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos
 
@@ -333,7 +368,7 @@ class FinanciacionesController extends AppController {
 				$Email->subject('Financiación de operación '.$financiacion['Operacion']['referencia'].' / Fecha '.date('Ymd'));
 				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS .'financiacion_'.$financiacion['Operacion']['referencia'].'_'.date('Ymd').'.pdf');
 				$Email->send('Adjuntamos financiación de la operación '.$financiacion['Operacion']['referencia']);
-				$this->Flash->set('¡Las financiaciones han sido enviadas a los asociados correctamente!');
+				$this->Flash->success('¡Las financiaciones han sido enviadas a los asociados correctamente!');
 				$this->redirect(array(
 					'action'=>'view',
 					'controller' =>'financiaciones',

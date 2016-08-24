@@ -33,7 +33,7 @@ foreach($contactos as $contacto){
 		$opciones[$contacto['Contacto']['email']] = $contacto['Empresa']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 		}
 }
-	//$opciones['info@circuletica.org'] = 'info@circuletica.org';
+	$opciones['circuletica@gmail.com'] = 'circuletica@gmail.com';
 
 	echo $this->Form->input('', array(
 		'name'=>'email',

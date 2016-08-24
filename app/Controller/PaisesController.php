@@ -8,10 +8,12 @@ class PaisesController extends AppController {
 	}
 
 	public function add() {
-		if($this->request->is('post')){
+		if($this->request->is('post')) {
 			if($this->Pais->save($this->request->data) ) {
-				$this->Flash->set('Pais guardado');
-				$this->History->Back(-1);
+				$this->Flash->success('Pais guardado');
+				$this->redirect(array(
+					'controller' => $this->params['named']['from_controller'],
+					'action' => $this->params['named']['from_action']));
 			}
 		}
 	}
@@ -19,11 +21,10 @@ class PaisesController extends AppController {
 	public function addPopup() {
 		if($this->request->is('post')) {
 			if($this->Pais->save($this->request->data) ) {
-				$this->Flash->set('Pais guardado');
+				$this->Flash->success('Pais guardado');
 				$this->redirect(array(
 					'controller' => $this->params['named']['from_controller'],
-					'action' => $this->params['named']['from_action']
-				));
+					'action' => $this->params['named']['from_action']));
 			}
 		}
 	}
@@ -34,21 +35,22 @@ class PaisesController extends AppController {
 			$this->request->data = $this->Pais->read();
 		} else {
 			if($this->Pais->save($this->request->data)) {
-				$this->Flash->set('Pais '.$this->request->data['Pais']['nombre'].' guardado');
+				$this->Flash->success('Pais '.$this->request->data['Pais']['nombre'].' guardado');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Flash->set('Pais no guardado');
+				$this->Flash->error('Pais no guardado');
 			}
 		}
 	}
 
-	public function delete($id) {
+	public function delete($id = null) {
 		if($this->request->is('get')) {
 			throw new MethodNotAllowedException();
-		}
-		if($this->Pais->delete($id)) {
-			$this->Flash->set('Pais borrado');
-			$this->redirect(array('action' => 'index'));
+		} else {
+			if($this->Pais->delete($id)) {
+				$this->Flash->success('Pais borrado');
+				$this->redirect(array('action' => 'index'));
+			}
 		}
 	}
 }

@@ -36,12 +36,12 @@ echo "  <dd>".$peso_por_fijar." kg&nbsp;</dd>";
 echo $this->html->tableheaders(array('Cantidad','Embalaje', 'Peso ud.', 'Peso'));
 $peso_total = 0;
 foreach($contrato['ContratoEmbalaje'] as $embalaje):
-    $peso_embalaje = $embalaje['cantidad_embalaje'] * $embalaje['peso_embalaje_real'];
+	$peso_embalaje = $embalaje['cantidad_embalaje'] * $embalaje['peso_embalaje_real'];
 echo $this->html->tablecells(array(
-    $embalaje['cantidad_embalaje'],
-    $embalaje['Embalaje']['nombre'],
-    $embalaje['peso_embalaje_real']." kg",
-    $peso_embalaje." kg",
+	$embalaje['cantidad_embalaje'],
+	$embalaje['Embalaje']['nombre'],
+	$embalaje['peso_embalaje_real']." kg",
+	$peso_embalaje." kg",
 ));
 $peso_total += $peso_embalaje;
 endforeach;
@@ -75,13 +75,13 @@ $this->start('lines');
 <?php
 echo $this->html->tableheaders(array('Referencia','Peso','Fecha de fijación', 'Precio de fijación', 'Precio de factura'));
 foreach($contrato['Operacion'] as $linea):
-    echo $this->html->tablecells(array(
-	$linea['referencia'],
-	$linea['PesoOperacion']['peso']." kg",
-	$linea['fecha_pos_fijacion'],
-	$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
-	$linea['precio_compra']." ".$contrato['CanalCompra']['divisa']
-    ));
+	echo $this->html->tablecells(array(
+		$linea['referencia'],
+		$linea['PesoOperacion']['peso']." kg",
+		$linea['fecha_pos_fijacion'],
+		$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
+		$linea['precio_compra']." ".$contrato['CanalCompra']['divisa']
+	));
 endforeach;
 ?>
 	</table>
@@ -93,4 +93,3 @@ $this->end();
 ?>
 	</div>
 </div>
-

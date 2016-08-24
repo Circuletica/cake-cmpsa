@@ -1,14 +1,14 @@
 <?php
 class Empresa extends AppModel {
-        public $hasMany = array(
-        	'Contacto'
-        	);
-        public $belongsTo = array(
-                'Pais' => array(
-                        'className' => 'Pais',
-                        'foreignKey' => 'pais_id'
-	                )
-        );
+	public $hasMany = array(
+		'Contacto'
+	);
+	public $belongsTo = array(
+		'Pais' => array(
+			'className' => 'Pais',
+			'foreignKey' => 'pais_id'
+		)
+	);
 	public $validate = array(
 		'nombre' => array(
 			'rule' => 'notBlank',
@@ -33,7 +33,7 @@ class Empresa extends AppModel {
 			)
 		)
 	);
- 	var $name = 'Empresa';
+	var $name = 'Empresa';
 	public $displayField = 'nombre_corto';
 }
 ?>

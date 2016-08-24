@@ -37,4 +37,3 @@ No hay contactos en esta lista
 <?php endforeach; ?>
 </table>
 <?php endif; ?>
-

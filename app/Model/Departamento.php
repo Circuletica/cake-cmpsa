@@ -1,4 +1,4 @@
 <?php
 class Departamento extends AppModel {
-    public $displayField = 'nombre';
+	public $displayField = 'nombre';
 }

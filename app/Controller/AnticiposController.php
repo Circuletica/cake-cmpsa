@@ -11,22 +11,111 @@ class AnticiposController extends AppController {
 			'Asociado',
 			'Operacion'
 		);
+		$this->loadModel('Banco');
+		$bancos = $this->Banco->find(
+			'list',
+			array(
+				'fields' => array('Banco.id','Empresa.nombre_corto'),
+				'order' => array('Empresa.nombre_corto' => 'asc'),
+				'recursive' => 1,
+			)
+		);
+		$this->set(compact('bancos'));
+
+		//necesitamos la lista de proveedor_id/nombre para rellenar el select
+		//del formulario de busqueda
+		$this->loadModel('Asociado');
+		$asociados = $this->Asociado->find(
+			'list',
+			array(
+				'fields' => array('Asociado.id','Empresa.nombre_corto'),
+				'order' => array('Empresa.nombre_corto' => 'asc'),
+				'recursive' => 1
+			)
+		);
+		$this->set(compact('asociados'));
+
+		$this->paginate['conditions'] = array();
+		$titulo = $this->filtroPaginador(
+			array(
+				'Anticipo' => array(
+					'Banco' => array(
+						'columna' => 'banco_id',
+						'exacto' => true,
+						'lista' => $bancos
+					)
+				),
+				'Operacion' => array(
+					'Operación' => array(
+						'columna' => 'referencia',
+						'exacto' => false,
+						'lista' => '',
+					),
+				),
+				'AsociadoOperacion' => array(
+					'Asociado' => array(
+						'columna' => 'asociado_id',
+						'exacto' => true,
+						'lista' => $asociados
+					)
+				)
+			)
+		);
+		//filtramos por fecha
+		if(isset($this->passedArgs['Search.desde']) && $this->passedArgs['Search.hasta'] != '--') {
+			$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
+			$this->paginate['conditions'] += array(
+				'Anticipo.fecha_conta >= ' => $criterio
+			);
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['desde'] = $criterio;
+			//completamos el titulo
+			$titulo .= '| Inicio: '.$criterio;
+		}
+		if(isset($this->passedArgs['Search.hasta']) and $this->passedArgs['Search.hasta'] != '--') {
+			$criterio = strtr($this->passedArgs['Search.hasta'],'_','/');
+			$this->paginate['conditions'] += array(
+				'Anticipo.fecha_conta <= ' => $criterio
+			);
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['hasta'] = $criterio;
+			//completamos el titulo
+			$titulo .= '| Fin: '.$criterio;
+		}
+
 		$this->Anticipo->bindModel(
 			array(
 				'belongsTo' => array(
 					'Asociado' => array(
 						'className' => 'Empresa',
 						'foreignKey' => false,
-						'conditions' => array('AsociadoOperacion.asociado_id = Asociado.id')
+						'conditions' => array(
+							'AsociadoOperacion.asociado_id = Asociado.id'
+						)
 					),
 					'Operacion' => array(
 						'foreignKey' => false,
-						'conditions' => array('AsociadoOperacion.operacion_id = Operacion.id')
+						'conditions' => array(
+							'AsociadoOperacion.operacion_id = Operacion.id'
+						)
 					)
 				)
 			)
 		);
+		$this->set(compact('titulo'));
 		$this->set('anticipos', $this->paginate());
+
+		//si venimos de exportar, generar el csv
+		//		if ($this->referer() == Router::url(
+		//			array(
+		//				'controller' => 'anticipos',
+		//				'action' => 'exportar'
+		//			),
+		//			true
+		//		)) {
+		//			debug('csv');
+		//			$this->csv();
+		//		}
 	}
 
 	public function add() {
@@ -35,6 +124,7 @@ class AnticiposController extends AppController {
 	}
 
 	public function edit($id = null) {
+		$this->checkId($id);
 		if (!$id && empty($this->request->data)) {
 			throw new NotFoundException(__('URL mal formado Anticipos/edit'));
 		}
@@ -43,9 +133,8 @@ class AnticiposController extends AppController {
 	}
 
 	public function form ($id = null) { //esta accion vale tanto para edit como add
-		$operacion_id = isset($this->params['named']['from_id'])?
-			$this->params['named']['from_id']:null;
 		$this->set('action', $this->action);
+
 		$this->loadModel('Banco');
 		$bancos = $this->Banco->find(
 			'list',
@@ -59,6 +148,19 @@ class AnticiposController extends AppController {
 			)
 		);
 		$this->set(compact('bancos'));
+		//si es un edit, hay que rellenar el id, ya que
+		//si no se hace, al guardar el edit, se va a crear
+		//un _nuevo_ registro, como si fuera un add
+		if (!empty($id)) {
+			$anticipo = $this->Anticipo->findById($id);
+			$si_contablilizado = $anticipo['Anticipo']['si_contabilizado'];
+			//pero si el anticipo ya ha sido contabilizado,
+			//se tiene que generar uno nuevo, sin borrar el antiguo
+			$operacion_id = $anticipo['AsociadoOperacion']['operacion_id'];
+		} else {
+			$operacion_id = isset($this->params['named']['from_id'])?
+				$this->params['named']['from_id']:null;
+		}
 
 		$this->Anticipo->AsociadoOperacion->unbindModel(array(
 			'belongsTo' => array('Asociado')
@@ -93,7 +195,17 @@ class AnticiposController extends AppController {
 		$operaciones = $this->Anticipo->AsociadoOperacion->Operacion->find(
 			'list',
 			array(
-				'order' => array('Operacion.referencia' => 'ASC')
+				'order' => array('Operacion.referencia' => 'ASC'),
+				'joins' => array( // solo las operaciones que tienen financiacion
+					array(
+						'table' => 'financiaciones',
+						'alias' => 'Financiacion',
+						'type' => 'RIGHT',
+						'conditions' => array(
+							'Operacion.id = Financiacion.id'
+						)
+					)
+				)
 			)
 		);
 		$this->set(compact('operaciones'));
@@ -112,19 +224,14 @@ class AnticiposController extends AppController {
 		foreach ($lista_operaciones as &$operacion) {
 			unset($operacion['Operacion']);
 			foreach ($operacion['AsociadoOperacion'] as $asociado) {
-				$operacion[$asociado['asociado_id']] = $asociado['Asociado']['nombre_corto'];
+				$operacion['Asociado'][] = array(
+					'id' => $asociado['asociado_id'],
+					'nombre_corto' => $asociado['Asociado']['nombre_corto']
+				);
 			}
 			unset($operacion['AsociadoOperacion']);
 		}
 		$this->set(compact('lista_operaciones'));
-
-		//si es un edit, hay que rellenar el id, ya que
-		//si no se hace, al guardar el edit, se va a crear
-		//un _nuevo_ registro, como si fuera un add
-		if (!empty($id)) {
-			$this->Anticipo->id = $id;
-			//$this->request->data['Anticipo']['operacion_id'] = $operacion_id;
-		}
 
 		if ($this->request->is(array('post', 'put'))){
 			$asociado_operacion = $this->Anticipo->AsociadoOperacion->find(
@@ -138,11 +245,34 @@ class AnticiposController extends AppController {
 			);
 			$asociado_operacion_id = $asociado_operacion['AsociadoOperacion']['id'];
 			$this->request->data['Anticipo']['asociado_operacion_id'] = $asociado_operacion_id;
-			if ($this->Anticipo->save($this->request->data)) {
-				$this->Flash->set('Anticipo guardado');
-				$this->History->Back(-1);
+
+			//Si estamos editando un anticipo ya exportado, en lugar
+			//de hacer un UPDATE de Mysql, hacemos un INSERT de DOS
+			//registros, primero un asiento inverso restando el importe
+			//equivocado, luego otro asiento con el importe correcto.
+			if ($this->request->data['Anticipo']['si_contabilizado'] == true) {
+				$anticipo_inverso = $this->Anticipo->findById($id); // el asiento inverso
+				$anticipo_inverso['Anticipo']['importe'] = -$anticipo_inverso['Anticipo']['importe'];
+				unset($anticipo_inverso['Anticipo']['id']); // va a tener nuevo id
+				$anticipo_inverso['Anticipo']['anticipo_padre_id'] = $id;
+				$anticipo_inverso['Anticipo']['si_contabilizado'] = false;
+				$this->Anticipo->create(); //el asiento de importe correcto
+				$this->request->data['Anticipo']['anticipo_padre_id'] = $id;
+				$this->request->data['Anticipo']['si_contabilizado'] = false;
+			}
+			if (isset($anticipo_inverso)) {
+				//saveMany es atómico, se guardan los dos o ninguno.
+				if ($this->Anticipo->saveMany(array($anticipo_inverso,$this->request->data))) {
+					$this->Flash->success('Anticipos guardados');
+				} else
+					$this->Flash->error('Anticipo(s) NO guardado(s)');
+				return $this->History->Back(-1);
 			} else {
-				$this->Flash->set('Anticipo NO guardado');
+				if ($this->Anticipo->save($this->request->data)) {
+					$this->Flash->success('Anticipo guardado');
+				} else
+					$this->Flash->error('Anticipo(s) NO guardado(s)');
+				return $this->History->Back(-1);
 			}
 		} else { //es un GET
 			$this->request->data = $this->Anticipo->read(null, $id);
@@ -150,17 +280,122 @@ class AnticiposController extends AppController {
 		}
 	}
 
-	public function delete($id) {
-		if (!$id or $this->request->is('get')){
-			throw new MethodNotAllowedException('URL mal formada o incompleta');
+	public function delete($id = null) {
+		$this->request->allowMethod('post');
+		$this->Anticipo->id = $id;
+		if (!$this->Anticipo->exists()) {
+			throw new NotFoundException('Anticipo inválido');
 		}
-		if($this->Anticipo->delete($id)) {
-			$this->Flash->set('Anticipo borrado');
-			$this->History->Back(0);
+		if ($this->Anticipo->delete()){
+			$this->Flash->success('Anticipo borrado');
+			return $this->History->Back(0);
+		}
+		$this->Flash->error('Anticipo NO borrado');
+		return $this->History->Back(0);
+	}
+
+	public function exportar() {
+		if ($this->request->is(array('post','put'))) {
+			debug($this->request->data);
+			throw new notFoundException;
 		} else {
-			$this->Flash->set('Anticipo NO borrado');
-			$this->History->Back(0);
+			$this->paginate['order'] = array(
+				'Anticipo.fecha_conta' => 'asc'
+			);
+			$this->paginate['contain'] = array(
+				'Banco',
+				'AsociadoOperacion',
+				'Asociado',
+				'Operacion'
+			);
+			$this->paginate['conditions'] = array(
+				"COALESCE(si_contabilizado, 'false') <>" => true
+			);
+			$this->Anticipo->bindModel(
+				array(
+					'belongsTo' => array(
+						'Asociado' => array(
+							'className' => 'Empresa',
+							'foreignKey' => false,
+							'conditions' => array(
+								'AsociadoOperacion.asociado_id = Asociado.id'
+							)
+						),
+						'Operacion' => array(
+							'foreignKey' => false,
+							'conditions' => array(
+								'AsociadoOperacion.operacion_id = Operacion.id'
+							)
+						)
+					)
+				)
+			);
+			$this->set('anticipos', $this->paginate());
 		}
+	}
+
+	public function csv() {
+		$lista_ids = $this->request->data['Anticipo'];
+		$this->Anticipo->bindModel(
+			array(
+				'belongsTo' => array(
+					'Asociado' => array(
+						'className' => 'Empresa',
+						'foreignKey' => false,
+						'conditions' => array(
+							'AsociadoOperacion.asociado_id = Asociado.id'
+						)
+					),
+					'Operacion' => array(
+						'foreignKey' => false,
+						'conditions' => array(
+							'AsociadoOperacion.operacion_id = Operacion.id'
+						)
+					)
+				)
+			)
+		);
+		$anticipos = $this->Anticipo->find(
+			'all',
+			array(
+				'recursive' => 1,
+				'fields' => array(
+					'id',
+					'importe',
+					'fecha_conta'
+				),
+				'contain' => array(
+					'Banco' => array(
+						'codigo_contable'
+					),
+					'AsociadoOperacion',
+					'Asociado' => array(
+						'codigo_contable'
+					),
+					'Operacion' => array(
+						'referencia'
+					),
+				),
+				'conditions' => array(
+					'Anticipo.id' => $lista_ids
+				)
+			)
+		);
+		$this->set(compact('anticipos'));
+
+		$this->layout = null;
+		$this->autoLayout = false;
+		Configure::write('debug', '0');
+		$this->response->download("anticipos_".date('Ymd').".csv");
+
+		$this->Anticipo->updateAll(
+			array(
+				'si_contabilizado' => true
+			),
+			array(
+				'Anticipo.id' => $lista_ids
+			)
+		);
 	}
 }
 ?>

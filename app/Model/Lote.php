@@ -9,5 +9,5 @@ class Lote extends AppModel {
 		'Contrato' => array(
 			'className' => 'Contrato',
 			'foreignKey' => 'contrato_id')
-	);
+		);
 }

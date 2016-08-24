@@ -1,6 +1,7 @@
 <?php
 class UsuariosController extends AppController {
 	var $name = 'Usuarios';
+
 	function index() {
 		$this->set('usuarios', $this->Usuario->find('all'));
 	}
@@ -27,14 +28,14 @@ class UsuariosController extends AppController {
 		}
 		if ($this->request->is('post')){
 			if($this->Usuario->save($this->request->data)) {
-				$this->Flash->set('Usuario guardado');
+				$this->Flash->success('Usuario guardado');
 				$this->redirect(
 					array(
 						'action' => 'index'
 					)
 				);
 			} else {
-				$this->Flash->set('Usuario NO guardado');
+				$this->Flash->error('Usuario NO guardado');
 			}
 		} else { //es un GET
 			$this->request->data= $this->Usuario->read(null, $id);
@@ -46,7 +47,7 @@ class UsuariosController extends AppController {
 			throw new MethodNotAllowedException();
 		}
 		if ($this->Usuario->delete($id)) {
-			$this->Flash->set('Usuario borrado');
+			$this->Flash->success('Usuario borrado');
 			$this->redirect(array(
 				'controller' => 'usuarios',
 				'action'=>'index',
@@ -55,12 +56,10 @@ class UsuariosController extends AppController {
 	}
 
 	public function view_pdf($id = null) {
-		$this->Usuario->id = $id;
-		if (!$this->Usuario->exists()) {
-			throw new NotFoundException(__('Invalid Usuario'));
-		}
+		$this->checkId($id);
 		// increase memory limit in PHP 
 		ini_set('memory_limit', '512M');
 		$this->set('usuario', $this->Usuario->read(null, $id));
 	}
 }
+?>
