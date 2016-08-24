@@ -264,7 +264,7 @@ class FinanciacionesController extends AppController {
 				$this->request->data['Financiacion']['tipo_iva_id'] = 3;
 				$this->request->data['Financiacion']['tipo_iva_comision_id'] = 4;
 				$this->request->data['Financiacion']['precio_euro_kilo'] =
-					$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'];	
+					$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'];
 			}
 		}
 	}

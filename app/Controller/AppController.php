@@ -68,6 +68,7 @@ class AppController extends Controller {
 	);
 
 	public function beforeFilter() {
+		setlocale(LC_TIME, "es_ES.UTF-8");
 		//        $this->Auth->allow('index');
 		$this->Auth->allow('display');
 	}
