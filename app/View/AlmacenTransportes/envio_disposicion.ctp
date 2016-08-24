@@ -23,7 +23,7 @@ echo "<h2>Envío de disposición a los asociados de la cuenta corriente <em>".$a
 foreach($almacentransportes['AlmacenTransporteAsociado'] as $disposicion_asociado){
 	foreach($contactos as $contacto){
 		if($disposicion_asociado['Asociado']['id'] == $contacto['Contacto']['empresa_id']){
-    	$opciones[$contacto['Contacto']['email']] = $disposicion_asociado['Asociado']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
+    	$opciones[$contacto['Contacto']['email']] = $disposicion_asociado['Asociado']['Empresa']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 		}
     }
 
@@ -86,7 +86,7 @@ echo $this->element('cancelarform');
         	'action' => 'view_disposicion',
 			$almacentransportes['AlmacenTransporte']['id'],
 			'ext' => 'pdf',
-		    'operacion_id'.$almacentransportes['AlmacenTransporte']['id'].'_'.date('Ymd')))
+		    'cuenta_almacen'.$almacentransportes['AlmacenTransporte']['cuenta_almacen'].'_'.date('Ymd')))
 		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"
 	)
 );

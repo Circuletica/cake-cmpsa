@@ -432,7 +432,7 @@ class LineaMuestrasController extends AppController {
                 // Get the PDF string returned
                 //$pdf = $CakePdf->output();
                 // Or write it to file directly
-                $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
+                $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 
 
                 //ENVIAMOS EL CORREO CON EL INFORME
@@ -445,7 +445,7 @@ class LineaMuestrasController extends AppController {
                     $Email->bcc($lista_bcc);
                 }
                 $Email->subject('Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
-                $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
+                $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
                 $Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
                 $this->Flash->set('Informe de calidad enviado.');
                 $this->redirect(array(

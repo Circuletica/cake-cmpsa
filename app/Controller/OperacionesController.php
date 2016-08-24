@@ -1228,7 +1228,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
                // Get the PDF string returned
                //$pdf = $CakePdf->output();
                // Or write it to file directly
-               $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS .'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+               $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS .'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
                 //ENVIAMOS EL CORREO CON EL INFORME
                $Email = new CakeEmail(); //Llamamos la instancia de email
                $Email->config('compras'); //Plantilla de email.php
@@ -1239,7 +1239,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
                	$Email->bcc($lista_bcc);
                }
                $Email->subject('Ficha de compra '.$operacion['Operacion']['referencia']);
-               $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Distrubucion_asociados' . DS . 'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+               $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS . 'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
                $Email->send('Adjuntamos la ficha de la operación '.$operacion['Operacion']['referencia'].' correspondiente a su '.$tipo_fecha_transporte.' en '.' de ');
                $this->Flash->set('Distribución a los asociados enviado con éxito.');
                $this->redirect(array(

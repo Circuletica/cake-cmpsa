@@ -486,7 +486,7 @@ class FinanciacionesController extends AppController {
 				//$pdf = $CakePdf->output();
 				// Or write it to file directly
 				$pdf = $CakePdf->write(
-					APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS . 'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf',
+					APP. 'webroot'. DS. 'files'. DS .'financiaciones' . DS . 'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf',
 					array(
 					    'orientation' => 'landscape',
 					)
@@ -495,14 +495,14 @@ class FinanciacionesController extends AppController {
 				//ENVIAMOS EL CORREO CON EL INFORME
 				$Email = new CakeEmail(); //Llamamos la instancia de email
 				$Email->config('compras'); //Plantilla de email.php
-				$Email->from(array('cmpsa@cmpsa.com' => 'Financiación CMPSA'));
+				$Email->from(array('cmpsa@cmpsa.com' => 'Contabilidad CMPSA'));
 				$Email->to($lista_email);
 				//$Email->readReceipt($lista_bcc); //Acuse de recibo
 				if(!empty($lista_bcc)){
 					$Email->bcc($lista_bcc);
 				}
 				$Email->subject('Financiación de operación '.$financiacion['Operacion']['referencia'].' / Fecha '.date('Ymd'));
-				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS .'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'financiaciones' . DS .'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
 				$Email->send('Adjuntamos financiación de la operación '.$financiacion['Operacion']['referencia']);
 				$this->Flash->success('¡Las financiaciones han sido enviadas a los asociados correctamente!');
 				$this->redirect(array(
