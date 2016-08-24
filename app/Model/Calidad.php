@@ -8,17 +8,17 @@ class Calidad extends AppModel {
 	);
 	public $actsAs = array('Containable');
 	public $virtualFields = array(
-	    'nombre' => 'CONCAT(
-		REPLACE(REPLACE(Calidad.descafeinado,0,""),1,"Descafeinado "),
-		    CASE WHEN ISNULL(Calidad.pais_id) THEN "Blend"
-			ELSE
-			    (SELECT nombre from paises where paises.id = Calidad.pais_id)
-		    END,
-		"-",
-		Calidad.descripcion
-		)',
+		'nombre' => 'CONCAT(
+			REPLACE(REPLACE(Calidad.descafeinado,0,""),1,"Descafeinado "),
+	CASE WHEN ISNULL(Calidad.pais_id) THEN "Blend"
+	ELSE
+	(SELECT nombre from paises where paises.id = Calidad.pais_id)
+	END,
+	"-",
+	Calidad.descripcion
+)',
 	);
-   	//Un café 'Blend' se guarda como pais_id=null en la BD
+//Un café 'Blend' se guarda como pais_id=null en la BD
 	public $validate = array(
 		'pais_id' => array(
 			'rule' => 'alphaNumeric',
@@ -27,12 +27,12 @@ class Calidad extends AppModel {
 		);
 	public function beforeDelete($cascade = true) {
 		$count = $this->Contrato->find(
-            "count",
-            array(
-                "recursive" => -1,
-                "conditions" => array("calidad_id" => $this->id)
-            )
-        );
+			"count",
+			array(
+				"recursive" => -1,
+				"conditions" => array("calidad_id" => $this->id)
+			)
+		);
 		if ($count == 0) {
 			return true;
 		}

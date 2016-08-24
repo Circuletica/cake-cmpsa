@@ -1,6 +1,5 @@
 <?php
 class ContratosController extends AppController {
-	var $displayField = 'referencia';
 
 	public function index() {
 		$this->paginate['order'] = array('Contrato.posicion_bolsa' => 'asc');
@@ -75,7 +74,7 @@ class ContratosController extends AppController {
 			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$criterio)) {
 				list($mes,$anyo) = explode('-',$criterio);
 			} else {
-				$this->Flash->set('Error de fecha');
+				$this->Flash->error('Error de fecha');
 				$this->redirect(array('action' => 'index'));
 			}
 			//si se ha introducido un año, filtramos por el año
@@ -99,6 +98,44 @@ class ContratosController extends AppController {
 
 		//pasamos los datos a la vista
 		$this->set(compact('contratos','title'));
+	}
+
+	public function index_left() {
+		$this->paginate['order'] = array('Contrato.posicion_bolsa' => 'asc');
+		$this->Contrato->virtualFields['calidad']=$this->Contrato->Calidad->virtualFields['nombre'];
+		$this->paginate['contain'] = array(
+			'Proveedor' => array(
+				'fields' => array(
+					'nombre_corto'
+				)
+			),
+			'Incoterm' => array(
+				'fields' => array(
+					'nombre'
+				)
+			),
+			'Calidad' => array(
+				'fields' => array(
+					'nombre'
+				)
+			),
+			'CanalCompra' => array(
+				'fields' => array(
+					'nombre'
+				)
+			),
+			'RestoContrato' => array(
+				'fields' => array(
+					'peso_restante'
+				)
+			)
+		);
+		$this->paginate['conditions']['RestoContrato.peso_restante !='] = 0;
+
+		$contratos=$this->paginate();
+
+		//pasamos los datos a la vista
+		$this->set(compact('contratos'));
 	}
 
 	public function view($id = null) {
@@ -147,7 +184,7 @@ class ContratosController extends AppController {
 			foreach ($sacos_pendientes as $id => $cantidad) {
 				if ($cantidad > 0) {
 					if ($sacos_por_fijar != '') $sacos_por_fijar .= ' + ';
-					$sacos_por_fijar .= $cantidad.' '.$embalajes_pendientes[$id]; 
+					$sacos_por_fijar .= $cantidad.' '.$embalajes_pendientes[$id];
 				}
 			}
 		}
@@ -163,8 +200,6 @@ class ContratosController extends AppController {
 		//mysql almacena la fecha en formato ymd
 		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
 		$fecha = $contrato['Contrato']['posicion_bolsa'];
-		//sacamos el nombre del mes en castellano
-		setlocale(LC_TIME, "es_ES.UTF-8");
 		$mes = strftime("%B", strtotime($fecha));
 		$anyo = substr($fecha,0,4);
 		$this->set('posicion_bolsa', $mes.' '.$anyo);
@@ -395,14 +430,14 @@ class ContratosController extends AppController {
 				$this->Contrato->ContratoEmbalaje->saveAll($this->request->data['ContratoEmbalaje']);
 				}
 			}
-			$this->Flash->set('Contrato '.$this->request->data['Contrato']['referencia'].' modificada con éxito');
+			$this->Flash->success('Contrato '.$this->request->data['Contrato']['referencia'].' modificada con éxito');
 			$this->redirect(array(
 				'action' => 'view',
 				$id
 				)
 			);
 			} else {
-				$this->Flash->set('Contrato NO guardado');
+				$this->Flash->error('Contrato NO guardado');
 			}
 		}
 	}
@@ -415,7 +450,7 @@ class ContratosController extends AppController {
 		//que lo necesitan (entre otros la referencia que es UNIQUE)
 
 		if (!$id) {
-			$this->Flash->set('URL mal formado');
+			$this->Flash->error('URL mal formado');
 			$this->redirect(array('action'=>'index'));
 		}
 
@@ -487,20 +522,22 @@ class ContratosController extends AppController {
 	}
 
 	public function delete($id = null) {
-		if (!$id or $this->request->is('get')){
-			throw new MethodNotAllowedException('URL mal formada o incompleta');
+		$this->request->allowMethod('post');
+
+		$this->Contrato->id = $id;
+		if (!$this->Contrato->exists()){
+			throw new NotFoundException(__('Contrato inválido'));
 		}
 		if ($this->Contrato->delete($id)) {
 			$this->Flash->success(h('Contrato borrado'));
-			$this->History->Back(-1);
-		} else {
-			$this->Flash->error(h('El contrato NO se ha borrado'));
-			$this->redirect(array(
-				'action'=>'view',
-				$id
-				)
-			);
+			return $this->History->Back(-1);
 		}
+		$this->Flash->error(h('El contrato NO se ha borrado'));
+		return $this->redirect(array(
+			'action'=>'view',
+			$id
+			)
+		);
 	}
 }
 ?>

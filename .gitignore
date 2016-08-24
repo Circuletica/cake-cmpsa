@@ -13,6 +13,7 @@
 /dist
 /tags
 *.mo
+*.sql
 
 # IDE and editor specific files #
 #################################

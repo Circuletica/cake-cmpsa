@@ -23,4 +23,3 @@
 	   array('format' => 'Página {:page} de {:pages}, mostrando {:current} registro de {:count}')
       );?>
 </div>
-

@@ -1,5 +1,7 @@
 <?php
 class AlmacenTransporte extends AppModel {
+	public $name = 'Cuenta de almacén';
+	public $useTable = 'almacen_transportes';
 	public $displayField = 'cuenta_almacen';
 	public $belongsTo = array(
 		'Almacen' => array(

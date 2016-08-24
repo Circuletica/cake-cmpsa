@@ -253,6 +253,6 @@ echo $this->Form->end('Guardar Operación');
 </fieldset>
 
 <script type="text/javascript">
-    window.onload = pesoAsociado();
-    window.onload = precioF();
+window.onload = pesoAsociado();
+window.onload = precioF();
 </script>

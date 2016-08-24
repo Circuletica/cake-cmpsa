@@ -1,7 +1,7 @@
 <?php
 $this->extend('/Common/index');
 $this->assign('class', 'TipoIva');
-//$this->assign('object', 'Tipo de IVA');
+$this->assign('add_button',true);
 
 $this->start('filter');
 $this->end();
@@ -20,9 +20,7 @@ $this->start('main');
     <td> <?php echo $tipo_iva['ValorTipoIva']['valor'].'%'?> </td>
     <td>
 <?php
-	//echo $this->Button->edit('tipo_ivas',$tipo_iva['TipoIva']['id'])
-	//.' '.$this->Button->delete('tipo_ivas',$tipo_iva['TipoIva']['id'],$tipo_iva['TipoIva']['nombre']);
-	echo $this->Button->view('tipo_ivas',$tipo_iva['TipoIva']['id']);
+echo $this->Button->view('tipo_ivas',$tipo_iva['TipoIva']['id']);
 ?>
     </td>
   </tr>

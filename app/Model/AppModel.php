@@ -41,24 +41,24 @@ class AppModel extends Model {
 		$suma = 0; $suma += $ccc[0] * 4; $suma += $ccc[1] * 8; $suma += $ccc[2] * 5;
 		$suma += $ccc[3] * 10; $suma += $ccc[4] * 9; $suma += $ccc[5] * 7;
 		$suma += $ccc[6] * 3; $suma += $ccc[7] * 6; $resto = $suma % 11;
-		if ($resto < 2):
+		if ($resto < 2) {
 			$digito1 = $resto;
-		else:
+		} else {
 			$digito1 = 11 - $resto;
-		endif;
+		}
 		if ($digito1 != $ccc[8]) return false;
 		//lo mismo con el digito de control de la cuenta (j)
 		$suma = 0;
 		$suma += $ccc[10] * 1; $suma += $ccc[11] * 2; $suma += $ccc[12] * 4;
 		$suma += $ccc[13] * 8; $suma += $ccc[14] * 5; $suma += $ccc[15] * 10;
-		$suma += $ccc[16] * 9; $suma += $ccc[17] * 7; $suma += $ccc[18] * 3; 
-		$suma += $ccc[19] * 6; 
+		$suma += $ccc[16] * 9; $suma += $ccc[17] * 7; $suma += $ccc[18] * 3;
+		$suma += $ccc[19] * 6;
 		$resto = $suma % 11;
-		if ($resto < 2):
+		if ($resto < 2) {
 			$digito2 = $resto;
-		else:
+		} else {
 			$digito2 = 11 - $resto;
-		endif;
+		}
 		if ($digito2 != $ccc[9]) return false;
 		return true;
 	}

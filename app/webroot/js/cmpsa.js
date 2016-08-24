@@ -305,7 +305,7 @@ function operacionesRetirada(){
 	var cuentaId = cuentaBox.options[cuentaIndex].value;
 	console.log(asociadoId);
 
-	//modificamos _todo_ el select de operaciones
+	//modificamos _todo_ el select de asociados
 	if (operacionId in operaciones) {
 		var asociadosOperacion = operaciones[operacionId].Asociado;
 		var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
@@ -324,11 +324,11 @@ function operacionesRetirada(){
 		var opt2 = almacenesOperacion.length; //cuantas cuentas tiene la operación
 		cuentaBox.options.length = opt2;
 		for (var i=0; i<opt2; i++){
-		    cuentaBox.options[i].value = almacenesOperacion[i].id;
-		    cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
-		   	if(cuentaBox.options[i].value == cuentaId){
-			cuentaBox.options[i].selected = true;
-		    }
+			cuentaBox.options[i].value = almacenesOperacion[i].id;
+			cuentaBox.options[i].text = almacenesOperacion[i].cuenta_almacen;
+			if(cuentaBox.options[i].value == cuentaId){
+				cuentaBox.options[i].selected = true;
+			}
 		}
 	}
 }
@@ -409,7 +409,7 @@ function sacosAsignados(){
 	var cantidadCuenta = window.app.cantidadCuenta;
 	//un array con las cantidades de cada socio
 	var cantidades = document.getElementsByClassName('cantidad');
-    var porcentajes = document.getElementsByClassName('porcentajeAsociado');
+	var porcentajes = document.getElementsByClassName('porcentajeAsociado');
 	//totalCantidad asignada
 	var textototalCantidad = document.getElementById('totalCantidad');
 	var textototalPorcentaje = document.getElementById('totalPorcentaje');
@@ -434,8 +434,8 @@ function sacosAsignados(){
 		textoporcentajeAsociado.innerHTML = porcentajeAsociado.toFixed(2) + "%";
 		totalPorcentaje +=porcentajeAsociado; 
 	}
-    textototalCantidad.innerHTML = totalCantidad;
-    textototalPorcentaje.innerHTML = totalPorcentaje.toFixed(2) + "%";
+	textototalCantidad.innerHTML = totalCantidad;
+	textototalPorcentaje.innerHTML = totalPorcentaje.toFixed(2) + "%";
 }
 
 function precioF(){
@@ -450,3 +450,31 @@ function precioF(){
 	$("#precioFijoEuro").prop('disabled', !$("#siPrecioFijo").is(':checked'));
 }
 
+function anticipoAsociado() {
+	var operaciones = window.app.lista_operaciones;
+
+	var operacionBox = document.getElementById('AsociadoOperacionOperacionId');
+	var asociadoBox = document.getElementById('AsociadoOperacionAsociadoId');
+	var operacionIndex = operacionBox.selectedIndex;
+	var asociadoIndex = asociadoBox.selectedIndex;
+	//console.log(asociadoIndex);
+	var operacionId = operacionBox.options[operacionIndex].value;
+	//console.log(operacionId);
+	if (asociadoIndex > 0) {
+		var asociadoId = asociadoBox.options[asociadoIndex].value;
+	}
+
+	//modificamos _todo_ el select de asociados
+	if (operacionId in operaciones) {
+		var asociadosOperacion = operaciones[operacionId].Asociado;
+		var opt1 = asociadosOperacion.length; //cuantos asociados tiene la operación
+		asociadoBox.options.length = opt1;
+		for (var i=0; i<opt1; i++){
+			asociadoBox.options[i].value = asociadosOperacion[i].id;
+			asociadoBox.options[i].text = asociadosOperacion[i].nombre_corto;
+			if(asociadoBox.options[i].value == asociadoId){
+				asociadoBox.options[i].selected = true;
+			}
+		}
+	}
+}
