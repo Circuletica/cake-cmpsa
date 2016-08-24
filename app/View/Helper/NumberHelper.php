@@ -7,5 +7,3 @@ class NumberHelper extends AppHelper {
     }
 }
 ?>
-
-

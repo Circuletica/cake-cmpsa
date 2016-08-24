@@ -1,4 +1,3 @@
-
 <?php
 class AlmacenTransportesController extends AppController {
 
