@@ -2,39 +2,28 @@
 $this->Html->addCrumb(
     'Operaciones',
     array(
-	'controller' => 'operaciones',
+	'controller' => 'almacen_transportes',
 	'action' => 'index'
     )
 );
-$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-    'controller'=>'operaciones',
+$this->Html->addCrumb('Operación '.$almacentransportes['AlmacenTransporte']['cuenta_almacen'], array(
+    'controller'=>'almacen_transportes',
     'action'=>'view',
-    $operacion['Operacion']['id']
+    $almacentransportes['AlmacenTransporte']['id']
 ));
 
 
-echo $this->Form->create('Operacion');
+echo $this->Form->create('AlmacenTransporte');
 
-echo "<h2>Envío de distribución a los asociados de la operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+echo "<h2>Envío de disposición a los asociados de la cuenta corriente <em>".$almacentransportes['AlmacenTransporte']['cuenta_almacen']."</em></h2>\n";
 ?>
 <fieldset style=width:60%;>
 <legend>Contactos asociados</legend>
 <?php
-/*
-foreach($asociados_operacion as $asociado_operacion){
-	foreach($asociado_operacion['Asociado'] as $asociado){
-    	foreach($asociado['Contacto'] as $contacto){
-    		echo $contacto['nombre'];
-    	}
-    }
-	$opciones[$asociado_operacion['Asociado']['nombre_corto']] =
-	 $asociado_operacion['Asociado']['nombre_corto'].' / '.$asociado_operacion['AsociadoOperacion']['cantidad_embalaje_asociado'].' sacos / ';
-}*/
-
-foreach($asociados_operacion as $asociado_operacion){
+foreach($almacentransportes['AlmacenTransporteAsociado'] as $disposicion_asociado){
 	foreach($contactos as $contacto){
-		if($asociado_operacion['Asociado']['id'] == $contacto['Contacto']['empresa_id']){
-    	$opciones[$contacto['Contacto']['email']] = $asociado_operacion['Asociado']['nombre_corto'].' / '.$asociado_operacion['AsociadoOperacion']['cantidad_embalaje_asociado'].' sacos / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
+		if($disposicion_asociado['Asociado']['id'] == $contacto['Contacto']['empresa_id']){
+    	$opciones[$contacto['Contacto']['email']] = $disposicion_asociado['Asociado']['nombre_corto'].' / '.$contacto['Contacto']['nombre'].' / '.$contacto['Contacto']['email'];
 		}
     }
 
@@ -55,7 +44,7 @@ foreach($asociados_operacion as $asociado_operacion){
 <legend>Contactos CMPSA</legend>
 <?php
 	foreach($usuarios as $usuario){
-		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 3){//Controlo que no haya usuarios sin email
+		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 4){//Controlo que no haya usuarios sin email
 		$compras[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
 		}
 	}
@@ -63,8 +52,8 @@ foreach($asociados_operacion as $asociado_operacion){
 		'name'=>'compras',
 		'type' => 'select',
 		'selected'=> array(
-			'cmpsa@cmpsa.com',
-			'mcnevado@cmpsa.com'
+            'yolandaordonez@cmpsa.com',
+			'mvillarm@cmpsa.com'
 			),
 		'multiple' => 'checkbox',
 		'options'=>$compras
@@ -91,13 +80,13 @@ echo $this->element('cancelarform');
 	echo $this->Form->submit('Previsualizar',
 	array(
 		'name'=>'previsualizar',
-        'title'=>'Distribución',
+        'title'=>'Disposición',
 		'onclick' => "var openWin = window.open('".$this->Html->url(
         	array(
-        	'action' => 'view_asociados',
-			$operacion['Operacion']['id'],
+        	'action' => 'view_disposicion',
+			$almacentransportes['AlmacenTransporte']['id'],
 			'ext' => 'pdf',
-		    'operacion_id'.$operacion['Operacion']['id'].'_'.date('Ymd')))
+		    'operacion_id'.$almacentransportes['AlmacenTransporte']['id'].'_'.date('Ymd')))
 		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"
 	)
 );

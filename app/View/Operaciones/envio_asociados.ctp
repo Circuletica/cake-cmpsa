@@ -20,17 +20,6 @@ echo "<h2>Envío de distribución a los asociados de la operación <em>".$operac
 <fieldset style=width:60%;>
 <legend>Contactos asociados</legend>
 <?php
-/*
-foreach($asociados_operacion as $asociado_operacion){
-	foreach($asociado_operacion['Asociado'] as $asociado){
-    	foreach($asociado['Contacto'] as $contacto){
-    		echo $contacto['nombre'];
-    	}
-    }
-	$opciones[$asociado_operacion['Asociado']['nombre_corto']] =
-	 $asociado_operacion['Asociado']['nombre_corto'].' / '.$asociado_operacion['AsociadoOperacion']['cantidad_embalaje_asociado'].' sacos / ';
-}*/
-
 foreach($asociados_operacion as $asociado_operacion){
 	foreach($contactos as $contacto){
 		if($asociado_operacion['Asociado']['id'] == $contacto['Contacto']['empresa_id']){
@@ -70,22 +59,22 @@ foreach($asociados_operacion as $asociado_operacion){
 		'options'=>$compras
 		)
 		);
-        /*echo $this->Form->input('', array(
-		'name'=>'trafico',
-		'type' => 'select',
-		'selected'=> array(
-			'mvillarm@cmpsa.com',
-			'yolandaordonez@cmpsa.com'
-			),
-		'multiple' => 'checkbox',
-		'options'=>$trafico
-		)
-    );
-echo $this->Form->input('observacion_externa', array(
-	'label' => 'Observaciones',
-	'type' => 'textarea'
-	)
-);*/
+        foreach($usuarios as $usuario){
+    		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 4){//Controlo que no haya usuarios sin email
+    		$trafico[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
+    		}
+    	}
+    	echo $this->Form->input('', array(
+    		'name'=>'trafico',
+    		'type' => 'select',
+    		'selected'=> array(
+    			'mvillarm@cmpsa.com',
+    			'yolandaordonez@cmpsa.com'
+    			),
+    		'multiple' => 'checkbox',
+    		'options'=>$trafico
+    		)
+    	);
 echo $this->element('cancelarform');
 	//echo $this->Form->submit('Guardar',array('name' =>'guardar'));
 	echo $this->Form->submit('Previsualizar',

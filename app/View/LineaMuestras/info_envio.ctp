@@ -66,7 +66,7 @@ foreach($contactos as $contacto){
 		$trafico[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
 		}
 	}
-		echo $this->Form->input('', array(
+	echo $this->Form->input('', array(
 		'name'=>'trafico',
 		'type' => 'select',
 		'selected'=> array(
