@@ -17,7 +17,7 @@ echo $this->Form->create('AlmacenTransporte');
 
 echo "<h2>Envío de disposición a los asociados de la cuenta corriente <em>".$almacentransportes['AlmacenTransporte']['cuenta_almacen']."</em></h2>\n";
 ?>
-<fieldset style=width:60%;>
+<fieldset style=width:65%;>
 <legend>Contactos asociados</legend>
 <?php
 foreach($almacentransportes['AlmacenTransporteAsociado'] as $disposicion_asociado){
@@ -39,8 +39,7 @@ foreach($almacentransportes['AlmacenTransporteAsociado'] as $disposicion_asociad
 		)
 	);
 ?>
-</fieldset>
-<fieldset style=width:35%;>
+<hr><br>
 <legend>Contactos CMPSA</legend>
 <?php
 	foreach($usuarios as $usuario){
@@ -75,8 +74,18 @@ echo $this->Form->input('observacion_externa', array(
 	'type' => 'textarea'
 	)
 );*/
+?>
+</fieldset>
+<fieldset style=width:30%;>
+<legend>Datos</legend>
+<?php
+echo $this->Form->input('observacion',array(
+	'label'=> 'Observaciones: ',
+    'type' => 'textarea'
+	)
+);
 echo $this->element('cancelarform');
-	//echo $this->Form->submit('Guardar',array('name' =>'guardar'));
+	echo $this->Form->submit('Guardar',array('name' =>'guardar'));
 	echo $this->Form->submit('Previsualizar',
 	array(
 		'name'=>'previsualizar',

@@ -28,19 +28,19 @@ $this->Html->addCrumb(
 $this->start('filter');
 echo $this->element('filtromuestra');
 if ($linea['Muestra']['tipo_id'] == 3){
-	echo '<br>';
-	echo $this->Html->link(
+	echo '<br><br>';
+	/*echo $this->Html->link(
 	    '<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar informe',
 	    array(
 		'action' => 'info_calidad',
 		$id,
 		'ext' => 'pdf',
-	    ), 
+	    ),
 	    array(
 		'escape'=>false,'target' => '_blank','title'=>'Informe calidad previo'
 	    )
-	);
-
+	);*/
+    echo "<hr>";
 	echo  $this->Html->link(
 	    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
 	    array(

@@ -8,7 +8,9 @@ if ($action == 'add') {
 if ($action == 'edit') {
     echo "<h2>Modificar Facturación de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
 }
-
+echo $this->Form->create('Facturacion');
+echo "<fieldset>";
+echo "<legend>Info</legend>";
 echo "<dl>";
 echo "  <dt>Operación</dt>\n";
 echo "  <dd>".$referencia.'&nbsp;'."</dd>";
@@ -40,7 +42,9 @@ echo "  <dd>".$this->Date->format($ultimo_despacho).'&nbsp;'."</dd>";
 echo "  <dt>Bultos despachos</dt>\n";
 echo "  <dd>".$bultos_despachados.'&nbsp;'."</dd>";
 echo "</dl>";
-echo $this->Form->create('Facturacion');
+echo "</fieldset>";
+echo "<fieldset>";
+echo "<legend>Datos</legend>";
 //la id de la facturacion siempre es la misma que la de operacion
 echo $this->Form->hidden(
     'id',
@@ -130,6 +134,8 @@ echo $this->Form->input(
         'oninput' => 'pesoFacturacion()'
     )
 );
+echo "</fieldset>";
+echo "<fieldset>";
 echo '<div id=totalGastos>'."Total gastos: ???€".'</div>';
 echo '<div id=totalOperacion>'."Precio real operacion: ???€/kg".'</div>';
 echo $this->Form->input('cuenta_venta_id');
@@ -149,6 +155,7 @@ echo $this->Form->input(
 echo $this->element('cancelarform');
 echo $this->Form->end('Guardar facturación');
 ?>
+</fieldset>
 <script type="text/javascript">
 window.onload = pesoFacturacion();
 </script>

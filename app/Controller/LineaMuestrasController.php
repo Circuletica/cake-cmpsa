@@ -248,41 +248,6 @@ class LineaMuestrasController extends AppController {
 		return $this->History->back(0);
 	}
 
-	public function info_calidad($id){
-		$linea = $this->LineaMuestra->findById($id);
-		$this->set('tipos', $this->tipoMuestras);
-		$this->set('linea',$linea);
-		$suma_linea = $linea['LineaMuestra']['criba20'] +
-			$linea['LineaMuestra']['criba19'] +
-			$linea['LineaMuestra']['criba13p'] +
-			$linea['LineaMuestra']['criba18'] +
-			$linea['LineaMuestra']['criba12p'] +
-			$linea['LineaMuestra']['criba17'] +
-			$linea['LineaMuestra']['criba11p'] +
-			$linea['LineaMuestra']['criba16'] +
-			$linea['LineaMuestra']['criba10p'] +
-			$linea['LineaMuestra']['criba15'] +
-			$linea['LineaMuestra']['criba9p'] +
-			$linea['LineaMuestra']['criba14'] +
-			$linea['LineaMuestra']['criba8p'] +
-			$linea['LineaMuestra']['criba13'] +
-			$linea['LineaMuestra']['criba12'];
-		$suma_ponderada = $linea['CribaPonderada']['criba20'] +
-			$linea['CribaPonderada']['criba19'] +
-			$linea['CribaPonderada']['criba18'] +
-			$linea['CribaPonderada']['criba17'] +
-			$linea['CribaPonderada']['criba16'] +
-			$linea['CribaPonderada']['criba15'] +
-			$linea['CribaPonderada']['criba14'] +
-			$linea['CribaPonderada']['criba13'] +
-			$linea['CribaPonderada']['criba12'];
-		$this->set('suma_linea',$suma_linea);
-		$this->set('suma_ponderada',$suma_ponderada);
-
-		//Para crear PDF
-		$this->set(compact('id'));
-	}
-
 	public function info_envio ($id) {
 		//Necesario para volcar los datos en el PDF
 		$linea = $this->LineaMuestra->findById($id);
@@ -457,5 +422,10 @@ class LineaMuestrasController extends AppController {
             }
         }
     }
+
+	public function info_calidad($id){
+		$this->view($id);
+		$this->render(view);
+	}
 }
 ?>

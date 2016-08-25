@@ -19,12 +19,12 @@ echo "  <dt>Ref. operación</dt>\n";
 echo "  <dd>".$almacentransportes['Transporte']['Operacion']['referencia'].'&nbsp;'."</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "  <dd>".$almacentransportes['Transporte']['Operacion']['Contrato']['Calidad']['nombre'].'&nbsp;'."</dd>";
-echo "  <dt>Transporte</dt>\n";
+echo "  <dt>Embarque / Entrega</dt>\n";
 echo "  <dd>".$almacentransportes['Transporte']['Operacion']['Contrato']['transporte'].'&nbsp;'."</dd>";
 echo "</dl><br><br>";
 echo "<dl>";
 echo "  <dt>Cantidad de bultos</dt>\n";
-echo "  <dd>".$almacentransportes['AlmacenTransporte']['cantidad_cuenta'].'&nbsp;'."</dd>";
+echo "  <dd>".$almacentransportes['AlmacenTransporte']['cantidad_cuenta'].' '.$almacentransportes['Transporte']['Operacion']['Embalaje']['nombre'].'&nbsp;'."</dd>";
 echo "  <dt>Almacén de carga</dt>\n";
 echo "  <dd>".$almacentransportes['Almacen']['nombre'].'&nbsp;'."</dd>";
 echo "  <dt>Ref. almacén</dt>\n";
@@ -56,11 +56,11 @@ echo "<br><table class='tr2'>";
     	)
         );
     }
+echo "</table><br>";
+if($almacentransportes['AlmacenTransporte']['observacion'] != NULL){
+echo "<h3>Observaciones</h3><br>".$almacentransportes['AlmacenTransporte']['observacion']."</dd>\n";
+}
 ?>
-	</table>
-	</div>
-</div>
-
 <div id="footer">
 	<br><br><br>
 	Atentos saludos<br>

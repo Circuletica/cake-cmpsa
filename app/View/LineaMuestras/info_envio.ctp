@@ -16,13 +16,8 @@ $this->Html->addCrumb(
     )
 );
 
-
-//echo $this->Form->create('EnvioCalidad');
 echo $this->Form->create('LineaMuestra');
-
 echo "<h2>Informe de calidad de la línea de muestra <em>".$linea_muestra['tipo_registro']."</em></h2>\n";
-
-
 ?>
 <fieldset style=width:44%;>
 <legend>Contactos asociados</legend>
@@ -82,11 +77,6 @@ foreach($contactos as $contacto){
 <fieldset style=width:25%;>
 <legend>Datos</legend>
 <?php
-/*echo $this->Form->input('email',array(
-	'label'=> 'Correos a enviar (separado por comas): ',
-	'after' => 'Solución temporal'
-	)
-);*/
 echo $this->Form->input('ref',array(
 	'label'=> 'Referencia: '
 	)
@@ -95,8 +85,6 @@ echo $this->Form->input('a', array(
 	'label'=>'A: '
 	)
 );
-
-
 /*echo $this->Form->input('asunto',array(
 	'label'=> 'Asunto: '
 	)

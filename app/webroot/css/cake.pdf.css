@@ -34,16 +34,17 @@ h3 {
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
 	font-size: 120%;
 	font-weight: bold;
+	margin-bottom:0.3em;
 }
 h4 {
 	color: #000;
-	font-size: 110%;
+	font-size: 100%;
 	font-weight: bold;
 }
 h5 {
 	color: #000;
 	font-size: 100%;
-	font-weight: bold;
+	/*font-weight: bold;*/
 }
 ul, li {
 	margin: 0 1px;

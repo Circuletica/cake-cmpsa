@@ -178,6 +178,11 @@ class AlmacenTransportesController extends AppController {
 								'Calidad'=>array(
 									'nombre'
 								)
+							),
+							'Embalaje' =>array(
+								'fields' =>array(
+									'nombre'
+								)
 							)
 						)
 					),
@@ -191,7 +196,6 @@ class AlmacenTransportesController extends AppController {
 			)
 		);
 		$this->set(compact('almacentransportes'));
-
 		//Necesario para controlar si hay alguna muestra hecha en la cuenta de almacén
 		$this->loadModel('LineaMuestra');
 		$lineamuestra = $this->LineaMuestra->find('first', array(
@@ -553,6 +557,11 @@ class AlmacenTransportesController extends AppController {
 								'Calidad'=>array(
 									'nombre'
 								)
+							),
+							'Embalaje' =>array(
+								'fields' =>array(
+									'nombre'
+								)
 							)
 						)
 					),
@@ -611,10 +620,13 @@ class AlmacenTransportesController extends AppController {
       	if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
            $this->request->data = $this->AlmacenTransporte->read();//Cargo los datos
       	}else{//es un POST
-	       	if(empty($this->request->data['email'])){
+			if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
+				$this->AlmacenTransporte->save($this->request->data['AlmacenTransporte']); //Guardamos los datos actuales en los campos de Linea Muestra
+				$this->Flash->set('Los datos del informe han sido guardados.');
+	       	}elseif(empty($this->request->data['email'])){
 	       		$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
 	       	}else{
-              // $this->AlmacenTransporte->save($this->request->data['AlmacenTransporte']); //Guardamos los datos actuales en los campos
+              $this->AlmacenTransporte->save($this->request->data['AlmacenTransporte']); //Guardamos los datos actuales en los campos
             	foreach ($this->data['email'] as $email){
 					$lista_email[]= $email;
                	}
@@ -633,8 +645,7 @@ class AlmacenTransportesController extends AppController {
                	$CakePdf->template('disposicion_asociados');
                	$CakePdf->viewVars(array(
 				   	'almacentransportes'=>$almacentransportes
-				   )
-			   );
+				));
                // Get the PDF string returned
                //$pdf = $CakePdf->output();
                // Or write it to file directly
