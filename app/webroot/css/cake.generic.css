@@ -20,7 +20,6 @@
 	margin:0;
 	padding:0;
 }
-
 /** General Style Info **/
 body {
 	background: #637A91;
@@ -79,17 +78,14 @@ ul, ol {
 p {
 	margin: 0 0 1em 0;
 }
-
 /** Layout **/
 #container {
 	text-align: left;
-
 }
-
 #header{
-	padding: 10px 20px 10px 30px;
-	width: 1200px;
- 	margin: 0 auto;}
+	padding: 20px 20px 10px 30px;
+	width: 1220px;
+ 	margin: 0px auto;}
 #header h1 {
 	/*line-height:30px;*/
 	background: #637A91 url('../img/grano.icon.png') no-repeat left;
@@ -160,7 +156,7 @@ p {
 div.menuheader{
 float: right;
 margin:0px;
-/*width: 70%; Se cambia*/	
+/*width: 70%; Se cambia*/
 }
 
 div.form,
@@ -184,7 +180,7 @@ div.actions {
 	border: 5px;
    /* height: 90px;*/
    /* margin: 5px;*/
-    
+
 }
 div.actions h3 {
 	padding-top:0;
@@ -358,7 +354,7 @@ fieldset {
 	/*display: block;*/
 	width: 30%;
 	/*width: 47%;
-	/*margin-right: 10px; 
+	/*margin-right: 10px;
 	margin: 0 30px 10px 0;*/
 	margin: 0 1% 0px 1%;
 }
@@ -681,7 +677,7 @@ input[type=submit]:active,
 	border: 1px solid #C1C1C1;
 	-webkit-appearance: none;
 }
- 
+
 /** Related **/
 .related {
 	clear: both;

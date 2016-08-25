@@ -12,35 +12,35 @@ echo $this->Form->create('Facturacion');
 echo "<fieldset>";
 echo "<legend>Info</legend>";
 echo "<dl>";
-echo "  <dt>Operación</dt>\n";
-echo "  <dd>".$referencia.'&nbsp;'."</dd>";
-echo "  <dt>Calidad</dt>\n";
-echo "  <dd>".$calidad.'&nbsp;'."</dd>";
-echo "  <dt>Proveedor</dt>\n";
-echo "  <dd>";
+echo "  <dt style=width:40%;>Operación</dt>\n";
+echo "  <dd style=margin-left:40%;>".$referencia.'&nbsp;'."</dd>";
+echo "  <dt style=width:40%;>Calidad</dt>\n";
+echo "  <dd style=margin-left:40%;>".$calidad.'&nbsp;'."</dd>";
+echo "  <dt style=width:40%;>Proveedor</dt>\n";
+echo "  <dd style=margin-left:40%;>";
 echo $this->html->link($proveedor, array(
     'controller' => 'proveedores',
     'action' => 'view',
     $proveedor_id)
 );
 echo "  </dd>";
-echo "  <dt>Condición</dt>\n";
-echo "  <dd>".$condicion.'&nbsp;'."</dd>";
-echo "  <dt>Precio estimado</dt>\n";
-echo "  <dd>".$coste_estimado.'€/kg&nbsp;'."</dd>";
-echo "  <dt>Cambio teórico</dt>\n";
-echo "  <dd>".$cambio_teorico.'$/€&nbsp;'."</dd>";
-echo "  <dt>Transportes</dt>\n";
-echo "  <dd>";
+echo "  <dt style=width:40%;>Condición</dt>\n";
+echo "  <dd style=margin-left:40%;>".$condicion.'&nbsp;'."</dd>";
+echo "  <dt style=width:40%;>Precio estimado</dt>\n";
+echo "  <dd style=margin-left:40%;>".$coste_estimado.'€/kg&nbsp;'."</dd>";
+echo "  <dt style=width:40%;>Cambio teórico</dt>\n";
+echo "  <dd style=margin-left:40%;>".$cambio_teorico.'$/€&nbsp;'."</dd>";
+echo "  <dt style=width:40%;>Transportes</dt>\n";
 if(isset($transportes))
+echo "  <dd style=margin-left:40%;>";
     foreach($transportes as $transporte) {
         echo $transporte.'&nbsp;'."<br>\n";
     }
-echo "  &nbsp;</dd>";
-echo "  <dt>Último despacho</dt>\n";
-echo "  <dd>".$this->Date->format($ultimo_despacho).'&nbsp;'."</dd>";
-echo "  <dt>Bultos despachos</dt>\n";
-echo "  <dd>".$bultos_despachados.'&nbsp;'."</dd>";
+echo "  </dd>";
+echo "  <dt style=width:40%;>Último despacho</dt>\n";
+echo "  <dd style=margin-left:40%;>".$this->Date->format($ultimo_despacho).'&nbsp;'."</dd>";
+echo "  <dt style=width:40%;>Bultos despachos</dt>\n";
+echo "  <dd style=margin-left:40%;>".$bultos_despachados.'&nbsp;'."</dd>";
 echo "</dl>";
 echo "</fieldset>";
 echo "<fieldset>";
@@ -81,7 +81,10 @@ echo $this->Form->input(
         'autofocus' => 'autofocus'
     )
 );
-echo "</div>\n";
+?>
+    </div>
+    <div class="col2">
+<?php
 echo $this->Form->input(
     'precio_dolar_tm',
     array(
@@ -98,7 +101,13 @@ echo $this->Form->input(
         'oninput' => 'pesoFacturacion()'
     )
 );
+?>
+    </div>
+<?php
 echo '<div id=totalCafe>'."Total café: ???€".'</div>';
+?>
+    <div class="col2">
+<?php
 echo $this->Form->input(
     'gastos_bancarios_pagados',
     array(
@@ -134,8 +143,11 @@ echo $this->Form->input(
         'oninput' => 'pesoFacturacion()'
     )
 );
-echo "</fieldset>";
-echo "<fieldset>";
+?>
+    </div>
+    </fieldset>
+    <fieldset>
+<?php
 echo '<div id=totalGastos>'."Total gastos: ???€".'</div>';
 echo '<div id=totalOperacion>'."Precio real operacion: ???€/kg".'</div>';
 echo $this->Form->input('cuenta_venta_id');
