@@ -6,7 +6,7 @@
 ?>
 <div class="printdet">
 <ul><li>
-  <?php 
+  <?php
   echo $this->element('imprimirI');
   ?>
   </li>

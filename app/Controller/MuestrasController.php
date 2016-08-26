@@ -230,7 +230,7 @@ class MuestrasController extends AppController {
 			$tipo_id = $muestra['Muestra']['tipo_id'];
 			$tipo_nombre = $tipos[$tipo_id];
 			$this->set('referencia',$muestra['Muestra']['tipo_registro']);
-		} else { //es un add()	
+		} else { //es un add()
 			//Si no esta el tipo de muestra en la URL, volvemos
 			//a muestras de oferta
 			$tipo_id = $this->passedArgs['tipo_id'];

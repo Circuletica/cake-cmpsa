@@ -35,7 +35,7 @@
 ?>
       </li>
       <li style="margin: 0">
-<?php           
+<?php
   echo $this->Form->end('Buscar');
 ?>
       </li>

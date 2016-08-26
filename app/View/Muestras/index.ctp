@@ -1,10 +1,10 @@
 <div class="printdet">
-<?php 
+<?php
 echo $this->element('imprimirI');
 ?>
 </div>
 <h2><?php echo $title;?></h2>
-<?php 
+<?php
 if(isset($this->request->data['Search']['tipo_id'])){
 	$this->Html->addCrumb($title, '/muestras/index/Search.tipo_id:'.$this->request->data['Search']['tipo_id']);
 } else {
@@ -68,7 +68,7 @@ if (isset($muestra['Contrato']['Operacion'])) {
   </table>
 
   <div class="btabla">
-<?php 
+<?php
 if(isset($this->request->data['Search']['tipo_id'])){
 	echo $this->Html->link(
 		'<i class="fa fa-plus"></i> Añadir Muestra',

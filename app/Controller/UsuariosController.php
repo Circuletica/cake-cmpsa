@@ -56,7 +56,7 @@ class UsuariosController extends AppController {
 
 	public function view_pdf($id = null) {
 		$this->checkId($id);
-		// increase memory limit in PHP 
+		// increase memory limit in PHP
 		ini_set('memory_limit', '512M');
 		$this->set('usuario', $this->Usuario->read(null, $id));
 	}

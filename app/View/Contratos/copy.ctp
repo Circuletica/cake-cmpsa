@@ -84,7 +84,7 @@
       <th>Cantidad</th>
       <th>Peso</th>
 	</tr>
-	
+
 	<?php
 	    foreach ($embalajes as $embalaje):
 		    echo '<tr>';

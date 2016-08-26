@@ -12,7 +12,7 @@ $this->Html->addCrumb(ucfirst($controller), array(
 
 <div class="printdet">
 <ul><li>
-<?php 
+<?php
 echo $this->element('imprimirI');
 ?>
 	</li>

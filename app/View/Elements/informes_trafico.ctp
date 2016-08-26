@@ -10,7 +10,7 @@
           'escape'=>false,
           'title'=>'Informe de situación de embarques sin despachar'
           )
-        );       
+        );
     echo  $this->Html->link('<i class="fa fa-info fa-lg"></i> Embarques',
       array(
           'action' =>'embarque',
@@ -21,7 +21,7 @@
           'title'=>'Informe de situación de embarques'
           )
         );
-    
+
     echo  $this->Html->link('<i class="fa fa-info fa-lg"></i> Supl. sin reclamación',
       array(
         'action' =>'suplemento',
@@ -61,7 +61,7 @@
         'escape'=>false,
         'title'=>'Informe de prórrogas pendientes'
       )
-    );    
+    );
 
     /*echo $this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> Descargar a CSV',
       array(

@@ -56,7 +56,7 @@ class ContactosController extends AppController {
 			if($this->Contacto->save($this->request->data)) {
 				$this->Flash->success('Contacto guardado');
 				return $this->History->back(-1);
-			} 
+			}
 			$this->Flash->error('Contacto NO guardado');
 			return $this->History->Back(0);
 		} else { //es un GET

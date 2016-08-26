@@ -77,7 +77,7 @@ echo $this->Html->tableCells(array(
 array(
     number_format($transporte['Operacion']['PrecioTotalOperacion']['precio_euro_kilo_total'], 4, ',', '.'),
     array('style' => 'text-align:center'
-)		
+)
 		),
 		array(
 		    $this->Date->format($transporte['Transporte']['fecha_carga']),

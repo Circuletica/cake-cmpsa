@@ -63,13 +63,13 @@ foreach($operacion['Transporte'] as $linea) {
 }
 ?>
 </table>
-<?php		
+<?php
 if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
     echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
 
 }elseif($transportado > $operacion['PesoOperacion']['cantidad_embalaje']){
     echo "<h4>Transportados: ".$transportado.' / <span style=color:#c43c35;>Restan: '.$restan."   ¡ATENCIÓN! La cantidad de Bultos son mayores a los establecidos en contrato</span></h4>";
-}else{ 
+}else{
     echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan." - "."<span style=color:#c43c35;>Todos los bultos han sido transportados</span></h4>";
 }
 

@@ -2,7 +2,7 @@
    echo $this->Form->create('Transporte', array('action'=>'filtroListado'));?>
   <div class="linea">
     <?php
-    echo $this->Form->input('Search.desde', 
+    echo $this->Form->input('Search.desde',
       array(
         'type'=>'date',
         'dateFormat' => 'DMY',
@@ -12,7 +12,7 @@
         'label'=> 'Fecha desde',
         'empty' => true
         )
-      );  
+      );
     echo $this->Form->input('Search.hasta',
       array(
         'type'=>'date',
@@ -22,9 +22,9 @@
         'orderYear' => 'asc',
         'label'=> 'Fecha hasta',
         'empty' => true
- 
+
         )
-      );  
+      );
       ?>
     </div>
     <div class="formuboton">
@@ -35,7 +35,7 @@
             ?>
           </li>
           <li style="margin: 0">
-            <?php           
+            <?php
             echo $this->Form->end('Buscar');
             ?>
           </li>

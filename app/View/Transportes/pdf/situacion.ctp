@@ -3,7 +3,7 @@
 ?>
 <div class='ancho_completo'>
     <table>
-<?php    
+<?php
 
 	echo $this->Html->tableHeaders(array(
 		$this->Paginator->sort('Calidad.nombre','Calidad'),
@@ -11,11 +11,11 @@
 		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 		$this->Paginator->sort('PesoOperacion.cantidad_embalaje','Cantidad'),
 		$this->Paginator->sort('Contrato.fecha_transporte','Embarque/Entrega'),
-		$this->Paginator->sort('PuertoDestino.nombre','Pto.Destino'),		
-		$this->Paginator->sort('fecha_carga','Fecha carga'),		
+		$this->Paginator->sort('PuertoDestino.nombre','Pto.Destino'),
+		$this->Paginator->sort('fecha_carga','Fecha carga'),
 		$this->Paginator->sort('fecha_llegada','Fecha llegada'),
 		$this->Paginator->sort('vehiculo','Nombre vehículo'),
-		$this->Paginator->sort('fecha_prevista','Llegada prevista')	
+		$this->Paginator->sort('fecha_prevista','Llegada prevista')
 		)
 	);
 
@@ -23,22 +23,22 @@
 				if (isset($transporte['Operacion']['Contrato']['si_entrega'])) {
 				  $entrega  = $transporte['Operacion']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
 				  $entrega = ' ('.$entrega.')';
-				}else{ 
+				}else{
 				  	$entrega ='';
 				}
 		echo $this->Html->tableCells(array(
-			$transporte['Operacion']['Contrato']['Calidad']['nombre'],			
+			$transporte['Operacion']['Contrato']['Calidad']['nombre'],
 			$transporte['Operacion']['referencia'],
 			$transporte[['Contrato']['Proveedor']['nombre_corto'],
-			$transporte['Operacion']['PesoOperacion']['cantidad_embalaje'],		
-		//	$transporte['Operacion']['PesoOperacion']['peso'].'kg',			
-		    $this->Date->format($transporte['Operacion']['Contrato']['fecha_transporte']).$entrega,	
+			$transporte['Operacion']['PesoOperacion']['cantidad_embalaje'],
+		//	$transporte['Operacion']['PesoOperacion']['peso'].'kg',
+		    $this->Date->format($transporte['Operacion']['Contrato']['fecha_transporte']).$entrega,
 		    $transporte['PuertoDestino']['nombre'],
 		    $this->Date->format($transporte['Transporte']['fecha_carga']),
 		    $this->Date->format($transporte['Transporte']['fecha_llegada']),
 		    $transporte['Transporte']['nombre_vehiculo'],
 		    $this->Date->format($transporte['Transporte']['fecha_prevista']    			)
-      			)		
+      			)
 		);
 		}
 ?>

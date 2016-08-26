@@ -55,7 +55,7 @@ class ButtonHelper extends AppHelper {
 		'escape' => false
 	    )
 	);
-    }    
+    }
 
     //dibujar un boton de 'editar', el tipico que aparece
     //en view(). Como variables pasamos:

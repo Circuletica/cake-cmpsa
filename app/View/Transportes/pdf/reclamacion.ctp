@@ -12,7 +12,7 @@ if(empty($transporte['Aseguradora']['nombre'] && $transporte['Transporte']['peri
 	Madrid, <?php echo $dia.' de '. $mes.' del '.$ano?>
 	</div>
 	<br><br>
-<?php echo '<b>Ref.: '.$transporte['Operacion']['referencia'].' '.'('.$transporte['Transporte']['linea'].'ª parte)&nbsp&nbsp&nbsp&nbsp Supl.: '.$transporte['Transporte']['suplemento_seguro'].'</b>'?> 
+<?php echo '<b>Ref.: '.$transporte['Operacion']['referencia'].' '.'('.$transporte['Transporte']['linea'].'ª parte)&nbsp&nbsp&nbsp&nbsp Supl.: '.$transporte['Transporte']['suplemento_seguro'].'</b>'?>
 <br><br>
 <?php echo '<h2>Café '.$transporte['Operacion']['Contrato']['Calidad']['nombre'].'</h2>';?>
 <br>
@@ -20,7 +20,7 @@ Muy Sres. nuestros:
 <br>
 Adjunto les enviamos los siguientes documentos para que nos efectúen
 liquidación por la diferencia de kilos faltantes:<br>
-<?php 
+<?php
 echo '<ul>';
 echo '<li>Certificado de Averías SGS</li>';
 echo '<li>Factura Comercial</li>';
@@ -47,7 +47,7 @@ echo 'El importe de la peritación SGS: '.number_format($transporte['Transporte'
 echo '<br><br>';
 $total = ($reclamacion*$transporte['Operacion']['PrecioTotalOperacion']['precio_euro_kilo_total']) + $suma;
 echo '<b>Total importe reclamación: '. number_format($total, 2, ',', '.').' Euros</b>';
-echo '<br><br>'; 
+echo '<br><br>';
 echo 'Sin otro particular, les saludamos atentamente.';
 }
 ?>

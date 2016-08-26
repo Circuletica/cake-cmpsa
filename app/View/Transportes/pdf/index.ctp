@@ -10,7 +10,7 @@ $this->assign('class', 'Transporte');
   );
 
 //echo "<h2>Línea de Transportes". $title."</h2>";
-$this->start('main'); 
+$this->start('main');
   if (empty($transportes)){
     echo "No hay transportes en esta lista";
   }else{
@@ -21,8 +21,8 @@ $this->start('main');
        'Nº línea',
        'Calidad',
        'Sacos',
-       'Fecha despacho' 
-       )    
+       'Fecha despacho'
+       )
       );
       foreach($transportes as $transporte){
         echo $this->Html->tableCells(array(

@@ -20,7 +20,7 @@ $this->start('filter');
 			'escape'=>false,
 			'title'=>'Descargar la información a un archivo CSV'
 		)
-	);*/ 
+	);*/
 	}
 $this->end();
 
@@ -85,4 +85,4 @@ if (empty($operaciones)){
 	echo "</table>\n";
 }
 $this->end();
-?> 
+?>

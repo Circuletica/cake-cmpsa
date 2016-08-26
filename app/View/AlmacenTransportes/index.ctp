@@ -32,7 +32,7 @@ $this->start('main');
 					$almacentransporte['AlmacenTransporte']['cantidad_cuenta'].' bultos',
 					$almacentransporte['AlmacenTransporte']['peso_bruto'].' kg',
 					$almacentransporte['AlmacenTransporte']['marca_almacen'],
-					$almacentransporte['Operacion']['referencia'],                    
+					$almacentransporte['Operacion']['referencia'],
 					$this->Button->view('almacen_transportes',$almacentransporte['AlmacenTransporte']['id'])
 				));
 			endforeach;

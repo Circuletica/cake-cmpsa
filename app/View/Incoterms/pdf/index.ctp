@@ -1,7 +1,7 @@
 <?php $this->Html->addCrumb('Incoterms', '/incoterms');?>
 <div class="printdet">
 <ul><li>
-<?php 
+<?php
 echo $this->element('imprimir');
 ?>
   </li>

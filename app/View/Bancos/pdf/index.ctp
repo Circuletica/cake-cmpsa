@@ -2,7 +2,7 @@
 <?php $this->Html->addCrumb('Bancos', '/banco_pruebas');?>
 
 <div class="printdet">
-<?php 
+<?php
 echo $this->element('imprimirI')
 ?>
 </div>

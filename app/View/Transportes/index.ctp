@@ -25,7 +25,7 @@ if ($action == 'index'){
   echo $this->element('filtrotransporte'); //Elemento del filtro despacho
 }
   echo $this->element('informes_trafico'); //Elemento de informes de tráfico
-$this->end();    
+$this->end();
 $this->start('main');
   if (empty($transportes)){
     echo "No hay transportes en esta lista";
@@ -92,7 +92,7 @@ $this->start('main');
               )
           );
         }
-        echo "</table>\n";       
+        echo "</table>\n";
       }elseif($action == 'reclamacion_factura'){
         echo "<table class='tc2 tc4 tc5 tc6'>\n";
         echo $this->Html->tableHeaders(array(
@@ -121,7 +121,7 @@ $this->start('main');
                         $transporte['Transporte']['id']),
                         array(
                         'class'=>'boton',
-                        'escape' => false,  
+                        'escape' => false,
                         'title'=>'Detalle'
                         )
                         )
@@ -129,11 +129,11 @@ $this->start('main');
             );
           }
         }
-        echo "</table>\n"; 
+        echo "</table>\n";
 
-      }elseif($action == 'prorrogas_pendientes'){ 
+      }elseif($action == 'prorrogas_pendientes'){
                echo "<table class='tc2 tc4 tc5 '>\n";
-        echo $this->Html->tableHeaders(array( 
+        echo $this->Html->tableHeaders(array(
           $this->Paginator->sort('Operacion.referencia','Ref. Operación'),
           $this->Paginator->sort('Transporte.linea','Nº línea'),
           $this->Paginator->sort('Calidad.nombre', 'Calidad'),
@@ -160,14 +160,14 @@ $this->start('main');
                       $transporte['Transporte']['id']),
                       array(
                       'class'=>'boton',
-                      'escape' => false,  
+                      'escape' => false,
                       'title'=>'Detalle'
                       )
                       )
               )
           );
         }
-        echo "</table>\n"; 
+        echo "</table>\n";
       }
   }
 $this->end();

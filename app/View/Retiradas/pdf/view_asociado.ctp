@@ -50,7 +50,7 @@ foreach($retiradas as $retirada):
 				)
 			)
 		);
-	
+
 endforeach;?>
 </table>
 <?php
@@ -66,7 +66,7 @@ echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
 ?>
 <br><br>
 <?php
-    echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Volver', 
+    echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Volver',
     	$this->request->referer(''), array('class' => 'botond',
     	'escape'=>false
     	)
