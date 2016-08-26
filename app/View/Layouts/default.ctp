@@ -74,11 +74,10 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> RETIRADAS','/retiradas/index_conta',array('escape' => false));?></li>
 				</ul>
 			</li>
-			<li>
-			<?php echo $this->Html->link('Salir','/users/logout',array('escape' => false));?>
-			</li>
 		</ul>
+		<?php echo $this->Html->link('Salir','/users/logout',array('class'=> 'salir','escape' => false));?>
 	</div>
+</div>
 	<div id="content">
 		<div id="bread">
 			<i class="fa fa-home"></i>
@@ -99,7 +98,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 				<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?></li>
 			</ul>
 		</div>
-		<?php echo '&nbsp&nbsp'.$cakeVersion.' - Optimizado para resolución superior a 1280x720'; ?>
+		<?php echo '<p style="text-align:center;">&nbsp&nbsp'.$cakeVersion.' - Optimizado para resolución superior a 1280x720</p>'; ?>
 	</div>
 	<?php echo $this->Js->writeBuffer(); //write cached scripts ?>
 </body>

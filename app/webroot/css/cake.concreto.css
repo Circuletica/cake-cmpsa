@@ -4,7 +4,7 @@
 	display: inline;
 
 }
-.tabs ul { 
+.tabs ul {
 	list-style: none;
 	padding:0;
 	margin:0;
@@ -39,7 +39,7 @@
 .tabs li ul {
 	display:none;
 	position:absolute;
-	min-width:150px;
+	min-width:5%;
 }
 .tabs li:hover > ul {
 	display:block;
@@ -186,8 +186,8 @@ input[type=submit]:active,
 }
 
 /*3 COLUMNAS*/
-.col3{ 
-	-webkit-column-count: 3; /* Chrome, Safari, Opera */	
+.col3{
+	-webkit-column-count: 3; /* Chrome, Safari, Opera */
 	-moz-column-count: 3; /* Firefox */
 	column-count: 3;
 	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
@@ -200,7 +200,7 @@ input[type=submit]:active,
 
 /*4 COLUMNAS*/
 .col4{
-	-webkit-column-count: 4; /* Chrome, Safari, Opera */	
+	-webkit-column-count: 4; /* Chrome, Safari, Opera */
 	-moz-column-count: 4; /* Firefox */
 	column-count: 4;
 	-webkit-column-gap: 35px; /* Chrome, Safari, Opera */
@@ -213,7 +213,7 @@ input[type=submit]:active,
 
 /*5 COLUMNAS*/
 .col5{
-	-webkit-column-count: 5; /* Chrome, Safari, Opera */	
+	-webkit-column-count: 5; /* Chrome, Safari, Opera */
 	-moz-column-count: 5; /* Firefox */
 	column-count: 5;
 	-webkit-column-gap: 40px; /* Chrome, Safari, Opera */
@@ -233,7 +233,7 @@ div.boton {
 .boton, input[type="submit"] {
 	font-weight:normal;
 	padding: 2px 5px;
-	text-align: center; 
+	text-align: center;
  	background: #dcdcdc;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));
 	background-image: -webkit-linear-gradient(top, #fefefe, #dcdcdc);
@@ -270,7 +270,7 @@ div.botond {
 .botond, input[type="submit"] {
 	font-weight:normal;
 	padding: 4px 8px;
-	text-align: center; 
+	text-align: center;
  	background: #dcdcdc;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));
 	background-image: -webkit-linear-gradient(top, #fefefe, #dcdcdc);
@@ -307,7 +307,7 @@ div.botonc {
 .botonc, input[type="submit"] {
 	font-weight:normal;
 	padding: 2px 5px;
-	text-align: center; 
+	text-align: center;
  	background: #dcdcdc;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));
 	background-image: -webkit-linear-gradient(top, #fefefe, #dcdcdc);
@@ -342,7 +342,7 @@ div.salir {
 .salir, input[type="submit"] {
 	font-weight:normal;
 	padding: 2px 8px;
-	text-align: center; 
+	text-align: center;
  	background: #dcdcdc;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));
 	background-image: -webkit-linear-gradient(top, #fefefe, #dcdcdc);
@@ -370,7 +370,7 @@ div.exp {
 	position:relative;
 	bottom: -300px;
 
-    
+
 }
 div.exp h3 {
 	padding-top:0;
@@ -487,7 +487,7 @@ input[type=submit]:active,
 	/*width:250px; No necesario*/
 }
 
-.formuboton ul { 
+.formuboton ul {
 	list-style: none;
 	padding:1em;
 	margin:0;
@@ -632,7 +632,7 @@ input[type=submit],
 	text-decoration: none;
 }
 	/*Boton tras texto o desplegable alineado */
-.printdet ul { 
+.printdet ul {
 	list-style: none;
 	padding:1em;
 	margin:0;
@@ -650,7 +650,7 @@ div.laterald {
 	/*padding:1%;*/
 	border: 5px;
     margin: 5px;
-    
+
 }
 div.laterald h3 {
 	padding-top:0;
@@ -689,7 +689,7 @@ div.laterali {
 	font-size: 12 5%;
 
 }
-.portada ul { 
+.portada ul {
 	list-style: none;
 	padding:0;
 	margin:0;
