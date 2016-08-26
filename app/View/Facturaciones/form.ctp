@@ -2,11 +2,11 @@
 $this->Html->addCrumb('Operaciones','/operaciones');
 
 if ($action == 'add') {
-    echo "<h2>Añadir Facturación a Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+	echo "<h2>Añadir Facturación a Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
 }
 
 if ($action == 'edit') {
-    echo "<h2>Modificar Facturación de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+	echo "<h2>Modificar Facturación de Operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
 }
 echo $this->Form->create('Facturacion');
 echo "<fieldset>";
@@ -19,9 +19,9 @@ echo "  <dd style=margin-left:40%;>".$calidad.'&nbsp;'."</dd>";
 echo "  <dt style=width:40%;>Proveedor</dt>\n";
 echo "  <dd style=margin-left:40%;>";
 echo $this->html->link($proveedor, array(
-    'controller' => 'proveedores',
-    'action' => 'view',
-    $proveedor_id)
+	'controller' => 'proveedores',
+	'action' => 'view',
+	$proveedor_id)
 );
 echo "  </dd>";
 echo "  <dt style=width:40%;>Condición</dt>\n";
@@ -67,7 +67,7 @@ if ($peso_facturacion != null) {
     );
     echo "</div>\n";
 } else {
-    echo "<em>No hay ningun peso definido, el cálculo de precio puede ser erróneo</em>\n";
+	echo "<em>No hay ningun peso definido, el cálculo de precio puede ser erróneo</em>\n";
 }
 echo "<div class='linea'>\n";
 echo $this->Form->input(
@@ -120,28 +120,28 @@ echo $this->Form->input(
     )
 );
 echo $this->Form->input(
-    'flete_pagado',
-    array(
-        'label' => 'Flete',
-        'value' => ($action == 'add')?0:$this->request->data['Facturacion']['flete_pagado'],
-        'oninput' => 'pesoFacturacion()'
-    )
+	'flete_pagado',
+	array(
+		'label' => 'Flete',
+		'value' => ($action == 'add')?0:$this->request->data['Facturacion']['flete_pagado'],
+		'oninput' => 'pesoFacturacion()'
+	)
 );
 echo $this->Form->input(
-    'despacho_pagado',
-    array(
-        'label' => 'Despacho',
-        'value' => ($action == 'add')?0:$this->request->data['Facturacion']['despacho_pagado'],
-        'oninput' => 'pesoFacturacion()'
-    )
+	'despacho_pagado',
+	array(
+		'label' => 'Despacho',
+		'value' => ($action == 'add')?0:$this->request->data['Facturacion']['despacho_pagado'],
+		'oninput' => 'pesoFacturacion()'
+	)
 );
 echo $this->Form->input(
-    'seguro_pagado',
-    array(
-        'label' => 'Seguro',
-        'value' => ($action == 'add')?0:$this->request->data['Facturacion']['seguro_pagado'],
-        'oninput' => 'pesoFacturacion()'
-    )
+	'seguro_pagado',
+	array(
+		'label' => 'Seguro',
+		'value' => ($action == 'add')?0:$this->request->data['Facturacion']['seguro_pagado'],
+		'oninput' => 'pesoFacturacion()'
+	)
 );
 ?>
     </div>

@@ -201,7 +201,6 @@ class FinanciacionesController extends AppController {
 		);
 		$this->set(compact('operacion'));
 
-		//$tipoIvas = $this->Financiacion->TipoIva->find('list');
 		$this->Financiacion->TipoIva->virtualFields['nombre_valor'] =
 			"CONCAT(TipoIva.nombre,'(',ValorTipoIva.valor,'%)')";
 
@@ -516,3 +515,4 @@ class FinanciacionesController extends AppController {
 	}
 
 }
+?>

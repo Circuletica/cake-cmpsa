@@ -58,7 +58,7 @@ class CsvHelper extends AppHelper
 		if ($to_encoding) {
 			$output = mb_convert_encoding($output, $to_encoding, $from_encoding);
 		}
-		//return $this->output($output);
-		return $output;
+		return $this->output($output);
+		//return $output;
 	}
 }

@@ -561,3 +561,4 @@ $this->set(compact('operaciones_almacen'));*/
 	//		}
 	//	}
 }
+?>

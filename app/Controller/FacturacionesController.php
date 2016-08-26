@@ -240,6 +240,7 @@ class FacturacionesController extends AppController {
 			'bultos_despachados',
 			$bultos_despachados[0]['cantidad_cuenta'].'/'.$operacion['PesoOperacion']['cantidad_embalaje']
 		);
+
 		$this->set(
 			'cuentaVentas',
 			$this->Facturacion->CuentaVenta->find(

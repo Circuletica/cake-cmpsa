@@ -6,3 +6,4 @@ class NumberHelper extends AppHelper {
 		return number_format((float)$number, 2, ',', '.');
 	}
 }
+?>

@@ -31,7 +31,6 @@ class ContactosController extends AppController {
 				'controller' => $this->params['named']['from_controller'],
 			));
 		}
-		debug('url correcta');
 		$this->form($id);
 		$this->render('form');
 	}

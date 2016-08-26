@@ -385,8 +385,8 @@ class AnticiposController extends AppController {
 
 		$this->layout = null;
 		$this->autoLayout = false;
-//		Configure::write('debug', '0');
-		//$this->response->download("anticipos_".date('Ymd').".csv");
+		Configure::write('debug', '0');
+		$this->response->download("anticipos_".date('Ymd').".csv");
 
 		$this->Anticipo->updateAll(
 			array(
@@ -398,3 +398,4 @@ class AnticiposController extends AppController {
 		);
 	}
 }
+?>
