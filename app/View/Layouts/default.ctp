@@ -36,47 +36,53 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 <body>
 <div id="header">
 	<h1><?php echo $this->Html->link($cakeDescription, '/'); ?></h1>
-		<div class="menuheader">
-		<ul class="tabs">
-			<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','#',array('escape' => false));?>
-				<ul>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> CONTRATO','#',array('escape' => false));?>
-						<ul>
-							<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> Todos','/contratos',array('escape' => false));?></li>
-							<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> Peso pendiente','/contratos/index_left',array('escape' => false));?></li>
-						</ul>
-					</li>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones',array('escape' => false));?></li>
-				</ul>
-			</li>
-			<li><?php echo $this->Html->link('<i class="fa fa-flask"></i> LABORATORIO','#',array('escape' => false));?>
-				<ul>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OFERTA','/muestras/index/Search.tipo_id:1',array('escape' => false));?></li>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> EMBARQUE','/muestras/index/Search.tipo_id:2	',array('escape' => false));?></li>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
-				</ul>
-			</li>
-			<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','#', array('escape' => false));?>
-				<ul>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> CUENTAS ALMACÉN','/almacen_transportes',array('escape' => false));?></li>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> RETIRADAS','/retiradas',array('escape' => false));?></li>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> FLETES','/fletes',array('escape' => false));?></li>
-				</ul>
-			</li>
+	<div id="cssmenu">
+	<ul>
+		<!--<li class="active"><a href="/">Inicio</a></li>-->
+		<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','#',array('escape' => false));?>
+			<ul>
+				<li class="has-sub"><?php echo $this->Html->link('CONTRATO','#',array('escape' => false));?>
+					<ul>
+						<li><?php echo $this->Html->link('Todos','/contratos',array('escape' => false));?></li>
+						<li class="last"><?php echo $this->Html->link('Peso pendiente','/contratos/index_left',array('escape' => false));?></li>
+					</ul>
+				</li>
+				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones',array('escape' => false));?></li>
+				</li>
+			</ul>
+		</li>
+		<li><?php echo $this->Html->link('<i class="fa fa-flask"></i> LABORATORIO','#',array('escape' => false));?>
+			<ul>
+				<li><?php echo $this->Html->link('OFERTA','/muestras/index/Search.tipo_id:1',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('EMBARQUE','/muestras/index/Search.tipo_id:2	',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
+			</ul>
+		</li>
+		<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','#', array('escape' => false));?>
+			<ul>
+				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('CUENTAS ALMACÉN','/almacen_transportes',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('RETIRADAS','/retiradas',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('FLETES','/fletes',array('escape' => false));?></li>
+			</ul>
+		</li>
+		<li class="last"><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','#',array('escape' => false));?>
+			<ul>
+				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('FINANCIACIÓN','/financiaciones',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('ANTICIPOS','/anticipos',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('FACTURACIÓN','/facturaciones',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('RETIRADAS','/retiradas/index_conta',array('escape' => false));?></li>
+			</ul>
+			<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?></li>
 
-			<li><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','#',array('escape' => false));?>
-				<ul>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> OPERACIÓN','/operaciones',array('escape' => false));?></li>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> FINANCIACIÓN','/financiaciones',array('escape' => false));?></li>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> ANTICIPOS','/anticipos',array('escape' => false));?></li>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> FACTURACIÓN','/facturaciones',array('escape' => false));?></li>
-					<li><?php echo $this->Html->link('<i class="fa fa-chevron-right"></i> RETIRADAS','/retiradas/index_conta',array('escape' => false));?></li>
-				</ul>
-			</li>
 		</ul>
-		<?php echo $this->Html->link('Salir','/users/logout',array('class'=> 'salir','escape' => false));?>
+
+		<ul>
+			<li><a href="/users/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Salir</a></li>
+		</ul>
 	</div>
+		<?php //echo $this->Html->link('Salir','/users/logout',array('class'=> 'salir','escape' => false));?>
 </div>
 	<div id="content">
 		<div id="bread">
@@ -89,15 +95,6 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 	</div>
 
 	<div id="footer">
-		<div class="menufooter">
-			<ul class="tabs">
-		<!--	<li><?php echo $this->Html->link('<i class="fa fa-calendar"></i> CALENDARIO','/pages/calendario',array('escape' => false));?></li>	-->
-		<!--		<li><?php echo $this->Html->link('<i class="fa fa-bar-chart"></i> INFORMES','/pages/home',array('escape' => false));?></li>-->
-				<!--		<li ><?php echo $this->Html->link('<i class="fa fa-cog"></i> PREFERENCIAS','/pages/preferencias',array('escape' => false));?></li>-->
-
-				<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?></li>
-			</ul>
-		</div>
 		<?php echo '<p style="text-align:center;">&nbsp&nbsp'.$cakeVersion.' - Optimizado para resolución superior a 1280x720</p>'; ?>
 	</div>
 	<?php echo $this->Js->writeBuffer(); //write cached scripts ?>

@@ -83,14 +83,14 @@ p {
 	text-align: left;
 }
 #header{
-	padding: 20px 20px 10px 30px;
-	width: 1220px;
+	padding: 20px 0px 30px 40px;
+	width: 1260px;
  	margin: 0px auto;}
 #header h1 {
 	/*line-height:30px;*/
 	background: #637A91 url('../img/grano.icon.png') no-repeat left;
 	color: #fff;
-	padding: 10px 10px 10px 40px;
+	padding: 0px 10px 10px 40px;
 	display: inline;
 }
 #header h1 a {

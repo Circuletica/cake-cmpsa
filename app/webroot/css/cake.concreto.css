@@ -1,3 +1,181 @@
+
+/* Starter CSS for Menu */
+#cssmenu {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+#cssmenu ul, #cssmenu li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#cssmenu ul {
+  position: relative;
+  z-index: 597;
+}
+#cssmenu ul li {
+  float: left;
+  min-height: 1px;
+  vertical-align: middle;
+}
+#cssmenu ul li.hover,
+#cssmenu ul li:hover {
+  position: relative;
+  z-index: 599;
+  cursor: default;
+}
+#cssmenu ul ul {
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 598;
+  width: 100%;
+}
+#cssmenu ul ul li {
+  float: none;
+}
+#cssmenu ul ul ul {
+  top: 0;
+  left: auto;
+  right: -99.5%;
+}
+#cssmenu ul li:hover > ul {
+  visibility: visible;
+}
+#cssmenu ul ul {
+  bottom: 0;
+  left: 0;
+}
+#cssmenu ul ul {
+  margin-top: 0;
+}
+#cssmenu ul ul li {
+  font-weight: normal;
+}
+#cssmenu a {
+  display: block;
+  line-height: 1em;
+  text-decoration: none;
+}
+
+/* Custom CSS Styles */
+#cssmenu{
+	background: #dcdcdc;
+	/*border-bottom: 4px solid #dcdcdc;*/
+	/*font-family: 'Oxygen Mono', Tahoma, Arial, sans-serif;*/
+	font-size: 12px;
+	width: 75%;
+	float: right;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));
+	background-image: -webkit-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: -moz-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: -ms-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: -o-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: linear-gradient(top, #fefefe, #dcdcdc);
+}
+#cssmenu > ul {
+	display: inline-block;
+}
+	#cssmenu:after, #cssmenu ul:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+#cssmenu ul {
+	text-transform: uppercase;
+}
+#cssmenu ul ul {
+	border-top: 4px solid #dcdcdc;
+	text-transform: none;
+	min-width: 190px;
+}
+#cssmenu ul ul a {
+	background: #5FCF80;
+	color: #000;
+	border: 1px solid #bbb;
+	border-top: 0 none;
+	line-height: 150%;
+	padding: 10px 12px;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));
+	background-image: -webkit-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: -moz-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: -ms-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: -o-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: linear-gradient(top, #fefefe, #dcdcdc);
+}
+#cssmenu ul ul ul {
+border-top: 0 none;
+}
+#cssmenu ul ul li {
+	position: relative;
+	text-transform: uppercase;
+
+}
+#cssmenu ul ul li:first-child > a {
+	border-top: 1px solid #bbb;
+}
+#cssmenu ul ul li:hover > a {
+	background: #5FCF80;
+}
+#cssmenu ul ul li:last-child > a {
+	-moz-border-radius: 0 0 3px 3px;
+	-webkit-border-radius: 0 0 3px 3px;
+	border-radius: 0 0 3px 3px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	-moz-box-shadow: 0 1px 0 #dcdcdc;
+	-webkit-box-shadow: 0 1px 0 #dcdcdc;
+	box-shadow: 0 1px 0 #dcdcdc;
+}
+#cssmenu ul ul li:last-child:hover > a {
+	-moz-border-radius: 0 0 0 3px;
+	-webkit-border-radius: 0 0 0 3px;
+	border-radius: 0 0 0 3px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+}
+#cssmenu ul ul li.has-sub > a:after {
+	content: '+';
+	position: absolute;
+	top: 50%;
+	right: 15px;
+	margin-top: -8px;
+}
+#cssmenu ul li:hover > a, #cssmenu ul li.active > a {
+	background: #dcdcdc;
+	color: #000;
+}
+#cssmenu ul li.has-sub > a:after {
+	content: '+';
+	margin-left: 5px;
+}
+#cssmenu ul li.last ul {
+	left: auto;
+	right: 0;
+}
+#cssmenu ul li.last ul ul {
+	left: auto;
+	right: 99.5%;
+}
+#cssmenu a {
+	background: #dcdcdc;
+	color: #000;
+	padding: 0 20px;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#dcdcdc));
+	background-image: -webkit-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: -moz-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: -ms-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: -o-linear-gradient(top, #fefefe, #dcdcdc);
+	background-image: linear-gradient(top, #fefefe, #dcdcdc);
+}
+#cssmenu > ul > li > a {
+	line-height: 42px;
+}
+
 .tabs{
 	position: relative;
 	padding-right:5%;
@@ -82,7 +260,7 @@ color: #fff;
 div.detallado {
 	/*float:right;*/
 	margin-top: 20px;
-    /*width:90%;*/
+	/*width:90%;*/
 	border-top: 2px solid rgba(102, 102, 102, 0.92);
 }
 div.detallado h3{
@@ -196,7 +374,7 @@ input[type=submit]:active,
   	-webkit-column-rule: 1px dotted #ddd;
     -moz-column-rule: 1px dotted #ddd;
     column-rule: 1px dotted #ddd;
-    }
+}
 
 /*4 COLUMNAS*/
 .col4{
