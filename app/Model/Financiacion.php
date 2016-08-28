@@ -25,4 +25,27 @@ class Financiacion extends AppModel {
 			'foreignKey' => 'id'
 		)
 	);
+
+	public function beforeDelete($cascade = true) {
+		//no se deja borrar financiación si ya hay
+		//anticipos exportados.
+		global $count;
+		$count = $this->Operacion->AsociadoOperacion->Anticipo->find(
+			'count',
+			array(
+				'recursive' => -1,
+				'conditions' => array(
+					'Anticipo.si_contabilizado' => true,
+					'AsociadoOperacion.operacion_id' => $this->id
+				),
+				'contain' => array(
+					'AsociadoOperacion'
+				)
+			)
+		);
+		if ($count == 0) {
+			return true;
+		}
+		return false;
+	}
 }
