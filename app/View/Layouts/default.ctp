@@ -48,7 +48,6 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 					</ul>
 				</li>
 				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones',array('escape' => false));?></li>
-				</li>
 			</ul>
 		</li>
 		<li><?php echo $this->Html->link('<i class="fa fa-flask"></i> LABORATORIO','#',array('escape' => false));?>
@@ -74,13 +73,27 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 				<li><?php echo $this->Html->link('FACTURACIÓN','/facturaciones',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('RETIRADAS','/retiradas/index_conta',array('escape' => false));?></li>
 			</ul>
-			<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?></li>
-
-		</ul>
-
-		<ul>
+		</li>
+		<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?>
+			<ul>
+				<li><?php echo $this->Html->link('Agentes','/agentes',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Almacenes','/almacenes',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Aseguradoras','/aseguradoras',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Asociados','/asociados',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Bancos','/bancos',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Calidades','/calidades',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Comisiones','/admin/comisiones',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Embalajes','/admin/embalajes',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Incoterms','/incoterms',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('IVA','/tipo_ivas',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Usuarios','/usuarios',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Navieras','/navieras',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Paises','/paises',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Proveedores','/proveedores',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('Puertos','/puertos',array('escape' => false));?></li>
+			</ul>
 			<li><a href="/users/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Salir</a></li>
-		</ul>
+	</ul>
 	</div>
 		<?php //echo $this->Html->link('Salir','/users/logout',array('class'=> 'salir','escape' => false));?>
 </div>

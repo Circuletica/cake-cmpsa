@@ -78,7 +78,7 @@
 #cssmenu > ul {
 	display: inline-block;
 }
-	#cssmenu:after, #cssmenu ul:after {
+#cssmenu:after, #cssmenu ul:after {
 	content: '';
 	display: block;
 	clear: both;
@@ -89,7 +89,7 @@
 #cssmenu ul ul {
 	border-top: 4px solid #dcdcdc;
 	text-transform: none;
-	min-width: 190px;
+	min-width: 160px;
 }
 #cssmenu ul ul a {
 	background: #5FCF80;

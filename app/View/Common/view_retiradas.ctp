@@ -30,16 +30,28 @@ if (!empty($this->fetch('breadcrumb'))) {
     </ul>
 </div>
 <div class="acciones">
+
 	<div class="printdet">
 	<ul><li>
  <a href="javascript:window.print()"><i class="fa fa-print fa-lg"></i></a>
- <?php // PARA VIEW
- echo " ".$this->Html->link(('<i class="fa fa-file-pdf-o fa-lg"></i>'),
- 	array(
- 		'action' => 'view_asociado',$id,'ext' => 'pdf',
- 	),
- 	array(
- 		'escape'=>false,'target' => '_blank','title'=>'Exportar a PDF')).' '.
+ <?php
+echo $this->Html->link(
+     '<i class="fa fa-file-pdf-o fa-lg"></i>',
+     array(
+        'controller' => 'retiradas',
+        'action' => 'view_asociado',
+        $id,
+        'from_controller' => 'operaciones',
+        'from_id' => $operacion_id,
+        'asociado_id' =>$asociado_nombre['Asociado']['id'],
+        'ext' => 'pdf'
+ ),
+     array(
+     'title'=>'Exportar a PDF',
+     'target' => '_blank',
+     'escape' => false
+     )
+ ).' '.
  $this->Html->link('<i class="fa fa-envelope-o fa-lg"></i>', 'mailto:',array('escape'=>false,'target' => '_blank', 'title'=>'Enviar e-mail'));
  ?>
 

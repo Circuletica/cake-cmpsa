@@ -18,9 +18,13 @@ $this->Html->addCrumb($object, array(
     'controller'=>$controller,
     'action'=>'index'
 ));
-?>
-<h2><?php echo 'Listado de '.$object.': '.$titulo; ?></h2>
 
+if(empty($title)){
+    echo '<h2>Listado de '.$object.'</h2>';
+}else{
+    echo '<h2>Listado de '.$object.': '.$titulo.'</h2>';
+}
+?>
 <div class="actions">
 <!--    <h3>Búsqueda</h3>
     <ul>-->

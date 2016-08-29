@@ -1,6 +1,6 @@
 <?php
 $this->extend('/Common/index');
-$this->assign('object', 'Cuentas de almacén');
+$this->assign('object', 'cuentas de almacén');
 $this->assign('class', 'AlmacenTransporte');
 $this->assign('add_button', 0);
 

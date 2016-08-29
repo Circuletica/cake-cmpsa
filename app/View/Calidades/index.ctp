@@ -18,12 +18,12 @@
 </ul>
 </div>
 <h2>Calidades</h2>
-<table>
+<table class="tc4">
   <tr>
     <th><?php echo $this->Paginator->sort('descafeinado','Proceso')?></th>
     <th><?php echo $this->Paginator->sort('Pais.nombre','Origen')?></th>
     <th><?php echo $this->Paginator->sort('descripcion', 'Descripción')?></th>
-    <th><?php echo 'Detalle'?></th>
+    <th><?php echo 'Detalles'?></th>
   </tr>
 <?php foreach($calidades as $calidad):?>
   <tr>

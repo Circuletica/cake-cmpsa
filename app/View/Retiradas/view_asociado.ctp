@@ -1,5 +1,5 @@
 <?php
-$this->extend('/Common/view');
+$this->extend('/Common/view_retiradas');
 $this->assign('object', 'Retirada del asociado '.$asociado_nombre['Asociado']['nombre_corto']);
 //$this->assign('line_object', 'precio');
 //$this->assign('id',$flete['Retirada']['id']);

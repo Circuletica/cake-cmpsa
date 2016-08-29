@@ -17,8 +17,7 @@ class RetiradasController extends AppController {
 			'Operacion' => array (
 				'fields' => array(
 					'id',
-					'referencia',
-
+					'referencia'
 				)
 			)
 		);
@@ -231,7 +230,6 @@ class RetiradasController extends AppController {
 		$peso = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] * $solicitado['ContratoEmbalaje']['peso_embalaje_real'];
 		$this->set(compact('peso'));
 
-
 		// Necesario para evitar agregar retirada si no hay en el almacen nada.
 		//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
 		$this->loadModel('Operacion');
@@ -253,47 +251,6 @@ class RetiradasController extends AppController {
 			$cuenta_almacen = $cuenta_almacen['AlmacenTransporte'];
 		}
 		$this->set(compact('cuenta_almacen'));
-
-
-
-
-		//NO TENGO NI IDEA QUE PINTA ESTE CODIGO, DE NO VER ERRORES EN EL FUNCIONAMIENTO SER BORRARA 07/04/2016
-
-/*	$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
-		'all',
-		array(
-		'contain' => array(
-			'Transporte' =>array(
-					'AlmacenTransporte'=>array(
-						'fields' => array(
-							'id'
-							)
-						)
-					)
-				)
-		)
-	);
-		foreach($operaciones_almacen as $clave => $operacion){
-		$operaciones_almacen[$clave]['AlmacenTransporte'] = array();
-		foreach($operacion['Transporte'] as $transporte){
-
-		if(!empty($transporte['AlmacenTransporte'])){
-			foreach($transporte['AlmacenTransporte'] as $cuenta){
-			$operaciones_almacen[$clave]['AlmacenTransporte'][] = $cuenta;
-			}
-		}
-		}
-		unset($operaciones_almacen[$clave]['Transporte']);
-		//quitamos operaciones sin cuenta de almacén
-		if (empty($operaciones_almacen[$clave]['AlmacenTransporte'])) {
-		unset($operaciones_almacen[$clave]);
-		}
-	}
-
-	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
-
-$this->set(compact('operaciones_almacen'));*/
-
 
 		//Para exportar en PDF nececisto declarar la id
 		$this->set(compact('id'));
