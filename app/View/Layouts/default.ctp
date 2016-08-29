@@ -39,7 +39,7 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 	<div id="cssmenu">
 	<ul>
 		<!--<li class="active"><a href="/">Inicio</a></li>-->
-		<li><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','#',array('escape' => false));?>
+		<li class="has-sub"><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','#',array('escape' => false));?>
 			<ul>
 				<li class="has-sub"><?php echo $this->Html->link('CONTRATO','#',array('escape' => false));?>
 					<ul>
