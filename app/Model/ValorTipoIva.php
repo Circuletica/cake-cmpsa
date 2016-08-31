@@ -16,3 +16,4 @@ class ValorTipoIva extends AppModel {
 		return $results;
 	}
 }
+?>

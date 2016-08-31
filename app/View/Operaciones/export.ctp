@@ -1,4 +1,4 @@
-<?php
+	<?php
  $line=$operaciones[0]['Operacion'];
  $this->CSV->addRow(array_keys($line));
  foreach ($operaciones as $operacion)
@@ -7,5 +7,5 @@
        $this->CSV->addRow($line);
  }
  $filename='operaciones';
- echo  $this->CSV->render($filename);
+ echo $this->CSV->render($filename);
 ?>

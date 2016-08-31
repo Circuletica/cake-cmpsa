@@ -6,3 +6,4 @@ class RestoContrato extends AppModel {
 		//			'foreignKey' => 'id')
 	);
 }
+?>

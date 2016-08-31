@@ -216,19 +216,19 @@ class FletesController extends AppController {
 		$this->set(compact('id'));
 	}
 
-//	public function delete($id = null) {
-//		$this->request->allowMethod('post');
-//
-//		$this->Flete->id = $id;
-//		if($this->Flete->delete()) {
-//			$this->Flash->success('Flete borrado');
-//			return $this->redirect(array(
-//				'controller' => 'fletes',
-//				'action' => 'index'
-//			));
-//		}
-//		$this->Flash->error(__('Flete NO borrado'));
-//		return $this->History->back(0);
-//	}
+	//	public function delete($id = null) {
+	//		$this->request->allowMethod('post');
+	//
+	//		$this->Flete->id = $id;
+	//		if($this->Flete->delete()) {
+	//			$this->Flash->success('Flete borrado');
+	//			return $this->redirect(array(
+	//				'controller' => 'fletes',
+	//				'action' => 'index'
+	//			));
+	//		}
+	//		$this->Flash->error(__('Flete NO borrado'));
+	//		return $this->History->back(0);
+	//	}
 }
 ?>

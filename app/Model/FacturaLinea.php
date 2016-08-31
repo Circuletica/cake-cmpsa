@@ -7,3 +7,4 @@ class FacturaLinea extends AppModel {
 		'TipoIva'
 	)
 }
+?>

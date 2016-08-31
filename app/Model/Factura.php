@@ -22,3 +22,4 @@ class Factura extends AppModel {
 		return false;
 	}
 }
+?>

@@ -2,6 +2,8 @@
 $class = $this->fetch('class');
 $titulo = $this->fetch('titulo');
 $add_button = $this->fetch('add_button'); //Variable que se asignará en el index cuando no se quiera  ver el botón de añadir.
+// 0 con botón
+// 1 sin botón
 
 //el controller se calcula por defecto a partir
 //de la clase
@@ -16,14 +18,19 @@ $this->Html->addCrumb($object, array(
     'controller'=>$controller,
     'action'=>'index'
 ));
-?>
-<h2><?php echo 'Listado de '.$object.': '.$titulo; ?></h2>
 
+if(empty($title)){
+    echo '<h2>Listado de '.$object.'</h2>';
+}else{
+    echo '<h2>Listado de '.$object.': '.$titulo.'</h2>';
+}
+?>
 <div class="actions">
-    <h3>Búsqueda</h3>
-    <ul>
+<!--    <h3>Búsqueda</h3>
+    <ul>-->
     <?php echo $this->fetch('filter');?>
-    </ul>
+<!--    </ul>
+-->
 </div>
 <div class="acciones">
 	<div class="printdet">

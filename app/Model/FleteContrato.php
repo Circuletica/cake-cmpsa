@@ -5,3 +5,4 @@ class FleteContrato extends AppModel{
 		'Flete'
 	);
 }
+?>

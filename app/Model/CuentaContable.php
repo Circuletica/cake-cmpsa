@@ -4,3 +4,4 @@ class CuentaContable extends AppModel {
 	public $useTable = 'cuenta_contables';
 	public $displayField = 'numero';
 }
+?>

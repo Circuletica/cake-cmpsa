@@ -39,3 +39,4 @@ class Calidad extends AppModel {
 		return false;
 	}
 }
+?>

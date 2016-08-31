@@ -25,3 +25,4 @@ class Retirada extends AppModel {
 		'Operacion'
 	);
 }
+?>

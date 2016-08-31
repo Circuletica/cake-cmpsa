@@ -13,3 +13,4 @@ class EnvioCalidad extends AppModel {
 			'message'=>'Un correo válido al menos es requerido' )
 		);
 }
+?>

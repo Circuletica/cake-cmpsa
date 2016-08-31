@@ -29,3 +29,4 @@ class Flete extends AppModel {
     );
     public $actsAs = array('Containable');
 }
+?>

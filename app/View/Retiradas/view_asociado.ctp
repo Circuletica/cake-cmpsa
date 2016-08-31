@@ -1,11 +1,13 @@
 <?php
-$this->extend('/Common/view_withoutbuttons');
+$this->extend('/Common/view_retiradas');
 $this->assign('object', 'Retirada del asociado '.$asociado_nombre['Asociado']['nombre_corto']);
 //$this->assign('line_object', 'precio');
 //$this->assign('id',$flete['Retirada']['id']);
 $this->assign('class','Retirada');
 $this->assign('controller','retiradas');
 $this->assign('line_controller','retiradas');
+$this->assign('button_edit_delete',0);
+$this->assign('print_pdf',0);
 
 $this->start('main');
 echo "<dl>";
@@ -80,7 +82,7 @@ foreach($retiradas as $retirada):
 					)
 			)	*/
 			));
-				
+
 endforeach;?>
 </table>
 <?php
@@ -112,7 +114,7 @@ echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
 ?>
 <br><br>
 <?php
-    echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Volver', 
+    echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Volver',
     	array(
     		'action'=>'view_trafico',
 	   		'controller' => 'operaciones',

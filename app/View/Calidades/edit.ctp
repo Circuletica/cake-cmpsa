@@ -36,7 +36,7 @@ $this->Html->addCrumb('Calidades', array(
       </li>
       <li>
       <div class="enlinea">
-        <?php      
+        <?php
         echo $enlace_anyadir_origen
         ?>
       </div>

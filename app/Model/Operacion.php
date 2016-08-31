@@ -2,6 +2,8 @@
 class Operacion extends AppModel {
 	public $recursive = 2;
 
+	public $action_view;
+
 	public $displayField = 'referencia';
 
 	public $validate = array(
@@ -72,3 +74,4 @@ class Operacion extends AppModel {
 		return false;
 	}
 }
+?>

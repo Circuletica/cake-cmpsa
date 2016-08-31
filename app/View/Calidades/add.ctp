@@ -38,13 +38,13 @@
 	?>
 	<fieldset>
 	<div class="columna2">
-	<?php		
+	<?php
 	echo $this->Form->input('descafeinado');
 	?>
     <div class="formuboton">
     <ul>
         <li>
-    <?php	
+    <?php
    	//Un café 'Blend' se guarda como pais_id==null en la BD
   	echo $this->Form->input('pais_id', array(
 		'label' =>'Origen',
@@ -54,15 +54,15 @@
       </li>
       <li>
       <div class="enlinea">
-        <?php     
-	
+        <?php
+
 	echo $enlace_anyadir_origen;
 	        ?>
       </div>
       </li>
    </ul>
    </div>
-   <?php	
+   <?php
 	echo $this->Form->input('descripcion',array("label"=>'Descripción'));
 	?>
 	</div>

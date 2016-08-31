@@ -575,6 +575,8 @@ class OperacionesController extends AppController {
 
 	public function view($id = null) {
 		$this->checkId($id);
+		$this->set('action', $this->action);	//Se usa para tener la misma info
+
 		$operacion = $this->Operacion->find(
 			'first',
 			array(
@@ -586,7 +588,8 @@ class OperacionesController extends AppController {
 					'Contrato' => array(
 						'Proveedor',
 						'Incoterm',
-						'CanalCompra'
+						'CanalCompra',
+						'Calidad'
 					),
 					'AsociadoOperacion' => array(
 						'Asociado'
@@ -724,24 +727,26 @@ class OperacionesController extends AppController {
 
 		$this ->set(compact('operacion'));
 		//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
-		$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
-			'first',
+		$cuentas_almacenes = $this->Operacion->Transporte->AlmacenTransporte->find(
+			'all',
 			array(
 				'conditions' => array(
 					'Transporte.operacion_id' => $id
 				),
-				'recursive' => 2,
+				//'recursive' => 2,
 				'fields' => array(
-					'cuenta_almacen'
+					'id',
+					'cuenta_almacen',
+					'cantidad_cuenta'
 				)
 			)
 		);
-		if(empty($cuenta_almacen['AlmacenTransporte'])){
-			$cuenta_almacen = NULL;
-		}else{
-			$cuenta_almacen = $cuenta_almacen['AlmacenTransporte'];
-		}
-		$this->set(compact('cuenta_almacen'));
+		$cuentas_almacenes = Hash::combine($cuentas_almacenes, '{n}.AlmacenTransporte.id', '{n}');
+
+		/*if(empty($cuentas_almacenes[0]['AlmacenTransporte']['id'])){
+			$cuentas_almacenes = 'NULL';
+		}*/
+		$this->set(compact('cuentas_almacenes'));
 
 		//el nombre de calidad concatenado esta en una view de MSQL
 		$this->loadModel('ContratoEmbalaje');
@@ -807,6 +812,15 @@ class OperacionesController extends AppController {
 				)
 			)
 		);
+
+		//Calculamos la cantidad de sacos asignados por asociado en el total de las cuentas de la operacion_id
+/*	foreach ($cuentas_almacenes as $almacen_transporte_id => $cuenta_almacen){//Recorro el array
+		if($almacen_transporte_id == $sacos_asignados['AlmacenTransporteAsociado']['almacen_transporte_id']){
+				foreach()
+		}
+}*/
+
+
 
 		//ahora el precio que facturamos por asociado
 /*  MIRAR ATENTAMENTE PARA CAMBIAR EL CóDIGO POR ESTO SOLO
@@ -891,7 +905,6 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		//Se declara para acceder al PDF
 		$this->set(compact('id'));
 	}
-
 
 	//	public function delete($id = null) {
 	//		if (!$id or $this->request->is('get')) {
@@ -1032,6 +1045,216 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		$operaciones = $this->paginate();
 		//pasamos los datos a la vista
 		$this->set(compact('operaciones','title'));
+	}
+
+	public function envio_asociados ($id) {
+
+		$operacion = $this->Operacion->find(
+			'first',
+			array(
+				'conditions' => array('Operacion.id' => $id),
+				'recursive' => 3,
+				'contain' => array(
+					'PuertoCarga',
+					'PuertoDestino',
+					'Contrato' => array(
+						'Proveedor',
+						'Incoterm',
+						'CanalCompra',
+						'Calidad'
+					),
+					'AsociadoOperacion' => array(
+						'Asociado'
+					),
+					'PesoOperacion',
+					'PrecioTotalOperacion'
+				)
+			)
+		);
+		$this->set('operacion', $operacion);
+
+		$this->set('referencia', $operacion['Operacion']['referencia']);
+		$this->loadModel('ContratoEmbalaje');
+		$embalaje = $this->ContratoEmbalaje->find(
+			'first',
+			array(
+				'conditions' => array(
+					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
+					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+				),
+				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
+			)
+		);
+		$this->set('embalaje', $embalaje);
+
+		$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
+		$tipo_fecha_transporte = $operacion['Contrato']['si_entrega'] ? 'entrega' : 'embarque';
+		$this->set('tipo_fecha_transporte', $tipo_fecha_transporte);
+		$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);
+
+		//Líneas de reparto
+		if (!empty($operacion['AsociadoOperacion'])) {
+			foreach ($operacion['AsociadoOperacion'] as $linea) {
+				$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+				$codigo = substr($linea['Asociado']['codigo_contable'],-2);
+				$lineas_reparto[] = array(
+					'Código' => $codigo,
+					'Nombre' => $linea['Asociado']['nombre_corto'],
+					'Cantidad' => $linea['cantidad_embalaje_asociado'],
+					'Peso' => $peso
+				);
+			}
+			$columnas_reparto = array_keys($lineas_reparto[0]);
+			//indexamos el array por el codigo de asociado
+			$lineas_reparto = Hash::combine($lineas_reparto, '{n}.Código','{n}');
+			//se ordena por codigo ascendente
+			ksort($lineas_reparto);
+			$this->set('columnas_reparto',$columnas_reparto);
+			$this->set('lineas_reparto',$lineas_reparto);
+		}
+
+		$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
+
+		$asociados_operacion = $this->Operacion->AsociadoOperacion->find(
+			'all',
+			array(
+				'conditions' => array(
+					'AsociadoOperacion.operacion_id' => $id
+				),
+				//	'recursive' => 4,
+				'contain' => array(
+					'Operacion'=>array(
+						'fields'=>array(
+							'contrato_id'
+						),
+						'Contrato'=>array(
+							'fields'=> array(
+								'id',
+								'calidad_id'
+							),
+							'Calidad' => array(
+								'fields' =>array(
+									'nombre'
+								)
+							)
+						)
+					),
+					'Asociado'=>array(
+						'fields'=> array(
+							'id',
+							'nombre_corto'
+						)
+					)
+				)
+			)
+		);
+		$this->set('asociados_operacion', $asociados_operacion);
+		//Necesario para volcar los datos en el PDF
+		//Contactos de los asociados
+		$this->loadModel('Contacto');
+		$contactos = $this->Contacto->find(
+			'all',
+			array(
+				'conditions' =>array(
+					'departamento_id' => array(3),
+				),
+				'order' => array('Empresa.nombre_corto' => 'asc'),
+				'fields'=> array(
+					'Contacto.departamento_id',
+					'Contacto.empresa_id',
+					'Contacto.nombre',
+					'Contacto.email'
+				)
+			)
+		);
+		$this->set('contactos',$contactos);
+
+		//Usuarios de la CMPSA
+		$this->loadModel('Usuario');
+		$usuarios = $this->Usuario->find(
+			'all',
+			array(
+				'conditions' =>array(
+					'departamento_id' => array(4,3) //Aquí indicamos el departamento de usuarios
+				),
+				'contain'=>array(
+					'Departamento'=>array(
+						'fields'=>array(
+							'nombre'
+						)
+					)
+				)
+			)
+		);
+		$this->set('usuarios',$usuarios);
+
+		if (!empty($id)) $this->Operacion->id = $id;
+		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
+			$this->request->data = $this->Operacion->read();//Cargo los datos
+		}else{//es un POST
+			if(empty($this->request->data['email'])){
+				$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
+			}else{
+				// $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
+				foreach ($this->data['email'] as $email){
+					$lista_email[]= $email;
+				}
+			   /*	if(!empty($this->data['trafico'])){
+					foreach ($this->data['trafico'] as $email){
+						$lista_bcc[]= $email;
+					}
+			   }*/
+				if(!empty($this->data['compras'])){
+					foreach ($this->data['compras'] as $email){
+						$lista_bcc[]= $email;
+					}
+				}
+
+				//Asigamos variable previa porque al incluir la funcion en el texto del mensaje redirecciona posteriormente mal
+				//	$mes = strftime('%B',$operacion['Contrato']['fecha_transporte']);
+				//	$ano = strftime('%Y',$operacion['Contrato']['fecha_transporte']);
+
+				//GENERAMOS EL PDF
+				App::uses('CakePdf', 'CakePdf.Pdf');
+				require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+				$CakePdf = new CakePdf();
+				$CakePdf->template('view_asociados');
+				$CakePdf->viewVars(array(
+					'operacion'=>$operacion,
+					'embalaje' =>$embalaje,
+					'divisa' => $operacion['Contrato']['CanalCompra']['divisa'],
+					'columnas_reparto' => $columnas_reparto,
+					'lineas_reparto' => $lineas_reparto));
+				// Get the PDF string returned
+				//$pdf = $CakePdf->output();
+				// Or write it to file directly
+				$pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS .'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+				//ENVIAMOS EL CORREO CON EL INFORME
+				$Email = new CakeEmail(); //Llamamos la instancia de email
+				$Email->config('compras'); //Plantilla de email.php
+				$Email->from(array('cmpsa@cmpsa.com' => 'Compras CMPSA'));
+				$Email->bcc($lista_email);
+				//$Email->readReceipt($lista_bcc); //Acuse de recibo
+				if(!empty($lista_bcc)){
+					$Email->bcc($lista_bcc);
+				}
+				$Email->subject('Ficha de compra '.$operacion['Operacion']['referencia']);
+				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS . 'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+				$Email->send('Adjuntamos la ficha de la operación '.$operacion['Operacion']['referencia'].' correspondiente a su '.$tipo_fecha_transporte.' en '.' de ');
+				$this->Flash->set('Distribución a los asociados enviado con éxito.');
+				$this->redirect(array(
+					'action'=>'view',
+					'controller' =>'Operaciones',
+					$operacion['Operacion']['id']
+				)
+			);
+			}
+		}
+	}
+
+	public function view_asociados ($id) {
+		$this->view($id);
+		$this->render(view);
 	}
 }
 ?>

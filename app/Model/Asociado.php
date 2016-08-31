@@ -18,7 +18,7 @@ class Asociado extends AppModel {
 			'className' => 'Retirada',
 			'foreignKey' => 'asociado_id'
 		),
-		'AlmacenReparto'		
+		'AlmacenReparto'
 	);
 	public function beforeDelete($cascade = true) {
 		$count = $this->AsociadoOperacion->find(
@@ -34,3 +34,4 @@ class Asociado extends AppModel {
 		return false;
 	}
 }
+?>

@@ -61,7 +61,7 @@ echo $this->Html->tableCells(
 			'si_facturado',
 			array(
 				'label' => 'Facturado'
-			) 
+			)
 		),
 		$this->Form->input(
 			'dato_factura',
@@ -88,7 +88,7 @@ echo $this->Form->input('observaciones');
 ?>
 <hr>
 </fieldset>
-<fieldset>	
+<fieldset>
 <legend>Criba</legend>
 	<div class="col2">
 <?php

@@ -200,6 +200,8 @@ class ContratosController extends AppController {
 		//mysql almacena la fecha en formato ymd
 		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
 		$fecha = $contrato['Contrato']['posicion_bolsa'];
+
+		//sacamos el nombre del mes en castellano
 		$mes = strftime("%B", strtotime($fecha));
 		$anyo = substr($fecha,0,4);
 		$this->set('posicion_bolsa', $mes.' '.$anyo);

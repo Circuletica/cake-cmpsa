@@ -2,46 +2,120 @@
 class TransportesController extends AppController {
 
 	public function index() {
+		$this->set('action', $this->action);	//Se usa para tener la misma vista
+		$this->pdfConfig = array(
+			'filename' => 'info_embarque',
+			'paperSize' => 'A4',
+			'orientation' => 'landscape'
+		);
+		if($this->action == 'index'){
+			$this->paginate['conditions'] = array(
+				'Transporte.fecha_despacho_op IS NOT NULL'
+			);
+		}elseif ($this->action == 'suplemento'){
+			$this->paginate['conditions'] = array(
+				'Transporte.suplemento_seguro IS NOT NULL',
+				'Transporte.fecha_reclamacion IS NULL'
+			);
+		}
 
 		$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
 		$this->paginate['recursive'] = 2;
-		$this->paginate['condition'] = array(
-			'Transporte.fecha_despacho_op'=> NULL
-		);
+		//$this->paginate['condition'] = array(
+		//    'Transporte.fecha_despacho_op'=> NULL
+		//);
 		$this->paginate['contain'] = array(
+			'Calidad',
 			'Operacion' => array(
 				'fields'=> array(
 					'id',
 					'referencia',
 					'contrato_id'
-				),
-				'PesoOperacion'=> array(
-					'fields' =>array(
-						'peso',
-						'cantidad_embalaje'
-					)
-				),
-				'Contrato'=>array(
-					'fields'=> array(
-						'id',
-						'fecha_transporte',
-						'si_entrega',
-					),
-					'Proveedor'=>array(
-						'id',
-						'nombre_corto'
-					),
-					'Calidad' => array(
-						'fields' =>(
-							'nombre'
-						)
-					)
+				)
+			),
+			/*'PesoOperacion',*/
+			'Incoterm'=>array(
+				'fields' => array(
+					'nombre'
+				)
+			),
+			'Contrato'=>array(
+				'fields'=> array(
+					'id',
+					'referencia',
+					'fecha_transporte',
+					'si_entrega',
+					'proveedor_id',
+					'calidad_id'
+				)
+			),
+			'Proveedor'=>array(
+				'fields'=> array(
+					'nombre_corto'
 				)
 			),
 			'PuertoDestino' => array(
 				'fields' => array(
 					'id',
 					'nombre'
+				)
+			)
+		);
+
+		if(isset($this->passedArgs['Search.desde'])) {
+			$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
+			$this->paginate['conditions'] = array(
+				'Transporte.fecha_despacho_op >= ' => $criterio
+			);
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['desde'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Transporte: '.$criterio;
+		}
+		if(isset($this->passedArgs['Search.hasta']) and $this->passedArgs['Search.hasta'] != '--') {
+			$criterio = strtr($this->passedArgs['Search.hasta'],'_','/');
+			$this->paginate['conditions'] += array(
+				'Transporte.fecha_despacho_op <= ' => $criterio
+			);
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['hasta'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Transporte: '.$criterio;
+		}
+
+
+		$this->Transporte->bindModel(
+			array(
+				'belongsTo' => array(
+					'Contrato' => array(
+						'foreignKey' => false,
+						'conditions' => array('Operacion.contrato_id = Contrato.id'),
+						'fields'=> array(
+							'id',
+							'referencia',
+							'fecha_transporte',
+							'si_entrega',
+							'proveedor_id',
+							'calidad_id'
+						)
+					),
+					'Calidad' => array(
+						'foreignKey' => false,
+						'conditions' => array('Contrato.calidad_id = Calidad.id')
+					),
+			/*'PesoOperacion' => array(
+				'foreignKey' => false,
+				'conditions' => array('Contrato.id = Operacion.contrato_id')
+			),*/
+					'Proveedor' => array(
+						'className' => 'Empresa',
+						'foreignKey' => false,
+						'conditions' => array('Proveedor.id = Contrato.proveedor_id')
+					),
+					'Incoterm'=> array(
+						'foreignKey' => false,
+						'conditions' => array('Contrato.incoterm_id = Incoterm.id')
+					)
 				)
 			)
 		);
@@ -55,6 +129,7 @@ class TransportesController extends AppController {
 		$this->pdfConfig = array(
 			'filename' => 'linea'.date('Ymd'),
 		);
+
 
 		$transporte = $this->Transporte->find(
 			'first',
@@ -134,6 +209,8 @@ class TransportesController extends AppController {
 				)
 			)
 		);
+		if (!$transporte)
+			throw new NotFoundException(__('No existe ese transporte'));
 		$this->set('transporte',$transporte);
 		//Calculamos la cantidad de sacos almacenados en la linea
 		if(!empty($transporte['Transporte']['id'])){
@@ -148,10 +225,8 @@ class TransportesController extends AppController {
 		$restan = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
 		$this->set(compact('restan'));
 		$this->set('almacenado',$almacenado);
-
 		$embalaje = $transporte['Operacion']['Embalaje']['nombre'];
 		$this->set('embalaje',$embalaje);
-
 		//Necesario para exportar en PDf
 		$this->set(compact('id'));
 	}
@@ -336,7 +411,7 @@ class TransportesController extends AppController {
 		//CALCULAMOS EL NÚMERO DE LINEA DE TRANSPORTE
 		//Saco el número del array para numerar las lineas de transporte
 
-		//Linea primera para comenzar desde el array que es 0. Si $clave es 5, $num será 6.
+		//Linea primera para comenzar desde el array que es 0. Si $clave es 5, $num sería 6.
 		//Sumamos 2 para saltar el 0 y agregar el número que corresponde como nueva linea.
 		//Este proceso genera la linea de nuevo siempre para que el contador lo haga desde el principio
 		$num = 0;
@@ -352,7 +427,6 @@ class TransportesController extends AppController {
 
 		}
 		$this->set(compact('num'));
-
 
 		if (!empty($id)) $this->Transporte->id = $id;
 
@@ -405,11 +479,13 @@ class TransportesController extends AppController {
 				$id
 			));
 		}
+
 	}
 
-	public function info_embarque() {
+
+	public function embarque() {
 		$this->pdfConfig = array(
-			'filename' => 'info_embarque',
+			'filename' => 'embarque',
 			'paperSize' => 'A4',
 			'orientation' => 'landscape',
 		);
@@ -459,6 +535,7 @@ class TransportesController extends AppController {
 			)
 		);
 
+
 		$this->Transporte->bindModel(
 			array(
 				'belongsTo' => array(
@@ -484,125 +561,25 @@ class TransportesController extends AppController {
 		$this->set('transportes',$this->paginate());
 
 	}
-	public function info_despacho() {
-		//	$this ->info_embarque();
-		//	$this ->render('info_despacho');
-		$this->pdfConfig = array(
-			'filename' => 'info_embarque',
-			'paperSize' => 'A4',
-			'orientation' => 'landscape',
-		);
 
-		//$this->paginate['order'] = array('Transporte.fecha_despacho_op' => 'asc');
-		//$this->paginate['recursive'] = 3;
-		//$this->Transporte->virtualFields['calidad']=$this->Transporte->Operacion->Contrato->Calidad->virtualFields['nombre'];
-		$this->paginate['conditions'] = array(
-			'Transporte.fecha_despacho_op IS NOT NULL'
-		);
-
-		$this->paginate['contain'] = array(
-			'Calidad',
-			'Contrato' => array(
-				'fields' => array(
-					'referencia',
-					'calidad_id'
-				)
-			),
-			'Operacion' =>array(
-				'fields'=> array(
-					'id',
-					'referencia',
-					'contrato_id'
-				)
-			)
-		);
-
-		$this->Transporte->bindModel(
-			array(
-				'belongsTo' => array(
-					'Contrato' => array(
-						'foreignKey' => false,
-						'conditions' => array('Operacion.contrato_id = Contrato.id')
-					),
-					'Calidad' => array(
-						'foreignKey' => false,
-						'conditions' => array('Contrato.calidad_id = Calidad.id')
-					)
-				)
-			)
-		);
-
-		$title = $this->filtroPaginador(
-			array(
-				'Transporte' => array(
-					'OperaciÃn' => array(
-						'columna' => 'referencia',
-						'exacto' => false,
-						'lista' => ''
-					)
-				),
-				'Calidad' => array(
-					'Calidad' => array(
-						'columna' => 'nombre',
-						'exacto' => false,
-						'lista' => ''
-					)
-				)
-			)
-		);
-
-		//filtramos por fecha
-		if(isset($this->passedArgs['Search.fechadesde'])) {
-			$fechadesde = $this->passedArgs['Search.fechadesde'];
-			//Si solo se ha introducido un año (aaaa)
-			if (preg_match('/^\d{4}$/',$fechadesde)) {
-				$anyo = $fechadesde;
-			}
-			//la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
-			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechadesde)) {
-				list($mes,$anyo) = explode('-',$fechadesde);
-			} else {
-				$this->Flash->error('Error de fecha');
-				$this->redirect(array('action' => 'index'));
-			}
-			//si se ha introducido un año, filtramos por el año
-			if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
-			//si se ha introducido un mes, filtramos por el mes
-			if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
-			$this->request->data['Search']['fecha'] = $fechadesd;
-			//completamos el titulo
-			$title .= '|Fecha: '.$fechadesde;
-		}
-		if(isset($this->passedArgs['Search.fechahasta'])) {
-			$fecha = $this->passedArgs['Search.fechasta'];
-			//Si solo se ha introducido un año (aaaa)
-			if (preg_match('/^\d{4}$/',$fecha)) { $anyo = $fechahasta; }
-			//la otra posibilidad es que se haya introducido mes y año (mm-aaaa)
-			elseif (preg_match('/^\d{1,2}-\d\d\d\d$/',$fechahasta)) {
-				list($mes,$anyo) = explode('-',$fechahasta);
-			} else {
-				$this->Flash->error('Error de fecha');
-				$this->redirect(array('action' => 'index'));
-			}
-			//si se ha introducido un año, filtramos por el año
-			if($anyo) { $this->paginate['conditions']['YEAR(Muestra.fecha) ='] = $anyo;};
-			//si se ha introducido un mes, filtramos por el mes
-			if(isset($mes)) { $this->paginate['conditions']['MONTH(Muestra.fecha) ='] = $mes;};
-			$this->request->data['Search']['fecha'] = $fechahasta;
-			//completamos el titulo
-			$title .= '|Fecha: '.$fechahasta;
-		}
-
-
-
-		$despachos =  $this->paginate();
-		$title = 'Despachos | '.$title;
-
-		//pasamos los datos a la vista
-		$this->set(compact('despachos','title'));
+	public function suplemento() { // Informe suplemento sin reclamación
+		$this->index();
+		$this->set('action', $this->action);
+		$this->render('index');
 	}
 
-	public function reclamacion($id = null) {
+	public function reclamacion_factura() { //Informes de operaciones sin fecha de reclamación factura final
+		$this->index();
+		$this->set('action', $this->action);
+		$this->render('index');
+	}
+	public function prorrogas_pendientes() { //Informes de operaciones sin fecha de reclamación factura final
+		$this->index();
+		$this->set('action', $this->action);
+		$this->render('index');
+	}
+
+	public function reclamacion($id = null) { // Carta reclamación seguro
 		$this->pdfConfig = array(
 			'filename' => 'reclamacion',
 			'paperSize' => 'A4',
@@ -650,8 +627,7 @@ class TransportesController extends AppController {
 		$this->set('transporte',$transporte);
 
 		$dia = date ('d');
-		//$mes=date('m');
-		$mes=date('F');
+		$mes=strftime('%B');
 		$ano = date('Y');
 
 		$this->set(compact('dia'));
@@ -682,7 +658,6 @@ class TransportesController extends AppController {
 	}
 
 	public function asegurar($id = null) {
-
 		$this->pdfConfig = array(
 			'filename' => 'asegurar',
 			'paperSize' => 'A4',
@@ -752,8 +727,7 @@ class TransportesController extends AppController {
 		$this->set('transporte',$transporte);
 
 		$dia = date ('d');
-		//$mes=date('m');
-		$mes=date('F');
+		$mes=strftime('%B');
 		$ano = date('Y');
 
 		$this->set(compact('dia'));
@@ -864,5 +838,7 @@ class TransportesController extends AppController {
 		)
 	);
    */
+
+
 }
 ?>

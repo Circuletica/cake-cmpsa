@@ -14,3 +14,4 @@ class Embalaje extends AppModel{
 		)
 	);
 }
+?>

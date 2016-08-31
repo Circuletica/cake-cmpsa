@@ -45,7 +45,7 @@
 		echo "  <dt>Tipo embalaje</dt>\n";
 		echo "<dd>";
 			echo $embalaje.'&nbsp;';
-		echo "</dd>";				
+		echo "</dd>";
 		echo "  <dt>Bultos línea</dt>\n";
 		echo "<dd>";
 			echo $transporte['Transporte']['cantidad_embalaje'].'&nbsp;';
@@ -152,7 +152,7 @@ if ($transporte['Transporte']['fecha_llegada'] !=NULL){
 		echo $fecha_reclamacion_factura.'&nbsp;';
 		echo "</dd>";
 	}
-	?>	
+	?>
 	</dl>
 	<br>
 	<?php
@@ -222,7 +222,7 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 			echo $transporte['Transporte']['averia'].' Kg&nbsp;';
 			echo "</dd>";
 		}
-	
+
 		echo "  <dt>Fecha de reclamación</dt>\n";
 		echo "<dd>";
 		//mysql almacena la fecha en formato ymd
@@ -233,9 +233,9 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 		$fecha_reclamacion= $dia.'-'.$mes.'-'.$anyo;
 		echo $fecha_reclamacion.'&nbsp;';
 		echo "</dd>";
-	} 
+	}
 }
-	?>		
+	?>
 </dl>
 	<div class="detallado">
 	<br>
@@ -273,5 +273,5 @@ if ($transporte['Operacion']['Contrato']['Incoterm']['nombre'] =='FOB'){
 ?>
 	</div>
 	</div>
-	
+
 </div>

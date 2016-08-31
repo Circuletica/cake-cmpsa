@@ -6,3 +6,4 @@ class RestoLotesContrato extends AppModel {
 		//			'foreignKey' => 'id')
 	);
 }
+?>

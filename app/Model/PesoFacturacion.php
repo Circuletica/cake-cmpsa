@@ -7,3 +7,4 @@ class PesoFacturacion extends AppModel {
 		)
 	);
 }
+?>

@@ -11,3 +11,4 @@ class Lote extends AppModel {
 			'foreignKey' => 'contrato_id')
 		);
 }
+?>

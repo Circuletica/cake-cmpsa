@@ -3,6 +3,7 @@ class RetiradasController extends AppController {
 
 	public function index() {
 		$this->set('action', $this->action);	//Se usa para tener la misma vista
+
 		$this->paginate['order'] = array('Retirada.fecha_retirada' => 'desc');
 		$this->paginate['contain'] = array(
 			'Asociado',
@@ -20,6 +21,40 @@ class RetiradasController extends AppController {
 				)
 			)
 		);
+
+		$titulo = $this->filtroPaginador(
+			array(
+				'Operacion' =>array(
+					'Referencia' => array(
+						'columna' => 'referencia',
+						'exacto' => false,
+						'lista' => ''
+					)
+				)
+			)
+		);
+
+		if(isset($this->passedArgs['Search.desde'])) {
+			$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
+			$this->paginate['conditions'] = array(
+				'Retirada.fecha_retirada >= ' => $criterio
+			);
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['desde'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Retirada: '.$criterio;
+		}
+		if(isset($this->passedArgs['Search.hasta']) and $this->passedArgs['Search.hasta'] != '--') {
+			$criterio = strtr($this->passedArgs['Search.hasta'],'_','/');
+			$this->paginate['conditions'] += array(
+				'Retirada.fecha_retirada <= ' => $criterio
+			);
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['hasta'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Retirada: '.$criterio;
+		}
+
 		$this->Retirada->bindModel(
 			array(
 				'belongsTo' => array(
@@ -35,7 +70,9 @@ class RetiradasController extends AppController {
 				)
 			)
 		);
-		$this->set('retiradas',$this->paginate());
+		$retiradas = $this->paginate();
+		//pasamos los datos a la vista
+		$this->set(compact('retiradas','title'));
 
 	}
 
@@ -46,7 +83,7 @@ class RetiradasController extends AppController {
 	}
 
 	public function view_asociado($id = null) {
-		$this->checkId($id);
+		//$this->checkId($id); NO PUEDE ESTAR ACTIVADO PORQUE GENERA ERRORES EN ESTA VISTA
 		//el id y la clase de la entidad de origen vienen en la URL
 
 		$operacion_id = $this->params['named']['from_id'];
@@ -193,7 +230,6 @@ class RetiradasController extends AppController {
 		$peso = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] * $solicitado['ContratoEmbalaje']['peso_embalaje_real'];
 		$this->set(compact('peso'));
 
-
 		// Necesario para evitar agregar retirada si no hay en el almacen nada.
 		//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
 		$this->loadModel('Operacion');
@@ -215,47 +251,6 @@ class RetiradasController extends AppController {
 			$cuenta_almacen = $cuenta_almacen['AlmacenTransporte'];
 		}
 		$this->set(compact('cuenta_almacen'));
-
-
-
-
-		//NO TENGO NI IDEA QUE PINTA ESTE CODIGO, DE NO VER ERRORES EN EL FUNCIONAMIENTO SER BORRARA 07/04/2016
-
-/*	$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
-		'all',
-		array(
-		'contain' => array(
-			'Transporte' =>array(
-					'AlmacenTransporte'=>array(
-						'fields' => array(
-							'id'
-							)
-						)
-					)
-				)
-		)
-	);
-		foreach($operaciones_almacen as $clave => $operacion){
-		$operaciones_almacen[$clave]['AlmacenTransporte'] = array();
-		foreach($operacion['Transporte'] as $transporte){
-
-		if(!empty($transporte['AlmacenTransporte'])){
-			foreach($transporte['AlmacenTransporte'] as $cuenta){
-			$operaciones_almacen[$clave]['AlmacenTransporte'][] = $cuenta;
-			}
-		}
-		}
-		unset($operaciones_almacen[$clave]['Transporte']);
-		//quitamos operaciones sin cuenta de almacén
-		if (empty($operaciones_almacen[$clave]['AlmacenTransporte'])) {
-		unset($operaciones_almacen[$clave]);
-		}
-	}
-
-	$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
-
-$this->set(compact('operaciones_almacen'));*/
-
 
 		//Para exportar en PDF nececisto declarar la id
 		$this->set(compact('id'));

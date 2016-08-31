@@ -27,30 +27,32 @@ $this->Html->addCrumb(
 
 $this->start('filter');
 echo $this->element('filtromuestra');
-echo '<br>';
-echo $this->Html->link(
-    '<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar informe',
-    array(
-	'action' => 'info_calidad',
-	$id,
-	'ext' => 'pdf',
-    ), 
-    array(
-	'escape'=>false,'target' => '_blank','title'=>'Informe calidad previo'
-    )
-);
-
-echo  $this->Html->link(
-    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
-    array(
-	'action' =>'info_envio',
-	$linea['LineaMuestra']['id']
-    ),
-    array(
-	'escape'=>false,
-	'title'=>'Envío informe de calidad',
-    )
-);
+if ($linea['Muestra']['tipo_id'] == 3){
+	echo '<br><br>';
+	/*echo $this->Html->link(
+	    '<i class="fa fa-file-pdf-o fa-lg"></i> Previsualizar informe',
+	    array(
+		'action' => 'info_calidad',
+		$id,
+		'ext' => 'pdf',
+	    ),
+	    array(
+		'escape'=>false,'target' => '_blank','title'=>'Informe calidad previo'
+	    )
+	);*/
+    echo "<hr>";
+	echo  $this->Html->link(
+	    '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío informe',
+	    array(
+		'action' =>'info_envio',
+		$linea['LineaMuestra']['id']
+	    ),
+	    array(
+		'escape'=>false,
+		'title'=>'Envío informe de calidad',
+	    )
+	);
+}
 $this->end();
 
 $this->start('main');

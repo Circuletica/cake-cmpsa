@@ -1,7 +1,7 @@
 <?php $this->Html->addCrumb('Incoterms', '/incoterms');?>
 <div class="printdet">
 <ul><li>
-<?php 
+<?php
 echo $this->element('imprimirI');
 ?>
   </li>
@@ -13,11 +13,11 @@ echo $this->element('desplegabledatos');
 </ul>
 </div>
 <h2>Listado de Incoterms</h2>
-<table>
+<table class="tc3">
   <tr>
-	<th>Id</th>
-	<th><?php echo $this->Paginator->sort('nombre')?></th>
-	<th>Acciones</th>
+    <th>Id</th>
+    <th><?php echo $this->Paginator->sort('nombre')?></th>
+    <th>Detalle</th>
   </tr>
 <?php foreach($incoterms as $incoterm):?>
   <tr>

@@ -68,7 +68,7 @@ echo "</dl>";
 
 ?>
 </fieldset>
-<fieldset style='width: 66%'>	
+<fieldset style='width: 66%'>
 <legend>Distribución asociados</legend>
 
 <table class="tr2 tr3 tr4 tr5 tr6">
@@ -144,7 +144,7 @@ echo $this->html->tablecells(array(
 		),
 		array(
 			'<div id=totalPorcentaje></div>',
-			array(	
+			array(
 				'style' => 'font-weight: bold;',
 				'bgcolor' => '#5FCF80'
 			)
@@ -153,7 +153,7 @@ echo $this->html->tablecells(array(
 ));
 ?>	</table>
 <?php
-echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Cancelar', 
+echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Cancelar',
 	array(
 		'action'=>'view',
 		'controller' => 'almacen_transportes',

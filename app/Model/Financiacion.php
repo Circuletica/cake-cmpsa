@@ -49,3 +49,4 @@ class Financiacion extends AppModel {
 		return false;
 	}
 }
+?>

@@ -8,7 +8,7 @@ $controller = Inflector::tableize($class);
 $this->Html->addCrumb(ucfirst($controller), array(
 	'controller' => $controller,
 	'action' => 'index')
-); 
+);
 
 echo "<h2>".ucfirst($controller)."</h2>\n";
 if (empty($empresas)):

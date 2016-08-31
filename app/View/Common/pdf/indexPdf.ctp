@@ -13,9 +13,10 @@ $this->Html->addCrumb($object, array(
     'controller'=>$controller,
     'action'=>'index'
 ));
+$title = $this->fetch('title');
+//El encabezado del listado a mostrar para poder personalizarlo
 ?>
-<h2><?php echo 'Listado de '.$object; ?></h2>
+<h2><?php echo $title; ?></h2>
 <div class='index'>
 	<?php echo $this->fetch('main'); ?>
-    <?php //echo $this->element('paginador');?>
 </div>

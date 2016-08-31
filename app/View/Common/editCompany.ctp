@@ -43,7 +43,7 @@ FORMATO MODELO PROVEEDORES EDIT.CTP
 					echo $this->Form->input('Empresa.pais_id',array('label'=>'País'));
 					?></li>
 					<li><div class="enlinea">
-						<?php            
+						<?php
 						echo $this->Html->link('<i class="fa fa-plus"></i> Añadir País', array(
 							'controller'=>'paises',
 							'action'=>'add'
@@ -59,7 +59,7 @@ FORMATO MODELO PROVEEDORES EDIT.CTP
 
 			</ul>
 		</div>
-	 	
+
 		<?php
 		echo $this->Form->input('Empresa.telefono',array('label'=>'Teléfono'));
 		?>

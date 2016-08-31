@@ -7,3 +7,4 @@ class AsociadoComision extends AppModel {
 		'Asociado'
 	);
 }
+?>

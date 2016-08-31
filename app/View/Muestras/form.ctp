@@ -159,8 +159,8 @@ echo $this->Form->end('Guardar Muestra');
 </fieldset>
 
 <script type="text/javascript">
-<?php 
-if ($tipo == 1) 
+<?php
+if ($tipo == 1)
     echo 'window.onload = muestraOferta();';
 ?>
 window.onload = contratosMuestra();

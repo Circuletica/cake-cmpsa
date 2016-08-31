@@ -340,7 +340,7 @@ echo $this->Form->input(
 );
 ?>
  </fieldset>
-<fieldset> 
+<fieldset>
 <?php
 //echo '<p id="divisa_opciones"></p>';
 ?>

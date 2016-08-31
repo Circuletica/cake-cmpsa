@@ -27,7 +27,7 @@ if ($action == 'add') {
 	echo "<dt style=width:40%;>Almacenado</dt>\n";
 	echo "<dd style=margin-left:40%;>";
 	echo $almacenado.'&nbsp;';
-	echo "</dl>";  
+	echo "</dl>";
 
 
 
@@ -47,7 +47,7 @@ if ($action == 'edit') {
 	echo "<dd style=margin-left:40%;>";
 	echo $almacenado.'&nbsp;';
 	echo "</dd>";
-	echo "</dl>";  
+	echo "</dl>";
 
 }
 ?>
@@ -64,7 +64,7 @@ echo $this->Form->input('almacen_id',array(
 	'label'=>'Nombre almacén',
 	'empty' => array(
 		'' => 'Selecciona'
-	),					
+	),
 )
 			);
 echo $this->Form->input('cuenta_almacen',array(
@@ -100,5 +100,5 @@ if ($action == 'edit') {
 }
 echo $this->element('cancelarform');
 echo $this->Form->end('Guardar Cuenta Almacén');
-?> 
+?>
 </fieldset>

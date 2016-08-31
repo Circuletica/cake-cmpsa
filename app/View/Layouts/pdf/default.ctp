@@ -1,14 +1,14 @@
-<?php 
+<?php
 echo $this->Html->css('cake.pdf');
 
 ?>
 <html>
 	<title>COMERCIAL DE MATERIAS PRIMAS S.A.</title>
-	<head>	
+	<head>
 	<?php
 	echo date('d/m/Y');
 	?>
-		  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+		  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		  <h1 style:align="">COMERCIAL DE MATERIAS PRIMAS S.A.</h1>
 	</head>
 	<body>

@@ -16,13 +16,8 @@ $this->Html->addCrumb(
     )
 );
 
-
-//echo $this->Form->create('EnvioCalidad');
 echo $this->Form->create('LineaMuestra');
-
 echo "<h2>Informe de calidad de la línea de muestra <em>".$linea_muestra['tipo_registro']."</em></h2>\n";
-
-
 ?>
 <fieldset style=width:44%;>
 <legend>Contactos asociados</legend>
@@ -60,13 +55,13 @@ foreach($contactos as $contacto){
 			),
 		'options'=>$calidad
 		)
-	);	
+	);
 	foreach($usuarios as $usuario){
 		if(!empty($usuario['Usuario']['email']) && $usuario['Usuario']['departamento_id'] == 4){//Controlo que no haya usuarios sin email
 		$trafico[$usuario['Usuario']['email']] = $usuario['Usuario']['nombre'].' / '.$usuario['Usuario']['email'];
 		}
 	}
-		echo $this->Form->input('', array(
+	echo $this->Form->input('', array(
 		'name'=>'trafico',
 		'type' => 'select',
 		'selected'=> array(
@@ -76,17 +71,12 @@ foreach($contactos as $contacto){
 		'multiple' => 'checkbox',
 		'options'=>$trafico
 		)
-	);	
+	);
 ?>
 </fieldset>
 <fieldset style=width:25%;>
 <legend>Datos</legend>
 <?php
-/*echo $this->Form->input('email',array(
-	'label'=> 'Correos a enviar (separado por comas): ',
-	'after' => 'Solución temporal'
-	)
-);*/
 echo $this->Form->input('ref',array(
 	'label'=> 'Referencia: '
 	)
@@ -95,8 +85,6 @@ echo $this->Form->input('a', array(
 	'label'=>'A: '
 	)
 );
-
-
 /*echo $this->Form->input('asunto',array(
 	'label'=> 'Asunto: '
 	)
@@ -132,11 +120,11 @@ echo $this->element('cancelarform');
 			$linea_muestra['LineaMuestra']['id'],
 			'ext' => 'pdf',
 		    $linea_muestra['tipo_registro']))
-		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"	    
+		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"
 	)
 );
 	echo $this->Form->end('Enviar informe',array('name' =>'enviar'));
-	
+
 ?>
 
 </fieldset>

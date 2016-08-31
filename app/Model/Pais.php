@@ -14,3 +14,4 @@ class Pais extends AppModel{
 			'foreignKey' => 'id')
 		);
 }
+?>

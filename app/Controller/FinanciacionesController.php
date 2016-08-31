@@ -282,8 +282,135 @@ class FinanciacionesController extends AppController {
 		return $this->History->Back(0);
 	}
 
-	public function financiacion_envio ($id) {
+	public function envio_financiacion ($id) {
 		//Necesario para volcar los datos en el PDF
+		$this->Financiacion->id = $id;
+		if (!$this->Financiacion->exists()) {
+			throw new NotFoundException(__('Financiación inválida'));
+		}
+
+		$financiacion = $this->Financiacion->find(
+			'first',
+			array(
+				'contain' => array(
+					'Banco',
+					'Operacion' => array(
+						'Contrato' => array(
+							'Calidad',
+							'Incoterm',
+							'Proveedor'
+						),
+						'AsociadoOperacion' => array(
+							'Asociado'
+						)
+					),
+					'ValorIvaFinanciacion',
+					'ValorIvaComision',
+				),
+				'conditions' => array('Financiacion.id' => $id),
+				'recursive' => 4
+			)
+		);
+		$this->set(compact('financiacion'));
+
+		//calculamos el total de cada línea de reparto como campo virtual del modelo
+		//Si metemos el campo nuevo directamente en el 'contain' del find, sale
+		//un element [0] en el resultado
+		$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
+			'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
+			'saldo_anticipo' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)-ifnull(total_anticipo,0)'
+		);
+		$distribuciones = $this->Financiacion->RepartoOperacionAsociado->find(
+			'all',
+			array(
+				'conditions'=>array(
+					'RepartoOperacionAsociado.id' => $id
+				),
+				'contains' => array(
+					'Asociado' => array(
+						'fields' => array('nombre_corto')
+					)
+				),
+				'order' => array('Asociado.codigo_contable' => 'ASC')
+			)
+		);
+		$this->set(compact('distribuciones'));
+
+		$this->Financiacion->RepartoOperacionAsociado->virtualFields = array(
+			'total' => 'precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0)',
+			'total_porcentaje_embalaje' => 'sum(porcentaje_embalaje_asociado)',
+			'total_peso' => 'sum(peso_asociado)',
+			'total_precio' => 'sum(precio_asociado)',
+			'total_iva' => 'sum(iva)',
+			'total_comision' => 'sum(comision)',
+			'total_iva_comision' => 'sum(iva_comision)',
+			'total_general' => 'sum(precio_asociado+iva+ifnull(comision,0)+ifnull(iva_comision,0))',
+		);
+		$totales = $this->Financiacion->RepartoOperacionAsociado->find(
+			'first',
+			array(
+				'conditions' => array('RepartoOperacionAsociado.id' => $id),
+				'fields' => array(
+					'total',
+					'total_porcentaje_embalaje',
+					'total_peso',
+					'total_precio',
+					'total_iva',
+					'total_comision',
+					'total_iva_comision',
+					'total_general',
+				)
+			)
+		);
+		$this->set('totales',$totales['RepartoOperacionAsociado']);
+
+		$anticipos = $this->Financiacion->Operacion->AsociadoOperacion->Anticipo->find(
+			'all',
+			array(
+				'recursive' => 3,
+				'contain' => array(
+					'Banco' => array(
+						'fields' => array('nombre_corto')
+					),
+					'AsociadoOperacion' => array(
+						'fields' => array('asociado_id','operacion_id'),
+						'Asociado' => array(
+							'fields' => array(
+								'id',
+								'nombre_corto'
+							),
+						)
+					)
+				),
+				'conditions' => array(
+					'AsociadoOperacion.operacion_id' => $id
+				)
+			)
+		);
+		$this->set(compact('anticipos'));
+
+		$asociados = $this->Financiacion->Operacion->AsociadoOperacion->find(
+			'all',
+			array(
+				'conditions' => array(
+					'AsociadoOperacion.operacion_id' => $financiacion['Operacion']['id']
+				)
+			)
+		);
+		$this->set('asociados', $asociados);
+
+		$this->set('financiacion_id', $financiacion['Financiacion']['id']);
+		$this->set('referencia', $financiacion['Operacion']['referencia']);
+		$this->set('proveedor', $financiacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
+		$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);
+		$this->set('calidad', $financiacion['Operacion']['Contrato']['Calidad']['nombre']);
+		$this->set('condicion', $financiacion['Operacion']['Contrato']['condicion']);
+		$this->set('fecha_vencimiento',$financiacion['Financiacion']['fecha_vencimiento']);
+		$cuenta = $financiacion['Banco']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['cuenta_bancaria']);
+		$this->set(compact('cuenta'));
+		$this->set('precio_euro_kilo', $financiacion['Financiacion']['precio_euro_kilo']);
+		$this->set('iva',$financiacion['ValorIvaFinanciacion']['valor']);
+		$this->set('iva_comision',$financiacion['ValorIvaComision']['valor']);
 
 		//Contactos de los asociados
 		$this->loadModel('Contacto');
@@ -291,7 +418,7 @@ class FinanciacionesController extends AppController {
 			'all',
 			array(
 				'conditions' =>array(
-					'departamento_id' => array(2,4)
+					'departamento_id' => array(1)
 				),
 				'order' => array('Empresa.nombre_corto' => 'asc')
 			)
@@ -304,7 +431,7 @@ class FinanciacionesController extends AppController {
 			'all',
 			array(
 				'conditions' =>array(
-					'departamento_id' => array(2,4)
+					'departamento_id' => array(1,2,4)
 				),
 				'contain'=>array(
 					'Departamento'=>array(
@@ -317,53 +444,61 @@ class FinanciacionesController extends AppController {
 		);
 		$this->set('usuarios',$usuarios);
 
-		if (!empty($id)) $this->LineaMuestra->id = $id;
-		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
-			$this->request->data = $this->LineaMuestra->read();//Cargo los datos
-		}else{//es un POST
-			if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
-				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra
-				$this->Flash->success('Los datos de la financiación han sido guardados.');
-			}elseif(empty($this->request->data['email'])){
-				$this->Flash->error('Los datos de la financiación NO fueron enviados. Faltan destinatarios');
-			}else{
-				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos
 
+		if (!empty($id)) $this->Financiacion->id = $id;
+		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
+			$this->request->data = $this->Financiacion->read();//Cargo los datos
+		}else{//es un POST
+			if(empty($this->request->data['email'])){
+				$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
+			}else{
+				// $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
 				foreach ($this->data['email'] as $email){
 					$lista_email[]= $email;
 				}
-				if(!empty($this->data['trafico'])){
-					foreach ($this->data['trafico'] as $email){
+				   /*	if(!empty($this->data['trafico'])){
+						foreach ($this->data['trafico'] as $email){
+							$lista_bcc[]= $email;
+						}
+				   }*/
+				if(!empty($this->data['compras'])){
+					foreach ($this->data['compras'] as $email){
 						$lista_bcc[]= $email;
 					}
 				}
-				if(!empty($this->data['calidad'])){
-					foreach ($this->data['calidad'] as $email){
-						$lista_bcc[]= $email;
-					}
-				}
-				//GENERAMOS EL PDF
+				//GENERAMOS EL PDFº
 				App::uses('CakePdf', 'CakePdf.Pdf');
 				require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
 				$CakePdf = new CakePdf();
-				$CakePdf->template('info_calidad');
-				$CakePdf->viewVars(array('linea'=>$linea));
+				$CakePdf->template('financiacion');
+				$CakePdf->viewVars(array(
+					'financiacion'=>$financiacion,
+					'distribuciones'=>$distribuciones,
+					'cuenta'=>$cuenta,
+					'totales'=>$totales,
+				));
+				$CakePdf->orientation('landscape');
 				// Get the PDF string returned
 				//$pdf = $CakePdf->output();
 				// Or write it to file directly
-				$pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS . 'financiacion_'.$financiacion['Operacion']['referencia'].'_'.date('Ymd').'.pdf');
+				$pdf = $CakePdf->write(
+					APP. 'webroot'. DS. 'files'. DS .'financiaciones' . DS . 'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf',
+					array(
+						'orientation' => 'landscape',
+					)
+				);
 
 				//ENVIAMOS EL CORREO CON EL INFORME
 				$Email = new CakeEmail(); //Llamamos la instancia de email
-				$Email->config('financiacion'); //Plantilla de email.php
-				$Email->from(array('financiacion@cmpsa.com' => 'Financiación CMPSA'));
+				$Email->config('compras'); //Plantilla de email.php
+				$Email->from(array('cmpsa@cmpsa.com' => 'Contabilidad CMPSA'));
 				$Email->to($lista_email);
 				//$Email->readReceipt($lista_bcc); //Acuse de recibo
 				if(!empty($lista_bcc)){
 					$Email->bcc($lista_bcc);
 				}
 				$Email->subject('Financiación de operación '.$financiacion['Operacion']['referencia'].' / Fecha '.date('Ymd'));
-				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Financiaciones' . DS .'financiacion_'.$financiacion['Operacion']['referencia'].'_'.date('Ymd').'.pdf');
+				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'financiaciones' . DS .'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
 				$Email->send('Adjuntamos financiación de la operación '.$financiacion['Operacion']['referencia']);
 				$this->Flash->success('¡Las financiaciones han sido enviadas a los asociados correctamente!');
 				$this->redirect(array(
@@ -375,5 +510,6 @@ class FinanciacionesController extends AppController {
 			}
 		}
 	}
+
 }
 ?>

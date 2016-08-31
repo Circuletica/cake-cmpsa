@@ -263,7 +263,7 @@ class AppController extends Controller {
 	);
 
 	public function filtroListado() { //FILTRO-BUSCADOR
-		//la página a la que redirigimos después de mandar  el formulario de filtro
+		//la página a la que redirigimos después de mandar el formulario de filtro
 		$url['action'] = 'index';
 		//construimos una URL con los elementos de filtro, que luego se usan en el paginator
 		//la URL final tiene ese aspecto:

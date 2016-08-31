@@ -12,3 +12,4 @@ class RepartoOperacionAsociado extends AppModel {
 //			'foreignKey' => 'id')
 //	);
 }
+?>

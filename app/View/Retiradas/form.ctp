@@ -8,7 +8,7 @@ echo $this->Js->writeBuffer(array('onDomReady' => false));
 if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
        echo "<h2>Añadir retirada de ".$asociado_nombre." en operación ".$operacion_ref."</h2>\n";
 }elseif($action == 'edit') {
-    echo "<h2>Modificar retirada de ".$asociado_nombre." en operación ".$operacion_ref."</h2>\n";  
+    echo "<h2>Modificar retirada de ".$asociado_nombre." en operación ".$operacion_ref."</h2>\n";
     //echo '<h4>Sacos solicitados: ' $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' en '.$embalaje.' / Pendientes: '.$retirados'</h4>';*/
 }elseif (!empty($operacion_ref) && $action == 'add'){
     echo "<h2>Añadir retirada de asociado en operación ".$operacion_ref."</h2>\n";
@@ -31,7 +31,7 @@ if ($action == 'add' && !empty($operacion_ref) && !empty($asociado_nombre)){
         'autofocus' => 'autofocus'
         )
     );
-    
+
 ?>
       </div>
 <?php
@@ -48,10 +48,10 @@ echo $this->Form->input('asociado_id',
 		'label'=>'Asociado',
 		'empty' =>array('' => 'Selecciona'),
 		'class' => 'ui-widget',
-		'id' => 'asociado', 
-	'value'=> isset($asociado_id)?$asociado_id:null  
+		'id' => 'asociado',
+	'value'=> isset($asociado_id)?$asociado_id:null
 	 )
-);  
+);
 ?>
    </fieldset>
    <fieldset>
@@ -64,8 +64,8 @@ echo $this->Form->input('almacen_transporte_id',
 		'id' => 'almacen',
 		'value'=> isset($almacen_transporte_id)?$almacen_transporte_id:null
 	)
-); 
-  
+);
+
 ?>
 <?php
 if(!empty($operacion['Embalaje']['nombre'])){

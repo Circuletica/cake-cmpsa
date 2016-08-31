@@ -69,7 +69,7 @@ echo $this->Form->input(
 		    </li>
 		    <li>
 			<div class="enlinea">
-<?php            
+<?php
 echo $this->Html->link(
     '<i class="fa fa-plus"></i> Añadir País',
     array(

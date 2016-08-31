@@ -28,24 +28,24 @@ echo '<h2>Situación de líneas transporte despachadas a día '.date("d-m-Y").'<
 </div>
 <div class='index'>
     <table class="tr2 tr4 tr5">
-<?php    
+<?php
 
 echo $this->Html->tableHeaders(array(
     $this->Paginator->sort('Operacion.referencia','Operación'),
     $this->Paginator->sort('Transporte.linea','Línea'),
     $this->Paginator->sort('Calidad.nombre','Calidad'),
-    $this->Paginator->sort('Transporte.cantidad_embalaje','Cantidad'),	
+    $this->Paginator->sort('Transporte.cantidad_embalaje','Cantidad'),
     $this->Paginator->sort('Transporte.fecha_despacho_op','Fecha despacho'),
-    'Detalle'			
+    'Detalle'
 )
 	);
 
-foreach ($despachos as $despacho){		
+foreach ($despachos as $despacho){
     echo $this->Html->tableCells(array(
 	$despacho['Operacion']['referencia'],
-	$despacho['Transporte']['linea'],			
+	$despacho['Transporte']['linea'],
 	$despacho['Calidad']['nombre'],
-	$despacho['Transporte']['cantidad_embalaje'],					
+	$despacho['Transporte']['cantidad_embalaje'],
 
 	$this->Date->format($despacho['Transporte']['fecha_despacho_op']),
 	$this->Html->link('<i class="fa fa-info-circle"></i>',array(

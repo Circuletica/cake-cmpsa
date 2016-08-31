@@ -13,3 +13,4 @@ class PrecioFlete extends AppModel {
 		'Flete',
 	);
 }
+?>

@@ -1,9 +1,9 @@
-<?php 
+<?php
 $this->Html->addCrumb('Contactos', '/Contactos');
 ?>
 <div class="printdet">
 <ul><li>
-  <?php 
+  <?php
   echo $this->element('imprimirI');
   ?>
   </li>

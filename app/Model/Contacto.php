@@ -12,3 +12,4 @@ class Contacto extends AppModel {
 		)
 	);
 }
+?>

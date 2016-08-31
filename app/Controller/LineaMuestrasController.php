@@ -248,41 +248,6 @@ class LineaMuestrasController extends AppController {
 		return $this->History->back(0);
 	}
 
-	public function info_calidad($id){
-		$linea = $this->LineaMuestra->findById($id);
-		$this->set('tipos', $this->tipoMuestras);
-		$this->set('linea',$linea);
-		$suma_linea = $linea['LineaMuestra']['criba20'] +
-			$linea['LineaMuestra']['criba19'] +
-			$linea['LineaMuestra']['criba13p'] +
-			$linea['LineaMuestra']['criba18'] +
-			$linea['LineaMuestra']['criba12p'] +
-			$linea['LineaMuestra']['criba17'] +
-			$linea['LineaMuestra']['criba11p'] +
-			$linea['LineaMuestra']['criba16'] +
-			$linea['LineaMuestra']['criba10p'] +
-			$linea['LineaMuestra']['criba15'] +
-			$linea['LineaMuestra']['criba9p'] +
-			$linea['LineaMuestra']['criba14'] +
-			$linea['LineaMuestra']['criba8p'] +
-			$linea['LineaMuestra']['criba13'] +
-			$linea['LineaMuestra']['criba12'];
-		$suma_ponderada = $linea['CribaPonderada']['criba20'] +
-			$linea['CribaPonderada']['criba19'] +
-			$linea['CribaPonderada']['criba18'] +
-			$linea['CribaPonderada']['criba17'] +
-			$linea['CribaPonderada']['criba16'] +
-			$linea['CribaPonderada']['criba15'] +
-			$linea['CribaPonderada']['criba14'] +
-			$linea['CribaPonderada']['criba13'] +
-			$linea['CribaPonderada']['criba12'];
-		$this->set('suma_linea',$suma_linea);
-		$this->set('suma_ponderada',$suma_ponderada);
-
-		//Para crear PDF
-		$this->set(compact('id'));
-	}
-
 	public function info_envio ($id) {
 		//Necesario para volcar los datos en el PDF
 		$linea = $this->LineaMuestra->findById($id);
@@ -382,12 +347,11 @@ class LineaMuestrasController extends AppController {
 		}else{//es un POST
 			if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
 				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra
-				$this->Flash->success('Los datos del informe han sido guardados.');
+				$this->Flash->set('Los datos del informe han sido guardados.');
 			}elseif(empty($this->request->data['email'])){
-				$this->Flash->error('Los datos del informe NO fueron enviados. Faltan destinatarios');
+				$this->Flash->set('Los datos del informe NO fueron enviados. Faltan destinatarios');
 			}else{
 				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos
-
 				foreach ($this->data['email'] as $email){
 					$lista_email[]= $email;
 				}
@@ -411,27 +375,57 @@ class LineaMuestrasController extends AppController {
 				//$pdf = $CakePdf->output();
 				// Or write it to file directly
 				$pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
+				foreach ($this->data['email'] as $email){
+					$lista_email[]= $email;
+				}
+				if(!empty($this->data['trafico'])){
+					foreach ($this->data['trafico'] as $email){
+						$lista_bcc[]= $email;
+					}
+				}
+				if(!empty($this->data['calidad'])){
+					foreach ($this->data['calidad'] as $email){
+						$lista_bcc[]= $email;
+					}
+				}
+				//GENERAMOS EL PDF
+				App::uses('CakePdf', 'CakePdf.Pdf');
+				require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+				$CakePdf = new CakePdf();
+				$CakePdf->template('info_calidad');
+				$CakePdf->viewVars(array('linea'=>$linea));
+				// Get the PDF string returned
+				//$pdf = $CakePdf->output();
+				// Or write it to file directly
+				$pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
+
 
 				//ENVIAMOS EL CORREO CON EL INFORME
 				$Email = new CakeEmail(); //Llamamos la instancia de email
 				$Email->config('calidad'); //Plantilla de email.php
 				$Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
-				$Email->to($lista_email);
+				$Email->bcc($lista_email);
 				//$Email->readReceipt($lista_bcc); //Acuse de recibo
 				if(!empty($lista_bcc)){
 					$Email->bcc($lista_bcc);
 				}
-				$Email->subject('NUEVO - Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
-				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
+				$Email->subject('Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
+				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 				$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
-				$this->Flash->success('¡Informe de calidad enviado!');
+				$this->Flash->set('Informe de calidad enviado.');
 				$this->redirect(array(
 					'action'=>'view',
 					'controller' =>'LineaMuestras',
 					$linea_muestra['LineaMuestra']['id']
-				));
+				)
+			);
 			}
 		}
+	}
+
+	public function info_calidad($id){
+		$this->view($id);
+		$this->render(view);
 	}
 }
 ?>

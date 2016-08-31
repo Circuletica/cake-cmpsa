@@ -11,7 +11,7 @@
 	echo $this->Form->create('Flete');
 	?>
 	<fieldset>
-    <?php	
+    <?php
   	echo $this->Form->input('naviera_id', array(
   		'autofocus' => 'autofocus'
   		)

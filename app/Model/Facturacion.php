@@ -37,3 +37,4 @@ class Facturacion extends AppModel {
 / Facturacion.cambio_dolar_euro'
 	);
 }
+?>

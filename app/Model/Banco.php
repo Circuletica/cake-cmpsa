@@ -23,3 +23,4 @@ class Banco extends AppModel {
 		'foreignKey' => 'id')
 	);
 }
+?>

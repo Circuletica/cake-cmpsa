@@ -16,7 +16,7 @@ $this->start('filter');
 echo  $this->Html->link(
 	'<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío financiación',
 	array(
-		'action' =>'info_envio',
+		'action' =>'envio_financiacion',
 		$financiacion_id
 	),
 	array(
@@ -54,7 +54,7 @@ echo "<dd>".$cuenta.'&nbsp;'."</dd>";
 echo "  <dt>Fecha de vencimiento</dt>\n";
 echo "<dd style='font-weight:bold'>".$this->Date->format($fecha_vencimiento).'&nbsp;'."</dd>";
 echo "  <dt>Precio</dt>\n";
-echo "<dd>".$precio_euro_kilo.' €/kg&nbsp;'."</dd>";
+echo "<dd>".round($precio_euro_kilo,2).' €/kg&nbsp;'."</dd>";
 echo "</dl>";
 $this->end();
 
@@ -107,7 +107,13 @@ foreach($distribuciones as $linea):
 	));
 endforeach;
 echo $this->html->tablecells(array(
-	'TOTALES',
+	array(
+		array(
+		'TOTALES',
+			array(
+				'style' => 'font-weight: bold; text-align:center'
+			)
+		),
 	array(
 		$this->Number->round($totales['total_porcentaje_embalaje']),
 		array(
@@ -157,14 +163,14 @@ echo $this->html->tablecells(array(
 			'bgcolor' => '#5FCF80'
 		)
 	)
-)
-	);
+	)
+));
 echo"</table><br>\n";
 
 $this->end();
 
 $this->start('lines2');
-echo "<table class='tc5'>\n";
+echo "<table class='tc5 tc6'>\n";
 echo $this->Html->tableHeaders(array(
 	'Asociado','Fecha','Importe','Banco','Importado','Detalle'));
 foreach ($anticipos as $anticipo) {

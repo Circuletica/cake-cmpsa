@@ -54,3 +54,4 @@ class Muestra extends AppModel {
 	);
 	public $hasMany = 'LineaMuestra';
 }
+?>

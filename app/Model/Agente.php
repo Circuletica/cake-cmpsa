@@ -9,3 +9,4 @@ class Agente extends AppModel{
 		)
 	);
 }
+?>

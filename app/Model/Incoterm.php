@@ -9,3 +9,4 @@ class Incoterm extends AppModel{
 		)
 	);
 }
+?>

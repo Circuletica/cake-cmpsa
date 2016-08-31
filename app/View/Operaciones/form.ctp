@@ -41,8 +41,8 @@ echo "</dd>";
 echo "<dt style=width:30%;>Peso sin fijar</dt>\n";
 echo "<dd style=margin-left:30%;>";
 echo $contrato['RestoContrato']['peso_restante'].'kg&nbsp;';
-echo "</dd>";	
-echo "</dl><br><hr style=border-width:2px><br>";	
+echo "</dd>";
+echo "</dl><br><hr style=border-width:2px><br>";
 echo $this->Form->input('observaciones');
 ?>
 </fieldset>
@@ -126,7 +126,7 @@ echo $this->Form->input(
 echo $this->Form->input(
 	'precio_fijacion',
 	array(
-		'label' => 'Precio fijación',	
+		'label' => 'Precio fijación',
 		'class' => 'precioFijo',
 		'between' => '('.$divisa.')',
 		'oninput' => 'precioFactura()'
