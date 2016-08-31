@@ -57,4 +57,4 @@ public function assetUrl($path, $options = array()) {
 	}
 	return parent::assetUrl($path, $options);
 }
-}
+}?>

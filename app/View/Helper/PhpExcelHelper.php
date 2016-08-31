@@ -353,3 +353,4 @@ class PhpExcelHelper extends AppHelper {
         unset($this->_xls);
     }
 }
+?>
