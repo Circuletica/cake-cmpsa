@@ -13,10 +13,7 @@ class FinanciacionesController extends AppController {
 	}
 
 	public function view($id = null) {
-		$this->Financiacion->id = $id;
-		if (!$this->Financiacion->exists()) {
-			throw new NotFoundException(__('Financiación inválida'));
-		}
+		$this->checkId($id);
 
 		$financiacion = $this->Financiacion->find(
 			'first',

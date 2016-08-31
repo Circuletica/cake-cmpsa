@@ -6,7 +6,9 @@ class Contrato extends AppModel {
 		'condicion' => 'CONCAT(
 			CASE Contrato.si_entrega WHEN 0 THEN "embarque" WHEN 1 THEN "entrega" END,
 			" ",
-			SUBSTR(Contrato.fecha_transporte,1,4),
+			SUBSTR(Contrato.fecha_transporte,6,2),
+	"/",
+	SUBSTR(Contrato.fecha_transporte,1,4),
 	"(",
 	(SELECT nombre FROM incoterms WHERE id = Contrato.incoterm_id),
 	")"
