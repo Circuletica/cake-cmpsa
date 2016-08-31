@@ -84,7 +84,7 @@
 	clear: both;
 }
 #cssmenu ul {
-	text-transform: uppercase;
+/*	text-transform: uppercase;*/
 }
 #cssmenu ul ul {
 	border-top: 4px solid #dcdcdc;
@@ -106,11 +106,11 @@
 	background-image: linear-gradient(top, #fefefe, #dcdcdc);
 }
 #cssmenu ul ul ul {
-border-top: 0 none;
+    border-top: 0 none;
 }
 #cssmenu ul ul li {
 	position: relative;
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 
 }
 #cssmenu ul ul li:first-child > a {

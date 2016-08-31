@@ -341,7 +341,7 @@ class LineaMuestrasController extends AppController {
 		);
 		$this->set('usuarios',$usuarios);
 
-	if (!empty($id)) $this->LineaMuestra->id = $id;
+		if (!empty($id)) $this->LineaMuestra->id = $id;
 		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
 			$this->request->data = $this->LineaMuestra->read();//Cargo los datos
 		}else{//es un POST
@@ -375,53 +375,53 @@ class LineaMuestrasController extends AppController {
 				//$pdf = $CakePdf->output();
 				// Or write it to file directly
 				$pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'Informes' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
-                foreach ($this->data['email'] as $email){
-                    $lista_email[]= $email;
-                }
-                if(!empty($this->data['trafico'])){
-                    foreach ($this->data['trafico'] as $email){
-                        $lista_bcc[]= $email;
-                    }
-                }
-                if(!empty($this->data['calidad'])){
-                    foreach ($this->data['calidad'] as $email){
-                        $lista_bcc[]= $email;
-                    }
-                }
-                //GENERAMOS EL PDF
-                App::uses('CakePdf', 'CakePdf.Pdf');
-                require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
-                $CakePdf = new CakePdf();
-                $CakePdf->template('info_calidad');
-                $CakePdf->viewVars(array('linea'=>$linea));
-                // Get the PDF string returned
-                //$pdf = $CakePdf->output();
-                // Or write it to file directly
-                $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
+				foreach ($this->data['email'] as $email){
+					$lista_email[]= $email;
+				}
+				if(!empty($this->data['trafico'])){
+					foreach ($this->data['trafico'] as $email){
+						$lista_bcc[]= $email;
+					}
+				}
+				if(!empty($this->data['calidad'])){
+					foreach ($this->data['calidad'] as $email){
+						$lista_bcc[]= $email;
+					}
+				}
+				//GENERAMOS EL PDF
+				App::uses('CakePdf', 'CakePdf.Pdf');
+				require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+				$CakePdf = new CakePdf();
+				$CakePdf->template('info_calidad');
+				$CakePdf->viewVars(array('linea'=>$linea));
+				// Get the PDF string returned
+				//$pdf = $CakePdf->output();
+				// Or write it to file directly
+				$pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 
 
-                //ENVIAMOS EL CORREO CON EL INFORME
-                $Email = new CakeEmail(); //Llamamos la instancia de email
-                $Email->config('calidad'); //Plantilla de email.php
-                $Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
-                $Email->bcc($lista_email);
-                //$Email->readReceipt($lista_bcc); //Acuse de recibo
-                if(!empty($lista_bcc)){
-                    $Email->bcc($lista_bcc);
-                }
-                $Email->subject('Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
-                $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
-                $Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
-                $this->Flash->set('Informe de calidad enviado.');
-                $this->redirect(array(
-                    'action'=>'view',
-                    'controller' =>'LineaMuestras',
-                    $linea_muestra['LineaMuestra']['id']
-                )
-            );
-            }
-        }
-    }
+				//ENVIAMOS EL CORREO CON EL INFORME
+				$Email = new CakeEmail(); //Llamamos la instancia de email
+				$Email->config('calidad'); //Plantilla de email.php
+				$Email->from(array('calidad@cmpsa.com' => 'Calidad CMPSA'));
+				$Email->bcc($lista_email);
+				//$Email->readReceipt($lista_bcc); //Acuse de recibo
+				if(!empty($lista_bcc)){
+					$Email->bcc($lista_bcc);
+				}
+				$Email->subject('Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
+				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
+				$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
+				$this->Flash->set('Informe de calidad enviado.');
+				$this->redirect(array(
+					'action'=>'view',
+					'controller' =>'LineaMuestras',
+					$linea_muestra['LineaMuestra']['id']
+				)
+			);
+			}
+		}
+	}
 
 	public function info_calidad($id){
 		$this->view($id);

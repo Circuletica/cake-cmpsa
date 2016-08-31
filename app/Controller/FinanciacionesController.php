@@ -449,25 +449,25 @@ class FinanciacionesController extends AppController {
 
 
 		if (!empty($id)) $this->Financiacion->id = $id;
-    	if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
-       		$this->request->data = $this->Financiacion->read();//Cargo los datos
-    	}else{//es un POST
-		   	if(empty($this->request->data['email'])){
-		   		$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
-		   	}else{
-	          // $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
-	    		foreach ($this->data['email'] as $email){
+		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
+			$this->request->data = $this->Financiacion->read();//Cargo los datos
+		}else{//es un POST
+			if(empty($this->request->data['email'])){
+				$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
+			}else{
+				// $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
+				foreach ($this->data['email'] as $email){
 					$lista_email[]= $email;
-	            }
+				}
 				   /*	if(!empty($this->data['trafico'])){
 						foreach ($this->data['trafico'] as $email){
 							$lista_bcc[]= $email;
 						}
-					}*/
+				   }*/
 				if(!empty($this->data['compras'])){
-				 	foreach ($this->data['compras'] as $email){
+					foreach ($this->data['compras'] as $email){
 						$lista_bcc[]= $email;
-				 	}
+					}
 				}
 				//GENERAMOS EL PDFº
 				App::uses('CakePdf', 'CakePdf.Pdf');
@@ -487,7 +487,7 @@ class FinanciacionesController extends AppController {
 				$pdf = $CakePdf->write(
 					APP. 'webroot'. DS. 'files'. DS .'financiaciones' . DS . 'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf',
 					array(
-					    'orientation' => 'landscape',
+						'orientation' => 'landscape',
 					)
 				);
 

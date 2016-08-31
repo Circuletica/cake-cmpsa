@@ -44,21 +44,21 @@ echo ' '.$this->Html->link(
 	);
 	?>
 </li>
-<li>
-	<?php
-//Contempar si hay retirada o muestras del almacén no de esto.
-	if(empty($almacentransportes['Retirada']) && empty($lineamuestra['LineaMuestra'])){
-		echo $this->Button->edit('almacen_transportes',$id)
-		.' '.
-		$this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
-	}
-/*echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas':
-    $this->Button->edit('almacen_transportes',$id)
-    .' '.
-    $this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);*/
+	<li>
+		<?php
+	//Contempar si hay retirada o muestras del almacén no de esto.
+		if(empty($almacentransportes['Retirada']) && empty($lineamuestra['LineaMuestra'])){
+			echo $this->Button->edit('almacen_transportes',$id)
+			.' '.
+			$this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);
+		}
+	/*echo !empty($almacentransportes['Retirada'])? '<i class="fa fa-hand-paper-o" aria-hidden="true" fa-lg ></i> Hay retiradas':
+	    $this->Button->edit('almacen_transportes',$id)
+	    .' '.
+	    $this->Button->delete('almacen_transportes',$almacentransportes['AlmacenTransporte']['id'],'la cuenta de almacén '.$almacentransportes['AlmacenTransporte']['cuenta_almacen']);*/
 
-    ?>
-</li>
+	    ?>
+	</li>
 </ul>
 </div>
 </div>

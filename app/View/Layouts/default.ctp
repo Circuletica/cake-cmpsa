@@ -41,10 +41,9 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 		<!--<li class="active"><a href="/">Inicio</a></li>-->
 		<li class="has-sub"><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','#',array('escape' => false));?>
 			<ul>
-				<li class="has-sub"><?php echo $this->Html->link('CONTRATO','#',array('escape' => false));?>
+				<li class="has-sub"><?php echo $this->Html->link('Contrato','/contratos',array('escape' => false));?>
 					<ul>
-						<li><?php echo $this->Html->link('Todos','/contratos',array('escape' => false));?></li>
-						<li class="last"><?php echo $this->Html->link('Peso pendiente','/contratos/index_left',array('escape' => false));?></li>
+						<li class="last"><?php echo $this->Html->link('Peso Pendiente','/contratos/index_left',array('escape' => false));?></li>
 					</ul>
 				</li>
 				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones',array('escape' => false));?></li>
@@ -59,9 +58,9 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 		</li>
 		<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','#', array('escape' => false));?>
 			<ul>
-				<li><?php echo $this->Html->link('OPERACIÓN','/operaciones/index_trafico',array('escape' => false));?></li>
+				<li class="has-sub"><?php echo $this->Html->link('Operación','/operaciones/index_trafico',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('CUENTAS ALMACÉN','/almacen_transportes',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('RETIRADAS','/retiradas',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('RETIRADA','/retiradas',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('FLETES','/fletes',array('escape' => false));?></li>
 			</ul>
 		</li>
@@ -71,28 +70,11 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 				<li><?php echo $this->Html->link('FINANCIACIÓN','/financiaciones',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('ANTICIPOS','/anticipos',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('FACTURACIÓN','/facturaciones',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('RETIRADAS','/retiradas/index_conta',array('escape' => false));?></li>
+				<li><?php echo $this->Html->link('RETIRADA','/retiradas/index_conta',array('escape' => false));?></li>
 			</ul>
 		</li>
 		<li><?php echo $this->Html->link('<i class="fa fa-database"></i> DATOS','/pages/gestiondatos',array('escape' => false));?>
-			<ul>
-				<li><?php echo $this->Html->link('Agentes','/agentes',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Almacenes','/almacenes',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Aseguradoras','/aseguradoras',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Asociados','/asociados',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Bancos','/bancos',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Calidades','/calidades',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Comisiones','/admin/comisiones',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Embalajes','/admin/embalajes',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Incoterms','/incoterms',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('IVA','/tipo_ivas',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Usuarios','/usuarios',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Navieras','/navieras',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Paises','/paises',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Proveedores','/proveedores',array('escape' => false));?></li>
-				<li><?php echo $this->Html->link('Puertos','/puertos',array('escape' => false));?></li>
-			</ul>
-			<li><a href="/users/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Salir</a></li>
+		<li><a href="/users/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Salir</a></li>
 	</ul>
 	</div>
 		<?php //echo $this->Html->link('Salir','/users/logout',array('class'=> 'salir','escape' => false));?>

@@ -61,21 +61,21 @@ class AlmacenTransportesController extends AppController {
 
 
 		$this->AlmacenTransporte->bindModel(
-		    array(
-			'belongsTo' => array(
-				'Operacion' => array(
-					'foreignKey' => false,
-					'conditions' => array('Transporte.operacion_id = Operacion.id')
-				),
-				'Contrato' => array(
-					'foreignKey' => false,
-					'conditions' => array('Operacion.contrato_id = Contrato.id')
-			    ),
-			    'Calidad' => array(
-					'foreignKey' => false,
-					'conditions' => array('Contrato.calidad_id = Calidad.id')
+			array(
+				'belongsTo' => array(
+					'Operacion' => array(
+						'foreignKey' => false,
+						'conditions' => array('Transporte.operacion_id = Operacion.id')
+					),
+					'Contrato' => array(
+						'foreignKey' => false,
+						'conditions' => array('Operacion.contrato_id = Contrato.id')
+					),
+					'Calidad' => array(
+						'foreignKey' => false,
+						'conditions' => array('Contrato.calidad_id = Calidad.id')
+					)
 				)
-			)
 			)
 		);
 
@@ -106,17 +106,16 @@ class AlmacenTransportesController extends AppController {
 
 		}
 		$this->set(compact('almacentransporteasociados'));
-				$this->set(compact('total_sacos_asignados'));
+		$this->set(compact('total_sacos_asignados'));
 
 
 	}
 
 	public function pendiente() { //Informes de sacos pendientes por adjudicar
-    	$this->index();
-    	$this->set('action', $this->action);
-    	$this->render('index');
-    }
-
+		$this->index();
+		$this->set('action', $this->action);
+		$this->render('index');
+	}
 
 	public function view($id = null) {
 		$this->checkId($id);
@@ -577,15 +576,15 @@ class AlmacenTransportesController extends AppController {
 		$this->set(compact('almacentransportes'));
 
 
-       //Necesario para volcar los datos en el PDF
-        //Contactos de los asociados
+		//Necesario para volcar los datos en el PDF
+		//Contactos de los asociados
 		$this->loadModel('Contacto');
 		$contactos = $this->Contacto->find(
 			'all',
 			array(
 				'conditions' =>array(
 					'departamento_id' => array(4),
-					),
+				),
 				'order' => array('Empresa.nombre_corto' => 'asc'),
 				'fields'=> array(
 					'Contacto.departamento_id',
@@ -597,14 +596,14 @@ class AlmacenTransportesController extends AppController {
 		);
 		$this->set('contactos',$contactos);
 
-        //Usuarios de la CMPSA
+		//Usuarios de la CMPSA
 		$this->loadModel('Usuario');
 		$usuarios = $this->Usuario->find(
 			'all',
 			array(
 				'conditions' =>array(
 					'departamento_id' => array(4,3) //Aquí indicamos el departamento de usuarios
-					),
+				),
 				'contain'=>array(
 					'Departamento'=>array(
 						'fields'=>array(
@@ -617,61 +616,61 @@ class AlmacenTransportesController extends AppController {
 		$this->set('usuarios',$usuarios);
 
 		if (!empty($id)) $this->AlmacenTransporte->id = $id;
-      	if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
-           $this->request->data = $this->AlmacenTransporte->read();//Cargo los datos
-      	}else{//es un POST
+		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
+			$this->request->data = $this->AlmacenTransporte->read();//Cargo los datos
+		}else{//es un POST
 			if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
 				$this->AlmacenTransporte->save($this->request->data['AlmacenTransporte']); //Guardamos los datos actuales en los campos de Linea Muestra
 				$this->Flash->set('Los datos del informe han sido guardados.');
-	       	}elseif(empty($this->request->data['email'])){
-	       		$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
-	       	}else{
-              $this->AlmacenTransporte->save($this->request->data['AlmacenTransporte']); //Guardamos los datos actuales en los campos
-            	foreach ($this->data['email'] as $email){
+			}elseif(empty($this->request->data['email'])){
+				$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
+			}else{
+				$this->AlmacenTransporte->save($this->request->data['AlmacenTransporte']); //Guardamos los datos actuales en los campos
+				foreach ($this->data['email'] as $email){
 					$lista_email[]= $email;
-               	}
+				}
 				if(!empty($this->data['trafico'])){
-				 	foreach ($this->data['trafico'] as $email){
+					foreach ($this->data['trafico'] as $email){
 						$lista_bcc[]= $email;
-				 	}
+					}
 				}
 
 				$tipo_fecha_transporte = $almacentransportes['Transporte']['Operacion']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
 				debug($tipo_fecha_transporte);
-               	//GENERAMOS EL PDF
-               	App::uses('CakePdf', 'CakePdf.Pdf');
-               	require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
-               	$CakePdf = new CakePdf();
-               	$CakePdf->template('disposicion_asociados');
-               	$CakePdf->viewVars(array(
-				   	'almacentransportes'=>$almacentransportes
+				//GENERAMOS EL PDF
+				App::uses('CakePdf', 'CakePdf.Pdf');
+				require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+				$CakePdf = new CakePdf();
+				$CakePdf->template('disposicion_asociados');
+				$CakePdf->viewVars(array(
+					'almacentransportes'=>$almacentransportes
 				));
-               // Get the PDF string returned
-               //$pdf = $CakePdf->output();
-               // Or write it to file directly
-               $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'disposicion' . DS .'disposicion_'.strtr($almacentransportes['AlmacenTransporte']['cuenta_almacen'],'/','_').'_'.date('Ymd').'.pdf');
-                //ENVIAMOS EL CORREO CON EL INFORME
-               $Email = new CakeEmail(); //Llamamos la instancia de email
-               $Email->config('trafico'); //Plantilla de email.php
-               $Email->from(array('trafico@cmpsa.com' => 'Tráfico CMPSA'));
-               $Email->bcc($lista_email);
-               //$Email->readReceipt($lista_bcc); //Acuse de recibo
-               if(!empty($lista_bcc)){
-               	$Email->bcc($lista_bcc);
-               }
-               $Email->subject($almacentransportes['Transporte']['Operacion']['referencia'].' - '.$almacentransportes['Transporte']['Operacion']['Contrato']['Calidad']['nombre'].' - '. $tipo_fecha_transporte.' en ');//.strftime('%B',$almacentransportes['Transporte']['Contrato']['fecha_transporte']));
-               $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'disposicion' . DS . 'disposicion_'.strtr($almacentransportes['AlmacenTransporte']['cuenta_almacen'],'/','_').'_'.date('Ymd').'.pdf');
-               $Email->send('Tienen disponible el café para la ficha de referencia '.$almacentransportes['Transporte']['Operacion']['referencia']. '. Adjuntamos la disposición de éstos.');
-               $this->Flash->set('Disposición de almacén enviada con éxito.');
-               $this->redirect(array(
-				   'controller' => 'almacen_transportes',
-				   'action'  => 'view',
-               		$id
-               		)
-               );
-       		}
-   		}
-   	}
+				// Get the PDF string returned
+				//$pdf = $CakePdf->output();
+				// Or write it to file directly
+				$pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'disposicion' . DS .'disposicion_'.strtr($almacentransportes['AlmacenTransporte']['cuenta_almacen'],'/','_').'_'.date('Ymd').'.pdf');
+				//ENVIAMOS EL CORREO CON EL INFORME
+				$Email = new CakeEmail(); //Llamamos la instancia de email
+				$Email->config('trafico'); //Plantilla de email.php
+				$Email->from(array('trafico@cmpsa.com' => 'Tráfico CMPSA'));
+				$Email->bcc($lista_email);
+				//$Email->readReceipt($lista_bcc); //Acuse de recibo
+				if(!empty($lista_bcc)){
+					$Email->bcc($lista_bcc);
+				}
+				$Email->subject($almacentransportes['Transporte']['Operacion']['referencia'].' - '.$almacentransportes['Transporte']['Operacion']['Contrato']['Calidad']['nombre'].' - '. $tipo_fecha_transporte.' en ');//.strftime('%B',$almacentransportes['Transporte']['Contrato']['fecha_transporte']));
+				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'disposicion' . DS . 'disposicion_'.strtr($almacentransportes['AlmacenTransporte']['cuenta_almacen'],'/','_').'_'.date('Ymd').'.pdf');
+				$Email->send('Tienen disponible el café para la ficha de referencia '.$almacentransportes['Transporte']['Operacion']['referencia']. '. Adjuntamos la disposición de éstos.');
+				$this->Flash->set('Disposición de almacén enviada con éxito.');
+				$this->redirect(array(
+					'controller' => 'almacen_transportes',
+					'action'  => 'view',
+					$id
+				)
+			);
+			}
+		}
+	}
 
 	public function view_disposicion ($id) {
 		$this->view($id);

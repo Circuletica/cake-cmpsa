@@ -813,12 +813,12 @@ class OperacionesController extends AppController {
 			)
 		);
 
-	//Calculamos la cantidad de sacos asignados por asociado en el total de las cuentas de la operacion_id
+		//Calculamos la cantidad de sacos asignados por asociado en el total de las cuentas de la operacion_id
 /*	foreach ($cuentas_almacenes as $almacen_transporte_id => $cuenta_almacen){//Recorro el array
 		if($almacen_transporte_id == $sacos_asignados['AlmacenTransporteAsociado']['almacen_transporte_id']){
 				foreach()
 		}
-	}*/
+}*/
 
 
 
@@ -1121,7 +1121,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 				'conditions' => array(
 					'AsociadoOperacion.operacion_id' => $id
 				),
-			//	'recursive' => 4,
+				//	'recursive' => 4,
 				'contain' => array(
 					'Operacion'=>array(
 						'fields'=>array(
@@ -1149,15 +1149,15 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 			)
 		);
 		$this->set('asociados_operacion', $asociados_operacion);
-       //Necesario para volcar los datos en el PDF
-        //Contactos de los asociados
+		//Necesario para volcar los datos en el PDF
+		//Contactos de los asociados
 		$this->loadModel('Contacto');
 		$contactos = $this->Contacto->find(
 			'all',
 			array(
 				'conditions' =>array(
 					'departamento_id' => array(3),
-					),
+				),
 				'order' => array('Empresa.nombre_corto' => 'asc'),
 				'fields'=> array(
 					'Contacto.departamento_id',
@@ -1169,14 +1169,14 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		);
 		$this->set('contactos',$contactos);
 
-        //Usuarios de la CMPSA
+		//Usuarios de la CMPSA
 		$this->loadModel('Usuario');
 		$usuarios = $this->Usuario->find(
 			'all',
 			array(
 				'conditions' =>array(
 					'departamento_id' => array(4,3) //Aquí indicamos el departamento de usuarios
-					),
+				),
 				'contain'=>array(
 					'Departamento'=>array(
 						'fields'=>array(
@@ -1189,68 +1189,68 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		$this->set('usuarios',$usuarios);
 
 		if (!empty($id)) $this->Operacion->id = $id;
-      	if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
-           $this->request->data = $this->Operacion->read();//Cargo los datos
-      	}else{//es un POST
-	       	if(empty($this->request->data['email'])){
-	       		$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
-	       	}else{
-              // $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
-            	foreach ($this->data['email'] as $email){
+		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
+			$this->request->data = $this->Operacion->read();//Cargo los datos
+		}else{//es un POST
+			if(empty($this->request->data['email'])){
+				$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
+			}else{
+				// $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
+				foreach ($this->data['email'] as $email){
 					$lista_email[]= $email;
-               	}
+				}
 			   /*	if(!empty($this->data['trafico'])){
 					foreach ($this->data['trafico'] as $email){
 						$lista_bcc[]= $email;
 					}
-				}*/
+			   }*/
 				if(!empty($this->data['compras'])){
-				 	foreach ($this->data['compras'] as $email){
+					foreach ($this->data['compras'] as $email){
 						$lista_bcc[]= $email;
-				 	}
+					}
 				}
 
 				//Asigamos variable previa porque al incluir la funcion en el texto del mensaje redirecciona posteriormente mal
-			//	$mes = strftime('%B',$operacion['Contrato']['fecha_transporte']);
-			//	$ano = strftime('%Y',$operacion['Contrato']['fecha_transporte']);
+				//	$mes = strftime('%B',$operacion['Contrato']['fecha_transporte']);
+				//	$ano = strftime('%Y',$operacion['Contrato']['fecha_transporte']);
 
-               	//GENERAMOS EL PDF
-               	App::uses('CakePdf', 'CakePdf.Pdf');
-               	require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
-               	$CakePdf = new CakePdf();
-               	$CakePdf->template('view_asociados');
-               	$CakePdf->viewVars(array(
-				   	'operacion'=>$operacion,
-				   	'embalaje' =>$embalaje,
-				   	'divisa' => $operacion['Contrato']['CanalCompra']['divisa'],
-			   		'columnas_reparto' => $columnas_reparto,
+				//GENERAMOS EL PDF
+				App::uses('CakePdf', 'CakePdf.Pdf');
+				require_once(APP."Plugin/CakePdf/Pdf/CakePdf.php");
+				$CakePdf = new CakePdf();
+				$CakePdf->template('view_asociados');
+				$CakePdf->viewVars(array(
+					'operacion'=>$operacion,
+					'embalaje' =>$embalaje,
+					'divisa' => $operacion['Contrato']['CanalCompra']['divisa'],
+					'columnas_reparto' => $columnas_reparto,
 					'lineas_reparto' => $lineas_reparto));
-               // Get the PDF string returned
-               //$pdf = $CakePdf->output();
-               // Or write it to file directly
-               $pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS .'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
-                //ENVIAMOS EL CORREO CON EL INFORME
-               $Email = new CakeEmail(); //Llamamos la instancia de email
-               $Email->config('compras'); //Plantilla de email.php
-               $Email->from(array('cmpsa@cmpsa.com' => 'Compras CMPSA'));
-               $Email->bcc($lista_email);
-               //$Email->readReceipt($lista_bcc); //Acuse de recibo
-               if(!empty($lista_bcc)){
-               	$Email->bcc($lista_bcc);
-               }
-               $Email->subject('Ficha de compra '.$operacion['Operacion']['referencia']);
-               $Email->attachments(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS . 'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
-               $Email->send('Adjuntamos la ficha de la operación '.$operacion['Operacion']['referencia'].' correspondiente a su '.$tipo_fecha_transporte.' en '.' de ');
-               $this->Flash->set('Distribución a los asociados enviado con éxito.');
-               $this->redirect(array(
-               		'action'=>'view',
-               		'controller' =>'Operaciones',
-               		$operacion['Operacion']['id']
-               		)
-               );
-       		}
-   		}
-   	}
+				// Get the PDF string returned
+				//$pdf = $CakePdf->output();
+				// Or write it to file directly
+				$pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS .'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+				//ENVIAMOS EL CORREO CON EL INFORME
+				$Email = new CakeEmail(); //Llamamos la instancia de email
+				$Email->config('compras'); //Plantilla de email.php
+				$Email->from(array('cmpsa@cmpsa.com' => 'Compras CMPSA'));
+				$Email->bcc($lista_email);
+				//$Email->readReceipt($lista_bcc); //Acuse de recibo
+				if(!empty($lista_bcc)){
+					$Email->bcc($lista_bcc);
+				}
+				$Email->subject('Ficha de compra '.$operacion['Operacion']['referencia']);
+				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS . 'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+				$Email->send('Adjuntamos la ficha de la operación '.$operacion['Operacion']['referencia'].' correspondiente a su '.$tipo_fecha_transporte.' en '.' de ');
+				$this->Flash->set('Distribución a los asociados enviado con éxito.');
+				$this->redirect(array(
+					'action'=>'view',
+					'controller' =>'Operaciones',
+					$operacion['Operacion']['id']
+				)
+			);
+			}
+		}
+	}
 
 	public function view_asociados ($id) {
 		$this->view($id);
