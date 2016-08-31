@@ -42,7 +42,7 @@ class CalidadesController extends AppController {
 						isset($this->params['named']['from_action']) ?
 						$this->params['named']['from_action'] : 'index',
 						'controller' =>
-						isset($this->params['named']['from_controller']) ? 
+						isset($this->params['named']['from_controller']) ?
 						$this->params['named']['from_controller'] : 'calidades',
 						//si venimos de Muestras::add()
 						'tipo_id' =>

@@ -194,7 +194,7 @@ class AlmacenTransportesController extends AppController {
 				'first',
 				array(
 					'conditions' =>array(
-						'AlmacenTransporte.id' => $id	
+						'AlmacenTransporte.id' => $id
 					),
 					'fields' => array(
 						'cantidad_cuenta'
@@ -372,3 +372,4 @@ class AlmacenTransportesController extends AppController {
 		}
 	}
 }
+?>

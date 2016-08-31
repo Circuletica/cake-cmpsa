@@ -147,7 +147,7 @@ class ContratosController extends AppController {
 			foreach ($sacos_pendientes as $id => $cantidad) {
 				if ($cantidad > 0) {
 					if ($sacos_por_fijar != '') $sacos_por_fijar .= ' + ';
-					$sacos_por_fijar .= $cantidad.' '.$embalajes_pendientes[$id]; 
+					$sacos_por_fijar .= $cantidad.' '.$embalajes_pendientes[$id];
 				}
 			}
 		}
