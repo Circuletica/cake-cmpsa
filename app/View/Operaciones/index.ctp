@@ -56,7 +56,7 @@ $this->end();
 $this->start('main');
 if (empty($operaciones)){
 	echo "No hay operaciones en esta lista";
-}else{
+} else { 
 	if ($action == 'index') {  //Departamento de compras
 		echo "<table class='tr5 tr6'>\n";
 		echo $this->Html->tableHeaders(array(

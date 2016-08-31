@@ -1,6 +1,7 @@
 <?php
 class UsuariosController extends AppController {
 	var $name = 'Usuarios';
+
 	function index() {
 		$this->set('usuarios', $this->Usuario->find('all'));
 	}
@@ -60,7 +61,5 @@ class UsuariosController extends AppController {
 		ini_set('memory_limit', '512M');
 		$this->set('usuario', $this->Usuario->read(null, $id));
 	}
-
-
 }
 ?>

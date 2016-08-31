@@ -457,9 +457,9 @@ function anticipoAsociado() {
 	var asociadoBox = document.getElementById('AsociadoOperacionAsociadoId');
 	var operacionIndex = operacionBox.selectedIndex;
 	var asociadoIndex = asociadoBox.selectedIndex;
-	console.log(asociadoIndex);
+	//console.log(asociadoIndex);
 	var operacionId = operacionBox.options[operacionIndex].value;
-	console.log(operacionId);
+	//console.log(operacionId);
 	if (asociadoIndex > 0) {
 		var asociadoId = asociadoBox.options[asociadoIndex].value;
 	}

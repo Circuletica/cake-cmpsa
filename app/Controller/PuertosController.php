@@ -20,12 +20,8 @@ class PuertosController extends AppController {
 	}
 
 	public function edit( $id = null) {
-		if (!$id) {
-			$this->Flash->error('URL mal formado');
-			$this->redirect(array('action'=>'index'));
-		}
-		$puerto = $this->Puerto->find('first',array(
-			'conditions' => array('Puerto.id' => $id)));
+		$this->checkId($id);
+		$puerto = $this->Puerto->findById($id);
 		$this->set('puerto',$puerto);
 		$this->Puerto->id = $id;
 		$this->set('paises', $this->Puerto->Pais->find('list'));

@@ -17,6 +17,7 @@ class PaisesController extends AppController {
 			}
 		}
 	}
+
 	public function addPopup() {
 		if($this->request->is('post')) {
 			if($this->Pais->save($this->request->data) ) {
@@ -27,6 +28,7 @@ class PaisesController extends AppController {
 			}
 		}
 	}
+
 	public function edit($id = null) {
 		$this->Pais->id = $id;
 		if($this->request->is('get')) {

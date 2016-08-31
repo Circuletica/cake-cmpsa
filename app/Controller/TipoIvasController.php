@@ -65,8 +65,6 @@ class TipoIvasController extends AppController {
 				)
 			)
 		);
-		if (!$tipo_iva)
-			throw new NotFoundException(__('No existe ese tipo de iva'));
 		$this->set(compact('id'));
 		$this->set(compact('tipo_iva'));
 	}

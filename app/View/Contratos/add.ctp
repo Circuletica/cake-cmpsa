@@ -175,21 +175,21 @@ $enlace_anyadir_proveedor = $this->Html->link (
 
 echo $this->Form->create('Contrato');
 ?>
-	
+
     <div class='radiomuestra'>
-	<?php
-	echo $this->Form->radio(
-	    'canal_compra_id',
-	    $canal_compras,
-	    array(
-		'legend' => false,
-		'value' => 1,
-		'separator' => ' -- ',
-		'onclick' => 'canalCompra()'
-	    ),
-	    array('class'=>'radiomuestra')
-	);
-	?>
+<?php
+echo $this->Form->radio(
+    'canal_compra_id',
+    $canal_compras,
+    array(
+	'legend' => false,
+	'value' => 1,
+	'separator' => ' -- ',
+	'onclick' => 'canalCompra()'
+    ),
+    array('class'=>'radiomuestra')
+);
+?>
 	</div>
 <hr>
 <br>
@@ -211,24 +211,24 @@ echo $this->Form->input(
 );
 ?></div>
 	<div class="col2">
-	<?php
-	echo $this->Form->input(
-	    'puerto_carga_id',
-	    array(
-		'label' => 'Puerto de carga',
-		'empty' => true
-	    )
-	);
-	echo $this->Form->input(
-	    'puerto_destino_id',
-	    array(
-		'label' => 'Puerto de destino',
-		'empty' => true
-	    )
-	);
-	?>
+<?php
+echo $this->Form->input(
+    'puerto_carga_id',
+    array(
+	'label' => 'Puerto de carga',
+	'empty' => true
+    )
+);
+echo $this->Form->input(
+    'puerto_destino_id',
+    array(
+	'label' => 'Puerto de destino',
+	'empty' => true
+    )
+);
+?>
 	</div>
-	<?php
+<?php
 
 echo $this->Form->input(
     'calidad_id',
@@ -237,9 +237,9 @@ echo $this->Form->input(
 	'empty' => array('' => 'Selecciona'),
 	'class' => 'ui-widget',
 	'id' => 'combobox',
-    'style' => 'width: 100%' //Si no marco el estilo se deforma todo el fieldset.
+	'style' => 'width: 100%' //Si no marco el estilo se deforma todo el fieldset.
     )
-    );
+);
 echo $this->Form->input(
     'proveedor_id',
     array(
@@ -247,35 +247,35 @@ echo $this->Form->input(
 	'empty' => array('' => 'Selecciona')
     )
 );
-	?>
+?>
 <div class="col2">
-	<?php
-	echo $this->Form->input(
-	    'peso_comprado',
-	    array(
-		'label' => 'Peso comprado (kg)',
-		'id' => 'pesoComprado',
-		'oninput' => 'totalDesglose()'
-	    )
-	);
-	echo $this->Form->input('lotes_contrato');
-	?>
+<?php
+echo $this->Form->input(
+    'peso_comprado',
+    array(
+	'label' => 'Peso comprado (kg)',
+	'id' => 'pesoComprado',
+	'oninput' => 'totalDesglose()'
+    )
+);
+echo $this->Form->input('lotes_contrato');
+?>
 	</div>
 <div class='linea'>
-	<?php
-	echo $this->Form->input(
-	    'posicion_bolsa',
-	    array(
-		'label' => 'Posición de bolsa',
-		'dateFormat' => 'MY',
-		'minYear' => date('Y'),
-		'maxYear' => date('Y')+5,
-		'orderYear' => 'asc'
-	    )
-	);
-	?>
+<?php
+echo $this->Form->input(
+    'posicion_bolsa',
+    array(
+	'label' => 'Posición de bolsa',
+	'dateFormat' => 'MY',
+	'minYear' => date('Y'),
+	'maxYear' => date('Y')+5,
+	'orderYear' => 'asc'
+    )
+);
+?>
 	</div>
-	
+
 
 </fieldset>
 <fieldset>
@@ -333,8 +333,8 @@ foreach ($embalajes as $embalaje){
 ?>
     </table>
     <p id="total"></p>
-    <?php
-    echo $this->Form->input(
+<?php
+echo $this->Form->input(
     'diferencial',
     array('between' => '(<var id="divisa_diferencial"></var>)')
 );
@@ -346,28 +346,28 @@ foreach ($embalajes as $embalaje){
 ?>
 <legend>Fecha de transporte</legend>
     <div class='radiomuestra'>
-	<?php
-	echo $this->Form->radio(
-	    'si_entrega',
-	    $tipos_fecha_transporte,
-	    array(
-		'legend' => '',//Fecha de transporte',
-		'value' => '0'
-	    )
-	);
-	?>
+<?php
+echo $this->Form->radio(
+    'si_entrega',
+    $tipos_fecha_transporte,
+    array(
+	'legend' => '',//Fecha de transporte',
+	'value' => '0'
+    )
+);
+?>
 	<br>
 	</div>
 	<div class='linea'>
-	<?php
-	echo $this->Form->input('fecha_transporte', array(
-	    'label' => '',
-	    'dateFormat' => 'DMY',
-	    'minYear' => date('Y'),
-	    'maxYear' => date('Y')+5,
-	    'orderYear' => 'asc',
-	    'selected' => date('Y-m-1', strtotime("+30 days"))
-	    )
+<?php
+echo $this->Form->input('fecha_transporte', array(
+    'label' => '',
+    'dateFormat' => 'DMY',
+    'minYear' => date('Y'),
+    'maxYear' => date('Y')+5,
+    'orderYear' => 'asc',
+    'selected' => date('Y-m-1', strtotime("+30 days"))
+)
 	);
 echo "</div>\n";
 echo $this->Form->input('comentario');

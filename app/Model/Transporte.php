@@ -56,9 +56,7 @@ class Transporte extends AppModel {
 		if ($count == 0) {
 			return true;
 		}
-		return false;		
+		return false;
 	}
-
-
 }
 ?>

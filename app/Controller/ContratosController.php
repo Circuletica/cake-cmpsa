@@ -1,6 +1,5 @@
 <?php
 class ContratosController extends AppController {
-	var $displayField = 'referencia';
 
 	public function index() {
 		$this->paginate['order'] = array('Contrato.posicion_bolsa' => 'asc');
@@ -101,6 +100,44 @@ class ContratosController extends AppController {
 		$this->set(compact('contratos','title'));
 	}
 
+	public function index_left() {
+		$this->paginate['order'] = array('Contrato.posicion_bolsa' => 'asc');
+		$this->Contrato->virtualFields['calidad']=$this->Contrato->Calidad->virtualFields['nombre'];
+		$this->paginate['contain'] = array(
+			'Proveedor' => array(
+				'fields' => array(
+					'nombre_corto'
+				)
+			),
+			'Incoterm' => array(
+				'fields' => array(
+					'nombre'
+				)
+			),
+			'Calidad' => array(
+				'fields' => array(
+					'nombre'
+				)
+			),
+			'CanalCompra' => array(
+				'fields' => array(
+					'nombre'
+				)
+			),
+			'RestoContrato' => array(
+				'fields' => array(
+					'peso_restante'
+				)
+			)
+		);
+		$this->paginate['conditions']['RestoContrato.peso_restante !='] = 0;
+
+		$contratos=$this->paginate();
+
+		//pasamos los datos a la vista
+		$this->set(compact('contratos'));
+	}
+
 	public function view($id = null) {
 		$this->Contrato->id = $id;
 		if (!$this->Contrato->exists()) {
@@ -163,8 +200,6 @@ class ContratosController extends AppController {
 		//mysql almacena la fecha en formato ymd
 		$this->set('fecha_transporte', $contrato['Contrato']['fecha_transporte']);
 		$fecha = $contrato['Contrato']['posicion_bolsa'];
-		//sacamos el nombre del mes en castellano
-		setlocale(LC_TIME, "es_ES.UTF-8");
 		$mes = strftime("%B", strtotime($fecha));
 		$anyo = substr($fecha,0,4);
 		$this->set('posicion_bolsa', $mes.' '.$anyo);

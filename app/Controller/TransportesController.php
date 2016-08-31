@@ -683,7 +683,6 @@ class TransportesController extends AppController {
 
 	public function asegurar($id = null) {
 
-		setlocale(LC_TIME, "es_ES.UTF-8");
 		$this->pdfConfig = array(
 			'filename' => 'asegurar',
 			'paperSize' => 'A4',

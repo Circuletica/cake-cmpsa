@@ -3,6 +3,3 @@
 	$this->assign('object', 'Almacén '.$referencia);
 	$this->assign('class','Almacen');
 ?>
-
-
-
