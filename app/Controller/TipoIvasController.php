@@ -96,3 +96,4 @@ class TipoIvasController extends AppController {
 	//endif;
 	//	}
 }
+?>
