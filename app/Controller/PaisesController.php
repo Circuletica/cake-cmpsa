@@ -54,3 +54,4 @@ class PaisesController extends AppController {
 		}
 	}
 }
+?>

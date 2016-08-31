@@ -73,3 +73,4 @@ class CalidadesController extends AppController {
 		return $this->History->Back(0);
 	}
 }
+?>
