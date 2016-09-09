@@ -465,15 +465,17 @@ class AlmacenTransportesController extends AppController {
 		//Necesario para exportar en Pdf
 		$this->set(compact('id'));
 		$asociados_distribucion = Hash::combine($almacentransportes['AlmacenTransporteAsociado'], '{n}.asociado_id', '{n}');
-
+		$control_asignado = 0;
+		$this->set(compact($control_asignado));
 
 		//GUARDAR LA DISTRIBUCIÓN DE LOS ASOCIADOS
 		if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
 			$this->request->data = $this->AlmacenTransporte->read();
 			foreach ($asociados_distribucion as $asociado_id => $asociado) {
+				$control_asignado = $control_asignado + $asociado['sacos_asignados'];
 				$this->request->data['CantidadAsociado'][$asociado_id] = $asociado['sacos_asignados'];
 			}
-		}else{
+		}elseif($control_asignado <= $almacentransportes['AlmacenTransporte']['cantidad_cuenta']){
 			$this->AlmacenTransporte->AlmacenTransporteAsociado->deleteAll(
 				array(
 					'AlmacenTransporteAsociado.almacen_transporte_id' => $id
@@ -481,6 +483,7 @@ class AlmacenTransportesController extends AppController {
 			);
 			foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
 				if ($cantidad != NULL) {
+					$control_asignado += $cantidad;
 					$this->request->data['AlmacenTransporteAsociado']['almacen_transporte_id'] = $id;
 					$this->request->data['AlmacenTransporteAsociado']['asociado_id'] = $asociado_id;
 					$this->request->data['AlmacenTransporteAsociado']['sacos_asignados'] = $cantidad;
@@ -495,6 +498,8 @@ class AlmacenTransportesController extends AppController {
 					$id
 				)
 			);
+		}else{
+			$this->Flash->error('La cantidad de asignada supera a la almacenada.');
 		}
 	}
 	public function envio_disposicion ($id) {
@@ -661,7 +666,7 @@ class AlmacenTransportesController extends AppController {
 				$Email->subject($almacentransportes['Transporte']['Operacion']['referencia'].' - '.$almacentransportes['Transporte']['Operacion']['Contrato']['Calidad']['nombre'].' - '. $tipo_fecha_transporte.' en ');//.strftime('%B',$almacentransportes['Transporte']['Contrato']['fecha_transporte']));
 				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'disposicion' . DS . 'disposicion_'.strtr($almacentransportes['AlmacenTransporte']['cuenta_almacen'],'/','_').'_'.date('Ymd').'.pdf');
 				$Email->send('Tienen disponible el café para la ficha de referencia '.$almacentransportes['Transporte']['Operacion']['referencia']. '. Adjuntamos la disposición de éstos.');
-				$this->Flash->set('Disposición de almacén enviada con éxito.');
+				$this->Flash->success('Disposición de almacén enviada con éxito.');
 				$this->redirect(array(
 					'controller' => 'almacen_transportes',
 					'action'  => 'view',

@@ -1,20 +1,3 @@
-<script>
-function totalSacos(){
-	var cal = document.getElementsByClassName('calidad');
-	var tot=0;
-	for(var i=0;i<cal.length;i++){
-		if(parseFloat(cal[i].value))
-			tot += parseFloat(cal[i].value);
-	}
-	//document.getElementById('total').value = tot.toFixed(1);
-	document.getElementById('total').innerHTML = 'TOTAL: '+tot.toFixed(1);
-	if(tot == 100)
-		document.getElementById('total').style.color = "black";
-	if(tot != 100)
-		document.getElementById('total').style.color = "red";
-}
-</script>
-
 <?php
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 echo $this->Js->set('cantidadCuenta',$almacentransportes['AlmacenTransporte']['cantidad_cuenta']);

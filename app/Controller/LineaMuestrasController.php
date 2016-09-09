@@ -412,7 +412,7 @@ class LineaMuestrasController extends AppController {
 				$Email->subject('Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
 				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 				$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
-				$this->Flash->set('Informe de calidad enviado.');
+				$this->Flash->success('Informe de calidad enviado.');
 				$this->redirect(array(
 					'action'=>'view',
 					'controller' =>'LineaMuestras',

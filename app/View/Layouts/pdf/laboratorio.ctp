@@ -1,14 +1,19 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-<?php //echo $this->Html->css('cake.pdf');//Esto no funciona al enviar correos?>
+<html>
+<head>
 <link rel="stylesheet" type="text/css" href="<?php echo APP.'webroot'.DS.'css'.DS.'cake.pdf.css'; ?>" media="all" />
+<style>
+body{
+    margin: 30px 5px 5px 0px;
+}
+</style>
 <title>COMERCIAL DE MATERIAS PRIMAS S.A.</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"></head>
 
  <body>
  <div id="content">
  <?php echo "<h5 style='text-align: right;'>".date('d/m/Y')."</h5>";?>
- <h2 style="text-align: center;">	COMERCIAL DE MATERIAS PRIMAS S.A.</h2>
+ <h2 style="text-align: center;">COMERCIAL DE MATERIAS PRIMAS S.A.</h2>
 <hr>
 	<?php
 		header("Content-type: application/pdf");

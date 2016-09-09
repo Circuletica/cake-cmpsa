@@ -4,11 +4,11 @@ $this->layout = 'laboratorio';
 $this->extend('/Common/pdf/viewPdf');
 //$this->assign('object', 'Línea de la muestra '.$linea['Muestra']['tipo_registro']);
 //$this->assign('id',$linea['LineaMuestra']['id']);
-$this->assign('class','LineaMuestra');
-$this->assign('controller','linea_muestras');
-$this->assign('from_controller','muestras');
-$this->assign('from_id',$linea['Muestra']['id']);
-
+	$this->assign('class','LineaMuestra');
+	$this->assign('controller','linea_muestras');
+	$this->assign('from_controller','muestras');
+	$this->assign('from_id',$linea['Muestra']['id']);
+	
 $this->start('main');
 echo "<h3 style='text-align: center;'>DEPARTAMENTO DE CONTROL DE CALIDAD</h3>";
 echo "<h3 style='text-align: center;'>INFORME DE CALIDAD Nº ".$linea['Muestra']['tipo_registro'].'</h3>';

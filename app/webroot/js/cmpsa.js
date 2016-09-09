@@ -17,7 +17,7 @@ function totalDesglose(){
 	}
 	if(total != pesoComprado) {
 		document.getElementById('total').innerHTML = "&#9888; Total desglose: " + total + "kg";
-		document.getElementById('total').style.color = "red";
+		document.getElementById('total').style.color = "#c43c35";
 		document.getElementById('total').style.fontSize = "large";
 	}
 }
@@ -131,7 +131,7 @@ function lotesPorFijar() {
 	var lotesPendientes = parseInt(document.getElementById('lotes').innerHTML);
 	var lotesOperacion = document.getElementById('OperacionLotesOperacion').value;
 	if (lotesOperacion > lotesPendientes) {
-		document.getElementById('OperacionLotesOperacion').style.color = "red";
+		document.getElementById('OperacionLotesOperacion').style.color = "#c43c35";
 	} else {
 		document.getElementById('OperacionLotesOperacion').style.color = "black";
 	}
@@ -153,7 +153,7 @@ function totalCriba(){
 	if(tot == 100)
 		document.getElementById('total').style.color = "black";
 	if(tot != 100)
-		document.getElementById('total').style.color = "red";
+		document.getElementById('total').style.color = "#c43c35";
 }
 
 function contratosMuestra(){
@@ -278,7 +278,7 @@ function muestraEntrega() {
 			if (proveedor.options[i].value == muestrasEmbarque[selectedOption].Contrato.proveedor_id){
 				proveedor.options[i].selected = true;
 				break;
-			}    
+			}
 		}
 	} else {
 		contrato.disabled = 0;
@@ -432,10 +432,18 @@ function sacosAsignados(){
 		var textoporcentajeAsociado = document.getElementById('porcentajeAsociado' + id);
 		//escribimos el peso
 		textoporcentajeAsociado.innerHTML = porcentajeAsociado.toFixed(2) + "%";
-		totalPorcentaje +=porcentajeAsociado; 
+		totalPorcentaje +=porcentajeAsociado;
 	}
-	textototalCantidad.innerHTML = totalCantidad;
-	textototalPorcentaje.innerHTML = totalPorcentaje.toFixed(2) + "%";
+
+	if(totalCantidad <= cantidadCuenta){
+		document.getElementById('totalCantidad').style.color = "black";
+		textototalCantidad.innerHTML = totalCantidad;
+	}
+	if(totalCantidad > cantidadCuenta){
+		document.getElementById('totalCantidad').style.color = "#c43c35";
+		textototalCantidad.innerHTML = 'La cantidad debe ser inferior: '+totalCantidad;
+	}
+		textototalPorcentaje.innerHTML = totalPorcentaje.toFixed(2) + "%";
 }
 
 function precioF(){
