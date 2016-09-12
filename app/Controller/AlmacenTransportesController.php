@@ -466,30 +466,33 @@ class AlmacenTransportesController extends AppController {
 		$this->set(compact('id'));
 		$asociados_distribucion = Hash::combine($almacentransportes['AlmacenTransporteAsociado'], '{n}.asociado_id', '{n}');
 		$control_asignado = 0;
-		$this->set(compact($control_asignado));
+		//$this->set(compact($control_asignado));
 
 		//GUARDAR LA DISTRIBUCIÓN DE LOS ASOCIADOS
 		if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
 			$this->request->data = $this->AlmacenTransporte->read();
 			foreach ($asociados_distribucion as $asociado_id => $asociado) {
-				$control_asignado = $control_asignado + $asociado['sacos_asignados'];
 				$this->request->data['CantidadAsociado'][$asociado_id] = $asociado['sacos_asignados'];
+				//$control_asignado = $control_asignado + $this->request->data['CantidadAsociado'][$asociado_id];
 			}
-		}elseif($control_asignado <= $almacentransportes['AlmacenTransporte']['cantidad_cuenta']){
-			$this->AlmacenTransporte->AlmacenTransporteAsociado->deleteAll(
-				array(
-					'AlmacenTransporteAsociado.almacen_transporte_id' => $id
-				)
-			);
-			foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
-				if ($cantidad != NULL) {
-					$control_asignado += $cantidad;
-					$this->request->data['AlmacenTransporteAsociado']['almacen_transporte_id'] = $id;
-					$this->request->data['AlmacenTransporteAsociado']['asociado_id'] = $asociado_id;
-					$this->request->data['AlmacenTransporteAsociado']['sacos_asignados'] = $cantidad;
-					$this->AlmacenTransporte->AlmacenTransporteAsociado->saveAll($this->request->data['AlmacenTransporteAsociado']);
+		}else{
+			foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad){
+				$control_asignado = $control_asignado + $cantidad;
+			}
+			if($control_asignado <= $almacentransportes['AlmacenTransporte']['cantidad_cuenta']){
+				$this->AlmacenTransporte->AlmacenTransporteAsociado->deleteAll(
+					array(
+						'AlmacenTransporteAsociado.almacen_transporte_id' => $id
+					)
+				);
+				foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
+					if ($cantidad != NULL) {
+						$this->request->data['AlmacenTransporteAsociado']['almacen_transporte_id'] = $id;
+						$this->request->data['AlmacenTransporteAsociado']['asociado_id'] = $asociado_id;
+						$this->request->data['AlmacenTransporteAsociado']['sacos_asignados'] = $cantidad;
+						$this->AlmacenTransporte->AlmacenTransporteAsociado->saveAll($this->request->data['AlmacenTransporteAsociado']);
+					}
 				}
-			}
 			$this->Flash->success('Distribución asociados guardada');
 			$this->redirect(
 				array(
@@ -498,8 +501,9 @@ class AlmacenTransportesController extends AppController {
 					$id
 				)
 			);
-		}else{
-			$this->Flash->error('La cantidad de asignada supera a la almacenada.');
+			}else{
+				$this->Flash->error('La cantidad asignada supera a la almacenada.');
+			}
 		}
 	}
 	public function envio_disposicion ($id) {
