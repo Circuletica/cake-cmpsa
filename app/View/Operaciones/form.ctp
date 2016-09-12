@@ -73,8 +73,6 @@ echo $this->Form->input(
 		'after' => 'Quedan por fijar '.$contrato['RestoLotesContrato']['lotes_restantes'].' lotes'
 	)
 );
-?>
-<?php
 echo $this->Form->input(
 	'si_precio_fijo',
 	array(

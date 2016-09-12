@@ -450,12 +450,6 @@ class OperacionesController extends AppController {
 			)
 		));
 
-		//Por defecto ponemos las opciones, el forfait, el seguro y el flete a cero
-		$this->request->data['Operacion']['opciones'] = 0;
-		$this->request->data['Operacion']['forfait'] = 0;
-		$this->request->data['Operacion']['seguro'] = 0;
-		$this->request->data['Operacion']['flete'] = 0;
-
 		//Queremos la lista de costes de fletes
 		//$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find(
 		$precio_fletes = $this->Operacion->Contrato->FleteContrato->find(
@@ -530,8 +524,10 @@ class OperacionesController extends AppController {
 			//al guardar la linea, se incluye a qué contrato pertenece
 			$this->request->data['Operacion']['contrato_id'] = $contrato_id;
 			if($id == NULL){
+				debug($this->request->data);
+
 				//primero guardamos los datos de Operacion
-				if($this->Operacion->save($this->request->data)){
+		/*		if($this->Operacion->save($this->request->data)){
 					//luego las cantidades de cada asociado en AsociadoOperacion
 					foreach ($data['CantidadAsociado'] as $asociado_id => $cantidad) {
 						if ($cantidad != NULL) {
@@ -567,8 +563,17 @@ class OperacionesController extends AppController {
 						)
 					);
 			}*/
-			}
+		}
 		}else{//es un GET
+			//Por defecto ponemos las opciones, el forfait, el seguro y el flete a cero
+			if(empty($this->request->data)){
+				debug('hola');
+				$this->request->data['Operacion'] = array();
+				$this->request->data['Operacion']['opciones'] = 0;
+				$this->request->data['Operacion']['forfait'] = 0;
+				$this->request->data['Operacion']['seguro'] = 0;
+				$this->request->data['Operacion']['flete'] = 0;
+			}
 			$this->request->data = $this->Operacion->read(null, $id);
 		}
 	}
