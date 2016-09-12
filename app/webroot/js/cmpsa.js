@@ -413,9 +413,11 @@ function sacosAsignados(){
 	//totalCantidad asignada
 	var textototalCantidad = document.getElementById('totalCantidad');
 	var textototalPorcentaje = document.getElementById('totalPorcentaje');
+	var textosinAdjudicar = document.getElementById('sinAdjudicar');
 
 	var totalCantidad = 0;
 	var totalPorcentaje = 0;
+	var sinAdjudicar = 0; //Sacos sin adjudicar en la cuenta de almacén
 
 	var totalCantidad = 0;
 	for(var i=0;i<cantidades.length;i++){
@@ -438,12 +440,17 @@ function sacosAsignados(){
 	if(totalCantidad <= cantidadCuenta){
 		document.getElementById('totalCantidad').style.color = "black";
 		textototalCantidad.innerHTML = totalCantidad;
-	}
-	if(totalCantidad > cantidadCuenta){
+	}else if (totalCantidad > cantidadCuenta){
 		document.getElementById('totalCantidad').style.color = "#c43c35";
 		textototalCantidad.innerHTML = 'La cantidad debe ser inferior: '+totalCantidad;
 	}
-		textototalPorcentaje.innerHTML = totalPorcentaje.toFixed(2) + "%";
+	textototalPorcentaje.innerHTML = totalPorcentaje.toFixed(2) + "%";
+	if(totalCantidad < cantidadCuenta){
+		sinAdjudicar = cantidadCuenta - totalCantidad;
+		textosinAdjudicar.innerHTML = 'Sacos sin adjudicar: ' +sinAdjudicar;
+	}else {
+		textosinAdjudicar.innerHTML ='';
+	}
 }
 
 function precioF(){

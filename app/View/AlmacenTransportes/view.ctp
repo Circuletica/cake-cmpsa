@@ -284,11 +284,11 @@ echo ' '.$this->Html->link(
 			</div>
 			<?php
 			if($almacentransportes['AlmacenTransporte']['cantidad_cuenta'] !=$total_asignacion_real){
-				if ($almacentransportes['AlmacenTransporte']['cantidad_cuenta']-$total_asignacion_real > 0){
-					echo "<h4>Cantidad de sacos sin adjudicar: ". $total_asignacion_real."</h4>";
+				$resta= $almacentransportes['AlmacenTransporte']['cantidad_cuenta']-$total_asignacion_real;
+				if ($resta > 0){
+					echo "<h4>Cantidad de sacos sin adjudicar: ".$resta."</h4>";
 				}else{
-					$total_asignacion_real = $total_asignacion_real - $almacentransportes['AlmacenTransporte']['cantidad_cuenta'];
-					echo "<h4 style='color:#c43c35;'>No puede haber más sacos asignados que en la cuenta: ".$total_asignacion_real."</h4>";
+					echo "<h4 style='color:#c43c35;'>No puede haber más sacos asignados que en la cuenta: ".$resta."</h4>";
 				}
 			}
 			if(!empty($almacentransportes['Retirada'])){

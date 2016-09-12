@@ -135,6 +135,7 @@ echo $this->html->tablecells(array(
 	)
 ));
 ?>	</table>
+<div style='font-weight:bold' id=sinAdjudicar></div>
 <?php
 echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Cancelar',
 	array(
