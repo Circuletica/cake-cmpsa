@@ -22,9 +22,9 @@ class Transporte extends AppModel {
 		'Aseguradora' => array(
 			'className' => 'Empresa',
 			'foreignKey' => 'aseguradora_id'),
-		'Operacion' => array(
-			'className' => 'Operacion',
-			'foreignKey' => 'operacion_id'),
+		'OperacionLogistica' => array(
+			'className' => 'OperacionLogistica',
+			'foreignKey' => 'operacion_logistica_id'),
 		'Naviera' => array(
 			'className' => 'Empresa',
 			'foreignKey' => 'naviera_id'),

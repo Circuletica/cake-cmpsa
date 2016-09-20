@@ -1,11 +1,11 @@
 <?php
-class OperacionesController extends AppController {
+class OperacionLogisticasController extends AppController {
 
 	public function index() {
 		$this->set('action', $this->action);	//Se usa para tener la misma vista
 
-		$this->Operacion->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
-		$this->paginate['order'] = array('Operacion.referencia' => 'asc');
+		$this->OperacionLogistica->virtualFields['calidad']=$this->OperacionLogistica->Contrato->Calidad->virtualFields['nombre'];
+		$this->paginate['order'] = array('OperacionLogistica.referencia' => 'asc');
 		$this->paginate['recursive'] = 2;
 		$this->paginate['contain'] = array(
 			'Contrato' =>array(
@@ -34,7 +34,7 @@ class OperacionesController extends AppController {
 
 		$titulo = $this->filtroPaginador(
 			array(
-				'Operacion' =>array(
+				'OperacionLogistica' =>array(
 					'Referencia' => array(
 						'columna' => 'referencia',
 						'exacto' => false,
@@ -66,7 +66,7 @@ class OperacionesController extends AppController {
 			$title[] = 'Contrato: '.$criterio;
 		}
 
-		$this->Operacion->bindModel(
+		$this->OperacionLogistica->bindModel(
 			array(
 				'belongsTo' => array(
 					'Calidad' => array(
@@ -89,7 +89,7 @@ class OperacionesController extends AppController {
 
 	public function edit($id = null) {
 		$this->checkId($id);
-		$this->Operacion->id = $id;
+		$this->OperacionLogistica->id = $id;
 		$this->loadModel('Asociado');
 		$asociados = $this->Asociado->find(
 			'all',
@@ -106,10 +106,10 @@ class OperacionesController extends AppController {
 				'recursive' => 1
 			)
 		);
-		$operacion = $this->Operacion->find(
+		$operacion = $this->OperacionLogistica->find(
 			'first',
 			array(
-				'conditions' => array('Operacion.id' => $id),
+				'conditions' => array('OperacionLogistica.id' => $id),
 				'recursive' => 3,
 				'contain' => array(
 					'Contrato' => array(
@@ -160,7 +160,7 @@ class OperacionesController extends AppController {
 				)
 			)
 		);
-		$contrato_id =  $operacion['Operacion']['contrato_id'];
+		$contrato_id =  $operacion['OperacionLogistica']['contrato_id'];
 		//sacamos los datos del contrato al que pertenece la linea
 		//nos sirven en la vista para detallar campos
 
@@ -219,7 +219,7 @@ class OperacionesController extends AppController {
 		//para los puertos de carga y destino
 		$this->set(
 			'puertoCargas',
-			$this->Operacion->PuertoCarga->find(
+			$this->OperacionLogistica->PuertoCarga->find(
 				'list',
 				array(
 					'order' => array('PuertoCarga.nombre' =>'ASC')
@@ -228,7 +228,7 @@ class OperacionesController extends AppController {
 		);
 		$this->set(
 			'puertoDestinos',
-			$this->Operacion->PuertoDestino->find(
+			$this->OperacionLogistica->PuertoDestino->find(
 				'list',
 				#el café solo llega a puerto españoles
 				array(
@@ -241,12 +241,12 @@ class OperacionesController extends AppController {
 		$this->set('proveedor',$contrato['Proveedor']['nombre_corto']);
 
 		if($this->request->is('get')){ //al abrir el edit, meter los datos de la bdd
-			$this->request->data = $this->Operacion->read();
+			$this->request->data = $this->OperacionLogistica->read();
 			foreach ($asociados_operacion as $asociado_id => $asociado) {
 				$this->request->data['CantidadAsociado'][$asociado_id] = $asociado['cantidad_embalaje_asociado'];
 			}
 		} else {
-			if ($this->Operacion->save($this->request->data)){
+			if ($this->OperacionLogistica->save($this->request->data)){
 				//Los registros de AsociadoOperacion se van sumando
 				//asi que hay que borrarlos todos porque el saveAll() los
 				//vuelve a crear y no queremos duplicados.

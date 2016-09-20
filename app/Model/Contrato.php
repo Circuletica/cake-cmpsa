@@ -56,8 +56,8 @@ AND muestras.aprobado = 1
 	),
 	);
 	public $hasMany = array(
-	'Operacion' => array(
-		'className' => 'Operacion',
+	'OperacionLogistica' => array(
+		'className' => 'OperacionLogistica',
 		'foreignKey' => 'contrato_id'
 	),
 	'ContratoEmbalaje' => array(

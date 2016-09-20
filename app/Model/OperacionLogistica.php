@@ -1,5 +1,5 @@
 <?php
-class Operacion extends AppModel {
+class OperacionLogistica extends AppModel {
 	public $recursive = 2;
 
 	public $action_view;
@@ -21,21 +21,9 @@ class Operacion extends AppModel {
 			'className' => 'Puerto',
 			'foreignKey' => 'puerto_destino_id'
 		),
-		'Pedido' => array(
-			'className' => 'Pedido',
-			'foreignKey' => 'pedido_id'
-		),
-		'Distribucion' => array(
-			'className' => 'Distribicion',
-			'foreignKey' => 'distribucion_id'
-		),
-		'OperacionLogistica' => array(
-			'className' => 'OperacionLogistica',
-			'foreignKey' => 'operacion_logistica_id'
-		),
-/*		'Contrato' => array(
+		'Contrato' => array(
 			'className' => 'Contrato',
-			'foreignKey' => 'contrato_id'),*/
+			'foreignKey' => 'contrato_id'),
 		'Embalaje' => array(
 			'className' => 'Embalaje',
 			'foreignKey' => 'embalaje_id')
@@ -65,10 +53,10 @@ class Operacion extends AppModel {
 	public $hasMany = array(
 		'AsociadoOperacion' => array(
 			'className' => 'AsociadoOperacion',
-			'foreignKey' => 'operacion_id'),
+			'foreignKey' => 'operacion_logistica_id'),
 		'Transporte' => array(
 			'className' => 'Transporte',
-			'foreignKey' => 'operacion_id'),
+			'foreignKey' => 'operacion_logistica_id'),
 		'LineaMuestra',
 		'Retirada'
 	);
