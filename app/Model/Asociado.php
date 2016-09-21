@@ -10,10 +10,10 @@ class Asociado extends AppModel {
 			'className' => 'AsociadoComision',
 			'foreignKey' => 'asociado_id'
 		),
-		'AsociadoOperacion' => array(
-			'className' => 'AsociadoOperacion',
-			'foreignKey' => 'asociado_id'
-		),
+//		'AsociadoOperacion' => array(
+//			'className' => 'AsociadoOperacion',
+//			'foreignKey' => 'asociado_id'
+//		),
 		'Retirada' => array(
 			'className' => 'Retirada',
 			'foreignKey' => 'asociado_id'

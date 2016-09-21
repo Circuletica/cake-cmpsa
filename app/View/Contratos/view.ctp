@@ -5,7 +5,7 @@ $this->assign('line_object', 'Operación');
 $this->assign('id',$contrato['Contrato']['id']);
 $this->assign('class','Contrato');
 $this->assign('controller','contratos');
-$this->assign('line_controller','operaciones');
+$this->assign('line_controller','operacion_logisticas');
 $this->assign('line_add','1');
 
 $this->start('breadcrumb');

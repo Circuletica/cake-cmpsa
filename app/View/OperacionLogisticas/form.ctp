@@ -1,11 +1,11 @@
 <?php
 if ($action == 'add') {
-	echo "<h2>Añadir Operación a Contrato <em>".$contrato['Contrato']['referencia']."</em></h2>\n";
+	echo "<h2>Añadir Operación (logística) a Contrato <em>".$contrato['Contrato']['referencia']."</em></h2>\n";
 	$this->Html->addCrumb('Contrato '.$contrato['Contrato']['referencia'],'/'.$this->params['named']['from_controller'].'/view/'.$this->params['named']['from_id']);
 }
 if ($action == 'edit') {
-	echo "<h2>Modificar Operación a Contrato <em>".$contrato['Contrato']['referencia']."</em></h2>\n";
-	$this->Html->addCrumb('Operaciones','/operaciones');
+	echo "<h2>Modificar Operación (logística) a Contrato <em>".$contrato['Contrato']['referencia']."</em></h2>\n";
+	$this->Html->addCrumb('Operaciones (logística)','/operacion_logisticas');
 }
 
 //Pasamos la lista de 'embalajes_completo' del contrato al javascript de la vista
@@ -15,7 +15,7 @@ $this->Js->set('precioFletes', $precio_fletes);
 $this->Js->set('diferencial', $contrato['Contrato']['diferencial']);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
-echo $this->Form->create('Operacion');
+echo $this->Form->create('OperacionLogistica');
 //Info de la operación
 ?>
 <fieldset>

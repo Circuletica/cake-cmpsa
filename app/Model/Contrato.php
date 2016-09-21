@@ -91,7 +91,7 @@ AND muestras.aprobado = 1
 		'foreignKey' => 'calidad_id')
 	);
 	public function beforeDelete($cascade = true) {
-		$count = $this->Operacion->find(
+		$count = $this->OperacionLogistica->find(
 			"count",
 			array(
 				"recursive" => -1,

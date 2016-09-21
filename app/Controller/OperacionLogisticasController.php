@@ -330,27 +330,27 @@ class OperacionLogisticasController extends AppController {
 
 		//Sacamos el valor de la operación si es un ADD
 		if (empty($this->params['named']['from_id'])){
-			$operacion = $this->Operacion->find(
+			$operacion = $this->OperacionLogistica->find(
 				'first',
 				array(
 					'conditions' =>array(
-						'Operacion.id' => $id
+						'OperacionLogistica.id' => $id
 					),
 					'fields' => array(
 						'contrato_id',
 					)
 				)
 			);
-			$contrato_id =  $operacion['Operacion']['contrato_id'];
+			$contrato_id =  $operacion['OperacionLogistica']['contrato_id'];
 		}else{
 			$contrato_id = $this->params['named']['from_id'];
 		}
 
 		//sacamos los datos del contrato al que pertenece la linea
 		//nos sirven en la vista para detallar campos
-		$this->Operacion->Contrato->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
+		$this->OperacionLogistica->Contrato->virtualFields['calidad']=$this->OperacionLogistica->Contrato->Calidad->virtualFields['nombre'];
 
-		$contrato = $this->Operacion->Contrato->find(
+		$contrato = $this->OperacionLogistica->Contrato->find(
 			'first',
 			array(
 				'conditions' => array('Contrato.id' => $contrato_id),
@@ -387,7 +387,7 @@ class OperacionLogisticasController extends AppController {
 		$this->set('puerto_carga_contrato_id', $contrato['Contrato']['puerto_carga_id']);
 		$this->set('puerto_destino_contrato_id', $contrato['Contrato']['puerto_destino_id']);
 		$this->set('divisa', $contrato['CanalCompra']['divisa']);
-		$embalajes_contrato = $this->Operacion->Contrato->ContratoEmbalaje->find(
+		$embalajes_contrato = $this->OperacionLogistica->Contrato->ContratoEmbalaje->find(
 			'all',
 			array(
 				'conditions' => array(
@@ -435,13 +435,13 @@ class OperacionLogisticasController extends AppController {
 		$this->set('proveedor',$contrato['Proveedor']['nombre_corto']);
 		//a quienes van asociadas las lineas de contrato
 		//para los puertos de carga y destino
-		$this->set('puertoCargas',$this->Operacion->PuertoCarga->find(
+		$this->set('puertoCargas',$this->OperacionLogistica->PuertoCarga->find(
 			'list',
 			array(
 				'order' => array('PuertoCarga.nombre' =>'ASC')
 			)
 		));
-		$this->set('puertoDestinos',$this->Operacion->PuertoDestino->find(
+		$this->set('puertoDestinos',$this->OperacionLogistica->PuertoDestino->find(
 			'list',
 			#el café solo llega a puerto españoles
 			array(
@@ -451,14 +451,14 @@ class OperacionLogisticasController extends AppController {
 		));
 
 		//Por defecto ponemos las opciones, el forfait, el seguro y el flete a cero
-		$this->request->data['Operacion']['opciones'] = 0;
-		$this->request->data['Operacion']['forfait'] = 0;
-		$this->request->data['Operacion']['seguro'] = 0;
-		$this->request->data['Operacion']['flete'] = 0;
+		$this->request->data['OperacionLogistica']['opciones'] = 0;
+		$this->request->data['OperacionLogistica']['forfait'] = 0;
+		$this->request->data['OperacionLogistica']['seguro'] = 0;
+		$this->request->data['OperacionLogistica']['flete'] = 0;
 
 		//Queremos la lista de costes de fletes
-		//$precio_fletes = $this->Operacion->Contrato->PrecioFleteContrato->find(
-		$precio_fletes = $this->Operacion->Contrato->FleteContrato->find(
+		//$precio_fletes = $this->OperacionLogistica->Contrato->PrecioFleteContrato->find(
+		$precio_fletes = $this->OperacionLogistica->Contrato->FleteContrato->find(
 			'all',
 			array(
 				'recursive' => 3,
@@ -522,24 +522,25 @@ class OperacionLogisticasController extends AppController {
 		$this->set(compact('fletes'));
 		$this->set(compact('precio_fletes'));
 
-		if (!empty($id))$this->Operacion->id = $id;
+		if (!empty($id))$this->OperacionLogistica->id = $id;
 
 
 		if ($this->request->is('post')) {//ES UN POST
 			$data = &$this->request->data;
 			//al guardar la linea, se incluye a qué contrato pertenece
-			$this->request->data['Operacion']['contrato_id'] = $contrato_id;
+			$this->request->data['OperacionLogistica']['contrato_id'] = $contrato_id;
 			if($id == NULL){
 				//primero guardamos los datos de Operacion
-				if($this->Operacion->save($this->request->data)){
+				if($this->OperacionLogistica->save($this->request->data)){
 					//luego las cantidades de cada asociado en AsociadoOperacion
 					foreach ($data['CantidadAsociado'] as $asociado_id => $cantidad) {
 						if ($cantidad != NULL) {
-							$data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
-							$data['AsociadoOperacion']['asociado_id'] = $asociado_id;
-							$data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
-							if (!$this->Operacion->AsociadoOperacion->saveAll($data['AsociadoOperacion']))
-								throw New Exception('error en guardar AsociadoOperacion');
+							$data['Pedido']['operacion_id'] = $this->OperacionLogistica->id;
+							$data['Pedido']['asociado_id'] = $asociado_id;
+							$data['Pedido']['cantidad_embalaje_asociado'] = $cantidad;
+//							if (!$this->OperacionLogistica->AsociadoOperacion->saveAll($data['AsociadoOperacion'])) OLD
+							if (!$this->OperacionLogistica->Operacion->Pedido->saveAll($data['AsociadoOperacion']))
+								throw New Exception('error en guardar Pedido');
 						}
 					}
 					//falta aquí guardar el peso total de la linea de contrato
@@ -549,10 +550,10 @@ class OperacionLogisticasController extends AppController {
 					//volvemos al contrato a la que pertenece la linea creada
 					$this->redirect(array(
 						//'controller' => 'contratos',
-						'controller' => 'operaciones',
+						'controller' => 'operacion_logisticas',
 						'action' => 'view',
 						//$contrato_id
-						$this->Operacion->id
+						$this->OperacionLogistica->id
 					));
 				}else{
 					$this->Flash->error('Operación NO guardada');
@@ -569,7 +570,7 @@ class OperacionLogisticasController extends AppController {
 			}*/
 			}
 		}else{//es un GET
-			$this->request->data = $this->Operacion->read(null, $id);
+			$this->request->data = $this->OperacionLogistica->read(null, $id);
 		}
 	}
 
@@ -577,7 +578,7 @@ class OperacionLogisticasController extends AppController {
 		$this->checkId($id);
 		$this->set('action', $this->action);	//Se usa para tener la misma info
 
-		$operacion = $this->Operacion->find(
+		$operacion = $this->OperacionLogistica->find(
 			'first',
 			array(
 				'conditions' => array('Operacion.id' => $id),
@@ -591,9 +592,9 @@ class OperacionLogisticasController extends AppController {
 						'CanalCompra',
 						'Calidad'
 					),
-					'AsociadoOperacion' => array(
-						'Asociado'
-					),
+//					'AsociadoOperacion' => array(
+//						'Asociado'
+//					),
 					'PesoOperacion',
 					'PrecioTotalOperacion'
 				)

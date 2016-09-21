@@ -33,14 +33,11 @@ class Operacion extends AppModel {
 			'className' => 'OperacionLogistica',
 			'foreignKey' => 'operacion_logistica_id'
 		),
-/*		'Contrato' => array(
-			'className' => 'Contrato',
-			'foreignKey' => 'contrato_id'),*/
 		'Embalaje' => array(
 			'className' => 'Embalaje',
 			'foreignKey' => 'embalaje_id')
 		);
-	public $hasOne = array(
+	/*public $hasOne = array(
 		'PrecioOperacion' => array(
 			'className' => 'PrecioOperacion',
 			'foreignKey' => 'id'
@@ -61,13 +58,13 @@ class Operacion extends AppModel {
 			'className' => 'Facturacion',
 			'foreignKey' => 'id'
 		)
-	);
+	);*/
 	public $hasMany = array(
-		'AsociadoOperacion' => array(
-			'className' => 'AsociadoOperacion',
-			'foreignKey' => 'operacion_id'),
-		'Transporte' => array(
-			'className' => 'Transporte',
+//		'AsociadoOperacion' => array(
+//			'className' => 'AsociadoOperacion',
+//			'foreignKey' => 'operacion_id'),
+		'OperacionCuenta' => array(
+			'className' => 'OperacionCuenta',
 			'foreignKey' => 'operacion_id'),
 		'LineaMuestra',
 		'Retirada'

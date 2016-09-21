@@ -51,14 +51,14 @@ class OperacionLogistica extends AppModel {
 		)
 	);
 	public $hasMany = array(
-		'AsociadoOperacion' => array(
-			'className' => 'AsociadoOperacion',
-			'foreignKey' => 'operacion_logistica_id'),
+//		'AsociadoOperacion' => array(
+//			'className' => 'AsociadoOperacion',
+//			'foreignKey' => 'operacion_logistica_id'),
 		'Transporte' => array(
 			'className' => 'Transporte',
 			'foreignKey' => 'operacion_logistica_id'),
 		'LineaMuestra',
-		'Retirada'
+	//	'Retirada'
 	);
 	public function beforeDelete($cascade = true) {
 		$count_retirada = $this->Retirada->find(
