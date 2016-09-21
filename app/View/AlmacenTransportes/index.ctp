@@ -22,7 +22,7 @@ $this->start('main');
 				$this->Paginator->sort('AlmacenTransporte.cantidad_cuenta','Cantidad'),
 				$this->Paginator->sort('AlmacenTransporte.peso_bruto','Peso bruto'),
 				$this->Paginator->sort('AlmacenTransporte.marca_almacen','Marca'),
-                $this->Paginator->sort('Operacion.referenciacuenta_almacen','Ref. operación'),
+                $this->Paginator->sort('Operacion.referencia','Ref. operación'),
 				'Detalle')
 			);
 			foreach($almacentransportes as $almacentransporte):
@@ -47,14 +47,14 @@ $this->start('main');
 		        $this->Paginator->sort('Transporte.linea','Nº línea'),
 		        $this->Paginator->sort('Calidad.nombre', 'Calidad'),
 		      	$this->Paginator->sort('AlmacenTransporte.cantidad_cuenta', 'Cantidad cuenta'), // SACOS PENDIENTES DE ADJUDICAR
-		       	$this->Paginator->sort('AlmacenTransporteAsociado.sacos_asignados', 'Sacos Pendientes'), // SACOS PENDIENTES DE ADJUDICAR
+		       	$this->Paginator->sort('AsociadoCuenta.sacos_asignados', 'Sacos Pendientes'), // SACOS PENDIENTES DE ADJUDICAR
 		        $this->Paginator->sort('AlmacenTransporte.cuenta_almacen', 'Ref. Almacén'),
 		        $this->Paginator->sort('Almacen.nombre_corto', 'Almacén'),
 		       'Detalle'
 		       )
         	);
 		    foreach($almacentransportes as $almacentransporte){
-		    	if(!empty($almacentransporte['AlmacenTransporteAsociado'])){
+		    	if(!empty($almacentransporte['AsociadoCuenta'])){
 					echo $this->Html->tableCells(array(
 			            $almacentransporte['Operacion']['referencia'],
 			            $almacentransporte['Transporte']['linea'],

@@ -1,18 +1,18 @@
 <?php
 $this->extend('/Common/view');
 $this->assign('object', 'Operación (logística)'.$referencia);
-$this->assign('line_object', 'Reparto asociados');
+$this->assign('line_object', 'Reparto asociados solicitado');
 $this->assign('id',$operacion['OperacionLogistica']['id']);
 $this->assign('class','Operacion');
-$this->assign('controller','operacion_logistica');
-//$this->assign('line_controller','asociado_operaciones');
+$this->assign('controller','operacion_logisticas');
+$this->assign('line_controller','pedidos');
 $this->assign('line_add','0');
 
 $this->start('breadcrumb');
 $this->Html->addCrumb(
-    'Operaciones',
+    'Operaciones (logística)',
     array(
-	'controller' => 'operaciones',
+	'controller' => 'operacion_logisticas',
 	'action' => 'index'
     )
 );

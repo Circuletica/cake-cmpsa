@@ -26,7 +26,7 @@ class Operacion extends AppModel {
 			'foreignKey' => 'pedido_id'
 		),
 		'Distribucion' => array(
-			'className' => 'Distribicion',
+			'className' => 'Distribucion',
 			'foreignKey' => 'distribucion_id'
 		),
 		'OperacionLogistica' => array(

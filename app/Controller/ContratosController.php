@@ -498,18 +498,20 @@ class ContratosController extends AppController {
 			$operacion['OperacionLogistica']['referencia'] .= '###'.$i;
 			$this->Contrato->OperacionLogistica->create();
 			$this->Contrato->OperacionLogistica->save($operacion);
+
+			//PENDIENTE DE SOLVENTAR
 			$asociado_operaciones = $this->Contrato->OperacionLogistica->AsociadoOperacion->find('all', array(
 				'conditions' => array('AsociadoOperacion.operacion_id' => $id_operacion_copiada)
 				)
 			);
 			//después de crear la operacion, hay que meterle los repartos de asociados
 			foreach ($asociado_operaciones as $asociado_operacion){
-				$asociado_operacion['AsociadoOperacion']['operacion_id'] = $this->Contrato->Operacion->id;
+				$asociado_operacion['AsociadoOperacion']['operacion_id'] = $this->Contrato->OperacionLogistica->id;
 				unset ($asociado_operacion['AsociadoOperacion']['id']);
 				unset ($asociado_operacion['AsociadoOperacion']['created']);
 				unset ($asociado_operacion['AsociadoOperacion']['modified']);
-				$this->Contrato->Operacion->AsociadoOperacion->create();
-				$this->Contrato->Operacion->AsociadoOperacion->save($asociado_operacion);
+				$this->Contrato->OperacionLogistica->AsociadoOperacion->create();
+				$this->Contrato->OperacionLogistica->AsociadoOperacion->save($asociado_operacion);
 			}
 			$i++;
 		}

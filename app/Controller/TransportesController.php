@@ -26,7 +26,7 @@ class TransportesController extends AppController {
 		//);
 		$this->paginate['contain'] = array(
 			'Calidad',
-			'Operacion' => array(
+			'OperacionLogistica' => array(
 				'fields'=> array(
 					'id',
 					'referencia',
@@ -89,7 +89,7 @@ class TransportesController extends AppController {
 				'belongsTo' => array(
 					'Contrato' => array(
 						'foreignKey' => false,
-						'conditions' => array('Operacion.contrato_id = Contrato.id'),
+						'conditions' => array('OperacionLogistica.contrato_id = Contrato.id'),
 						'fields'=> array(
 							'id',
 							'referencia',
@@ -139,7 +139,7 @@ class TransportesController extends AppController {
 				),
 				'recursive' => 3,
 				'contain' => array(
-					'Operacion' => array(
+					'OperacionLogistica' => array(
 						'Contrato' => array(
 							'fields' => array(
 								'id',
@@ -225,7 +225,7 @@ class TransportesController extends AppController {
 		$restan = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
 		$this->set(compact('restan'));
 		$this->set('almacenado',$almacenado);
-		$embalaje = $transporte['Operacion']['Embalaje']['nombre'];
+		$embalaje = $transporte['OperacionLogistica']['Embalaje']['nombre'];
 		$this->set('embalaje',$embalaje);
 		//Necesario para exportar en PDf
 		$this->set(compact('id'));
@@ -248,7 +248,7 @@ class TransportesController extends AppController {
 			$this->Flash->error('error en URL');
 			$this->redirect(array(
 				'action' => 'view_trafico',
-				'controller' => 'operaciones',
+				'controller' => 'operacion_logisticas',
 				$this->params['from_id']
 			));
 		}
@@ -319,22 +319,22 @@ class TransportesController extends AppController {
 						'Transporte.id' => $id
 					),
 					'fields' => array(
-						'operacion_id',
+						'operacion_logistica_id',
 						'cantidad_embalaje',
 						'linea'
 					)
 				)
 			);
-			$operacion_id =  $transporte['Transporte']['operacion_id'];
+			$operacion_id =  $transporte['Transporte']['operacion_logistica_id'];
 		}else{
 			$operacion_id = $this->params['named']['from_id'];
 		}
 
-		$operacion = $this->Transporte->Operacion->find(
+		$operacion = $this->Transporte->OperacionLogistica->find(
 			'first',
 			array(
 				'conditions' => array(
-					'Operacion.id' => $operacion_id
+					'OperacionLogistica.id' => $operacion_id
 				),
 				'recursive' => 2,
 				'fields' => array(
@@ -347,7 +347,7 @@ class TransportesController extends AppController {
 				'Transporte' => array(
 					'fields' => array(
 						'id',
-						'operacion_id',
+						'operacion_logistica_id',
 						'linea'
 					)
 				),

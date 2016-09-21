@@ -14,7 +14,7 @@ class AlmacenTransportesController extends AppController {
 					'nombre_corto'
 				)
 			),
-			'Operacion' => array(
+			'OperacionLogistica' => array(
 				'fields' => array(
 					'referencia',
 					'contrato_id'
@@ -33,10 +33,10 @@ class AlmacenTransportesController extends AppController {
 			'Transporte'=>array(
 				'fields'=> array(
 					'linea',
-					'operacion_id'
+					'operacion_logistica_id'
 				)
 			),
-			'AlmacenTransporteAsociado'
+			'AsociadoCuenta'
 		);
 		if(isset($this->passedArgs['Search.desde'])) {
 			$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
@@ -63,13 +63,13 @@ class AlmacenTransportesController extends AppController {
 		$this->AlmacenTransporte->bindModel(
 			array(
 				'belongsTo' => array(
-					'Operacion' => array(
+					'OperacionLogistica' => array(
 						'foreignKey' => false,
-						'conditions' => array('Transporte.operacion_id = Operacion.id')
+						'conditions' => array('Transporte.operacion_logistica_id = OperacionLogistica.id')
 					),
 					'Contrato' => array(
 						'foreignKey' => false,
-						'conditions' => array('Operacion.contrato_id = Contrato.id')
+						'conditions' => array('OperacionLogistica.contrato_id = Contrato.id')
 					),
 					'Calidad' => array(
 						'foreignKey' => false,
@@ -80,7 +80,7 @@ class AlmacenTransportesController extends AppController {
 		);
 
 		$this->set('almacentransportes', $this->paginate());
-		$almacentransporteasociados = $this->AlmacenTransporte->AlmacenTransporteAsociado->find(
+		$almacentransporteasociados = $this->AlmacenTransporte->AsociadoCuenta->find(
 			'all',
 			array(
 				'contain' => array(

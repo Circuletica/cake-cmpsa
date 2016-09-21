@@ -3,9 +3,9 @@ $this->extend('/Common/view');
 $this->assign('object', 'Operación (logística)'.$operacion['OperacionLogistica']['referencia']);
 $this->assign('line_object', 'Líneas de transporte');
 $this->assign('line2_object', 'Resumen retiradas en base a la operación');
-$this->assign('id',$operacion['Operacion']['id']);
+$this->assign('id',$operacion['OperacionLogistica']['id']);
 $this->assign('class','Operacion');
-$this->assign('controller','operaciones');
+$this->assign('controller','operacion_logisticas');
 $this->assign('line_controller','transportes');
 $this->assign('line2_controller','retiradas');
 $this->assign('button_edit_delete',0);
@@ -16,14 +16,14 @@ $this->start('breadcrumb');
 $this->Html->addCrumb(
 	'Operaciones',
 	array(
-		'controller' => 'operaciones',
+		'controller' => 'operacion_logisticas',
 		'action' => 'index_trafico'
 	)
 );
-$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-	'controller'=>'operaciones',
+$this->Html->addCrumb('Operación '.$operacion['OperacionLogistica']['referencia'], array(
+	'controller'=>'operacion_logisticas',
 	'action'=>'view_trafico',
-	$operacion['Operacion']['id']
+	$operacion['OperacionLogistica']['id']
 ));
 $this->end();
 
@@ -35,7 +35,7 @@ $this->start('main');
 echo "<dl>";
 echo "  <dt>Ref. operación</dt>\n";
 echo "<dd>";
-echo $operacion['Operacion']['referencia'].'&nbsp;';
+echo $operacion['OperacionLogistica']['referencia'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Ref. contrato</dt>\n";
 echo "<dd>";
@@ -44,7 +44,7 @@ echo $this->html->link(
 	array(
 		'controller' => 'contratos',
 		'action' => 'view',
-		$operacion['Operacion']['contrato_id'])
+		$operacion['OperacionLogistica']['contrato_id'])
 	);
 echo "</dd>";
 echo "  <dt>".$tipo_fecha_transporte."</dt>\n";
@@ -77,27 +77,28 @@ echo "<dd>";
 echo $operacion['Contrato']['Incoterm']['nombre'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Peso:</dt>\n";
-echo "  <dd>".$operacion['PesoOperacion']['peso'].'kg&nbsp;'."</dd>";
+echo "  <dd>PENDIENTE"//.$operacion['PesoOperacion']['peso'].'kg&nbsp;'
+."</dd>";
 echo "  <dt>Embalaje:</dt>\n";
 echo "  <dd>".
-	$operacion['PesoOperacion']['cantidad_embalaje'].' x '.
-	$embalaje['Embalaje']['nombre'].
+	'PENDIENTE'//$operacion['PesoOperacion']['cantidad_embalaje'].' x '.
+	.$embalaje['Embalaje']['nombre'].
 	' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."
 	</dd>";
-	echo "  <dt>Precio ".$operacion['PrecioTotalOperacion']['divisa']."/Tm:</dt>\n";
+	echo "  <dt>Precio "./*$operacion['PrecioTotalOperacion']['divisa'].*/"/Tm:</dt>\n";
 echo "  <dd>".
-	$operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].
-	$operacion['PrecioTotalOperacion']['divisa'].
-	'/Tm&nbsp;'.
+	'PENDIENTE'//$operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].
+	//$operacion['PrecioTotalOperacion']['divisa'].
+	.'/Tm&nbsp;'.
 	"</dd>";
 if ($operacion['Contrato']['Incoterm']['si_flete']) {
 	echo "  <dt>Flete:</dt>\n";
 	echo "  <dd>".
-		$operacion['Operacion']['flete'].
+		$operacion['OperacionLogistica']['flete'].
 		'$/Tm&nbsp;'."</dd>";
 }
 echo "  <dt>Observaciones</dt>\n";
-echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
+echo "  <dd>".$operacion['OperacionLogistica']['observaciones'].'&nbsp;'."</dd>";
 echo "</dl>";
 $this->end();
 
@@ -123,7 +124,7 @@ foreach($operacion['Transporte'] as $linea) {
 	}
 	echo "</table>\n";
 	echo "<div class='btabla'>\n";
-	echo $this->Button->addLine('transportes','operaciones',$operacion['Operacion']['id'],'transporte');
+	echo $this->Button->addLine('transportes','operacion_logisticas',$operacion['OperacionLogistica']['id'],'transporte');
 	echo '</div>';
 	if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
 	    echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
@@ -182,7 +183,7 @@ foreach ($lineas_retirada as $linea_retirada):
 				'action' => 'view_asociado',
 				'asociado_id'=>$linea_retirada['asociado_id'],
 				'from_controller' => 'operaciones',
-				'from_id' => $operacion['Operacion']['id']
+				'from_id' => $operacion['OperacionLogistica']['id']
 			),
 			array(
 				'class' => 'boton',
@@ -252,7 +253,7 @@ echo $this->html->tablecells(array(
     //SE COMPRUEBA QUE HAY CUENTAS DE ALMACÉN PARA PERMITIR QUE SE AGREGEN RETIRADAS CON EL BOTÓN
     if(is_array($cuentas_almacenes)){
         echo '<div class="btabla">';
-        echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
+        echo $this->Button->addLine('retiradas','operaciones',$operacion['OperacionLogistica']['id'],'retirada');
         echo '</div>';
     }else{
         echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
@@ -306,7 +307,7 @@ foreach ($lineas_retirada as $linea_retirada):
 		'action' => 'view_asociado',
 		'asociado_id'=>$linea_retirada['asociado_id'],
 		'from_controller' => 'operaciones',
-		'from_id' => $operacion['Operacion']['id']
+		'from_id' => $operacion['OperacionLogistica']['id']
 	    ),
 	    array(
 		'class' => 'boton',
@@ -375,7 +376,7 @@ endforeach;
 <?php
 /*if ($cuenta_almacen['cuenta_almacen'] != NULL ){
     echo '<div class="btabla">';
-    echo $this->Button->addLine('retiradas','operaciones',$operacion['Operacion']['id'],'retirada');
+    echo $this->Button->addLine('retiradas','operaciones',$operacion['OperacionLogistica']['id'],'retirada');
     echo '</div>';
 }else{
     echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
@@ -423,7 +424,7 @@ endforeach;
 										'action' => 'view_asociado',
 										'asociado_id'=>$operacion_retirada['Retirada']['asociado_id'],
 										'from_controller' => 'operaciones',
-										'from_id' => $operacion['Operacion']['id']
+										'from_id' => $operacion['OperacionLogistica']['id']
 										),
 									array(
 										'class' => 'boton',

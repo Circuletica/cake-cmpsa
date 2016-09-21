@@ -156,7 +156,7 @@ class OperacionLogisticasController extends AppController {
 						'RestoLotesContrato'
 					),
 					'Embalaje',
-					'AsociadoOperacion'
+					//'AsociadoOperacion'
 				)
 			)
 		);
@@ -581,7 +581,7 @@ class OperacionLogisticasController extends AppController {
 		$operacion = $this->OperacionLogistica->find(
 			'first',
 			array(
-				'conditions' => array('Operacion.id' => $id),
+				'conditions' => array('OperacionLogistica.id' => $id),
 				'recursive' => 3,
 				'contain' => array(
 					'PuertoCarga',
@@ -601,14 +601,14 @@ class OperacionLogisticasController extends AppController {
 			)
 		);
 		$this->set('operacion', $operacion);
-		$this->set('referencia', $operacion['Operacion']['referencia']);
+		$this->set('referencia', $operacion['OperacionLogistica']['referencia']);
 		$this->loadModel('ContratoEmbalaje');
 		$embalaje = $this->ContratoEmbalaje->find(
 			'first',
 			array(
 				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+					'ContratoEmbalaje.contrato_id' => $operacion['OperacionLogistica']['contrato_id'],
+					'ContratoEmbalaje.embalaje_id' => $operacion['OperacionLogistica']['embalaje_id']
 				),
 				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
 			)
@@ -640,13 +640,13 @@ class OperacionLogisticasController extends AppController {
 			$this->set('lineas_reparto',$lineas_reparto);
 		}
 
-		$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
+		$this->set('fecha_fijacion', $operacion['OperacionLogistica']['fecha_pos_fijacion']);
 		//comprobamos si ya existe una financiacion para esta operación
-		if ($this->Operacion->Financiacion->hasAny(array('Financiacion.id' => $id))) {
+		if ($this->OperacionLogistica->Financiacion->hasAny(array('Financiacion.id' => $id))) {
 			$this->set('existe_financiacion', 1);
 		}
 		//comprobamos si ya existe una facturación para esta operación
-		if ($this->Operacion->Facturacion->hasAny(array('Facturacion.id' => $id))) {
+		if ($this->OperacionLogistica->Facturacion->hasAny(array('Facturacion.id' => $id))) {
 			$this->set('existe_facturacion', 1);
 		}
 		//Se declara para acceder al PDF
@@ -662,11 +662,11 @@ class OperacionLogisticasController extends AppController {
 
 	public function view_trafico($id = null){
 		$this->checkId($id);
-		$operacion = $this->Operacion->find(
+		$operacion = $this->OperacionLogistica->find(
 			'first',
 			array(
 				'conditions' => array(
-					'Operacion.id' => $id
+					'OperacionLogistica.id' => $id
 				),
 				'recursive' => 2,
 				'contain' => array(
@@ -712,15 +712,15 @@ class OperacionLogisticasController extends AppController {
 							'cantidad_embalaje'
 						)
 					),
-					'PrecioTotalOperacion'=> array(
-						'fields'=>array(
-							'precio_divisa_tonelada',
-							'divisa'
-						)
-					),
-					'AsociadoOperacion'=>array(
-						'Asociado'
-					)
+//PENDIENTE					'PrecioTotalOperacion'=> array(
+//						'fields'=>array(
+//							'precio_divisa_tonelada',
+//							'divisa'
+//						)
+//					),
+//					'AsociadoOperacion'=>array(
+//						'Asociado'
+//					)
 				)
 
 			)
@@ -728,11 +728,11 @@ class OperacionLogisticasController extends AppController {
 
 		$this ->set(compact('operacion'));
 		//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
-		$cuentas_almacenes = $this->Operacion->Transporte->AlmacenTransporte->find(
+		$cuentas_almacenes = $this->OperacionLogistica->Transporte->AlmacenTransporte->find(
 			'all',
 			array(
 				'conditions' => array(
-					'Transporte.operacion_id' => $id
+					'Transporte.operacion_logistica_id' => $id
 				),
 				//'recursive' => 2,
 				'fields' => array(
@@ -755,8 +755,8 @@ class OperacionLogisticasController extends AppController {
 			'first',
 			array(
 				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+					'ContratoEmbalaje.contrato_id' => $operacion['OperacionLogistica']['contrato_id'],
+					'ContratoEmbalaje.embalaje_id' => $operacion['OperacionLogistica']['embalaje_id']
 				),
 				'fields' => array(
 					'Embalaje.nombre',
@@ -766,11 +766,11 @@ class OperacionLogisticasController extends AppController {
 		);
 
 		//Calculo la cantidad de bultos transportados
-		if($operacion['Operacion']['id']!= NULL){
+		if($operacion['OperacionLogistica']['id']!= NULL){
 			$suma = 0;
 			$transportado=0;
 			foreach ($operacion['Transporte'] as $suma){
-				if ($transporte['operacion_id']=$operacion['Operacion']['id']){
+				if ($transporte['operacion_logistica_id']=$operacion['OperacionLogistica']['id']){
 					$transportado = $transportado + $suma['cantidad_embalaje'];
 				}
 			}
@@ -856,7 +856,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		$total_sacos_retirados = 0;
 		$total_peso_retirado = 0;
 		$total_pendiente = 0;
-
+//HAY QUE CAMBIAR TODO EL CODIGO SIGUIENTE
 		foreach ($operacion['AsociadoOperacion'] as $linea) {
 			$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 
@@ -1074,14 +1074,14 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 		);
 		$this->set('operacion', $operacion);
 
-		$this->set('referencia', $operacion['Operacion']['referencia']);
+		$this->set('referencia', $operacion['OperacionLogistica']['referencia']);
 		$this->loadModel('ContratoEmbalaje');
 		$embalaje = $this->ContratoEmbalaje->find(
 			'first',
 			array(
 				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+					'ContratoEmbalaje.contrato_id' => $operacion['OperacionLogistica']['contrato_id'],
+					'ContratoEmbalaje.embalaje_id' => $operacion['OperacionLogistica']['embalaje_id']
 				),
 				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
 			)
@@ -1114,7 +1114,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 			$this->set('lineas_reparto',$lineas_reparto);
 		}
 
-		$this->set('fecha_fijacion', $operacion['Operacion']['fecha_pos_fijacion']);
+		$this->set('fecha_fijacion', $operacion['OperacionLogistica']['fecha_pos_fijacion']);
 
 		$asociados_operacion = $this->Operacion->AsociadoOperacion->find(
 			'all',
@@ -1229,7 +1229,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 				// Get the PDF string returned
 				//$pdf = $CakePdf->output();
 				// Or write it to file directly
-				$pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS .'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+				$pdf = $CakePdf->write(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS .'ficha_'.strtr($operacion['OperacionLogistica']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
 				//ENVIAMOS EL CORREO CON EL INFORME
 				$Email = new CakeEmail(); //Llamamos la instancia de email
 				$Email->config('compras'); //Plantilla de email.php
@@ -1239,14 +1239,14 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 				if(!empty($lista_bcc)){
 					$Email->bcc($lista_bcc);
 				}
-				$Email->subject('Ficha de compra '.$operacion['Operacion']['referencia']);
-				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS . 'ficha_'.strtr($operacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
-				$Email->send('Adjuntamos la ficha de la operación '.$operacion['Operacion']['referencia'].' correspondiente a su '.$tipo_fecha_transporte.' en '.' de ');
+				$Email->subject('Ficha de compra '.$operacion['OperacionLogistica']['referencia']);
+				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS . 'ficha_'.strtr($operacion['OperacionLogistica']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+				$Email->send('Adjuntamos la ficha de la operación '.$operacion['OperacionLogistica']['referencia'].' correspondiente a su '.$tipo_fecha_transporte.' en '.' de ');
 				$this->Flash->set('Distribución a los asociados enviado con éxito.');
 				$this->redirect(array(
 					'action'=>'view',
 					'controller' =>'Operaciones',
-					$operacion['Operacion']['id']
+					$operacion['OperacionLogistica']['id']
 				)
 			);
 			}

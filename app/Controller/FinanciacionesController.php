@@ -4,10 +4,10 @@ class FinanciacionesController extends AppController {
 	public function index() {
 		$this->paginate['contain'] = array(
 			'Banco',
-			'Operacion'
+			'OperacionLogistica'
 		);
 		$this->paginate['order'] = array(
-			'Operacion.referencia' => 'asc'
+			'OperacionLogistica.referencia' => 'asc'
 		);
 		$this->set('financiaciones', $this->paginate());
 	}
@@ -20,7 +20,7 @@ class FinanciacionesController extends AppController {
 			array(
 				'contain' => array(
 					'Banco',
-					'Operacion' => array(
+					'OperacionLogistica' => array(
 						'Contrato' => array(
 							'Calidad',
 							'Incoterm',
