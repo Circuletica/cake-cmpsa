@@ -5,8 +5,8 @@
  {
       $line = $transporte;
        $this->CSV->addRow($line);
-       if(!empty($transporte['Operacion']){
-       	$this->CSV->addRow($transporte['Operacion']['referencia']);
+       if(!empty($transporte['OperacionLogistica']){
+       	$this->CSV->addRow($transporte['OperacionLogistica']['referencia']);
        }
  }
  $filename='transportes';

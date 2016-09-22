@@ -35,8 +35,10 @@ class Operacion extends AppModel {
 		),
 		'Embalaje' => array(
 			'className' => 'Embalaje',
-			'foreignKey' => 'embalaje_id')
-		);
+			'foreignKey' => 'embalaje_id'
+		),
+		'OperacionLogistica'
+	);
 	/*public $hasOne = array(
 		'PrecioOperacion' => array(
 			'className' => 'PrecioOperacion',

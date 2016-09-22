@@ -31,7 +31,7 @@ $this->Html->addCrumb('Línea de Transporte', array(
 	$almacentransportes['AlmacenTransporte']['transporte_id']
 )
 	);
-echo $this->Form->create('AlmacenTransporteAsociado');
+echo $this->Form->create('AsociadoCuenta');
 
 ?>
 <h2>Cuenta corriente <?php echo $almacentransportes['AlmacenTransporte']['cuenta_almacen'] ?></h2>
@@ -81,7 +81,7 @@ $total_porcentaje_real = 0;
 
 echo $this->Html->tableHeaders(array('Asociado','Asignado Teorico', 'Asignados Real','Pendiente','% teorico', '% real'));
 
-foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte){
+foreach($almacentransportes['AsociadoCuenta'] as $almacentransporte){
 	$pendiente = !empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'];
 
 	echo $this->Html->tableCells(array(

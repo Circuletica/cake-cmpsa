@@ -75,7 +75,7 @@ echo $this->Form->input('cuenta_almacen',array(
 	</div>
 <?php
 echo $this->Form->input('cantidad_cuenta',array(
-	'label'=>'Cantidad '.$transporte['Operacion']['Embalaje']['nombre']
+	'label'=>'Cantidad '.$transporte['OperacionLogistica']['Embalaje']['nombre']
 )
 	);
 ?>

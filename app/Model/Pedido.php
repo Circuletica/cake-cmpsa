@@ -18,7 +18,7 @@ class Pedido extends AppModel {
 			'className' => 'Anticipos',
 			'foreignKey' => 'pedido_id'),
 	);
-/*	public function beforeDelete($cascade = true) {
+	public function beforeDelete($cascade = true) {
 		$count_retirada = $this->Retirada->find(
 			"count",
 			array(
@@ -30,6 +30,6 @@ class Pedido extends AppModel {
 			return true;
 		}
 		return false;
-	}*/
+	}
 }
 ?>

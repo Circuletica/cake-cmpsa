@@ -58,6 +58,7 @@ class OperacionLogistica extends AppModel {
 			'className' => 'Transporte',
 			'foreignKey' => 'operacion_logistica_id'),
 		'LineaMuestra',
+		'Operacion'
 	//	'Retirada'
 	);
 	public function beforeDelete($cascade = true) {

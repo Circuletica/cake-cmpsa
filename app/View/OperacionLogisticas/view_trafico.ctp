@@ -2,7 +2,7 @@
 $this->extend('/Common/view');
 $this->assign('object', 'Operación (logística)'.$operacion['OperacionLogistica']['referencia']);
 $this->assign('line_object', 'Líneas de transporte');
-$this->assign('line2_object', 'Resumen retiradas en base a la operación');
+$this->assign('line2_object', 'Distribución asociados de la operación');
 $this->assign('id',$operacion['OperacionLogistica']['id']);
 $this->assign('class','Operacion');
 $this->assign('controller','operacion_logisticas');
@@ -141,7 +141,7 @@ echo "<table>\n";
 //Se calcula la cantidad total de bultos retirados
 
 echo $this->Html->tableHeaders(array(
-    'Asociado','Sacos','Peso solicitado (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)','Detalle'
+    'Asociado','Sacos','Peso solicitado (Kg)','Detalle'
 ));
 
 foreach ($lineas_retirada as $linea_retirada):
@@ -155,24 +155,6 @@ foreach ($lineas_retirada as $linea_retirada):
 		),
 		array(
 			$linea_retirada['Peso'],
-			array(
-				'style' => 'text-align:right'
-			)
-		),
-		array(
-			$linea_retirada['Cantidad_retirado'],
-			array(
-				'style' => 'text-align:right'
-			)
-		),
-		array(
-			$linea_retirada['Peso_retirado'],
-			array(
-				'style' => 'text-align:right'
-			)
-		),
-		array(
-			$linea_retirada['Pendiente'],
 			array(
 				'style' => 'text-align:right'
 			)
@@ -219,27 +201,6 @@ echo $this->html->tablecells(array(
 			)
 		),
 		array(
-			$total_sacos_retirados,
-			array(
-				'style' => 'font-weight: bold; text-align:right',
-				'bgcolor' => '#5FCF80'
-			)
-		),
-		array(
-			$total_peso_retirado,
-			array(
-				'style' => 'font-weight: bold; text-align:right',
-				'bgcolor' => '#5FCF80'
-			)
-		),
-		array(
-			$total_pendiente,
-			array(
-				'style' => 'font-weight: bold; text-align:right',
-				'bgcolor' => '#5FCF80'
-			)
-		),
-		array(
 			'<i class="fa fa-arrow-left fa-lg"></i>',
 			array(
 				'style' => 'text-align:center',
@@ -250,15 +211,6 @@ echo $this->html->tablecells(array(
 );
 ?></table>
 <?php
-    //SE COMPRUEBA QUE HAY CUENTAS DE ALMACÉN PARA PERMITIR QUE SE AGREGEN RETIRADAS CON EL BOTÓN
-    if(is_array($cuentas_almacenes)){
-        echo '<div class="btabla">';
-        echo $this->Button->addLine('retiradas','operaciones',$operacion['OperacionLogistica']['id'],'retirada');
-        echo '</div>';
-    }else{
-        echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
-    }
-
 //NUEVA VISUALIZACIÓN PERO CONTROLANDO LA CANTIDAD DE SACOS QUE HAY ALMACENADOS PARA LOS ASOCIADOS.
 echo '<h3>Resumen retiradas en base a las cuentas de almacén</h3>';
 echo "<table>\n";
@@ -374,6 +326,15 @@ endforeach;
     );
 ?></table>
 <?php
+//SE COMPRUEBA QUE HAY CUENTAS DE ALMACÉN PARA PERMITIR QUE SE AGREGEN RETIRADAS CON EL BOTÓN
+if(is_array($cuentas_almacenes)){
+	echo '<div class="btabla">';
+	echo $this->Button->addLine('retiradas','operaciones',$operacion['OperacionLogistica']['id'],'retirada');
+	echo '</div>';
+}else{
+	echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
+}
+
 /*if ($cuenta_almacen['cuenta_almacen'] != NULL ){
     echo '<div class="btabla">';
     echo $this->Button->addLine('retiradas','operaciones',$operacion['OperacionLogistica']['id'],'retirada');

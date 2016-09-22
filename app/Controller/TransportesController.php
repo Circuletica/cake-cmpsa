@@ -396,11 +396,11 @@ class TransportesController extends AppController {
 		//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
 
 		//Calculo la cantidad de bultos transportados
-		if(!empty($operacion['Operacion']['id'])) {
+		if(!empty($operacion['OperacionLogistica']['id'])) {
 			$suma = 0;
 			$transportado=0;
 			foreach ($operacion['Transporte'] as $suma){
-				if ($transporte['operacion_id']=$operacion['Operacion']['id']) {
+				if ($transporte['operacion_logistica_id']=$operacion['OperacionLogistica']['id']) {
 					$transportado = $transportado + $suma['cantidad_embalaje'];
 				}
 			}
@@ -432,13 +432,13 @@ class TransportesController extends AppController {
 
 		if ($this->request->is(array('post', 'put'))) {//ES UN POST
 			$this->request->data['Transporte']['id'] = $id;
-			$this->request->data['Transporte']['operacion_id'] = $operacion_id;
+			$this->request->data['Transporte']['operacion_logistica_id'] = $operacion_id;
 
 			if($id == NULL){
 				if($this->Transporte->save($this->request->data)){
 					$this->Flash->success("Linea de transporte guardada correctamente");
 					$this->redirect(array(
-						'controller' => 'operaciones',
+						'controller' => 'operacion_logisticas',
 						'action' => 'view_trafico',
 						$operacion_id
 					));
@@ -468,7 +468,7 @@ class TransportesController extends AppController {
 		if ($this->Transporte->delete($id)){
 			$this->Flash->success('Linea de transporte borrada correctamente');
 			$this->redirect(array(
-				'controller' => 'operaciones',
+				'controller' => 'operacion_logisticas',
 				'action' => 'view_trafico',
 				$this->params['named']['from_id']
 			));//No usar History aquí

@@ -156,7 +156,9 @@ class OperacionLogisticasController extends AppController {
 						'RestoLotesContrato'
 					),
 					'Embalaje',
-					//'AsociadoOperacion'
+					'Operacion'=>array(
+						'Pedido'
+					)
 				)
 			)
 		);
@@ -179,7 +181,9 @@ class OperacionLogisticasController extends AppController {
 
 		//los que ya tienen embalajes en la operacion
 		//queremos el id del socio como index del array
-		$asociados_operacion = Hash::combine($operacion['AsociadoOperacion'], '{n}.asociado_id', '{n}');
+//		$asociados_operacion = Hash::combine($operacion['AsociadoOperacion'], '{n}.asociado_id', '{n}');
+		$asociados_operacion = Hash::combine($operacion['Pedido'], '{n}.asociado_id', '{n}');
+
 		$this->set('asociados_operacion', $asociados_operacion);
 		//hace falta para el desplegable de 'Embalaje'
 		//recombinamos el array anterior que quedaba asi:
@@ -718,6 +722,11 @@ class OperacionLogisticasController extends AppController {
 //							'divisa'
 //						)
 //					),
+					'Operacion' => array(
+						'Pedido'=>array(
+							'Asociado'
+						)
+					)
 //					'AsociadoOperacion'=>array(
 //						'Asociado'
 //					)
@@ -796,7 +805,7 @@ class OperacionLogisticasController extends AppController {
 		$anyo = substr($fecha,0,4);
 		$this->set('fecha_carga', $dia.'-'.$mes.'-'.$anyo);
 
-		$operacion_retiradas = $this->Operacion->Retirada->find(
+		/*$operacion_retiradas= $this->Operacion->Retirada->find(
 			'all',
 			array(
 				'recursive'=>1,
@@ -812,7 +821,7 @@ class OperacionLogisticasController extends AppController {
 					)
 				)
 			)
-		);
+		);*/
 
 		//Calculamos la cantidad de sacos asignados por asociado en el total de las cuentas de la operacion_id
 /*	foreach ($cuentas_almacenes as $almacen_transporte_id => $cuenta_almacen){//Recorro el array
@@ -820,37 +829,6 @@ class OperacionLogisticasController extends AppController {
 				foreach()
 		}
 }*/
-
-
-
-		//ahora el precio que facturamos por asociado
-/*  MIRAR ATENTAMENTE PARA CAMBIAR EL CóDIGO POR ESTO SOLO
-	   $this->loadModel('PesoFacturacion');
-	$peso_asociados = $this->PesoFacturacion->find(
-		'all',
-		array(
-		'conditions' => array(
-			'operacion_id' => $id
-		)
-		)
-	);
-	$this->set(compact('peso_asociados'));
-	$this->PesoFacturacion->virtualFields = array(
-		'total_peso_retirado' => 'sum(total_peso_retirado)',
-		'total_sacos_pendientes' => 'sum(sacos_pendientes)',
-		'total_peso_pendiente' => 'sum(peso_pendiente)',
-		'total_peso_total' => 'sum(peso_total)'
-	);
-	$totales = $this->PesoFacturacion->find(
-		'first',
-		array(
-		'conditions' => array(
-			'PesoFacturacion.operacion_id' => $id
-		)
-		)
-	);
-$this->set('totales',$totales['PesoFacturacion']);-*/
-
 		$total_sacos = 0;
 		$total_peso = 0;
 		$total_sacos_retirados = 0;
@@ -876,7 +854,7 @@ $this->set('totales',$totales['PesoFacturacion']);-*/
 
 			$lineas_retirada[] = array(
 				'asociado_id' => $linea['Asociado']['id'],
-				'Nombre' => $linea['Asociado']['nombre_corto'],
+				'Nombre' => $linea['Asociado']['nombre'],
 				'Cantidad' => $linea['cantidad_embalaje_asociado'],
 				'Peso' => $peso,
 				'Cantidad_retirado' => $cantidad_retirado,

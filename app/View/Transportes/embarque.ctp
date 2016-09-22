@@ -42,7 +42,7 @@ echo '<h2>Situación de embarques a día '.date("d-m-Y").' sin despachar</h2>';
 echo $this->Html->tableHeaders(array(
 
 	//$this->Paginator->sort('Calidad.nombre','Calidad'),
-	$this->Paginator->sort('Operacion.referencia','Ref. Operación'),
+	$this->Paginator->sort('OperacionLogistica.referencia','Ref. Operación'),
 	$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 	$this->Paginator->sort('PesoOperacion.cantidad_embalaje','Cantidad'),
 	$this->Paginator->sort('Contrato.fecha_transporte','Embarque / Entrega'),
@@ -68,7 +68,7 @@ foreach ($transportes as $clave=>$transporte){
 
 		//$transporte['CalidadNombre']['nombre'],
 
-		$transporte['Operacion']['referencia'],
+		$transporte['OperacionLogistica']['referencia'],
 		$transporte['Proveedor']['nombre_corto'],
 		$transporte['PesoOperacion']['cantidad_embalaje'],
 		//	$transporte['Operacion']['PesoOperacion']['peso'].'kg',
