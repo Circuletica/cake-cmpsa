@@ -22,7 +22,7 @@ $this->start('main');
 				$this->Paginator->sort('AlmacenTransporte.cantidad_cuenta','Cantidad'),
 				$this->Paginator->sort('AlmacenTransporte.peso_bruto','Peso bruto'),
 				$this->Paginator->sort('AlmacenTransporte.marca_almacen','Marca'),
-                $this->Paginator->sort('Operacion.referencia','Ref. operación'),
+                $this->Paginator->sort('OperacionLogistica.referencia','Ref. operación'),
 				'Detalle')
 			);
 			foreach($almacentransportes as $almacentransporte):
@@ -32,7 +32,7 @@ $this->start('main');
 					$almacentransporte['AlmacenTransporte']['cantidad_cuenta'].' bultos',
 					$almacentransporte['AlmacenTransporte']['peso_bruto'].' kg',
 					$almacentransporte['AlmacenTransporte']['marca_almacen'],
-					$almacentransporte['Operacion']['referencia'],
+					$almacentransporte['OperacionLogistica']['referencia'],
 					$this->Button->view('almacen_transportes',$almacentransporte['AlmacenTransporte']['id'])
 				));
 			endforeach;
@@ -43,7 +43,7 @@ $this->start('main');
 			echo "<table class='tc2'>\n";
         	echo $this->Html->tableHeaders(
         		array(
-		        $this->Paginator->sort('Operacion.referencia','Ref. Operación'),
+		        $this->Paginator->sort('OperacionLogistica.referencia','Ref. Operación'),
 		        $this->Paginator->sort('Transporte.linea','Nº línea'),
 		        $this->Paginator->sort('Calidad.nombre', 'Calidad'),
 		      	$this->Paginator->sort('AlmacenTransporte.cantidad_cuenta', 'Cantidad cuenta'), // SACOS PENDIENTES DE ADJUDICAR
@@ -56,7 +56,7 @@ $this->start('main');
 		    foreach($almacentransportes as $almacentransporte){
 		    	if(!empty($almacentransporte['AsociadoCuenta'])){
 					echo $this->Html->tableCells(array(
-			            $almacentransporte['Operacion']['referencia'],
+			            $almacentransporte['OperacionLogistica']['referencia'],
 			            $almacentransporte['Transporte']['linea'],
 			            $almacentransporte['Calidad']['nombre'],
 			            $almacentransporte['AlmacenTransporte']['cantidad_cuenta']. ' bultos',// SACOS PENDIENTES DE ADJUDICAR

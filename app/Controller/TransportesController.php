@@ -499,7 +499,7 @@ class TransportesController extends AppController {
 			'Transporte.fecha_despacho_op'=> NULL
 		);
 		$this->paginate['contain'] = array(
-			'Operacion' => array(
+			'OperacionLogistica' => array(
 				'fields'=> array(
 					'id',
 					'referencia',
@@ -541,7 +541,7 @@ class TransportesController extends AppController {
 				'belongsTo' => array(
 					'Contrato' => array(
 						'foreignKey' => false,
-						'conditions' => array('Operacion.contrato_id = Contrato.id')
+						'conditions' => array('OperacionLogistica.contrato_id = Contrato.id')
 					),
 					'Proveedor' => array(
 						'className' => 'Empresa',
@@ -552,7 +552,7 @@ class TransportesController extends AppController {
 				'hasOne' => array(
 					'PesoOperacion' => array(
 						'foreignKey' => false,
-						'conditions' => array('Transporte.operacion_id = PesoOperacion.id')
+						'conditions' => array('Transporte.operacion_logistica_id = PesoOperacion.id')
 					)
 				)
 			)
@@ -595,7 +595,7 @@ class TransportesController extends AppController {
 				),
 				'recursive' => 3,
 				'contain' => array(
-					'Operacion' => array(
+					'OperacionLogistica' => array(
 						'Contrato' => array(
 							'fields' => array(
 								'id',
@@ -635,11 +635,11 @@ class TransportesController extends AppController {
 		$this->set(compact('ano'));
 
 
-		$parte = $this->Transporte->Operacion->find(
+		$parte = $this->Transporte->OperacionLogistica->find(
 			'first',
 			array(
 				'conditions' => array(
-					'Operacion.id' => $transporte['Operacion']['id']
+					'OperacionLogistica.id' => $transporte['OperacionLogistica']['id']
 				),
 				'recursive' => -1,
 				'fields' => array(
@@ -649,7 +649,7 @@ class TransportesController extends AppController {
 					'Transporte' => array(
 						'fields' => array(
 							'id',
-							'operacion_id'
+							'operacion_logistica_id'
 						)
 					)
 				)
@@ -672,7 +672,7 @@ class TransportesController extends AppController {
 				),
 				'recursive' => 3,
 				'contain' => array(
-					'Operacion' => array(
+					'OperacionLogistica' => array(
 						'Contrato' => array(
 							'fields' => array(
 								'id',
@@ -734,11 +734,11 @@ class TransportesController extends AppController {
 		$this->set(compact('mes'));
 		$this->set(compact('ano'));
 
-		$parte = $this->Transporte->Operacion->find(
+		$parte = $this->Transporte->OperacionLogistica->find(
 			'first',
 			array(
 				'conditions' => array(
-					'Operacion.id' => $transporte['Operacion']['id']
+					'OperacionLogistica.id' => $transporte['OperacionLogistica']['id']
 				),
 				'recursive' => -1,
 				'fields' => array(
@@ -748,7 +748,7 @@ class TransportesController extends AppController {
 					'Transporte' => array(
 						'fields' => array(
 							'id',
-							'operacion_id'
+							'operacion_logistica_id'
 						)
 					)
 				)
@@ -774,7 +774,7 @@ class TransportesController extends AppController {
 					'observaciones'
 				),
 				'contain'=>array(
-					'Operacion'=>array(
+					'OperacionLogistica'=>array(
 						'PesoOperacion',
 						'Contrato'=>array(
 							'fields'=>array(

@@ -108,7 +108,7 @@ echo ' '.$this->Html->link(
 			'action' => 'add',
 			'almacen_transporte_id'=>$almacentransportes['AlmacenTransporte']['id'],
 			'from_controller' => 'operaciones',
-			'from_id' => $almacentransportes['Transporte']['operacion_id']
+			'from_id' => $almacentransportes['Transporte']['operacion_logistica_id']
 			),
 		array(
 			'class' => 'botond',
@@ -121,14 +121,14 @@ echo ' '.$this->Html->link(
 	<div class='view'>
 		<?php
 		echo "<dl>";
-		echo "  <dt>Ref. operación </dt>\n";
+		echo "  <dt>Ref. operación (logística) </dt>\n";
 		echo "<dd>";
 		echo $this->html->link(
-			$almacentransportes['Transporte']['Operacion']['referencia'],
+			$almacentransportes['Transporte']['OperacionLogistica']['referencia'],
 			array(
-				'controller' => 'operaciones',
+				'controller' => 'operacion_logisticas',
 				'action' => 'view_trafico',
-				$almacentransportes['Transporte']['operacion_id']
+				$almacentransportes['Transporte']['operacion_logistica_id']
 				)
 			).'&nbsp;';
 		echo "</dd>";
@@ -181,7 +181,7 @@ echo ' '.$this->Html->link(
 				$total_porcentaje_teorico = 0;
 				$total_porcentaje_real = 0;
 
-				foreach ($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte) {
+				foreach ($almacentransportes['AsociadoCuenta'] as $almacentransporte) {
 					$total_asignacion_real= $total_asignacion_real + $almacentransporte['sacos_asignados'];
 				}
 
@@ -195,7 +195,7 @@ echo ' '.$this->Html->link(
 						)
 					);
 
-				foreach($almacentransportes['AlmacenTransporteAsociado'] as $almacentransporte){
+				foreach($almacentransportes['AsociadoCuenta'] as $almacentransporte){
 					$pendiente = !empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'];
 					$sacos_asignados = !empty($almacentransporte['sacos_asignados']) ? $this->Number->round($almacentransporte['sacos_asignados']*100/$total_asignacion_real ,2) : 'Sin asignar';
 					echo $this->Html->tableCells(

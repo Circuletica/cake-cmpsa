@@ -154,7 +154,7 @@ class AlmacenTransportesController extends AppController {
 							'linea',
 							'matricula',
 							'nombre_vehiculo',
-							'operacion_id'
+							'operacion_logistica_id'
 						),
 						'PuertoDestino'=>array(
 							'fields'=>array(
