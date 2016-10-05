@@ -176,7 +176,7 @@
 	line-height: 42px;
 }
 
-.tabs{
+/*.tabs{
 	position: relative;
 	padding-right:5%;
 	display: inline;
@@ -189,13 +189,13 @@
 	display: inline;
 	}
 .tabs li {
-	/*margin: 0 0.5%  1em 0;*/
+	/*margin: 0 0.5%  1em 0;/*
 	margin: 0px 2px;
 }
 .tabs > li {
 	float:left;
 }
-/* Enlace en pestaña*/
+/* Enlace en pestaña/*
 .tabs li a {
 	font-weight:600;
 	padding: 10px 12px;
@@ -238,7 +238,7 @@ text-decoration: none;
 .tabs a:active {
 background: #5FCF80;
 color: #fff;
-}
+}*/
 
 /* Fin CSS TABS*/
 /*Breadcrumnbs*/

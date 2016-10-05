@@ -56,9 +56,19 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 				<li><?php echo $this->Html->link('ENTREGA','/muestras/index/Search.tipo_id:3',array('escape' => false));?></li>
 			</ul>
 		</li>
-		<li><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','#', array('escape' => false));?>
+		<li class="has-sub"><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','#', array('escape' => false));?>
 			<ul>
-				<li class="has-sub"><?php echo $this->Html->link('Operación','/operacion_logisticas/index_trafico',array('escape' => false));?></li>
+				<li class="has-sub"><?php echo $this->Html->link('Operación','/operacion_logisticas/index_trafico',array('escape' => false));?>
+					<ul>
+						<li><?php echo $this->Html->link('Despachos','/transportes/index',array('escape' => false));?></li>
+						<li><?php echo $this->Html->link('Embarque','/transportes/embarque',array('escape' => false));?></li>
+						<li><?php echo $this->Html->link('Supl. sin reclamación','/transportes/suplemento',array('escape' => false));?></li>
+						<li><?php echo $this->Html->link('Pediente de adjudicar','/almacen_transportes/pendiente',array('escape' => false));?></li>
+						<li><?php echo $this->Html->link('Sin reclamación pendientes','/transportes/reclamacion_factura',array('escape' => false));?></li>
+						<li class="last"><?php echo $this->Html->link('Prorrogas pendientes','/transportes/prorrogas_pendientes',array('escape' => false));?></li>
+
+					</ul>
+				</li>
 				<li><?php echo $this->Html->link('CUENTAS ALMACÉN','/almacen_transportes',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('RETIRADA','/retiradas',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('FLETES','/fletes',array('escape' => false));?></li>

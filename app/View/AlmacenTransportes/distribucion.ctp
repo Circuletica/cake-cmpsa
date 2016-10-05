@@ -1,27 +1,9 @@
-<script>
-function totalSacos(){
-	var cal = document.getElementsByClassName('calidad');
-	var tot=0;
-	for(var i=0;i<cal.length;i++){
-		if(parseFloat(cal[i].value))
-			tot += parseFloat(cal[i].value);
-	}
-	//document.getElementById('total').value = tot.toFixed(1);
-	document.getElementById('total').innerHTML = 'TOTAL: '+tot.toFixed(1);
-	if(tot == 100)
-		document.getElementById('total').style.color = "black";
-	if(tot != 100)
-		document.getElementById('total').style.color = "red";
-}
-</script>
-
 <?php
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 echo $this->Js->set('cantidadCuenta',$almacentransportes['AlmacenTransporte']['cantidad_cuenta']);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
-
-$this->Html->addCrumb('Operación', array(
-	'controller'=>'operaciones',
+$this->Html->addCrumb('Operación (logística)', array(
+	'controller'=>'operaciones_logistica',
 	'action'=>'view_trafico',
 	//	$almacentransportes['AlmacenTransporte']['Transporte']['operacion_id']
 ));
@@ -32,7 +14,6 @@ $this->Html->addCrumb('Línea de Transporte', array(
 )
 	);
 echo $this->Form->create('AsociadoCuenta');
-
 ?>
 <h2>Cuenta corriente <?php echo $almacentransportes['AlmacenTransporte']['cuenta_almacen'] ?></h2>
 <fieldset>
@@ -52,7 +33,6 @@ echo $this->html->link($almacentransportes['Transporte']['nombre_vehiculo'], arr
 )
 			).'&nbsp;';
 echo "</dd>";
-
 echo "<dt style=width:50%;>BL/Matrícula </dt>\n";
 echo "<dd style=margin-left:50%;>";
 echo $almacentransportes['Transporte']['matricula'].'&nbsp;';
@@ -63,9 +43,7 @@ echo "<dt style=width:50%;>Cantidad</dt>\n";
 echo "  <dd style=margin-left:50%;>".$almacentransportes['AlmacenTransporte']['cantidad_cuenta'].'&nbsp;sacos'."</dd>";
 echo "<dt style=width:50%;>Peso bruto</dt>\n";
 echo "<dd style=margin-left:50%;>".$almacentransportes['AlmacenTransporte']['peso_bruto'].'&nbsp;Kg'."</dd>";
-
 echo "</dl>";
-
 ?>
 </fieldset>
 <fieldset style='width: 66%'>
@@ -78,12 +56,9 @@ $total_asignacion_real=0;
 $total_pendiente = 0;
 $total_porcentaje_teorico = 0;
 $total_porcentaje_real = 0;
-
 echo $this->Html->tableHeaders(array('Asociado','Asignado Teorico', 'Asignados Real','Pendiente','% teorico', '% real'));
-
 foreach($almacentransportes['AsociadoCuenta'] as $almacentransporte){
 	$pendiente = !empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'];
-
 	echo $this->Html->tableCells(array(
 		$almacentransporte['Asociado']['Empresa']['nombre_corto'],
 		$almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'],
@@ -104,7 +79,6 @@ foreach($almacentransportes['AsociadoCuenta'] as $almacentransporte){
 	$total_pendiente = $total_pendiente + $pendiente;
 	$total_porcentaje_teorico = $total_porcentaje_teorico + $almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'];
 	//$total_porcentaje_real = $total_porcentaje_real +$almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'];
-
 }
 echo $this->html->tablecells(array(
 	array(
@@ -152,6 +126,7 @@ echo $this->html->tablecells(array(
 	)
 ));
 ?>	</table>
+<div style='font-weight:bold' id=sinAdjudicar></div>
 <?php
 echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Cancelar',
 	array(

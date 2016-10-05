@@ -1172,7 +1172,7 @@ class OperacionLogisticasController extends AppController {
 			$this->request->data = $this->Operacion->read();//Cargo los datos
 		}else{//es un POST
 			if(empty($this->request->data['email'])){
-				$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
+				$this->Flash->error('Los datos del NO fueron enviados. Faltan destinatarios');
 			}else{
 				// $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
 				foreach ($this->data['email'] as $email){
@@ -1220,7 +1220,7 @@ class OperacionLogisticasController extends AppController {
 				$Email->subject('Ficha de compra '.$operacion['OperacionLogistica']['referencia']);
 				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'distrubucion_asociados' . DS . 'ficha_'.strtr($operacion['OperacionLogistica']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
 				$Email->send('Adjuntamos la ficha de la operación '.$operacion['OperacionLogistica']['referencia'].' correspondiente a su '.$tipo_fecha_transporte.' en '.' de ');
-				$this->Flash->set('Distribución a los asociados enviado con éxito.');
+				$this->flash->success('Distribución a los asociados enviado con éxito.');
 				$this->redirect(array(
 					'action'=>'view',
 					'controller' =>'Operaciones',

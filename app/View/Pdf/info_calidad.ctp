@@ -9,7 +9,6 @@ $this->extend('/Common/pdf/viewPdf');
 	$this->assign('from_controller','muestras');
 	$this->assign('from_id',$linea['LineaMuestra']['id']);
 
-
 $this->start('main');
 echo "<h3 style='text-align: center;'>DEPARTAMENTO DE CONTROL DE CALIDAD</h3>";
 echo "<h3 style='text-align: center;'>INFORME DE CALIDAD Nº ".$linea['Muestra']['tipo_registro'].'</h3>';
@@ -19,7 +18,7 @@ if(!empty($linea['LineaMuestra']['a'] or $linea['LineaMuestra']['atn'] or $linea
 echo "<dl>";
 	echo "<dt>A: </dt><dd>".$linea['LineaMuestra']['a']."</dd>\n";
 	echo "<dt>ATN: </dt><dd>".$linea['LineaMuestra']['atn']."</dd>\n";
-	echo "<dt>REF: </dt><dd>".$linea['LineaMuestra']['ref']."</dd>\n";
+	echo "<dt>REF: </dt><dd>".nl2br(h($linea['LineaMuestra']['ref']))."&nbsp;</dd>\n";
 echo "</dl><br>";
 }
 
@@ -38,8 +37,6 @@ if ($linea['Muestra']['tipo_id'] != 1) {
 	echo "  <dt>Proveedor</dt><dd>".$linea['Muestra']['Proveedor']['nombre']."&nbsp;</dd>\n";
     echo "  <dt>Ficha/Operación</dt><dd>".$linea['Operacion']['referencia']."&nbsp;</dd>\n";
     echo "  <dt>Transporte</dt><dd>".$linea['Muestra']['Contrato']['transporte']."&nbsp;</dd>\n";
-
-
 }
 
 for ($i=12; (!$linea['LineaMuestra']['criba'.$i] || $linea['LineaMuestra']['criba'.$i] == 0) && $i <= 19; $i++){

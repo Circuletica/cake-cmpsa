@@ -347,9 +347,9 @@ class LineaMuestrasController extends AppController {
 		}else{//es un POST
 			if (!empty($this->request->data['guardar'])) {	//Pulsamos previsualizar
 				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos de Linea Muestra
-				$this->Flash->set('Los datos del informe han sido guardados.');
+				$this->flash->success('Los datos del informe han sido guardados.');
 			}elseif(empty($this->request->data['email'])){
-				$this->Flash->set('Los datos del informe NO fueron enviados. Faltan destinatarios');
+				$this->flash->success('Los datos del informe NO fueron enviados. Faltan destinatarios');
 			}else{
 				$this->LineaMuestra->save($this->request->data['LineaMuestra']); //Guardamos los datos actuales en los campos
 				foreach ($this->data['email'] as $email){
@@ -412,7 +412,7 @@ class LineaMuestrasController extends AppController {
 				$Email->subject('Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
 				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
 				$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
-				$this->Flash->set('Informe de calidad enviado.');
+				$this->flash->success('Informe de calidad enviado.');
 				$this->redirect(array(
 					'action'=>'view',
 					'controller' =>'LineaMuestras',
