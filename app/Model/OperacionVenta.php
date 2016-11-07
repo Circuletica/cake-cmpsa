@@ -1,5 +1,5 @@
 <?php
-class OperacionLogistica extends AppModel {
+class Operacion extends AppModel {
 	public $recursive = 2;
 
 	public $action_view;
@@ -21,14 +21,25 @@ class OperacionLogistica extends AppModel {
 			'className' => 'Puerto',
 			'foreignKey' => 'puerto_destino_id'
 		),
-		'Contrato' => array(
-			'className' => 'Contrato',
-			'foreignKey' => 'contrato_id'),
+		'Pedido' => array(
+			'className' => 'Pedido',
+			'foreignKey' => 'pedido_id'
+		),
+		'Distribucion' => array(
+			'className' => 'Distribucion',
+			'foreignKey' => 'distribucion_id'
+		),
+		'OperacionLogistica' => array(
+			'className' => 'OperacionLogistica',
+			'foreignKey' => 'operacion_logistica_id'
+		),
 		'Embalaje' => array(
 			'className' => 'Embalaje',
-			'foreignKey' => 'embalaje_id')
-		);
-	public $hasOne = array(
+			'foreignKey' => 'embalaje_id'
+		),
+		'OperacionLogistica'
+	);
+	/*public $hasOne = array(
 		'PrecioOperacion' => array(
 			'className' => 'PrecioOperacion',
 			'foreignKey' => 'id'
@@ -49,17 +60,16 @@ class OperacionLogistica extends AppModel {
 			'className' => 'Facturacion',
 			'foreignKey' => 'id'
 		)
-	);
+	);*/
 	public $hasMany = array(
 //		'AsociadoOperacion' => array(
 //			'className' => 'AsociadoOperacion',
-//			'foreignKey' => 'operacion_logistica_id'),
-		'Transporte' => array(
-			'className' => 'Transporte',
-			'foreignKey' => 'operacion_logistica_id'),
+//			'foreignKey' => 'operacion_id'),
+		'OperacionCuenta' => array(
+			'className' => 'OperacionCuenta',
+			'foreignKey' => 'operacion_id'),
 		'LineaMuestra',
-		'Operacion'
-	//	'Retirada'
+		'Retirada'
 	);
 	public function beforeDelete($cascade = true) {
 		$count_retirada = $this->Retirada->find(
