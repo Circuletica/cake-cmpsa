@@ -39,14 +39,19 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 	<div id="cssmenu">
 	<ul>
 		<!--<li class="active"><a href="/">Inicio</a></li>-->
-		<li class="has-sub"><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMERCIAL','#',array('escape' => false));?>
+		<li class="has-sub"><?php echo $this->Html->link('<i class="fa fa-shopping-cart"></i> COMPRAS','#',array('escape' => false));?>
 			<ul>
-				<li class="has-sub"><?php echo $this->Html->link('Contrato','/contratos',array('escape' => false));?>
+				<li class="has-sub"><?php echo $this->Html->link('Contratos','/contratos',array('escape' => false));?>
 					<ul>
 						<li class="last"><?php echo $this->Html->link('Peso Pendiente','/contratos/index_left',array('escape' => false));?></li>
 					</ul>
 				</li>
-				<li><?php echo $this->Html->link('OPERACIÓN','/operacion_logisticas',array('escape' => false));?></li>
+				<li class="has-sub"><?php echo $this->Html->link('Operaciones','/operacion_compras',array('escape' => false));?>
+					<ul>
+						<li ><?php echo $this->Html->link('Compras','/operacion_compras',array('escape' => false));?></li>
+						<li class="last"><?php echo $this->Html->link('Ventas','/operacion_ventas',array('escape' => false));?></li>
+					</ul>
+				</li>
 			</ul>
 		</li>
 		<li><?php echo $this->Html->link('<i class="fa fa-flask"></i> LABORATORIO','#',array('escape' => false));?>
@@ -58,7 +63,13 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 		</li>
 		<li class="has-sub"><?php echo $this->Html->link('<i class="fa fa-ship"></i> TRAFICO','#', array('escape' => false));?>
 			<ul>
-				<li class="has-sub"><?php echo $this->Html->link('Operación','/operacion_logisticas/index_trafico',array('escape' => false));?>
+				<li class="has-sub"><?php echo $this->Html->link('Operaciones','#',array('escape' => false));?>
+					<ul>
+						<li ><?php echo $this->Html->link('Compras','/operacion_compras/index_trafico',array('escape' => false));?></li>
+						<li class="last"><?php echo $this->Html->link('Ventas','/operacion_ventas',array('escape' => false));?></li>
+					</ul>
+				</li>
+				<li class="has-sub"><?php echo $this->Html->link('Informes','#',array('escape' => false));?>
 					<ul>
 						<li><?php echo $this->Html->link('Despachos','/transportes/index',array('escape' => false));?></li>
 						<li><?php echo $this->Html->link('Embarque','/transportes/embarque',array('escape' => false));?></li>

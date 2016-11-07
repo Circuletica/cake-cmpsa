@@ -26,7 +26,7 @@ class TransportesController extends AppController {
 		//);
 		$this->paginate['contain'] = array(
 			'Calidad',
-			'OperacionLogistica' => array(
+			'OperacionCompra' => array(
 				'fields'=> array(
 					'id',
 					'referencia',
@@ -89,7 +89,7 @@ class TransportesController extends AppController {
 				'belongsTo' => array(
 					'Contrato' => array(
 						'foreignKey' => false,
-						'conditions' => array('OperacionLogistica.contrato_id = Contrato.id'),
+						'conditions' => array('OperacionCompra.contrato_id = Contrato.id'),
 						'fields'=> array(
 							'id',
 							'referencia',
@@ -139,7 +139,7 @@ class TransportesController extends AppController {
 				),
 				'recursive' => 3,
 				'contain' => array(
-					'OperacionLogistica' => array(
+					'OperacionCompra' => array(
 						'Contrato' => array(
 							'fields' => array(
 								'id',
@@ -225,7 +225,7 @@ class TransportesController extends AppController {
 		$restan = $transporte['Transporte']['cantidad_embalaje'] - $almacenado;
 		$this->set(compact('restan'));
 		$this->set('almacenado',$almacenado);
-		$embalaje = $transporte['OperacionLogistica']['Embalaje']['nombre'];
+		$embalaje = $transporte['OperacionCompra']['Embalaje']['nombre'];
 		$this->set('embalaje',$embalaje);
 		//Necesario para exportar en PDf
 		$this->set(compact('id'));
@@ -330,11 +330,11 @@ class TransportesController extends AppController {
 			$operacion_id = $this->params['named']['from_id'];
 		}
 
-		$operacion = $this->Transporte->OperacionLogistica->find(
+		$operacion = $this->Transporte->OperacionCompra->find(
 			'first',
 			array(
 				'conditions' => array(
-					'OperacionLogistica.id' => $operacion_id
+					'OperacionCompra.id' => $operacion_id
 				),
 				'recursive' => 2,
 				'fields' => array(
@@ -396,11 +396,11 @@ class TransportesController extends AppController {
 		//Obligatoriedad de que sea rellenado debido a la tabla de la bbdd
 
 		//Calculo la cantidad de bultos transportados
-		if(!empty($operacion['OperacionLogistica']['id'])) {
+		if(!empty($operacion['OperacionCompra']['id'])) {
 			$suma = 0;
 			$transportado=0;
 			foreach ($operacion['Transporte'] as $suma){
-				if ($transporte['operacion_logistica_id']=$operacion['OperacionLogistica']['id']) {
+				if ($transporte['operacion_logistica_id']=$operacion['OperacionCompra']['id']) {
 					$transportado = $transportado + $suma['cantidad_embalaje'];
 				}
 			}
@@ -499,7 +499,7 @@ class TransportesController extends AppController {
 			'Transporte.fecha_despacho_op'=> NULL
 		);
 		$this->paginate['contain'] = array(
-			'OperacionLogistica' => array(
+			'OperacionCompra' => array(
 				'fields'=> array(
 					'id',
 					'referencia',
@@ -541,7 +541,7 @@ class TransportesController extends AppController {
 				'belongsTo' => array(
 					'Contrato' => array(
 						'foreignKey' => false,
-						'conditions' => array('OperacionLogistica.contrato_id = Contrato.id')
+						'conditions' => array('OperacionCompra.contrato_id = Contrato.id')
 					),
 					'Proveedor' => array(
 						'className' => 'Empresa',
@@ -595,7 +595,7 @@ class TransportesController extends AppController {
 				),
 				'recursive' => 3,
 				'contain' => array(
-					'OperacionLogistica' => array(
+					'OperacionCompra' => array(
 						'Contrato' => array(
 							'fields' => array(
 								'id',
@@ -635,11 +635,11 @@ class TransportesController extends AppController {
 		$this->set(compact('ano'));
 
 
-		$parte = $this->Transporte->OperacionLogistica->find(
+		$parte = $this->Transporte->OperacionCompra->find(
 			'first',
 			array(
 				'conditions' => array(
-					'OperacionLogistica.id' => $transporte['OperacionLogistica']['id']
+					'OperacionCompra.id' => $transporte['OperacionCompra']['id']
 				),
 				'recursive' => -1,
 				'fields' => array(
@@ -672,7 +672,7 @@ class TransportesController extends AppController {
 				),
 				'recursive' => 3,
 				'contain' => array(
-					'OperacionLogistica' => array(
+					'OperacionCompra' => array(
 						'Contrato' => array(
 							'fields' => array(
 								'id',
@@ -734,11 +734,11 @@ class TransportesController extends AppController {
 		$this->set(compact('mes'));
 		$this->set(compact('ano'));
 
-		$parte = $this->Transporte->OperacionLogistica->find(
+		$parte = $this->Transporte->OperacionCompra->find(
 			'first',
 			array(
 				'conditions' => array(
-					'OperacionLogistica.id' => $transporte['OperacionLogistica']['id']
+					'OperacionCompra.id' => $transporte['OperacionCompra']['id']
 				),
 				'recursive' => -1,
 				'fields' => array(
@@ -774,7 +774,7 @@ class TransportesController extends AppController {
 					'observaciones'
 				),
 				'contain'=>array(
-					'OperacionLogistica'=>array(
+					'OperacionCompra'=>array(
 						'PesoOperacion',
 						'Contrato'=>array(
 							'fields'=>array(

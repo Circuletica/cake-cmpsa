@@ -33,7 +33,7 @@ $this->start('main');
       if ($action == 'index') { //INDEX ES INFORME DE DESPACHOS
       echo "<table class='tc2 tc4 tc5'>\n";
       echo $this->Html->tableHeaders(array(
-        $this->Paginator->sort('OperacionLogistica.referencia','Ref. Operación'),
+        $this->Paginator->sort('OperacionCompra.referencia','Ref. Operación'),
         $this->Paginator->sort('Transporte.linea','Nº línea'),
         $this->Paginator->sort('Calidad.nombre', 'Calidad'),
         $this->Paginator->sort('Transporte.cantidad_embalaje', 'Sacos'),
@@ -43,7 +43,7 @@ $this->start('main');
       );
       foreach($transportes as $transporte){
         echo $this->Html->tableCells(array(
-            $transporte['OperacionLogistica']['referencia'],
+            $transporte['OperacionCompra']['referencia'],
             $transporte['Transporte']['linea'],
             $transporte['Calidad']['nombre'],
             $transporte['Transporte']['cantidad_embalaje'],
@@ -65,7 +65,7 @@ $this->start('main');
       }elseif($action == 'suplemento'){ //INFORME OPERACIONES CON SUPLEMENTO SIN FECHA DE RECLAMACIÓN
         echo "<table class='tc2 tc4 tc5'>\n";
         echo $this->Html->tableHeaders(array(
-          $this->Paginator->sort('OperacionLogistica.referencia','Ref. Operación'),
+          $this->Paginator->sort('OperacionCompra.referencia','Ref. Operación'),
           $this->Paginator->sort('Transporte.linea','Nº línea'),
           $this->Paginator->sort('Calidad.nombre', 'Calidad'),
           $this->Paginator->sort('Transporte.cantidad_embalaje', 'Sacos'),
@@ -75,7 +75,7 @@ $this->start('main');
         );
         foreach($transportes as $transporte){
           echo $this->Html->tableCells(array(
-              $transporte['OperacionLogistica']['referencia'],
+              $transporte['OperacionCompra']['referencia'],
               $transporte['Transporte']['linea'],
               $transporte['Calidad']['nombre'],
               $transporte['Transporte']['cantidad_embalaje'],
@@ -96,7 +96,7 @@ $this->start('main');
       }elseif($action == 'reclamacion_factura'){
         echo "<table class='tc2 tc4 tc5 tc6'>\n";
         echo $this->Html->tableHeaders(array(
-          $this->Paginator->sort('OperacionLogistica.referencia','Ref. Operación'),
+          $this->Paginator->sort('OperacionCompra.referencia','Ref. Operación'),
           $this->Paginator->sort('Transporte.linea','Nº línea'),
           $this->Paginator->sort('Calidad.nombre', 'Calidad'),
           $this->Paginator->sort('Transporte.cantidad_embalaje', 'Sacos'),
@@ -109,7 +109,7 @@ $this->start('main');
         foreach($transportes as $transporte){
           if ($transporte['Incoterm']['nombre'] == 'CIF' or $transporte['Incoterm']['nombre'] == 'IN STORE DESPACHADO' or $transporte['Incoterm']['nombre'] == 'IN STORE'){
             echo $this->Html->tableCells(array(
-                $transporte['OperacionLogistica']['referencia'],
+                $transporte['OperacionCompra']['referencia'],
                 $transporte['Transporte']['linea'],
                 $transporte['Calidad']['nombre'],
                 $transporte['Transporte']['cantidad_embalaje'],
@@ -134,7 +134,7 @@ $this->start('main');
       }elseif($action == 'prorrogas_pendientes'){
                echo "<table class='tc2 tc4 tc5 '>\n";
         echo $this->Html->tableHeaders(array(
-          $this->Paginator->sort('OperacionLogistica.referencia','Ref. Operación'),
+          $this->Paginator->sort('OperacionCompra.referencia','Ref. Operación'),
           $this->Paginator->sort('Transporte.linea','Nº línea'),
           $this->Paginator->sort('Calidad.nombre', 'Calidad'),
           $this->Paginator->sort('Transporte.fecha_llegada', 'Vencimiento'),
@@ -147,7 +147,7 @@ $this->start('main');
         );
         foreach($transportes as $transporte){
           echo $this->Html->tableCells(array(
-              $transporte['OperacionLogistica']['referencia'],
+              $transporte['OperacionCompra']['referencia'],
               $transporte['Transporte']['linea'],
               $transporte['Calidad']['nombre'],
                $this->Date->format($transporte['Transporte']['fecha_llegada']),

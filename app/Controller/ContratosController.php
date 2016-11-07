@@ -177,7 +177,7 @@ class ContratosController extends AppController {
 			$sacos_pendientes = Hash::combine($contrato['ContratoEmbalaje'],'{n}.embalaje_id','{n}.cantidad_embalaje');
 			//miramos la cantidad de embalajes de cada operacion del contrato
 			//y la restamos de la cantidad de embalajes contratada
-			foreach ($contrato['OperacionLogistica'] as $operacion) {
+			foreach ($contrato['OperacionCompra'] as $operacion) {
 				$cantidad_embalaje_operacion = $operacion['PesoOperacion']['cantidad_embalaje'];
 				$sacos_pendientes[$operacion['embalaje_id']] -= $cantidad_embalaje_operacion;
 			}
@@ -481,37 +481,37 @@ class ContratosController extends AppController {
 		}
 
 		//recuperar las operaciones asociadas al contrato
-		$operaciones = $this->Contrato->OperacionLogistica->find(
+		$operaciones = $this->Contrato->OperacionCompra->find(
 			'all',
 			array(
-				'conditions' => array('OperacionLogistica.contrato_id' => $id)
+				'conditions' => array('OperacionCompra.contrato_id' => $id)
 			)
 		);
 		//y copiarlas con el id del nuevo contrato y una nueva referencia
 		$i = 1; //hay que incrementar cada referencia de operacion
 		foreach ($operaciones as $operacion) {
-			$id_operacion_copiada = $operacion['OperacionLogistica']['id'];
-			unset($operacion['OperacionLogistica']['id']);
-			unset($operacion['OperacionLogistica']['created']);
-			unset($operacion['OperacionLogistica']['modified']);
-			$operacion['OperacionLogistica']['contrato_id'] = $this->Contrato->id;
-			$operacion['OperacionLogistica']['referencia'] .= '###'.$i;
-			$this->Contrato->OperacionLogistica->create();
-			$this->Contrato->OperacionLogistica->save($operacion);
+			$id_operacion_copiada = $operacion['OperacionCompra']['id'];
+			unset($operacion['OperacionCompra']['id']);
+			unset($operacion['OperacionCompra']['created']);
+			unset($operacion['OperacionCompra']['modified']);
+			$operacion['OperacionCompra']['contrato_id'] = $this->Contrato->id;
+			$operacion['OperacionCompra']['referencia'] .= '###'.$i;
+			$this->Contrato->OperacionCompra->create();
+			$this->Contrato->OperacionCompra->save($operacion);
 
 			//PENDIENTE DE SOLVENTAR
-			$asociado_operaciones = $this->Contrato->OperacionLogistica->AsociadoOperacion->find('all', array(
+			$asociado_operaciones = $this->Contrato->OperacionCompra->AsociadoOperacion->find('all', array(
 				'conditions' => array('AsociadoOperacion.operacion_id' => $id_operacion_copiada)
 				)
 			);
 			//después de crear la operacion, hay que meterle los repartos de asociados
 			foreach ($asociado_operaciones as $asociado_operacion){
-				$asociado_operacion['AsociadoOperacion']['operacion_id'] = $this->Contrato->OperacionLogistica->id;
+				$asociado_operacion['AsociadoOperacion']['operacion_id'] = $this->Contrato->OperacionCompra->id;
 				unset ($asociado_operacion['AsociadoOperacion']['id']);
 				unset ($asociado_operacion['AsociadoOperacion']['created']);
 				unset ($asociado_operacion['AsociadoOperacion']['modified']);
-				$this->Contrato->OperacionLogistica->AsociadoOperacion->create();
-				$this->Contrato->OperacionLogistica->AsociadoOperacion->save($asociado_operacion);
+				$this->Contrato->OperacionCompra->AsociadoOperacion->create();
+				$this->Contrato->OperacionCompra->AsociadoOperacion->save($asociado_operacion);
 			}
 			$i++;
 		}

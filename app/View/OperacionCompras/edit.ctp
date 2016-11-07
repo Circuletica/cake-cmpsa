@@ -1,4 +1,4 @@
-<h2>Modificar Operacion (logística) <em><?php echo $operacion['OperacionLogistica']['referencia']?></em></h2>
+<h2>Modificar Operacion (logística) <em><?php echo $operacion['OperacionCompra']['referencia']?></em></h2>
 
 <?php
 $this->Html->addCrumb('Contratos','/contratos');
@@ -8,7 +8,7 @@ $this->Html->addCrumb('Contrato '.$contrato['referencia'],'/contratos/view/'.$co
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 $this->Js->set('pesoEmbalaje', $peso_embalaje_real);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
-echo $this->Form->create('OperacionLogistica');
+echo $this->Form->create('OperacionCompra');
 ?>
 <fieldset>
 <legend>Info</legend>
@@ -48,7 +48,7 @@ echo $this->Form->input('observaciones');
 echo '<div id=totalReparto>Total sacos: ??? / Total peso: ???kg</div>';
 //Los lotes que quedan por fijar = los de RestoLotesContrato +
 //los de esta operacion visto que estamos editando.
-$lotes_por_fijar = $contrato['RestoLotesContrato']['lotes_restantes'] + $this->request->data['OperacionLogistica']['lotes_operacion'];
+$lotes_por_fijar = $contrato['RestoLotesContrato']['lotes_restantes'] + $this->request->data['OperacionCompra']['lotes_operacion'];
 ?>
 <div class='col2'>
 <?php

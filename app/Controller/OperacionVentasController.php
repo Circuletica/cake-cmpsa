@@ -1,5 +1,5 @@
 <?php
-class OperacionesController extends AppController {
+class OperacionVentasController extends AppController {
 
 	public function index() {
 		$this->set('action', $this->action);	//Se usa para tener la misma vista

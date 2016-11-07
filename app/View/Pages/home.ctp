@@ -5,7 +5,9 @@
 <ul class="portada">
 		<li>&nbsp;&nbsp;<i class="fa fa-shopping-cart fa-3x"></i> <b>COMERCIAL</b><br>
 			<ul>
-				<li><?php echo $this->Html->link('OPERACIÓN','/operacion_logisticas',array('escape' => false));?>
+				<li><?php echo $this->Html->link('Compra','/operacion_compras',array('escape' => false));?>
+				</li>
+				<li><?php echo $this->Html->link('Venta','/operacion_ventas',array('escape' => false));?>
 				</li>
 				<li><?php echo $this->Html->link('CONTRATO','/contratos',array('escape' => false));?>
 				</li>

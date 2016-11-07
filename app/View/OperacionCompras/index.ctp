@@ -1,7 +1,7 @@
 <?php
 $this->extend('/Common/index');
-$this->assign('object', 'Operaciones (logística)');
-$this->assign('controller', 'operacion_logisticas');
+$this->assign('object', 'Operaciones (compra)');
+$this->assign('controller', 'operacion_compras');
 $this->assign('class', 'Operacion');
 $this->assign('add_button', 0);
 
@@ -31,23 +31,23 @@ if (empty($operaciones)){
 	if ($action == 'index') {  //Departamento de compras
 		echo "<table class='tr5 tr6'>\n";
 		echo $this->Html->tableHeaders(array(
-					$this->Paginator->sort('OperacionLogistica.referencia','Ref.Operación'),
+					$this->Paginator->sort('OperacionCompra.referencia','Ref.Operación'),
 					$this->Paginator->sort('Contrato.referencia','Ref.Contrato'),
 					$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 					$this->Paginator->sort('Calidad.nombre','Calidad'),
-					$this->Paginator->sort('PesoOperacion.peso','Peso (kg)'),
-					$this->Paginator->sort('OperacionLogistica.lotes_operacion','Lotes'),
+					$this->Paginator->sort('PesoOperacionCompra.peso','Peso (kg)'),
+					$this->Paginator->sort('OperacionCompra.lotes_operacion','Lotes'),
 					'Detalle')
 				);
 		foreach($operaciones as $operacion){
 			echo $this->Html->tableCells(array(
-						$operacion['OperacionLogistica']['referencia'],
+						$operacion['OperacionCompra']['referencia'],
 						$operacion['Contrato']['referencia'],
 						$operacion['Proveedor']['nombre_corto'],
 						$operacion['Calidad']['nombre'],
 						$operacion['PesoOperacion']['peso'],
-						$operacion['OperacionLogistica']['lotes_operacion'],
-						$this->Button->view('operacion_logisticas',$operacion['OperacionLogistica']['id']
+						$operacion['OperacionCompra']['lotes_operacion'],
+						$this->Button->view('operacion_compras',$operacion['OperacionCompra']['id']
 							)
 						)
 					);
@@ -56,7 +56,7 @@ if (empty($operaciones)){
 	}elseif($action == 'index_trafico'){
 		echo "<table class='tc3 tr6'>\n";
 		echo $this->Html->tableHeaders(array(
-					$this->Paginator->sort('OperacionLogistica.referencia','Ref.Operación'),
+					$this->Paginator->sort('OperacionCompra.referencia','Ref.Operación'),
 					$this->Paginator->sort('Contrato.referencia','Ref.Contrato'),
 					$this->Paginator->sort('Contrato.fecha_transporte','Embarque/ Entrega'),
 					$this->Paginator->sort('Calidad.nombre','Calidad'),
@@ -71,14 +71,14 @@ if (empty($operaciones)){
 						} else { $entrega ='';}
 
 						echo $this->Html->tableCells(array(
-								$operacion['OperacionLogistica']['referencia'],
+								$operacion['OperacionCompra']['referencia'],
 								$operacion['Contrato']['referencia'],
 								$this->Date->format($operacion['Contrato']['fecha_transporte']).$entrega,
 								$operacion['Calidad']['nombre'],
 								$operacion['Proveedor']['nombre_corto'],
 								$operacion['PesoOperacion']['cantidad_embalaje'],
 								//No se puede usar el ButtonHelper. Enlace distinto.
-								$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view_trafico',$operacion['OperacionLogistica']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalle'))
+								$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view_trafico',$operacion['OperacionCompra']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalle'))
 								));
 						}
 						}

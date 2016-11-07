@@ -56,8 +56,8 @@ AND muestras.aprobado = 1
 	),
 	);
 	public $hasMany = array(
-	'OperacionLogistica' => array(
-		'className' => 'OperacionLogistica',
+	'OperacionCompra' => array(
+		'className' => 'OperacionCompra',
 		'foreignKey' => 'contrato_id'
 	),
 	'ContratoEmbalaje' => array(
@@ -91,7 +91,7 @@ AND muestras.aprobado = 1
 		'foreignKey' => 'calidad_id')
 	);
 	public function beforeDelete($cascade = true) {
-		$count = $this->OperacionLogistica->find(
+		$count = $this->OperacionCompra->find(
 			"count",
 			array(
 				"recursive" => -1,
