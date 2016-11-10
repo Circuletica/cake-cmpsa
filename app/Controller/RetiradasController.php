@@ -14,7 +14,7 @@ class RetiradasController extends AppController {
 					'nombre_corto'
 				)
 			),
-			'Operacion' => array (
+			'OperacionCompra' => array (
 				'fields' => array(
 					'id',
 					'referencia'
@@ -24,7 +24,7 @@ class RetiradasController extends AppController {
 
 		$titulo = $this->filtroPaginador(
 			array(
-				'Operacion' =>array(
+				'OperacionCompra' =>array(
 					'Referencia' => array(
 						'columna' => 'referencia',
 						'exacto' => false,
@@ -58,9 +58,9 @@ class RetiradasController extends AppController {
 		$this->Retirada->bindModel(
 			array(
 				'belongsTo' => array(
-					'Operacion' => array(
+					'OperacionCompra' => array(
 						'foreignKey' => false,
-						'conditions' => array('Retirada.operacion_id = Operacion.id')
+						'conditions' => array('Retirada.operacion_compra_id = OperacionCompra.id')
 					),
 					'Almacen' => array(
 						'className' => 'Empresa',
@@ -87,13 +87,13 @@ class RetiradasController extends AppController {
 		//el id y la clase de la entidad de origen vienen en la URL
 
 		$operacion_id = $this->params['named']['from_id'];
-		$this->set(compact('operacion_id'));
+		$this->set(compact('operacion_compra_id'));
 
-		$operacion = $this->Retirada->Operacion->find(
+		$operacion = $this->Retirada->OperacionCompra->find(
 			'first',
 			array(
 				'conditions' => array(
-					'Operacion.id'=>$operacion_id
+					'OperacionCompra.id'=>$operacion_id
 				),
 				'recursive'=>-1,
 				'fields' => array(
@@ -118,8 +118,8 @@ class RetiradasController extends AppController {
 			'first',
 			array(
 				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['Operacion']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['Operacion']['embalaje_id']
+					'ContratoEmbalaje.contrato_id' => $operacion['OperacionCompra']['contrato_id'],
+					'ContratoEmbalaje.embalaje_id' => $operacion['OperacionCompra']['embalaje_id']
 				),
 				'fields' => array(
 					//'Embalaje.nombre',
@@ -135,7 +135,7 @@ class RetiradasController extends AppController {
 			array(
 				'conditions' =>array(
 					'Retirada.asociado_id' => $this->params['named']['asociado_id'],
-					'Retirada.operacion_id'=> $operacion_id
+					'Retirada.operacion_compra_id'=> $operacion_id
 				),
 				'recursive' => 3,
 				'contain' => array(
@@ -158,7 +158,7 @@ class RetiradasController extends AppController {
 							'nombre_corto'
 						)
 					),
-					'Operacion' => array(
+					'OperacionCompra' => array(
 						'fields' => array(
 							'id',
 							'referencia',
@@ -186,12 +186,12 @@ class RetiradasController extends AppController {
 
 		$this->set(compact('asociado_nombre'));
 
-		$asociado_op = $this->Retirada->Operacion->AsociadoOperacion->find(
+		$asociado_op = $this->Retirada->OperacionCompra->Distribucion->find(
 			'first',
 			array(
 				'conditions' => array(
-					'AsociadoOperacion.operacion_id' => $operacion_id,
-					'AsociadoOperacion.asociado_id' => $this->params['named']['asociado_id']
+					'Distribucion.operacion_compra_id' => $operacion_id,
+					'Distribucion.asociado_id' => $this->params['named']['asociado_id']
 				),
 				'recursive'=>-1,
 				'fields' => array(
@@ -232,12 +232,12 @@ class RetiradasController extends AppController {
 
 		// Necesario para evitar agregar retirada si no hay en el almacen nada.
 		//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
-		$this->loadModel('Operacion');
-		$cuenta_almacen = $this->Operacion->Transporte->AlmacenTransporte->find(
+		$this->loadModel('OperacionCompra');
+		$cuenta_almacen = $this->OperacionCompra->Transporte->AlmacenTransporte->find(
 			'first',
 			array(
 				'conditions' => array(
-					'Transporte.operacion_id' => $operacion_id
+					'Transporte.operacion_compra_id' => $operacion_id
 				),
 				'recursive' => 2,
 				'fields' => array(
@@ -309,7 +309,7 @@ class RetiradasController extends AppController {
 		}else{
 			$operacion_id = $this->passedArgs['from_id'];
 		}
-		$this->set(compact('operacion_id'));
+		$this->set(compact('operacion_compra_id'));
 
 		if(empty($this->passedArgs['almacen_transporte_id'])){
 			$almacen_transporte_id = NULL;
@@ -317,7 +317,7 @@ class RetiradasController extends AppController {
 			$this->set('almacen_transporte_id', $this->passedArgs['almacen_transporte_id']);
 		}
 
-		$operaciones_asociados = $this->Retirada->Operacion->find(
+		$operaciones_asociados = $this->Retirada->OperacionCompra->find(
 			'all',
 			array(
 				'contain' => array(
@@ -341,11 +341,11 @@ class RetiradasController extends AppController {
 			$operaciones_asociados[$clave] = $operacion;
 			unset($operaciones_asociados[$clave]['AsociadoOperacion']);
 		}
-		$operaciones_asociados = Hash::combine($operaciones_asociados, '{n}.Operacion.id','{n}');
+		$operaciones_asociados = Hash::combine($operaciones_asociados, '{n}.OperacionCompra.id','{n}');
 		$this->set(compact('operaciones_asociados'));
 
 
-		$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->Operacion->find(
+		$operaciones_almacen = $this->Retirada->AlmacenTransporte->Transporte->OperacionCompra->find(
 			'all',
 			array(
 				'contain' => array(
@@ -373,23 +373,23 @@ class RetiradasController extends AppController {
 			}
 		}
 
-		$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.Operacion.id','{n}');
+		$operaciones_almacen = Hash::combine($operaciones_almacen, '{n}.OperacionCompra.id','{n}');
 		$this->set(compact('operaciones_almacen'));
 
 		$id_edit = $id;
 		//construimos la lista de operaciones para el desplegable,
 		//pero solo las que tengan cuentas de almacén.
 		foreach ($operaciones_almacen as $id => $operacion) {
-			$operaciones[$id] = $operacion['Operacion']['referencia'];
+			$operaciones[$id] = $operacion['OperacionCompra']['referencia'];
 		}
 		$this->set(compact('operaciones'));
 		//Solucionamos el problema de asignar add o edit que se pierde en el anterior foreach
 		$id = $id_edit;
-		$operacion = $this->Retirada->Operacion->find(
+		$operacion = $this->Retirada->OperacionCompra->find(
 			'first',
 			array(
 				'conditions' => array(
-					'Operacion.id'=>$operacion_id
+					'OperacionCompra.id'=>$operacion_id
 				),
 				'recursive'=>-1,
 				'fields' => array(
@@ -436,7 +436,7 @@ class RetiradasController extends AppController {
 		// Saco la referencia de la operación para usar en el form excepto en un add() desde index
 		$operacion_ref = NULL;
 		if(!empty($this->params['named']['from_id'])){
-			$operacion_ref = $operacion['Operacion']['referencia'];
+			$operacion_ref = $operacion['OperacionCompra']['referencia'];
 		}
 		$this->set(compact('operacion_ref'));
 

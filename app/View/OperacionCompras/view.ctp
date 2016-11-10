@@ -2,9 +2,9 @@
 $this->extend('/Common/view');
 $this->assign('object', 'Operación (logística)'.$referencia);
 $this->assign('line_object', 'Reparto asociados solicitado');
-$this->assign('id',$operacion['OperacionLogistica']['id']);
+$this->assign('id',$operacion['OperacionCompra']['id']);
 $this->assign('class','Operacion');
-$this->assign('controller','operacion_logisticas');
+$this->assign('controller','operacion_compras');
 $this->assign('line_controller','pedidos');
 $this->assign('line_add','0');
 
@@ -12,7 +12,7 @@ $this->start('breadcrumb');
 $this->Html->addCrumb(
     'Operaciones (logística)',
     array(
-	'controller' => 'operacion_logisticas',
+	'controller' => 'operacion_compras',
 	'action' => 'index'
     )
 );
@@ -35,9 +35,9 @@ echo "<br><hr>";
 if (empty($existe_financiacion)) {
     echo $this->Html->link('<i class="fa fa-file-text-o fa-lg" aria-hidden="true"></i>
 	Generar financiación', array(
-	    'controller' => 'operacion_logisticas',
+	    'controller' => 'operacion_compras',
 	    'action' => 'generarFinanciacion',
-	    $operacion['OperacionLogistica']['id']
+	    $operacion['OperacionCompra']['id']
 	),
 	array(
 	    'escape' => false)
@@ -47,7 +47,7 @@ if (empty($existe_financiacion)) {
     Ver financiación', array(
 	'controller' => 'financiaciones',
 	'action' => 'view',
-	$operacion['OperacionLogistica']['id']
+	$operacion['OperacionCompra']['id']
     ),
     array('escape' => false)
     );
@@ -57,7 +57,7 @@ if (empty($existe_facturacion)) {
 	Generar facturación', array(
 	    'controller' => 'operaciones',
 	    'action' => 'generarFacturacion',
-	    $operacion['OperacionLogistica']['id']
+	    $operacion['OperacionCompra']['id']
 	),
 	array('escape' => false)
     );
@@ -66,7 +66,7 @@ if (empty($existe_facturacion)) {
     Ver facturación', array(
 	'controller' => 'facturaciones',
 	'action' => 'view',
-	$operacion['OperacionLogistica']['id']
+	$operacion['OperacionCompra']['id']
     ),
     array('escape' => false)
     );
@@ -94,16 +94,16 @@ echo "  </dd>";
 echo "  <dt>Transporte:</dt>\n";
 echo "  <dd>".$operacion['Contrato']['transporte']."&nbsp;</dd>";
 echo "  <dt>Peso:</dt>\n";
-echo "  <dd>".$operacion['PesoOperacion']['peso'].' kg&nbsp;'."</dd>";
+echo "  <dd>".$operacion['PesoOperacionCompra']['peso'].' kg&nbsp;'."</dd>";
 echo "  <dt>Peso factura:</dt>\n";
-echo "  <dd>".$operacion['PesoOperacion']['peso_pagado'].' kg&nbsp;'."</dd>";
+echo "  <dd>".$operacion['PesoOperacionCompra']['peso_pagado'].' kg&nbsp;'."</dd>";
 echo "  <dt>Embalaje:</dt>\n";
 echo "  <dd>".
-    $operacion['PesoOperacion']['cantidad_embalaje'].' x '.
+    $operacion['PesoOperacionCompra']['cantidad_embalaje'].' x '.
     $embalaje['Embalaje']['nombre'].
-    ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
+    ' ('.$operacion['PesoOperacionCompra']['peso'].'kg)&nbsp;'."</dd>";
 echo "  <dt>Lotes:</dt>\n";
-echo "  <dd>".$operacion['OperacionLogistica']['lotes_operacion']."&nbsp;</dd>";
+echo "  <dd>".$operacion['OperacionCompra']['lotes_operacion']."&nbsp;</dd>";
 echo "  <dt>Puerto de Embarque:</dt>\n";
 echo "  <dd>".$operacion['PuertoCarga']['nombre'].'&nbsp;'."</dd>";
 echo "  <dt>Puerto de Destino:</dt>\n";
@@ -112,49 +112,49 @@ echo "  <dd>".$operacion['PuertoDestino']['nombre'].'&nbsp;'."</dd>";
 echo "  <dt>Fecha fijación:</dt>\n";
 echo "  <dd>".$this->Date->format($fecha_fijacion).'&nbsp;'."</dd>";
 echo "  <dt>Precio fijación:</dt>\n";
-echo "  <dd>".$operacion['OperacionLogistica']['precio_fijacion']
+echo "  <dd>".$operacion['OperacionCompra']['precio_fijacion']
     .$divisa
     .'&nbsp;'."</dd>";
 echo "  <dt>Diferencial:</dt>\n";
 echo "  <dd>".$operacion['Contrato']['diferencial'].$divisa.'&nbsp;'."</dd>";
-if ($operacion['OperacionLogistica']['opciones'] != 0){
+if ($operacion['OperacionCompra']['opciones'] != 0){
     echo "  <dt>Opciones:</dt>\n";
-    echo "  <dd>".$operacion['OperacionLogistica']['opciones'].$divisa.'&nbsp;'."</dd>";
+    echo "  <dd>".$operacion['OperacionCompra']['opciones'].$divisa.'&nbsp;'."</dd>";
 }
-echo "  <dt>Precio ".$operacion['PrecioTotalOperacion']['divisa']."/Tm:</dt>\n";
+echo "  <dt>Precio ".$operacion['PrecioTotalOperacionCompra']['divisa']."/Tm:</dt>\n";
 echo "  <dd>".
-    $operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].
-    $operacion['PrecioTotalOperacion']['divisa'].
+    $operacion['PrecioTotalOperacionCompra']['precio_divisa_tonelada'].
+    $operacion['PrecioTotalOperacionCompra']['divisa'].
     '/Tm&nbsp;'.
     "</dd>";
 if ($operacion['Contrato']['Incoterm']['si_flete']) {
     echo "  <dt>Flete:</dt>\n";
     echo "  <dd>".
-	$operacion['OperacionLogistica']['flete'].
+	$operacion['OperacionCompra']['flete'].
 	'$/Tm&nbsp;'.
 	"</dd>";
 }
-if (isset($operacion['OperacionLogistica']['precio_directo_euro'])) {
+if (isset($operacion['OperacionCompra']['precio_directo_euro'])) {
     echo "  <dt>Precio €/kg directo:</dt>\n";
-    echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_directo_euro'].'€/kg&nbsp;'."</dd>";
+    echo "  <dd>".$operacion['PrecioTotalOperacionCompra']['precio_directo_euro'].'€/kg&nbsp;'."</dd>";
 }else{
     echo "  <dt>Cambio dolar/euro:</dt>\n";
-    echo "  <dd>".$operacion['OperacionLogistica']['cambio_dolar_euro'].'&nbsp;'."</dd>";
+    echo "  <dd>".$operacion['OperacionCompra']['cambio_dolar_euro'].'&nbsp;'."</dd>";
     echo "  <dt>Precio €/Tm:</dt>\n";
-    echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_tonelada'].'€/Tm&nbsp;'."</dd>";
+    echo "  <dd>".$operacion['PrecioTotalOperacionCompra']['precio_euro_tonelada'].'€/Tm&nbsp;'."</dd>";
     if ($operacion['Contrato']['Incoterm']['si_seguro']) {
 	echo "  <dt>Seguro:</dt>\n";
-	echo "  <dd>".$operacion['OperacionLogistica']['seguro'].'%'
-	    .' ('.$operacion['PrecioTotalOperacion']['seguro_euro_tonelada'].'€/Tm)'
+	echo "  <dd>".$operacion['OperacionCompra']['seguro'].'%'
+	    .' ('.$operacion['PrecioTotalOperacionCompra']['seguro_euro_tonelada'].'€/Tm)'
 	    .'&nbsp;'."</dd>";
     }
     echo "  <dt>Forfait:</dt>\n";
-    echo "  <dd>".$operacion['OperacionLogistica']['forfait'].'€/Tm&nbsp;'."</dd>";
+    echo "  <dd>".$operacion['OperacionCompra']['forfait'].'€/Tm&nbsp;'."</dd>";
     echo "  <dt>Precio €/kg estimado:</dt>\n";
-    echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
+    echo "  <dd>".$operacion['PrecioTotalOperacionCompra']['precio_euro_kilo_total'].'€/kg&nbsp;'."</dd>";
 }
 echo "  <dt>Comentarios:</dt>\n";
-echo "  <dd>".$operacion['OperacionLogistica']['observaciones'].'&nbsp;'."</dd>";
+echo "  <dd>".$operacion['OperacionCompra']['observaciones'].'&nbsp;'."</dd>";
 echo "</dl>";
 $this->end();
 $this->start('lines');

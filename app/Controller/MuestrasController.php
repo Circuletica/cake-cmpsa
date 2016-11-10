@@ -14,7 +14,7 @@ class MuestrasController extends AppController {
 					'calidad_id'
 				),
 				'Proveedor',
-				'OperacionLogistica' => array(
+				'OperacionCompra' => array(
 					'fields' => array(
 						'id',
 						'referencia'
@@ -114,7 +114,7 @@ class MuestrasController extends AppController {
 					'Contrato',
 					'LineaMuestra'=>array(
 						'AlmacenTransporte',
-						'OperacionLogistica'=>array(
+						'OperacionCompra'=>array(
 							'fields'=>array(
 								'referencia'
 							)

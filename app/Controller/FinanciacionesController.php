@@ -4,10 +4,10 @@ class FinanciacionesController extends AppController {
 	public function index() {
 		$this->paginate['contain'] = array(
 			'Banco',
-			'OperacionLogistica'
+			'OperacionCompra'
 		);
 		$this->paginate['order'] = array(
-			'OperacionLogistica.referencia' => 'asc'
+			'OperacionCompra.referencia' => 'asc'
 		);
 		$this->set('financiaciones', $this->paginate());
 	}
@@ -20,7 +20,7 @@ class FinanciacionesController extends AppController {
 			array(
 				'contain' => array(
 					'Banco',
-					'OperacionLogistica' => array(
+					'OperacionCompra' => array(
 						'Contrato' => array(
 							'Calidad',
 							'Incoterm',
@@ -90,7 +90,7 @@ class FinanciacionesController extends AppController {
 		);
 		$this->set('totales',$totales['RepartoOperacionAsociado']);
 
-		$anticipos = $this->Financiacion->Operacion->AsociadoOperacion->Anticipo->find(
+		$anticipos = $this->Financiacion->OperacionCompra->AsociadoOperacion->Anticipo->find(
 			'all',
 			array(
 				'recursive' => 3,
@@ -116,11 +116,11 @@ class FinanciacionesController extends AppController {
 		$this->set(compact('anticipos'));
 
 		$this->set('financiacion_id', $financiacion['Financiacion']['id']);
-		$this->set('referencia', $financiacion['Operacion']['referencia']);
-		$this->set('proveedor', $financiacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
-		$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);
-		$this->set('calidad', $financiacion['Operacion']['Contrato']['Calidad']['nombre']);
-		$this->set('condicion', $financiacion['Operacion']['Contrato']['condicion']);
+		$this->set('referencia', $financiacion['OperacionCompra']['referencia']);
+		$this->set('proveedor', $financiacion['OperacionCompra']['Contrato']['Proveedor']['nombre_corto']);
+		$this->set('proveedor_id', $financiacion['OperacionCompra']['Contrato']['Proveedor']['id']);
+		$this->set('calidad', $financiacion['OperacionCompra']['Contrato']['Calidad']['nombre']);
+		$this->set('condicion', $financiacion['OperacionCompra']['Contrato']['condicion']);
 		$this->set('fecha_vencimiento',$financiacion['Financiacion']['fecha_vencimiento']);
 		$cuenta = $financiacion['Banco']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['cuenta_bancaria']);
 		$this->set(compact('cuenta'));
@@ -181,10 +181,10 @@ class FinanciacionesController extends AppController {
 		unset($this->Banco->virtualFields);
 		$this->set(compact('bancos'));
 
-		$operacion = $this->Financiacion->Operacion->find(
+		$operacion = $this->Financiacion->OperacionCompra->find(
 			'first',
 			array(
-				'conditions' => array('Operacion.id' => $id),
+				'conditions' => array('OperacionCompra.id' => $id),
 				'recursive' => 1,
 				'contain' => array(
 					'Contrato' => array(
@@ -230,7 +230,7 @@ class FinanciacionesController extends AppController {
 		unset($this->Financiacion->TipoIva->virtualFields['nombre_valor']);
 		$this->set(compact('tipoIvas'));
 		$this->set('tipoIvaComisiones', $tipoIvas);
-		$this->set('referencia', $operacion['Operacion']['referencia']);
+		$this->set('referencia', $operacion['OperacionCompra']['referencia']);
 		$this->set('proveedor', $operacion['Contrato']['Proveedor']['nombre_corto']);
 		$this->set('proveedor_id', $operacion['Contrato']['Proveedor']['id']);
 		$this->set('calidad', $operacion['Contrato']['Calidad']['nombre']);
@@ -294,7 +294,7 @@ class FinanciacionesController extends AppController {
 			array(
 				'contain' => array(
 					'Banco',
-					'Operacion' => array(
+					'OperacionCompra' => array(
 						'Contrato' => array(
 							'Calidad',
 							'Incoterm',
@@ -364,7 +364,7 @@ class FinanciacionesController extends AppController {
 		);
 		$this->set('totales',$totales['RepartoOperacionAsociado']);
 
-		$anticipos = $this->Financiacion->Operacion->AsociadoOperacion->Anticipo->find(
+		$anticipos = $this->Financiacion->OperacionCompra->AsociadoOperacion->Anticipo->find(
 			'all',
 			array(
 				'recursive' => 3,
@@ -389,22 +389,22 @@ class FinanciacionesController extends AppController {
 		);
 		$this->set(compact('anticipos'));
 
-		$asociados = $this->Financiacion->Operacion->AsociadoOperacion->find(
+		$asociados = $this->Financiacion->OperacionCompra->AsociadoOperacion->find(
 			'all',
 			array(
 				'conditions' => array(
-					'AsociadoOperacion.operacion_id' => $financiacion['Operacion']['id']
+					'AsociadoOperacion.operacion_id' => $financiacion['OperacionCompra']['id']
 				)
 			)
 		);
 		$this->set('asociados', $asociados);
 
 		$this->set('financiacion_id', $financiacion['Financiacion']['id']);
-		$this->set('referencia', $financiacion['Operacion']['referencia']);
-		$this->set('proveedor', $financiacion['Operacion']['Contrato']['Proveedor']['nombre_corto']);
-		$this->set('proveedor_id', $financiacion['Operacion']['Contrato']['Proveedor']['id']);
-		$this->set('calidad', $financiacion['Operacion']['Contrato']['Calidad']['nombre']);
-		$this->set('condicion', $financiacion['Operacion']['Contrato']['condicion']);
+		$this->set('referencia', $financiacion['OperacionCompra']['referencia']);
+		$this->set('proveedor', $financiacion['OperacionCompra']['Contrato']['Proveedor']['nombre_corto']);
+		$this->set('proveedor_id', $financiacion['OperacionCompra']['Contrato']['Proveedor']['id']);
+		$this->set('calidad', $financiacion['OperacionCompra']['Contrato']['Calidad']['nombre']);
+		$this->set('condicion', $financiacion['OperacionCompra']['Contrato']['condicion']);
 		$this->set('fecha_vencimiento',$financiacion['Financiacion']['fecha_vencimiento']);
 		$cuenta = $financiacion['Banco']['nombre_corto'].' '.$this->iban('ES',$financiacion['Banco']['cuenta_bancaria']);
 		$this->set(compact('cuenta'));
@@ -452,7 +452,7 @@ class FinanciacionesController extends AppController {
 			if(empty($this->request->data['email'])){
 				$this->Flash->set('Los datos del NO fueron enviados. Faltan destinatarios');
 			}else{
-				// $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
+				// $this->OperacionCompra->save($this->request->data['OperacionCompra']); //Guardamos los datos actuales en los campos
 				foreach ($this->data['email'] as $email){
 					$lista_email[]= $email;
 				}
@@ -482,7 +482,7 @@ class FinanciacionesController extends AppController {
 				//$pdf = $CakePdf->output();
 				// Or write it to file directly
 				$pdf = $CakePdf->write(
-					APP. 'webroot'. DS. 'files'. DS .'financiaciones' . DS . 'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf',
+					APP. 'webroot'. DS. 'files'. DS .'financiaciones' . DS . 'financiacion_'.strtr($financiacion['OperacionCompra']['referencia'],'/','_').'_'.date('Ymd').'.pdf',
 					array(
 						'orientation' => 'landscape',
 					)
@@ -497,9 +497,9 @@ class FinanciacionesController extends AppController {
 				if(!empty($lista_bcc)){
 					$Email->bcc($lista_bcc);
 				}
-				$Email->subject('Financiación de operación '.$financiacion['Operacion']['referencia'].' / Fecha '.date('Ymd'));
-				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'financiaciones' . DS .'financiacion_'.strtr($financiacion['Operacion']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
-				$Email->send('Adjuntamos financiación de la operación '.$financiacion['Operacion']['referencia']);
+				$Email->subject('Financiación de operación '.$financiacion['OperacionCompra']['referencia'].' / Fecha '.date('Ymd'));
+				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'financiaciones' . DS .'financiacion_'.strtr($financiacion['OperacionCompra']['referencia'],'/','_').'_'.date('Ymd').'.pdf');
+				$Email->send('Adjuntamos financiación de la operación '.$financiacion['OperacionCompra']['referencia']);
 				$this->Flash->success('¡Las financiaciones han sido enviadas a los asociados correctamente!');
 				$this->redirect(array(
 					'action'=>'view',

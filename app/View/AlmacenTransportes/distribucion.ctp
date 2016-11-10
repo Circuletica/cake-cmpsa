@@ -2,7 +2,7 @@
 echo $this->Html->script('jquery')."\n"; // Include jQuery library
 echo $this->Js->set('cantidadCuenta',$almacentransportes['AlmacenTransporte']['cantidad_cuenta']);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
-$this->Html->addCrumb('Operación (logística)', array(
+$this->Html->addCrumb('Operación (compras)', array(
 	'controller'=>'operaciones_logistica',
 	'action'=>'view_trafico',
 	//	$almacentransportes['AlmacenTransporte']['Transporte']['operacion_id']
@@ -13,7 +13,7 @@ $this->Html->addCrumb('Línea de Transporte', array(
 	$almacentransportes['AlmacenTransporte']['transporte_id']
 )
 	);
-echo $this->Form->create('AsociadoCuenta');
+echo $this->Form->create('OperacionAsociadoCuenta');
 ?>
 <h2>Cuenta corriente <?php echo $almacentransportes['AlmacenTransporte']['cuenta_almacen'] ?></h2>
 <fieldset>
@@ -57,7 +57,7 @@ $total_pendiente = 0;
 $total_porcentaje_teorico = 0;
 $total_porcentaje_real = 0;
 echo $this->Html->tableHeaders(array('Asociado','Asignado Teorico', 'Asignados Real','Pendiente','% teorico', '% real'));
-foreach($almacentransportes['AsociadoCuenta'] as $almacentransporte){
+foreach($almacentransportes['OperacionAsociadoCuenta'] as $almacentransporte){
 	$pendiente = !empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'];
 	echo $this->Html->tableCells(array(
 		$almacentransporte['Asociado']['Empresa']['nombre_corto'],

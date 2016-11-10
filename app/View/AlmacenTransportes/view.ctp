@@ -1,8 +1,8 @@
 <?php
 $this->Html->addCrumb(
-	'Operación (logística)',
+	'Operación (compra)',
 	array(
-		'controller'=>'operaciones',
+		'controller'=>'operacion_compras',
 		'action'=>'view_trafico',
 		)
 	);
@@ -107,8 +107,8 @@ echo $this->Html->link(
 		'controller' => 'retiradas',
 		'action' => 'add',
 		'almacen_transporte_id'=>$almacentransportes['AlmacenTransporte']['id'],
-		'from_controller' => 'operaciones',
-		'from_id' => $almacentransportes['Transporte']['operacion_logistica_id']
+		'from_controller' => 'operacion_compras',
+		'from_id' => $almacentransportes['Transporte']['operacion_compra_id']
 		),
 	array(
 		'class' => 'botond',
@@ -121,14 +121,14 @@ echo $this->Html->link(
 <div class='view'>
 	<?php
 	echo "<dl>";
-	echo "  <dt>Ref. Operación (logística) </dt>\n";
+	echo "  <dt>Ref. Operación (compra) </dt>\n";
 	echo "<dd>";
 	echo $this->html->link(
-		$almacentransportes['Transporte']['OperacionLogistica']['referencia'],
+		$almacentransportes['Transporte']['OperacionCompra']['referencia'],
 		array(
-			'controller' => 'operaciones',
+			'controller' => 'operacion_compras',
 			'action' => 'view_trafico',
-			$almacentransportes['Transporte']['operacion_logistica_id']
+			$almacentransportes['Transporte']['operacion_compra_id']
 			)
 		).'&nbsp;';
 	echo "</dd>";
@@ -181,7 +181,7 @@ echo $this->Html->link(
 			$total_porcentaje_teorico = 0;
 			$total_porcentaje_real = 0;
 
-			foreach ($almacentransportes['AsociadoCuenta'] as $almacentransporte) {
+			foreach ($almacentransportes['OperacionAsociadoCuenta'] as $almacentransporte) {
 				$total_asignacion_real= $total_asignacion_real + $almacentransporte['sacos_asignados'];
 			}
 
@@ -195,7 +195,7 @@ echo $this->Html->link(
 					)
 				);
 
-			foreach($almacentransportes['AsociadoCuenta'] as $almacentransporte){
+			foreach($almacentransportes['OperacionAsociadoCuenta'] as $almacentransporte){
 				$pendiente = !empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'];
 				$sacos_asignados = !empty($almacentransporte['sacos_asignados']) ? $this->Number->round($almacentransporte['sacos_asignados']*100/$total_asignacion_real ,2) : 'Sin asignar';
 				echo $this->Html->tableCells(

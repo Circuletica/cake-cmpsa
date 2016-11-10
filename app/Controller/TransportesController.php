@@ -33,7 +33,7 @@ class TransportesController extends AppController {
 					'contrato_id'
 				)
 			),
-			/*'PesoOperacion',*/
+			/*'PesoOperacionCompra',*/
 			'Incoterm'=>array(
 				'fields' => array(
 					'nombre'

@@ -15,7 +15,7 @@ class AlmacenTransporte extends AppModel {
 	);
 	public $hasMany = array(
 		'Retirada',
-		'AsociadoCuenta',
+		'OperacionAsociadoCuenta',
 		'AlmacenReparto' => array(
 			'className' => 'AlmacenReparto',
 			'foreignKey' => 'id'

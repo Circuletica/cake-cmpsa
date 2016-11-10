@@ -9,7 +9,7 @@ $this->end();
 $this->start('main');
 echo "<table>\n";
 echo $this->Html->tableHeaders(array(
-	$this->Paginator->sort('Operacion.referencia','Operación'),
+	$this->Paginator->sort('OperacionCompra.referencia','Operación (compra)'),
 	$this->Paginator->sort('Banco.nombre_corto','Banco'),
 	$this->Paginator->sort('Financiacion.fecha_vencimiento','F. Vencimiento'),
 	'Detalle'
@@ -23,7 +23,7 @@ foreach($financiaciones as $financiacion) {
 	$anyo = substr($fecha,0,4);
 	$fecha_vencimiento = $mes.' '.$anyo;
 	echo $this->Html->tableCells(array(
-		$financiacion['Operacion']['referencia'],
+		$financiacion['OperacionCompra']['referencia'],
 		$financiacion['Banco']['nombre_corto'],
 		$fecha_vencimiento,
 		$this->Button->view('financiaciones',$financiacion['Financiacion']['id'])

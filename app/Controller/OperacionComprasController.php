@@ -15,7 +15,7 @@ class OperacionComprasController extends AppController {
 					'si_entrega'
 				)
 			),
-			'PesoOperacion',
+			'PesoOperacionCompra',
 			'Proveedor',
 			'Calidad'
 		);
@@ -599,8 +599,8 @@ class OperacionComprasController extends AppController {
 //					'AsociadoOperacion' => array(
 //						'Asociado'
 //					),
-					'PesoOperacion',
-					'PrecioTotalOperacion'
+					'PesoOperacionCompra',
+					'PrecioTotalOperacionCompra'
 				)
 			)
 		);
@@ -710,26 +710,26 @@ class OperacionComprasController extends AppController {
 							)
 						)
 					),
-					'PesoOperacion'=> array(
+					'PesoOperacionCompra'=> array(
 						'fields' =>array(
 							'peso',
 							'cantidad_embalaje'
 						)
 					),
-//PENDIENTE					'PrecioTotalOperacion'=> array(
-//						'fields'=>array(
-//							'precio_divisa_tonelada',
-//							'divisa'
-//						)
-//					),
-					'Operacion' => array(
+					'PrecioTotalOperacionCompra'=> array(
+						'fields'=>array(
+							'precio_divisa_tonelada',
+							'divisa'
+						)
+					),
+					'OperacionVenta' => array(
 						'Pedido'=>array(
 							'Asociado'
 						)
+					),
+					'OperacionAsociadoCuenta'=>array(
+						'Asociado'
 					)
-//					'AsociadoOperacion'=>array(
-//						'Asociado'
-//					)
 				)
 
 			)
@@ -784,7 +784,7 @@ class OperacionComprasController extends AppController {
 				}
 			}
 		}
-		$restan = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
+		$restan = $operacion['PesoOperacionCompra']['cantidad_embalaje'] - $transportado;
 		$this->set(compact('transportado'));
 		$this->set(compact('restan'));
 
@@ -955,7 +955,7 @@ class OperacionComprasController extends AppController {
 					'si_entrega'
 				)
 			),
-			'PesoOperacion',
+			'PesoOperacionCompra',
 			'Proveedor',
 			'Calidad'
 		);
@@ -1045,8 +1045,8 @@ class OperacionComprasController extends AppController {
 					'AsociadoOperacion' => array(
 						'Asociado'
 					),
-					'PesoOperacion',
-					'PrecioTotalOperacion'
+					'PesoOperacionCompra',
+					'PrecioTotalOperacionCompra'
 				)
 			)
 		);

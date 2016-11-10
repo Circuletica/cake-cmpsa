@@ -11,8 +11,8 @@ class Financiacion extends AppModel {
 		'TipoIvaComision' => array(
 			'className' => 'TipoIva',
 			'foreignKey' => 'tipo_iva_comision_id'),
-		'OperacionLogistica' => array(
-			'className' => 'OperacionLogistica',
+		'OperacionCompra' => array(
+			'className' => 'OperacionCompra',
 			'foreignKey' => 'id')
 		);
 	public $hasOne = array(
@@ -30,13 +30,13 @@ class Financiacion extends AppModel {
 		//no se deja borrar financiación si ya hay
 		//anticipos exportados.
 		global $count;
-		$count = $this->OperacionLogistica->Operacion->Pedido->Anticipo->find(
+		$count = $this->OperacionCompra->OperacionVenta->Pedido->Anticipo->find(
 			'count',
 			array(
 				'recursive' => -1,
 				'conditions' => array(
 					'Anticipo.si_contabilizado' => true,
-					'Pedido.operacion_id'=>$this->id
+					'Pedido.operacion_venta_id'=>$this->id
 //					'AsociadoOperacion.operacion_id' => $this->id
 				),
 				'contain' => array(

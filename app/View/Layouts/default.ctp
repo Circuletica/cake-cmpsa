@@ -85,9 +85,14 @@ echo $this->Html->script('cmpsa');//incluye funciones javascript
 				<li><?php echo $this->Html->link('FLETES','/fletes',array('escape' => false));?></li>
 			</ul>
 		</li>
-		<li class="last"><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','#',array('escape' => false));?>
+		<li class="has-sub"><?php echo $this->Html->link('<i class="fa fa-money"></i> CONTABILIDAD','#',array('escape' => false));?>
 			<ul>
-				<li><?php echo $this->Html->link('OPERACIÓN','/operacion_logisticas',array('escape' => false));?></li>
+				<li class="has-sub"><?php echo $this->Html->link('Operación','#',array('escape' => false));?>
+					<ul>
+						<li><?php echo $this->Html->link('Compras','/operacion_compras',array('escape' => false));?></li>
+						<li class="last"><?php echo $this->Html->link('Ventas','/operacion_ventas',array('escape' => false));?></li>
+					</ul>
+				</li>
 				<li><?php echo $this->Html->link('FINANCIACIÓN','/financiaciones',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('ANTICIPOS','/anticipos',array('escape' => false));?></li>
 				<li><?php echo $this->Html->link('FACTURACIÓN','/facturaciones',array('escape' => false));?></li>

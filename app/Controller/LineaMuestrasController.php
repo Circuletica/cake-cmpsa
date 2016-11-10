@@ -98,7 +98,7 @@ class LineaMuestrasController extends AppController {
 					'Calidad',
 					'Proveedor',
 					'Contrato' => array(
-						'OperacionLogistica' => array(
+						'OperacionCompra' => array(
 							'fields' => array(
 								'id',
 								'referencia',

@@ -29,16 +29,16 @@ class OperacionCompra extends AppModel {
 			'foreignKey' => 'embalaje_id')
 		);
 	public $hasOne = array(
-		'PrecioOperacion' => array(
-			'className' => 'PrecioOperacion',
+		'PrecioOperacionCompra' => array(
+			'className' => 'PrecioOperacionCompra',
 			'foreignKey' => 'id'
 		),
-		'PrecioTotalOperacion' => array(
-			'className' => 'PrecioTotalOperacion',
+		'PrecioTotalOperacionCompra' => array(
+			'className' => 'PrecioTotalOperacionCompra',
 			'foreignKey' => 'id'
 		),
-		'PesoOperacion' => array(
-			'className' => 'PesoOperacion',
+		'PesoOperacionCompra' => array(
+			'className' => 'PesoOperacionCompra',
 			'foreignKey' => 'id'
 		),
 		'Financiacion' => array(
@@ -58,7 +58,7 @@ class OperacionCompra extends AppModel {
 			'className' => 'Transporte',
 			'foreignKey' => 'operacion_compra_id'),
 		'LineaMuestra',
-		'Operacion'
+		'OperacionCompra'
 	//	'Retirada'
 	);
 	public function beforeDelete($cascade = true) {
@@ -66,7 +66,7 @@ class OperacionCompra extends AppModel {
 			"count",
 			array(
 				"recursive" => -1,
-				"conditions" => array("operacion_id" => $this->id)
+				"conditions" => array("operacion_compra_id" => $this->id)
 			)
 		);
 		if ($count_retirada == 0) {

@@ -14,7 +14,7 @@ class AlmacenTransportesController extends AppController {
 					'nombre_corto'
 				)
 			),
-			'OperacionLogistica' => array(
+			'OperacionCompra' => array(
 				'fields' => array(
 					'referencia',
 					'contrato_id'
@@ -33,10 +33,10 @@ class AlmacenTransportesController extends AppController {
 			'Transporte'=>array(
 				'fields'=> array(
 					'linea',
-					'operacion_logistica_id'
+					'operacion_compra_id'
 				)
 			),
-			'AsociadoCuenta'
+			'OperacionAsociadoCuenta'
 		);
 		if(isset($this->passedArgs['Search.desde'])) {
 			$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
@@ -63,13 +63,13 @@ class AlmacenTransportesController extends AppController {
 		$this->AlmacenTransporte->bindModel(
 			array(
 				'belongsTo' => array(
-					'OperacionLogistica' => array(
+					'OperacionCompra' => array(
 						'foreignKey' => false,
-						'conditions' => array('Transporte.operacion_logistica_id = OperacionLogistica.id')
+						'conditions' => array('Transporte.operacion_compra_id = OperacionCompra.id')
 					),
 					'Contrato' => array(
 						'foreignKey' => false,
-						'conditions' => array('OperacionLogistica.contrato_id = Contrato.id')
+						'conditions' => array('OperacionCompra.contrato_id = Contrato.id')
 					),
 					'Calidad' => array(
 						'foreignKey' => false,
@@ -80,7 +80,7 @@ class AlmacenTransportesController extends AppController {
 		);
 
 		$this->set('almacentransportes', $this->paginate());
-		$almacentransporteasociados = $this->AlmacenTransporte->AsociadoCuenta->find(
+		$almacentransporteasociados = $this->AlmacenTransporte->OperacionAsociadoCuenta->find(
 			'all',
 			array(
 				'contain' => array(
@@ -93,14 +93,14 @@ class AlmacenTransportesController extends AppController {
 			)
 		);
 		$total_sacos_asignados=0;
-		//$almacentransporteasociados = Hash::combine($almacentransporteasociados, '{n}.AsociadoCuenta.almacen_transporte_id','{n}');
-		foreach ($almacentransporteasociados as $clave=>$AsociadoCuenta){
+		//$almacentransporteasociados = Hash::combine($almacentransporteasociados, '{n}.OperacionAsociadoCuenta.almacen_transporte_id','{n}');
+		foreach ($almacentransporteasociados as $clave=>$OperacionAsociadoCuenta){
 			if($clave==0){
-				$almacentransporte_id = $AsociadoCuenta['AsociadoCuenta']['almacen_transporte_id'];
-			}elseif($almacentransporte_id == $AsociadoCuenta['AsociadoCuenta']['almacen_transporte_id']){
-				$total_sacos_asignados +=$AsociadoCuenta['AsociadoCuenta']['sacos_asignados'];
+				$almacentransporte_id = $OperacionAsociadoCuenta['OperacionAsociadoCuenta']['almacen_transporte_id'];
+			}elseif($almacentransporte_id == $OperacionAsociadoCuenta['OperacionAsociadoCuenta']['almacen_transporte_id']){
+				$total_sacos_asignados +=$OperacionAsociadoCuenta['OperacionAsociadoCuenta']['sacos_asignados'];
 			}else{
-				$almacentransporte_id = $AsociadoCuenta['AsociadoCuenta']['almacen_transporte_id'];
+				$almacentransporte_id = $OperacionAsociadoCuenta['OperacionAsociadoCuenta']['almacen_transporte_id'];
 			}
 			unset($almacentransporteasociados[$clave]['Asociado']);
 
@@ -120,7 +120,7 @@ class AlmacenTransportesController extends AppController {
 	public function view($id = null) {
 		$this->checkId($id);
 
-		$this->AlmacenTransporte->AsociadoCuenta->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
+		$this->AlmacenTransporte->OperacionAsociadoCuenta->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
 
 		$almacentransportes = $this->AlmacenTransporte->find(
 			'first',
@@ -129,7 +129,7 @@ class AlmacenTransportesController extends AppController {
 					'AlmacenTransporte.id' => $id
 				),
 				'contain' => array(
-					'AsociadoCuenta' =>array(
+					'OperacionAsociadoCuenta' =>array(
 						'Asociado'=> array(
 							'fields'=> array(
 								'id',
@@ -154,7 +154,7 @@ class AlmacenTransportesController extends AppController {
 							'linea',
 							'matricula',
 							'nombre_vehiculo',
-							'operacion_logistica_id'
+							'operacion_compra_id'
 						),
 						'PuertoDestino'=>array(
 							'fields'=>array(
@@ -166,7 +166,7 @@ class AlmacenTransportesController extends AppController {
 								'nombre'
 							)
 						),
-						'OperacionLogistica' => array(
+						'OperacionCompra' => array(
 							'fields'=> array(
 								'referencia'
 							),
@@ -287,7 +287,7 @@ class AlmacenTransportesController extends AppController {
 				),
 				'contain'=> array(
 					'AlmacenTransporte',
-					'OperacionLogistica' => array(
+					'OperacionCompra' => array(
 						'fields'=>array(
 							'embalaje_id'
 						),
@@ -413,7 +413,7 @@ class AlmacenTransportesController extends AppController {
 	}
 
 	public function distribucion($id){
-		$this->AlmacenTransporte->AsociadoCuenta->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
+		$this->AlmacenTransporte->OperacionAsociadoCuenta->Asociado->Retirada->virtualFields['total_retirada_asociado'] = 'COALESCE(sum(embalaje_retirado),0)';
 
 		$almacentransportes = $this->AlmacenTransporte->find(
 			'first',
@@ -422,7 +422,7 @@ class AlmacenTransportesController extends AppController {
 					'AlmacenTransporte.id' => $id
 				),
 				'contain' => array(
-					'AsociadoCuenta' =>array(
+					'OperacionAsociadoCuenta' =>array(
 						'Asociado'=> array(
 							'fields'=> array(
 								'id',
@@ -445,7 +445,7 @@ class AlmacenTransportesController extends AppController {
 							'linea',
 							'matricula',
 							'nombre_vehiculo',
-							'operacion_logistica_id'
+							'operacion_compra_id'
 						)
 					),
 					'Almacen' => array(
@@ -464,7 +464,7 @@ class AlmacenTransportesController extends AppController {
 
 		//Necesario para exportar en Pdf
 		$this->set(compact('id'));
-		$asociados_distribucion = Hash::combine($almacentransportes['AsociadoCuenta'], '{n}.asociado_id', '{n}');
+		$asociados_distribucion = Hash::combine($almacentransportes['OperacionAsociadoCuenta'], '{n}.asociado_id', '{n}');
 		$control_asignado = 0;
 		//$this->set(compact($control_asignado));
 
@@ -480,17 +480,17 @@ class AlmacenTransportesController extends AppController {
 				$control_asignado = $control_asignado + $cantidad;
 			}
 			if($control_asignado <= $almacentransportes['AlmacenTransporte']['cantidad_cuenta']){
-				$this->AlmacenTransporte->AsociadoCuenta->deleteAll(
+				$this->AlmacenTransporte->OperacionAsociadoCuenta->deleteAll(
 					array(
-						'AsociadoCuenta.almacen_transporte_id' => $id
+						'OperacionAsociadoCuenta.almacen_transporte_id' => $id
 					)
 				);
 				foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
 					if ($cantidad != NULL) {
-						$this->request->data['AsociadoCuenta']['almacen_transporte_id'] = $id;
-						$this->request->data['AsociadoCuenta']['asociado_id'] = $asociado_id;
-						$this->request->data['AsociadoCuenta']['sacos_asignados'] = $cantidad;
-						$this->AlmacenTransporte->AsociadoCuenta->saveAll($this->request->data['AsociadoCuenta']);
+						$this->request->data['OperacionAsociadoCuenta']['almacen_transporte_id'] = $id;
+						$this->request->data['OperacionAsociadoCuenta']['asociado_id'] = $asociado_id;
+						$this->request->data['OperacionAsociadoCuenta']['sacos_asignados'] = $cantidad;
+						$this->AlmacenTransporte->OperacionAsociadoCuenta->saveAll($this->request->data['OperacionAsociadoCuenta']);
 					}
 				}
 			$this->Flash->success('Distribución asociados guardada');
@@ -515,7 +515,7 @@ class AlmacenTransportesController extends AppController {
 				),
 				'recursive'=>2,
 				'contain' => array(
-					'AsociadoCuenta' =>array(
+					'OperacionAsociadoCuenta' =>array(
 						'Asociado'=> array(
 							'fields'=> array(
 								'id'
@@ -540,7 +540,7 @@ class AlmacenTransportesController extends AppController {
 							'linea',
 							'matricula',
 							'nombre_vehiculo',
-							'operacion_logistica_id'
+							'operacion_compra_id'
 						),
 						'PuertoDestino'=>array(
 							'fields'=>array(
@@ -552,7 +552,7 @@ class AlmacenTransportesController extends AppController {
 								'nombre'
 							)
 						),
-						'OperacionLogistica' => array(
+						'OperacionCompra' => array(
 							'fields'=> array(
 								'referencia'
 							),
@@ -644,7 +644,7 @@ class AlmacenTransportesController extends AppController {
 					}
 				}
 
-				$tipo_fecha_transporte = $almacentransportes['Transporte']['OperacionLogistica']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
+				$tipo_fecha_transporte = $almacentransportes['Transporte']['OperacionCompra']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
 				debug($tipo_fecha_transporte);
 				//GENERAMOS EL PDF
 				App::uses('CakePdf', 'CakePdf.Pdf');
@@ -667,9 +667,9 @@ class AlmacenTransportesController extends AppController {
 				if(!empty($lista_bcc)){
 					$Email->bcc($lista_bcc);
 				}
-				$Email->subject($almacentransportes['Transporte']['OperacionLogistica']['referencia'].' - '.$almacentransportes['Transporte']['OperacionLogistica']['Contrato']['Calidad']['nombre'].' - '. $tipo_fecha_transporte.' en ');//.strftime('%B',$almacentransportes['Transporte']['Contrato']['fecha_transporte']));
+				$Email->subject($almacentransportes['Transporte']['OperacionCompra']['referencia'].' - '.$almacentransportes['Transporte']['OperacionCompra']['Contrato']['Calidad']['nombre'].' - '. $tipo_fecha_transporte.' en ');//.strftime('%B',$almacentransportes['Transporte']['Contrato']['fecha_transporte']));
 				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'disposicion' . DS . 'disposicion_'.strtr($almacentransportes['AlmacenTransporte']['cuenta_almacen'],'/','_').'_'.date('Ymd').'.pdf');
-				$Email->send('Tienen disponible el café para la ficha de referencia '.$almacentransportes['Transporte']['OperacionLogistica']['referencia']. '. Adjuntamos la disposición de éstos.');
+				$Email->send('Tienen disponible el café para la ficha de referencia '.$almacentransportes['Transporte']['OperacionCompra']['referencia']. '. Adjuntamos la disposición de éstos.');
 				$this->Flash->success('Disposición de almacén enviada con éxito.');
 				$this->redirect(array(
 					'controller' => 'almacen_transportes',

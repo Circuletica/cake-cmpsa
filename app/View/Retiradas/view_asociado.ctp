@@ -13,7 +13,7 @@ $this->start('main');
 echo "<dl>";
 	echo "  <dt>Ref. operación</dt>\n";
 	echo "<dd>";
-	echo $this->html->link($operacion['Operacion']['referencia'], array(
+	echo $this->html->link($operacion['OperacionCompra']['referencia'], array(
 	    'controller' => 'operaciones',
 	    'action'  => 'view_trafico',
 	    $operacion_id)
@@ -52,7 +52,7 @@ foreach($retiradas as $retirada):
 							$retirada['Retirada']['id'],
 							'asociado_id'=>$this->params['named']['asociado_id'],
 							'from_controller' => 'operaciones',
-							'from_id' => $retirada['Retirada']['operacion_id']
+							'from_id' => $retirada['Retirada']['operacion_compra_id']
 							),
 						array(
 							'class' => 'botond',
@@ -60,7 +60,7 @@ foreach($retiradas as $retirada):
 							'escape' => false
 							)
 				)
-			.' '.$this->Button->deleteLine('retiradas',	$retirada['Retirada']['id'],'operaciones',$retirada['Retirada']['operacion_id'],
+			.' '.$this->Button->deleteLine('retiradas',	$retirada['Retirada']['id'],'operaciones',$retirada['Retirada']['operacion_compra_id'],
 					'la retirada del día: '.$this->Date->format($retirada['Retirada']['fecha_retirada']
 					)
 					)

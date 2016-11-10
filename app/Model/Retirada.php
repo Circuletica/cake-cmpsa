@@ -5,7 +5,7 @@ class Retirada extends AppModel {
 			'rule' => 'notBlank',
 			'message' => 'Debe seleccionar un asociado'
 		),
-		'operacion_id' => array(
+		'operacion_compra_id' => array(
 			'rule' => 'notBlank',
 			'message' => 'Debe seleccionar una ref. operación'
 		),
@@ -22,7 +22,7 @@ class Retirada extends AppModel {
 		'AlmacenTransporte' => array(
 			'className' => 'AlmacenTransporte',
 			'foreignKey' => 'almacen_transporte_id'),
-		'Operacion'
+		'OperacionCompra'
 	);
 }
 ?>
