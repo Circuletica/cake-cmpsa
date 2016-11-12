@@ -147,8 +147,8 @@ class LineaMuestrasController extends AppController {
 		//primero se sacan todos los almacen_transportes
 		//de todos los transportes de la operacion relativa
 		//de la muestra
-		if (isset($muestra['Contrato']['Operacion'])) {
-			$operaciones = $muestra['Contrato']['Operacion'];
+		if (isset($muestra['Contrato']['OperacionCompra'])) {
+			$operaciones = $muestra['Contrato']['OperacionCompra'];
 			//tenemos que usar $operacion por referencia si
 			//queremos que se modifique $operaciones a la vez
 			foreach ($operaciones as &$operacion) {
@@ -294,7 +294,7 @@ class LineaMuestrasController extends AppController {
 							'tipo_registro'
 						)
 					),
-					'Operacion' =>array(
+					'OperacionCompra' =>array(
 						'fields'=> array(
 							'referencia'
 						)
@@ -409,9 +409,9 @@ class LineaMuestrasController extends AppController {
 				if(!empty($lista_bcc)){
 					$Email->bcc($lista_bcc);
 				}
-				$Email->subject('Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['Operacion']['referencia']);
+				$Email->subject('Informe de calidad '.$linea_muestra['tipo_registro'].' / ficha '.$linea_muestra['OperacionCompra']['referencia']);
 				$Email->attachments(APP. 'webroot'. DS. 'files'. DS .'informes_calidad' . DS . $linea_muestra['tipo_registro'].'_'.date('Ymd').'.pdf');
-				$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['Operacion']['referencia']);
+				$Email->send('Adjuntamos informe de calidad '.$linea_muestra['tipo_registro'].' de la ficha '.$linea_muestra['OperacionCompra']['referencia']);
 				$this->flash->success('Informe de calidad enviado.');
 				$this->redirect(array(
 					'action'=>'view',

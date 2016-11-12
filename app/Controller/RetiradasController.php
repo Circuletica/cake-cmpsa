@@ -186,11 +186,11 @@ class RetiradasController extends AppController {
 
 		$this->set(compact('asociado_nombre'));
 
-		$asociado_op = $this->Retirada->OperacionCompra->Distribucion->find(
+		$asociado_op = $this->Retirada->OperacionVenta->Distribucion->find(
 			'first',
 			array(
 				'conditions' => array(
-					'Distribucion.operacion_compra_id' => $operacion_id,
+					'Distribucion.operacion_venta_id' => $operacion_id,
 					'Distribucion.asociado_id' => $this->params['named']['asociado_id']
 				),
 				'recursive'=>-1,

@@ -14,13 +14,13 @@ echo "<dl>";
 	echo "  <dt>Ref. operación</dt>\n";
 	echo "<dd>";
 	echo $this->html->link($operacion['OperacionCompra']['referencia'], array(
-	    'controller' => 'operaciones',
+	    'controller' => 'operacion_compras',
 	    'action'  => 'view_trafico',
 	    $operacion_id)
 	).'&nbsp;';
 	echo "</dd>";
 	echo "<dt>Sacos solicitados</dt>\n";
-	echo "<dd>".$asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'].' x '.$embalaje['nombre'].'&nbsp';
+	echo "<dd>".$asociado_op['Distribucion']['cantidad_embalaje_asociado'].' x '.$embalaje['nombre'].'&nbsp';
 		"</dd>";
 	echo "<dt>Peso solicitado</dt>\n";
 	echo "<dd>".$peso.' Kg &nbsp;'."</dd>";
@@ -51,7 +51,7 @@ foreach($retiradas as $retirada):
 							'action' => 'edit',
 							$retirada['Retirada']['id'],
 							'asociado_id'=>$this->params['named']['asociado_id'],
-							'from_controller' => 'operaciones',
+							'from_controller' => 'operacion_compra',
 							'from_id' => $retirada['Retirada']['operacion_compra_id']
 							),
 						array(
@@ -60,7 +60,7 @@ foreach($retiradas as $retirada):
 							'escape' => false
 							)
 				)
-			.' '.$this->Button->deleteLine('retiradas',	$retirada['Retirada']['id'],'operaciones',$retirada['Retirada']['operacion_compra_id'],
+			.' '.$this->Button->deleteLine('retiradas',	$retirada['Retirada']['id'],'operacion_compras',$retirada['Retirada']['operacion_compra_id'],
 					'la retirada del día: '.$this->Date->format($retirada['Retirada']['fecha_retirada']
 					)
 					)
@@ -88,14 +88,14 @@ endforeach;?>
 <?php
 
 echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
-			if (($retirado < $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado']) && $cuenta_almacen['cuenta_almacen']!= NULL ){
+			if (($retirado < $asociado_op['Distribucion']['cantidad_embalaje_asociado']) && $cuenta_almacen['cuenta_almacen']!= NULL ){
 			echo '<div class="btabla">';
 				echo $this->Html->link(
 						'<i class="fa fa-plus"></i> Añadir retirada de '. $asociado_nombre['Asociado']['nombre_corto'],array(
 							'controller' => 'retiradas',
 							'action' => 'add',
-							'asociado_id'=>$asociado_op['AsociadoOperacion']['asociado_id'],
-							'from_controller' => 'operaciones',
+							'asociado_id'=>$asociado_op['Distribucion']['asociado_id'],
+							'from_controller' => 'operacion_compras',
 							'from_id' => $operacion_id
 							),
 						array(
@@ -117,7 +117,7 @@ echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
     echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Volver',
     	array(
     		'action'=>'view_trafico',
-	   		'controller' => 'operaciones',
+	   		'controller' => 'operacion_compras',
 	   		$operacion_id
 	   		),
      	array(

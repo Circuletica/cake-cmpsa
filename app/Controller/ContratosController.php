@@ -124,13 +124,13 @@ class ContratosController extends AppController {
 					'nombre'
 				)
 			),
-			'RestoContrato' => array(
+/*			'RestoContrato' => array(
 				'fields' => array(
 					'peso_restante'
 				)
-			)
+			)*/
 		);
-		$this->paginate['conditions']['RestoContrato.peso_restante !='] = 0;
+//		$this->paginate['conditions']['RestoContrato.peso_restante !='] = 0;
 
 		$contratos=$this->paginate();
 
@@ -178,7 +178,7 @@ class ContratosController extends AppController {
 			//miramos la cantidad de embalajes de cada operacion del contrato
 			//y la restamos de la cantidad de embalajes contratada
 			foreach ($contrato['OperacionCompra'] as $operacion) {
-				$cantidad_embalaje_operacion = $operacion['PesoOperacion']['cantidad_embalaje'];
+				$cantidad_embalaje_operacion = $operacion['PesoOperacionCompra']['cantidad_embalaje'];
 				$sacos_pendientes[$operacion['embalaje_id']] -= $cantidad_embalaje_operacion;
 			}
 			foreach ($sacos_pendientes as $id => $cantidad) {

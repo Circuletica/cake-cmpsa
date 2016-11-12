@@ -7,9 +7,8 @@ $this->assign('add_button', 0);
 
 $this->start('filter');
 echo "<h3>Búsqueda</h3>\n";
-echo $this->element('filtrooperacion'); //Elemento del Filtro de operaciones
+echo $this->element('filtrooperacioncompra'); //Elemento del Filtro de operaciones compra
 if ($action == 'index_trafico') {  //Departamento de tráfico
-	echo $this->element('informes_trafico'); //Elemento de informes de tráfico
 	/* echo $this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> Descargar a CSV',
 	   array(
 	   'controller'=>'operaciones',
@@ -45,7 +44,7 @@ if (empty($operaciones)){
 						$operacion['Contrato']['referencia'],
 						$operacion['Proveedor']['nombre_corto'],
 						$operacion['Calidad']['nombre'],
-						$operacion['PesoOperacion']['peso'],
+						$operacion['PesoOperacionCompra']['peso'],
 						$operacion['OperacionCompra']['lotes_operacion'],
 						$this->Button->view('operacion_compras',$operacion['OperacionCompra']['id']
 							)
@@ -61,7 +60,7 @@ if (empty($operaciones)){
 					$this->Paginator->sort('Contrato.fecha_transporte','Embarque/ Entrega'),
 					$this->Paginator->sort('Calidad.nombre','Calidad'),
 					$this->Paginator->sort('Proveedor.nombre_corto', 'Proveedor'),
-					$this->Paginator->sort('PesoOperacion.cantidad_embalaje', 'Bultos'),
+					$this->Paginator->sort('PesoOperacionCompra.cantidad_embalaje', 'Bultos'),
 					'Detalle')
 				);
 		foreach($operaciones as $operacion) {
@@ -76,7 +75,7 @@ if (empty($operaciones)){
 								$this->Date->format($operacion['Contrato']['fecha_transporte']).$entrega,
 								$operacion['Calidad']['nombre'],
 								$operacion['Proveedor']['nombre_corto'],
-								$operacion['PesoOperacion']['cantidad_embalaje'],
+								$operacion['PesoOperacionCompra']['cantidad_embalaje'],
 								//No se puede usar el ButtonHelper. Enlace distinto.
 								$this->Html->link('<i class="fa fa-info-circle"></i>',array('action'=>'view_trafico',$operacion['OperacionCompra']['id']), array('class'=>'boton','escape' => false,'title'=>'Detalle'))
 								));

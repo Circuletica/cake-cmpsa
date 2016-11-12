@@ -181,7 +181,7 @@ class OperacionComprasController extends AppController {
 
 		//los que ya tienen embalajes en la operacion
 		//queremos el id del socio como index del array
-//		$asociados_operacion = Hash::combine($operacion['AsociadoOperacion'], '{n}.asociado_id', '{n}');
+//		$asociados_operacion = Hash::combine($operacion['Distribucion'], '{n}.asociado_id', '{n}');
 		$asociados_operacion = Hash::combine($operacion['Pedido'], '{n}.asociado_id', '{n}');
 
 		$this->set('asociados_operacion', $asociados_operacion);
@@ -251,18 +251,18 @@ class OperacionComprasController extends AppController {
 			}
 		} else {
 			if ($this->OperacionCompra->save($this->request->data)){
-				//Los registros de AsociadoOperacion se van sumando
+				//Los registros de Distribucion se van sumando
 				//asi que hay que borrarlos todos porque el saveAll() los
 				//vuelve a crear y no queremos duplicados.
-				$this->Operacion->AsociadoOperacion->deleteAll(array(
-					'AsociadoOperacion.operacion_id' => $id
+				$this->Operacion->Distribucion->deleteAll(array(
+					'Distribucion.operacion_venta_id' => $id
 				));
 				foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
 					if ($cantidad != NULL) {
-						$this->request->data['AsociadoOperacion']['operacion_id'] = $this->Operacion->id;
-						$this->request->data['AsociadoOperacion']['asociado_id'] = $asociado_id;
-						$this->request->data['AsociadoOperacion']['cantidad_embalaje_asociado'] = $cantidad;
-						$this->Operacion->AsociadoOperacion->saveAll($this->request->data['AsociadoOperacion']);
+						$this->request->data['Distribucion']['operacion_venta_id'] = $this->Operacion->id;
+						$this->request->data['Distribucion']['asociado_id'] = $asociado_id;
+						$this->request->data['Distribucion']['cantidad_embalaje_asociado'] = $cantidad;
+						$this->Operacion->Distribucion->saveAll($this->request->data['Distribucion']);
 					}
 				}
 				$this->Flash->success(
@@ -536,14 +536,14 @@ class OperacionComprasController extends AppController {
 			if($id == NULL){
 				//primero guardamos los datos de Operacion
 				if($this->OperacionCompra->save($this->request->data)){
-					//luego las cantidades de cada asociado en AsociadoOperacion
+					//luego las cantidades de cada asociado en Distribucion
 					foreach ($data['CantidadAsociado'] as $asociado_id => $cantidad) {
 						if ($cantidad != NULL) {
-							$data['Pedido']['operacion_id'] = $this->OperacionCompra->id;
+							$data['Pedido']['operacion_venta_id'] = $this->OperacionCompra->id;
 							$data['Pedido']['asociado_id'] = $asociado_id;
 							$data['Pedido']['cantidad_embalaje_asociado'] = $cantidad;
-//							if (!$this->OperacionCompra->AsociadoOperacion->saveAll($data['AsociadoOperacion'])) OLD
-							if (!$this->OperacionCompra->Operacion->Pedido->saveAll($data['AsociadoOperacion']))
+//							if (!$this->OperacionCompra->Distribucion->saveAll($data['Distribucion'])) OLD
+							if (!$this->OperacionCompra->Operacion->Pedido->saveAll($data['Distribucion']))
 								throw New Exception('error en guardar Pedido');
 						}
 					}
@@ -596,11 +596,12 @@ class OperacionComprasController extends AppController {
 						'CanalCompra',
 						'Calidad'
 					),
-//					'AsociadoOperacion' => array(
-//						'Asociado'
-//					),
-					'PesoOperacionCompra',
-					'PrecioTotalOperacionCompra'
+					'OperacionVenta'=> array(
+							'Distribucion' => array(
+								'Asociado'
+							),
+//					'PesoOperacionCompra',
+					)
 				)
 			)
 		);
@@ -624,8 +625,8 @@ class OperacionComprasController extends AppController {
 		$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);
 
 		//Líneas de reparto
-		if (!empty($operacion['AsociadoOperacion'])) {
-			foreach ($operacion['AsociadoOperacion'] as $linea) {
+		if (!empty($operacion['Distribucion'])) {
+			foreach ($operacion['Distribucion'] as $linea) {
 				$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 				$codigo = substr($linea['Asociado']['codigo_contable'],-2);
 				$lineas_reparto[] = array(
@@ -835,7 +836,7 @@ class OperacionComprasController extends AppController {
 		$total_peso_retirado = 0;
 		$total_pendiente = 0;
 //HAY QUE CAMBIAR TODO EL CODIGO SIGUIENTE
-		foreach ($operacion['AsociadoOperacion'] as $linea) {
+		foreach ($operacion['Distribucion'] as $linea) {
 			$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 
 			$cantidad_retirado = 0;
@@ -943,7 +944,7 @@ class OperacionComprasController extends AppController {
 	}
 
 	public function index_pdf() {
-		$this->Operacion->virtualFields['calidad']=$this->Operacion->Contrato->Calidad->virtualFields['nombre'];
+		$this->OperacionCompra->virtualFields['calidad']=$this->OperacionCompra->Contrato->Calidad->virtualFields['nombre'];
 		$this->paginate['order'] = array('Operacion.referencia' => 'asc');
 		$this->paginate['limit'] = 100; //Muestra al cantidad de registros por pantalla, así como se podrá ver en el pdf
 		$this->paginate['recursive'] = 2;
@@ -974,7 +975,7 @@ class OperacionComprasController extends AppController {
 
 		$titulo = $this->filtroPaginador(
 			array(
-				'Operacion' =>array(
+				'OperacionCompra' =>array(
 					'Referencia' => array(
 						'columna' => 'referencia',
 						'exacto' => false,
@@ -1042,7 +1043,7 @@ class OperacionComprasController extends AppController {
 						'CanalCompra',
 						'Calidad'
 					),
-					'AsociadoOperacion' => array(
+					'Distribucion' => array(
 						'Asociado'
 					),
 					'PesoOperacionCompra',
@@ -1072,8 +1073,8 @@ class OperacionComprasController extends AppController {
 		$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);
 
 		//Líneas de reparto
-		if (!empty($operacion['AsociadoOperacion'])) {
-			foreach ($operacion['AsociadoOperacion'] as $linea) {
+		if (!empty($operacion['Distribucion'])) {
+			foreach ($operacion['Distribucion'] as $linea) {
 				$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 				$codigo = substr($linea['Asociado']['codigo_contable'],-2);
 				$lineas_reparto[] = array(
@@ -1094,11 +1095,11 @@ class OperacionComprasController extends AppController {
 
 		$this->set('fecha_fijacion', $operacion['OperacionCompra']['fecha_pos_fijacion']);
 
-		$asociados_operacion = $this->Operacion->AsociadoOperacion->find(
+		$asociados_operacion = $this->Operacion->Distribucion->find(
 			'all',
 			array(
 				'conditions' => array(
-					'AsociadoOperacion.operacion_id' => $id
+					'Distribucion.operacion_venta_id' => $id
 				),
 				//	'recursive' => 4,
 				'contain' => array(

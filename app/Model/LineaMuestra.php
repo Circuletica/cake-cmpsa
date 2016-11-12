@@ -15,7 +15,6 @@ class LineaMuestra extends AppModel {
 			'foreignKey' => 'id'
 		),
 		'AlmacenTransporte',
-		//'Operacion'
 		'OperacionCompra'
 	);
 	public $virtualFields = array(

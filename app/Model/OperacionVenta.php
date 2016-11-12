@@ -1,5 +1,5 @@
 <?php
-class Operacion extends AppModel {
+class OperacionVenta extends AppModel {
 	public $recursive = 2;
 
 	public $action_view;
@@ -13,70 +13,41 @@ class Operacion extends AppModel {
 		);
 
 	public $belongsTo = array(
-		'PuertoCarga' => array(
-			'className' => 'Puerto',
-			'foreignKey' => 'puerto_carga_id'
-		),
-		'PuertoDestino' => array(
-			'className' => 'Puerto',
-			'foreignKey' => 'puerto_destino_id'
-		),
-		'Pedido' => array(
-			'className' => 'Pedido',
-			'foreignKey' => 'pedido_id'
-		),
-		'Distribucion' => array(
-			'className' => 'Distribucion',
-			'foreignKey' => 'distribucion_id'
-		),
-		'OperacionLogistica' => array(
-			'className' => 'OperacionLogistica',
-			'foreignKey' => 'operacion_logistica_id'
+		'OperacionCompra' => array(
+			'className' => 'OperacionCompra',
+			'foreignKey' => 'operacion_compra_id'
 		),
 		'Embalaje' => array(
 			'className' => 'Embalaje',
 			'foreignKey' => 'embalaje_id'
-		),
-		'OperacionLogistica'
+		)
 	);
-	/*public $hasOne = array(
-		'PrecioOperacion' => array(
-			'className' => 'PrecioOperacion',
+	public $hasOne = array(
+		'PrecioOperacionVenta' => array(
+			'className' => 'PrecioOperacionVenta',
 			'foreignKey' => 'id'
 		),
-		'PrecioTotalOperacion' => array(
-			'className' => 'PrecioTotalOperacion',
+		'PrecioTotalOperacionVenta' => array(
+			'className' => 'PrecioTotalOperacionVenta',
 			'foreignKey' => 'id'
 		),
-		'PesoOperacion' => array(
-			'className' => 'PesoOperacion',
-			'foreignKey' => 'id'
-		),
-		'Financiacion' => array(
-			'className' => 'Financiacion',
-			'foreignKey' => 'id'
-		),
-		'Facturacion' => array(
-			'className' => 'Facturacion',
+		'PesoOperacionVenta' => array(
+			'className' => 'PesoOperacionVenta',
 			'foreignKey' => 'id'
 		)
-	);*/
+	);
 	public $hasMany = array(
-//		'AsociadoOperacion' => array(
-//			'className' => 'AsociadoOperacion',
-//			'foreignKey' => 'operacion_id'),
-		'OperacionCuenta' => array(
-			'className' => 'OperacionCuenta',
-			'foreignKey' => 'operacion_id'),
-		'LineaMuestra',
-		'Retirada'
+		'Pedido',
+		'Distribucion',
+		'OperacionAsociadoCuenta',
+		'OperacionVentaCuenta',
 	);
 	public function beforeDelete($cascade = true) {
 		$count_retirada = $this->Retirada->find(
 			"count",
 			array(
 				"recursive" => -1,
-				"conditions" => array("operacion_id" => $this->id)
+				"conditions" => array("operacion_venta_id" => $this->id)
 			)
 		);
 		if ($count_retirada == 0) {

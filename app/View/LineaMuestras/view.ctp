@@ -58,14 +58,14 @@ $this->end();
 $this->start('main');
 echo "<dl>\n";
 if ($linea['Muestra']['tipo_id'] != 1) {
-    echo "  <dt>Operación</dt><dd>".$linea['Operacion']['referencia']."&nbsp;</dd>\n";
+    echo "  <dt>Operación</dt><dd>".$linea['OperacionCompra']['referencia']."&nbsp;</dd>\n";
     echo "  <dt>Cuenta Almacen</dt><dd>".$linea['AlmacenTransporte']['cuenta_almacen']."&nbsp;</dd>\n";
     echo "  <dt>Marca</dt><dd>".$linea['AlmacenTransporte']['marca_almacen']."&nbsp;</dd>\n";
 }
 echo "  <dt>Ref. Proveedor</dt><dd>".$linea['LineaMuestra']['referencia_proveedor']."&nbsp;</dd>\n";
 echo "  <dt>Sacos</dt><dd>".$linea['LineaMuestra']['sacos'].
-    " ".(isset($linea['Operacion']['Embalaje'])?
-    $linea['Operacion']['Embalaje']['nombre']:'')."&nbsp;</dd>\n";
+    " ".(isset($linea['OperacionCompra']['Embalaje'])?
+    $linea['OperacionCompra']['Embalaje']['nombre']:'')."&nbsp;</dd>\n";
 if ($linea['Muestra']['tipo_id'] == 3) {
     echo "  <dt>Facturado</dt><dd>".
 	($linea['LineaMuestra']['si_facturado'] ? '&#10004; ('.$linea['LineaMuestra']['dato_factura'].')' :'&nbsp;')

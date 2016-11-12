@@ -45,6 +45,7 @@ AND muestras.aprobado = 1
 	'calidad_id' => array('rule' => 'notBlank'),
 	'referencia' => array('rule' => 'notBlank')
 	);
+/*	PENDIENTE PARA QUE SE REALICEN
 	public $hasOne = array(
 	'RestoContrato' => array(
 		'className' => 'RestoContrato',
@@ -54,7 +55,7 @@ AND muestras.aprobado = 1
 		'className' => 'RestoLotesContrato',
 		'foreignKey' => 'id'
 	),
-	);
+);*/
 	public $hasMany = array(
 	'OperacionCompra' => array(
 		'className' => 'OperacionCompra',
