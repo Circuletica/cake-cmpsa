@@ -319,13 +319,13 @@ class TransportesController extends AppController {
 						'Transporte.id' => $id
 					),
 					'fields' => array(
-						'operacion_logistica_id',
+						'operacion_compra_id',
 						'cantidad_embalaje',
 						'linea'
 					)
 				)
 			);
-			$operacion_id =  $transporte['Transporte']['operacion_logistica_id'];
+			$operacion_id =  $transporte['Transporte']['operacion_compra_id'];
 		}else{
 			$operacion_id = $this->params['named']['from_id'];
 		}
@@ -347,7 +347,7 @@ class TransportesController extends AppController {
 				'Transporte' => array(
 					'fields' => array(
 						'id',
-						'operacion_logistica_id',
+						'operacion_compra_id',
 						'linea'
 					)
 				),
@@ -400,7 +400,7 @@ class TransportesController extends AppController {
 			$suma = 0;
 			$transportado=0;
 			foreach ($operacion['Transporte'] as $suma){
-				if ($transporte['operacion_logistica_id']=$operacion['OperacionCompra']['id']) {
+				if ($transporte['operacion_compra_id']=$operacion['OperacionCompra']['id']) {
 					$transportado = $transportado + $suma['cantidad_embalaje'];
 				}
 			}
@@ -432,7 +432,7 @@ class TransportesController extends AppController {
 
 		if ($this->request->is(array('post', 'put'))) {//ES UN POST
 			$this->request->data['Transporte']['id'] = $id;
-			$this->request->data['Transporte']['operacion_logistica_id'] = $operacion_id;
+			$this->request->data['Transporte']['operacion_compra_id'] = $operacion_id;
 
 			if($id == NULL){
 				if($this->Transporte->save($this->request->data)){
@@ -552,7 +552,7 @@ class TransportesController extends AppController {
 				'hasOne' => array(
 					'PesoOperacion' => array(
 						'foreignKey' => false,
-						'conditions' => array('Transporte.operacion_logistica_id = PesoOperacion.id')
+						'conditions' => array('Transporte.operacion_compra_id = PesoOperacion.id')
 					)
 				)
 			)
@@ -649,7 +649,7 @@ class TransportesController extends AppController {
 					'Transporte' => array(
 						'fields' => array(
 							'id',
-							'operacion_logistica_id'
+							'operacion_compra_id'
 						)
 					)
 				)
@@ -748,7 +748,7 @@ class TransportesController extends AppController {
 					'Transporte' => array(
 						'fields' => array(
 							'id',
-							'operacion_logistica_id'
+							'operacion_compra_id'
 						)
 					)
 				)

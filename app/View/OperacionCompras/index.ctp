@@ -2,7 +2,7 @@
 $this->extend('/Common/index');
 $this->assign('object', 'Operaciones (compra)');
 $this->assign('controller', 'operacion_compras');
-$this->assign('class', 'Operacion');
+$this->assign('class', 'OperacionCompra');
 $this->assign('add_button', 0);
 
 $this->start('filter');

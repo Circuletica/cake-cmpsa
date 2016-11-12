@@ -15,7 +15,7 @@ class OperacionComprasController extends AppController {
 					'si_entrega'
 				)
 			),
-			'PesoOperacionCompra',
+//PENDIENTE			'PesoOperacionCompra',//////////////////////////////////////////////////////////////////
 			'Proveedor',
 			'Calidad'
 		);
@@ -156,7 +156,7 @@ class OperacionComprasController extends AppController {
 						'RestoLotesContrato'
 					),
 					'Embalaje',
-					'Operacion'=>array(
+					'OperacionVenta'=>array(
 						'Pedido'
 					)
 				)
@@ -741,7 +741,7 @@ class OperacionComprasController extends AppController {
 			'all',
 			array(
 				'conditions' => array(
-					'Transporte.operacion_logistica_id' => $id
+					'Transporte.operacion_compra_id' => $id
 				),
 				//'recursive' => 2,
 				'fields' => array(
@@ -779,7 +779,7 @@ class OperacionComprasController extends AppController {
 			$suma = 0;
 			$transportado=0;
 			foreach ($operacion['Transporte'] as $suma){
-				if ($transporte['operacion_logistica_id']=$operacion['OperacionCompra']['id']){
+				if ($transporte['operacion_compra_id']=$operacion['OperacionCompra']['id']){
 					$transportado = $transportado + $suma['cantidad_embalaje'];
 				}
 			}

@@ -1,19 +1,19 @@
 <?php
 $this->Html->addCrumb('Operaciones','/operaciones/index_trafico/');
-$this->Html->addCrumb('Operación '.$operacion['OperacionLogistica']['referencia'], array(
+$this->Html->addCrumb('Operación '.$operacion['OperacionCompra']['referencia'], array(
     'controller'=>'operaciones',
     'action'=>'view_trafico',
-    $operacion['OperacionLogistica']['id']
+    $operacion['OperacionCompra']['id']
     )
 );
 
 $mostrar = ($operacion['Contrato']['Incoterm']['nombre'] =='IN STORE') || ($operacion['Contrato']['Incoterm']['nombre'] =='IN STORE DESPACHADO');
 if ($action == 'add') {
     $transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
-    echo "<h2>Añadir Transporte a Operación <em>".$operacion['OperacionLogistica']['referencia']."</em></h2>\n";
+    echo "<h2>Añadir Transporte a Operación <em>".$operacion['OperacionCompra']['referencia']."</em></h2>\n";
 }
 if ($action == 'edit') {
-    echo "<h2>Modificar Transporte de Operación <em>".$operacion['OperacionLogistica']['referencia']."</em></h2>\n";
+    echo "<h2>Modificar Transporte de Operación <em>".$operacion['OperacionCompra']['referencia']."</em></h2>\n";
 }
 echo $this->Form->create('Transporte',array(
     'inputDefaults' => array(

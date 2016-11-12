@@ -34,7 +34,7 @@ class OperacionVentasController extends AppController {
 
 		$titulo = $this->filtroPaginador(
 			array(
-				'Operacion' =>array(
+				'OperacionVenta' =>array(
 					'Referencia' => array(
 						'columna' => 'referencia',
 						'exacto' => false,

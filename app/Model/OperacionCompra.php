@@ -37,10 +37,11 @@ class OperacionCompra extends AppModel {
 			'className' => 'PrecioTotalOperacionCompra',
 			'foreignKey' => 'id'
 		),
+/*PENDIENTE
 		'PesoOperacionCompra' => array(
 			'className' => 'PesoOperacionCompra',
 			'foreignKey' => 'id'
-		),
+		),*/
 		'Financiacion' => array(
 			'className' => 'Financiacion',
 			'foreignKey' => 'id'

@@ -12,11 +12,11 @@ if(empty($transporte['Aseguradora']['nombre'] && $transporte['Transporte']['peri
 	Madrid, <?php echo $dia.' de '. $mes.' del '.$ano?>
 	</div>
 	<br><br>
-<?php echo '<b>Ref.: '.$transporte['OperacionLogistica']['referencia'].' '.'('.$num.'ª parte)&nbsp&nbsp&nbsp&nbsp Supl.: '.$transporte['Transporte']['suplemento_seguro'].'</b>'?>
+<?php echo '<b>Ref.: '.$transporte['OperacionCompra']['referencia'].' '.'('.$num.'ª parte)&nbsp&nbsp&nbsp&nbsp Supl.: '.$transporte['Transporte']['suplemento_seguro'].'</b>'?>
 
 <br>
 <br>
-<?php echo '<h2>'.$transporte['OperacionLogistica']['Contrato']['Calidad']['nombre'].'</h2>';?>
+<?php echo '<h2>'.$transporte['OperacionCompra']['Contrato']['Calidad']['nombre'].'</h2>';?>
 <br>
 Muy Sres. nuestros:<br>
 <br>
@@ -37,15 +37,15 @@ echo 'A la vista de los citados documentos, rogamos el abono de:';
 if (!empty($transporte['Transporte']['averia'])){
 	echo '<li>'.$transporte['Transporte']['averia'].'Kg de avería</li>';
 	echo '</ul><br>';
-	echo 'Siendo el importe de <b>'.$suma.' total de kilogramos </b>('.$transporte['OperacionLogistica']['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg) = '.$suma*$transporte['OperacionLogistica']['PrecioTotalOperacion']['precio_euro_kilo_total'].' Euros';
+	echo 'Siendo el importe de <b>'.$suma.' total de kilogramos </b>('.$transporte['OperacionCompra']['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg) = '.$suma*$transporte['OperacionCompra']['PrecioTotalOperacion']['precio_euro_kilo_total'].' Euros';
 }else{
 	echo '</ul><br>';
-	echo 'Siendo el importe de <b>'.$reclamacion.'</b> ('.$transporte['OperacionLogistica']['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg) ='.$suma*$transporte['OperacionLogistica']['PrecioTotalOperacion']['precio_euro_kilo_total'];
+	echo 'Siendo el importe de <b>'.$reclamacion.'</b> ('.$transporte['OperacionCompra']['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg) ='.$suma*$transporte['OperacionCompra']['PrecioTotalOperacion']['precio_euro_kilo_total'];
 }
 echo '<br><br>';
 echo 'El importe de la peritación SGS: '.$transporte['Transporte']['peritacion'].' €';
 echo '<br><br>';
-$total = ($reclamacion*$transporte['OperacionLogistica']['PrecioTotalOperacion']['precio_euro_kilo_total'])+$suma;
+$total = ($reclamacion*$transporte['OperacionCompra']['PrecioTotalOperacion']['precio_euro_kilo_total'])+$suma;
 echo '<b>Total importe reclamación: '.$total.' Euros</b>';
 echo '<br><br>';
 echo 'Sin otro particular, les saludamos atentamente.';
