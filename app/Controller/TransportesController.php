@@ -248,7 +248,7 @@ class TransportesController extends AppController {
 			$this->Flash->error('error en URL');
 			$this->redirect(array(
 				'action' => 'view_trafico',
-				'controller' => 'operacion_logisticas',
+				'controller' => 'operacion_compras',
 				$this->params['from_id']
 			));
 		}
@@ -351,11 +351,12 @@ class TransportesController extends AppController {
 						'linea'
 					)
 				),
-				'PrecioTotalOperacion'=> array(
+//PENDIENTE
+/*				'PrecioTotalOperacion'=> array(
 					'fields' => array(
 						'precio_euro_kilo_total'
 					)
-				),
+				),*/
 				'Contrato' => array(
 					'fields' => array(
 						'id',
@@ -438,7 +439,7 @@ class TransportesController extends AppController {
 				if($this->Transporte->save($this->request->data)){
 					$this->Flash->success("Linea de transporte guardada correctamente");
 					$this->redirect(array(
-						'controller' => 'operacion_logisticas',
+						'controller' => 'operacion_compras',
 						'action' => 'view_trafico',
 						$operacion_id
 					));
@@ -468,7 +469,7 @@ class TransportesController extends AppController {
 		if ($this->Transporte->delete($id)){
 			$this->Flash->success('Linea de transporte borrada correctamente');
 			$this->redirect(array(
-				'controller' => 'operacion_logisticas',
+				'controller' => 'operacion_compras',
 				'action' => 'view_trafico',
 				$this->params['named']['from_id']
 			));//No usar History aquí

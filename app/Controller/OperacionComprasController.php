@@ -254,25 +254,25 @@ class OperacionComprasController extends AppController {
 				//Los registros de Distribucion se van sumando
 				//asi que hay que borrarlos todos porque el saveAll() los
 				//vuelve a crear y no queremos duplicados.
-				$this->Operacion->Distribucion->deleteAll(array(
+				$this->OperacionCompra->OperacionVenta->Distribucion->deleteAll(array(
 					'Distribucion.operacion_venta_id' => $id
 				));
-				foreach ($this->request->data['CantidadAsociado'] as $asociado_id => $cantidad) {
+				foreach ($this->request->data['OperacionCantidadAsociado'] as $asociado_id => $cantidad) {
 					if ($cantidad != NULL) {
-						$this->request->data['Distribucion']['operacion_venta_id'] = $this->Operacion->id;
+						$this->request->data['Distribucion']['operacion_venta_id'] = $this->OperacionCompra->OperacionVenta->id;
 						$this->request->data['Distribucion']['asociado_id'] = $asociado_id;
 						$this->request->data['Distribucion']['cantidad_embalaje_asociado'] = $cantidad;
-						$this->Operacion->Distribucion->saveAll($this->request->data['Distribucion']);
+						$this->Operacion->OperacionVenta->Distribucion->saveAll($this->request->data['Distribucion']);
 					}
 				}
 				$this->Flash->success(
-					'Operacion '.
-					$this->request->data['Operacion']['referencia'].
+					'OperacionCompra '.
+					$this->request->data['OperacionCompra']['referencia'].
 					' modificada con éxito'
 				);
 				$this->redirect(array('action' => 'view', $id));
 			} else {
-				$this->Flash->error('Operacion NO guardada');
+				$this->Flash->error('OperacionCompra NO guardada');
 			}
 		}
 		//	$this->set('action', $this->action);
@@ -543,7 +543,7 @@ class OperacionComprasController extends AppController {
 							$data['Pedido']['asociado_id'] = $asociado_id;
 							$data['Pedido']['cantidad_embalaje_asociado'] = $cantidad;
 //							if (!$this->OperacionCompra->Distribucion->saveAll($data['Distribucion'])) OLD
-							if (!$this->OperacionCompra->Operacion->Pedido->saveAll($data['Distribucion']))
+							if (!$this->OperacionCompra->OperacionCompra->Pedido->saveAll($data['Distribucion']))
 								throw New Exception('error en guardar Pedido');
 						}
 					}
@@ -711,7 +711,8 @@ class OperacionComprasController extends AppController {
 							)
 						)
 					),
-					'PesoOperacionCompra'=> array(
+//PENDIENTE
+/*					'PesoOperacionCompra'=> array(
 						'fields' =>array(
 							'peso',
 							'cantidad_embalaje'
@@ -722,14 +723,14 @@ class OperacionComprasController extends AppController {
 							'precio_divisa_tonelada',
 							'divisa'
 						)
-					),
+					),*/
 					'OperacionVenta' => array(
-						'Pedido'=>array(
+						'Distribucion'=>array(
+							'Asociado'
+						),
+						'OperacionAsociadoCuenta'=>array(
 							'Asociado'
 						)
-					),
-					'OperacionAsociadoCuenta'=>array(
-						'Asociado'
 					)
 				)
 
@@ -738,7 +739,7 @@ class OperacionComprasController extends AppController {
 
 		$this ->set(compact('operacion'));
 		//Controlo la posibilidad de agregar retiradas unicamente si hay cuentas de almacen.
-		$cuentas_almacenes = $this->OperacionCompra->Transporte->AlmacenTransporte->find(
+	/*	$cuentas_almacenes = $this->OperacionCompra->Transporte->AlmacenTransporte->find(
 			'all',
 			array(
 				'conditions' => array(
@@ -752,7 +753,7 @@ class OperacionComprasController extends AppController {
 				)
 			)
 		);
-		$cuentas_almacenes = Hash::combine($cuentas_almacenes, '{n}.AlmacenTransporte.id', '{n}');
+		$cuentas_almacenes = Hash::combine($cuentas_almacenes, '{n}.AlmacenTransporte.id', '{n}');-**/
 
 		/*if(empty($cuentas_almacenes[0]['AlmacenTransporte']['id'])){
 			$cuentas_almacenes = 'NULL';
@@ -836,12 +837,12 @@ class OperacionComprasController extends AppController {
 		$total_peso_retirado = 0;
 		$total_pendiente = 0;
 //HAY QUE CAMBIAR TODO EL CODIGO SIGUIENTE
-		foreach ($operacion['Distribucion'] as $linea) {
-			$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
+/*		foreach ($operacion['OperacionVenta'] as $linea) {
+			$peso = $linea['Distribucion']['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 
 			$cantidad_retirado = 0;
 			$peso_retirado = 0;
-			$pendiente = $linea['cantidad_embalaje_asociado'];
+			$pendiente = $linea['Distribucion']['cantidad_embalaje_asociado'];
 			$asociados_error=0;
 
 			foreach ($operacion_retiradas as $clave => $operacion_retirada){
@@ -856,14 +857,14 @@ class OperacionComprasController extends AppController {
 			$lineas_retirada[] = array(
 				'asociado_id' => $linea['Asociado']['id'],
 				'Nombre' => $linea['Asociado']['nombre'],
-				'Cantidad' => $linea['cantidad_embalaje_asociado'],
+				'Cantidad' => $linea['Distribucion']['cantidad_embalaje_asociado'],
 				'Peso' => $peso,
 				'Cantidad_retirado' => $cantidad_retirado,
 				'Peso_retirado' => $peso_retirado,
 				'Pendiente' => $pendiente
 			);
 
-			$total_sacos += $linea['cantidad_embalaje_asociado'];
+			$total_sacos += $linea['Distribucion']['cantidad_embalaje_asociado'];
 			$total_peso += $peso;
 			$total_sacos_retirados += $cantidad_retirado;
 			$total_peso_retirado += $peso_retirado;
@@ -876,7 +877,7 @@ class OperacionComprasController extends AppController {
 		$this->set('total_peso',$total_peso);
 		$this->set('total_sacos_retirados',$total_sacos_retirados);
 		$this->set('total_peso_retirado',$total_peso_retirado);
-		$this->set('total_pendiente',$total_pendiente);
+		$this->set('total_pendiente',$total_pendiente);*/
 
 
 		//$this->set(compact('asociados_error'));
@@ -926,7 +927,7 @@ class OperacionComprasController extends AppController {
 	public function export() {
 		$this->set(
 			'operaciones',
-			$this->Operacion->find(
+			$this->OperacionCompra->find(
 				'all',
 				array(
 					'recursive' => 1,
@@ -945,7 +946,7 @@ class OperacionComprasController extends AppController {
 
 	public function index_pdf() {
 		$this->OperacionCompra->virtualFields['calidad']=$this->OperacionCompra->Contrato->Calidad->virtualFields['nombre'];
-		$this->paginate['order'] = array('Operacion.referencia' => 'asc');
+		$this->paginate['order'] = array('OperacionCompra.referencia' => 'asc');
 		$this->paginate['limit'] = 100; //Muestra al cantidad de registros por pantalla, así como se podrá ver en el pdf
 		$this->paginate['recursive'] = 2;
 		$this->paginate['contain'] = array(
@@ -1007,7 +1008,7 @@ class OperacionComprasController extends AppController {
 			$title[] = 'Contrato: '.$criterio;
 		}
 
-		$this->Operacion->bindModel(
+		$this->OperacionCompra->bindModel(
 			array(
 				'belongsTo' => array(
 					'Calidad' => array(
@@ -1029,10 +1030,10 @@ class OperacionComprasController extends AppController {
 
 	public function envio_asociados ($id) {
 
-		$operacion = $this->Operacion->find(
+		$operacion = $this->OperacionCompra->find(
 			'first',
 			array(
-				'conditions' => array('Operacion.id' => $id),
+				'conditions' => array('OperacionCompra.id' => $id),
 				'recursive' => 3,
 				'contain' => array(
 					'PuertoCarga',
@@ -1095,7 +1096,7 @@ class OperacionComprasController extends AppController {
 
 		$this->set('fecha_fijacion', $operacion['OperacionCompra']['fecha_pos_fijacion']);
 
-		$asociados_operacion = $this->Operacion->Distribucion->find(
+		$asociados_operacion = $this->OperacionCompra->OperacionVenta->Distribucion->find(
 			'all',
 			array(
 				'conditions' => array(
@@ -1103,7 +1104,7 @@ class OperacionComprasController extends AppController {
 				),
 				//	'recursive' => 4,
 				'contain' => array(
-					'Operacion'=>array(
+					'OperacionCompra'=>array(
 						'fields'=>array(
 							'contrato_id'
 						),
@@ -1168,14 +1169,14 @@ class OperacionComprasController extends AppController {
 		);
 		$this->set('usuarios',$usuarios);
 
-		if (!empty($id)) $this->Operacion->id = $id;
+		if (!empty($id)) $this->OperacionCompra->id = $id;
 		if($this->request->is('get')){//Comprobamos si hay datos previos en esa línea de muestras
-			$this->request->data = $this->Operacion->read();//Cargo los datos
+			$this->request->data = $this->OperacionCompra->read();//Cargo los datos
 		}else{//es un POST
 			if(empty($this->request->data['email'])){
 				$this->Flash->error('Los datos del NO fueron enviados. Faltan destinatarios');
 			}else{
-				// $this->Operacion->save($this->request->data['Operacion']); //Guardamos los datos actuales en los campos
+				// $this->OperacionCompra->save($this->request->data['OperacionCompra']); //Guardamos los datos actuales en los campos
 				foreach ($this->data['email'] as $email){
 					$lista_email[]= $email;
 				}

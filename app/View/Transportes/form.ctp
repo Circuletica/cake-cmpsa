@@ -1,7 +1,7 @@
 <?php
-$this->Html->addCrumb('Operaciones','/operaciones/index_trafico/');
-$this->Html->addCrumb('Operación '.$operacion['OperacionCompra']['referencia'], array(
-    'controller'=>'operaciones',
+$this->Html->addCrumb('Operaciones'0,'/operacion_compras/index_trafico/');
+$this->Html->addCrumb('Operación (compra) '.$operacion['OperacionCompra']['referencia'], array(
+    'controller'=>'operacion_compras',
     'action'=>'view_trafico',
     $operacion['OperacionCompra']['id']
     )
@@ -33,8 +33,9 @@ echo $operacion['Contrato']['Incoterm']['nombre'].'&nbsp;';
 echo "</dd>";
 echo "<dt style=width:40%;>Precio</dt>\n";
 echo "<dd style=margin-left:40%;>";
-echo $operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg &nbsp;';
-echo "</dd>";
+//PENDIENTE
+//echo $operacion['PrecioTotalOperacion']['precio_euro_kilo_total'].' €/Kg &nbsp;';
+//echo "</dd>";
 echo "<dt style=width:40%;>Bultos operación</dt>\n";
 echo "<dd style=margin-left:40%;>";
 echo $operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.'&nbsp;';

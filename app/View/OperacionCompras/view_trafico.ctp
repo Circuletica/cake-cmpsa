@@ -1,11 +1,11 @@
 <?php
 $this->extend('/Common/view');
-$this->assign('object', 'Operación (logística)'.$operacion['OperacionLogistica']['referencia']);
+$this->assign('object', 'Operación (compra)'.$operacion['OperacionCompra']['referencia']);
 $this->assign('line_object', 'Líneas de transporte');
 $this->assign('line2_object', 'Distribución asociados de la operación');
-$this->assign('id',$operacion['OperacionLogistica']['id']);
-$this->assign('class','Operacion');
-$this->assign('controller','operacion_logisticas');
+$this->assign('id',$operacion['OperacionCompra']['id']);
+$this->assign('class','OperacionCompra');
+$this->assign('controller','operacion_compras');
 $this->assign('line_controller','transportes');
 $this->assign('line2_controller','retiradas');
 $this->assign('button_edit_delete',0);
@@ -14,28 +14,28 @@ $this->assign('line2_add',0);
 
 $this->start('breadcrumb');
 $this->Html->addCrumb(
-	'Operaciones',
+	'Operacion (compra)',
 	array(
-		'controller' => 'operacion_logisticas',
+		'controller' => 'operacion_compras',
 		'action' => 'index_trafico'
 	)
 );
-$this->Html->addCrumb('Operación '.$operacion['OperacionLogistica']['referencia'], array(
-	'controller'=>'operacion_logisticas',
+$this->Html->addCrumb('Operación '.$operacion['OperacionCompra']['referencia'], array(
+	'controller'=>'operacion_compras',
 	'action'=>'view_trafico',
-	$operacion['OperacionLogistica']['id']
+	$operacion['OperacionCompra']['id']
 ));
 $this->end();
 
 $this->start('filter');
-echo $this->element('filtrooperacion');
+echo $this->element('filtrooperacioncompra');
 $this->end();
 
 $this->start('main');
 echo "<dl>";
 echo "  <dt>Ref. operación</dt>\n";
 echo "<dd>";
-echo $operacion['OperacionLogistica']['referencia'].'&nbsp;';
+echo $operacion['OperacionCompra']['referencia'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Ref. contrato</dt>\n";
 echo "<dd>";
@@ -44,7 +44,7 @@ echo $this->html->link(
 	array(
 		'controller' => 'contratos',
 		'action' => 'view',
-		$operacion['OperacionLogistica']['contrato_id'])
+		$operacion['OperacionCompra']['contrato_id'])
 	);
 echo "</dd>";
 echo "  <dt>".$tipo_fecha_transporte."</dt>\n";
@@ -94,11 +94,11 @@ echo "  <dd>".
 if ($operacion['Contrato']['Incoterm']['si_flete']) {
 	echo "  <dt>Flete:</dt>\n";
 	echo "  <dd>".
-		$operacion['OperacionLogistica']['flete'].
+		$operacion['OperacionCompra']['flete'].
 		'$/Tm&nbsp;'."</dd>";
 }
 echo "  <dt>Observaciones</dt>\n";
-echo "  <dd>".$operacion['OperacionLogistica']['observaciones'].'&nbsp;'."</dd>";
+echo "  <dd>".$operacion['OperacionCompra']['observaciones'].'&nbsp;'."</dd>";
 echo "</dl>";
 $this->end();
 
@@ -124,15 +124,15 @@ foreach($operacion['Transporte'] as $linea) {
 	}
 	echo "</table>\n";
 	echo "<div class='btabla'>\n";
-	echo $this->Button->addLine('transportes','operacion_logisticas',$operacion['OperacionLogistica']['id'],'transporte');
+	echo $this->Button->addLine('transportes','operacion_compras',$operacion['OperacionCompra']['id'],'transporte');
 	echo '</div>';
-	if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
+	/*if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
 	    echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
 	}elseif($transportado > $operacion['PesoOperacion']['cantidad_embalaje']){
 	    echo "<h4>Transportados: ".$transportado.' / <span style=color:#c43c35;>Restan: '.$restan."   ¡ATENCIÓN! La cantidad de Bultos son mayores a los establecidos en contrato</span></h4>";
 	}else{
 	    echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan." - "."<span style=color:#c43c35;>Todos los bultos han sido registrados</span></h4>";
-	}
+	}*/
 
 $this->end();
 
@@ -164,8 +164,8 @@ foreach ($lineas_retirada as $linea_retirada):
 				'controller' => 'retiradas',
 				'action' => 'view_asociado',
 				'asociado_id'=>$linea_retirada['asociado_id'],
-				'from_controller' => 'operaciones',
-				'from_id' => $operacion['OperacionLogistica']['id']
+				'from_controller' => 'operacion_compras',
+				'from_id' => $operacion['OperacionCompra']['id']
 			),
 			array(
 				'class' => 'boton',
@@ -258,8 +258,8 @@ foreach ($lineas_retirada as $linea_retirada):
 		'controller' => 'retiradas',
 		'action' => 'view_asociado',
 		'asociado_id'=>$linea_retirada['asociado_id'],
-		'from_controller' => 'operaciones',
-		'from_id' => $operacion['OperacionLogistica']['id']
+		'from_controller' => 'operacion_compras',
+		'from_id' => $operacion['OperacionCompra']['id']
 	    ),
 	    array(
 		'class' => 'boton',
@@ -329,7 +329,7 @@ endforeach;
 //SE COMPRUEBA QUE HAY CUENTAS DE ALMACÉN PARA PERMITIR QUE SE AGREGEN RETIRADAS CON EL BOTÓN
 if(is_array($cuentas_almacenes)){
 	echo '<div class="btabla">';
-	echo $this->Button->addLine('retiradas','operaciones',$operacion['OperacionLogistica']['id'],'retirada');
+	echo $this->Button->addLine('retiradas','operacion_compras',$operacion['OperacionCompra']['id'],'retirada');
 	echo '</div>';
 }else{
 	echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
@@ -337,7 +337,7 @@ if(is_array($cuentas_almacenes)){
 
 /*if ($cuenta_almacen['cuenta_almacen'] != NULL ){
     echo '<div class="btabla">';
-    echo $this->Button->addLine('retiradas','operaciones',$operacion['OperacionLogistica']['id'],'retirada');
+    echo $this->Button->addLine('retiradas','operacion_compras',$operacion['OperacionCompra']['id'],'retirada');
     echo '</div>';
 }else{
     echo "<h4><span style=color:#c43c35;>Aún no se ha almacenado nada para poder retirar.</span></h4>";
@@ -384,8 +384,8 @@ if(is_array($cuentas_almacenes)){
 										'controller' => 'retiradas',
 										'action' => 'view_asociado',
 										'asociado_id'=>$operacion_retirada['Retirada']['asociado_id'],
-										'from_controller' => 'operaciones',
-										'from_id' => $operacion['OperacionLogistica']['id']
+										'from_controller' => 'operacion_compras',
+										'from_id' => $operacion['OperacionCompra']['id']
 										),
 									array(
 										'class' => 'boton',
