@@ -70,5 +70,6 @@ echo $this->Paginator->counter(
 echo $this->Paginator->numbers(array('separator' => ''));
 echo $this->Paginator->next('siguiente >', array(), null, array('class'=>'next disabled')); ?>
 	</div>
-	<?php endif; ?>
+<?php endif;
+?>
 </div>

@@ -7,7 +7,7 @@ $this->assign('add_button', 0);
 
 $this->start('filter');
 echo "<h3>Búsqueda</h3>\n";
-echo $this->element('filtrooperacionventa'); //Elemento del Filtro de operaciones
+//echo $this->element('filtrooperacionventa'); //Elemento del Filtro de operaciones
 if ($action == 'index_trafico') {  //Departamento de tráfico
 
 }
@@ -21,27 +21,24 @@ if (empty($operaciones)){
 		echo "<table class='tr5 tr6'>\n";
 		echo $this->Html->tableHeaders(array(
 					$this->Paginator->sort('OperacionVenta.referencia','Ref.Operación'),
-				/*	$this->Paginator->sort('Contrato.referencia','Ref.Contrato'),
-					$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
+				//	$this->Paginator->sort('Contrato.referencia','Ref.Contrato'),
 					$this->Paginator->sort('Calidad.nombre','Calidad'),
-					$this->Paginator->sort('PesoOperacionVenta.peso','Peso (kg)'),
-					$this->Paginator->sort('OperacionVenta.lotes_operacion','Lotes'),*/
+				//	$this->Paginator->sort('PesoOperacionVenta.peso','Peso (kg)'),
+				//	$this->Paginator->sort('OperacionVenta.lotes_operacion','Lotes'),*/
 					'Detalle')
 				);
 		foreach($operaciones as $operacion){
 			echo $this->Html->tableCells(array(
 						$operacion['OperacionVenta']['referencia'],
-					/*	$operacion['Contrato']['referencia'],
-						$operacion['Proveedor']['nombre_corto'],
-						$operacion['Calidad']['nombre'],
-						$operacion['PesoOperacionVenta']['peso'],
-						$operacion['OperacionVenta']['lotes_operacion'],*/
-						$this->Button->view('operaciones',$operacion['OperacionVenta']['id']
+					//	$operacion['Contrato']['referencia'],
+						$operacion['OperacionCompra']['Contrato']['Calidad']['nombre'],
+					//	$operacion['PesoOperacionVenta']['peso'],
+					//	$operacion['OperacionVenta']['lotes_operacion'],*/
+						$this->Button->view('operacion_ventas',$operacion['OperacionVenta']['id']
 							)
 						)
 					);
 		}
-
 	}elseif($action == 'index_trafico'){
 		echo "<table class='tc3 tr6'>\n";
 		echo $this->Html->tableHeaders(array(
@@ -73,5 +70,10 @@ if (empty($operaciones)){
 						}
 						echo "</table>\n";
 						}
-						$this->end();
 						?>
+<div class="btabla">
+	<?php echo $this->Button->add('operacion_ventas','Operación venta'); ?>
+</div>
+<?php
+$this->end();
+?>

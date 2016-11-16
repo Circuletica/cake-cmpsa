@@ -1,11 +1,11 @@
 <?php
 $this->extend('/Common/view');
 $this->assign('object', 'Contrato '.$referencia);
-$this->assign('line_object', 'Operación');
+$this->assign('line_object', 'Operación (compra)');
 $this->assign('id',$contrato['Contrato']['id']);
 $this->assign('class','Contrato');
 $this->assign('controller','contratos');
-$this->assign('line_controller','operacion_logisticas');
+$this->assign('line_controller','operacion_compras');
 $this->assign('line_add','1');
 
 $this->start('breadcrumb');

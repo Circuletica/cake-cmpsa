@@ -4,35 +4,19 @@ class OperacionVentasController extends AppController {
 	public function index() {
 		$this->set('action', $this->action);	//Se usa para tener la misma vista
 
-		//$this->OperacionVenta->virtualFields['calidad']=$this->OperacionVenta->Contrato->Calidad->virtualFields['nombre'];
+//		$this->OperacionVenta->virtualFields['calidad']=$this->OperacionVenta->OperacionCompra->Contrato->Calidad->virtualFields['nombre'];
 		$this->paginate['order'] = array('OperacionVenta.referencia' => 'asc');
-		$this->paginate['recursive'] = 2;
+		//$this->paginate['recursive'] = 2;
 		$this->paginate['contain'] = array(
-	/*		'Contrato' =>array(
-				'fields' => array(
-					'referencia',
-					'fecha_transporte',
-					'si_entrega'
+			'OperacionCompra'=>array(
+				'Contrato' =>array(
+					'Calidad'
 				)
-			),*/
-//			'PesoOperacionVenta',
-			'Proveedor',
-		//	'Calidad'
+			),
+//PENDIENTE//'PesoOperacionVenta'
 		);
-		//necesitamos la lista de proveedor_id/nombre para rellenar el select
-		//del formulario de busqueda
-		$this->loadModel('Proveedor');
-		$proveedores = $this->Proveedor->find(
-			'list',
-			array(
-				'fields' => array('Proveedor.id','Empresa.nombre_corto'),
-				'order' => array('Empresa.nombre_corto' => 'asc'),
-				'recursive' => 1
-			)
-		);
-		$this->set('proveedores',$proveedores);
 
-		$titulo = $this->filtroPaginador(
+/*		$titulo = $this->filtroPaginador(
 			array(
 				'OperacionVenta' =>array(
 					'Referencia' => array(
@@ -40,24 +24,24 @@ class OperacionVentasController extends AppController {
 						'exacto' => false,
 						'lista' => ''
 					),
-/*					'Calidad' => array(
+					'Calidad' => array(
 						'columna' => 'calidad',
 						'exacto' => false,
 						'lista' => ''
 					)
 				),
-/*				'Contrato' => array(
+				'Contrato' => array(
 					'Proveedor' => array(
 						'columna' => 'proveedor_id',
 						'exacto' => true,
 						'lista' => $proveedores
-					)*/
+					)
 				)
 			)
 		);
 
 		//filtramos por contrato
-/*		if(isset($this->passedArgs['Search.contrato_referencia'])) {
+		if(isset($this->passedArgs['Search.contrato_referencia'])) {
 			$criterio = strtr($this->passedArgs['Search.contrato_referencia'],'_','/');
 			$this->paginate['conditions']['Contrato.referencia LIKE'] = "%$criterio%";
 			//guardamos el criterio para el formulario de vuelta
@@ -66,7 +50,7 @@ class OperacionVentasController extends AppController {
 			$title[] = 'Contrato: '.$criterio;
 		}*/
 
-	/*	$this->OperacionVenta->bindModel(
+		$this->OperacionVenta->bindModel(
 			array(
 				'belongsTo' => array(
 					'Calidad' => array(
@@ -80,7 +64,7 @@ class OperacionVentasController extends AppController {
 					)
 				)
 			)
-		);*/
+		);
 		$operaciones = $this->paginate();
 		//pasamos los datos a la vista
 		$this->set(compact('operaciones','title'));
@@ -583,20 +567,17 @@ class OperacionVentasController extends AppController {
 				'conditions' => array('OperacionVenta.id' => $id),
 				'recursive' => 3,
 				'contain' => array(
-					'PuertoCarga',
-					'PuertoDestino',
-					'Contrato' => array(
-						'Proveedor',
-						'Incoterm',
-						'CanalCompra',
-						'Calidad'
+					'OperacionCompra'=>array(
+						'Contrato' => array(
+							'Calidad'
+							)
+						)
 					),
-					'AsociadoOperacion' => array(
+					'Distribucion' => array(
 						'Asociado'
 					),
-					'PesoOperacion',
-					'PrecioTotalOperacion'
-				)
+			//		'PesoOperacion',
+			//		'PrecioTotalOperacion'
 			)
 		);
 		$this->set('operacion', $operacion);
@@ -606,17 +587,13 @@ class OperacionVentasController extends AppController {
 			'first',
 			array(
 				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['OperacionVenta']['contrato_id'],
+					'ContratoEmbalaje.contrato_id' => $operacion['OperacionCompra']['contrato_id'],
 					'ContratoEmbalaje.embalaje_id' => $operacion['OperacionVenta']['embalaje_id']
 				),
 				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
 			)
 		);
 		$this->set('embalaje', $embalaje);
-
-		$this->set('divisa', $operacion['Contrato']['CanalCompra']['divisa']);
-		$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
-		$this->set('fecha_transporte', $operacion['Contrato']['fecha_transporte']);
 
 		//Líneas de reparto
 		if (!empty($operacion['AsociadoOperacion'])) {
@@ -638,16 +615,14 @@ class OperacionVentasController extends AppController {
 			$this->set('columnas_reparto',$columnas_reparto);
 			$this->set('lineas_reparto',$lineas_reparto);
 		}
-
-		$this->set('fecha_fijacion', $operacion['OperacionVenta']['fecha_pos_fijacion']);
 		//comprobamos si ya existe una financiacion para esta operación
-		if ($this->OperacionVenta->Financiacion->hasAny(array('Financiacion.id' => $id))) {
-			$this->set('existe_financiacion', 1);
-		}
-		//comprobamos si ya existe una facturación para esta operación
-		if ($this->OperacionVenta->Facturacion->hasAny(array('Facturacion.id' => $id))) {
-			$this->set('existe_facturacion', 1);
-		}
+//PENDIENTE		if ($this->OperacionVenta->Financiacion->hasAny(array('Financiacion.id' => $id))) {
+//			$this->set('existe_financiacion', 1);
+//		}
+//		//comprobamos si ya existe una facturación para esta operación
+//		if ($this->OperacionVenta->Facturacion->hasAny(array('Facturacion.id' => $id))) {
+//			$this->set('existe_facturacion', 1);
+//		}
 		//Se declara para acceder al PDF
 		$this->set(compact('id'));
 

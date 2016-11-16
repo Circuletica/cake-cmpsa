@@ -5,7 +5,7 @@ if ($action == 'add') {
 }
 if ($action == 'edit') {
 	echo "<h2>Modificar Operación a Contrato <em>".$contrato['Contrato']['referencia']."</em></h2>\n";
-	$this->Html->addCrumb('Operaciones','/operaciones');
+	$this->Html->addCrumb('Operaciones','/operacion_ventas');
 }
 
 //Pasamos la lista de 'embalajes_completo' del contrato al javascript de la vista
@@ -15,7 +15,7 @@ $this->Js->set('precioFletes', $precio_fletes);
 $this->Js->set('diferencial', $contrato['Contrato']['diferencial']);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 
-echo $this->Form->create('Operacion');
+echo $this->Form->create('OperacionVenta');
 //Info de la operación
 ?>
 <fieldset>

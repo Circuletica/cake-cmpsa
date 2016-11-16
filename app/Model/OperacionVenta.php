@@ -31,10 +31,11 @@ class OperacionVenta extends AppModel {
 			'className' => 'PrecioTotalOperacionVenta',
 			'foreignKey' => 'id'
 		),
-		'PesoOperacionVenta' => array(
-			'className' => 'PesoOperacionVenta',
-			'foreignKey' => 'id'
-		)
+		//PENDIENTE///////////////////////////////////////////////////////////////////////////
+//		'PesoOperacionVenta' => array(
+//			'className' => 'PesoOperacionVenta',
+//			'foreignKey' => 'id'
+//		)
 	);
 	public $hasMany = array(
 		'Pedido',
