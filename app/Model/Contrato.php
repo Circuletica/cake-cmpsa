@@ -46,15 +46,15 @@ AND muestras.aprobado = 1
 	'referencia' => array('rule' => 'notBlank')
 	);
 	public $hasOne = array(
-	'RestoContrato' => array(
-		'className' => 'RestoContrato',
-		'foreignKey' => 'id'
-	),
+		'RestoContrato' => array(
+			'className' => 'RestoContrato',
+			'foreignKey' => 'id'
+		)
 /*	'RestoLotesContrato' => array(
 		'className' => 'RestoLotesContrato',
 		'foreignKey' => 'id'
-	),
-);*/
+	),*/
+	);
 	public $hasMany = array(
 	'OperacionCompra' => array(
 		'className' => 'OperacionCompra',
