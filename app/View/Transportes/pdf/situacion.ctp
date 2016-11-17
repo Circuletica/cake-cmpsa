@@ -20,19 +20,19 @@
 	);
 
 		foreach ($transportes as $clave=>$transporte){
-				if (isset($transporte['Operacion']['Contrato']['si_entrega'])) {
-				  $entrega  = $transporte['Operacion']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
+				if (isset($transporte['OperacionCompra']['Contrato']['si_entrega'])) {
+				  $entrega  = $transporte['OperacionCompra']['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque';
 				  $entrega = ' ('.$entrega.')';
 				}else{
 				  	$entrega ='';
 				}
 		echo $this->Html->tableCells(array(
-			$transporte['Operacion']['Contrato']['Calidad']['nombre'],
-			$transporte['Operacion']['referencia'],
+			$transporte['OperacionCompra']['Contrato']['Calidad']['nombre'],
+			$transporte['OperacionCompra']['referencia'],
 			$transporte[['Contrato']['Proveedor']['nombre_corto'],
-			$transporte['Operacion']['PesoOperacion']['cantidad_embalaje'],
-		//	$transporte['Operacion']['PesoOperacion']['peso'].'kg',
-		    $this->Date->format($transporte['Operacion']['Contrato']['fecha_transporte']).$entrega,
+			$transporte['OperacionCompra']['PesoOperacion']['cantidad_embalaje'],
+		//	$transporte['OperacionCompra']['PesoOperacion']['peso'].'kg',
+		    $this->Date->format($transporte['OperacionCompra']['Contrato']['fecha_transporte']).$entrega,
 		    $transporte['PuertoDestino']['nombre'],
 		    $this->Date->format($transporte['Transporte']['fecha_carga']),
 		    $this->Date->format($transporte['Transporte']['fecha_llegada']),

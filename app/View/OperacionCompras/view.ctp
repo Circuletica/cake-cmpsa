@@ -55,7 +55,7 @@ if (empty($existe_financiacion)) {
 if (empty($existe_facturacion)) {
     echo $this->Html->link('<i class="fa fa-file-text fa-lg" aria-hidden="true"></i>
 	Generar facturación', array(
-	    'controller' => 'operaciones',
+	    'controller' => 'operacion_compras',
 	    'action' => 'generarFacturacion',
 	    $operacion['OperacionCompra']['id']
 	),

@@ -2,12 +2,12 @@
 $this->Html->addCrumb(
     'Operaciones',
     array(
-	'controller' => 'operaciones',
+	'controller' => 'operacion_ventas',
 	'action' => 'index'
     )
 );
-$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-    'controller'=>'operaciones',
+$this->Html->addCrumb('Operación (venta)'.$operacion['Operacion']['referencia'], array(
+    'controller'=>'operacion_ventas',
     'action'=>'view',
     $operacion['Operacion']['id']
 ));

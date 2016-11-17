@@ -1,4 +1,4 @@
-<h2>Operación <?php echo $operacion['Operacion']['referencia']?></h2>
+<h2>Operación <?php echo $operacion['OperacionCompra']['referencia']?></h2>
 <div class='view'>
 <?php
 echo "<dl>";
@@ -31,10 +31,10 @@ echo "  <dt>Precio $/Tm total:</dt>\n";
 echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].'$/Tm&nbsp;'."</dd>";
 if ($operacion['Contrato']['Incoterm']['si_flete']) {
     echo "  <dt>Flete:</dt>\n";
-    echo "  <dd>".$operacion['Operacion']['flete'].'$/Tm&nbsp;'."</dd>";
+    echo "  <dd>".$operacion['OperacionCompra']['flete'].'$/Tm&nbsp;'."</dd>";
 }
 echo "  <dt>Observaciones</dt>\n";
-echo "  <dd>".$operacion['Operacion']['observaciones'].'&nbsp;'."</dd>";
+echo "  <dd>".$operacion['OperacionCompra']['observaciones'].'&nbsp;'."</dd>";
 echo "</dl>";
 ?>
 <!--Se hace un index de la Linea de contratos-->

@@ -2,20 +2,20 @@
 $this->Html->addCrumb(
     'Operaciones',
     array(
-	'controller' => 'operaciones',
+	'controller' => 'operacion_compras',
 	'action' => 'index'
     )
 );
-$this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-    'controller'=>'operaciones',
+$this->Html->addCrumb('Operación '.$operacion['OperacionCompra']['referencia'], array(
+    'controller'=>'operacion_compras',
     'action'=>'view',
-    $operacion['Operacion']['id']
+    $operacion['OperacionCompra']['id']
 ));
 
 
-echo $this->Form->create('Operacion');
+echo $this->Form->create('OperacionCompra');
 
-echo "<h2>Envío de distribución a los asociados de la operación <em>".$operacion['Operacion']['referencia']."</em></h2>\n";
+echo "<h2>Envío de distribución a los asociados de la operación <em>".$operacion['OperacionCompra']['referencia']."</em></h2>\n";
 ?>
 <fieldset style=width:60%;>
 <legend>Contactos asociados</legend>
@@ -84,9 +84,9 @@ echo $this->element('cancelarform');
 		'onclick' => "var openWin = window.open('".$this->Html->url(
         	array(
         	'action' => 'view_asociados',
-			$operacion['Operacion']['id'],
+			$operacion['OperacionCompra']['id'],
 			'ext' => 'pdf',
-		    'operacion_id'.$operacion['Operacion']['id'].'_'.date('Ymd')))
+		    'operacion_id'.$operacion['OperacionCompra']['id'].'_'.date('Ymd')))
 		    ."', '_blank', 'toolbar=0,scrollbars=1,location=0,status=1,menubar=0,resizable=1,width=800,height=1000');  return false;"
 	)
 );

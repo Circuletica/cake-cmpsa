@@ -1,15 +1,10 @@
 <?php
 $this->Html->addCrumb('Operación '.$transporte['OperacionCompra']['referencia'], array(
-    'controller'=>'operaciones',
+    'controller'=>'operacion_compras',
     'action'=>'view_trafico',
     $transporte['OperacionCompra']['id']
 ));
-$this->Html->addCrumb('Línea de Transporte', array(
-    'controller' => 'transportes',
-    'action' => 'view',
-    $transporte['Transporte']['id']
-)
-	);
+$this->Html->addCrumb('Línea de Transporte');
 ?><div class="acciones">
 	<div class="printdet">
 	<ul><li>
@@ -90,7 +85,7 @@ echo $this->Html->link(
         'controller' => 'retiradas',
         'action' => 'add',
         'almacen_transporte_id'=>$transporte['Transporte']['id'],
-        'from_controller' => 'operaciones',
+        'from_controller' => 'operacion_compras',
         'from_id' => $transporte['Transporte']['operacion_compra_id']
         ),
     array(
@@ -119,10 +114,10 @@ echo empty($transporte['AlmacenTransporte'])?
 
 	<div class='view'>
 	<dl><?php
-echo "  <dt>Operación</dt>\n";
+echo "  <dt>Operación (compra)</dt>\n";
 echo "<dd>";
 echo $this->Html->link($transporte['OperacionCompra']['referencia'], array(
-    'controller' => 'operaciones',
+    'controller' => 'operacion_compras',
     'action' => 'view_trafico',
     $transporte['OperacionCompra']['id'])
 ).'&nbsp;';

@@ -89,7 +89,7 @@ class RetiradasController extends AppController {
 		$operacion_id = $this->params['named']['from_id'];
 		$this->set(compact('operacion_compra_id'));
 
-		$operacion = $this->Retirada->OperacionCompra->find(
+		$operacion = $this->Retirada->OperacionVenta->OperacionCompra->find(
 			'first',
 			array(
 				'conditions' => array(
@@ -216,7 +216,7 @@ class RetiradasController extends AppController {
 				}
 			}
 		}
-		$restan = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] - $retirado;
+		$restan = $asociado_op['Distribucion']['cantidad_embalaje_asociado'] - $retirado;
 		$this->set(compact('restan'));
 		$this->set('retirado',$retirado);
 
@@ -227,7 +227,7 @@ class RetiradasController extends AppController {
 		$this->set(compact('retirado'));
 		$this->set(compact('restan'));
 
-		$peso = $asociado_op['AsociadoOperacion']['cantidad_embalaje_asociado'] * $solicitado['ContratoEmbalaje']['peso_embalaje_real'];
+		$peso = $asociado_op['Distribucion']['cantidad_embalaje_asociado'] * $solicitado['ContratoEmbalaje']['peso_embalaje_real'];
 		$this->set(compact('peso'));
 
 		// Necesario para evitar agregar retirada si no hay en el almacen nada.
@@ -321,7 +321,7 @@ class RetiradasController extends AppController {
 			'all',
 			array(
 				'contain' => array(
-					'AsociadoOperacion' => array(
+					'Distribucion' => array(
 						'Asociado' => array(
 							'fields' => array(
 								'id',
@@ -335,11 +335,11 @@ class RetiradasController extends AppController {
 
 		foreach($operaciones_asociados as $clave => $operacion){
 
-			foreach($operacion['AsociadoOperacion'] as $asociado_operacion){
+			foreach($operacion['Distribucion'] as $asociado_operacion){
 				$operacion['Asociado'][] = $asociado_operacion['Asociado'];
 			}
 			$operaciones_asociados[$clave] = $operacion;
-			unset($operaciones_asociados[$clave]['AsociadoOperacion']);
+			unset($operaciones_asociados[$clave]['Distribucion']);
 		}
 		$operaciones_asociados = Hash::combine($operaciones_asociados, '{n}.OperacionCompra.id','{n}');
 		$this->set(compact('operaciones_asociados'));
@@ -402,7 +402,7 @@ class RetiradasController extends AppController {
 							'nombre'
 						)
 					),
-					'AsociadoOperacion' => array(
+					'Distribucion' => array(
 						'fields' => array(
 							'asociado_id'
 						),

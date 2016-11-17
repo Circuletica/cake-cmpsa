@@ -31,10 +31,10 @@
 
 			//$transporte['CalidadNombre']['nombre'],
 
-			$transporte['Operacion']['referencia'],
+			$transporte['OperacionCompra']['referencia'],
 			$transporte['Proveedor']['nombre_corto'],
 			$transporte['PesoOperacion']['cantidad_embalaje'],
-		//	$transporte['Operacion']['PesoOperacion']['peso'].'kg',
+		//	$transporte['OperacionCompra']['PesoOperacion']['peso'].'kg',
 		    $this->Date->format($transporte['Contrato']['fecha_transporte']).$entrega,
 		    $transporte['PuertoDestino']['nombre'],
 		    $this->Date->format($transporte['Transporte']['fecha_carga']),

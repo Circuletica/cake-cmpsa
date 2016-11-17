@@ -22,7 +22,7 @@ class Retirada extends AppModel {
 		'AlmacenTransporte' => array(
 			'className' => 'AlmacenTransporte',
 			'foreignKey' => 'almacen_transporte_id'),
-		'OperacionCompra'
+		'OperacionVenta'
 	);
 }
 ?>

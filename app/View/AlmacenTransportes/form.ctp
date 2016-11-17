@@ -1,7 +1,7 @@
 <?php
 $this->Html->addCrumb('Contratos','/contratos');
 $this->Html->addCrumb('Operaciones ', array(
-	'controller'=>'operaciones',
+	'controller'=>'operacion_compras',
 	'action'=>'index_trafico'
 ));
 $this->Html->addCrumb('Transporte', array(
@@ -75,7 +75,7 @@ echo $this->Form->input('cuenta_almacen',array(
 	</div>
 <?php
 echo $this->Form->input('cantidad_cuenta',array(
-	'label'=>'Cantidad '.$transporte['OperacionLogistica']['Embalaje']['nombre']
+	'label'=>'Cantidad '.$transporte['OperacionCompra']['Embalaje']['nombre']
 )
 	);
 ?>

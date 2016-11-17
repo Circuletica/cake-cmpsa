@@ -26,9 +26,9 @@ $this->start('main');
       );
       foreach($transportes as $transporte){
         echo $this->Html->tableCells(array(
-            $transporte['Operacion']['referencia'],
+            $transporte['OperacionCompra']['referencia'],
             $transporte['Transporte']['linea'],
-            $transporte['Operacion']['Contrato']['Calidad']['nombre'],
+            $transporte['OperacionCompra']['Contrato']['Calidad']['nombre'],
             $transporte['Transporte']['cantidad_embalaje'],
             $this->Date->format($transporte['Transporte']['fecha_despacho_op'])
             )
@@ -38,4 +38,3 @@ $this->start('main');
       }
   }
 $this->end();
-

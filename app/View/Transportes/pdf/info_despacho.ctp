@@ -15,7 +15,7 @@ echo $this->Html->tableHeaders(array(
 	);
 foreach ($despachos as $despacho){
 	echo $this->Html->tableCells(array(
-		$despacho['Operacion']['referencia'],
+		$despacho['OperacionCompra']['referencia'],
 		$despacho['Transporte']['linea'],
 		$despacho['Calidad']['nombre'],
 		$despacho['Transporte']['cantidad_embalaje'],

@@ -6,23 +6,23 @@
 	else:
 	echo "<table>\n";
 	echo $this->Html->tableHeaders(array(
-		$this->Paginator->sort('Operacion.referencia','Referencia'),
+		$this->Paginator->sort('OperacionCompra.referencia','Referencia'),
 		$this->Paginator->sort('Contrato.referencia','Contrato'),
 		$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
 		$this->Paginator->sort('Calidad.nombre','Calidad'),
 		$this->Paginator->sort('PesoOperacion.peso','Peso'),
-		$this->Paginator->sort('Operacion.lotes_operacion','Lotes')
+		$this->Paginator->sort('OperacionCompra.lotes_operacion','Lotes')
 		)
 	);
 
 	foreach($operaciones as $operacion):
 		echo $this->Html->tableCells(array(
-			$operacion['Operacion']['referencia'],
+			$operacion['OperacionCompra']['referencia'],
 			$operacion['Contrato']['referencia'],
 			$operacion['Proveedor']['nombre_corto'],
 			$operacion['Calidad']['nombre'],
 			$operacion['PesoOperacion']['peso'].'kg',
-			$operacion['Operacion']['lotes_operacion']
+			$operacion['OperacionCompra']['lotes_operacion']
 	));
 
 	endforeach;?>

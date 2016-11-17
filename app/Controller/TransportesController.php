@@ -336,7 +336,7 @@ class TransportesController extends AppController {
 				'conditions' => array(
 					'OperacionCompra.id' => $operacion_id
 				),
-				'recursive' => 1,
+				'recursive' => 2,
 				'fields' => array(
 					'id',
 					'precio_compra',

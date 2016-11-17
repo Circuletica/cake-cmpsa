@@ -5,7 +5,7 @@ $this->assign('line_object', 'Líneas de transporte');
 $this->assign('line2_object', 'Resumen retiradas en base a la operación');
 $this->assign('id',$operacion['Operacion']['id']);
 $this->assign('class','Operacion');
-$this->assign('controller','operaciones');
+$this->assign('controller','operacion_ventas');
 $this->assign('line_controller','transportes');
 $this->assign('line2_controller','retiradas');
 $this->assign('button_edit_delete',0);
@@ -16,12 +16,12 @@ $this->start('breadcrumb');
 $this->Html->addCrumb(
 	'Operaciones',
 	array(
-		'controller' => 'operaciones',
+		'controller' => 'operacion_ventas',
 		'action' => 'index_trafico'
 	)
 );
 $this->Html->addCrumb('Operación '.$operacion['Operacion']['referencia'], array(
-	'controller'=>'operaciones',
+	'controller'=>'operacion_ventas',
 	'action'=>'view_trafico',
 	$operacion['Operacion']['id']
 ));

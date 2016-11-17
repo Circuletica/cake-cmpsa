@@ -1044,8 +1044,10 @@ class OperacionComprasController extends AppController {
 						'CanalCompra',
 						'Calidad'
 					),
-					'Distribucion' => array(
-						'Asociado'
+					'OperacionVenta' => array(
+						'Distribucion' => array(
+							'Asociado'
+						)
 					),
 					'PesoOperacionCompra',
 					'PrecioTotalOperacionCompra'

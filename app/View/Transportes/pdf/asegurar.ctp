@@ -12,7 +12,7 @@ $this->layout = 'trafico';
 	Madrid, <?php echo $dia.' de '. $mes.' del '.$ano?>
 	</div>
 	<br><br>
-<?php echo '<h2>Solicitamos asegurar Ref.: '.$transporte['Operacion']['referencia'].' '.'('.$transporte['Transporte']['linea'].'ª parte)</h2>'?>
+<?php echo '<h2>Solicitamos asegurar Ref.: '.$transporte['OperacionCompra']['referencia'].' '.'('.$transporte['Transporte']['linea'].'ª parte)</h2>'?>
 <br>
 Muy Sres. nuestros,
 <br><br>
@@ -21,11 +21,11 @@ Les escribimos para solicitarles asegurar lo siguiente:<br><br>
 echo "<dl>";
 echo "  <dt>Ref. operación</dt>\n";
 echo "<dd>";
-echo $transporte['Operacion']['referencia'];
+echo $transporte['OperacionCompra']['referencia'];
 echo "</dd>";
 echo "  <dt>Calidad</dt>\n";
 echo "<dd>";
-echo $transporte['Operacion']['Contrato']['Calidad']['nombre'];
+echo $transporte['OperacionCompra']['Contrato']['Calidad']['nombre'];
 echo "</dd>";
 echo "  <dt>Puerto de carga</dt>\n";
 echo "<dd>";
@@ -45,7 +45,7 @@ echo $transporte['Transporte']['nombre_vehiculo'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Proveedor</dt>\n";
 echo "<dd>";
-echo $transporte['Operacion']['Contrato']['Proveedor']['nombre'].'&nbsp;';
+echo $transporte['OperacionCompra']['Contrato']['Proveedor']['nombre'].'&nbsp;';
 echo "</dd>";
 echo '<br><table>';
 echo $this->Html->tableHeaders(array(
@@ -65,7 +65,7 @@ echo $this->Html->tableCells(array(
 	    )
 	),
 	array(
-	    $transporte['Transporte']['cantidad_embalaje']*$transporte['Operacion']['Embalaje']['peso_embalaje'],
+	    $transporte['Transporte']['cantidad_embalaje']*$transporte['OperacionCompra']['Embalaje']['peso_embalaje'],
 	    array('style' => 'text-align:center'
 	)
     ),
@@ -75,7 +75,7 @@ echo $this->Html->tableCells(array(
     )
 ),
 array(
-    number_format($transporte['Operacion']['PrecioTotalOperacion']['precio_euro_kilo_total'], 4, ',', '.'),
+    number_format($transporte['OperacionCompra']['PrecioTotalOperacion']['precio_euro_kilo_total'], 4, ',', '.'),
     array('style' => 'text-align:center'
 )
 		),

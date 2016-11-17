@@ -2,7 +2,7 @@
 <div class='index'>
   <table>
   <tr>
-    <th><?php echo $this->Paginator->sort('Operacion.referencia', 'Ref. Operación')?></th>
+    <th><?php echo $this->Paginator->sort('OperacionCompra.referencia', 'Ref. Operación')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.referencia', 'Ref. Contrato')?></th>
     <th><?php echo $this->Paginator->sort('Contrato.fecha_transporte','Embarque/Entrega')?></th>
     <th><?php echo $this->Paginator->sort('Calidad.nombre', 'Calidad')?></th>
@@ -16,7 +16,7 @@
 		  $entrega = ' ('.$entrega.')';
 	  } else { $entrega ='';}
     echo $this->Html->tableCells(array(
-      $operacion['Operacion']['referencia'],
+      $operacion['OperacionCompra']['referencia'],
       $operacion['Contrato']['referencia'],
       $this->Date->format($operacion['Contrato']['fecha_transporte']).$entrega,
       $operacion['Calidad']['nombre'],

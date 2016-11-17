@@ -11,7 +11,7 @@ echo $this->element('filtrooperacioncompra'); //Elemento del Filtro de operacion
 if ($action == 'index_trafico') {  //Departamento de tráfico
 	/* echo $this->Html->link('<i class="fa fa-file-excel-o fa-lg" aria-hidden="true"></i> Descargar a CSV',
 	   array(
-	   'controller'=>'operaciones',
+	   'controller'=>'operacion_compras',
 	   'action'=>'export'
 	   ),
 	   array(

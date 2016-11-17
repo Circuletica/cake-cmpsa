@@ -41,10 +41,10 @@ class OperacionCompra extends AppModel {
 //			'className' => 'PesoOperacionCompra',
 //			'foreignKey' => 'id'
 //		),
-//		'Financiacion' => array(
-//			'className' => 'Financiacion',
-//			'foreignKey' => 'id'
-//		),
+		'Financiacion' => array(
+			'className' => 'Financiacion',
+			'foreignKey' => 'id'
+		),
 		'Facturacion' => array(
 			'className' => 'Facturacion',
 			'foreignKey' => 'id'
