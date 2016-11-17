@@ -9,8 +9,9 @@ class OperacionCompra extends AppModel {
 	public $validate = array(
 		'referencia' => array(
 			'rule' => 'notBlank',
-			'message' => 'La referencia no puede estar vacía')
-		);
+			'message' => 'La referencia no puede estar vacía'
+		)
+	);
 
 	public $belongsTo = array(
 		'PuertoCarga' => array(
@@ -23,20 +24,22 @@ class OperacionCompra extends AppModel {
 		),
 		'Contrato' => array(
 			'className' => 'Contrato',
-			'foreignKey' => 'contrato_id'),
+			'foreignKey' => 'contrato_id'
+		),
 		'Embalaje' => array(
 			'className' => 'Embalaje',
-			'foreignKey' => 'embalaje_id')
-		);
+			'foreignKey' => 'embalaje_id'
+		)
+	);
 	public $hasOne = array(
-//		'PrecioOperacionCompra' => array(
-//			'className' => 'PrecioOperacionCompra',
-//			'foreignKey' => 'id'
-//		),
-//		'PrecioTotalOperacionCompra' => array(
-//			'className' => 'PrecioTotalOperacionCompra',
-//			'foreignKey' => 'id'
-//		),
+		//		'PrecioOperacionCompra' => array(
+		//			'className' => 'PrecioOperacionCompra',
+		//			'foreignKey' => 'id'
+		//		),
+		//		'PrecioTotalOperacionCompra' => array(
+		//			'className' => 'PrecioTotalOperacionCompra',
+		//			'foreignKey' => 'id'
+		//		),
 		'PesoOperacionCompra' => array(
 			'className' => 'PesoOperacionCompra',
 			'foreignKey' => 'id'

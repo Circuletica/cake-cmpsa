@@ -600,9 +600,9 @@ class OperacionComprasController extends AppController {
 					'OperacionVenta'=> array(
 							'Distribucion' => array(
 								'Asociado'
-							),
+							)
+					),
 					'PesoOperacionCompra',
-					)
 				)
 			)
 		);

@@ -1,6 +1,6 @@
 <?php
 $this->extend('/Common/view');
-$this->assign('object', 'Operación compra) '.$referencia);
+$this->assign('object', 'Operacion compra '.$referencia);
 $this->assign('line_object', 'Reparto asociados solicitado');
 $this->assign('id',$operacion['OperacionCompra']['id']);
 $this->assign('class','Operacion');
@@ -10,7 +10,7 @@ $this->assign('line_add','0');
 
 $this->start('breadcrumb');
 $this->Html->addCrumb(
-    'Operaciones (compra)'
+    'Operaciones (compra)',
     array(
 	'controller' => 'operacion_compras',
 	'action' => 'index'
@@ -22,12 +22,12 @@ $this->start('filter');
 echo  $this->Html->link(
     '<i class="fa fa-envelope fa-lg aria-hidden="true"></i> Envío distribución',
     array(
-    'action' =>'envio_asociados',
-    $id
+	'action' =>'envio_asociados',
+	$id
     ),
     array(
-    'escape'=>false,
-    'title'=>'Envío distribución asociados',
+	'escape'=>false,
+	'title'=>'Envío distribución asociados',
     )
 );
 echo "<br><hr>";
@@ -44,12 +44,12 @@ if (empty($existe_financiacion)) {
 	);
 } else {
     echo $this->Html->link('<i class="fa fa-list-alt fa-lg" aria-hidden="true"></i>
-    Ver financiación', array(
-	'controller' => 'financiaciones',
-	'action' => 'view',
-	$operacion['OperacionCompra']['id']
-    ),
-    array('escape' => false)
+	Ver financiación', array(
+	    'controller' => 'financiaciones',
+	    'action' => 'view',
+	    $operacion['OperacionCompra']['id']
+	),
+	array('escape' => false)
     );
 }
 if (empty($existe_facturacion)) {
@@ -63,12 +63,12 @@ if (empty($existe_facturacion)) {
     );
 } else {
     echo $this->Html->link('<i class="fa fa-list-ul fa-lg" aria-hidden="true"></i>
-    Ver facturación', array(
-	'controller' => 'facturaciones',
-	'action' => 'view',
-	$operacion['OperacionCompra']['id']
-    ),
-    array('escape' => false)
+	Ver facturación', array(
+	    'controller' => 'facturaciones',
+	    'action' => 'view',
+	    $operacion['OperacionCompra']['id']
+	),
+	array('escape' => false)
     );
 }
 $this->end();
