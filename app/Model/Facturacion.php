@@ -21,7 +21,7 @@ class Facturacion extends AppModel {
 			'className' => 'CuentaContable',
 			'foreignKey' => 'cuenta_iva_comision_id'
 		),
-		'Operacion' => array(
+		'OperacionCompra' => array(
 			'foreignKey' => 'id'
 		)
 	);

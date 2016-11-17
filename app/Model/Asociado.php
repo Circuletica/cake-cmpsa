@@ -21,7 +21,7 @@ class Asociado extends AppModel {
 		'AlmacenReparto'
 	);
 	public function beforeDelete($cascade = true) {
-		$count = $this->AsociadoOperacion->find(
+		$count = $this->Distribucion->find(
 			"count",
 			array(
 				"recursive" => -1,

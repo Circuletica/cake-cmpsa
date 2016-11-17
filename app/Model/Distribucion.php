@@ -8,12 +8,13 @@ class Distribucion extends AppModel {
 		'Asociado' => array(
 			'className' => 'Empresa',
 			'foreignKey' => 'asociado_id'
+		),
+		'OperacionVenta' => array(
+			'className' => 'OperacionVenta',
+			'foreingkey'=> 'operacion_venta_id'
 		)
 	);
 	public $hasMany = array(
-		'Operacion' => array(
-			'className' => 'Operacion',
-			'foreignKey' => 'pedido_id'),
 		'Anticipos' => array(
 			'className' => 'Anticipos',
 			'foreignKey' => 'pedido_id'),

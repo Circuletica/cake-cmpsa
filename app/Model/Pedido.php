@@ -8,12 +8,13 @@ class Pedido extends AppModel {
 		'Asociado' => array(
 			'className' => 'Empresa',
 			'foreignKey' => 'asociado_id'
+		),
+		'OperacionVenta' => array(
+			'className' => 'OperacionVenta',
+			'foreingkey'=> 'operacion_venta_id'
 		)
 	);
 	public $hasMany = array(
-		'Operacion' => array(
-			'className' => 'Operacion',
-			'foreignKey' => 'pedido_id'),
 		'Anticipos' => array(
 			'className' => 'Anticipos',
 			'foreignKey' => 'pedido_id'),
@@ -23,7 +24,7 @@ class Pedido extends AppModel {
 			"count",
 			array(
 				"recursive" => -1,
-				"conditions" => array("operacion_id" => $this->id)
+				"conditions" => array("operacion_compra_id" => $this->id)
 			)
 		);
 		if ($count_retirada == 0) {

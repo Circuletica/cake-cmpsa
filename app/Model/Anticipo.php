@@ -1,7 +1,7 @@
 <?php
 class Anticipo extends AppModel {
 	public $belongsTo = array(
-		'AsociadoOperacion',
+		'Pedido',
 		'Banco' => array(
 			'className' => 'Empresa'
 		)

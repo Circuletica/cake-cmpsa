@@ -1,5 +1,5 @@
 <?php
-$this->Html->addCrumb('Operaciones'0,'/operacion_compras/index_trafico/');
+$this->Html->addCrumb('Operaciones ','/operacion_compras/index_trafico/');
 $this->Html->addCrumb('Operación (compra) '.$operacion['OperacionCompra']['referencia'], array(
     'controller'=>'operacion_compras',
     'action'=>'view_trafico',
@@ -9,7 +9,8 @@ $this->Html->addCrumb('Operación (compra) '.$operacion['OperacionCompra']['refe
 
 $mostrar = ($operacion['Contrato']['Incoterm']['nombre'] =='IN STORE') || ($operacion['Contrato']['Incoterm']['nombre'] =='IN STORE DESPACHADO');
 if ($action == 'add') {
-    $transportado = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
+    //PENDIENTE
+    //$transportado = $operacion['PesoOperacionCompra']['cantidad_embalaje'] - $transportado;
     echo "<h2>Añadir Transporte a Operación <em>".$operacion['OperacionCompra']['referencia']."</em></h2>\n";
 }
 if ($action == 'edit') {
@@ -38,7 +39,8 @@ echo "<dd style=margin-left:40%;>";
 //echo "</dd>";
 echo "<dt style=width:40%;>Bultos operación</dt>\n";
 echo "<dd style=margin-left:40%;>";
-echo $operacion['PesoOperacion']['cantidad_embalaje'].' en '.$embalaje.'&nbsp;';
+//PENDIENTE
+//echo $operacion['PesoOperacionCompra']['cantidad_embalaje'].' en '.$embalaje.'&nbsp;';
 echo "</dd>";
 echo "<dt style=width:40%;>Bultos pendientes</dt>\n";
 echo "<dd style=margin-left:40%;>";

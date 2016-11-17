@@ -336,7 +336,7 @@ class TransportesController extends AppController {
 				'conditions' => array(
 					'OperacionCompra.id' => $operacion_id
 				),
-				'recursive' => 2,
+				'recursive' => 1,
 				'fields' => array(
 					'id',
 					'precio_compra',
@@ -507,7 +507,7 @@ class TransportesController extends AppController {
 					'contrato_id',
 				)
 			),
-			'PesoOperacion'=> array(
+			'PesoOperacionCompra'=> array(
 				'fields' =>array(
 					'id',
 					'peso',
@@ -551,9 +551,9 @@ class TransportesController extends AppController {
 					)
 				),
 				'hasOne' => array(
-					'PesoOperacion' => array(
+					'PesoOperacionCompra' => array(
 						'foreignKey' => false,
-						'conditions' => array('Transporte.operacion_compra_id = PesoOperacion.id')
+						'conditions' => array('Transporte.operacion_compra_id = PesoOperacionCompra.id')
 					)
 				)
 			)
@@ -776,7 +776,7 @@ class TransportesController extends AppController {
 				),
 				'contain'=>array(
 					'OperacionCompra'=>array(
-						'PesoOperacion',
+						'PesoOperacionCompra',
 						'Contrato'=>array(
 							'fields'=>array(
 								'fecha_transporte'
@@ -810,7 +810,7 @@ class TransportesController extends AppController {
 			'contrato_id',
 		)
 		),
-		'PesoOperacion'=> array(
+		'PesoOperacionCompra'=> array(
 		'fields' =>array(
 			'id',
 			'peso',

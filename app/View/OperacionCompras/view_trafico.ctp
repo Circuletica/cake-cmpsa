@@ -77,13 +77,13 @@ echo "<dd>";
 echo $operacion['Contrato']['Incoterm']['nombre'].'&nbsp;';
 echo "</dd>";
 echo "  <dt>Peso:</dt>\n";
-echo "  <dd>PENDIENTE"//.$operacion['PesoOperacion']['peso'].'kg&nbsp;'
+echo "  <dd>PENDIENTE"//.$operacion['PesoOperacionCompra']['peso'].'kg&nbsp;'
 ."</dd>";
 echo "  <dt>Embalaje:</dt>\n";
 echo "  <dd>".
-	'PENDIENTE'//$operacion['PesoOperacion']['cantidad_embalaje'].' x '.
+	'PENDIENTE'//$operacion['PesoOperacionCompra']['cantidad_embalaje'].' x '.
 	.$embalaje['Embalaje']['nombre'].
-	' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."
+	' ('.$operacion['PesoOperacionCompra']['peso'].'kg)&nbsp;'."
 	</dd>";
 	echo "  <dt>Precio "./*$operacion['PrecioTotalOperacion']['divisa'].*/"/Tm:</dt>\n";
 echo "  <dd>".
@@ -126,9 +126,9 @@ foreach($operacion['Transporte'] as $linea) {
 	echo "<div class='btabla'>\n";
 	echo $this->Button->addLine('transportes','operacion_compras',$operacion['OperacionCompra']['id'],'transporte');
 	echo '</div>';
-	/*if($transportado < $operacion['PesoOperacion']['cantidad_embalaje']){
+	/*if($transportado < $operacion['PesoOperacionCompra']['cantidad_embalaje']){
 	    echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan;
-	}elseif($transportado > $operacion['PesoOperacion']['cantidad_embalaje']){
+	}elseif($transportado > $operacion['PesoOperacionCompra']['cantidad_embalaje']){
 	    echo "<h4>Transportados: ".$transportado.' / <span style=color:#c43c35;>Restan: '.$restan."   ¡ATENCIÓN! La cantidad de Bultos son mayores a los establecidos en contrato</span></h4>";
 	}else{
 	    echo "<h4>Transportados: ".$transportado.' / Restan: '.$restan." - "."<span style=color:#c43c35;>Todos los bultos han sido registrados</span></h4>";

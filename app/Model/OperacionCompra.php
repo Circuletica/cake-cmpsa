@@ -29,22 +29,22 @@ class OperacionCompra extends AppModel {
 			'foreignKey' => 'embalaje_id')
 		);
 	public $hasOne = array(
-		'PrecioOperacionCompra' => array(
-			'className' => 'PrecioOperacionCompra',
-			'foreignKey' => 'id'
-		),
-		'PrecioTotalOperacionCompra' => array(
-			'className' => 'PrecioTotalOperacionCompra',
-			'foreignKey' => 'id'
-		),
-		'PesoOperacionCompra' => array(
-			'className' => 'PesoOperacionCompra',
-			'foreignKey' => 'id'
-		),
-		'Financiacion' => array(
-			'className' => 'Financiacion',
-			'foreignKey' => 'id'
-		),
+//		'PrecioOperacionCompra' => array(
+//			'className' => 'PrecioOperacionCompra',
+//			'foreignKey' => 'id'
+//		),
+//		'PrecioTotalOperacionCompra' => array(
+//			'className' => 'PrecioTotalOperacionCompra',
+//			'foreignKey' => 'id'
+//		),
+//		'PesoOperacionCompra' => array(
+//			'className' => 'PesoOperacionCompra',
+//			'foreignKey' => 'id'
+//		),
+//		'Financiacion' => array(
+//			'className' => 'Financiacion',
+//			'foreignKey' => 'id'
+//		),
 		'Facturacion' => array(
 			'className' => 'Facturacion',
 			'foreignKey' => 'id'

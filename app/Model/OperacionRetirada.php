@@ -4,8 +4,8 @@ class OperacionRetirada extends AppModel{
 	public $useTable = 'operacion_retiradas';
 	public $recursive = 2;
 	public $belongsTo = array(
-		'Operacion' => array(
-			'className' => 'Operacion',
+		'OperacionCompra' => array(
+			'className' => 'OperacionCompra',
 			'foreignKey' => 'id'
 		),
 		'Retirada'
