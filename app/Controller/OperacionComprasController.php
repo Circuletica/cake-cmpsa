@@ -181,9 +181,9 @@ class OperacionComprasController extends AppController {
 
 		//los que ya tienen embalajes en la operacion
 		//queremos el id del socio como index del array
-//PENDIENTE
-//		$asociados_operacion = Hash::combine($operacion['Distribucion'], '{n}.asociado_id', '{n}');
-//		$asociados_operacion = Hash::combine($operacion['Pedido'], '{n}.asociado_id', '{n}');
+		//PENDIENTE
+		//		$asociados_operacion = Hash::combine($operacion['Distribucion'], '{n}.asociado_id', '{n}');
+		//		$asociados_operacion = Hash::combine($operacion['Pedido'], '{n}.asociado_id', '{n}');
 
 		$this->set('asociados_operacion', $asociados_operacion);
 		//hace falta para el desplegable de 'Embalaje'
@@ -543,7 +543,7 @@ class OperacionComprasController extends AppController {
 							$data['Pedido']['operacion_venta_id'] = $this->OperacionCompra->id;
 							$data['Pedido']['asociado_id'] = $asociado_id;
 							$data['Pedido']['cantidad_embalaje_asociado'] = $cantidad;
-//							if (!$this->OperacionCompra->Distribucion->saveAll($data['Distribucion'])) OLD
+							//							if (!$this->OperacionCompra->Distribucion->saveAll($data['Distribucion'])) OLD
 							if (!$this->OperacionCompra->OperacionCompra->Pedido->saveAll($data['Distribucion']))
 								throw New Exception('error en guardar Pedido');
 						}
@@ -598,9 +598,9 @@ class OperacionComprasController extends AppController {
 						'Calidad'
 					),
 					'OperacionVenta'=> array(
-							'Distribucion' => array(
-								'Asociado'
-							)
+						'Distribucion' => array(
+							'Asociado'
+						)
 					),
 					'PesoOperacionCompra',
 				)
@@ -754,7 +754,7 @@ class OperacionComprasController extends AppController {
 				)
 			)
 		);
-		$cuentas_almacenes = Hash::combine($cuentas_almacenes, '{n}.AlmacenTransporte.id', '{n}');-**/
+	$cuentas_almacenes = Hash::combine($cuentas_almacenes, '{n}.AlmacenTransporte.id', '{n}');-**/
 
 		/*if(empty($cuentas_almacenes[0]['AlmacenTransporte']['id'])){
 			$cuentas_almacenes = 'NULL';
@@ -837,7 +837,7 @@ class OperacionComprasController extends AppController {
 		$total_sacos_retirados = 0;
 		$total_peso_retirado = 0;
 		$total_pendiente = 0;
-//HAY QUE CAMBIAR TODO EL CODIGO SIGUIENTE
+		//HAY QUE CAMBIAR TODO EL CODIGO SIGUIENTE
 /*		foreach ($operacion['OperacionVenta'] as $linea) {
 			$peso = $linea['Distribucion']['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 
@@ -878,7 +878,7 @@ class OperacionComprasController extends AppController {
 		$this->set('total_peso',$total_peso);
 		$this->set('total_sacos_retirados',$total_sacos_retirados);
 		$this->set('total_peso_retirado',$total_peso_retirado);
-		$this->set('total_pendiente',$total_pendiente);*/
+$this->set('total_pendiente',$total_pendiente);*/
 
 
 		//$this->set(compact('asociados_error'));
