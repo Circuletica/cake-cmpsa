@@ -33,7 +33,7 @@ class TransportesController extends AppController {
 					'contrato_id'
 				)
 			),
-			/*'PesoOperacionCompra',*/
+			'PesoOperacionCompra',
 			'Incoterm'=>array(
 				'fields' => array(
 					'nombre'
@@ -103,10 +103,10 @@ class TransportesController extends AppController {
 						'foreignKey' => false,
 						'conditions' => array('Contrato.calidad_id = Calidad.id')
 					),
-			/*'PesoOperacion' => array(
+			'PesoOperacionCompra' => array(
 				'foreignKey' => false,
-				'conditions' => array('Contrato.id = Operacion.contrato_id')
-			),*/
+				'conditions' => array('Contrato.id = OperacionCompra.contrato_id')
+			),
 					'Proveedor' => array(
 						'className' => 'Empresa',
 						'foreignKey' => false,

@@ -14,7 +14,7 @@ $this->assign('line2_add',0);
 
 $this->start('breadcrumb');
 $this->Html->addCrumb(
-	'Operacion (compra)',
+	'Operacion (compra) ',
 	array(
 		'controller' => 'operacion_compras',
 		'action' => 'index_trafico'
@@ -33,7 +33,7 @@ $this->end();
 
 $this->start('main');
 echo "<dl>";
-echo "  <dt>Ref. operación</dt>\n";
+echo "  <dt>Ref. operación (compra) </dt>\n";
 echo "<dd>";
 echo $operacion['OperacionCompra']['referencia'].'&nbsp;';
 echo "</dd>";
@@ -210,121 +210,7 @@ echo $this->html->tablecells(array(
 	))
 );
 ?></table>
-<?php
-//NUEVA VISUALIZACIÓN PERO CONTROLANDO LA CANTIDAD DE SACOS QUE HAY ALMACENADOS PARA LOS ASOCIADOS.
-echo '<h3>Resumen retiradas en base a las cuentas de almacén</h3>';
-echo "<table>\n";
-//Se calcula la cantidad total de bultos retirados
 
-echo $this->Html->tableHeaders(array(
-    'Asociado','Sacos','Peso (Kg)', 'Sacos retirados','Peso retirado (Kg)', 'Pendiente (sacos)','Detalle'
-));
-
-foreach ($lineas_retirada as $linea_retirada):
-    echo $this->Html->tableCells(array(
-	$linea_retirada['Nombre'],
-	array(
-	    $linea_retirada['Cantidad'],
-	    array(
-		'style' => 'text-align:right'
-	    )
-	),
-	array(
-	    $linea_retirada['Peso'],
-	    array(
-		'style' => 'text-align:right'
-	    )
-	),
-	array(
-	    $linea_retirada['Cantidad_retirado'],
-	    array(
-		'style' => 'text-align:right'
-	    )
-	),
-	array(
-	    $linea_retirada['Peso_retirado'],
-	    array(
-		'style' => 'text-align:right'
-	    )
-	),
-	array(
-	    $linea_retirada['Pendiente'],
-	    array(
-		'style' => 'text-align:right'
-	    )
-	),
-	$this->Html->link(
-	    '<i class="fa fa-info-circle"></i> ',array(
-		'controller' => 'retiradas',
-		'action' => 'view_asociado',
-		'asociado_id'=>$linea_retirada['asociado_id'],
-		'from_controller' => 'operacion_compras',
-		'from_id' => $operacion['OperacionCompra']['id']
-	    ),
-	    array(
-		'class' => 'boton',
-		'title' => 'Detalle asociado',
-		'escape' => false
-	    )
-	)
-    )
-
-);
-endforeach;
-    echo $this->html->tablecells(array(
-	array(
-	    array(
-		'TOTALES',
-		array(
-		    'style' => 'font-weight: bold; text-align:center'
-		)
-	    ),
-
-	    array(
-		$total_sacos,
-		array(
-		    'style' => 'font-weight: bold; text-align:right',
-		    'bgcolor' => '#5FCF80'
-		)
-	    ),
-	    array(
-		$total_peso,
-		array(
-		    'style' => 'font-weight: bold; text-align:right',
-		    'bgcolor' => '#5FCF80'
-		)
-	    ),
-	    array(
-		$total_sacos_retirados,
-		array(
-		    'style' => 'font-weight: bold; text-align:right',
-		    'bgcolor' => '#5FCF80'
-		)
-	    ),
-	    array(
-		$total_peso_retirado,
-		array(
-		    'style' => 'font-weight: bold; text-align:right',
-		    'bgcolor' => '#5FCF80'
-		)
-	    ),
-	    array(
-		$total_pendiente,
-		array(
-		    'style' => 'font-weight: bold; text-align:right',
-		    'bgcolor' => '#5FCF80'
-		)
-	    ),
-	    array(
-		'<i class="fa fa-arrow-left fa-lg"></i>',
-		array(
-		    'style' => 'text-align:center',
-		    'escape' => false
-		)
-	    )
-	))
-    );
-?></table>
 <?php
 //SE COMPRUEBA QUE HAY CUENTAS DE ALMACÉN PARA PERMITIR QUE SE AGREGEN RETIRADAS CON EL BOTÓN
 if(is_array($cuentas_almacenes)){

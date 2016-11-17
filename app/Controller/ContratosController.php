@@ -124,11 +124,11 @@ class ContratosController extends AppController {
 					'nombre'
 				)
 			),
-/*			'RestoContrato' => array(
+			'RestoContrato' => array(
 				'fields' => array(
 					'peso_restante'
 				)
-			)*/
+			)
 		);
 //		$this->paginate['conditions']['RestoContrato.peso_restante !='] = 0;
 
@@ -156,7 +156,7 @@ class ContratosController extends AppController {
 		$peso_fijado = $this->Contrato->query(
 			"SELECT
 			SUM(p.peso) as peso_fijado
-			FROM peso_operaciones p
+			FROM peso_operacion_compras p
 			LEFT JOIN contratos c ON (p.contrato_id = c.id)
 			WHERE c.id = $id;
 		"

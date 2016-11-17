@@ -24,7 +24,6 @@ $this->start('filter');
 if ($action == 'index'){
   echo $this->element('filtrotransporte'); //Elemento del filtro despacho
 }
-  echo $this->element('informes_trafico'); //Elemento de informes de tráfico
 $this->end();
 $this->start('main');
   if (empty($transportes)){

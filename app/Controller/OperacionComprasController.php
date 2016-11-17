@@ -15,7 +15,7 @@ class OperacionComprasController extends AppController {
 					'si_entrega'
 				)
 			),
-//PENDIENTE			'PesoOperacionCompra',//////////////////////////////////////////////////////////////////
+			'PesoOperacionCompra',
 			'Proveedor',
 			'Calidad'
 		);
@@ -181,8 +181,9 @@ class OperacionComprasController extends AppController {
 
 		//los que ya tienen embalajes en la operacion
 		//queremos el id del socio como index del array
+//PENDIENTE
 //		$asociados_operacion = Hash::combine($operacion['Distribucion'], '{n}.asociado_id', '{n}');
-		$asociados_operacion = Hash::combine($operacion['Pedido'], '{n}.asociado_id', '{n}');
+//		$asociados_operacion = Hash::combine($operacion['Pedido'], '{n}.asociado_id', '{n}');
 
 		$this->set('asociados_operacion', $asociados_operacion);
 		//hace falta para el desplegable de 'Embalaje'
@@ -600,7 +601,7 @@ class OperacionComprasController extends AppController {
 							'Distribucion' => array(
 								'Asociado'
 							),
-//					'PesoOperacionCompra',
+					'PesoOperacionCompra',
 					)
 				)
 			)
@@ -711,13 +712,13 @@ class OperacionComprasController extends AppController {
 							)
 						)
 					),
-//PENDIENTE
-/*					'PesoOperacionCompra'=> array(
+
+					'PesoOperacionCompra'=> array(
 						'fields' =>array(
 							'peso',
 							'cantidad_embalaje'
 						)
-					),
+					),/*
 					'PrecioTotalOperacionCompra'=> array(
 						'fields'=>array(
 							'precio_divisa_tonelada',

@@ -1,5 +1,5 @@
 <?php
-$this->Html->addCrumb('Operaciones', array(
+$this->Html->addCrumb('Operaciones (compra)', array(
 	'controller' => 'operaciones',
 	'action' => 'index_trafico')
 );
@@ -32,7 +32,7 @@ $this->Html->addCrumb('Operaciones', array(
 echo '<h2>Situación de embarques a día '.date("d-m-Y").' sin despachar</h2>';
 ?>
 <!--<div class="actions">
-  <?php echo $this->element('filtrooperacion');?>
+  <?php echo $this->element('filtrooperacioncompra');?>
   <!--h3>Filtro de transporte</h3-->
 <!--</div>-->
 <div class='ancho_completo'>
@@ -44,7 +44,7 @@ echo $this->Html->tableHeaders(array(
 	//$this->Paginator->sort('Calidad.nombre','Calidad'),
 	$this->Paginator->sort('OperacionCompra.referencia','Ref. Operación'),
 	$this->Paginator->sort('Proveedor.nombre_corto','Proveedor'),
-	$this->Paginator->sort('PesoOperacion.cantidad_embalaje','Cantidad'),
+	$this->Paginator->sort('PesoOperacionCompra.cantidad_embalaje','Cantidad'),
 	$this->Paginator->sort('Contrato.fecha_transporte','Embarque / Entrega'),
 	$this->Paginator->sort('PuertoDestino.nombre','Pto. Destino'),
 	$this->Paginator->sort('Transporte.fecha_carga','Fecha carga'),
@@ -70,8 +70,8 @@ foreach ($transportes as $clave=>$transporte){
 
 		$transporte['OperacionCompra']['referencia'],
 		$transporte['Proveedor']['nombre_corto'],
-		$transporte['PesoOperacion']['cantidad_embalaje'],
-		//	$transporte['Operacion']['PesoOperacion']['peso'].'kg',
+		$transporte['PesoOperacionCompra']['cantidad_embalaje'],
+		//	$transporte['Operacion']['PesoOperacionCompra']['peso'].'kg',
 		$this->Date->format($transporte['Contrato']['fecha_transporte']).$entrega,
 		$transporte['PuertoDestino']['nombre'],
 		$this->Date->format($transporte['Transporte']['fecha_carga']),
