@@ -32,10 +32,10 @@ class OperacionCompra extends AppModel {
 		)
 	);
 	public $hasOne = array(
-		//		'PrecioOperacionCompra' => array(
-		//			'className' => 'PrecioOperacionCompra',
-		//			'foreignKey' => 'id'
-		//		),
+		'PrecioOperacionCompra' => array(
+			'className' => 'PrecioOperacionCompra',
+			'foreignKey' => 'id'
+		),
 		//		'PrecioTotalOperacionCompra' => array(
 		//			'className' => 'PrecioTotalOperacionCompra',
 		//			'foreignKey' => 'id'

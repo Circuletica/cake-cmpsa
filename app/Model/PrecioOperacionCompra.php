@@ -1,10 +1,10 @@
 <?php
 class PrecioOperacionCompra extends AppModel {
-/*	public $belongsTo = array(
+	public $belongsTo = array(
 		'OperacionCompra' => array(
 			'className' => 'OperacionCompra',
 			'foreignKey' => 'id'
 		)
-	);*/
+	);
 }
 ?>

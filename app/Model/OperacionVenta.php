@@ -23,14 +23,14 @@ class OperacionVenta extends AppModel {
 		)
 	);
 	public $hasOne = array(
-		'PrecioOperacionVenta' => array(
-			'className' => 'PrecioOperacionVenta',
-			'foreignKey' => 'id'
-		),
-		'PrecioTotalOperacionVenta' => array(
-			'className' => 'PrecioTotalOperacionVenta',
-			'foreignKey' => 'id'
-		),
+//		'PrecioOperacionVenta' => array(
+//			'className' => 'PrecioOperacionVenta',
+//			'foreignKey' => 'id'
+//		),
+//		'PrecioTotalOperacionVenta' => array(
+//			'className' => 'PrecioTotalOperacionVenta',
+//			'foreignKey' => 'id'
+//		),
 		//PENDIENTE///////////////////////////////////////////////////////////////////////////
 //		'PesoOperacionVenta' => array(
 //			'className' => 'PesoOperacionVenta',
