@@ -3,7 +3,7 @@ echo $this->Html->script('jquery')."\n"; // Include jQuery library
 echo $this->Js->set('cantidadCuenta',$almacentransportes['AlmacenTransporte']['cantidad_cuenta']);
 echo $this->Js->writeBuffer(array('onDomReady' => false));
 $this->Html->addCrumb('Operación (compras)', array(
-	'controller'=>'operaciones_logistica',
+	'controller'=>'operacion_compras',
 	'action'=>'view_trafico',
 	//	$almacentransportes['AlmacenTransporte']['Transporte']['operacion_id']
 ));

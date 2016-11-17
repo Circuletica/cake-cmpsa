@@ -105,14 +105,14 @@ $this->start('lines');
 	<table>
 <?php
 echo $this->html->tableheaders(array('Referencia','Peso','Fecha de fijación', 'Precio de fijación', 'Precio de factura','Detalle'));
-foreach($contrato['OperacionLogistica'] as $linea) {
+foreach($contrato['OperacionCompra'] as $linea) {
 	echo $this->html->tablecells(array(
 		$linea['referencia'],
-		$linea['PesoOperacion']['peso']." kg",
+		$linea['PesoOperacionCompra']['peso']." kg",
 		$linea['fecha_pos_fijacion'],
 		$linea['precio_fijacion']." ".$contrato['CanalCompra']['divisa'],
 		$linea['precio_compra']." ".$contrato['CanalCompra']['divisa'],
-		$this->Button->view('operacion_logisticas',$linea['id'])
+		$this->Button->view('operacion_compras',$linea['id'])
 	));
 }
 ?>
