@@ -555,7 +555,7 @@ class OperacionComprasController extends AppController {
 					//volvemos al contrato a la que pertenece la linea creada
 					$this->redirect(array(
 						//'controller' => 'contratos',
-						'controller' => 'operacion_logisticas',
+						'controller' => 'operacion_compras',
 						'action' => 'view',
 						//$contrato_id
 						$this->OperacionCompra->id

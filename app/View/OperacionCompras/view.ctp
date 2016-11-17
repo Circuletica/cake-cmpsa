@@ -1,6 +1,6 @@
 <?php
 $this->extend('/Common/view');
-$this->assign('object', 'Operación (logística)'.$referencia);
+$this->assign('object', 'Operación compra) '.$referencia);
 $this->assign('line_object', 'Reparto asociados solicitado');
 $this->assign('id',$operacion['OperacionCompra']['id']);
 $this->assign('class','Operacion');
@@ -10,7 +10,7 @@ $this->assign('line_add','0');
 
 $this->start('breadcrumb');
 $this->Html->addCrumb(
-    'Operaciones (logística)',
+    'Operaciones (compra)'
     array(
 	'controller' => 'operacion_compras',
 	'action' => 'index'

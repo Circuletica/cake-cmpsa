@@ -1,4 +1,4 @@
-<h2>Modificar Operacion (logística) <em><?php echo $operacion['OperacionCompra']['referencia']?></em></h2>
+<h2>Modificar Operacion (compra) <em><?php echo $operacion['OperacionCompra']['referencia']?></em></h2>
 
 <?php
 $this->Html->addCrumb('Contratos','/contratos');
