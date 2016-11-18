@@ -49,11 +49,11 @@ AND muestras.aprobado = 1
 		'RestoContrato' => array(
 			'className' => 'RestoContrato',
 			'foreignKey' => 'id'
+		),
+		'RestoLotesContrato' => array(
+			'className' => 'RestoLotesContrato',
+			'foreignKey' => 'id'
 		)
-/*	'RestoLotesContrato' => array(
-		'className' => 'RestoLotesContrato',
-		'foreignKey' => 'id'
-	),*/
 	);
 	public $hasMany = array(
 	'OperacionCompra' => array(

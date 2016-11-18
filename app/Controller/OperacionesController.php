@@ -279,7 +279,7 @@ class OperacionesController extends AppController {
 
 	public function add() {
 		if (!isset($this->params['named']['from_id'])) {
-			$this->Flash->error('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
+			$this->Flash->error('URL mal formado operacion_ventas/add '.$this->params['named']['from_controller']);
 			//$this->redirect(array(
 			//    'controller' => $this->params['named']['from_controller'],
 			//    'action' => 'index')

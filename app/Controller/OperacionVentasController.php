@@ -4,8 +4,11 @@ class OperacionVentasController extends AppController {
 	public function index() {
 		$this->set('action', $this->action);	//Se usa para tener la misma vista
 
-//		$this->OperacionVenta->virtualFields['calidad']=$this->OperacionVenta->OperacionCompra->Contrato->Calidad->virtualFields['nombre'];
+		//$this->OperacionVenta->virtualFields['calidad']=$this->OperacionVenta->OperacionCompra->Contrato->Calidad->virtualFields['nombre'];
 		$this->paginate['order'] = array('OperacionVenta.referencia' => 'asc');
+		$this->paginate['conditions'] = array(
+			'OperacionVenta.operacion_compra_id IS NULL'
+		);
 		//$this->paginate['recursive'] = 2;
 		$this->paginate['contain'] = array(
 			'OperacionCompra'=>array(
@@ -262,14 +265,6 @@ class OperacionVentasController extends AppController {
 	//// AQUI EMPIEZA EL FORM ()
 
 	public function add() {
-		if (!isset($this->params['named']['from_id'])) {
-			$this->Flash->error('URL mal formado operaciones/add '.$this->params['named']['from_controller']);
-			//$this->redirect(array(
-			//    'controller' => $this->params['named']['from_controller'],
-			//    'action' => 'index')
-			//);
-			$this->History->Back(0);
-		}
 		$this->form();
 		$this->render('form');
 	}
@@ -289,7 +284,7 @@ class OperacionVentasController extends AppController {
 				'order' => array(
 					'Empresa.codigo_contable' => 'ASC'
 				),
-				'recursive' => 1
+				'recursive' => 0
 			)
 		);
 		//reindexamos los asociados por codigo contable
@@ -312,204 +307,41 @@ class OperacionVentasController extends AppController {
 		);
 		$this->set('proveedores',$proveedores);
 
+		$this->loadModel('Calidad');
+		$calidades = $this->Calidad->find(
+			'list',
+			array(
+				'fields' => array(
+					'Calidad.id',
+					'Calidad.descripcion'),
+				'order' => array(
+					'Calidad.descripcion' => 'asc'),
+				'recursive' => 1
+			)
+		);
+		$this->set('calidades',$calidades);
+
 		//Sacamos el valor de la operación si es un ADD
 		if (empty($this->params['named']['from_id'])){
-			$operacion = $this->OperacionVenta->find(
+			$op_venta = $this->OperacionVenta->find(
 				'first',
 				array(
 					'conditions' =>array(
 						'OperacionVenta.id' => $id
-					),
-					'fields' => array(
-						'contrato_id',
 					)
 				)
 			);
-			$contrato_id =  $operacion['OperacionVenta']['contrato_id'];
-		}else{
-			$contrato_id = $this->params['named']['from_id'];
 		}
-
 		//sacamos los datos del contrato al que pertenece la linea
 		//nos sirven en la vista para detallar campos
-		$this->OperacionVenta->Contrato->virtualFields['calidad']=$this->OperacionVenta->Contrato->Calidad->virtualFields['nombre'];
-
-		$contrato = $this->OperacionVenta->Contrato->find(
-			'first',
-			array(
-				'conditions' => array('Contrato.id' => $contrato_id),
-				'recursive' => 2,
-				'contain' => array(
-					'Calidad',
-					'CanalCompra',
-					'FleteContrato',
-					'Incoterm',
-					'Proveedor',
-					'RestoContrato',
-					'RestoLotesContrato'
-				),
-				'fields' => array(
-					'Contrato.id',
-					'Contrato.referencia',
-					'Contrato.proveedor_id',
-					'Contrato.peso_comprado',
-					'Contrato.diferencial',
-					'Contrato.puerto_carga_id',
-					'Contrato.puerto_destino_id',
-					'Contrato.calidad',
-					'CanalCompra.nombre',
-					'CanalCompra.divisa',
-					'Incoterm.nombre',
-					'Incoterm.si_flete',
-					'Incoterm.si_seguro',
-					'Proveedor.nombre_corto'
-				)
-			)
-		);
-
-		$this->set('contrato',$contrato);
-		$this->set('puerto_carga_contrato_id', $contrato['Contrato']['puerto_carga_id']);
-		$this->set('puerto_destino_contrato_id', $contrato['Contrato']['puerto_destino_id']);
-		$this->set('divisa', $contrato['CanalCompra']['divisa']);
-		$embalajes_contrato = $this->OperacionVenta->Contrato->ContratoEmbalaje->find(
-			'all',
-			array(
-				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $contrato_id
-				),
-				'fields' => array(
-					'Embalaje.id',
-					'Embalaje.nombre',
-					'ContratoEmbalaje.cantidad_embalaje',
-					'ContratoEmbalaje.peso_embalaje_real'
-				)
-			)
-		);
-		//hace falta para el desplegable de 'Embalaje'
-		//recombinamos el array anterior que quedaba asi:
-		//Array
-		//  (
-		//    [0] => Array
-		//      id => 2
-		//      nombre => big bag
-		//    [1] => Array
-		//      id => 1
-		//      nombre => saco 60kg
-		//y se transforma así
-		//Array
-		//  (
-		//    [2] => big bag
-		//    [1] => saco 60kg
-		$embalajes = Hash::combine($embalajes_contrato, '{n}.Embalaje.id', '{n}.Embalaje.nombre');
-		$this->set('embalajes', $embalajes);
-		$embalajes_nombre = Hash::combine($embalajes_contrato, '{n}.Embalaje.id', '{n}.Embalaje');
-		$embalajes_peso = Hash::combine($embalajes_contrato, '{n}.Embalaje.id', '{n}.ContratoEmbalaje');
-		//sumamos los distintos arrays de mismo index para llegar a esto:
-		//Array
-		//  (
-		//    [2] =>Array
-		//      id => 2
-		//      nombre => big bag
-		//      cantidad_embalaje => 60
-		//      peso_embalaje_real => 60
-		//    [1] => ...
-		$embalajes_completo = array_replace_recursive($embalajes_nombre,$embalajes_peso);
-		$this->set('embalajes_completo', $embalajes_completo);
-		//solo para mostrar el proveedor a nivel informativo
-		$this->set('proveedor',$contrato['Proveedor']['nombre_corto']);
-		//a quienes van asociadas las lineas de contrato
-		//para los puertos de carga y destino
-		$this->set('puertoCargas',$this->OperacionVenta->PuertoCarga->find(
-			'list',
-			array(
-				'order' => array('PuertoCarga.nombre' =>'ASC')
-			)
-		));
-		$this->set('puertoDestinos',$this->OperacionVenta->PuertoDestino->find(
-			'list',
-			#el café solo llega a puerto españoles
-			array(
-				'contain' => array('Pais'),
-				'conditions' => array( 'Pais.nombre' => 'España')
-			)
-		));
-
-		//Por defecto ponemos las opciones, el forfait, el seguro y el flete a cero
-		$this->request->data['OperacionVenta']['opciones'] = 0;
-		$this->request->data['OperacionVenta']['forfait'] = 0;
-		$this->request->data['OperacionVenta']['seguro'] = 0;
-		$this->request->data['OperacionVenta']['flete'] = 0;
+		//$this->OperacionVenta->Contrato->virtualFields['calidad']=$this->OperacionVenta->Contrato->Calidad->virtualFields['nombre'];
 
 		//Queremos la lista de costes de fletes
 		//$precio_fletes = $this->OperacionVenta->Contrato->PrecioFleteContrato->find(
-		$precio_fletes = $this->OperacionVenta->Contrato->FleteContrato->find(
-			'all',
-			array(
-				'recursive' => 3,
-				'contain' => array(
-					'Flete' => array(
-						'PuertoCarga' => array(
-							'fields' => array(
-								'nombre'
-							)
-						),
-						'PuertoDestino' => array(
-							'fields' => array(
-								'nombre'
-							)
-						),
-						'Naviera' => array(
-							'fields' => array(
-								'nombre_corto'
-							)
-						),
-						'Embalaje' => array(
-							'fields' => array(
-								'nombre'
-							)
-						)
-					)
-				),
-				'conditions' => array(
-					'FleteContrato.contrato_id' => $contrato_id,
-				)
-			)
-		);
-		//el desplegable con los costes de flete según los puertos de
-		//carga/destino asociados con el contrato.
-		//Tenemos que hacer un array con name =>, value => para poder
-		//usar el mismo valor para varias opciones del select.
-		//Con un array simple no funciona, no se puede usar la misma clave
-		//varias veces.
-		//si $precio_fletes == null evitar acabar con una variable null en el form.ctp
-		$fletes = array();
-		foreach($precio_fletes as &$precio_flete) { //usar &$ para que funcione el unset
-			$fletes[] = array(
-				'name' => $precio_flete['Flete']['Naviera']['nombre_corto'].'('
-				.$precio_flete['Flete']['PuertoCarga']['nombre'].'-'
-				.$precio_flete['Flete']['PuertoDestino']['nombre'].')-'
-				.(!empty($precio_flete['Flete']['Embalaje']) ? $precio_flete['Flete']['Embalaje']['nombre'] : '??').'-'
-				.($precio_flete['FleteContrato']['precio_flete'] ?: '??').'$/Tm',
-				'value' => $precio_flete['FleteContrato']['precio_flete'] ?: ''
-			);
-			//vamos a tener otro array para un js que modifique la lista de fletes disponibles
-			//segun se elija uno u otro puerto embarque/puerto destino/embalaje
-			//$precio_flete['Flete']['value']=$precio_flete['PrecioFleteContrato']['precio_flete'];
-			$precio_flete['Flete']['value']=$precio_flete['FleteContrato']['precio_flete'];
-			$precio_flete['Flete']['name']=end($fletes)['name'];
-			unset($precio_flete['Flete']['Naviera']);
-			unset($precio_flete['Flete']['PuertoCarga']);
-			unset($precio_flete['Flete']['PuertoDestino']);
-			unset($precio_flete['Flete']['Embalaje']);
-			unset($precio_flete['FleteContrato']);
-		}
-		$this->set(compact('fletes'));
-		$this->set(compact('precio_fletes'));
-
 		if (!empty($id))$this->OperacionVenta->id = $id;
 
 
-		if ($this->request->is('post')) {//ES UN POST
+		/*if ($this->request->is('post')) {//ES UN POST
 			$data = &$this->request->data;
 			//al guardar la linea, se incluye a qué contrato pertenece
 			$this->request->data['OperacionVenta']['contrato_id'] = $contrato_id;
@@ -542,7 +374,7 @@ class OperacionVentasController extends AppController {
 					$this->Flash->error('Operación NO guardada');
 				}
 			}else{
-			/*	if($this->OperacionVenta->save($this->request->data)){
+			if($this->OperacionVenta->save($this->request->data)){
 					$this->Flash->success('Operación modificada');
 					$this->redirect(array(
 						'controller' => 'operaciones',
@@ -550,18 +382,17 @@ class OperacionVentasController extends AppController {
 						$id
 						)
 					);
-			}*/
+			}
 			}
 		}else{//es un GET
 			$this->request->data = $this->OperacionVenta->read(null, $id);
-		}
+		}*/
 	}
-
 	public function view($id = null) {
 		$this->checkId($id);
 		$this->set('action', $this->action);	//Se usa para tener la misma info
 
-		$operacion = $this->OperacionVenta->find(
+		$op_venta = $this->OperacionVenta->find(
 			'first',
 			array(
 				'conditions' => array('OperacionVenta.id' => $id),
@@ -580,15 +411,15 @@ class OperacionVentasController extends AppController {
 			//		'PrecioTotalOperacion'
 			)
 		);
-		$this->set('operacion', $operacion);
-		$this->set('referencia', $operacion['OperacionVenta']['referencia']);
+		$this->set('operacion', $op_venta);
+		$this->set('referencia', $op_venta['OperacionVenta']['referencia']);
 		$this->loadModel('ContratoEmbalaje');
 		$embalaje = $this->ContratoEmbalaje->find(
 			'first',
 			array(
 				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['OperacionCompra']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['OperacionVenta']['embalaje_id']
+					'ContratoEmbalaje.contrato_id' => $op_venta['OperacionCompra']['contrato_id'],
+					'ContratoEmbalaje.embalaje_id' => $op_venta['OperacionVenta']['embalaje_id']
 				),
 				'fields' => array('Embalaje.nombre', 'ContratoEmbalaje.peso_embalaje_real')
 			)
@@ -596,8 +427,8 @@ class OperacionVentasController extends AppController {
 		$this->set('embalaje', $embalaje);
 
 		//Líneas de reparto
-		if (!empty($operacion['AsociadoOperacion'])) {
-			foreach ($operacion['AsociadoOperacion'] as $linea) {
+		if (!empty($op_venta['AsociadoOperacion'])) {
+			foreach ($op_venta['AsociadoOperacion'] as $linea) {
 				$peso = $linea['cantidad_embalaje_asociado'] * $embalaje['ContratoEmbalaje']['peso_embalaje_real'];
 				$codigo = substr($linea['Asociado']['codigo_contable'],-2);
 				$lineas_reparto[] = array(
@@ -636,7 +467,7 @@ class OperacionVentasController extends AppController {
 
 	public function view_trafico($id = null){
 		$this->checkId($id);
-		$operacion = $this->OperacionVenta->find(
+		$op_venta = $this->OperacionVenta->find(
 			'first',
 			array(
 				'conditions' => array(
@@ -729,8 +560,8 @@ class OperacionVentasController extends AppController {
 			'first',
 			array(
 				'conditions' => array(
-					'ContratoEmbalaje.contrato_id' => $operacion['OperacionVenta']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['OperacionVenta']['embalaje_id']
+					'ContratoEmbalaje.contrato_id' => $op_venta['OperacionVenta']['contrato_id'],
+					'ContratoEmbalaje.embalaje_id' => $op_venta['OperacionVenta']['embalaje_id']
 				),
 				'fields' => array(
 					'Embalaje.nombre',
@@ -740,23 +571,23 @@ class OperacionVentasController extends AppController {
 		);
 
 		//Calculo la cantidad de bultos transportados
-		if($operacion['OperacionVenta']['id']!= NULL){
+		if($op_venta['OperacionVenta']['id']!= NULL){
 			$suma = 0;
 			$transportado=0;
-			foreach ($operacion['Transporte'] as $suma){
-				if ($transporte['operacion_id']=$operacion['OperacionVenta']['id']){
+			foreach ($op_venta['Transporte'] as $suma){
+				if ($transporte['operacion_id']=$op_venta['OperacionVenta']['id']){
 					$transportado = $transportado + $suma['cantidad_embalaje'];
 				}
 			}
 		}
-		$restan = $operacion['PesoOperacion']['cantidad_embalaje'] - $transportado;
+		$restan = $op_venta['PesoOperacion']['cantidad_embalaje'] - $transportado;
 		$this->set(compact('transportado'));
 		$this->set(compact('restan'));
 
-		$this->set('tipo_fecha_transporte', $operacion['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
+		$this->set('tipo_fecha_transporte', $op_venta['Contrato']['si_entrega'] ? 'Entrega' : 'Embarque');
 		//mysql almacena la fecha en formato ymd
-		//	$this->Date->format($operacion['Contrato']['fecha_transporte']);
-		$fecha = $operacion['Contrato']['fecha_transporte'];
+		//	$this->Date->format($op_venta['Contrato']['fecha_transporte']);
+		$fecha = $op_venta['Contrato']['fecha_transporte'];
 		$dia = substr($fecha,8,2);
 		$mes = substr($fecha,5,2);
 		$anyo = substr($fecha,0,4);
