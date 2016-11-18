@@ -36,10 +36,10 @@ class OperacionCompra extends AppModel {
 			'className' => 'PrecioOperacionCompra',
 			'foreignKey' => 'id'
 		),
-		//		'PrecioTotalOperacionCompra' => array(
-		//			'className' => 'PrecioTotalOperacionCompra',
-		//			'foreignKey' => 'id'
-		//		),
+		'PrecioTotalOperacionCompra' => array(
+			'className' => 'PrecioTotalOperacionCompra',
+			'foreignKey' => 'id'
+		),
 		'PesoOperacionCompra' => array(
 			'className' => 'PesoOperacionCompra',
 			'foreignKey' => 'id'
