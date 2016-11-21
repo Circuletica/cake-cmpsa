@@ -6,9 +6,9 @@ class OperacionVentasController extends AppController {
 
 		//$this->OperacionVenta->virtualFields['calidad']=$this->OperacionVenta->OperacionCompra->Contrato->Calidad->virtualFields['nombre'];
 		$this->paginate['order'] = array('OperacionVenta.referencia' => 'asc');
-		$this->paginate['conditions'] = array(
+	/*	$this->paginate['conditions'] = array(
 			'OperacionVenta.operacion_compra_id IS NULL'
-		);
+		);*/
 		//$this->paginate['recursive'] = 2;
 		$this->paginate['contain'] = array(
 			'OperacionCompra'=>array(

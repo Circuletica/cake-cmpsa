@@ -28,7 +28,7 @@ if (empty($retiradas)){
     <table class="tc1 tr6 tr7">
       <tr>
         <th><?php echo $this->Paginator->sort('Retirada.fecha_retirada','Fecha retirada')?></th>
-        <th><?php echo $this->Paginator->sort('OperacionCompra.referencia','Ref.Operación')?></th>
+        <th><?php echo $this->Paginator->sort('OperacionVenta.referencia','Ref.Operación')?></th>
         <th><?php echo $this->Paginator->sort('AlmacenTransporte.cuenta_almacen','Cuenta Almacén')?></th>
         <th><?php echo $this->Paginator->sort('Almacen.nombre_corto','Almacén')?></th>
         <th><?php echo $this->Paginator->sort('Asociado.nombre_corto','Asociado')?></th>
@@ -42,13 +42,13 @@ if (empty($retiradas)){
     ?>
       <tr>
     	    <td> <?php echo $this->Date->format($retirada['Retirada']['fecha_retirada'])?> </td>
-          <td> <?php echo $retirada['OperacionCompra']['referencia']?> </td>
+          <td> <?php echo $retirada['OperacionVenta']['referencia']?> </td>
           <td> <?php echo $retirada['AlmacenTransporte']['cuenta_almacen']?> </td>
           <td> <?php echo $retirada['Almacen']['nombre_corto']?> </td>
     	    <td> <?php echo $retirada['Asociado']['nombre_corto']?> </td>
           <td> <?php echo $retirada['Retirada']['embalaje_retirado']?> </td>
           <td> <?php echo $retirada['Retirada']['peso_retirado']?> </td>
-    	    <td> <?php echo $this->Button->viewCrossed('asociado','retiradas','asociado_id', $retirada['Retirada']['asociado_id'],'operaciones',$retirada['Retirada']['operacion_compra_id']);?></td>
+    	    <td> <?php echo $this->Button->viewCrossed('asociado','retiradas','asociado_id', $retirada['Retirada']['asociado_id'],'operacion_ventas',$retirada['Retirada']['operacion_venta_id']);?></td>
       </tr>
     <?php endforeach;?>
     </table>
@@ -61,7 +61,7 @@ if (empty($retiradas)){
     ?>
     <table class="tc1 tr6 tr7">
       <tr>
-        <th><?php echo $this->Paginator->sort('OperacionCompra.referencia','Ref.Operación')?></th>
+        <th><?php echo $this->Paginator->sort('OperacionVenta.referencia','Ref.Operación')?></th>
         <th><?php echo $this->Paginator->sort('Asociado.nombre_corto','Asociado')?></th>
         <th><?php echo $this->Paginator->sort('Retirada.embalaje_retirado','Sacos adjudicados')?></th>
         <th><?php echo $this->Paginator->sort('AlmacenTransporte.cuenta_almacen','Cuenta Almacén')?></th>
@@ -78,7 +78,7 @@ if (empty($retiradas)){
       foreach($retiradas as $retirada):
     ?>
       <tr>
-          <td> <?php echo $retirada['OperacionCompra']['referencia']?> </td>
+          <td> <?php echo $retirada['OperacionVenta']['referencia']?> </td>
           <td> <?php echo $retirada['Asociado']['nombre_corto']?> </td>
           <td> <?php echo $retirada['Retirada']['embalaje_retirado']?> </td>
           <td> <?php echo $retirada['AlmacenTransporte']['cuenta_almacen']?> </td>

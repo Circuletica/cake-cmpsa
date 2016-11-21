@@ -13,8 +13,8 @@ $this->start('main');
 echo "<dl>";
 	echo "  <dt>Ref. operación</dt>\n";
 	echo "<dd>";
-	echo $this->html->link($operacion['OperacionCompra']['referencia'], array(
-	    'controller' => 'operacion_compras',
+	echo $this->html->link($operacion['OperacionVenta']['referencia'], array(
+	    'controller' => 'operacion_ventas',
 	    'action'  => 'view_trafico',
 	    $operacion_id)
 	).'&nbsp;';
@@ -60,7 +60,7 @@ foreach($retiradas as $retirada):
 							'escape' => false
 							)
 				)
-			.' '.$this->Button->deleteLine('retiradas',	$retirada['Retirada']['id'],'operacion_compras',$retirada['Retirada']['operacion_compra_id'],
+			.' '.$this->Button->deleteLine('retiradas',	$retirada['Retirada']['id'],'operacion_ventas',$retirada['Retirada']['operacion_compra_id'],
 					'la retirada del día: '.$this->Date->format($retirada['Retirada']['fecha_retirada']
 					)
 					)
@@ -95,7 +95,7 @@ echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
 							'controller' => 'retiradas',
 							'action' => 'add',
 							'asociado_id'=>$asociado_op['Distribucion']['asociado_id'],
-							'from_controller' => 'operacion_compras',
+							'from_controller' => 'operacion_ventas',
 							'from_id' => $operacion_id
 							),
 						array(
@@ -117,7 +117,7 @@ echo "<h4>Retiradas: ".$retirado.' / Restan: '.$restan;
     echo $this->Html->Link('<i class="fa fa-arrow-left"></i> Volver',
     	array(
     		'action'=>'view_trafico',
-	   		'controller' => 'operacion_compras',
+	   		'controller' => 'operacion_ventas',
 	   		$operacion_id
 	   		),
      	array(

@@ -157,7 +157,7 @@ class OperacionComprasController extends AppController {
 					),
 					'Embalaje',
 					'OperacionVenta'=>array(
-						'Pedido'
+						'Distribucion'
 					)
 				)
 			)

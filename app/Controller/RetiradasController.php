@@ -14,7 +14,7 @@ class RetiradasController extends AppController {
 					'nombre_corto'
 				)
 			),
-			'OperacionCompra' => array (
+			'OperacionVenta' => array (
 				'fields' => array(
 					'id',
 					'referencia'
@@ -24,7 +24,7 @@ class RetiradasController extends AppController {
 
 		$titulo = $this->filtroPaginador(
 			array(
-				'OperacionCompra' =>array(
+				'OperacionVenta' =>array(
 					'Referencia' => array(
 						'columna' => 'referencia',
 						'exacto' => false,
@@ -58,9 +58,9 @@ class RetiradasController extends AppController {
 		$this->Retirada->bindModel(
 			array(
 				'belongsTo' => array(
-					'OperacionCompra' => array(
+					'OperacionVenta' => array(
 						'foreignKey' => false,
-						'conditions' => array('Retirada.operacion_compra_id = OperacionCompra.id')
+						'conditions' => array('Retirada.operacion_venta_id = OperacionVenta.id')
 					),
 					'Almacen' => array(
 						'className' => 'Empresa',
@@ -86,20 +86,20 @@ class RetiradasController extends AppController {
 		//$this->checkId($id); NO PUEDE ESTAR ACTIVADO PORQUE GENERA ERRORES EN ESTA VISTA
 		//el id y la clase de la entidad de origen vienen en la URL
 
-		$operacion_id = $this->params['named']['from_id'];
-		$this->set(compact('operacion_compra_id'));
+		$operacion_venta_id = $this->params['named']['from_id'];
+		$this->set(compact('operacion_venta_id'));
 
-		$operacion = $this->Retirada->OperacionVenta->OperacionCompra->find(
+		$operacion = $this->Retirada->OperacionVenta->find(
 			'first',
 			array(
 				'conditions' => array(
-					'OperacionCompra.id'=>$operacion_id
+					'OperacionVenta.id'=>$operacion_venta_id
 				),
 				'recursive'=>-1,
 				'fields' => array(
 					'id',
 					'referencia',
-					'contrato_id',
+					//'contrato_id',
 					'embalaje_id'
 				),
 				'contain' => array(
@@ -107,7 +107,8 @@ class RetiradasController extends AppController {
 						'fields' => array(
 							'nombre'
 						)
-					)
+					),
+					'OperacionCompra',
 				)
 			)
 		);
@@ -119,7 +120,7 @@ class RetiradasController extends AppController {
 			array(
 				'conditions' => array(
 					'ContratoEmbalaje.contrato_id' => $operacion['OperacionCompra']['contrato_id'],
-					'ContratoEmbalaje.embalaje_id' => $operacion['OperacionCompra']['embalaje_id']
+					'ContratoEmbalaje.embalaje_id' => $operacion['OperacionVenta']['embalaje_id']
 				),
 				'fields' => array(
 					//'Embalaje.nombre',
@@ -135,7 +136,7 @@ class RetiradasController extends AppController {
 			array(
 				'conditions' =>array(
 					'Retirada.asociado_id' => $this->params['named']['asociado_id'],
-					'Retirada.operacion_compra_id'=> $operacion_id
+					'Retirada.operacion_venta_id'=> $operacion_venta_id
 				),
 				'recursive' => 3,
 				'contain' => array(
@@ -158,7 +159,7 @@ class RetiradasController extends AppController {
 							'nombre_corto'
 						)
 					),
-					'OperacionCompra' => array(
+					'OperacionVenta' => array(
 						'fields' => array(
 							'id',
 							'referencia',
@@ -190,7 +191,7 @@ class RetiradasController extends AppController {
 			'first',
 			array(
 				'conditions' => array(
-					'Distribucion.operacion_venta_id' => $operacion_id,
+					'Distribucion.operacion_venta_id' => $operacion_venta_id,
 					'Distribucion.asociado_id' => $this->params['named']['asociado_id']
 				),
 				'recursive'=>-1,
@@ -237,7 +238,7 @@ class RetiradasController extends AppController {
 			'first',
 			array(
 				'conditions' => array(
-					'Transporte.operacion_compra_id' => $operacion_id
+					'Transporte.operacion_compra_id' => $operacion_venta_id
 				),
 				'recursive' => 2,
 				'fields' => array(
