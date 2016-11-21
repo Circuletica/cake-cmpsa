@@ -376,13 +376,13 @@ class ContratosController extends AppController {
 				)
 			);
 		$this->set('canalCompras', $canal_compras);
-		$canal_compras_divisa = $this->Contrato->CanalCompra->find('all');
-		$this->set('canal_compras_divisa', $canal_compras_divisa);
+	//	$canal_compras_divisa = $this->Contrato->CanalCompra->find('all');
+	//	$this->set('canal_compras_divisa', $canal_compras_divisa);
 		//En la vista se muestra la lista de todos los embalajes existentes
-		$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
-			'order' => array('Embalaje.nombre' => 'asc')
-			)
-		);
+	//	$embalajes = $this->Contrato->ContratoEmbalaje->Embalaje->find('all', array(
+//			'order' => array('Embalaje.nombre' => 'asc')
+//			)
+//		);
 		$this->set('embalajes', $embalajes);
 		//El tipo de fecha: embarque o entrega
 		$this->set(
@@ -500,18 +500,18 @@ class ContratosController extends AppController {
 			$this->Contrato->OperacionCompra->save($operacion);
 
 			//PENDIENTE DE SOLVENTAR
-			$asociado_operaciones = $this->Contrato->OperacionCompra->AsociadoOperacion->find('all', array(
-				'conditions' => array('AsociadoOperacion.operacion_id' => $id_operacion_copiada)
+			$pedidos = $this->Contrato->OperacionCompra->OperacionVenta->Pedido->find('all', array(
+				'conditions' => array('Pedido.operacion_venta_id' => $id_operacion_copiada)
 				)
 			);
 			//después de crear la operacion, hay que meterle los repartos de asociados
-			foreach ($asociado_operaciones as $asociado_operacion){
-				$asociado_operacion['AsociadoOperacion']['operacion_id'] = $this->Contrato->OperacionCompra->id;
-				unset ($asociado_operacion['AsociadoOperacion']['id']);
-				unset ($asociado_operacion['AsociadoOperacion']['created']);
-				unset ($asociado_operacion['AsociadoOperacion']['modified']);
-				$this->Contrato->OperacionCompra->AsociadoOperacion->create();
-				$this->Contrato->OperacionCompra->AsociadoOperacion->save($asociado_operacion);
+			foreach ($pedidos as $pedido){
+				$pedido['Pedido']['operacion_venta_id'] = $this->Contrato->OperacionCompra->id;
+				unset ($pedido['Pedido']['id']);
+				unset ($pedido['Pedido']['created']);
+				unset ($pedido['Pedido']['modified']);
+				$this->Contrato->OperacionCompra->Pedido->create();
+				$this->Contrato->OperacionCompra->Pedido->save($pedido);
 			}
 			$i++;
 		}

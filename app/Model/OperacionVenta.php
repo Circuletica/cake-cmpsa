@@ -42,6 +42,7 @@ class OperacionVenta extends AppModel {
 		'Distribucion',
 		'OperacionAsociadoCuenta',
 		'OperacionVentaCuenta',
+		'Retirada'
 	);
 	public function beforeDelete($cascade = true) {
 		$count_retirada = $this->Retirada->find(

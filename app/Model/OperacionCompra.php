@@ -62,8 +62,7 @@ class OperacionCompra extends AppModel {
 			'className' => 'OperacionVenta',
 			'foreignkey' => 'operacion_venta_id	'
 		),
-		'LineaMuestra',
-		'Retirada'
+		'LineaMuestra'
 	);
 	public function beforeDelete($cascade = true) {
 		$count_retirada = $this->Retirada->find(

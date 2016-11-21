@@ -5,7 +5,7 @@ class Retirada extends AppModel {
 			'rule' => 'notBlank',
 			'message' => 'Debe seleccionar un asociado'
 		),
-		'operacion_compra_id' => array(
+		'operacion_venta_id' => array(
 			'rule' => 'notBlank',
 			'message' => 'Debe seleccionar una ref. operación'
 		),
