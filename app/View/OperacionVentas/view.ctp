@@ -10,9 +10,9 @@ $this->assign('line_add','0');
 
 $this->start('breadcrumb');
 $this->Html->addCrumb(
-    'Operaciones',
+    'Operacion (venta)',
     array(
-	'controller' => 'operaciones',
+	'controller' => 'operacion_ventas',
 	'action' => 'index'
     )
 );
@@ -35,7 +35,7 @@ echo "<br><hr>";
 if (empty($existe_financiacion)) {
     echo $this->Html->link('<i class="fa fa-file-text-o fa-lg" aria-hidden="true"></i>
 	Generar financiación', array(
-	    'controller' => 'operaciones',
+	    'controller' => 'operacion_ventas',
 	    'action' => 'generarFinanciacion',
 	    $operacion['OperacionVenta']['id']
 	),
@@ -55,7 +55,7 @@ if (empty($existe_financiacion)) {
 if (empty($existe_facturacion)) {
     echo $this->Html->link('<i class="fa fa-file-text fa-lg" aria-hidden="true"></i>
 	Generar facturación', array(
-	    'controller' => 'operaciones',
+    	    'controller' => 'operacion_ventas',
 	    'action' => 'generarFacturacion',
 	    $operacion['OperacionVenta']['id']
 	),
@@ -83,53 +83,9 @@ echo $this->html->link($operacion['OperacionCompra']['Contrato']['referencia'], 
     $operacion['OperacionCompra']['Contrato']['id'])
 );
 echo "  </dd>";
-echo "  <dt>Proveedor:</dt>\n";
-echo "<dd>";
-echo $this->html->link($operacion['Contrato']['Proveedor']['nombre_corto'], array(
-    'controller' => 'proveedores',
-    'action' => 'view',
-    $operacion['Contrato']['Proveedor']['id'])
-);
-echo "  </dd>";
-echo "  <dt>Peso:</dt>\n";
-echo "  <dd>".$operacion['PesoOperacion']['peso'].' kg&nbsp;'."</dd>";
-echo "  <dt>Peso factura:</dt>\n";
-echo "  <dd>".$operacion['PesoOperacion']['peso_pagado'].' kg&nbsp;'."</dd>";
-echo "  <dt>Embalaje:</dt>\n";
-echo "  <dd>".
-    $operacion['PesoOperacion']['cantidad_embalaje'].' x '.
-    $embalaje['Embalaje']['nombre'].
-    ' ('.$operacion['PesoOperacion']['peso'].'kg)&nbsp;'."</dd>";
-echo "  <dt>Lotes:</dt>\n";
-echo "  <dd>".$operacion['OperacionVenta']['lotes_operacion']."&nbsp;</dd>";
-echo "  <dt>Puerto de Destino:</dt>\n";
-echo "  <dd>".$operacion['PuertoDestino']['nombre'].'&nbsp;'."</dd>";
-//mysql almacena la fecha en formato ymd
-echo "  <dt>Fecha fijación:</dt>\n";
-echo "  <dd>".$this->Date->format($fecha_fijacion).'&nbsp;'."</dd>";
-echo "  <dt>Precio fijación:</dt>\n";
-echo "  <dd>".$operacion['OperacionVenta']['precio_fijacion']
-    .$divisa
-    .'&nbsp;'."</dd>";
-echo "  <dt>Diferencial:</dt>\n";
-echo "  <dd>".$operacion['Contrato']['diferencial'].$divisa.'&nbsp;'."</dd>";
-if ($operacion['OperacionVenta']['opciones'] != 0){
-    echo "  <dt>Opciones:</dt>\n";
-    echo "  <dd>".$operacion['OperacionVenta']['opciones'].$divisa.'&nbsp;'."</dd>";
-}
-echo "  <dt>Precio ".$operacion['PrecioTotalOperacion']['divisa']."/Tm:</dt>\n";
-echo "  <dd>".
-    $operacion['PrecioTotalOperacion']['precio_divisa_tonelada'].
-    $operacion['PrecioTotalOperacion']['divisa'].
-    '/Tm&nbsp;'.
-    "</dd>";
-if ($operacion['Contrato']['Incoterm']['si_flete']) {
-    echo "  <dt>Flete:</dt>\n";
-    echo "  <dd>".
-	$operacion['OperacionVenta']['flete'].
-	'$/Tm&nbsp;'.
-	"</dd>";
-}
+echo "  <dt>Precio €/kg directo:</dt>\n";
+echo "  <dd>".$operacion['OperacionVenta']['precio_directo_euro'].'€/kg&nbsp;'."</dd>";
+
 if (isset($operacion['OperacionVenta']['precio_directo_euro'])) {
     echo "  <dt>Precio €/kg directo:</dt>\n";
     echo "  <dd>".$operacion['PrecioTotalOperacion']['precio_directo_euro'].'€/kg&nbsp;'."</dd>";

@@ -5,14 +5,6 @@ echo $this->Form->input('Search.referencia',
   'label' => 'Ref. operación'
   )
 );
-/*echo $this->Form->input('Search.contrato_referencia', array(
-	'label' => 'Ref. contrato',
-	'empty' => true
-));*/
-echo $this->Form->input('Search.proveedor_id', array(
-	'label' => 'Proveedor',
-	'empty' => true
-));
 echo $this->Form->input('Search.calidad', array(
 	'label' => 'Calidad',
 	'empty' => true

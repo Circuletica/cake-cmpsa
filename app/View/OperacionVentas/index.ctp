@@ -7,7 +7,7 @@ $this->assign('add_button', 0);
 
 $this->start('filter');
 echo "<h3>Búsqueda</h3>\n";
-//echo $this->element('filtrooperacionventa'); //Elemento del Filtro de operaciones
+echo $this->element('filtrooperacionventa'); //Elemento del Filtro de operaciones
 if ($action == 'index_trafico') {  //Departamento de tráfico
 
 }
@@ -21,19 +21,18 @@ if (empty($operaciones)){
 		echo "<table class='tr5 tr6'>\n";
 		echo $this->Html->tableHeaders(array(
 					$this->Paginator->sort('OperacionVenta.referencia','Ref.Operación'),
-				//	$this->Paginator->sort('Contrato.referencia','Ref.Contrato'),
 					$this->Paginator->sort('Calidad.nombre','Calidad'),
-				//	$this->Paginator->sort('PesoOperacionVenta.peso','Peso (kg)'),
-				//	$this->Paginator->sort('OperacionVenta.lotes_operacion','Lotes'),*/
+					$this->Paginator->sort('PesoOperacionVenta.peso','Peso total(kg)'),
+					$this->Paginator->sort('OperacionVenta.precio_directo_euro','Precio €/kg directo'),
 					'Detalle')
 				);
 		foreach($operaciones as $operacion){
 			echo $this->Html->tableCells(array(
 						$operacion['OperacionVenta']['referencia'],
-					//	$operacion['Contrato']['referencia'],
 						$operacion['OperacionCompra']['Contrato']['Calidad']['nombre'],
-					//	$operacion['PesoOperacionVenta']['peso'],
-					//	$operacion['OperacionVenta']['lotes_operacion'],*/
+						'pendiente',
+						//$operacion['PesoOperacionVenta']['peso'],
+						$operacion['OperacionVenta']['precio_directo_euro'],
 						$this->Button->view('operacion_ventas',$operacion['OperacionVenta']['id']
 							)
 						)
@@ -72,7 +71,8 @@ if (empty($operaciones)){
 						}
 						?>
 <div class="btabla">
-	<?php echo $this->Button->add('operacion_ventas','Operación venta'); ?>
+	<?php echo $this->Button->add('operacion_ventas','Operación venta');
+echo $this->Html->link('Start form >', array('action' => 'msf_setup'));?>
 </div>
 <?php
 $this->end();

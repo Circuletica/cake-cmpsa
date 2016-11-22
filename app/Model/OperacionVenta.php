@@ -1,17 +1,13 @@
 <?php
 class OperacionVenta extends AppModel {
 	public $recursive = 2;
-
 	public $action_view;
-
 	public $displayField = 'referencia';
-
 	public $validate = array(
 		'referencia' => array(
 			'rule' => 'notBlank',
 			'message' => 'La referencia no puede estar vacía')
 		);
-
 	public $belongsTo = array(
 		'OperacionCompra' => array(
 			'className' => 'OperacionCompra',
