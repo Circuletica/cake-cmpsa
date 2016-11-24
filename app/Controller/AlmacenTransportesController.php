@@ -6,8 +6,7 @@ class AlmacenTransportesController extends AppController {
 		$this->set('action', $this->action);	//Se usa para tener la misma vista
 
 		$this->paginate['order'] = array('AlmacenTransporte.cuenta_almacen' => 'asc');
-		//$this->paginate['recursive'] = 3;
-
+		$this->paginate['recursive'] = -1;
 		$this->paginate['contain'] = array(
 			'Almacen'=>array(
 				'fields'=>array(
@@ -59,7 +58,6 @@ class AlmacenTransportesController extends AppController {
 			$title[] = 'Transporte: '.$criterio;
 		}
 
-
 		$this->AlmacenTransporte->bindModel(
 			array(
 				'belongsTo' => array(
@@ -79,36 +77,31 @@ class AlmacenTransportesController extends AppController {
 			)
 		);
 
-		$this->set('almacentransportes', $this->paginate());
-		$almacentransporteasociados = $this->AlmacenTransporte->OperacionAsociadoCuenta->find(
-			'all',
-			array(
-				'contain' => array(
-					'AlmacenTransporte'=>array(
-						'fields' => array(
-							'cantidad_cuenta'
-						)
-					)
-				)
+	$this->set('almacentransportes', $this->paginate());
+
+/*	$at = $this->AlmacenTransporte->find(
+		'all',
+		array(
+			'contain'=>array(
+				'OperacionAsociadoCuenta'
 			)
-		);
-		$total_sacos_asignados=0;
-		//$almacentransporteasociados = Hash::combine($almacentransporteasociados, '{n}.OperacionAsociadoCuenta.almacen_transporte_id','{n}');
-		foreach ($almacentransporteasociados as $clave=>$OperacionAsociadoCuenta){
-			if($clave==0){
-				$almacentransporte_id = $OperacionAsociadoCuenta['OperacionAsociadoCuenta']['almacen_transporte_id'];
-			}elseif($almacentransporte_id == $OperacionAsociadoCuenta['OperacionAsociadoCuenta']['almacen_transporte_id']){
-				$total_sacos_asignados +=$OperacionAsociadoCuenta['OperacionAsociadoCuenta']['sacos_asignados'];
-			}else{
-				$almacentransporte_id = $OperacionAsociadoCuenta['OperacionAsociadoCuenta']['almacen_transporte_id'];
+		)
+	);
+	$this->set(compact('at'));
+	$sacos_asignados = 0;
+	foreach ($at as $clave=>$cuenta) {
+		foreach ($cuenta['OperacionAsociadoCuenta'] as $op_asoc_cuenta){
+			if($cuenta['AlmacenTransporte']['id'] == $op_asoc_cuenta['almacen_transporte_id']){
+				$sacos_asignados=+ $op_asoc_cuenta['sacos_asignados'];
+
 			}
-			unset($almacentransporteasociados[$clave]['Asociado']);
-
 		}
-		$this->set(compact('almacentransporteasociados'));
-		$this->set(compact('total_sacos_asignados'));
+		$pendiente = $cuenta['AlmacenTransporte']['cantidad_cuenta'] - $sacos_asignados;
+	}
+	$this->set('sacos_asignados');
+	$this->set('pendiente');
 
-
+*/
 	}
 
 	public function pendiente() { //Informes de sacos pendientes por adjudicar
@@ -140,11 +133,11 @@ class AlmacenTransportesController extends AppController {
 								)
 							),
 							'Empresa',
-							'AlmacenReparto'=> array(
-								'conditions'=> array(
-									'AlmacenReparto.id' => $id
-								)
-							)
+					//		'AlmacenReparto'=> array(
+					//			'conditions'=> array(
+					//				'AlmacenReparto.id' => $id
+					//			)
+					//		)
 						)
 					),
 					'Retirada',
@@ -543,11 +536,12 @@ class AlmacenTransportesController extends AppController {
 								)
 							),
 							'Empresa',
-							'AlmacenReparto'=> array(
+						/*	'AlmacenReparto'=> array(
 								'conditions'=> array(
 									'AlmacenReparto.id' => $id
 								)
 							)
+						*/
 						)
 					),
 					'Transporte'=> array(

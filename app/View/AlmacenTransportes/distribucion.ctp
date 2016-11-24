@@ -56,12 +56,12 @@ $total_asignacion_real=0;
 $total_pendiente = 0;
 $total_porcentaje_teorico = 0;
 $total_porcentaje_real = 0;
-echo $this->Html->tableHeaders(array('Asociado','Asignado Teorico', 'Asignados Real','Pendiente','% teorico', '% real'));
+echo $this->Html->tableHeaders(array('Asociado'/*,'Asignado Teorico'*/, 'Asignados','Pendiente'/*,'% teorico'*/, 'porcentaje %'));
 foreach($almacentransportes['OperacionAsociadoCuenta'] as $almacentransporte){
 	$pendiente = !empty($almacentransporte['Asociado']['Retirada'])? $almacentransporte['sacos_asignados']-$almacentransporte['Asociado']['Retirada'][0]['total_retirada_asociado']: $almacentransporte['sacos_asignados'];
 	echo $this->Html->tableCells(array(
 		$almacentransporte['Asociado']['Empresa']['nombre_corto'],
-		$almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'],
+	//	$almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'],
 		$this->Form->input('CantidadAsociado.'.$almacentransporte['asociado_id'], array(
 			'label' => '',
 			'class' => 'cantidad',
@@ -70,14 +70,14 @@ foreach($almacentransportes['OperacionAsociadoCuenta'] as $almacentransporte){
 		)
 	),
 	$pendiente,
-	$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),
+	//$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),
 	'<div id=porcentajeAsociado'.$almacentransporte['asociado_id'].' class=porcentajeAsociado>'." %".'</div>',
 )
 		);
-	$total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
-	$total_asignacion_real = $total_asignacion_real + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
+//	$total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
+//	$total_asignacion_real = $total_asignacion_real + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
 	$total_pendiente = $total_pendiente + $pendiente;
-	$total_porcentaje_teorico = $total_porcentaje_teorico + $almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'];
+//	$total_porcentaje_teorico = $total_porcentaje_teorico + $almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'];
 	//$total_porcentaje_real = $total_porcentaje_real +$almacentransporte['sacos_asignados']*100/$almacentransportes['AlmacenTransporte']['cantidad_cuenta'];
 }
 echo $this->html->tablecells(array(
@@ -88,14 +88,14 @@ echo $this->html->tablecells(array(
 				'style' => 'font-weight: bold; text-align:center'
 			)
 		),
-		array(
+	/*	array(
 			$total_asignacion_teorica,
 			array(
 				'style' => 'font-weight: bold;',
 				'bgcolor' => '#5FCF80'
 			)
 		),
-		array(
+	*/	array(
 			'<div id=totalCantidad></div>',
 			array(
 				'style' => 'font-weight: bold;',
@@ -109,14 +109,14 @@ echo $this->html->tablecells(array(
 				'bgcolor' => '#5FCF80'
 			)
 		),
-		array(
+	/*	array(
 			$total_porcentaje_teorico.'%',
 			array(
 				'style' => 'font-weight: bold;',
 				'bgcolor' => '#5FCF80'
 			)
 		),
-		array(
+	*/	array(
 			'<div id=totalPorcentaje></div>',
 			array(
 				'style' => 'font-weight: bold;',

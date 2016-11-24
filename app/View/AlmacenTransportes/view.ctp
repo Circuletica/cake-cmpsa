@@ -188,10 +188,11 @@ echo $this->Html->link(
 			echo $this->Html->tableHeaders(
 				array(
 					'Asociado',
-					'Asignación teórica',
-					'Asignación real',
+//					'Asignación teórica',
+					'Asignación',
 					'Pendiente',
-					'% teorico','% real'
+//					'% teorico',
+					'porcentaje %'
 					)
 				);
 
@@ -201,18 +202,18 @@ echo $this->Html->link(
 				echo $this->Html->tableCells(
 					array(
 						$almacentransporte['Asociado']['Empresa']['nombre_corto'],
-						$almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'],
+//						$almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'],
 						$almacentransporte['sacos_asignados'],
 						$pendiente,
-						$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),
+//						$this->Number->round($almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'],2),
 						$sacos_asignados
 //$this->Number->round($almacentransporte['sacos_asignados']*100/$total_asignacion_real ,2)
 						)
 					);
 //Saco los datos de los totales de la tabla
-				$total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
+		//		$total_asignacion_teorica = $total_asignacion_teorica + $almacentransporte['Asociado']['AlmacenReparto'][0]['sacos_asignados'];
 				$total_pendiente = $total_pendiente + $pendiente;
-				$total_porcentaje_teorico = $total_porcentaje_teorico + $almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'];
+		//		$total_porcentaje_teorico = $total_porcentaje_teorico + $almacentransporte['Asociado']['AlmacenReparto'][0]['porcentaje_embalaje_asociado'];
 				if ($almacentransporte['sacos_asignados'] != 0){
 					$total_porcentaje_real = $total_porcentaje_real + $almacentransporte['sacos_asignados']*100/$total_asignacion_real;
 				}
@@ -225,14 +226,14 @@ echo $this->Html->link(
 							'style' => 'font-weight: bold; text-align:center'
 							)
 						),
-					array(
+		/*			array(
 						$total_asignacion_teorica,
 						array(
 							'style' => 'font-weight: bold;',
 							'bgcolor' => '#5FCF80'
 							)
 						),
-					array(
+		*/			array(
 						$total_asignacion_real,
 						array(
 							'style' => 'font-weight: bold;',
@@ -246,14 +247,14 @@ echo $this->Html->link(
 							'bgcolor' => '#5FCF80'
 							)
 						),
-					array(
+		/*			array(
 						$total_porcentaje_teorico.'%',
 						array(
 							'style' => 'font-weight: bold;',
 							'bgcolor' => '#5FCF80'
 							)
 						),
-					array(
+		*/			array(
 						$total_porcentaje_real.'%',
 						array(
 							'style' => 'font-weight: bold;',

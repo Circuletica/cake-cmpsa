@@ -47,7 +47,7 @@ $this->start('main');
 		        $this->Paginator->sort('Transporte.linea','Nº línea'),
 		        $this->Paginator->sort('Calidad.nombre', 'Calidad'),
 		      	$this->Paginator->sort('AlmacenTransporte.cantidad_cuenta', 'Cantidad cuenta'), // SACOS PENDIENTES DE ADJUDICAR
-		       	$this->Paginator->sort('OperacionAsociadoCuenta.sacos_asignados', 'Sacos Pendientes'), // SACOS PENDIENTES DE ADJUDICAR
+		       	'Sacos Pendientes', // SACOS PENDIENTES DE ADJUDICAR
 		        $this->Paginator->sort('AlmacenTransporte.cuenta_almacen', 'Ref. Almacén'),
 		        $this->Paginator->sort('Almacen.nombre_corto', 'Almacén'),
 		       'Detalle'
@@ -60,7 +60,7 @@ $this->start('main');
 			            $almacentransporte['Transporte']['linea'],
 			            $almacentransporte['Calidad']['nombre'],
 			            $almacentransporte['AlmacenTransporte']['cantidad_cuenta']. ' bultos',// SACOS PENDIENTES DE ADJUDICAR
-			           //$almacentransporte['AlmacenTransporteAsociado']['sacos_asignados'],
+                        //$sacos_pendientes['']],
 			            $almacentransporte['AlmacenTransporte']['cuenta_almacen'],
 			        	$almacentransporte['Almacen']['nombre_corto'],
 						$this->Button->view('almacen_transportes',$almacentransporte['AlmacenTransporte']['id'])
