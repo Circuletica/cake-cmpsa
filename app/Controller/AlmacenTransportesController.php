@@ -213,6 +213,116 @@ class AlmacenTransportesController extends AppController {
 		$this->set(compact('id'));
 	}
 
+	public function restos() {
+
+		$this->set('action', $this->action);	//Se usa para tener la misma vista
+
+		$this->paginate['order'] = array('AlmacenTransporte.cuenta_almacen' => 'asc');
+		//$this->paginate['recursive'] = 3;
+
+		$this->paginate['contain'] = array(
+			'Almacen'=>array(
+				'fields'=>array(
+					'nombre_corto'
+				)
+			),
+			'OperacionCompra' => array(
+				'fields' => array(
+					'referencia',
+					'contrato_id'
+				)
+			),
+			'Contrato'=> array(
+				'fields' => array(
+					'calidad_id'
+				)
+			),
+			'Calidad'=> array(
+				'fields'=> array(
+					'nombre'
+				)
+			),
+			'Transporte'=>array(
+				'fields'=> array(
+					'linea',
+					'operacion_compra_id'
+				)
+			),
+			'OperacionAsociadoCuenta'
+		);
+		if(isset($this->passedArgs['Search.desde'])) {
+			$criterio = strtr($this->passedArgs['Search.desde'],'_','/');
+			$this->paginate['conditions'] = array(
+				'AlmacenTransporte.fecha_despacho_op >= ' => $criterio
+			);
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['desde'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Transporte: '.$criterio;
+		}
+		if(isset($this->passedArgs['Search.hasta']) and $this->passedArgs['Search.hasta'] != '--') {
+			$criterio = strtr($this->passedArgs['Search.hasta'],'_','/');
+			$this->paginate['conditions'] += array(
+				'AlmacenTransporte.fecha_despacho_op <= ' => $criterio
+			);
+			//guardamos el criterio para el formulario de vuelta
+			$this->request->data['Search']['hasta'] = $criterio;
+			//completamos el titulo
+			$title[] = 'Transporte: '.$criterio;
+		}
+
+
+		$this->AlmacenTransporte->bindModel(
+			array(
+				'belongsTo' => array(
+					'OperacionCompra' => array(
+						'foreignKey' => false,
+						'conditions' => array('Transporte.operacion_compra_id = OperacionCompra.id')
+					),
+					'Contrato' => array(
+						'foreignKey' => false,
+						'conditions' => array('OperacionCompra.contrato_id = Contrato.id')
+					),
+					'Calidad' => array(
+						'foreignKey' => false,
+						'conditions' => array('Contrato.calidad_id = Calidad.id')
+					)
+				)
+			)
+		);
+
+		$this->set('almacentransportes', $this->paginate());
+		$almacentransporteasociados = $this->AlmacenTransporte->OperacionAsociadoCuenta->find(
+			'all',
+			array(
+				'contain' => array(
+					'AlmacenTransporte'=>array(
+						'fields' => array(
+							'cantidad_cuenta'
+						)
+					)
+				)
+			)
+		);
+		$total_sacos_asignados=0;
+		//$almacentransporteasociados = Hash::combine($almacentransporteasociados, '{n}.OperacionAsociadoCuenta.almacen_transporte_id','{n}');
+		foreach ($almacentransporteasociados as $clave=>$OperacionAsociadoCuenta){
+			if($clave==0){
+				$almacentransporte_id = $OperacionAsociadoCuenta['OperacionAsociadoCuenta']['almacen_transporte_id'];
+			}elseif($almacentransporte_id == $OperacionAsociadoCuenta['OperacionAsociadoCuenta']['almacen_transporte_id']){
+				$total_sacos_asignados +=$OperacionAsociadoCuenta['OperacionAsociadoCuenta']['sacos_asignados'];
+			}else{
+				$almacentransporte_id = $OperacionAsociadoCuenta['OperacionAsociadoCuenta']['almacen_transporte_id'];
+			}
+			unset($almacentransporteasociados[$clave]['Asociado']);
+
+		}
+		$this->set(compact('almacentransporteasociados'));
+		$this->set(compact('total_sacos_asignados'));
+
+
+	}
+
 	public function add() {
 		//el id y la clase de la entidad de origen vienen en la URL
 		if (!$this->params['named']['from_id']) {

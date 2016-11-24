@@ -71,8 +71,7 @@ if (empty($operaciones)){
 						}
 						?>
 <div class="btabla">
-	<?php echo $this->Button->add('operacion_ventas','Operación venta');
-echo $this->Html->link('Start form >', array('action' => 'msf_setup'));?>
+	<?php echo $this->Button->add('operacion_ventas','Operación venta');?>
 </div>
 <?php
 $this->end();
